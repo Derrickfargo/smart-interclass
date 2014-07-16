@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:circle="http://schemas.android.com/apk/res/cn.com.incito.classroom"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rlayout"
+    android:background="@drawable/bg_wifilist"
+    android:paddingRight="10dp"
+    android:paddingLeft="10dp"
+    android:paddingBottom="10dp">
+
+    <LinearLayout
+        android:id="@+id/contentLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+    <!--<GridView-->
+    <!--android:layout_marginTop="10dp"-->
+    <!--android:layout_below="@id/iv_back"-->
+    <!--android:id="@+id/gv_wifi_list"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:columnWidth="160dp"-->
+    <!--android:horizontalSpacing="10dp"-->
+    <!--android:verticalSpacing="10dp"-->
+    <!--android:numColumns="auto_fit"-->
+    <!--android:scrollbars="none" />-->
+    <cn.com.incito.classroom.ui.widget.circlemenu.CircleLayout
+
+        android:layout_width="500dp"
+        android:layout_height="match_parent"
+        android:id="@+id/carousel"
+        android:layout_centerHorizontal="true"
+        circle:firstChildPosition="South"
+        circle:rotateToCenter="true"
+        circle:isRotating="true" />
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="vertical">-->
+
+        <!--<cn.com.incito.classroom.ui.widget.caroursel.CarouselView-->
+        <!--android:layout_width="750dp"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:layout_height="330dp"-->
+        <!--android:id="@+id/carousel"-->
+        <!--android:animationDuration="200" />-->
+
+        <!--pj:Items="@array/entries"-->
+        <!--pj:Names="@array/names"-->
+        <!--pj:UseReflection="true"-->
+        <!--pj:SelectedItem="0"-->
+    <!--</LinearLayout>-->
+</RelativeLayout>
