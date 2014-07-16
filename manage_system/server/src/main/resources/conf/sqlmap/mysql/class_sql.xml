@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap>
+	<typeAlias alias="Classes" type="com.incito.interclass.entity.Classes" />
+<!-- 	<resultMap id="SchoolMap" class="School">
+		<result column="id" property="id" />
+		<result column="uname" property="uname" />
+		<result column="password" property="password" />
+		<result column="login_salt" property="loginSalt" />
+		<result column="name" property="name" />
+		<result column="email" property="email" />
+		<result column="sex" property="sex" ></result>
+		<result column="is_active" property="isActive" />
+		<result column="role" property="role" />
+		<result column="ctime" property="ctime" javaType="java.util.Date"/>
+		<result column="phone" property="phone" />
+	</resultMap> -->
+
+	<select id="getClassList" resultClass="Classes">
+		SELECT	
+			tb_class.id,tb_class.name,school_id AS schoolId,
+			contact,tb_class.phone,tb_class.ctime,tb_school.name AS schoolName
+		FROM 
+			tb_class
+		LEFT JOIN 
+			tb_school
+		ON 
+			tb_class.school_id = tb_school.id
+		ORDER BY
+			id
+	</select>
+
+	<select id="getClassListBySchoolId" resultClass="Classes" parameterClass="java.lang.Integer">
+		SELECT	
+			tb_class.id,tb_class.name,school_id AS schoolId,
+			contact,tb_class.phone,tb_class.ctime,tb_school.name AS schoolName
+		FROM 
+			tb_class
+		LEFT JOIN 
+			tb_school
+		ON 
+			tb_class.school_id = tb_school.id
+		WHERE
+			tb_class.school_id=#school_id#
+		ORDER BY
+			id
+	</select>
+	
+	<insert id="saveClass" parameterClass="Classes">
+		INSERT INTO 
+			tb_class(name,school_id,contact,phone,ctime)
+		VALUES
+			(#name#,#schoolId#,#contact#,#phone#,now())
+		<selectKey resultClass="int" keyProperty="id" > 
+            SELECT @@IDENTITY AS ID 
+        </selectKey> 
+	</insert>
+	
+	<delete id="deleteClass" parameterClass="java.lang.Integer">
+		DELETE FROM tb_class WHERE id = #id# 
+	</delete>
+</sqlMap>

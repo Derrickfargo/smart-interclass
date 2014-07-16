@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap>
+	<typeAlias alias="Device" type="com.incito.interclass.entity.Device" />
+
+	<select id="getDeviceList" resultClass="Device">
+		SELECT	
+			tb_device.id,imei,tb_user.name AS studentName,tb_device.ctime,
+			tb_student.phone,tb_student.address,tb_school.name AS schoolName
+		FROM 
+			tb_device
+		INNER JOIN
+			tb_student
+		ON	tb_student.device_id = tb_device.id
+		INNER JOIN
+			tb_user
+		ON 	tb_user.id = tb_student.id
+		INNER JOIN
+			tb_class
+		ON	tb_student.class_id = tb_class.id
+		INNER JOIN 
+			tb_school
+		ON tb_class.school_id = tb_school.id
+		ORDER BY
+			id
+	</select>
+
+	<insert id="saveDevice" parameterClass="Device">
+		INSERT INTO 
+			tb_device(imei,ctime)
+		VALUES
+			(#imei#,now())
+		<selectKey resultClass="int" keyProperty="id" > 
+            SELECT @@IDENTITY AS ID 
+        </selectKey> 
+	</insert>
+	
+	<delete id="deleteDevice" parameterClass="java.lang.Integer">
+		DELETE FROM tb_device WHERE id = #id# 
+	</delete>
+</sqlMap>
