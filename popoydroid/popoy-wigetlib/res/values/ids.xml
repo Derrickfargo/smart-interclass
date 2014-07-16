@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="titlebar" type="id">false</item>
+    <!-- titlebar layout -->
+    <item name="screen" type="id">false</item>
+    <item name="actionbar_home" type="id">false</item>
+    <item name="actionbar_home_logo" type="id">false</item>
+    <item name="actionbar_home_bg" type="id">false</item>
+    <item name="actionbar_home_btn" type="id">false</item>
+    <item name="actionbar_home_is_back" type="id">false</item>
+    <item name="actionbar_actions" type="id">false</item>
+    <item name="actionbar_progress" type="id">false</item>
+    <item name="actionbar_title" type="id">false</item>
+
+</resources>
