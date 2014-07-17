@@ -78,7 +78,7 @@ public class Login extends MouseAdapter{
 		JButton headb = new JButton();//创建按钮对象
 		headb.setBorderPainted(false);//设置边框不可见
 		headb.setContentAreaFilled(false);//设置透明
-		ImageIcon  icmr = new ImageIcon("images/logo.png");
+		ImageIcon  icmr = new ImageIcon("images/login/logo.png");
 		headb.setIcon(icmr);//设置图片
 		frame.add(headb);//添加按钮
 		headb.setBounds(20, 60, icmr.getIconWidth(), icmr.getIconHeight());
@@ -105,7 +105,7 @@ public class Login extends MouseAdapter{
 		btnLogin = new JButton();//创建按钮对象
 		btnLogin.setBorderPainted(false);//设置边框不可见
 		btnLogin.setContentAreaFilled(false);//设置透明
-		ImageIcon btnImage = new ImageIcon("images/btn_login_normal.png");
+		ImageIcon btnImage = new ImageIcon("images/login/btn_login_normal.png");
 		btnLogin.setIcon(btnImage);//设置图片
 		frame.add(btnLogin);//添加按钮
 		btnLogin.setBounds(197, 220, btnImage.getIconWidth(), btnImage.getIconHeight());
@@ -148,7 +148,7 @@ public class Login extends MouseAdapter{
 	//设置背景
 	public void setBgimg(){
 		bg = new JLabel();
-		bg.setIcon(new ImageIcon("images/log/login_bg.png"));
+		bg.setIcon(new ImageIcon("images/login/login_bg.png"));
 		bg.setBounds(0,0, 460, 290);
 		frame.add(bg);
 	}
@@ -162,7 +162,7 @@ public class Login extends MouseAdapter{
 	public void mousePressed(MouseEvent e) {
 		//按钮按下效果
 		if(e.getSource()==btnLogin){
-			btnLogin.setIcon(new ImageIcon("images/btn_login_pressed.png"));
+			btnLogin.setIcon(new ImageIcon("images/login/btn_login_pressed.png"));
 		}
 	}
 
@@ -170,7 +170,7 @@ public class Login extends MouseAdapter{
 	public void mouseReleased(MouseEvent e) {
 		//按钮释放效果
 		if(e.getSource()==btnLogin){
-			ImageIcon btnImage = new ImageIcon("images/btn_login_normal.png");
+			ImageIcon btnImage = new ImageIcon("images/login/btn_login_normal.png");
 			btnLogin.setIcon(btnImage);
 		}
 	}
@@ -187,7 +187,7 @@ public class Login extends MouseAdapter{
 	public void mouseExited(MouseEvent e) {
 		//鼠标退出效果
 		if(e.getSource()==btnLogin){
-			ImageIcon btnImage = new ImageIcon("images/btn_login_normal.png");
+			ImageIcon btnImage = new ImageIcon("images/login/btn_login_normal.png");
 			btnLogin.setIcon(btnImage);
 		}
 	}

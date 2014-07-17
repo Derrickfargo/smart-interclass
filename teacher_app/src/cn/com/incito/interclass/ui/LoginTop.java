@@ -44,7 +44,7 @@ public class LoginTop extends JPanel implements MouseListener{
 	//加载图片
 	public void getImg(){
 		for(int i=1;i<10;i++){
-			ImageIcon img = new ImageIcon("images/log/"+i+".png");
+			ImageIcon img = new ImageIcon("images/login/"+i+".png");
 			list.add(img);
 		}
 	}

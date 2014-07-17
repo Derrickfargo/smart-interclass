@@ -5,7 +5,7 @@
   
   <!-- 继承产品设置 -->
   <parent>
-    <groupId>com.incito.xx</groupId>
+    <groupId>com.incito.interclass</groupId>
     <artifactId>product</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
@@ -17,7 +17,7 @@
   <dependencies>
 		<!-- 依赖server模块 -->
     <dependency>
-      <groupId>com.incito.xx</groupId>
+      <groupId>com.incito.interclass</groupId>
 		  <artifactId>server</artifactId>
 		  <version>0.0.1-SNAPSHOT</version>
     </dependency>
