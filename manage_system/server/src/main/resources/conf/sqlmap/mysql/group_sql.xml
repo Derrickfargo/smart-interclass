@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap>
+	<typeAlias alias="Group" type="com.incito.interclass.entity.Group" />
+	<select id="getGroupList" resultClass="Group">
+		SELECT	
+			tb_group.id,tb_group.name,tb_group.logo,tb_group.slogan,
+			tb_user.name AS teacherName
+		FROM 
+			tb_group
+		INNER JOIN 
+			tb_teacher ON tb_teacher.id = tb_group.teacher_id
+		INNER JOIN 
+			tb_user ON tb_user.id = tb_teacher.id
+		ORDER BY
+			id
+	</select>
+
+	<insert id="saveGroup" parameterClass="Group">
+		INSERT INTO 
+			tb_group(name,logo,slogan,course_id,teacher_id,class_id,ctime)
+		VALUES
+			(#name#,#logo#,#slogan#,#courseId#,#teacherId#,#classId#,now())
+		<selectKey resultClass="int" keyProperty="id" > 
+            SELECT @@IDENTITY AS ID 
+        </selectKey> 
+	</insert>
+	
+	<delete id="deleteGroup" parameterClass="java.lang.Integer">
+		DELETE FROM tb_group WHERE id = #id# 
+	</delete>
+</sqlMap>
