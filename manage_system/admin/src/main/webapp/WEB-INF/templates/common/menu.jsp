@@ -6,12 +6,15 @@
 		  	<a class="list-group-item active">学校信息管理</a>
 		  	<ul class="nav">
 		    	<li class=""><a href="${path}/school/list" > 学校信息</a></li>
-		    	<li class=""><a href="${path}/class/list" > 班级信息</a></li>
+		    	<li class=""><a href="${path}/room/list" > 教室信息</a></li>
 		  	</ul>
-		  	<a href="#" class="list-group-item active">人员信息管理</a>
+		  	<a href="#" class="list-group-item active"> 教师信息管理</a>
 			<ul class="nav">
 		    	<li class=""><a href="${path}/teacher/list" > 教师信息</a></li>
-				<li class=""><a href="${path}/student/list" > 学生信息</a></li>
+		  	</ul>
+		  	<a href="#" class="list-group-item active">课程信息管理</a>
+			<ul class="nav">
+		    	<li class=""><a href="${path}/course/list" > 课程信息</a></li>
 		  	</ul>
  			<a class="list-group-item active">设备信息管理</a>  
  			<ul class="nav">

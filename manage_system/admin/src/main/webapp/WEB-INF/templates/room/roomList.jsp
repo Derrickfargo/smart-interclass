@@ -11,7 +11,7 @@
     <meta name="author" content="">
     <title>互动课堂后台管理平台</title>
     <jsp:include page="../common/common.jsp" />
-    <script type="text/javascript" src="${path}/js/school.js"></script>
+    <script type="text/javascript" src="${path}/js/room.js"></script>
   </head>
 
   <body>
@@ -31,23 +31,15 @@
 		<div class="col-xs-12 col-sm-10">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<h3 class="panel-title">学校信息</h3>
+						<h3 class="panel-title">教室信息</h3>
 					</div>
 					<div class="panel-body">
-						<form action="${path}/school/list" id="searchForm" method="post" class="form-horizontal" >
+						<form action="${path}/room/list" id="searchForm" method="post" class="form-horizontal" >
 							<div class="col-xs-12" style="border: 1px solid #f5f5f5;padding: 5px;margin-bottom:5px">
 								<div class="form-group">
 									<label class="col-xs-1 control-label">学校名称:</label>
 									<div class="col-xs-2">
 										<input type="text" name="name" value="${user.name}" class="form-control borderRadiusIE8">
-									</div>
-									<label class="col-xs-1 control-label">学校性质:</label>
-									<div class="col-xs-2">
-										<select id="schoolType" name="schoolType" class="form-control" >
-											<option value="1" selected>小学</option>
-											<option value="2">中学</option>
-											<option value="3">其他</option>
-										</select>
 									</div>
 									<button type="button" class="btn btn-primary" onclick="search('1')">搜索</button>
 									<button type="button" class="btn btn-primary" onclick="emptyForm('searchForm')">清空</button>
@@ -55,7 +47,7 @@
 							</div>
 
 							<div class="col-xs-12" style="padding: 0px;margin-bottom:5px">
-								<button type="button" class="btn btn-success btn-sm pull-right" onclick="window.location.href='${path}/school/add'">新增</button>
+								<button type="button" class="btn btn-success btn-sm pull-right" onclick="window.location.href='${path}/room/add'">新增</button>
 							</div>
 
                             <div class="col-xs-12" style="padding: 0px;margin-bottom:5px">
@@ -63,32 +55,20 @@
 									<thead>
 										<tr class="success">
 											<th>学校名称</th>
-											<th>学校类型</th>
-											<th>联系电话</th>
-											<th>学校地址</th>
+											<th>教室名称</th>
+											<th>Mac地址</th>
 											<th>操作</th>
 										</tr>
 									</thead>
 									<tbody>
-										<c:forEach items="${schools}" var="school">
+										<c:forEach items="${rooms}" var="room">
 											<tr>
-												<td>${school.name}</td>
+												<td>${room.schoolName}</td>
+												<td>${room.name}</td>
+												<td>${room.mac}</td>
 												<td>
-													<c:if test="${school.schoolType =='1' }">
-														小学
-													</c:if>
-													<c:if test="${school.schoolType =='2' }">
-														中学
-													</c:if>
-													<c:if test="${school.schoolType =='3' }">
-														其他
-													</c:if>
-												</td>
-												<td>${school.phone}</td>
-												<td>${school.address}</td>
-												<td>
-													<a href="#" onclick="modifySchool('${school.id}')"><span title="修改" class="glyphicon glyphicon-pencil"></span></a>&nbsp; 
-													<a href="#" onclick="deleteSchool('${school.id}')"><span title="删除" class="glyphicon glyphicon-remove"></span></a>&nbsp;
+													<a href="#" onclick="modifyRoom('${room.id}')"><span title="修改" class="glyphicon glyphicon-pencil"></span></a>&nbsp; 
+													<a href="#" onclick="deleteRoom('${room.id}')"><span title="删除" class="glyphicon glyphicon-remove"></span></a>&nbsp;
 												</td>
 											</tr>
 										</c:forEach>
@@ -98,7 +78,7 @@
 
 							<div class='text-center'>
 								<c:choose>
-									<c:when test="${empty schools}">
+									<c:when test="${empty rooms}">
 										<b>没有查询到相应的数据</b>
 									</c:when>
 									<c:when test="${search.totalPage == 1}">
@@ -153,7 +133,7 @@
 								<input type="hidden" id="pageSize" name="pageSize" value="">
 								<input type="hidden" id="opType" name="opType" value="">
 								<input type="hidden" id="pageType" name="pageType" value="">
-								<input type="hidden" id="schoolId" name="schoolId" value="">
+								<input type="hidden" id="roomId" name="roomId" value="">
 						</form>
 					</div>
 				</div>

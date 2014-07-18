@@ -34,8 +34,8 @@ public class UserService extends BaseService {
 		return (Teacher) findForObject("loginForTeacher", teacher);
 	}
 	
-	public List<Student> getStudentListByMac(String mac) {
-		return findForList("getStudentListByMac", mac);
+	public List<Student> getStudentByGroupId(int groupId) {
+		return findForList("getStudentByGroupId", groupId);
 	}
 	
 	public Student loginForStudent(String deviceId){

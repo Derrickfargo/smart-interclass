@@ -5,12 +5,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
 import com.incito.interclass.business.UserService;
 import com.incito.interclass.common.BaseCtrl;
 import com.incito.interclass.entity.Student;
 import com.incito.interclass.entity.Teacher;
+import com.incito.interclass.entity.User;
 
 /**
  * 后台端 请求处理
@@ -31,19 +33,28 @@ public class ApiCtrl extends BaseCtrl {
 	@RequestMapping(value = "/teacher_login", produces = { "application/json;charset=UTF-8" })
 	public String login(String mac, String uname, String password) {
 		Teacher teacher = userService.loginForTeacher(uname, password);
-		if (teacher != null && teacher.getId() != 0) {
-			List<Student> studentList = userService.getStudentListByMac(mac);
-			return JSON.toJSONString(studentList);
-		}
-		return null;
+		return JSON.toJSONString(teacher);
 	}
 
 	/**
-	 * 下载班级学生名单
+	 * 学生注册
+	 * @return
+	 */
+	@RequestMapping(value = "/student/save", produces = { "application/json;charset=UTF-8" })
+	public ModelAndView save(Student student) {
+		student.setActive(true);
+		//用户角色为学生
+		student.setRole(User.ROLE_STUDENT);
+		userService.saveStudent(student);
+		return new ModelAndView("redirect:list");
+	}
+	
+	/**
+	 * 获取某组学生名单
 	 */
 	@RequestMapping(value = "/student_list", produces = { "application/json;charset=UTF-8" })
-	public String getStudentList(String mac) {
-		List<Student> studentList = userService.getStudentListByMac(mac);
+	public String getStudentList(int groupId) {
+		List<Student> studentList = userService.getStudentByGroupId(groupId);
 		return JSON.toJSONString(studentList);
 	}
 

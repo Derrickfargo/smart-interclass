@@ -42,55 +42,34 @@
 			AND tb_user.role = 2
 	</select>
 	
-	<select id="getStudentListByClassId" resultClass="Student" parameterClass="java.lang.Integer">
+	
+	<select id="getStudentByGroupId" resultClass="Student" parameterClass="java.lang.Integer">
 		SELECT	
-			tb_user.* ,tb_student.*,tb_class.imei,
+			tb_user.* ,tb_student.*
 		FROM 
-			tb_user
-		LEFT JOIN 
-			tb_student
-		ON 
-			tb_user.id = tb_student.id
-		LEFT JOIN
-			tb_class
-		ON
-			tb_class.id = tb_student.class_id
+			tb_student_group
+		INNER JOIN
+			tb_user ON tb_student_group.student_id = tb_user.id
+		INNER JOIN 
+			tb_student ON tb_user.id = tb_student.id
+		INNER JOIN 
+			tb_group ON tb_student_group.group_id = tb_group.id
 		WHERE 
-			tb_class.id = #classId#
+			tb_group.id = #id#
 	</select>
 	
-	<select id="getStudentListByMac" resultClass="Student" parameterClass="java.lang.String">
+	<select id="loginForStudent" resultClass="Student" parameterClass="Student">
 		SELECT	
 			tb_user.* ,tb_student.*
 		FROM 
 			tb_user
-		LEFT JOIN 
-			tb_student
-		ON 
-			tb_user.id = tb_student.id
-		LEFT JOIN
-			tb_class
-		ON
-			tb_class.id = tb_student.class_id
+		INNER JOIN 
+			tb_student ON tb_user.id = tb_student.id
 		WHERE 
-			tb_class.mac = #mac#
-	</select>
-	
-	<select id="loginForStudent" resultClass="Student" parameterClass="java.lang.String">
-		SELECT	
-			tb_user.* ,tb_student.*,tb_device.imei
-		FROM 
-			tb_user
-		LEFT JOIN 
-			tb_student
-		ON 
-			tb_user.id = tb_student.id
-		LEFT JOIN
-			tb_device
-		ON
-			tb_student.device_id = tb_device.id
-		WHERE 
-			tb_device.imei=#imei#
+			tb_user.is_Active = 1
+			AND tb_user.role = 3
+			AND tb_student.number=#number# 
+			AND tb_user.name = #name#
 	</select>
 	
 	<select id="getTeacherList" resultClass="Teacher">
@@ -114,31 +93,6 @@
 			tb_user.id
 	</select>
 	
-	<select id="getStudentList" resultClass="Student">
-		SELECT	
-			tb_user.id,tb_user.name,tb_user.sex,tb_user.ctime,tb_student.guardian,tb_class.name AS className,
-			tb_school.id AS schoolId,tb_school.name AS schoolName,tb_student.phone,tb_student.address
-		FROM 
-			tb_user
-		INNER JOIN 
-			tb_student
-		ON 
-			tb_user.id = tb_student.id
-		INNER JOIN
-			tb_class
-		ON
-			tb_student.class_id = tb_class.id
-		INNER JOIN
-			tb_school
-		ON
-			tb_class.school_id = tb_school.id
-		WHERE
-			tb_user.is_Active = 1
-			AND tb_user.role = 3
-		ORDER BY
-			tb_user.id
-	</select>
-	
 	<insert id="saveUser" parameterClass="User">
 		INSERT INTO 
 			tb_user(uname,password,name,email,sex,is_active,role,ctime)
@@ -158,9 +112,9 @@
 	
 	<insert id="saveStudent" parameterClass="Student">
 		INSERT INTO 
-			tb_student(id,guardian,phone,address,class_id,device_id)
+			tb_student(id,number,avatar)
 		VALUES
-			(#id#,#guardian#,#phone#,#address#,#classId#,#deviceId#)
+			(#id#,#number#,#avatar#)
 	</insert>
 	
 	<delete id="deleteUser" parameterClass="java.lang.Integer">

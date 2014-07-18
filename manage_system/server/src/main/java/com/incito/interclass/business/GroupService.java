@@ -10,10 +10,6 @@ import com.incito.interclass.entity.Group;
 @Service
 public class GroupService extends BaseService {
 	
-	public List<Group> getGroupList(Object parameterObject, int skipResults, int maxResults) {
-		return findForList("getGroupList", parameterObject, skipResults, maxResults);
-	}
-
 	public List<Group> getGroupList(){
 		return findForList("getGroupList", null);
 	}
