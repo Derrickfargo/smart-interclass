@@ -49,9 +49,9 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>课程简介：</label>
+												<label class="col-xs-2 control-label">课程简介：</label>
 												<div class="col-xs-4">
-													<textarea class="form-control" rows="3" name="intro"></textarea>
+													<textarea class="form-control" rows="5" name="intro"></textarea>
 												</div>
 											</div>
 											<!-- 

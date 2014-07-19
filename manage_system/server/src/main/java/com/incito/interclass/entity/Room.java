@@ -16,6 +16,8 @@ public class Room implements Serializable {
 	private String mac;
 	private Date ctime;
 
+	private String schoolName;
+
 	public int getId() {
 		return id;
 	}
@@ -54,6 +56,14 @@ public class Room implements Serializable {
 
 	public void setCtime(Date ctime) {
 		this.ctime = ctime;
+	}
+
+	public String getSchoolName() {
+		return schoolName;
+	}
+
+	public void setSchoolName(String schoolName) {
+		this.schoolName = schoolName;
 	}
 
 }

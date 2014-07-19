@@ -54,8 +54,8 @@
 											<div class="form-room">
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>Mac地址：</label>
 												<div class="col-xs-4">
-													<input type="text" name="zipCode" id="zipCode" value="${room.mac}" maxlength="8" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkZipCodeTip').addClass('hidden')">
-													<p id="checkZipCodeTip" class="help-block hidden"><font color="red"><b>请输入正确的Mac地址邮编</b></font></p>
+													<input type="text" name="mac" id="mac" value="${room.mac}" maxlength="17" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkMacTip').addClass('hidden')">
+													<p id="checkMacTip" class="help-block hidden"><font color="red"><b>请输入正确的Mac地址</b></font></p>
 												</div>
 											</div>
 											<!-- 
@@ -69,7 +69,7 @@
 									<div class='col-xs-offset-4'>
 										<button type="submit" class="btn btn-success col-xs-2">完成</button>
 										<div class="col-xs-1">&nbsp;</div>
-										<button type="button" class="btn btn-default col-xs-2" onclick="goback('新增学校')">取消</button>
+										<button type="button" class="btn btn-default col-xs-2" onclick="goback('新增教室')">取消</button>
 									</div>
 								</form>
 							</div>

@@ -3,46 +3,47 @@ package com.incito.interclass.admin;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.incito.interclass.business.ClassService;
+import com.incito.interclass.business.RoomService;
 import com.incito.interclass.business.SchoolService;
 import com.incito.interclass.common.BaseCtrl;
-import com.incito.interclass.entity.Classes;
+import com.incito.interclass.entity.Room;
 import com.incito.interclass.entity.School;
 
 @RestController
-@RequestMapping("/class")
-public class ClassCtrl extends BaseCtrl {
+@RequestMapping("/room")
+public class RoomCtrl extends BaseCtrl {
 
 	@Autowired
-	private ClassService classService;
+	private RoomService roomService;
 	
 	@Autowired
 	private SchoolService schoolService;
 	
 	/**
-	 * 班级
+	 * 列表
 	 */
 	@RequestMapping("/list")
-	public ModelAndView index(Classes classes,Integer page) {
-		ModelAndView res = new ModelAndView("class/classList");
+	public ModelAndView index(Room room,Integer page) {
+		ModelAndView res = new ModelAndView("room/roomList");
 		if (page == null) {
 			page = 0;
 		}
-		List<Classes> classList = classService.getClassList(classes, page * maxResults, maxResults);
-		res.addObject("classList", classList);
+		List<Room> rooms = roomService.getRoomList();
+		res.addObject("rooms", rooms);
 		return res;
 	}
 	
 	/**
-	 * 添加班级
+	 * 添加
 	 */
 	@RequestMapping("/add")
 	public ModelAndView add() {
-		ModelAndView mav = new ModelAndView("class/classAdd");
+		ModelAndView mav = new ModelAndView("room/roomAdd");
 		List<School> schools = schoolService.getSchoolList();
 		mav.addObject("schools", schools);
 		return mav;
@@ -53,14 +54,14 @@ public class ClassCtrl extends BaseCtrl {
 	 * @return
 	 */
 	@RequestMapping(value = "/save")
-	public ModelAndView save(Classes classes) {
-		classService.saveClass(classes);
-		return new ModelAndView("redirect:/class/list");
+	public ModelAndView save(Room room,Model model) {
+		roomService.saveRoom(room);
+		return new ModelAndView("redirect:list");
 	}
 	
 	@RequestMapping(value = "/delete")
-	public ModelAndView delete(int classId) {
-		classService.deleteClass(classId);
+	public ModelAndView delete(int roomId) {
+		roomService.deleteRoom(roomId);
 		return new ModelAndView("redirect:list");
 	}
 }

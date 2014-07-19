@@ -1,28 +1,28 @@
 //页面初始化设置
 $(document).ready(function() {
-	$("#studentForm").validate({
+	$("#roomForm").validate({
 		submitHandler:function(form){
 			var flag = true;
 			//学校名称
-//			if (!new RegExp(/^[\u4e00-\u9fa5]{2,8}$/).test($("#studentName").val())) {
-//				$("#checkStudentNameTip").removeClass("hidden");
+//			if (!new RegExp(/^[\u4e00-\u9fa5]{2,8}$/).test($("#roomName").val())) {
+//				$("#checkRoomNameTip").removeClass("hidden");
 //				flag = false;
 //			}
 //			//检查身份证格式是否正确
 //			var idCarNo = new RegExp(/^\d{17}([0-9]|X)$|^(\d{15})$/);
 //			if (!idCarNo.test($("#idcard").val())) {
-//				$("#checkStudentIdTip").removeClass("hidden");
+//				$("#checkRoomIdTip").removeClass("hidden");
 //				flag = false;
 //			}
 //			//检查联系方式格式是否正确
 //			var isTelNum = new RegExp(/^\d{11}/);
-//			if (!isTelNum.test($("#studentTel").val())) {
-//				$("#checkStudentTelTip").removeClass("hidden");
+//			if (!isTelNum.test($("#roomTel").val())) {
+//				$("#checkRoomTelTip").removeClass("hidden");
 //				flag = false;
 //			}
 //
-//			if ($("#studentName").val() == "") {
-//				$('#checkStudentStudentTip').removeClass('hidden');
+//			if ($("#roomName").val() == "") {
+//				$('#checkRoomRoomTip').removeClass('hidden');
 //				flag = false;
 //			}
 			
@@ -35,24 +35,24 @@ $(document).ready(function() {
 
 
 // 搜索教师信息
-function searchStudent(currentPage) {
+function searchRoom(currentPage) {
 	$("#currentPage").val(currentPage);
 	$("#searchForm").submit();
 }
 
 // 页面跳转，查看教师详情或者修改教师信息
-function modifyStudent(studentId) {
-	$("#studentId").val(studentId);
+function modifyRoom(roomId) {
+	$("#roomId").val(roomId);
 	$("#pageType").val(pageType);
-	$("#searchForm").attr("action", _path + "/student/" + opType);
+	$("#searchForm").attr("action", _path + "/room/" + opType);
 	$("#searchForm").submit();
 }
 
 
-function deleteStudent(studentId){
+function deleteRoom(roomId){
 	if(confirm("确认要删除本条记录吗?")){
-		$("#studentId").val(studentId);
-		$("#searchForm").attr("action", _path + "/student/delete");
+		$("#roomId").val(roomId);
+		$("#searchForm").attr("action", _path + "/room/delete");
 		$("#searchForm").submit();
 	}
 }
@@ -68,7 +68,7 @@ function mouseOut(obj){
 }
 
 // 保存学校信息
-function saveStudent() {
-	$("#studentForm").submit();
+function saveRoom() {
+	$("#roomForm").submit();
 }
 

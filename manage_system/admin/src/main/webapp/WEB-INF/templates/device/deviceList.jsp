@@ -36,13 +36,13 @@
 						<form action="${path}/device" id="searchForm" method="post" class="form-horizontal" >
 							<div class="col-xs-12" style="border: 1px solid #f5f5f5;padding: 5px;margin-bottom:5px">
 								<div class="form-group">
-									<label class="col-xs-1 control-label">学生姓名:</label>
+									<label class="col-xs-1 control-label">IMEI:</label>
 									<div class="col-xs-2">
-										<input type="text" name="name" value="${student.name}" class="form-control borderRadiusIE8">
+										<input type="text" name="imei" value="${device.imei}" class="form-control borderRadiusIE8">
 									</div>
 									<label class="col-xs-1 control-label">所属学校:</label>
 									<div class="col-xs-2">
-										<input type="text" name="deviceName" value="${deviceName}" class="form-control borderRadiusIE8">
+										<input type="text" name="schoolId" class="form-control borderRadiusIE8">
 									</div>
 									<button type="button" class="btn btn-primary" onclick="searchDriver('1')">搜索</button>
 									<button type="button" class="btn btn-primary" onclick="emptyForm('searchForm')">清空</button>
@@ -58,10 +58,9 @@
 									<thead>
 										<tr class="success">
 											<th>IMEI</th>
-											<th>所属学生</th>
 											<th>所属学校</th>
-											<th>学生电话</th>
-											<th>家庭地址</th>
+											<th>所在教室</th>
+											<th>所在课桌</th>
 											<th>操作</th>
 										</tr>
 									</thead>
@@ -69,13 +68,12 @@
 										<c:forEach items="${devices}" var="device">
 											<tr>
 												<td>${device.imei}</td>
-												<td>${device.studentName}</td>
 												<td>${device.schoolName}</td>
-												<td>${device.phone}</td>
-												<td>${device.address}</td>
+												<td>${device.roomName}</td>
+												<td>${device.tableName}</td>
 												<td>
-													<a href="#" onclick="modifyDevice('${student.id}')"><span title="修改" class="glyphicon glyphicon-pencil"></span></a>&nbsp; 
-													<a href="#" onclick="deleteDevice('${student.id}')"><span title="删除" class="glyphicon glyphicon-remove"></span></a>&nbsp;
+													<a href="#" onclick="modifyDevice('${device.id}')"><span title="修改" class="glyphicon glyphicon-pencil"></span></a>&nbsp; 
+													<a href="#" onclick="deleteDevice('${device.id}')"><span title="删除" class="glyphicon glyphicon-remove"></span></a>&nbsp;
 												</td>
 											</tr>
 										</c:forEach>

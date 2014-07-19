@@ -9,9 +9,12 @@
 
 	<select id="getRoomList" resultClass="Room">
 		SELECT	
-			id,name,school_id, mac,ctime
+			tb_room.id,tb_room.name,school_id AS schoolId, 
+			tb_school.name AS schoolName,mac,tb_room.ctime
 		FROM 
 			tb_room
+		LEFT JOIN
+			tb_school ON tb_school.id = tb_room.school_id
 		ORDER BY
 			id
 	</select>
