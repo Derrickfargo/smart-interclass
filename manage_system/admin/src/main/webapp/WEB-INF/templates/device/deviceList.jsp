@@ -70,7 +70,7 @@
 												<td>${device.imei}</td>
 												<td>${device.schoolName}</td>
 												<td>${device.roomName}</td>
-												<td>${device.tableName}</td>
+												<td>${device.tableNumber}</td>
 												<td>
 													<a href="#" onclick="modifyDevice('${device.id}')"><span title="修改" class="glyphicon glyphicon-pencil"></span></a>&nbsp; 
 													<a href="#" onclick="deleteDevice('${device.id}')"><span title="删除" class="glyphicon glyphicon-remove"></span></a>&nbsp;
