@@ -2,29 +2,32 @@ package com.incito.interclass.business;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.incito.base.dao.BaseService;
 import com.incito.interclass.entity.School;
+import com.incito.interclass.persistence.SchoolMapper;
 
 @Service
-public class SchoolService extends BaseService {
+public class SchoolService {
 
+	@Autowired
+	private SchoolMapper schoolMapper;
+	
 	public List<School> getSchoolList(Object parameterObject, int skipResults,
 			int maxResults) {
-		return findForList("getSchoolList", parameterObject, skipResults,
-				maxResults);
+		return schoolMapper.getSchoolList();
 	}
 
 	public List<School> getSchoolList(){
-		return findForList("getSchoolList", null);
+		return schoolMapper.getSchoolList();
 	}
 	public boolean saveSchool(School school) {
-		int id = (Integer) addObject("saveSchool", school);
+		int id = (Integer) schoolMapper.save(school);
 		return id != 0;
 	}
 
 	public void deleteSchool(int schoolId) {
-		delObject("deleteSchool", schoolId);
+		schoolMapper.delete(schoolId);
 	}
 }

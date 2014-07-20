@@ -23,16 +23,21 @@
 		<property name="jndiName" value="${jndiName}"/>
 	</bean>
  
-	<!-- ibatis配置 -->
-	<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
-		<property name="dataSource" ref="dataSource"/>
-		<property name="configLocation" value="classpath:conf/sqlmap/sqlmap-config.xml"/>
-		<property name="mappingLocations" value="classpath*:conf/sqlmap/mysql/*_sql.xml"/>
+	<!-- transaction manager, use JtaTransactionManager for global tx -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
 	</bean>
-	
-	<!-- 事物配置 -->
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource"></property>
+
+	<!-- define the SqlSessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="typeAliasesPackage" value="com.incito.interclass.entity" />
+	</bean>
+
+	<!-- scan for mappers and let them be autowired -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.incito.interclass.persistence" />
 	</bean>
 	
 	<!--事物处理方式 使用@Transactional 标注在 方法上-->

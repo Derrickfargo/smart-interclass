@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.incito.interclass.persistence.TableMapper">
+
+	<select id="getTableList" resultType="com.incito.interclass.entity.Table">
+		SELECT	
+			id,room_id, number,ctime
+		FROM 
+			tb_table
+		ORDER BY
+			id
+	</select>
+
+	<insert id="save" parameterType="com.incito.interclass.entity.Table">
+		INSERT INTO 
+			tb_table(room_id,number,ctime)
+		VALUES
+			(#{roomId},#{number},now())
+		<selectKey resultType="java.lang.Integer" keyProperty="id" > 
+            SELECT @@IDENTITY AS ID 
+        </selectKey> 
+	</insert>
+	
+	<delete id="delete" parameterType="java.lang.Integer">
+		DELETE FROM tb_table WHERE id = #{id} 
+	</delete>
+</mapper>

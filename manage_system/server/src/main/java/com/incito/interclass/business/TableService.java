@@ -2,25 +2,28 @@ package com.incito.interclass.business;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.incito.base.dao.BaseService;
 import com.incito.interclass.entity.Table;
+import com.incito.interclass.persistence.TableMapper;
 
 @Service
-public class TableService extends BaseService {
+public class TableService {
 
+	@Autowired
+	private TableMapper tableMapper;
 
-	public List<Table> getTableList(){
-		return findForList("getTableList", null);
+	public List<Table> getTableList() {
+		return tableMapper.getTableList();
 	}
-	
-	public boolean saveTable(Table room) {
-		int id = (Integer) addObject("saveTable", room);
+
+	public boolean saveTable(Table table) {
+		int id = (Integer) tableMapper.save(table);
 		return id != 0;
 	}
 
-	public void deleteTable(int roomId) {
-		delObject("deleteTable", roomId);
+	public void deleteTable(int tableId) {
+		tableMapper.delete(tableId);
 	}
 }

@@ -58,13 +58,4 @@ public class ApiCtrl extends BaseCtrl {
 		return JSON.toJSONString(studentList);
 	}
 
-	/**
-	 * 学生登录
-	 */
-	@RequestMapping(value = "/student_login", produces = { "application/json;charset=UTF-8" })
-	public String login(String imei) {
-		Student student = userService.loginForStudent(imei);
-		return JSON.toJSONString(student);
-	}
-
 }

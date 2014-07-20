@@ -2,24 +2,28 @@ package com.incito.interclass.business;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.incito.base.dao.BaseService;
 import com.incito.interclass.entity.Room;
+import com.incito.interclass.persistence.RoomMapper;
 
 @Service
-public class RoomService extends BaseService {
+public class RoomService {
 
+	@Autowired
+	private RoomMapper roomMapper;
+	
 
 	public List<Room> getRoomList(){
-		return findForList("getRoomList", null);
+		return roomMapper.getRoomList();
 	}
 	public boolean saveRoom(Room room) {
-		int id = (Integer) addObject("saveRoom", room);
+		int id = (Integer) roomMapper.save(room);
 		return id != 0;
 	}
 
 	public void deleteRoom(int roomId) {
-		delObject("deleteRoom", roomId);
+		roomMapper.delete(roomId);
 	}
 }

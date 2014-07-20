@@ -38,4 +38,7 @@ public class IDUtil {
     return UUID.fromString(id);
   }
 
+  public static void main(String[] args) {
+	System.out.println(getID());
+}
 }

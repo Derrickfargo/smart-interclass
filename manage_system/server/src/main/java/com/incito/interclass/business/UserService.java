@@ -2,18 +2,23 @@ package com.incito.interclass.business;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.incito.base.dao.BaseService;
 import com.incito.base.util.Md5Utils;
 import com.incito.interclass.entity.Admin;
 import com.incito.interclass.entity.Student;
 import com.incito.interclass.entity.Teacher;
 import com.incito.interclass.entity.User;
+import com.incito.interclass.persistence.UserMapper;
 
 @Service
-public class UserService extends BaseService {
+public class UserService {
 
+	@Autowired
+	private UserMapper userMapper;
+	
 	/**
 	 * 管理员登陆
 	 * 
@@ -24,63 +29,58 @@ public class UserService extends BaseService {
 		Admin admin = new Admin();
 		admin.setUname(user.getUname());
 		admin.setPassword(Md5Utils.md5(user.getPassword()));
-		return (Admin) findForObject("loginForAdmin", admin);
+		return userMapper.loginForAdmin(admin);
 	}
 
 	public Teacher loginForTeacher(String uname,String password){
 		Teacher teacher = new Teacher();
 		teacher.setUname(uname);
 		teacher.setPassword(password); 
-		return (Teacher) findForObject("loginForTeacher", teacher);
+		return userMapper.loginForTeacher(teacher);
 	}
 	
 	public List<Student> getStudentByGroupId(int groupId) {
-		return findForList("getStudentByGroupId", groupId);
-	}
-	
-	public Student loginForStudent(String deviceId){
-		return (Student) findForObject("loginForStudent", deviceId);
+		return userMapper.getStudentByGroupId(groupId);
 	}
 	
 	public List<Teacher> getTeacherList(Object parameterObject, int skipResults,
 			int maxResults) {
-		return findForList("getTeacherList", parameterObject, skipResults,
-				maxResults);
+		return userMapper.getTeacherList();
 	}
 	
 	public List<Student> getStudentList(Object parameterObject, int skipResults,
 			int maxResults) {
-		return findForList("getStudentList", parameterObject, skipResults,
-				maxResults);
+		return userMapper.getStudentList();
 	}
 	
+	@Transactional(rollbackFor = RuntimeException.class)
 	public boolean saveTeacher(Teacher teacher) {
-		int id = (Integer) addObject("saveUser", teacher);
-		if (id != 0) {
-			teacher.setId(id);
-			addObject("saveTeacher", teacher);
-			return true;
+		userMapper.saveUser(teacher);
+		if(teacher.getId() <= 0){
+			throw new RuntimeException();
 		}
-		return false;
+		userMapper.saveTeacher(teacher);
+		return true;
 	}
 
+	@Transactional(rollbackFor = RuntimeException.class)
 	public boolean saveStudent(Student student) {
-		int id = (Integer) addObject("saveUser", student);
-		if (id != 0) {
-			student.setId(id);
-			addObject("saveStudent", student);
-			return true;
+		int id = (Integer) userMapper.saveUser(student);
+		if(id <= 0){
+			throw new RuntimeException();
 		}
-		return false;
+		student.setId(id);
+		userMapper.saveStudent(student);
+		return true;
 	}
 
 	public void deleteTeacher(int teacherId) {
-		delObject("deleteUser", teacherId);
-		delObject("deleteTeacher", teacherId);
+		userMapper.deleteUser(teacherId);
+		userMapper.deleteTeacher(teacherId);
 	}
 	
 	public void deleteStudent(int studentId) {
-		delObject("deleteUser", studentId);
-		delObject("deleteStudent", studentId);
+		userMapper.deleteUser(studentId);
+		userMapper.deleteStudent(studentId);
 	}
 }
