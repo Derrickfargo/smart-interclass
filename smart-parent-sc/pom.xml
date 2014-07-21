@@ -88,11 +88,11 @@
 			<artifactId>servlet-api</artifactId>
 			<version>2.5</version>
 		</dependency>
-		<!-- ibatis -->
+		<!-- MyBATIS -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis</artifactId>
-			<version>3.2.4</version>
+			<version>3.2.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mybatis</groupId>

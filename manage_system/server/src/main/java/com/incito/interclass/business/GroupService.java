@@ -14,8 +14,8 @@ public class GroupService {
 	@Autowired
 	private GroupMapper groupMapper;
 	
-	public List<Group> getGroupList(){
-		return groupMapper.getGroupList();
+	public List<Group> getGroupList(int teacherId,int courseId,int classId){
+		return groupMapper.getGroupList(teacherId, courseId, classId);
 	}
 	
 	public boolean saveGroup(Group group) {

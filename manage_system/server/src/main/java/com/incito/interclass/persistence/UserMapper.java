@@ -11,6 +11,8 @@ public interface UserMapper {
 	Admin loginForAdmin(Admin admin);
 
 	Teacher loginForTeacher(Teacher teacher);
+	
+	Student loginForStudent(Student student);
 
 	List<Student> getStudentByGroupId(int groupId);
 

@@ -2,7 +2,7 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.incito.interclass.persistence.GroupMapper">
-	<select id="getGroupList" resultType="com.incito.interclass.entity.Group">
+	<select id="getGroupList" resultType="com.incito.interclass.entity.Group" parameterType="java.util.Map">
 		SELECT	
 			tb_group.id,tb_group.name,tb_group.logo,tb_group.slogan,
 			tb_user.name AS teacherName
@@ -12,6 +12,14 @@
 			tb_teacher ON tb_teacher.id = tb_group.teacher_id
 		INNER JOIN 
 			tb_user ON tb_user.id = tb_teacher.id
+		LEFT JOIN
+			tb_course ON tb_course.id = tb_group.course_id
+		LEFT JOIN
+			tb_class ON tb_class.id = tb_group.class_id
+		WHERE
+			tb_user.id = #{teacherId}
+			AND tb_class.id = #{classId}
+			AND tb_course.id = #{courseId}
 		ORDER BY
 			id
 	</select>

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.incito.base.exception.AppException;
 import com.incito.base.util.Md5Utils;
 import com.incito.interclass.entity.Admin;
 import com.incito.interclass.entity.Student;
@@ -32,11 +33,12 @@ public class UserService {
 		return userMapper.loginForAdmin(admin);
 	}
 
-	public Teacher loginForTeacher(String uname,String password){
-		Teacher teacher = new Teacher();
-		teacher.setUname(uname);
-		teacher.setPassword(password); 
+	public Teacher loginForTeacher(Teacher teacher){
 		return userMapper.loginForTeacher(teacher);
+	}
+	
+	public Student loginForStudent(Student student){
+		return userMapper.loginForStudent(student);
 	}
 	
 	public List<Student> getStudentByGroupId(int groupId) {
@@ -53,25 +55,24 @@ public class UserService {
 		return userMapper.getStudentList();
 	}
 	
-	@Transactional(rollbackFor = RuntimeException.class)
-	public boolean saveTeacher(Teacher teacher) {
+	@Transactional(rollbackFor = AppException.class)
+	public boolean saveTeacher(Teacher teacher) throws AppException {
 		userMapper.saveUser(teacher);
 		if(teacher.getId() <= 0){
-			throw new RuntimeException();
+			throw AppException.database(0);
 		}
-		userMapper.saveTeacher(teacher);
-		return true;
+		int result = userMapper.saveTeacher(teacher);
+		return result == 1;
 	}
 
-	@Transactional(rollbackFor = RuntimeException.class)
-	public boolean saveStudent(Student student) {
-		int id = (Integer) userMapper.saveUser(student);
-		if(id <= 0){
-			throw new RuntimeException();
+	@Transactional(rollbackFor = AppException.class)
+	public boolean saveStudent(Student student) throws AppException {
+		userMapper.saveUser(student);
+		if(student.getId() <= 0){
+			throw AppException.database(0);
 		}
-		student.setId(id);
-		userMapper.saveStudent(student);
-		return true;
+		int result = userMapper.saveStudent(student);
+		return result == 1;
 	}
 
 	public void deleteTeacher(int teacherId) {

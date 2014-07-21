@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.incito.base.exception.AppException;
 import com.incito.base.util.Md5Utils;
 import com.incito.interclass.business.SchoolService;
 import com.incito.interclass.business.UserService;
@@ -63,7 +64,11 @@ public class TeacherCtrl extends BaseCtrl {
 		teacher.setPassword(Md5Utils.md5(password));
 		//用户角色为老师
 		teacher.setRole(User.ROLE_TEACHER);
-		userService.saveTeacher(teacher);
+		try {
+			userService.saveTeacher(teacher);
+		} catch (AppException e) {
+			e.printStackTrace();
+		}
 		return new ModelAndView("redirect:list");
 	}
 	
