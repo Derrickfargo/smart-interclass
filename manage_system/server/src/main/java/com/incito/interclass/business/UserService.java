@@ -55,6 +55,10 @@ public class UserService {
 		return userMapper.getStudentList();
 	}
 	
+	public Student getStudent(String name, String number) {
+		return userMapper.getStudent(name, number);
+	}
+	
 	@Transactional(rollbackFor = AppException.class)
 	public boolean saveTeacher(Teacher teacher) throws AppException {
 		userMapper.saveUser(teacher);

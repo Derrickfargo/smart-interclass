@@ -20,6 +20,8 @@ public interface UserMapper {
 
 	List<Student> getStudentList();
 
+	Student getStudent(String name, String number);
+	
 	Integer saveUser(User user);
 	
 	Integer saveTeacher(Teacher teacher);

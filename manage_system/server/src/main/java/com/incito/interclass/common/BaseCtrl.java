@@ -106,7 +106,7 @@ public class BaseCtrl {
 	 */
 	protected String renderJSONString(int result) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("data", result);
+		map.put("code", result);
 		return JSON.toJSONString(map);
 	}
 	
@@ -118,7 +118,7 @@ public class BaseCtrl {
 	 */
 	protected String renderJSONString(int result, Object data){
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("result", result);
+		map.put("code", result);
 		map.put("data", data);
 		return JSON.toJSONString(map);
 	}
@@ -131,7 +131,14 @@ public class BaseCtrl {
 	 */
 	protected <T> String renderJSONString(int result, List<T> data){
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("result", result);
+		map.put("code", result);
+		map.put("data", data);
+		return JSON.toJSONString(map);
+	}
+	
+	protected <T> String renderJSONString(int result, Map<String,T> data) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("code", result);
 		map.put("data", data);
 		return JSON.toJSONString(map);
 	}

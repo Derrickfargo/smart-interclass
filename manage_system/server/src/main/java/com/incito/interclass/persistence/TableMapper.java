@@ -10,4 +10,6 @@ public interface TableMapper {
 	Integer save(Table table);
 
 	void delete(int id);
+	
+	Table getTableByNumber(String number);
 }

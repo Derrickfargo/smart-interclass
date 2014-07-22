@@ -14,13 +14,13 @@ public class ClassService {
 	@Autowired
 	private ClassMapper classMapper;
 	
-	public List<Classes> getClassListBySchoolId(int schoolId) {
-		return classMapper.getClassListBySchoolId(schoolId);
+	public List<Classes> getClassList(int teacherId, int year) {
+		return classMapper.getClassList(teacherId, year);
 	}
 	
 	public boolean saveClass(Classes classes) {
-		int id = (Integer) classMapper.save(classes);
-		return id != 0;
+		classMapper.save(classes);
+		return classes.getId() != 0;
 	}
 
 	public void deleteClass(int classId) {

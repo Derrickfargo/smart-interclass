@@ -13,14 +13,11 @@
 			id
 	</select>
 
-	<insert id="save" parameterType="com.incito.interclass.entity.School">
+	<insert id="save" parameterType="com.incito.interclass.entity.School" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO 
 			tb_school(name,school_alias,school_number,phone,email,address,zip_code,school_type,educational_type,intro,ctime)
 		VALUES
 			(#{name},#{schoolAlias},#{schoolNumber},#{phone},#{email},#{address},#{zipCode},#{schoolType},#{educationalType},#{intro},now())
-		<selectKey resultType="java.lang.Integer" keyProperty="id" > 
-            SELECT @@IDENTITY AS ID 
-        </selectKey> 
 	</insert>
 	
 	<delete id="delete" parameterType="java.lang.Integer">

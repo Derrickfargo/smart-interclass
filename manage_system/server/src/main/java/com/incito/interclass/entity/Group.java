@@ -2,6 +2,7 @@ package com.incito.interclass.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class Group implements Serializable {
 
@@ -17,8 +18,10 @@ public class Group implements Serializable {
 	private int courseId;
 	private int teacherId;
 	private int classId;
+	private int tableId;
 	private Date ctime;
 
+	private List<Student> students;
 	private String teacherName;
 
 	public int getId() {
@@ -77,6 +80,14 @@ public class Group implements Serializable {
 		this.classId = classId;
 	}
 
+	public int getTableId() {
+		return tableId;
+	}
+
+	public void setTableId(int tableId) {
+		this.tableId = tableId;
+	}
+
 	public Date getCtime() {
 		return ctime;
 	}
@@ -91,6 +102,14 @@ public class Group implements Serializable {
 
 	public void setTeacherName(String teacherName) {
 		this.teacherName = teacherName;
+	}
+
+	public List<Student> getStudents() {
+		return students;
+	}
+
+	public void setStudents(List<Student> students) {
+		this.students = students;
 	}
 
 }

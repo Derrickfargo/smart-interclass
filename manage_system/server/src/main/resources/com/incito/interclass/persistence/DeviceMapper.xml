@@ -19,14 +19,11 @@
 			id
 	</select>
 
-	<insert id="save" parameterType="com.incito.interclass.entity.Device">
+	<insert id="save" parameterType="com.incito.interclass.entity.Device" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO 
 			tb_device(imei,table_id,ctime)
 		VALUES
 			(#{imei},#{tableId},now())
-		<selectKey resultType="int" keyProperty="id" > 
-            SELECT @@IDENTITY AS ID 
-        </selectKey> 
 	</insert>
 	
 	<delete id="delete" parameterType="java.lang.Integer">

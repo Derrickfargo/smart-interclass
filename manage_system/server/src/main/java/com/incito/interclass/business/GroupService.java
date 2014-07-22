@@ -4,9 +4,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.incito.base.exception.AppException;
 import com.incito.interclass.entity.Group;
+import com.incito.interclass.entity.StudentGroup;
 import com.incito.interclass.persistence.GroupMapper;
+import com.incito.interclass.persistence.UserMapper;
 
 @Service
 public class GroupService {
@@ -18,11 +22,51 @@ public class GroupService {
 		return groupMapper.getGroupList(teacherId, courseId, classId);
 	}
 	
-	public boolean saveGroup(Group group) {
-		int id = (Integer) groupMapper.save(group);
-		return id != 0;
+	@Transactional(rollbackFor = AppException.class)
+	public boolean saveGroup(Group group, String studentIds) throws AppException {
+		groupMapper.save(group);
+		if(group.getId() <= 0){
+			throw AppException.database(0);
+		}
+		String[] ids = studentIds.split(",");
+		for(String id : ids){
+			StudentGroup sg = new StudentGroup();
+			sg.setStudentId(Integer.parseInt(id));
+			sg.setGroupId(group.getId());
+			groupMapper.saveStudentGroup(sg);
+			if (sg.getId() <= 0) {
+				throw AppException.database(0);
+			}
+		}
+		return true;
 	}
 
+	@Transactional(rollbackFor = AppException.class)
+	public boolean addStudent(int courseId, int classId, int teacherId, int tableId, int studentId)throws AppException{
+		Group group = groupMapper.getGroupByTableId(courseId, teacherId, courseId, classId);
+		if (group == null || group.getId() == 0) {
+			group = new Group();
+			group.setClassId(classId);
+			group.setCourseId(courseId);
+			group.setTeacherId(teacherId);
+			group.setTableId(tableId);
+			groupMapper.save(group);
+			if(group.getId() <= 0){
+				throw AppException.database(0);
+			}
+		}
+		
+		StudentGroup sg = new StudentGroup();
+		sg.setStudentId(studentId);
+		sg.setGroupId(group.getId());
+		groupMapper.saveStudentGroup(sg);
+		return sg.getId() != 0;
+	}
+	
+	public Group getGroupByIMEI(String imei,int teacherId,int courseId,int classId){
+		return groupMapper.getGroupByIMEI(imei, teacherId, courseId, classId);
+	}
+	
 	public void deleteGroup(int groupId) {
 		groupMapper.delete(groupId);
 	}

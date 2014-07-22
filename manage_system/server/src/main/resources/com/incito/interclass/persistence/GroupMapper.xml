@@ -24,14 +24,44 @@
 			id
 	</select>
 
-	<insert id="save" parameterType="com.incito.interclass.entity.Group">
+	<select id="getGroupByIMEI" resultType="com.incito.interclass.entity.Group" parameterType="java.util.Map">
+		SELECT	
+			tb_group.id,tb_group.name,tb_group.logo,tb_group.slogan
+		FROM 
+			tb_group
+		INNER JOIN 
+			tb_teacher ON tb_teacher.id = tb_group.teacher_id
+		INNER JOIN 
+			tb_user ON tb_user.id = tb_teacher.id
+		INNER JOIN
+			tb_course ON tb_course.id = tb_group.course_id
+		INNER JOIN
+			tb_class ON tb_class.id = tb_group.class_id
+		INNER JOIN
+			tb_table ON tb_table.id = tb_group.table_id
+		INNER JOIN
+			tb_device ON tb_device.table_id = tb_table.id
+		WHERE
+			tb_user.id = #{teacherId}
+			AND tb_class.id = #{classId}
+			AND tb_course.id = #{courseId}
+			AND tb_device.imei = #{imei}
+		ORDER BY
+			id
+	</select>
+	
+	<insert id="save" parameterType="com.incito.interclass.entity.Group" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO 
 			tb_group(name,logo,slogan,course_id,teacher_id,class_id,ctime)
 		VALUES
 			(#{name},#{logo},#{slogan},#{courseId},#{teacherId},#{classId},now())
-		<selectKey resultType="int" keyProperty="id" > 
-            SELECT @@IDENTITY AS ID 
-        </selectKey> 
+	</insert>
+	
+	<insert id="saveStudentGroup" parameterType="com.incito.interclass.entity.StudentGroup" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO 
+			tb_student_group(student_id,group_id)
+		VALUES
+			(#{studentId},#{groupId})
 	</insert>
 	
 	<delete id="delete" parameterType="java.lang.Integer">
