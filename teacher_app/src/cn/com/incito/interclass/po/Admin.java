@@ -1,6 +1,5 @@
 package cn.com.incito.interclass.po;
 
-
 public class Admin extends User {
 	/**
 	 * 
@@ -24,5 +23,4 @@ public class Admin extends User {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-
 }

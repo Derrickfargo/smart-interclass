@@ -1,6 +1,5 @@
 package cn.com.incito.server.core;
 
-import java.io.Serializable;
 
 
 /**
@@ -16,5 +15,5 @@ public interface MessageHandler
      * 
      * @param msg 被处理消息
      */
-    Serializable handleMessage(Message msg);
+    void handleMessage(Message msg);
 }

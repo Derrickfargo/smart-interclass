@@ -23,6 +23,7 @@ import cn.com.incito.interclass.Listener.MySystemTrayEvent;
 import cn.com.incito.interclass.Listener.MySystemTrayManager;
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.server.api.Application;
+import cn.com.incito.server.api.result.TeacherLoginResultData;
 import cn.com.incito.server.core.CoreSocket;
 
 public class MainFrame extends JFrame {
@@ -34,7 +35,12 @@ public class MainFrame extends JFrame {
 	private JList<String> lstStudent;
 	private JTextArea txtConsole;
 	
+	private TeacherLoginResultData data;
 	
+	public void setData(TeacherLoginResultData data) {
+		this.data = data;
+	}
+
 	public static MainFrame getInstance() {
 		if (instance == null) {
 			instance = new MainFrame();
@@ -151,17 +157,18 @@ public class MainFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
+	//TODO 
 	private void initData() {
-		Application app = Application.getInstance();
-		List<Student> studentList = app.getStudentList();
-		if (studentList == null || studentList.size() == 0) {
-			return;
-		}
-		String[] nameList = new String[studentList.size()];
-		for (int i = 0; i < studentList.size(); i++) {
-			nameList[i] = studentList.get(i).getName() + "[未登录]";
-		}
-		lstStudent.setListData(nameList);
+//		Application app = Application.getInstance();
+//		List<Student> studentList = app.getStudentList();
+//		if (studentList == null || studentList.size() == 0) {
+//			return;
+//		}
+//		String[] nameList = new String[studentList.size()];
+//		for (int i = 0; i < studentList.size(); i++) {
+//			nameList[i] = studentList.get(i).getName() + "[未登录]";
+//		}
+//		lstStudent.setListData(nameList);
 	}
 	
 	public void refreshStudent() {

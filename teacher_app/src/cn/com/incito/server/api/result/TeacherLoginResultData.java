@@ -1,11 +1,11 @@
-package com.incito.interclass.app.result;
+package cn.com.incito.server.api.result;
 
 import java.util.List;
 
-import com.incito.interclass.entity.Classes;
-import com.incito.interclass.entity.Course;
-import com.incito.interclass.entity.Room;
-import com.incito.interclass.entity.Teacher;
+import cn.com.incito.interclass.po.Classes;
+import cn.com.incito.interclass.po.Course;
+import cn.com.incito.interclass.po.Room;
+import cn.com.incito.interclass.po.Teacher;
 
 public class TeacherLoginResultData implements IApiResultData {
 	private Teacher teacher;

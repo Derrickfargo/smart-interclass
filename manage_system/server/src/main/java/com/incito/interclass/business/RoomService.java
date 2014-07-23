@@ -13,14 +13,18 @@ public class RoomService {
 
 	@Autowired
 	private RoomMapper roomMapper;
-	
 
-	public List<Room> getRoomList(){
+	public List<Room> getRoomList() {
 		return roomMapper.getRoomList();
 	}
+
+	public Room getRoomByMac(String mac) {
+		return roomMapper.getRoomByMac(mac);
+	}
+
 	public boolean saveRoom(Room room) {
-		int id = (Integer) roomMapper.save(room);
-		return id != 0;
+		roomMapper.save(room);
+		return room.getId() != 0;
 	}
 
 	public void deleteRoom(int roomId) {

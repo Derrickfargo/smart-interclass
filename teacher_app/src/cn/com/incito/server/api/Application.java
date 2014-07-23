@@ -5,20 +5,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.com.incito.interclass.po.Student;
+import cn.com.incito.interclass.po.Course;
+import cn.com.incito.interclass.po.Group;
+import cn.com.incito.interclass.po.Room;
+import cn.com.incito.interclass.po.Teacher;
 import cn.com.incito.interclass.ui.Login;
 import cn.com.incito.server.core.CoreSocket;
 
 public class Application {
 
 	private static Application instance;
-	private List<Student> studentList;
-	private List<Student> onlineList;
-	private Map<Student, SocketChannel> clientChannel;
+	private Room room;//当前上课的教室
+	private Teacher teacher;//当前登录的老师
+	private Course course;//当前课程
+	private Map<Group, List<SocketChannel>> clientChannel;
 	private CoreSocket coreSocket;
 
 	private Application() {
-		clientChannel = new HashMap<Student, SocketChannel>();
+		clientChannel = new HashMap<Group, List<SocketChannel>>();
 		new Login();
 	}
 
@@ -29,28 +33,36 @@ public class Application {
 		return instance;
 	}
 
-	public List<Student> getStudentList() {
-		return studentList;
+	public Room getRoom() {
+		return room;
 	}
 
-	public void setStudentList(List<Student> studentList) {
-		this.studentList = studentList;
+	public void setRoom(Room room) {
+		this.room = room;
 	}
 
-	public List<Student> getOnlineList() {
-		return onlineList;
+	public Teacher getTeacher() {
+		return teacher;
 	}
 
-	public void setOnlineList(List<Student> onlineList) {
-		this.onlineList = onlineList;
+	public void setTeacher(Teacher teacher) {
+		this.teacher = teacher;
 	}
 
-	public Map<Student, SocketChannel> getClientChannel() {
+	public Course getCourse() {
+		return course;
+	}
+
+	public void setCourse(Course course) {
+		this.course = course;
+	}
+
+	public Map<Group, List<SocketChannel>> getClientChannel() {
 		return clientChannel;
 	}
 
-	public void putClientChannel(Student student, SocketChannel channel) {
-		clientChannel.put(student, channel);
+	public void putClientChannel(Group group, List<SocketChannel> channels) {
+		clientChannel.put(group, channels);
 	}
 
 	public CoreSocket getCoreSocket() {

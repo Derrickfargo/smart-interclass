@@ -1,10 +1,7 @@
 package com.incito.interclass.app;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,10 +13,12 @@ import com.incito.interclass.app.result.ApiResult;
 import com.incito.interclass.app.result.TeacherLoginResultData;
 import com.incito.interclass.business.ClassService;
 import com.incito.interclass.business.CourseService;
+import com.incito.interclass.business.RoomService;
 import com.incito.interclass.business.UserService;
 import com.incito.interclass.common.BaseCtrl;
 import com.incito.interclass.entity.Classes;
 import com.incito.interclass.entity.Course;
+import com.incito.interclass.entity.Room;
 import com.incito.interclass.entity.Teacher;
 
 @RestController
@@ -40,14 +39,20 @@ public class TeacherCtrl extends BaseCtrl {
 	@Autowired
 	private ClassService classService;
 	
+	@Autowired
+	private RoomService roomService;
+	
 	@RequestMapping(value = "/login", produces = { "application/json;charset=UTF-8" })
-	public String login(Teacher teacher){
-		String password = teacher.getPassword();
+	public String login(String uname, String password, String mac) {
+		Teacher teacher = new Teacher();
+		teacher.setUname(uname);
 		teacher.setPassword(Md5Utils.md5(password)); 
 		teacher = userService.loginForTeacher(teacher);
 		if (teacher == null || teacher.getId() == 0) {
 			return renderJSONString(USERNAME_OR_PASSWORD_ERROR);
 		}
+		//获取上课教室
+		Room room = roomService.getRoomByMac(mac);
 		//获取当前老师的课程列表
 		List<Course> courses = courseService.getCourseList();
 		//获取当前老师的教室列表
@@ -57,6 +62,7 @@ public class TeacherCtrl extends BaseCtrl {
 		
 		TeacherLoginResultData data = new TeacherLoginResultData();
 		data.setTeacher(teacher);
+		data.setRoom(room);
 		data.setClasses(classes);
 		data.setCourses(courses);
 		ApiResult result = new ApiResult();

@@ -14,6 +14,20 @@
 			id
 	</select>
 
+	<select id="getRoomByMac" resultType="com.incito.interclass.entity.Room" parameterType="java.lang.String">
+		SELECT	
+			tb_room.id,tb_room.name,school_id AS schoolId, 
+			tb_school.name AS schoolName,mac,tb_room.ctime
+		FROM 
+			tb_room
+		LEFT JOIN
+			tb_school ON tb_school.id = tb_room.school_id
+		WHERE 
+			tb_room.mac = #{mac}
+		ORDER BY
+			id
+	</select>
+	
 	<insert id="save" parameterType="com.incito.interclass.entity.Room" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO 
 			tb_room(name,school_id,mac,ctime)

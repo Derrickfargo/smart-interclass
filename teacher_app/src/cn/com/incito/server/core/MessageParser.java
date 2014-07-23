@@ -1,13 +1,10 @@
 package cn.com.incito.server.core;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 
-import cn.com.incito.interclass.po.Student;
-import cn.com.incito.server.api.Application;
 import cn.com.incito.server.utils.BufferUtils;
 
 /**
@@ -60,13 +57,9 @@ public class MessageParser {
 			parseMsgHeader(headerBuffer);
 			// 解析消息体和命令
 			if (parseMsgBody()) {
+				message.setChannel(channel);
 				// 执行消息命令
-				Serializable result = message.executeMessage();
-				if (result instanceof Student) {//是否为登陆消息
-					Student student = (Student) result;
-					Application app = Application.getInstance();
-					app.putClientChannel(student, channel);
-				}
+				message.executeMessage();
 			}
 		}
 	}

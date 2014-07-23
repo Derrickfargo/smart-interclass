@@ -19,7 +19,7 @@
 			AND tb_user.role = 1
 	</select>
 
-	<select id="loginForTeacher" resultType="com.incito.interclass.entity.Teacher">
+	<select id="loginForTeacher" resultType="com.incito.interclass.entity.Teacher" parameterType="com.incito.interclass.entity.Teacher">
 		SELECT	
 			tb_user.* ,tb_teacher.*
 		FROM 

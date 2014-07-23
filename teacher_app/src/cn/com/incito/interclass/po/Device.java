@@ -11,12 +11,12 @@ public class Device implements Serializable {
 	private static final long serialVersionUID = 5030861381666684624L;
 	private int id;
 	private String imei;
+	private int tableId;
 	private Date ctime;
 
-	private String studentName;
+	private String roomName;
+	private String tableNumber;
 	private String schoolName;
-	private String phone;
-	private String address;
 
 	public int getId() {
 		return id;
@@ -42,14 +42,6 @@ public class Device implements Serializable {
 		this.ctime = ctime;
 	}
 
-	public String getStudentName() {
-		return studentName;
-	}
-
-	public void setStudentName(String studentName) {
-		this.studentName = studentName;
-	}
-
 	public String getSchoolName() {
 		return schoolName;
 	}
@@ -58,20 +50,28 @@ public class Device implements Serializable {
 		this.schoolName = schoolName;
 	}
 
-	public String getPhone() {
-		return phone;
+	public int getTableId() {
+		return tableId;
 	}
 
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setTableId(int tableId) {
+		this.tableId = tableId;
 	}
 
-	public String getAddress() {
-		return address;
+	public String getRoomName() {
+		return roomName;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setRoomName(String roomName) {
+		this.roomName = roomName;
+	}
+
+	public String getTableNumber() {
+		return tableNumber;
+	}
+
+	public void setTableNumber(String tableNumber) {
+		this.tableNumber = tableNumber;
 	}
 
 }

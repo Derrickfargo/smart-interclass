@@ -18,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
@@ -25,10 +26,12 @@ import javax.swing.UIManager;
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.server.api.ApiClient;
 import cn.com.incito.server.api.Application;
+import cn.com.incito.server.api.result.TeacherLoginResultData;
 import cn.com.incito.server.core.AppException;
 import cn.com.incito.server.utils.NetworkUtils;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 public class Login extends MouseAdapter{
 
@@ -197,9 +200,18 @@ public class Login extends MouseAdapter{
 		try {
 			final String result = ApiClient.loginForTeacher(mac, userName.getText(), new String(password.getPassword()));
 			if (result != null && !result.equals("")) {
-				List<Student> students = JSON.parseArray(result, Student.class);
+				JSONObject jsonObject = JSON.parseObject(result);
+				if(jsonObject.getIntValue("code") == 1){
+					JOptionPane.showMessageDialog(frame, "用户名或密码错误!");
+					return;
+				}
+				String data = jsonObject.getString("data");
+				TeacherLoginResultData resultData = JSON.parseObject(data,TeacherLoginResultData.class);
+				
 				frame.setVisible(false);
-				Application.getInstance().setStudentList(students);
+				Application.getInstance().setRoom(resultData.getRoom());
+				Application.getInstance().setTeacher(resultData.getTeacher());
+				MainFrame.getInstance().setData(resultData);
 				MainFrame.getInstance().setVisible(true);
 			}
 			System.out.println(result);

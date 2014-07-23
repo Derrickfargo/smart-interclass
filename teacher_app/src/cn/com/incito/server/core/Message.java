@@ -1,12 +1,13 @@
 package cn.com.incito.server.core;
 
-import java.io.Serializable;
 import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
 
 /**
  * 通用消息类
+ * 
  * @author 刘世平
- *
+ * 
  */
 public class Message {
 
@@ -29,7 +30,8 @@ public class Message {
 	private int msgSize;
 	private ByteBuffer bodyBuffer;
 	private MessageHandler handler;
-	
+	private SocketChannel channel;
+
 	public byte getMsgID() {
 		return msgID;
 	}
@@ -56,7 +58,15 @@ public class Message {
 		this.bodyBuffer = bodyBuffer;
 	}
 
-	public Serializable executeMessage() {
-		return handler.handleMessage(this);
+	public SocketChannel getChannel() {
+		return channel;
+	}
+
+	public void setChannel(SocketChannel channel) {
+		this.channel = channel;
+	}
+
+	public void executeMessage() {
+		handler.handleMessage(this);
 	}
 }
