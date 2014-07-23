@@ -1,7 +1,6 @@
 package cn.com.incito.classroom.ui.activity;
 
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.BitmapDrawable;
@@ -10,45 +9,26 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.activeandroid.util.Log;
 import com.popoy.annotation.TAInjectView;
-import com.popoy.common.TAActivity;
-import com.popoy.common.TAApplication;
 import com.popoy.common.core.AsyncTask;
-import com.popoy.tookit.cache.TAFileCache;
-import com.popoy.widget.pulltorefresh.AbMultiColumnBaseAbsListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.com.incito.classroom.Canvas1Activity;
-import cn.com.incito.classroom.Canvas2Activity;
 import cn.com.incito.classroom.R;
-import cn.com.incito.classroom.adapter.WifiListAdapter;
-import cn.com.incito.classroom.adapter.WifiListAdapter1;
 import cn.com.incito.classroom.base.BaseActivity;
+import cn.com.incito.classroom.ui.dialog.ConfigWifiWindow;
 import cn.com.incito.classroom.ui.dialog.LoadingDialog;
-import cn.com.incito.classroom.ui.dialog.SelectPicPopupWindow;
-import cn.com.incito.classroom.ui.dialog.WifiConfigDialog;
 import cn.com.incito.classroom.ui.widget.AbAnalogClock;
-import cn.com.incito.classroom.ui.widget.caroursel.CarouselView;
 import cn.com.incito.classroom.ui.widget.caroursel.CarouselViewAdapter;
 import cn.com.incito.classroom.ui.widget.circlemenu.CircleImageView;
 import cn.com.incito.classroom.ui.widget.circlemenu.CircleLayout;
 import cn.com.incito.classroom.utils.WifiAdmin;
-import cn.com.incito.classroom.ui.widget.caroursel.CarouselAdapter;
-import cn.com.incito.socket.core.CoreSocket;
 
 /**
  * 用户其启动界面
@@ -78,13 +58,6 @@ public class WifiListActivity extends BaseActivity {
     @Override
     protected void onAfterOnCreate(Bundle savedInstanceState) {
         super.onAfterOnCreate(savedInstanceState);
-//        CircleLayout circleMenu = (CircleLayout)findViewById(R.id.carousel);
-
-        //不支持的动态添加adapter.notifyDataSetChanged()增强滑动的流畅
-//        adapter = new CarouselViewAdapter(WifiListActivity.this, mViews, false);
-//        ImageView imageView = new ImageView(this);
-//        imageView.setImageDrawable(getResources().getDrawable(R.drawable.bg_common_toast));
-
         rlayout.getLocationOnScreen(location);
         carousel.setOnItemClickListener(new CircleLayout.OnItemClickListener() {
             @Override
@@ -108,7 +81,7 @@ public class WifiListActivity extends BaseActivity {
 //                        }
 //                    }, wifilist.get(position).SSID);
 //                    dialog.show(getSupportFragmentManager().beginTransaction(), "dialog");
-                    SelectPicPopupWindow popupWindow = new SelectPicPopupWindow(WifiListActivity.this, wifilist.get(position).SSID, new SelectPicPopupWindow.WifiConfigCallBack() {
+                    ConfigWifiWindow popupWindow = new ConfigWifiWindow(WifiListActivity.this, wifilist.get(position).SSID, new ConfigWifiWindow.WifiConfigCallBack() {
                         @Override
                         public void connectWifi(String ssid, String password) {
                             LoadingDialog.hide();

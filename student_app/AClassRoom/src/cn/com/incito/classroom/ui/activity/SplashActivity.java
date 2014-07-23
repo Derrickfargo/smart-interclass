@@ -109,10 +109,10 @@ public class SplashActivity extends BaseActivity {
         registerInfo.setSex("1");
         String json = JSON.toJSONString(registerInfo);
 
-        MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
-        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
-//        CoreSocket.getInstance().sendMessage(messagePacking);
-        socketMinaClient.sendMessage(messagePacking);
+//        MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
+//        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
+////        CoreSocket.getInstance().sendMessage(messagePacking);
+//        socketMinaClient.sendMessage(messagePacking);
 //        socketMinaClient.getSocketConnector().dispose();
     }
 }

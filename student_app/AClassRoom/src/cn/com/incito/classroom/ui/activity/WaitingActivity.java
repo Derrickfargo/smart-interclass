@@ -1,23 +1,11 @@
 package cn.com.incito.classroom.ui.activity;
 
-import android.content.BroadcastReceiver;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.net.wifi.ScanResult;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
-import com.activeandroid.util.Log;
 import com.popoy.annotation.TAInjectView;
-import com.popoy.common.core.AsyncTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,17 +13,7 @@ import java.util.List;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.adapter.GroupNumAdapter;
 import cn.com.incito.classroom.base.BaseActivity;
-import cn.com.incito.classroom.ui.dialog.LoadingDialog;
-import cn.com.incito.classroom.ui.dialog.SelectPicPopupWindow;
-import cn.com.incito.classroom.ui.widget.AbAnalogClock;
-import cn.com.incito.classroom.ui.widget.caroursel.CarouselViewAdapter;
-import cn.com.incito.classroom.ui.widget.circlemenu.CircleImageView;
-import cn.com.incito.classroom.ui.widget.circlemenu.CircleLayout;
-import cn.com.incito.classroom.utils.WifiAdmin;
 import cn.com.incito.classroom.vo.GroupNumberListRes2;
-import cn.com.incito.classroom.vo.RegisterInfo;
-import cn.com.incito.socket.core.CoreSocket;
-import cn.com.incito.socket.core.SocketMinaClient;
 
 /**
  * 用户其启动界面
