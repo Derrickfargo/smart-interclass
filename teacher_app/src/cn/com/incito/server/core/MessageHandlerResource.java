@@ -3,8 +3,10 @@ package cn.com.incito.server.core;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.com.incito.server.handler.GroupListHandler;
+import cn.com.incito.server.handler.HandShakeHandler;
 import cn.com.incito.server.handler.HeartbeatHandler;
-import cn.com.incito.server.handler.LoginHandler;
+import cn.com.incito.server.handler.StudentLoginHandler;
 
 /**
  * 消息处理器列表 
@@ -26,10 +28,14 @@ public final class MessageHandlerResource {
 	
 	private MessageHandlerResource(){
 		handlerResources = new HashMap<Byte, Class<? extends MessageHandler>>();
+		//握手消息
+		handlerResources.put(Message.MESSAGE_HAND_SHAKE, HandShakeHandler.class);
 		//心跳消息
-		handlerResources.put(Message.MESSAGE_HEARTBEAT, HeartbeatHandler.class);
+		handlerResources.put(Message.MESSAGE_HEART_BEAT, HeartbeatHandler.class);
+		//获取分组消息
+		handlerResources.put(Message.MESSAGE_GROUP_LIST, GroupListHandler.class);
 		//学生登陆消息
-		handlerResources.put(Message.MESSAGE_LOGIN, LoginHandler.class);
+		handlerResources.put(Message.MESSAGE_STUDENT_LOGIN, StudentLoginHandler.class);
 	}
 	
 	public MessageHandler getMessageHandler(Byte key){

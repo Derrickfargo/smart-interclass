@@ -12,24 +12,22 @@ import cn.com.incito.server.utils.BufferUtils;
  * @author 刘世平
  * 
  */
-public class LoginHandler implements MessageHandler {
-
-	private String imei;
+public class StudentLoginHandler implements MessageHandler {
 
 	@Override
 	public void handleMessage(Message msg) {
 		ByteBuffer data = msg.getBodyBuffer();
 		data.flip();
 		
-		//解析IMEI
+		//解析JSON
 		byte[] intSize = new byte[4];//int
 		data.get(intSize);
-		int imeiLength = Integer.parseInt(BufferUtils.decodeIntLittleEndian(intSize, 0, intSize.length) + "");
-		byte[] imeiByte = new byte[imeiLength];
-		data.get(imeiByte);
-		imei = BufferUtils.readUTFString(imeiByte);
+		int jsonLength = Integer.parseInt(BufferUtils.decodeIntLittleEndian(intSize, 0, intSize.length) + "");
+		byte[] jsonByte = new byte[jsonLength];
+		data.get(jsonByte);
+		String json = BufferUtils.readUTFString(jsonByte);
 		
-		System.out.println("收到登陆消息，IMEI:" + imei);
+		System.out.println("收到登陆消息，JSON:" + json);
 //		try {
 //			final String result = ApiClient.loginForStudent(imei);
 //			if (result != null) {

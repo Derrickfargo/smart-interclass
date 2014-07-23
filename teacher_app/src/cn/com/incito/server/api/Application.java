@@ -1,9 +1,11 @@
 package cn.com.incito.server.api;
 
 import java.nio.channels.SocketChannel;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import cn.com.incito.interclass.po.Course;
 import cn.com.incito.interclass.po.Group;
@@ -18,10 +20,12 @@ public class Application {
 	private Room room;//当前上课的教室
 	private Teacher teacher;//当前登录的老师
 	private Course course;//当前课程
-	private Map<Group, List<SocketChannel>> clientChannel;
+	private Map<String,List<String>> tables;//保存每个课桌和课桌上已登录的pad
+	private Map<Group, List<SocketChannel>> clientChannel;//保存每组和已登录的socket
 	private CoreSocket coreSocket;
 
 	private Application() {
+		tables = new HashMap<String, List<String>>();
 		clientChannel = new HashMap<Group, List<SocketChannel>>();
 		new Login();
 	}
@@ -33,6 +37,15 @@ public class Application {
 		return instance;
 	}
 
+	public void addDevice(String tableNumber, String imei) {
+		List<String> imeiList = tables.get(tableNumber);
+		if (imeiList == null) {
+			imeiList = new ArrayList<String>();
+		}
+		imeiList.add(imei);
+		tables.put(tableNumber, imeiList);
+	}
+	
 	public Room getRoom() {
 		return room;
 	}

@@ -248,8 +248,11 @@ public class ApiClient {
 		}
 	}
 	
-	public static String loginForStudent(String imei) throws AppException{
+	public static String loginForStudent(String name,int sex ,String number,String imei) throws AppException{
 		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("name", imei);
+		params.put("sex", imei);
+		params.put("number", imei);
 		params.put("imei", imei);
 		try {
 			return _post(URLs.URL_STUDENT_LOGIN, params, null);

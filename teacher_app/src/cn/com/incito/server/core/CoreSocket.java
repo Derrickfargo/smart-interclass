@@ -117,7 +117,7 @@ public final class CoreSocket extends Thread implements ISocket {
 			client.register(selector, SelectionKey.OP_READ);
 		} else if (selectionKey.isReadable()) {// 若为可读的事件，则进行消息解析
 			// 得到消息协议解析对象
-			messageParser = new MessageParser();
+			MessageParser messageParser = new MessageParser();
 			// 解析消息
 			messageParser.parseMessage(selectionKey);
 		}

@@ -47,6 +47,11 @@ public class MessageParser {
 			}
 		} catch (IOException e) {
 			System.out.println("解析消息失败:" + e.getMessage());
+			try {
+				channel.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 			return;
 		}
 		headerBuffer.flip();

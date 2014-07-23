@@ -17,14 +17,25 @@ public class Message {
 	public static final int MESSAGE_FAKE_ID = 0xFAFB;
 
 	/**
+	 * 握手消息
+	 */
+	public static final Byte MESSAGE_HAND_SHAKE = (byte)0xFF;
+	
+	/**
 	 * 心跳消息
 	 */
-	public static final Byte MESSAGE_HEARTBEAT = (byte) 0xFF;
+	public static final Byte MESSAGE_HEART_BEAT = (byte) 0xFE;
 
+	/**
+	 * 获取分组信息
+	 */
+	public static final Byte MESSAGE_GROUP_LIST = 0x01;
+	
 	/**
 	 * 登陆消息
 	 */
-	public static final Byte MESSAGE_LOGIN = 0x01;
+	public static final Byte MESSAGE_STUDENT_LOGIN = 0x02;
+	
 
 	private byte msgID;
 	private int msgSize;
