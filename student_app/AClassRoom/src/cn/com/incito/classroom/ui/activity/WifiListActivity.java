@@ -37,6 +37,7 @@ import cn.com.incito.classroom.Canvas2Activity;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.adapter.WifiListAdapter;
 import cn.com.incito.classroom.adapter.WifiListAdapter1;
+import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.ui.dialog.LoadingDialog;
 import cn.com.incito.classroom.ui.dialog.SelectPicPopupWindow;
 import cn.com.incito.classroom.ui.dialog.WifiConfigDialog;
@@ -56,7 +57,7 @@ import cn.com.incito.socket.core.CoreSocket;
  * @author liubo
  * @version V1.0
  */
-public class WifiListActivity extends TAActivity {
+public class WifiListActivity extends BaseActivity {
     public static final String SYSTEMCACHE = "WifiListActivity";
     //自定义的弹出框类
 //    @TAInjectView(id = R.id.gv_wifi_list)
@@ -222,7 +223,7 @@ public class WifiListActivity extends TAActivity {
      * 与后台服务建立连接，并实现登陆
      */
     private void login() {
-        CoreSocket.getInstance().start();
+//        CoreSocket.getInstance().startConnection();
 
     }
 }

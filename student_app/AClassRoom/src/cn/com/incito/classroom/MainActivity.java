@@ -9,7 +9,6 @@ import com.popoy.tookit.cache.TAFileCache;
 import com.popoy.tookit.cache.TAFileCache.TACacheParams;
 
 import cn.com.incito.classroom.base.BaseActivity;
-import cn.com.incito.classroom.ui.activity.ClientActivity;
 import cn.com.incito.classroom.ui.activity.WifiListActivity;
 import cn.com.incito.classroom.ui.dialog.SelectPicPopupWindow;
 
@@ -24,11 +23,11 @@ public class MainActivity extends BaseActivity {
     public static final String SYSTEMCACHE = "MainActivity";
     //自定义的弹出框类
     SelectPicPopupWindow menuWindow;
-    @TAInjectView(id=R.id.rl_layout1)
+    @TAInjectView(id = R.id.rl_layout1)
     RelativeLayout rl_layout1;
-    @TAInjectView(id=R.id.rl_layout2)
+    @TAInjectView(id = R.id.rl_layout2)
     RelativeLayout rl_layout2;
-//    private Handler mHandler;
+    //    private Handler mHandler;
     private int detchTime = 50;
 
     @Override
@@ -65,8 +64,6 @@ public class MainActivity extends BaseActivity {
                 Canvas1Activity.class);
         getTAApplication().registerActivity(R.string.cavas2activity,
                 Canvas2Activity.class);
-        getTAApplication().registerActivity(R.string.clientactivity,
-                ClientActivity.class);
         getTAApplication().registerActivity(R.string.wifilistactivity,
                 WifiListActivity.class);
 

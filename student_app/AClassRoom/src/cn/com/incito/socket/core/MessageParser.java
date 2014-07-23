@@ -109,8 +109,8 @@ public class MessageParser {
 	/**
 	 * 解析消息体
 	 * 
-	 * @param buffer
-	 *            消息体内容
+	 * @param
+     * *消息体内容
 	 * @return true，解析成功，false表示为其他类型包无需压入消息队列
 	 */
 	private boolean parseMsgBody() {

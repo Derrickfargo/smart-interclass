@@ -6,5 +6,6 @@
     <string name="cavas2activity">Canvas2Activity</string>
     <string name="clientactivity">ClientActivity</string>
     <string name="wifilistactivity">WifiListActivity</string>
+    <string name="waitingactivity">WaitingActivity</string>
 
 </resources>

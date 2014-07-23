@@ -27,9 +27,9 @@ public final class MessageHandlerResource {
 	private MessageHandlerResource(){
 		handlerResources = new HashMap<Byte, Class<? extends MessageHandler>>();
 		//心跳消息
-		handlerResources.put(Message.MESSAGE_HEARTBEAT, HeartbeatHandler.class);
+		handlerResources.put(Message.MESSAGE_HEART_BEAT, HeartbeatHandler.class);
 		//学生登陆消息
-		handlerResources.put(Message.MESSAGE_LOGIN, LoginHandler.class);
+		handlerResources.put(Message.MESSAGE_STUDENT_LOGIN, LoginHandler.class);
 	}
 	
 	public MessageHandler getMessageHandler(Byte key){

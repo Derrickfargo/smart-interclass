@@ -1,8 +1,5 @@
 package cn.com.incito.classroom.service;
 
-import cn.com.incito.classroom.ui.activity.Home;
-import cn.com.incito.classroom.ui.activity.ImageActivity;
-
 import android.app.Service;
 import android.content.Intent;
 import android.net.Uri;
@@ -13,7 +10,7 @@ import android.os.IBinder;
 
 public class MessageService extends Service {
 
-    private MessageHandler client;
+//    private MessageHandler client;
     private static MessageService instance;
 
     public static MessageService getInstance() {
@@ -39,7 +36,7 @@ public class MessageService extends Service {
         int port = Integer.valueOf(bundle.getString("PORT"));
         System.out.println("IP:" + ip);
         System.out.println("PORT:" + port);
-        client = new MessageHandler(ip, port, this);
+//        client = new MessageHandler(ip, port, this);
 
         return START_STICKY;
     }
@@ -53,7 +50,7 @@ public class MessageService extends Service {
 
             @Override
             public void run() {
-                client.disconnected();
+//                client.disconnected();
                 System.out.println("Disconnected");
             }
         });
@@ -72,34 +69,34 @@ public class MessageService extends Service {
         }
     }
 
-    public void showPicture(byte[] data) {
-        ImageActivity instance = ImageActivity.getInstance();
-        if (instance != null) {
-            instance.finish();
-        }
-        Intent it = new Intent(this, ImageActivity.class);
-        it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        it.putExtra("data", data);
-        startActivity(it);
-    }
-
-    public void lock() {
-        ImageActivity instance = ImageActivity.getInstance();
-        if (instance == null) {
-            Intent it = new Intent(this, Home.class);
-            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(it);
-        }
-    }
-
-    public void unlock() {
-        Home instance = Home.getInstance();
-        if (instance != null) {
-            instance.finish();
-        }
-    }
+//    public void showPicture(byte[] data) {
+//        ImageActivity instance = ImageActivity.getInstance();
+//        if (instance != null) {
+//            instance.finish();
+//        }
+//        Intent it = new Intent(this, ImageActivity.class);
+//        it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        it.putExtra("data", data);
+//        startActivity(it);
+//    }
+//
+//    public void lock() {
+//        ImageActivity instance = ImageActivity.getInstance();
+//        if (instance == null) {
+//            Intent it = new Intent(this, Home.class);
+//            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            startActivity(it);
+//        }
+//    }
+//
+//    public void unlock() {
+//        Home instance = Home.getInstance();
+//        if (instance != null) {
+//            instance.finish();
+//        }
+//    }
 
     public void sendPicture(byte[] data) {
-        client.sendPicture(data);
+//        client.sendPicture(data);
     }
 }
