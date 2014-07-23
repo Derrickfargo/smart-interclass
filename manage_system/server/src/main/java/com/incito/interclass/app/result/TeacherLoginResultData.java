@@ -1,4 +1,4 @@
-package com.incito.interclass.app.dto;
+package com.incito.interclass.app.result;
 
 import java.util.List;
 

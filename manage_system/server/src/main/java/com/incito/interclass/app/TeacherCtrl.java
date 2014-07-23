@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
 import com.incito.base.util.Md5Utils;
-import com.incito.interclass.app.dto.ApiResult;
-import com.incito.interclass.app.dto.TeacherLoginResultData;
+import com.incito.interclass.app.result.ApiResult;
+import com.incito.interclass.app.result.TeacherLoginResultData;
 import com.incito.interclass.business.ClassService;
 import com.incito.interclass.business.CourseService;
 import com.incito.interclass.business.UserService;

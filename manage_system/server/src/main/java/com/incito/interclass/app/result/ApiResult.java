@@ -1,4 +1,4 @@
-package com.incito.interclass.app.dto;
+package com.incito.interclass.app.result;
 
 public class ApiResult {
 	public static final int SUCCESS = 0;
