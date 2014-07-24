@@ -37,7 +37,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        dsfdssdfsdf
+        
         <!--<activity-->
         <!--android:name="cn.com.incito.classroom.ui.activity.Home"-->
         <!--android:configChanges="keyboardHidden|orientation"-->
