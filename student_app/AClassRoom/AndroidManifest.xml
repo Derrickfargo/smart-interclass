@@ -36,7 +36,7 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity>日日日日本
         ddd
         <!--<activity-->
         <!--android:name="cn.com.incito.classroom.ui.activity.Home"-->
