@@ -149,8 +149,6 @@ public class WaitingActivity extends BaseActivity {
                 mAdapter.notifyDataSetChanged();
             }
         });
-
-
     }
 
 
