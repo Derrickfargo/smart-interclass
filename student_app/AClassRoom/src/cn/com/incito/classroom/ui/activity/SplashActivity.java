@@ -68,8 +68,6 @@ public class SplashActivity extends BaseActivity {
         // 注册activity
 //        getTAApplication().registerCommand(R.string.testmvccommand,
 //                TestMVCCommand.class);
-        getTAApplication().registerActivity(R.string.wifilistactivity,
-                WifiListActivity.class);
         getTAApplication().registerActivity(R.string.cavas1activity,
                 Canvas1Activity.class);
         getTAApplication().registerActivity(R.string.cavas2activity,
