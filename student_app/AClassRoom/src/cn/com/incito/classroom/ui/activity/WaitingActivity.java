@@ -3,6 +3,7 @@ package cn.com.incito.classroom.ui.activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.popoy.annotation.TAInjectView;
+import com.popoy.tookit.helper.ToastHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +61,7 @@ public class WaitingActivity extends BaseActivity {
     GroupNumAdapter mAdapter;
     TranslateAnimation mShowAction;
     TranslateAnimation mHiddenAction;
-    InputMethodManager imm ;
+    InputMethodManager imm;
     /**
      * 0只显示增加按钮，1显示姓名2显示姓名、学号、性别
      */
@@ -89,27 +91,23 @@ public class WaitingActivity extends BaseActivity {
                     llayout2.setVisibility(View.GONE);
                     addState = 1;
                 } else {
-                    GroupNumberRes2Vo groupNumberListRes = new GroupNumberRes2Vo();
-                    groupNumberListRes.setMembergender("12");
-                    groupNumberListRes.setMembername("刘博");
-                    groupNumberListRes.setMembernumber("10203");
-                    list.add(groupNumberListRes);
+                    if (checkNameRepeat()) {
+                        GroupNumberRes2Vo groupNumberListRes = new GroupNumberRes2Vo();
+                        groupNumberListRes.setMembergender(male.isChecked() ? "1" : "2");
+                        groupNumberListRes.setMembername(et_stname.getText().toString());
+                        groupNumberListRes.setMembernumber(et_stnumber.getText().toString());
+                        list.add(groupNumberListRes);
+                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
+                        llayout1.setVisibility(View.GONE);
+                        addState = 0;
+                    }
+
                 }
                 mAdapter.notifyDataSetChanged();
             }
         });
         et_stname = (EditText) findViewById(R.id.et_stname);
 
-        et_stname.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (et_stname.getText().length() > 1 && addState == 1) {
-                    llayout2.setAnimation(mShowAction);
-                    llayout2.setVisibility(View.VISIBLE);
-
-                }
-            }
-        });
         et_stname.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -118,14 +116,13 @@ public class WaitingActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                if (et_stname.getText().length() > 1 && addState == 1) {
-                    llayout2.setVisibility(View.VISIBLE);
-                }
+
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
                 if (et_stname.getText().length() > 1 && addState == 1) {
+                    llayout2.setAnimation(mShowAction);
                     llayout2.setVisibility(View.VISIBLE);
                 }
             }
@@ -183,17 +180,38 @@ public class WaitingActivity extends BaseActivity {
 
     }
 
+    /**
+     * 检查新增的学生是否为重复录入(客户端检查)
+     */
+    private boolean checkNameRepeat() {
+        String stName = et_stname.getText().toString();
+        String stNumber = et_stnumber.getText().toString();
+        if (TextUtils.isEmpty(stName)) {
+            ToastHelper.showCustomToast(getApplicationContext(), R.string.toast_stname_notnull);
+            return false;
+        } else if (stName.length() < 2) {
+            ToastHelper.showCustomToast(getApplicationContext(), R.string.toast_stname_tooshort);
+            return false;
+        }
+        if (TextUtils.isEmpty(stNumber)) {
+            ToastHelper.showCustomToast(getApplicationContext(), R.string.toast_stnumber_notnull);
+            return false;
+        }
+        for (int i = 0; i < list.size(); i++) {
+            if (stName.equals(list.get(i).getMembername()) || stNumber.equals(list.get(i).getMembernumber())) {
+                ToastHelper.showCustomToast(getApplicationContext(), R.string.toast_stname_repeat);
+                return false;
+            }
+        }
+        return true;
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-//        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-//            if (WaitingActivity.this.getCurrentFocus() != null) {
-//                if (WaitingActivity.this.getCurrentFocus().getWindowToken() != null) {
-//                    imm.hideSoftInputFromWindow(WaitingActivity.this.getCurrentFocus().getWindowToken(),
-//                            InputMethodManager.HIDE_NOT_ALWAYS);
-//                }
-//            }
-//        }
-//        return super.onTouchEvent(event);
+        if (addState == 1 || addState == 2) {
+            llayout1.setVisibility(View.GONE);
+            addState = 0;
+        }
         return imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
     }
 }

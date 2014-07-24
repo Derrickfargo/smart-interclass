@@ -4,34 +4,43 @@
     android:layout_height="match_parent"
     android:id="@+id/rlayout"
     android:orientation="vertical"
-    android:background="@drawable/bg_wifilist"
-    android:paddingRight="10dp"
-    android:paddingLeft="10dp"
-    android:paddingBottom="10dp">
+    android:background="@drawable/bg_empty">
 
-    <GridView
-        android:layout_marginTop="40dp"
-        android:layout_marginLeft="120dp"
-        android:layout_marginRight="120dp"
-        android:layout_marginBottom="40dp"
-        android:id="@+id/gv_group_member"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:layout_weight="1"
-        android:columnWidth="260dp"
-        android:horizontalSpacing="10dp"
-        android:verticalSpacing="10dp"
-        android:numColumns="auto_fit"
-        android:scrollbars="none" />
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:background="#86222222">-->
+
+        <!--</LinearLayout>-->
+
+        <GridView
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="120dp"
+            android:layout_marginRight="120dp"
+            android:id="@+id/gv_group_member"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:columnWidth="260dp"
+            android:horizontalSpacing="10dp"
+            android:verticalSpacing="10dp"
+            android:numColumns="auto_fit"
+            android:scrollbars="none" />
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/ll_add_partner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:orientation="horizontal"
-        android:layout_marginBottom="35dp"
+        android:background="@drawable/cloud"
         android:gravity="center">
 
         <LinearLayout
@@ -79,7 +88,8 @@
                         android:src="@drawable/ic_user_male"
                         android:button="@null"
                         android:background="@drawable/gender_radio_btn_male"
-                        android:id="@+id/male" />
+                        android:id="@+id/male"
+                        android:checked="true"/>
 
                     <RadioButton
                         android:layout_width="wrap_content"
