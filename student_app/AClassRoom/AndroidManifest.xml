@@ -18,7 +18,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
-    <uses-permission android:name="android.permission.MODIFY_PHONE_STATE" />
+    <!--<uses-permission android:name="android.permission.MODIFY_PHONE_STATE" />-->
     <!--<uses-permission android:name="android.permission.ACCESS_CHECKIN_PROPERTIES" />-->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
@@ -37,7 +37,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
         <!--<activity-->
         <!--android:name="cn.com.incito.classroom.ui.activity.Home"-->
         <!--android:configChanges="keyboardHidden|orientation"-->
