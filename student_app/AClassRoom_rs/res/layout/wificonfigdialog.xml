@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@android:drawable/dialog_holo_light_frame">
+
+    <TextView
+        android:id="@+id/et_ssid"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:text="sdafasdf"
+        android:layout_height="48dp" />
+
+    <EditText
+        android:id="@+id/et_password"
+        android:layout_width="220dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center_horizontal"
+        android:hint="密码" />
+
+    <Button
+        android:id="@+id/btn_access_wifi"
+        android:layout_width="220dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/btn_big_normal_normal"
+        android:layout_height="wrap_content"
+        android:text="连接" />
+
+</LinearLayout>
