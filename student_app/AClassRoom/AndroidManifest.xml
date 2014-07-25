@@ -56,6 +56,7 @@
             android:screenOrientation="landscape" />
 
         <service android:name="cn.com.incito.classroom.service.MessageService" />
+        <service android:name="cn.com.incito.classroom.service.SocketService" />
     </application>
 
 </manifest>
