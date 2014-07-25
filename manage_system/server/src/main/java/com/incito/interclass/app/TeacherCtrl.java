@@ -13,11 +13,13 @@ import com.incito.interclass.app.result.ApiResult;
 import com.incito.interclass.app.result.TeacherLoginResultData;
 import com.incito.interclass.business.ClassService;
 import com.incito.interclass.business.CourseService;
+import com.incito.interclass.business.GroupService;
 import com.incito.interclass.business.RoomService;
 import com.incito.interclass.business.UserService;
 import com.incito.interclass.common.BaseCtrl;
 import com.incito.interclass.entity.Classes;
 import com.incito.interclass.entity.Course;
+import com.incito.interclass.entity.Group;
 import com.incito.interclass.entity.Room;
 import com.incito.interclass.entity.Teacher;
 
@@ -41,6 +43,9 @@ public class TeacherCtrl extends BaseCtrl {
 	
 	@Autowired
 	private RoomService roomService;
+	
+	@Autowired
+	private GroupService groupService;
 	
 	@RequestMapping(value = "/login", produces = { "application/json;charset=UTF-8" })
 	public String login(String uname, String password, String mac) {
@@ -71,4 +76,17 @@ public class TeacherCtrl extends BaseCtrl {
 		return  JSON.toJSONString(result);
 	}
 	
+	/**
+	 * 获得课堂分组
+	 * @param teacherId
+	 * @param courseId
+	 * @param classId
+	 * @return
+	 */
+	@RequestMapping(value = "/group", produces = { "application/json;charset=UTF-8" })
+	public String group(int teacherId, int courseId, int classId) {
+		//获得当前课堂的分组列表
+		List<Group> groupList = groupService.getGroupList(teacherId, courseId, classId);
+		return renderJSONString(SUCCESS, groupList);
+	}
 }

@@ -43,6 +43,7 @@ public class GroupService {
 
 	@Transactional(rollbackFor = AppException.class)
 	public boolean addStudent(int courseId, int classId, int teacherId, int tableId, int studentId)throws AppException{
+		//检查组是否存在
 		Group group = groupMapper.getGroupByTableId(courseId, teacherId, courseId, classId);
 		if (group == null || group.getId() == 0) {
 			group = new Group();
@@ -50,7 +51,7 @@ public class GroupService {
 			group.setCourseId(courseId);
 			group.setTeacherId(teacherId);
 			group.setTableId(tableId);
-			groupMapper.save(group);
+			groupMapper.save(group);//创建分组
 			if(group.getId() <= 0){
 				throw AppException.database(0);
 			}

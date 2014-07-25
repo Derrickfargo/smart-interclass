@@ -25,7 +25,7 @@ public class StudentCtrl extends BaseCtrl {
 	
 
 	/**
-	 * 学生注册到组（注册学生、创建分组同一个操作）
+	 * 注册学生
 	 * @param courseId 课程id
 	 * @param classId 课程id
 	 * @param teacherId 教师id
@@ -33,7 +33,7 @@ public class StudentCtrl extends BaseCtrl {
 	 * @param studentId 学生id
 	 * @return
 	 */
-	@RequestMapping(value = "/register", produces = { "application/json;charset=UTF-8" })
+	@RequestMapping(value = "/login", produces = { "application/json;charset=UTF-8" })
 	public String addStudent(int courseId, int classId, int teacherId,
 			int tableId, String name, String number, int sex, String imei) {
 		// 查学生是否存在
@@ -62,20 +62,6 @@ public class StudentCtrl extends BaseCtrl {
 		} catch (AppException e) {
 			return renderJSONString(REGISTER_ERROR);
 		}
-	}
-	
-	/**
-	 * 学生登陆
-	 * @param student
-	 * @return
-	 */
-	@RequestMapping(value = "/login", produces = { "application/json;charset=UTF-8" })
-	public String login(Student student){
-		Student result = userService.loginForStudent(student);
-		if (result == null || result.getId() == 0) {
-			return renderJSONString(LOGIN_ERROR);//
-		}
-		return renderJSONString(SUCCESS, result);
 	}
 	
 }

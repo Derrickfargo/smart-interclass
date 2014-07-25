@@ -6,7 +6,6 @@ import java.nio.ByteBuffer;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
 import cn.com.incito.server.message.MessagePacking;
-import cn.com.incito.server.utils.BufferUtils;
 
 /**
  * 握手消息处理器
@@ -14,23 +13,13 @@ import cn.com.incito.server.utils.BufferUtils;
  * @author 刘世平
  * 
  */
-public class HandShakeHandler implements MessageHandler {
+public class HandShakeHandler extends MessageHandler {
 
 	private String imei;
 
 	@Override
-	public void handleMessage(Message msg) {
-		ByteBuffer data = msg.getBodyBuffer();
-		data.flip();
-		
-		//解析IMEI
-		byte[] intSize = new byte[4];//int
-		data.get(intSize);
-		int imeiLength = Integer.parseInt(BufferUtils.decodeIntLittleEndian(intSize, 0, intSize.length) + "");
-		byte[] imeiByte = new byte[imeiLength];
-		data.get(imeiByte);
-		imei = BufferUtils.readUTFString(imeiByte);
-		
+	public void handleMessage() {
+		imei = data.getString("imei");
 		System.out.println("收到握手消息，IMEI:" + imei);
 		
 		//回复握手消息
@@ -40,7 +29,7 @@ public class HandShakeHandler implements MessageHandler {
         buffer.put(handShakResponse);
         buffer.flip();
         try {
-			msg.getChannel().write(buffer);
+			message.getChannel().write(buffer);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

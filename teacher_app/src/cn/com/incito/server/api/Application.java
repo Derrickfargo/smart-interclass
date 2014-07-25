@@ -17,11 +17,14 @@ import cn.com.incito.server.core.CoreSocket;
 public class Application {
 
 	private static Application instance;
-	private Room room;//当前上课的教室
-	private Teacher teacher;//当前登录的老师
-	private Course course;//当前课程
-	private Map<String,List<String>> tables;//保存每个课桌和课桌上已登录的pad
-	private Map<Group, List<SocketChannel>> clientChannel;//保存每组和已登录的socket
+	private Room room;// 当前上课的教室
+	private Teacher teacher;// 当前登录的老师
+	private Course course;// 当前课程
+	private Map<String, List<String>> tables;// 保存每个课桌和课桌上已登录的pad
+	private Set<Group> groupSet;// 本堂课的分组情况
+
+	private List<Course> courseList;
+	private Map<Group, List<SocketChannel>> clientChannel;// 保存每组和已登录的socket
 	private CoreSocket coreSocket;
 
 	private Application() {
@@ -45,7 +48,23 @@ public class Application {
 		imeiList.add(imei);
 		tables.put(tableNumber, imeiList);
 	}
-	
+
+	public Set<Group> getGroupSet() {
+		return groupSet;
+	}
+
+	public void setGroupList(Set<Group> groupSet) {
+		this.groupSet = groupSet;
+	}
+
+	public List<Course> getCourseList() {
+		return courseList;
+	}
+
+	public void setCourseList(List<Course> courseList) {
+		this.courseList = courseList;
+	}
+
 	public Room getRoom() {
 		return room;
 	}

@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.incito.interclass.business.CourseService;
 import com.incito.interclass.common.BaseCtrl;
 import com.incito.interclass.entity.Course;
-test
+
 @RestController
 @RequestMapping("/course")
 public class CourseCtrl extends BaseCtrl {

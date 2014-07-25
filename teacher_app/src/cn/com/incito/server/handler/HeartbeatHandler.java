@@ -1,13 +1,12 @@
 package cn.com.incito.server.handler;
 
-import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
 
-public class HeartbeatHandler implements MessageHandler {
+public class HeartbeatHandler extends MessageHandler {
 
 	 
 	@Override
-	public void handleMessage(Message msg) {
+	public void handleMessage() {
 		System.out.println("收到心跳消息");
 	}
 

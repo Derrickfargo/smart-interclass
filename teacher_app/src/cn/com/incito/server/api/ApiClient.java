@@ -248,11 +248,20 @@ public class ApiClient {
 		}
 	}
 	
+	/**
+	 * 注册学生走这个api
+	 * @param name
+	 * @param sex
+	 * @param number
+	 * @param imei
+	 * @return
+	 * @throws AppException
+	 */
 	public static String loginForStudent(String name,int sex ,String number,String imei) throws AppException{
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("name", imei);
-		params.put("sex", imei);
-		params.put("number", imei);
+		params.put("name", name);
+		params.put("sex", sex);
+		params.put("number", number);
 		params.put("imei", imei);
 		try {
 			return _post(URLs.URL_STUDENT_LOGIN, params, null);

@@ -4,12 +4,14 @@ import java.util.List;
 
 import com.incito.interclass.entity.Classes;
 import com.incito.interclass.entity.Course;
+import com.incito.interclass.entity.Group;
 import com.incito.interclass.entity.Room;
 import com.incito.interclass.entity.Teacher;
 
 public class TeacherLoginResultData implements IApiResultData {
 	private Teacher teacher;
 	private Room room;
+	private List<Group> groupList;
 	private List<Course> courses;
 	private List<Classes> classes;
 
@@ -27,6 +29,14 @@ public class TeacherLoginResultData implements IApiResultData {
 
 	public void setRoom(Room room) {
 		this.room = room;
+	}
+
+	public List<Group> getGroupList() {
+		return groupList;
+	}
+
+	public void setGroupList(List<Group> groupList) {
+		this.groupList = groupList;
 	}
 
 	public List<Course> getCourses() {
