@@ -26,7 +26,6 @@ import cn.com.incito.socket.utils.BufferUtils;
 public final class CoreSocket extends Thread {
     private static CoreSocket instance = null;
 
-    private boolean isConnection;
     private Selector selector;
     private SocketChannel channel;
 
@@ -37,7 +36,7 @@ public final class CoreSocket extends Thread {
         return instance;
     }
     private CoreSocket(){
-        getInstance().start();
+        
     }
     private void handle(SelectionKey selectionKey) throws IOException {
         if (selectionKey.isConnectable()) {//连接建立事件，已成功连接至服务器
@@ -45,9 +44,9 @@ public final class CoreSocket extends Thread {
             if (channel.isConnectionPending()) {
                 channel.finishConnect();
                 //发送握手消息
-                byte[] loginData = getHandShakeMessage();
-                ByteBuffer buffer = ByteBuffer.allocate(loginData.length);
-                buffer.put(loginData);
+                byte[] handSharkData = getHandShakeMessage();
+                ByteBuffer buffer = ByteBuffer.allocate(handSharkData.length);
+                buffer.put(handSharkData);
                 buffer.flip();
                 channel.write(buffer);// 发送握手消息至服务器
             }
@@ -70,16 +69,21 @@ public final class CoreSocket extends Thread {
      *
      * @param packing
      */
-    public void sendMessage(MessagePacking packing) {
-        byte[] message = packing.pack().array();
-        ByteBuffer buffer = ByteBuffer.allocate(message.length);
-        buffer.put(message);
-        buffer.flip();
-        try {
-                channel.write(buffer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void sendMessage(final MessagePacking packing) {
+    	new Thread(){
+    		public void run() {
+    			byte[] message = packing.pack().array();
+    	        ByteBuffer buffer = ByteBuffer.allocate(message.length);
+    	        buffer.put(message);
+    	        buffer.flip();
+    	        try {
+    	                channel.write(buffer);
+    	        } catch (IOException e) {
+    	            e.printStackTrace();
+    	        }
+    		}
+    	}.start();
+        
     }
 
 
