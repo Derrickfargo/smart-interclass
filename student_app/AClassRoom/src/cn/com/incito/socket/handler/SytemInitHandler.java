@@ -17,7 +17,7 @@ import cn.com.incito.socket.utils.BufferUtils;
  *
  * @author 刘世平
  */
-public class LoginHandler implements MessageHandler {
+public class SytemInitHandler implements MessageHandler {
 
     @Override
     public void handleMessage(Message msg) {
@@ -36,7 +36,7 @@ public class LoginHandler implements MessageHandler {
             LoginResVo loginResVo = jsonObject.getObject("data", LoginResVo.class);
             ((MyApplication) TAApplication.getApplication()).setLoginResVo(loginResVo);
         }
-        System.out.println("收到登陆消息:" + json);
+        System.out.println("收到分组消息:" + json);
     }
 
 }

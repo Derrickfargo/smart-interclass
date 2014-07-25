@@ -2,6 +2,7 @@ package cn.com.incito.classroom.ui.activity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -19,7 +20,9 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.alibaba.fastjson.JSON;
 import com.popoy.annotation.TAInjectView;
+import com.popoy.common.TAApplication;
 import com.popoy.tookit.helper.ToastHelper;
 
 import java.util.ArrayList;
@@ -28,7 +31,15 @@ import java.util.List;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.adapter.GroupNumAdapter;
 import cn.com.incito.classroom.base.BaseActivity;
+import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.vo.GroupNumberRes2Vo;
+import cn.com.incito.classroom.vo.LoginReqVo;
+import cn.com.incito.classroom.vo.LoginRes2Vo;
+import cn.com.incito.socket.core.CoreSocket;
+import cn.com.incito.socket.core.Message;
+import cn.com.incito.socket.message.DataType;
+import cn.com.incito.socket.message.MessagePacking;
+import cn.com.incito.socket.utils.BufferUtils;
 
 /**
  * 用户其启动界面
@@ -57,7 +68,7 @@ public class WaitingActivity extends BaseActivity {
     LinearLayout llayout1;
     @TAInjectView(id = R.id.llayout2)
     LinearLayout llayout2;
-    List<GroupNumberRes2Vo> list;
+    List<LoginRes2Vo> list;
     GroupNumAdapter mAdapter;
     TranslateAnimation mShowAction;
     TranslateAnimation mHiddenAction;
@@ -92,10 +103,10 @@ public class WaitingActivity extends BaseActivity {
                     addState = 1;
                 } else {
                     if (checkNameRepeat()) {
-                        GroupNumberRes2Vo groupNumberListRes = new GroupNumberRes2Vo();
-                        groupNumberListRes.setMembergender(male.isChecked() ? "1" : "2");
-                        groupNumberListRes.setMembername(et_stname.getText().toString());
-                        groupNumberListRes.setMembernumber(et_stnumber.getText().toString());
+                        LoginRes2Vo groupNumberListRes = new LoginRes2Vo();
+                        groupNumberListRes.setSex(male.isChecked() ? "1" : "2");
+                        groupNumberListRes.setName(et_stname.getText().toString());
+                        groupNumberListRes.setNumber(et_stnumber.getText().toString());
                         list.add(groupNumberListRes);
                         imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
                         llayout1.setVisibility(View.GONE);
@@ -128,23 +139,23 @@ public class WaitingActivity extends BaseActivity {
             }
         });
 //        gv_group_member.setSelector(R.drawable.selector_groupnumber);
-        list = new ArrayList<GroupNumberRes2Vo>();
-        GroupNumberRes2Vo groupNumberListRes = new GroupNumberRes2Vo();
-        groupNumberListRes.setMembergender("1");
-        groupNumberListRes.setMembername("lisan");
-        groupNumberListRes.setMembernumber("111");
+        list = new ArrayList<LoginRes2Vo>();
+        LoginRes2Vo groupNumberListRes = new LoginRes2Vo();
+        groupNumberListRes.setSex("1");
+        groupNumberListRes.setName("lisan");
+        groupNumberListRes.setNumber("111");
         list.add(groupNumberListRes);
         mAdapter = new GroupNumAdapter(this, list);
         gv_group_member.setAdapter(mAdapter);
         gv_group_member.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                if (!list.get(position).isLogon()) {
-                    list.get(position).setLogon(true);
-                    login();
+                if (list.get(position).getIslogin() == "1") {
+                    list.get(position).setIslogin("0");
+                    login(list.get(position).getName(), list.get(position).getNumber(), list.get(position).getSex());
                 } else {
-                    list.get(position).setLogon(false);
-                    logout();
+                    list.get(position).setIslogin("1");
+                    logout(list.get(position).getName(), list.get(position).getNumber(), list.get(position).getSex());
                 }
                 mAdapter.notifyDataSetChanged();
             }
@@ -166,16 +177,34 @@ public class WaitingActivity extends BaseActivity {
     /**
      * 与后台服务建立连接，并实现登陆
      */
-    private void login() {
-//        CoreSocket.getInstance().startConnection();
+    private void login(String name, String number, String sex) {
+        LoginReqVo loginReqVo = new LoginReqVo();
+        loginReqVo.setImei(MyApplication.deviceId);
+        loginReqVo.setName(name);
+        loginReqVo.setNumber(number);
+        loginReqVo.setSex(sex);
+        loginReqVo.setType("0");
+        String json = JSON.toJSONString(loginReqVo);
+        MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
+        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
+        CoreSocket.getInstance().sendMessage(messagePacking);
 
     }
 
     /**
      * 取消登陆
      */
-    private void logout() {
-
+    private void logout(String name, String number, String sex) {
+        LoginReqVo loginReqVo = new LoginReqVo();
+        loginReqVo.setImei(MyApplication.deviceId);
+        loginReqVo.setName(name);
+        loginReqVo.setNumber(number);
+        loginReqVo.setSex(sex);
+        loginReqVo.setType("0");
+        String json = JSON.toJSONString(loginReqVo);
+        MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
+        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
+        CoreSocket.getInstance().sendMessage(messagePacking);
     }
 
     /**
@@ -196,7 +225,7 @@ public class WaitingActivity extends BaseActivity {
             return false;
         }
         for (int i = 0; i < list.size(); i++) {
-            if (stName.equals(list.get(i).getMembername()) || stNumber.equals(list.get(i).getMembernumber())) {
+            if (stName.equals(list.get(i).getName()) || stNumber.equals(list.get(i).getNumber())) {
                 ToastHelper.showCustomToast(getApplicationContext(), R.string.toast_stname_repeat);
                 return false;
             }

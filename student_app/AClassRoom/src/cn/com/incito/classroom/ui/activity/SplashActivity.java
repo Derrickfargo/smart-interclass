@@ -7,10 +7,12 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
+
 import cn.com.incito.classroom.Canvas1Activity;
 import cn.com.incito.classroom.Canvas2Activity;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
+import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.transition.SocketMinaClient;
 import cn.com.incito.classroom.vo.LoginReqVo;
 import cn.com.incito.socket.core.CoreSocket;
@@ -55,7 +57,7 @@ public class SplashActivity extends BaseActivity {
 
             @Override
             public void onAnimationStart(Animation animation) {
-                
+
             }
         });
     }
@@ -88,21 +90,20 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void startMain() {
-    	init();
+        init();
         doActivity(R.string.waitingactivity);
     }
 
     void init() {
-        TelephonyManager tm = (TelephonyManager) TAApplication.getApplication().getSystemService(Context.TELEPHONY_SERVICE);
-        SocketMinaClient socketMinaClient = new SocketMinaClient();
-        LoginReqVo loginReqVo =new LoginReqVo();
-        loginReqVo.setImei(tm.getDeviceId());
+//        SocketMinaClient socketMinaClient = new SocketMinaClient();
+        LoginReqVo loginReqVo = new LoginReqVo();
+        loginReqVo.setImei(MyApplication.deviceId);
         loginReqVo.setName("liubo");
         loginReqVo.setNumber("111");
         loginReqVo.setSex("1");
         String json = JSON.toJSONString(loginReqVo);
 
-        MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
+        MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_LIST);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
         CoreSocket.getInstance().sendMessage(messagePacking);
 //        socketMinaClient.sendMessage(messagePacking);
