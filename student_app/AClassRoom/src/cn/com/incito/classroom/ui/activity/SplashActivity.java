@@ -1,8 +1,5 @@
 package cn.com.incito.classroom.ui.activity;
 
-import com.alibaba.fastjson.JSON;
-import com.popoy.common.TAApplication;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
@@ -10,13 +7,20 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
-
 import cn.com.incito.classroom.Canvas1Activity;
 import cn.com.incito.classroom.Canvas2Activity;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
-import cn.com.incito.classroom.vo.LoginReqVo;
 import cn.com.incito.classroom.transition.SocketMinaClient;
+import cn.com.incito.classroom.vo.LoginReqVo;
+import cn.com.incito.socket.core.CoreSocket;
+import cn.com.incito.socket.core.Message;
+import cn.com.incito.socket.message.DataType;
+import cn.com.incito.socket.message.MessagePacking;
+import cn.com.incito.socket.utils.BufferUtils;
+
+import com.alibaba.fastjson.JSON;
+import com.popoy.common.TAApplication;
 
 /**
  * @author 白猫
@@ -51,7 +55,7 @@ public class SplashActivity extends BaseActivity {
 
             @Override
             public void onAnimationStart(Animation animation) {
-                init();
+                
             }
         });
     }
@@ -84,6 +88,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void startMain() {
+    	init();
         doActivity(R.string.waitingactivity);
     }
 
@@ -97,9 +102,9 @@ public class SplashActivity extends BaseActivity {
         loginReqVo.setSex("1");
         String json = JSON.toJSONString(loginReqVo);
 
-//        MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
-//        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
-////        CoreSocket.getInstance().sendMessage(messagePacking);
+        MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
+        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
+        CoreSocket.getInstance().sendMessage(messagePacking);
 //        socketMinaClient.sendMessage(messagePacking);
 //        socketMinaClient.getSocketConnector().dispose();
     }

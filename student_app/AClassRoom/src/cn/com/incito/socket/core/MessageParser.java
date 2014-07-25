@@ -55,6 +55,10 @@ public class MessageParser {
 		if (parseFakeId(headerBuffer)) {
 			// 获取消息头中有用的信息,msgId,msgSize
 			parseMsgHeader(headerBuffer);
+			if(message.getMsgID() == Message.MESSAGE_HAND_SHAKE){
+				System.out.println("收到握手回复消息");
+				return;
+			}
 			// 解析消息体和命令
 			if (parseMsgBody()) {
 				// 执行消息命令
