@@ -27,6 +27,7 @@ import java.util.List;
 
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.vo.GroupNumberRes2Vo;
+import cn.com.incito.classroom.vo.LoginRes2Vo;
 // TODO: Auto-generated Javadoc
 
 /**
@@ -48,7 +49,7 @@ public class GroupNumAdapter extends BaseAdapter {
     /**
      * The m views.
      */
-    private List<GroupNumberRes2Vo> datas;
+    private List<LoginRes2Vo> datas;
 
     /**
      * The m reflected.
@@ -63,7 +64,7 @@ public class GroupNumAdapter extends BaseAdapter {
      * @param context the c
      * @param datas   the views
      */
-    public GroupNumAdapter(Context context, List<GroupNumberRes2Vo> datas) {
+    public GroupNumAdapter(Context context, List<LoginRes2Vo> datas) {
         this.mContext = context;
         this.datas = datas;
         mInflater = (LayoutInflater) context
@@ -139,12 +140,12 @@ public class GroupNumAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        if (datas.get(position).isLogon()) {
+        if (datas.get(position).getIslogin() == "0") {
             holder.rlayout.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.bg_logged_user_m));
         } else {
             holder.rlayout.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.bg_not_logged_user_m));
         }
-        holder.tv_num_name.setText(datas.get(position).getMembername());
+        holder.tv_num_name.setText(datas.get(position).getName());
         return convertView;
     }
 

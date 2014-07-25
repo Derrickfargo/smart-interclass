@@ -25,7 +25,7 @@ import cn.com.incito.socket.utils.BufferUtils;
  */
 public final class CoreSocket extends Thread {
     private static CoreSocket instance = null;
-
+    TelephonyManager tm;
     private Selector selector;
     private SocketChannel channel;
 
@@ -35,9 +35,11 @@ public final class CoreSocket extends Thread {
         }
         return instance;
     }
-    private CoreSocket(){
-        
+
+    private CoreSocket() {
+
     }
+
     private void handle(SelectionKey selectionKey) throws IOException {
         if (selectionKey.isConnectable()) {//连接建立事件，已成功连接至服务器
             channel = (SocketChannel) selectionKey.channel();
@@ -59,7 +61,7 @@ public final class CoreSocket extends Thread {
 
     private byte[] getHandShakeMessage() {
         MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_HAND_SHAKE);
-        TelephonyManager tm = (TelephonyManager) TAApplication.getApplication().getSystemService(Context.TELEPHONY_SERVICE);
+        tm = (TelephonyManager) TAApplication.getApplication().getSystemService(Context.TELEPHONY_SERVICE);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(tm.getDeviceId()));
         return messagePacking.pack().array();
     }
@@ -70,20 +72,20 @@ public final class CoreSocket extends Thread {
      * @param packing
      */
     public void sendMessage(final MessagePacking packing) {
-    	new Thread(){
-    		public void run() {
-    			byte[] message = packing.pack().array();
-    	        ByteBuffer buffer = ByteBuffer.allocate(message.length);
-    	        buffer.put(message);
-    	        buffer.flip();
-    	        try {
-    	                channel.write(buffer);
-    	        } catch (IOException e) {
-    	            e.printStackTrace();
-    	        }
-    		}
-    	}.start();
-        
+        new Thread() {
+            public void run() {
+                byte[] message = packing.pack().array();
+                ByteBuffer buffer = ByteBuffer.allocate(message.length);
+                buffer.put(message);
+                buffer.flip();
+                try {
+                    channel.write(buffer);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+
     }
 
 

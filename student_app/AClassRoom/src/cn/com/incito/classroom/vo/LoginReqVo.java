@@ -8,6 +8,7 @@ public class LoginReqVo {
     private String number;
     private String sex;
     private String imei;
+    private String type;
 
     public String getName() {
         return name;
@@ -39,5 +40,13 @@ public class LoginReqVo {
 
     public void setImei(String imei) {
         this.imei = imei;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
