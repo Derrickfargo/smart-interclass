@@ -14,9 +14,19 @@
 		ORDER BY
 			id
 	</select>
-
 	
-	<insert id="save" parameterType="Classes" useGeneratedKeys="true" keyProperty="id">
+	<select id="getClassById" resultType="com.incito.interclass.entity.Classes" parameterType="java.lang.Integer">
+		SELECT	
+			id,name,year,school_id AS schoolId,teacher_id AS teacherId,ctime
+		FROM 
+			tb_class
+		WHERE
+			id = #{id}
+		ORDER BY
+			id
+	</select>
+	
+	<insert id="save" parameterType="com.incito.interclass.entity.Classes" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO 
 			tb_class(name,year,school_id,teacher_id,ctime)
 		VALUES

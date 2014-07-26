@@ -12,6 +12,17 @@
 			id
 	</select>
 
+	<select id="getCourseById" resultType="com.incito.interclass.entity.Course" parameterType="java.lang.Integer">
+		SELECT	
+			id,sum,name,intro,ctime
+		FROM 
+			tb_course
+		WHERE
+			tb_course.id = #{id}
+		ORDER BY
+			id
+	</select>
+	
 	<insert id="save" parameterType="com.incito.interclass.entity.Course" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO 
 			tb_course(sum,name,intro,ctime)

@@ -18,31 +18,44 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import cn.com.incito.interclass.po.Classes;
 import cn.com.incito.interclass.po.Course;
+import cn.com.incito.interclass.ui.widget.Item;
+import cn.com.incito.server.api.ApiClient;
 import cn.com.incito.server.api.Application;
+import cn.com.incito.server.api.result.TeacherGroupResultData;
+import cn.com.incito.server.core.AppException;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 public class Login2 extends MouseAdapter{
 
-	private JFrame frame;
+	private JFrame frame= new JFrame();
 	private Boolean isDragged;
 	private Point loc, tmp;
 	private JLabel lblClass, lblCourse;
-	private JComboBox<String> jcbClass, jcbCourse;
+	private JComboBox<Item> jcbClass, jcbCourse;
 	private JButton btnMin, btnClose, btnLogin;
 	private JLabel lblBackground;
-	
-	
+	private Application app = Application.getInstance();
+	private List<Classes> classList;
+	public JFrame getFrame() {
+		return frame;
+	}
+
 	//构造函数、调用方法
-	public Login2(){
+	public Login2(List<Classes> classList){
+		this.classList = classList;
 		showLoginUI();
 		setDragable();
 	}
 	
 	//显示登陆界面
-	public void showLoginUI(){
-		frame = new JFrame();
+	private void showLoginUI(){
 		frame.setSize(460,290);
 		frame.setDefaultCloseOperation(3);
 		frame.setLocationRelativeTo(null);//设置窗体中间位置
@@ -83,7 +96,7 @@ public class Login2 extends MouseAdapter{
 		lblClass.setText("请选择班级:");
 		lblClass.setBounds(60, 65, 265, 35);
 		frame.add(lblClass);
-		jcbClass = new JComboBox<String>();
+		jcbClass = new JComboBox<Item>();
 		jcbClass.setBounds(140, 65, 265, 35);//设定位置
 		jcbClass.setEditable(true);
 		frame.add(jcbClass);//添加到界面
@@ -92,7 +105,7 @@ public class Login2 extends MouseAdapter{
 		lblCourse.setText("请选择课程:");
 		lblCourse.setBounds(60, 115, 265, 35);
 		frame.add(lblCourse);
-		jcbCourse = new JComboBox<String>();
+		jcbCourse = new JComboBox<Item>();
 		jcbCourse.setBounds(140, 115, 265, 35);
 		frame.add(jcbCourse);
 				
@@ -110,21 +123,25 @@ public class Login2 extends MouseAdapter{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				doLogin();
+				doGetGroup();
 			}
 		});
 		initData();
 		setBgimg();//设置背景
-		frame.setVisible(true);
 	}
 	
 	private void initData() {
-		Application app = Application.getInstance();
 		List<Course> courseList = app.getCourseList();
 		for (Course course : courseList) {
-			jcbCourse.addItem(course.getName());
+			Item item = new Item(course.getId(), course.getName());
+			jcbCourse.addItem(item);
+		}
+		for(Classes classes : classList){
+			Item item = new Item(classes.getId(), classes.getName());
+			jcbClass.addItem(item);
 		}
 	}
+	
 	//拖动窗体的方法
 	private void setDragable(){
 		frame.addMouseListener(new MouseAdapter() {
@@ -222,9 +239,52 @@ public class Login2 extends MouseAdapter{
 		}
 	}
 	
-	private void doLogin() {
-		frame.setVisible(false);
-		MainFrame.getInstance().setVisible(true);
+	private void doGetGroup() {
+		int schoolId = app.getTeacher().getSchoolId();
+		int roomId = app.getRoom().getId();
+		int teacherId = app.getTeacher().getId();
+		Item course = (Item)jcbCourse.getSelectedItem();
+		int courseId = course.getKey();
+		Object aItem = jcbClass.getSelectedItem();
+		int classId = 0;
+		String className = new String();
+		if (aItem instanceof Item) {
+			Item item = (Item) aItem;
+			classId = item.getKey();
+			className = item.getValue();
+		} else {
+			className = (String)aItem;
+		}
+		if (classId == 0 && className.trim().equals("")) {
+			JOptionPane.showMessageDialog(frame, "请输入班级!");
+			return;
+		}
+		try {
+			final String result = ApiClient.getGroupList(schoolId, roomId, teacherId,courseId,classId,className);
+			if (result != null && !result.equals("")) {
+				JSONObject jsonObject = JSON.parseObject(result);
+				if(jsonObject.getIntValue("code") == 2){
+					JOptionPane.showMessageDialog(frame, "保存班级出现错误!");
+					return;
+				}
+				String data = jsonObject.getString("data");
+				TeacherGroupResultData resultData = JSON.parseObject(data,TeacherGroupResultData.class);
+				
+				frame.setVisible(false);
+				//当前课堂的分组情况
+				if(resultData.getGroups() != null || resultData.getGroups().size() != 0){
+					Application.getInstance().getGroupSet().addAll(resultData.getGroups());
+				}
+				//当前教室的课桌情况
+				Application.getInstance().setTableList(resultData.getTables());
+				Application.getInstance().setCourse(resultData.getCourse());
+				
+				MainFrame.getInstance().setVisible(true);
+			}
+			System.out.println(result);
+		} catch (AppException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

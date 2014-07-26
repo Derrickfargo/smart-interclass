@@ -18,6 +18,10 @@ public class ClassService {
 		return classMapper.getClassList(teacherId, year);
 	}
 	
+	public Classes getClassById(int id) {
+		return classMapper.getClassById(id);
+	}
+	
 	public boolean saveClass(Classes classes) {
 		classMapper.save(classes);
 		return classes.getId() != 0;

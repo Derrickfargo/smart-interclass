@@ -15,6 +15,8 @@ public interface ClassMapper {
 	List<Classes> getClassList(@Param("teacherId") int teacherId,
 			@Param("year") int year);
 
+	Classes getClassById(int id);
+	
 	/**
 	 * 保存班级
 	 * 

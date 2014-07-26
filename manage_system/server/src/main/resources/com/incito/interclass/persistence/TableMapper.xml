@@ -11,6 +11,17 @@
 		ORDER BY
 			id
 	</select>
+	
+	<select id="getTableListByRoomId" resultType="com.incito.interclass.entity.Table" parameterType="java.lang.Integer">
+		SELECT	
+			id,room_id, number,ctime
+		FROM 
+			tb_table
+		WHERE
+			tb_table.room_id = #{roomId}
+		ORDER BY
+			number
+	</select>
 
 	<insert id="save" parameterType="com.incito.interclass.entity.Table" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO 

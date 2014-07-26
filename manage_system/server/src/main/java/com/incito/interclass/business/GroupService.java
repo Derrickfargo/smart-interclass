@@ -10,7 +10,6 @@ import com.incito.base.exception.AppException;
 import com.incito.interclass.entity.Group;
 import com.incito.interclass.entity.StudentGroup;
 import com.incito.interclass.persistence.GroupMapper;
-import com.incito.interclass.persistence.UserMapper;
 
 @Service
 public class GroupService {

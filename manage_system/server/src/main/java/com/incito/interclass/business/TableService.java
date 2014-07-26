@@ -24,6 +24,10 @@ public class TableService {
 		return tableMapper.getTableList();
 	}
 
+	public List<Table> getTableListByRoomId(int roomId){
+		return tableMapper.getTableListByRoomId(roomId);
+	}
+	
 	public boolean saveTable(Table table) {
 		int id = (Integer) tableMapper.save(table);
 		return id != 0;

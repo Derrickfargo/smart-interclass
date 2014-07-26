@@ -13,7 +13,12 @@ public class URLs {
 	public final static String URL_TEACHER_LOGIN = URL_API_HOST + "api/teacher/login";
 	
 	/**
-	 * 学生登陆
+	 * 获取分组
+	 */
+	public final static String URL_TEACHER_GROUP = URL_API_HOST + "api/teacher/group";
+	
+	/**
+	 * 学生注册
 	 */
 	public final static String URL_STUDENT_LOGIN = URL_API_HOST + "api/student/login";
 }

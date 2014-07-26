@@ -91,9 +91,9 @@ public class Login extends MouseAdapter{
 		 * 中部
 		 */
 		//LOGO
-		JButton headb = new JButton();//创建按钮对象
-		headb.setBorderPainted(false);//设置边框不可见
-		headb.setContentAreaFilled(false);//设置透明
+		JLabel headb = new JLabel();//创建按钮对象
+//		headb.setBorderPainted(false);//设置边框不可见
+//		headb.setContentAreaFilled(false);//设置透明
 		ImageIcon  icmr = new ImageIcon("images/login/logo.png");
 		headb.setIcon(icmr);//设置图片
 		frame.add(headb);//添加按钮
@@ -253,8 +253,8 @@ public class Login extends MouseAdapter{
 				Application.getInstance().setRoom(resultData.getRoom());
 				Application.getInstance().setTeacher(resultData.getTeacher());
 				Application.getInstance().setCourseList(resultData.getCourses());
-				Login2 login2 = new Login2();
-				login2.showLoginUI();
+				Login2 login2 = new Login2(resultData.getClasses());
+				login2.getFrame().setVisible(true);
 			}
 			System.out.println(result);
 		} catch (AppException e) {

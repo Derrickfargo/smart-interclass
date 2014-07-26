@@ -21,7 +21,7 @@
 
 	<select id="loginForTeacher" resultType="com.incito.interclass.entity.Teacher" parameterType="com.incito.interclass.entity.Teacher">
 		SELECT	
-			tb_user.* ,tb_teacher.*
+			tb_user.* ,tb_teacher.*,tb_teacher.school_id AS schoolId
 		FROM 
 			tb_user
 		LEFT JOIN 

@@ -5,7 +5,8 @@
 	<select id="getGroupList" resultType="com.incito.interclass.entity.Group" parameterType="java.util.Map">
 		SELECT	
 			tb_group.id,tb_group.name,tb_group.logo,tb_group.slogan,
-			tb_user.name AS teacherName
+			tb_group.course_id AS courseId,tb_group.teacher_id AS teacherId,
+			tb_group.class_id AS classId,tb_group.table_id AS tableId
 		FROM 
 			tb_group
 		INNER JOIN 
@@ -26,7 +27,9 @@
 
 	<select id="getGroupByIMEI" resultType="com.incito.interclass.entity.Group" parameterType="java.util.Map">
 		SELECT	
-			tb_group.id,tb_group.name,tb_group.logo,tb_group.slogan
+			tb_group.id,tb_group.name,tb_group.logo,tb_group.slogan,
+			tb_group.course_id AS courseId,tb_group.teacher_id AS teacherId,
+			tb_group.class_id AS classId,tb_group.table_id AS tableId
 		FROM 
 			tb_group
 		INNER JOIN 

@@ -22,6 +22,10 @@ public class CourseService {
 		return courseMapper.getCourseList();
 	}
 	
+	public Course getCourseById(int id){
+		return courseMapper.getCourseById(id);
+	}
+	
 	public boolean saveCourse(Course course) {
 		int id = (Integer) courseMapper.save(course);
 		return id != 0;
