@@ -26,7 +26,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import cn.com.incito.classroom.R;
-import cn.com.incito.classroom.vo.LoginRes2Vo;
 
 /**
  * © 2012 amsoft.cn
@@ -37,7 +36,7 @@ import cn.com.incito.classroom.vo.LoginRes2Vo;
  * @version v1.0
  * @date：2013-8-22 下午4:05:09
  */
-public class GroupNumAdapter extends BaseAdapter {
+public class DeskNumberAdapter extends BaseAdapter {
 
     /**
      * The m context.
@@ -47,7 +46,7 @@ public class GroupNumAdapter extends BaseAdapter {
     /**
      * The m views.
      */
-    private List<LoginRes2Vo> datas;
+    private List<String> datas;
 
     /**
      * The m reflected.
@@ -62,7 +61,7 @@ public class GroupNumAdapter extends BaseAdapter {
      * @param context the c
      * @param datas   the views
      */
-    public GroupNumAdapter(Context context, List<LoginRes2Vo> datas) {
+    public DeskNumberAdapter(Context context, List<String> datas) {
         this.mContext = context;
         this.datas = datas;
         mInflater = (LayoutInflater) context
@@ -114,7 +113,7 @@ public class GroupNumAdapter extends BaseAdapter {
     }
 
     /**
-     * 描述：TODO.
+     * 描述：TODO
      *
      * @param position    the position
      * @param convertView the convert view
@@ -130,7 +129,7 @@ public class GroupNumAdapter extends BaseAdapter {
         final ViewHolder holder;
         if (convertView == null) {
             convertView = mInflater.inflate(
-                    R.layout.item_group_mem, parent, false);
+                    R.layout.item_desk_number, parent, false);
             holder = new ViewHolder();
             holder.tv_num_name = (TextView) convertView.findViewById(R.id.tv_num_name);
             holder.rlayout = (RelativeLayout) convertView.findViewById(R.id.rlayout);
@@ -138,12 +137,7 @@ public class GroupNumAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        if (datas.get(position).getIslogin() == "0") {
-            holder.rlayout.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.bg_logged_user_m));
-        } else {
-            holder.rlayout.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.bg_not_logged_user_m));
-        }
-        holder.tv_num_name.setText(datas.get(position).getName());
+        holder.tv_num_name.setText(datas.get(position));
         return convertView;
     }
 

@@ -7,5 +7,6 @@
     <string name="clientactivity">ClientActivity</string>
     <string name="wifilistactivity">WifiListActivity</string>
     <string name="waitingactivity">WaitingActivity</string>
+    <string name="binddeskactivity">BindDeskActivity</string>
 
 </resources>

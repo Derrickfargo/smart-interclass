@@ -1,8 +1,6 @@
 package cn.com.incito.classroom.ui.activity;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -13,16 +11,18 @@ import cn.com.incito.classroom.Canvas2Activity;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.classroom.transition.SocketMinaClient;
-import cn.com.incito.classroom.vo.LoginReqVo;
+import cn.com.incito.classroom.vo.LoginResVo;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
+import cn.com.incito.socket.core.MessageHandler;
+import cn.com.incito.socket.handler.SytemInitHandler1;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
 
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.popoy.common.TAApplication;
+import com.popoy.tookit.helper.ToastHelper;
 
 /**
  * @author 白猫
@@ -34,12 +34,14 @@ import com.popoy.common.TAApplication;
  */
 public class SplashActivity extends BaseActivity {
     private static final String SYSTEMCACHE = "adream";
+    private SytemInitHandler1 handler;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final View view = View.inflate(this, R.layout.splash, null);
         setContentView(view);
+        handler = new SytemInitHandler1();
 //		渐变展示启动屏
 
         AlphaAnimation aa = new AlphaAnimation(0.5f, 1.0f);
@@ -80,6 +82,8 @@ public class SplashActivity extends BaseActivity {
                 Canvas2Activity.class);
         getTAApplication().registerActivity(R.string.waitingactivity,
                 WaitingActivity.class);
+        getTAApplication().registerActivity(R.string.waitingactivity,
+                WaitingActivity.class);
 
     }
 
@@ -94,19 +98,46 @@ public class SplashActivity extends BaseActivity {
         doActivity(R.string.waitingactivity);
     }
 
+    //    void init() {
+////        SocketMinaClient socketMinaClient = new SocketMinaClient();
+//        LoginReqVo loginReqVo = new LoginReqVo();
+//        loginReqVo.setImei(MyApplication.deviceId);
+//        loginReqVo.setName("liubo");
+//        loginReqVo.setNumber("111");
+//        loginReqVo.setSex("1");
+//        String json = JSON.toJSONString(loginReqVo);
+//
+//        MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_LIST);
+//        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
+//        CoreSocket.getInstance().sendMessage(messagePacking);
+////        socketMinaClient.sendMessage(messagePacking);
+////        socketMinaClient.getSocketConnector().dispose();
+//    }
     void init() {
 //        SocketMinaClient socketMinaClient = new SocketMinaClient();
-        LoginReqVo loginReqVo = new LoginReqVo();
-        loginReqVo.setImei(MyApplication.deviceId);
-        loginReqVo.setName("liubo");
-        loginReqVo.setNumber("111");
-        loginReqVo.setSex("1");
-        String json = JSON.toJSONString(loginReqVo);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("imei", MyApplication.deviceId);
 
         MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_LIST);
-        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
+        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
         CoreSocket.getInstance().sendMessage(messagePacking);
 //        socketMinaClient.sendMessage(messagePacking);
 //        socketMinaClient.getSocketConnector().dispose();
+    }
+
+    public class SystemInitHandler extends MessageHandler {
+
+        @Override
+        protected void handleMessage() {
+            System.out.println("收到获取分组回复消息:" + data);
+
+            String code = data.getString("code");
+            if ("0".equals(code)) {
+                LoginResVo loginResVo = data.getObject("data", LoginResVo.class);
+                ((MyApplication) TAApplication.getApplication()).setLoginResVo(loginResVo);
+            } else {
+                ToastHelper.showCustomToast(SplashActivity.this, "test");
+            }
+        }
     }
 }

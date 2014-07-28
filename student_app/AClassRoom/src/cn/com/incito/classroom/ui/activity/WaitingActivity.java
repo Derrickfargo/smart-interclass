@@ -2,7 +2,6 @@ package cn.com.incito.classroom.ui.activity;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -21,8 +20,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.popoy.annotation.TAInjectView;
 import com.popoy.common.TAApplication;
+import com.popoy.common.core.AsyncTask;
 import com.popoy.tookit.helper.ToastHelper;
 
 import java.util.ArrayList;
@@ -32,7 +33,6 @@ import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.adapter.GroupNumAdapter;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.classroom.vo.GroupNumberRes2Vo;
 import cn.com.incito.classroom.vo.LoginReqVo;
 import cn.com.incito.classroom.vo.LoginRes2Vo;
 import cn.com.incito.socket.core.CoreSocket;
@@ -111,6 +111,7 @@ public class WaitingActivity extends BaseActivity {
                         imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
                         llayout1.setVisibility(View.GONE);
                         addState = 0;
+                        task.execute();
                     }
 
                 }
@@ -152,10 +153,10 @@ public class WaitingActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 if (list.get(position).getIslogin() == "1") {
                     list.get(position).setIslogin("0");
-                    login(list.get(position).getName(), list.get(position).getNumber(), list.get(position).getSex());
+//                    login(list.get(position).getName(), list.get(position).getNumber(), list.get(position).getSex());
                 } else {
                     list.get(position).setIslogin("1");
-                    logout(list.get(position).getName(), list.get(position).getNumber(), list.get(position).getSex());
+//                    logout(list.get(position).getName(), list.get(position).getNumber(), list.get(position).getSex());
                 }
                 mAdapter.notifyDataSetChanged();
             }
@@ -241,4 +242,27 @@ public class WaitingActivity extends BaseActivity {
         }
         return imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
     }
+
+    AsyncTask task = new AsyncTask() {
+        @Override
+        protected Object doInBackground(Object[] params) {
+            LoginReqVo loginReqVo = new LoginReqVo();
+            loginReqVo.setImei(MyApplication.deviceId);
+            loginReqVo.setName("liubo");
+            loginReqVo.setNumber("111");
+            loginReqVo.setSex("1");
+            loginReqVo.setType("2");
+            String json = JSON.toJSONString(loginReqVo);
+
+            MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
+            messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
+            CoreSocket.getInstance().sendMessage(messagePacking);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+        }
+    };
 }
