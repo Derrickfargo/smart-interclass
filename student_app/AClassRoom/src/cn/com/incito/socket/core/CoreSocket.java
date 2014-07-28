@@ -3,6 +3,7 @@ package cn.com.incito.socket.core;
 import android.content.Context;
 import android.telephony.TelephonyManager;
 
+import com.alibaba.fastjson.JSONObject;
 import com.popoy.common.TAApplication;
 
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.Set;
 
+import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constant;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
@@ -25,7 +27,6 @@ import cn.com.incito.socket.utils.BufferUtils;
  */
 public final class CoreSocket extends Thread {
     private static CoreSocket instance = null;
-    TelephonyManager tm;
     private Selector selector;
     private SocketChannel channel;
 
@@ -61,8 +62,9 @@ public final class CoreSocket extends Thread {
 
     private byte[] getHandShakeMessage() {
         MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_HAND_SHAKE);
-        tm = (TelephonyManager) TAApplication.getApplication().getSystemService(Context.TELEPHONY_SERVICE);
-        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(tm.getDeviceId()));
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("imei", MyApplication.deviceId);
+        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
         return messagePacking.pack().array();
     }
 

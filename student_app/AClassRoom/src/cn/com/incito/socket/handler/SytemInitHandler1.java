@@ -11,7 +11,7 @@ import com.popoy.common.TAApplication;
  *
  * @author 刘世平
  */
-public class SytemInitHandler extends MessageHandler {
+public class SytemInitHandler1 extends MessageHandler {
 
     @Override
     public void handleMessage() {
@@ -21,6 +21,8 @@ public class SytemInitHandler extends MessageHandler {
         if ("0".equals(code)) {
             LoginResVo loginResVo = data.getObject("data", LoginResVo.class);
             ((MyApplication) TAApplication.getApplication()).setLoginResVo(loginResVo);
+        }else {
+
         }
     }
 
