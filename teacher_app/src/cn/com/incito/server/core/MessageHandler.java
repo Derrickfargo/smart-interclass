@@ -16,6 +16,11 @@ public abstract class MessageHandler {
 	
 	protected Message message;
 	protected JSONObject data;
+	protected CoreService service;
+	
+	public MessageHandler() {
+		service = new CoreService();
+	}
 	
 	/**
 	 * 消息对应的处理器 存放消息对应的处理逻辑，在消息分发时使用

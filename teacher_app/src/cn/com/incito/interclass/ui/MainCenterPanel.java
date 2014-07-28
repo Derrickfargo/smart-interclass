@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Stroke;
+import java.util.Collections;
+import java.util.List;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -13,6 +15,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import cn.com.incito.interclass.po.Group;
+import cn.com.incito.interclass.po.Table;
+import cn.com.incito.server.api.Application;
 
 public class MainCenterPanel extends JPanel {
 
@@ -25,7 +29,23 @@ public class MainCenterPanel extends JPanel {
 //		this.setSize(878, 620);
 		this.setLayout(null);
 		this.setOpaque(false);
+		initView();
+	}
 
+	private void initView(){
+		Application app = Application.getInstance();
+		List<Group> groupList = app.getGroupList();
+		if (groupList == null || groupList.size() == 0) {
+			List<Table> tableList = app.getTableList();
+		} else {
+			Collections.sort(groupList);
+			for (Group group : groupList) {
+				
+			}
+		}
+		
+		
+		//TODO 以下代码为测试代码
 		int x = 20;
 		for (int i = 0; i < 8; i++) {
 			JPanel pnlTable1 = createTable(String.valueOf(i + 1), null);
@@ -34,7 +54,7 @@ public class MainCenterPanel extends JPanel {
 			x += 150;
 		}
 	}
-
+	
 	private JPanel createTable(String tableNumber,Group group) {
 		JPanel pnlTable = new JPanel() {
 			private static final long serialVersionUID = 1778895558158714379L;
@@ -169,7 +189,11 @@ public class MainCenterPanel extends JPanel {
 		return lblName;
 	}
 	
-	public static void main(String[] args) {
-		MainFrame.getInstance().setVisible(true);
+	/**
+	 * TODO 更新UI
+	 */
+	public void refresh() {
+		removeAll();
+		initView();
 	}
 }

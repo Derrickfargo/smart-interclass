@@ -21,6 +21,7 @@ public class Group implements Serializable {
 	private int tableId;
 	private Date ctime;
 
+	private int tableNumber;
 	private List<Student> students;
 	private String teacherName;
 
@@ -96,6 +97,14 @@ public class Group implements Serializable {
 		this.ctime = ctime;
 	}
 
+	public int getTableNumber() {
+		return tableNumber;
+	}
+
+	public void setTableNumber(int tableNumber) {
+		this.tableNumber = tableNumber;
+	}
+
 	public String getTeacherName() {
 		return teacherName;
 	}
@@ -112,4 +121,27 @@ public class Group implements Serializable {
 		this.students = students;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Group other = (Group) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+
+	
 }

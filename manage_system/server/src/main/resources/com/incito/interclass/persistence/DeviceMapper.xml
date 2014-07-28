@@ -18,6 +18,20 @@
 		ORDER BY
 			id
 	</select>
+	
+	<select id="getDeviceListByRoomId" resultType="com.incito.interclass.entity.Device" parameterType="java.lang.Integer">
+		SELECT	
+			tb_device.id,imei,tb_device.table_id AS tableId,tb_device.ctime
+		FROM 
+			tb_device
+		INNER JOIN 
+			tb_table ON tb_table.id = tb_device.table_id
+		WHERE
+			tb_table.room_id = #{roomId}
+		ORDER BY
+			id
+	</select>
+	
 
 	<insert id="save" parameterType="com.incito.interclass.entity.Device" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO 

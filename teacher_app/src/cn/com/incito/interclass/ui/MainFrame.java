@@ -33,6 +33,7 @@ public class MainFrame extends MouseAdapter{
 	private JLabel lblBackground;
 	private JPanel contentPane;
 	private JButton btnBegin;
+	private MainCenterPanel centerPanel;
 	private Application app = Application.getInstance();
 	private static MainFrame instance;
 	
@@ -45,6 +46,12 @@ public class MainFrame extends MouseAdapter{
 
 	public void setVisible(boolean show){
 		frame.setVisible(show);
+	}
+	
+	public void refresh(){
+		if(frame.isVisible()){
+			centerPanel.refresh();
+		}
 	}
 	
 	private MainFrame(){
@@ -157,12 +164,13 @@ public class MainFrame extends MouseAdapter{
 		contentPane.add(left);
 		
 		/////////////////////center部分////////////////////////
-		MainCenterPanel centerPanel = new MainCenterPanel();
+		centerPanel = new MainCenterPanel();
 		centerPanel.setOpaque(true);
 		centerPanel.setBackground(Color.WHITE);
 		JScrollPane scrollPane = new JScrollPane(centerPanel);
 		scrollPane.setBorder(null);
 		scrollPane.setBounds(127, 75, 878, 618);
+		//TODO 根据分组的多少动态调整
 		centerPanel.setPreferredSize(new Dimension(scrollPane.getWidth() - 50, scrollPane.getHeight() * 2));
 		contentPane.add(scrollPane);
 		centerPanel.revalidate();

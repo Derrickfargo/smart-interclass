@@ -2,11 +2,39 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.incito.interclass.persistence.GroupMapper">
-	<select id="getGroupList" resultType="com.incito.interclass.entity.Group" parameterType="java.util.Map">
+	<resultMap id="GroupMap" type="com.incito.interclass.entity.Group" >
+	    <id column="id" property="id"/>
+	    <result column="name" property="name"/>
+	    <result column="logo" property="logo"/>
+	    <result column="slogan" property="slogan"/>
+	    <result column="course_id" property="courseId"/>
+	    <result column="teacher_id" property="teacherId"/>
+	    <result column="class_id" property="classId"/>
+	    <result column="table_id" property="tableId"/>
+	    <result column="ctime" property="ctime"/>
+	</resultMap>
+	
+	<resultMap id="GroupUserMap" extends="GroupMap" type="com.incito.interclass.entity.Group" >
+		<collection property="students" ofType="com.incito.interclass.entity.Student">  
+		    <id column="id" property="id"/>
+		    <result column="uname" property="uname"/>
+		    <result column="password" property="password"/>
+		    <result column="name" property="name"/>
+		    <result column="email" property="email"/>
+		    <result column="sex" property="sex"/>
+		    <result column="is_active" property="isActive"/>
+		    <result column="role" property="role"/>
+		    <result column="ctime" property="ctime"/>
+		    <result column="number" property="number"/>
+		    <result column="avatar" property="avatar"/>
+	    </collection>
+	</resultMap>
+  
+	<select id="getGroupList" resultMap="GroupUserMap" parameterType="java.util.Map">
 		SELECT	
 			tb_group.id,tb_group.name,tb_group.logo,tb_group.slogan,
 			tb_group.course_id AS courseId,tb_group.teacher_id AS teacherId,
-			tb_group.class_id AS classId,tb_group.table_id AS tableId
+			tb_group.class_id AS classId,tb_group.table_id AS tableId,tb_table.number AS tableNumber
 		FROM 
 			tb_group
 		INNER JOIN 
@@ -17,6 +45,8 @@
 			tb_course ON tb_course.id = tb_group.course_id
 		LEFT JOIN
 			tb_class ON tb_class.id = tb_group.class_id
+		INNER JOIN
+			tb_table ON tb_table.id = tb_group.table_id
 		WHERE
 			tb_user.id = #{teacherId}
 			AND tb_class.id = #{classId}
@@ -25,11 +55,11 @@
 			id
 	</select>
 
-	<select id="getGroupByIMEI" resultType="com.incito.interclass.entity.Group" parameterType="java.util.Map">
+	<select id="getGroupByIMEI" resultMap="GroupUserMap" parameterType="java.util.Map">
 		SELECT	
 			tb_group.id,tb_group.name,tb_group.logo,tb_group.slogan,
 			tb_group.course_id AS courseId,tb_group.teacher_id AS teacherId,
-			tb_group.class_id AS classId,tb_group.table_id AS tableId
+			tb_group.class_id AS classId,tb_group.table_id AS tableId,tb_table.number AS tableNumber
 		FROM 
 			tb_group
 		INNER JOIN 

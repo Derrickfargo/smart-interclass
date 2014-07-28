@@ -43,13 +43,15 @@ public class Login2 extends MouseAdapter{
 	private JLabel lblBackground;
 	private Application app = Application.getInstance();
 	private List<Classes> classList;
+	private List<Course> courseList;
 	public JFrame getFrame() {
 		return frame;
 	}
 
 	//构造函数、调用方法
-	public Login2(List<Classes> classList){
+	public Login2(List<Classes> classList,List<Course> courseList){
 		this.classList = classList;
+		this.courseList = courseList;
 		showLoginUI();
 		setDragable();
 	}
@@ -131,7 +133,6 @@ public class Login2 extends MouseAdapter{
 	}
 	
 	private void initData() {
-		List<Course> courseList = app.getCourseList();
 		for (Course course : courseList) {
 			Item item = new Item(course.getId(), course.getName());
 			jcbCourse.addItem(item);
@@ -271,13 +272,11 @@ public class Login2 extends MouseAdapter{
 				TeacherGroupResultData resultData = JSON.parseObject(data,TeacherGroupResultData.class);
 				
 				frame.setVisible(false);
-				//当前课堂的分组情况
-				if(resultData.getGroups() != null || resultData.getGroups().size() != 0){
-					Application.getInstance().getGroupSet().addAll(resultData.getGroups());
-				}
-				//当前教室的课桌情况
-				Application.getInstance().setTableList(resultData.getTables());
+				//第二步获得班级、课程、设备、课桌、分组数据
+				Application.getInstance().setClasses(resultData.getClasses());
 				Application.getInstance().setCourse(resultData.getCourse());
+				Application.getInstance().initMapping(resultData.getDevices(),
+						resultData.getTables(), resultData.getGroups());
 				
 				MainFrame.getInstance().setVisible(true);
 			}

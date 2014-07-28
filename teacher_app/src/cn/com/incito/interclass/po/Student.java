@@ -11,6 +11,8 @@ public class Student extends User {
 	private int id;
 	private String number;
 	private String avatar;
+	
+	private boolean isLogin;
 
 	public int getId() {
 		return id;
@@ -34,6 +36,14 @@ public class Student extends User {
 
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
+	}
+
+	public boolean isLogin() {
+		return isLogin;
+	}
+
+	public void setLogin(boolean isLogin) {
+		this.isLogin = isLogin;
 	}
 
 }

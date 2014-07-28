@@ -3,15 +3,11 @@ package cn.com.incito.server.handler;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-import cn.com.incito.server.api.ApiClient;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 
 /**
  * 登陆消息处理器
@@ -23,30 +19,28 @@ public class StudentLoginHandler extends MessageHandler {
 
 	@Override
 	public void handleMessage() {
-		System.out.println("收到登陆消息:" + data);
+		System.out.println("消息解析结果:" + data);
 		
         String uname = data.getString("name");
         int sex = data.getIntValue("sex");
         String number = data.getString("number");
         String imei = data.getString("imei");
         int type = data.getIntValue("type");//0登陆,1取消登陆,2注册
-        
-		try {
-			final String result = ApiClient.loginForStudent(uname, sex, number, imei);
-			if (result != null) {
-				JSONObject jsonResult = JSON.parseObject(result);
-				if (jsonResult.getIntValue("code") != 0) {
-					sendResponse(jsonResult.getString("data"));
-					return;
-				}
-				
-			}
-		} catch (Exception e) {
-			System.out.println("学生登陆异常：" + imei);
-			System.out.println(e.getMessage());
-		}
+        switch (type){
+        case 0:
+        	String result = service.login(uname, sex, number, imei);
+    		sendResponse(result);
+        	break;
+        case 1:
+        	result = service.logout(uname, sex, number, imei);
+    		sendResponse(result);
+        case 2:
+        	result = service.register(uname, sex, number, imei);
+    		sendResponse(result);
+        	break;
+        }
 	}
-
+	
 	private void sendResponse(String json) {
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));

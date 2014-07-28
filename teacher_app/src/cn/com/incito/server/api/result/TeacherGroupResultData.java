@@ -4,12 +4,14 @@ import java.util.List;
 
 import cn.com.incito.interclass.po.Classes;
 import cn.com.incito.interclass.po.Course;
+import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Table;
 
 public class TeacherGroupResultData implements IApiResultData {
 	private List<Group> groups;
 	private List<Table> tables;
+	private List<Device> devices;
 	private Classes classes;
 	private Course course;
 
@@ -27,6 +29,14 @@ public class TeacherGroupResultData implements IApiResultData {
 
 	public void setTables(List<Table> tables) {
 		this.tables = tables;
+	}
+
+	public List<Device> getDevices() {
+		return devices;
+	}
+
+	public void setDevices(List<Device> devices) {
+		this.devices = devices;
 	}
 
 	public Classes getClasses() {

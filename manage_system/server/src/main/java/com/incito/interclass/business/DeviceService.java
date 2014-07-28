@@ -21,6 +21,11 @@ public class DeviceService {
 	public List<Device> getDeviceList(){
 		return deviceMapper.getDeviceList();
 	}
+	
+	public List<Device> getDeviceListByRoomId(int roomId){
+		return deviceMapper.getDeviceListByRoomId(roomId);
+	}
+	
 	public int saveDevice(Device device) {
 		return (Integer) deviceMapper.save(device);
 	}

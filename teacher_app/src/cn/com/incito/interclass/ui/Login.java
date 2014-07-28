@@ -250,10 +250,10 @@ public class Login extends MouseAdapter{
 				TeacherLoginResultData resultData = JSON.parseObject(data,TeacherLoginResultData.class);
 				
 				frame.setVisible(false);
+				//第一步获取教室、教师数据
 				Application.getInstance().setRoom(resultData.getRoom());
 				Application.getInstance().setTeacher(resultData.getTeacher());
-				Application.getInstance().setCourseList(resultData.getCourses());
-				Login2 login2 = new Login2(resultData.getClasses());
+				Login2 login2 = new Login2(resultData.getClasses(), resultData.getCourses());
 				login2.getFrame().setVisible(true);
 			}
 			System.out.println(result);

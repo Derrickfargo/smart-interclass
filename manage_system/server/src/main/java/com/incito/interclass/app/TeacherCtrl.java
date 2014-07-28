@@ -14,6 +14,7 @@ import com.incito.interclass.app.result.TeacherGroupResultData;
 import com.incito.interclass.app.result.TeacherLoginResultData;
 import com.incito.interclass.business.ClassService;
 import com.incito.interclass.business.CourseService;
+import com.incito.interclass.business.DeviceService;
 import com.incito.interclass.business.GroupService;
 import com.incito.interclass.business.RoomService;
 import com.incito.interclass.business.TableService;
@@ -21,6 +22,7 @@ import com.incito.interclass.business.UserService;
 import com.incito.interclass.common.BaseCtrl;
 import com.incito.interclass.entity.Classes;
 import com.incito.interclass.entity.Course;
+import com.incito.interclass.entity.Device;
 import com.incito.interclass.entity.Group;
 import com.incito.interclass.entity.Room;
 import com.incito.interclass.entity.Table;
@@ -56,6 +58,9 @@ public class TeacherCtrl extends BaseCtrl {
 	
 	@Autowired
 	private TableService tableService;
+	
+	@Autowired
+	private DeviceService deviceService;
 	
 	/**
 	 * 教师登陆
@@ -121,12 +126,17 @@ public class TeacherCtrl extends BaseCtrl {
 		List<Group> groups = groupService.getGroupList(teacherId, courseId, classId);
 		//获取当前教室的课桌列表
 		List<Table> tables = tableService.getTableListByRoomId(roomId);
+		//获得当前教室的设备列表
+		List<Device> devices = deviceService.getDeviceListByRoomId(roomId);
+		//选择的课程
 		Course course = courseService.getCourseById(courseId);
+		//选择的班级
 		Classes classes = classService.getClassById(classId);
 		
 		TeacherGroupResultData data = new TeacherGroupResultData();
 		data.setGroups(groups);
 		data.setTables(tables);
+		data.setDevices(devices);
 		data.setCourse(course);
 		data.setClasses(classes);
 		ApiResult result = new ApiResult();
