@@ -26,9 +26,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import cn.com.incito.classroom.R;
-import cn.com.incito.classroom.vo.GroupNumberRes2Vo;
 import cn.com.incito.classroom.vo.LoginRes2Vo;
-// TODO: Auto-generated Javadoc
 
 /**
  * © 2012 amsoft.cn

@@ -5,7 +5,7 @@ import java.util.Map;
 
 import cn.com.incito.socket.handler.HeartbeatHandler;
 import cn.com.incito.socket.handler.LoginHandler;
-import cn.com.incito.socket.handler.SytemInitHandler;
+import cn.com.incito.socket.handler.SytemInitHandler1;
 
 /**
  * 消息处理器列表 
@@ -30,7 +30,7 @@ public final class MessageHandlerResource {
 		//心跳消息
 		handlerResources.put(Message.MESSAGE_HEART_BEAT, HeartbeatHandler.class);
 		//程序启动初始化消息
-		handlerResources.put(Message.MESSAGE_GROUP_LIST, SytemInitHandler.class);
+		handlerResources.put(Message.MESSAGE_GROUP_LIST, SytemInitHandler1.class);
         //学生登陆消息
 		handlerResources.put(Message.MESSAGE_STUDENT_LOGIN, LoginHandler.class);
 	}

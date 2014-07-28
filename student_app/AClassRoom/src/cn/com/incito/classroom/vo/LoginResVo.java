@@ -1,31 +1,33 @@
 package cn.com.incito.classroom.vo;
 
+import java.util.List;
+
 /**
  * Created by popoy on 2014/7/25.
  */
 public class LoginResVo {
-    private String groupid;
-    private String groupname;
+    private String id;
+    private String name;
     private String slogan;
     private String logo;
     private String glory;
     private String medal;
-    private LoginRes2Vo groupmember;
+    private List<LoginRes2Vo> students;
 
-    public String getGroupid() {
-        return groupid;
+    public String getId() {
+        return id;
     }
 
-    public void setGroupid(String groupid) {
-        this.groupid = groupid;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getGroupname() {
-        return groupname;
+    public String getName() {
+        return name;
     }
 
-    public void setGroupname(String groupname) {
-        this.groupname = groupname;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getSlogan() {
@@ -60,11 +62,11 @@ public class LoginResVo {
         this.medal = medal;
     }
 
-    public LoginRes2Vo getGroupmember() {
-        return groupmember;
+    public List<LoginRes2Vo> getStudents() {
+        return students;
     }
 
-    public void setGroupmember(LoginRes2Vo groupmember) {
-        this.groupmember = groupmember;
+    public void setStudents(List<LoginRes2Vo> students) {
+        this.students = students;
     }
 }
