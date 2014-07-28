@@ -2,6 +2,8 @@ package com.incito.interclass.persistence;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.incito.interclass.entity.Admin;
 import com.incito.interclass.entity.Student;
 import com.incito.interclass.entity.Teacher;
@@ -19,8 +21,8 @@ public interface UserMapper {
 	List<Teacher> getTeacherList();
 
 	List<Student> getStudentList();
-
-	Student getStudent(String name, String number);
+	
+	Student getStudent(@Param("name")String name, @Param("number")String number);
 	
 	Integer saveUser(User user);
 	

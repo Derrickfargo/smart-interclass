@@ -8,13 +8,14 @@ import com.incito.base.exception.AppException;
 import com.incito.interclass.business.GroupService;
 import com.incito.interclass.business.UserService;
 import com.incito.interclass.common.BaseCtrl;
+import com.incito.interclass.entity.Group;
 import com.incito.interclass.entity.Student;
 
 @RestController
 @RequestMapping("/api/student")
 public class StudentCtrl extends BaseCtrl {
 
-	private static final int REGISTER_ERROR = 1;
+	private static final int REGISTER_ERROR = 3;
 	private static final int LOGIN_ERROR = 1;
 	
 	@Autowired
@@ -54,14 +55,21 @@ public class StudentCtrl extends BaseCtrl {
 		
 		//根据学生id保存组
 		try {
-			if (groupService.addStudent(courseId, classId, teacherId, tableId, student.getId())) {
+			Group group = groupService.addStudent(courseId, classId, teacherId, tableId, student.getId());
+			if (group == null || group.getId() == 0) {
 				return renderJSONString(REGISTER_ERROR);
 			} else {
-				return renderJSONString(SUCCESS);
+				group = groupService.getGroupById(group.getId());
+				return renderJSONString(SUCCESS, group);
 			}
 		} catch (AppException e) {
 			return renderJSONString(REGISTER_ERROR);
 		}
 	}
 	
+	@RequestMapping(value = "/test", produces = { "application/json;charset=UTF-8" })
+	public String test(){
+		Group group = groupService.getGroupById(2);
+		return renderJSONString(SUCCESS, group);
+	}
 }

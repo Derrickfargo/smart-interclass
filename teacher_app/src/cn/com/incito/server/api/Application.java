@@ -96,7 +96,6 @@ public class Application {
 	 */
 	private void initImeiDevice(List<Device> devices){
 		deviceList = devices;
-		imeiDevice.clear();
 		for(Device device : devices){
 			imeiDevice.put(device.getImei(), device);
 		}
@@ -108,7 +107,6 @@ public class Application {
 	 */
 	private void initTableMap(List<Table> tables) {
 		tableList = tables;
-		tableMap.clear();
 		for (Table table : tables) {
 			tableMap.put(table.getId(), table);
 		}
@@ -129,7 +127,6 @@ public class Application {
 	 * 初始化设备课桌映射
 	 */
 	private void initDeviceTable() {
-		deviceList.clear();
 		for (Device device : deviceList) {
 			Table table = tableMap.get(device.getTableId());
 			deviceTable.put(device.getId(), table);

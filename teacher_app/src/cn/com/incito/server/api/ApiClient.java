@@ -18,7 +18,10 @@ import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 
+import cn.com.incito.interclass.po.Device;
+import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.core.AppException;
+import cn.com.incito.server.utils.JSONUtils;
 import cn.com.incito.server.utils.Md5Utils;
 import cn.com.incito.server.utils.URLs;
 
@@ -267,6 +270,20 @@ public class ApiClient {
 	 */
 	public static String loginForStudent(String name,int sex ,String number,String imei) throws AppException{
 		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("courseId", Application.getInstance().getCourse().getId());
+		params.put("classId", Application.getInstance().getClasses().getId());
+		params.put("teacherId", Application.getInstance().getTeacher().getId());
+		Device device = Application.getInstance().getImeiDevice().get(imei);
+		if (device == null) {
+			// 系统中无此设备
+			return JSONUtils.renderJSONString(1);// 失败
+		}
+		Table table = Application.getInstance().getDeviceTable().get(device.getId());
+		if (table == null) {
+			// 此设备未绑定课桌
+			return JSONUtils.renderJSONString(2);// 失败
+		}
+		params.put("tableId", table.getId());
 		params.put("name", name);
 		params.put("sex", sex);
 		params.put("number", number);
@@ -281,7 +298,7 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 获得
+	 * 获得分组列表
 	 * @param schoolId
 	 * @param roomId
 	 * @param teacherId

@@ -19,7 +19,7 @@ public class StudentLoginHandler extends MessageHandler {
 
 	@Override
 	public void handleMessage() {
-		System.out.println("消息解析结果:" + data);
+		System.out.println("消息类型为学生登陆:" + data);
 		
         String uname = data.getString("name");
         int sex = data.getIntValue("sex");

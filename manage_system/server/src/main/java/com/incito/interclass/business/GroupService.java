@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.incito.base.exception.AppException;
 import com.incito.interclass.entity.Group;
+import com.incito.interclass.entity.Student;
 import com.incito.interclass.entity.StudentGroup;
 import com.incito.interclass.persistence.GroupMapper;
 
@@ -41,9 +42,9 @@ public class GroupService {
 	}
 
 	@Transactional(rollbackFor = AppException.class)
-	public boolean addStudent(int courseId, int classId, int teacherId, int tableId, int studentId)throws AppException{
+	public Group addStudent(int courseId, int classId, int teacherId, int tableId, int studentId)throws AppException{
 		//检查组是否存在
-		Group group = groupMapper.getGroupByTableId(courseId, teacherId, courseId, classId);
+		Group group = groupMapper.getGroupByTableId(tableId, teacherId, courseId, classId);
 		if (group == null || group.getId() == 0) {
 			group = new Group();
 			group.setClassId(classId);
@@ -55,12 +56,19 @@ public class GroupService {
 				throw AppException.database(0);
 			}
 		}
-		
-		StudentGroup sg = new StudentGroup();
-		sg.setStudentId(studentId);
-		sg.setGroupId(group.getId());
-		groupMapper.saveStudentGroup(sg);
-		return sg.getId() != 0;
+		//检查学生是否在该组中
+		Student student = groupMapper.getStudentByStudentId(group.getId(), studentId);
+		if(student == null || student.getId() == 0){
+			StudentGroup sg = new StudentGroup();
+			sg.setStudentId(studentId);
+			sg.setGroupId(group.getId());
+			groupMapper.saveStudentGroup(sg);
+		}
+		return group;
+	}
+	
+	public Group getGroupById(int id){
+		return groupMapper.getGroupById(id);
 	}
 	
 	public Group getGroupByIMEI(String imei,int teacherId,int courseId,int classId){
