@@ -11,6 +11,8 @@ import cn.com.incito.classroom.Canvas2Activity;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.classroom.transition.SocketMinaClient;
+import cn.com.incito.classroom.vo.LoginReqVo;
 import cn.com.incito.classroom.vo.LoginResVo;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
@@ -20,6 +22,7 @@ import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.popoy.common.TAApplication;
 import com.popoy.tookit.helper.ToastHelper;
@@ -43,7 +46,7 @@ public class SplashActivity extends BaseActivity {
         setContentView(view);
         handler = new SytemInitHandler1();
 //		渐变展示启动屏
-
+        init();
         AlphaAnimation aa = new AlphaAnimation(0.5f, 1.0f);
         aa.setDuration(2000);
         view.startAnimation(aa);
@@ -73,9 +76,6 @@ public class SplashActivity extends BaseActivity {
 //		TAFileCache fileCache = new TAFileCache(cacheParams);
 //		application.setFileCache(fileCache);
         // 注册activity
-        // 注册activity
-//        getTAApplication().registerCommand(R.string.testmvccommand,
-//                TestMVCCommand.class);
         getTAApplication().registerActivity(R.string.cavas1activity,
                 Canvas1Activity.class);
         getTAApplication().registerActivity(R.string.cavas2activity,
@@ -94,35 +94,29 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void startMain() {
-        init();
+
         doActivity(R.string.waitingactivity);
     }
 
-    //    void init() {
-////        SocketMinaClient socketMinaClient = new SocketMinaClient();
-//        LoginReqVo loginReqVo = new LoginReqVo();
-//        loginReqVo.setImei(MyApplication.deviceId);
-//        loginReqVo.setName("liubo");
-//        loginReqVo.setNumber("111");
-//        loginReqVo.setSex("1");
-//        String json = JSON.toJSONString(loginReqVo);
-//
-//        MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_LIST);
-//        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
+    void init1() {
+        SocketMinaClient socketMinaClient = SocketMinaClient.getInstance();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("imei", MyApplication.deviceId);
+
+        MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_LIST);
+        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
 //        CoreSocket.getInstance().sendMessage(messagePacking);
-////        socketMinaClient.sendMessage(messagePacking);
-////        socketMinaClient.getSocketConnector().dispose();
-//    }
+        socketMinaClient.sendMessage(messagePacking);
+//        socketMinaClient.getSocketConnector().dispose();
+    }
+
     void init() {
-//        SocketMinaClient socketMinaClient = new SocketMinaClient();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("imei", MyApplication.deviceId);
 
         MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_LIST);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
         CoreSocket.getInstance().sendMessage(messagePacking);
-//        socketMinaClient.sendMessage(messagePacking);
-//        socketMinaClient.getSocketConnector().dispose();
     }
 
     public class SystemInitHandler extends MessageHandler {

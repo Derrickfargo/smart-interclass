@@ -5,6 +5,10 @@ import android.telephony.TelephonyManager;
 
 import com.alibaba.fastjson.JSONObject;
 import com.popoy.common.TAApplication;
+import com.popoy.tookit.http.AsyncHttpResponseHandler;
+import com.popoy.tookit.http.RequestParams;
+
+import org.apache.http.client.methods.HttpGet;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -89,7 +93,27 @@ public final class CoreSocket extends Thread {
         }.start();
 
     }
+    /**
+     * 客户端往服务端发送消息
+     *
+     * @param packing
+     */
+    public void sendMessage(final MessagePacking packing, final MessageHandler messageHandler) {
+        new Thread() {
+            public void run() {
+                byte[] message = packing.pack().array();
+                ByteBuffer buffer = ByteBuffer.allocate(message.length);
+                buffer.put(message);
+                buffer.flip();
+                try {
+                    channel.write(buffer);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
 
+    }
 
     public void stopConnection() {
         try {
@@ -129,4 +153,5 @@ public final class CoreSocket extends Thread {
         }
         return channel.isConnected();
     }
+
 }

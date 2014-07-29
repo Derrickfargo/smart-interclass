@@ -33,6 +33,7 @@ import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.adapter.GroupNumAdapter;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.classroom.utils.HandleMessageListener;
 import cn.com.incito.classroom.vo.LoginReqVo;
 import cn.com.incito.classroom.vo.LoginRes2Vo;
 import cn.com.incito.socket.core.CoreSocket;
@@ -48,7 +49,7 @@ import cn.com.incito.socket.utils.BufferUtils;
  * @author liubo
  * @version V1.0
  */
-public class WaitingActivity extends BaseActivity {
+public class WaitingActivity extends BaseActivity implements HandleMessageListener {
     public static final String TAG = "WaitingActivity";
     //自定义的弹出框类
     EditText et_stname;
@@ -139,25 +140,23 @@ public class WaitingActivity extends BaseActivity {
                 }
             }
         });
-//        gv_group_member.setSelector(R.drawable.selector_groupnumber);
-        list = new ArrayList<LoginRes2Vo>();
-        LoginRes2Vo groupNumberListRes = new LoginRes2Vo();
-        groupNumberListRes.setSex("1");
-        groupNumberListRes.setName("lisan");
-        groupNumberListRes.setNumber("111");
-        list.add(groupNumberListRes);
-        mAdapter = new GroupNumAdapter(this, list);
+        list = ((MyApplication) getApplication()).getLoginResVo().getStudents();
+        if (list != null && list.size() > 0) {
+            mAdapter = new GroupNumAdapter(this, list);
+        }
+
         gv_group_member.setAdapter(mAdapter);
         gv_group_member.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 if (list.get(position).getIslogin() == "1") {
                     list.get(position).setIslogin("0");
-//                    login(list.get(position).getName(), list.get(position).getNumber(), list.get(position).getSex());
+                    login(list.get(position).getName(), list.get(position).getNumber(), list.get(position).getSex());
                 } else {
                     list.get(position).setIslogin("1");
-//                    logout(list.get(position).getName(), list.get(position).getNumber(), list.get(position).getSex());
+                    logout(list.get(position).getName(), list.get(position).getNumber(), list.get(position).getSex());
                 }
+                mAdapter.setDatas(list);
                 mAdapter.notifyDataSetChanged();
             }
         });
@@ -201,7 +200,7 @@ public class WaitingActivity extends BaseActivity {
         loginReqVo.setName(name);
         loginReqVo.setNumber(number);
         loginReqVo.setSex(sex);
-        loginReqVo.setType("0");
+        loginReqVo.setType("1");
         String json = JSON.toJSONString(loginReqVo);
         MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
@@ -265,4 +264,9 @@ public class WaitingActivity extends BaseActivity {
             super.onPostExecute(o);
         }
     };
+
+    @Override
+    public void onResultReceived() {
+
+    }
 }
