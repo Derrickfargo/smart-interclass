@@ -2,6 +2,7 @@ package cn.com.incito.socket.core;
 
 import java.nio.ByteBuffer;
 
+import cn.com.incito.classroom.utils.HandleMessageListener;
 import cn.com.incito.socket.utils.BufferUtils;
 
 import com.alibaba.fastjson.JSON;
@@ -45,7 +46,5 @@ public abstract class MessageHandler {
 
     protected abstract void handleMessage();
 
-    public void addReceiveMessageListener() {
 
-    }
 }

@@ -2,8 +2,6 @@ package cn.com.incito.classroom.ui.activity;
 
 import android.os.Bundle;
 import android.widget.GridView;
-import android.widget.SimpleAdapter;
-
 import com.popoy.annotation.TAInjectView;
 
 import java.util.ArrayList;

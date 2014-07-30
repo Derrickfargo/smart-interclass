@@ -1,5 +1,6 @@
 package cn.com.incito.classroom.service;
 
+import cn.com.incito.classroom.transition.SocketMinaClient;
 import cn.com.incito.socket.core.CoreSocket;
 import android.app.Service;
 import android.content.Intent;
@@ -16,6 +17,7 @@ public class SocketService extends Service {
 	public void onCreate() {
 		super.onCreate();
 		CoreSocket.getInstance().start();
+//        SocketMinaClient.getInstance().start();
 	}
 
 	

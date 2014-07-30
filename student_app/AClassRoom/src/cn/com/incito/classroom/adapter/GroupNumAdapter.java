@@ -152,4 +152,7 @@ public class GroupNumAdapter extends BaseAdapter {
         public RelativeLayout rlayout;
     }
 
+    public void setDatas(List<LoginRes2Vo> datas) {
+        this.datas = datas;
+    }
 }

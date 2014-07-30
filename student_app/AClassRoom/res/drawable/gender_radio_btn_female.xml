@@ -6,12 +6,12 @@
         android:drawable="@drawable/ic_user_female" />
     <item
         android:state_checked="true"
-        android:drawable="@drawable/ic_user_male" />
+        android:drawable="@drawable/ico_user_f_hover" />
     <item
         android:state_selected="true"
-        android:drawable="@drawable/ic_user_male" />
+        android:drawable="@drawable/ico_user_f_hover" />
     <item
         android:state_pressed="true"
-        android:drawable="@drawable/ic_user_male" />
+        android:drawable="@drawable/ico_user_f_hover" />
 
 </selector>

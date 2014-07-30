@@ -4,6 +4,7 @@ import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.vo.LoginResVo;
 import cn.com.incito.socket.core.MessageHandler;
 
+import com.alibaba.fastjson.JSONObject;
 import com.popoy.common.TAApplication;
 
 /**
@@ -15,13 +16,16 @@ public class LoginHandler extends MessageHandler {
 
     @Override
     public void handleMessage() {
-    	System.out.println("收到登录回复消息:" + data);
-    	
+        System.out.println("收到登录回复消息:" + data);
+
         String code = data.getString("code");
         if ("0".equals(code)) {
             LoginResVo loginResVo = data.getObject("data", LoginResVo.class);
             ((MyApplication) TAApplication.getApplication()).setLoginResVo(loginResVo);
+        } else {
+
         }
+
     }
 
 }

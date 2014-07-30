@@ -71,7 +71,7 @@ public class ApiClient {
 	private static PostMethod getHttpPost(String url) {
 		PostMethod httpPost = new PostMethod(url);
 		// 设置 请求超时时间
-		httpPost.getParams().setSoTimeout(TIMEOUT_SOCKET);
+//		httpPost.getParams().setSoTimeout(TIMEOUT_SOCKET);
 		httpPost.setRequestHeader("Host", URLs.HOST);
 		httpPost.setRequestHeader("Connection", "Keep-Alive");
 		return httpPost;
