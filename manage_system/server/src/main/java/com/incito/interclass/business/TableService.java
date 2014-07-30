@@ -39,7 +39,7 @@ public class TableService {
 
 	@Transactional(rollbackFor = AppException.class)
 	public boolean addDevice(int roomId, int number, String imei) throws AppException {
-		Table table = tableMapper.getTableByNumber(number);
+		Table table = tableMapper.getTableByNumber(roomId, number);
 		if (table == null || table.getId() == 0) {
 			table = new Table();
 			table.setRoomId(roomId);

@@ -34,6 +34,15 @@
 		ORDER BY
 			number
 	</select>
+	
+	<select id="getTableByNumber" resultType="com.incito.interclass.entity.Table" parameterType="java.util.Map">
+		SELECT	
+			id,room_id, number,ctime
+		FROM 
+			tb_table
+		WHERE
+			number = #{number} AND room_id = #{roomId}
+	</select>
 
 	<insert id="save" parameterType="com.incito.interclass.entity.Table" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO 

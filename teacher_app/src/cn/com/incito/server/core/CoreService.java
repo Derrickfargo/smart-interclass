@@ -19,6 +19,21 @@ public class CoreService {
 		app.refreshMainFrame();// 更新UI
 	}
 	
+	public String deviceBind(String imei, int number) {
+		try {
+			int roomId = app.getRoom().getId();
+			final String result = ApiClient.deviceBind(imei, number, roomId);
+			if (result != null && !result.equals("")) {
+				return result;
+			}
+		} catch (Exception e) {
+			if (e instanceof AppException) {
+				return JSONUtils.renderJSONString(1);// 失败
+			}
+		}
+		return JSONUtils.renderJSONString(2);// 失败
+	}
+	
 	/**
 	 * 登陆
 	 * 

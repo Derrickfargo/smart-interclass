@@ -32,13 +32,13 @@ public class TableCtrl extends BaseCtrl {
 	 *            设备号imei
 	 * @return
 	 */
-	@RequestMapping(value = "/addDevice", produces = { "application/json;charset=UTF-8" })
+	@RequestMapping(value = "/bind", produces = { "application/json;charset=UTF-8" })
 	public String addDevice(int roomId, int number, String imei) {
 		try {
 			if (tableService.addDevice(roomId, number, imei)) {
-				return renderJSONString(ADD_DEVICE_ERROR);
-			} else {
 				return renderJSONString(SUCCESS);
+			} else {
+				return renderJSONString(ADD_DEVICE_ERROR);
 			}
 		} catch (AppException e) {
 			return renderJSONString(ADD_DEVICE_ERROR);

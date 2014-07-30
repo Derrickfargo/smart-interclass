@@ -22,4 +22,9 @@ public class URLs {
 	 * 学生注册
 	 */
 	public final static String URL_STUDENT_LOGIN = URL_API_HOST + "api/student/login";
+	
+	/**
+	 * 绑定课桌
+	 */
+	public final static String URL_DEVICE_BIND = URL_API_HOST + "api/table/bind";
 }

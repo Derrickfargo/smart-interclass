@@ -2,6 +2,8 @@ package com.incito.interclass.persistence;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.incito.interclass.entity.Table;
 
 public interface TableMapper {
@@ -13,5 +15,6 @@ public interface TableMapper {
 
 	void delete(int id);
 	
-	Table getTableByNumber(int number);
+	Table getTableByNumber(@Param("roomId") int roomId,
+			@Param("number") int number);
 }
