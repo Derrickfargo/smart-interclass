@@ -26,6 +26,13 @@
 		    <result column="number" property="number"/>
 		    <result column="avatar" property="avatar"/>
 	    </collection>
+	    <collection property="devices" column="id" ofType="com.incito.interclass.entity.Device" 
+			select="com.incito.interclass.persistence.DeviceMapper.getDeviceByGroupId">  
+		    <id column="id" property="id"/>
+		    <result column="imei" property="imei"/>
+		    <result column="table_id" property="tableId"/>
+		    <result column="ctime" property="ctime"/>
+	    </collection>
 	</resultMap>
   
 	<select id="getGroupList" resultMap="GroupUserMap" parameterType="java.util.Map">

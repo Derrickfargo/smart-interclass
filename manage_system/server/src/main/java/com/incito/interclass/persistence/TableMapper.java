@@ -13,5 +13,5 @@ public interface TableMapper {
 
 	void delete(int id);
 	
-	Table getTableByNumber(String number);
+	Table getTableByNumber(int number);
 }

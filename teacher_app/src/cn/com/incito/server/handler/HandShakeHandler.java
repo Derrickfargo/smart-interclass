@@ -20,8 +20,8 @@ public class HandShakeHandler extends MessageHandler {
 	@Override
 	public void handleMessage() {
 		imei = data.getString("imei");
-		System.out.println("收到握手消息，IMEI:" + imei);
-		
+		System.out.println("收到设备登陆消息，IMEI:" + imei);
+		service.deviceLogin(imei);
 		//回复握手消息
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_HAND_SHAKE);
 		byte[] handShakResponse = messagePacking.pack().array();

@@ -33,7 +33,7 @@ public class TableCtrl extends BaseCtrl {
 	 * @return
 	 */
 	@RequestMapping(value = "/addDevice", produces = { "application/json;charset=UTF-8" })
-	public String addDevice(int roomId, String number, String imei) {
+	public String addDevice(int roomId, int number, String imei) {
 		try {
 			if (tableService.addDevice(roomId, number, imei)) {
 				return renderJSONString(ADD_DEVICE_ERROR);

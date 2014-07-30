@@ -22,6 +22,7 @@ public class Group implements Serializable,Comparable<Group> {
 	private Date ctime;
 
 	private int tableNumber;
+	private List<Device> devices;
 	private List<Student> students;
 	private String teacherName;
 
@@ -113,6 +114,14 @@ public class Group implements Serializable,Comparable<Group> {
 		this.teacherName = teacherName;
 	}
 
+	public List<Device> getDevices() {
+		return devices;
+	}
+
+	public void setDevices(List<Device> devices) {
+		this.devices = devices;
+	}
+
 	public List<Student> getStudents() {
 		return students;
 	}
@@ -147,5 +156,4 @@ public class Group implements Serializable,Comparable<Group> {
 	public int compareTo(Group group) {
 		return this.tableNumber - group.tableNumber;
 	}
-
 }

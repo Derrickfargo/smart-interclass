@@ -14,6 +14,11 @@ import com.alibaba.fastjson.JSONObject;
 public class CoreService {
 	private Application app = Application.getInstance();
 
+	public void deviceLogin(String imei){
+		app.getOnlineDevice().add(imei);
+		app.refreshMainFrame();// 更新UI
+	}
+	
 	/**
 	 * 登陆
 	 * 
@@ -39,6 +44,7 @@ public class CoreService {
 			if (student.getUname().equals(uname)
 					&& student.getNumber().equals(number)) {
 				student.setLogin(true);
+				app.getOnlineStudent().add(student);//加入在线的学生
 				app.refreshMainFrame();// 更新UI
 				return JSONUtils.renderJSONString(0, group);
 			}
@@ -71,6 +77,7 @@ public class CoreService {
 			if (student.getUname().equals(uname)
 					&& student.getNumber().equals(number)) {
 				student.setLogin(false);
+				app.getOnlineStudent().remove(student);
 				app.refreshMainFrame();// 更新UI
 				return JSONUtils.renderJSONString(0, group);
 			}
@@ -96,6 +103,12 @@ public class CoreService {
 				if (jsonObject.getIntValue("code") == 0) {
 					String data = jsonObject.getString("data");
 					Group group = JSON.parseObject(data, Group.class);
+					for (Student student : group.getStudents()) {
+						if((student.getName()+student.getName()).equals(uname + number)){
+							student.setLogin(true);
+							app.getOnlineStudent().add(student);
+						}
+					}
 					app.addGroup(group);
 					app.getTableGroup().put(group.getTableId(), group);
 					app.refreshMainFrame();// 更新UI

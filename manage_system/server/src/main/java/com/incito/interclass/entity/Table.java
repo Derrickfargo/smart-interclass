@@ -2,8 +2,9 @@ package com.incito.interclass.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
-public class Table implements Serializable {
+public class Table implements Serializable,Comparable<Table> {
 
 	/**
 	 * 
@@ -12,9 +13,11 @@ public class Table implements Serializable {
 
 	private int id;
 	private int roomId;
-	private String number;
+	private int number;
 	private Date ctime;
 
+	private List<Device> devices;
+	
 	public int getId() {
 		return id;
 	}
@@ -31,11 +34,11 @@ public class Table implements Serializable {
 		this.roomId = roomId;
 	}
 
-	public String getNumber() {
+	public int getNumber() {
 		return number;
 	}
 
-	public void setNumber(String number) {
+	public void setNumber(int number) {
 		this.number = number;
 	}
 
@@ -45,6 +48,19 @@ public class Table implements Serializable {
 
 	public void setCtime(Date ctime) {
 		this.ctime = ctime;
+	}
+
+	public List<Device> getDevices() {
+		return devices;
+	}
+
+	public void setDevices(List<Device> devices) {
+		this.devices = devices;
+	}
+
+	@Override
+	public int compareTo(Table o) {
+		return number - o.getNumber();
 	}
 
 }
