@@ -6,7 +6,6 @@ import java.util.HashMap;
 import com.popoy.common.TAActivity;
 
 import cn.com.incito.classroom.R;
-import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.canvas.PaletteView;
 
 import android.app.Activity;
@@ -23,7 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
-public class Canvas1Activity extends BaseActivity {
+public class Canvas1Activity extends TAActivity {
     PaletteView paletteView = null;
 
     ListView picList = null;

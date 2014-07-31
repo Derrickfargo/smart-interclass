@@ -2,6 +2,8 @@ package cn.com.incito.classroom.ui.activity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -22,7 +24,7 @@ import android.widget.RadioGroup;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.popoy.annotation.TAInjectView;
-import com.popoy.common.TAApplication;
+import com.popoy.common.TAActivity;
 import com.popoy.common.core.AsyncTask;
 import com.popoy.tookit.helper.ToastHelper;
 
@@ -31,13 +33,14 @@ import java.util.List;
 
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.adapter.GroupNumAdapter;
-import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.utils.HandleMessageListener;
 import cn.com.incito.classroom.vo.LoginReqVo;
 import cn.com.incito.classroom.vo.LoginRes2Vo;
+import cn.com.incito.classroom.vo.LoginResVo;
 import cn.com.incito.socket.core.CoreSocket;
-import cn.com.incito.socket.core.Message;
+import cn.com.incito.socket.core.MessageHandler;
+import cn.com.incito.socket.core.MessageInfo;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
@@ -49,7 +52,7 @@ import cn.com.incito.socket.utils.BufferUtils;
  * @author liubo
  * @version V1.0
  */
-public class WaitingActivity extends BaseActivity implements HandleMessageListener {
+public class WaitingActivity extends TAActivity {
     public static final String TAG = "WaitingActivity";
     //自定义的弹出框类
     EditText et_stname;
@@ -69,7 +72,7 @@ public class WaitingActivity extends BaseActivity implements HandleMessageListen
     LinearLayout llayout1;
     @TAInjectView(id = R.id.llayout2)
     LinearLayout llayout2;
-    List<LoginRes2Vo> list;
+    List<LoginRes2Vo> list = new ArrayList<LoginRes2Vo>();
     GroupNumAdapter mAdapter;
     TranslateAnimation mShowAction;
     TranslateAnimation mHiddenAction;
@@ -112,11 +115,11 @@ public class WaitingActivity extends BaseActivity implements HandleMessageListen
                         imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
                         llayout1.setVisibility(View.GONE);
                         addState = 0;
-                        task.execute();
+                        registerStudent();
                     }
 
                 }
-                mAdapter.notifyDataSetChanged();
+
             }
         });
         et_stname = (EditText) findViewById(R.id.et_stname);
@@ -140,26 +143,21 @@ public class WaitingActivity extends BaseActivity implements HandleMessageListen
                 }
             }
         });
-        list = ((MyApplication) getApplication()).getLoginResVo().getStudents();
-        if (list != null && list.size() > 0) {
-            mAdapter = new GroupNumAdapter(this, list);
-        }
 
-        gv_group_member.setAdapter(mAdapter);
         gv_group_member.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                if (list.get(position).getIslogin() == "1") {
-                    list.get(position).setIslogin("0");
+                if (list.get(position).isLogin() == false) {
+                    list.get(position).setLogin(true);
                     login(list.get(position).getName(), list.get(position).getNumber(), list.get(position).getSex());
                 } else {
-                    list.get(position).setIslogin("1");
+                    list.get(position).setLogin(false);
                     logout(list.get(position).getName(), list.get(position).getNumber(), list.get(position).getSex());
                 }
-                mAdapter.setDatas(list);
                 mAdapter.notifyDataSetChanged();
             }
         });
+        getGroupUserList();
     }
 
 
@@ -185,9 +183,17 @@ public class WaitingActivity extends BaseActivity implements HandleMessageListen
         loginReqVo.setSex(sex);
         loginReqVo.setType("0");
         String json = JSON.toJSONString(loginReqVo);
-        MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
+        MessagePacking messagePacking = new MessagePacking(MessageInfo.MESSAGE_STUDENT_LOGIN);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
-        CoreSocket.getInstance().sendMessage(messagePacking);
+        CoreSocket.getInstance().sendMessage(messagePacking, new MessageHandler() {
+            @Override
+            protected void handleMessage(Bundle data) {
+                Message message = new Message();
+                message.what = 1;
+                message.setData(data);
+                mHandler.sendMessage(message);
+            }
+        });
 
     }
 
@@ -202,9 +208,17 @@ public class WaitingActivity extends BaseActivity implements HandleMessageListen
         loginReqVo.setSex(sex);
         loginReqVo.setType("1");
         String json = JSON.toJSONString(loginReqVo);
-        MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
+        MessagePacking messagePacking = new MessagePacking(MessageInfo.MESSAGE_STUDENT_LOGIN);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
-        CoreSocket.getInstance().sendMessage(messagePacking);
+        CoreSocket.getInstance().sendMessage(messagePacking, new MessageHandler() {
+            @Override
+            protected void handleMessage(Bundle data) {
+                Message message = new Message();
+                message.what = 2;
+                message.setData(data);
+                mHandler.sendMessage(message);
+            }
+        });
     }
 
     /**
@@ -242,31 +256,109 @@ public class WaitingActivity extends BaseActivity implements HandleMessageListen
         return imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
     }
 
-    AsyncTask task = new AsyncTask() {
-        @Override
-        protected Object doInBackground(Object[] params) {
-            LoginReqVo loginReqVo = new LoginReqVo();
-            loginReqVo.setImei(MyApplication.deviceId);
-            loginReqVo.setName("liubo");
-            loginReqVo.setNumber("111");
-            loginReqVo.setSex("1");
-            loginReqVo.setType("2");
-            String json = JSON.toJSONString(loginReqVo);
-
-            MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
-            messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
-            CoreSocket.getInstance().sendMessage(messagePacking);
-            return null;
-        }
+    private Handler mHandler = new Handler() {
 
         @Override
-        protected void onPostExecute(Object o) {
-            super.onPostExecute(o);
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1: {
+                    JSONObject jsonObject = (JSONObject) msg.getData().getSerializable("data");
+                    if (!"0".equals(jsonObject.getString("code"))) {
+                        return;
+                    } else {
+                        LoginResVo loginResVo = JSON.parseObject(jsonObject.getJSONObject("data").toJSONString(), LoginResVo.class);
+                        list = loginResVo.getStudents();
+                        ((MyApplication) getApplication()).getLoginResVo().setStudents(list);
+                        if (list != null && list.size() > 0) {
+                            mAdapter = new GroupNumAdapter(WaitingActivity.this, list);
+                            gv_group_member.setAdapter(mAdapter);
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    }
+                    break;
+                }
+                case 2: {
+                    JSONObject jsonObject = (JSONObject) msg.getData().getSerializable("data");
+                    if (!"0".equals(jsonObject.getString("code"))) {
+                        return;
+                    } else {
+                        LoginResVo loginResVo = JSON.parseObject(jsonObject.getJSONObject("data").toJSONString(), LoginResVo.class);
+                        list = loginResVo.getStudents();
+                        ((MyApplication) getApplication()).getLoginResVo().setStudents(list);
+                        if (list != null && list.size() > 0) {
+                            mAdapter = new GroupNumAdapter(WaitingActivity.this, list);
+                            gv_group_member.setAdapter(mAdapter);
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    }
+                    break;
+                }
+                case 3: {
+                    JSONObject jsonObject = (JSONObject) msg.getData().getSerializable("data");
+                    if (!"0".equals(jsonObject.getString("code"))) {
+                        return;
+                    } else {
+                        LoginResVo loginResVo = JSON.parseObject(jsonObject.getJSONObject("data").toJSONString(), LoginResVo.class);
+                        if (loginResVo.getStudents() != null) {
+                            list = loginResVo.getStudents();
+                        }
+                        ((MyApplication) getApplication()).getLoginResVo().setStudents(list);
+                        if (list != null && list.size() > 0) {
+                            mAdapter = new GroupNumAdapter(WaitingActivity.this, list);
+                            gv_group_member.setAdapter(mAdapter);
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
         }
     };
 
-    @Override
-    public void onResultReceived() {
+    /**
+     * 注册成员
+     */
+    private void registerStudent() {
+        LoginReqVo loginReqVo = new LoginReqVo();
+        loginReqVo.setImei(MyApplication.deviceId);
+        loginReqVo.setName("liubo");
+        loginReqVo.setNumber("111");
+        loginReqVo.setSex("1");
+        loginReqVo.setType("2");
+        String json = JSON.toJSONString(loginReqVo);
 
+        MessagePacking messagePacking = new MessagePacking(MessageInfo.MESSAGE_STUDENT_LOGIN);
+        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
+        CoreSocket.getInstance().sendMessage(messagePacking, new MessageHandler() {
+            @Override
+            protected void handleMessage(Bundle data) {
+                Message message = new Message();
+                message.what = 3;
+                message.setData(data);
+                mHandler.sendMessage(message);
+            }
+        });
+    }
+
+    /**
+     * 获取组成员列表
+     */
+    private void getGroupUserList() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("imei", MyApplication.deviceId);
+
+        MessagePacking messagePacking = new MessagePacking(MessageInfo.MESSAGE_GROUP_LIST);
+        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
+        CoreSocket.getInstance().sendMessage(messagePacking, new MessageHandler() {
+            @Override
+            protected void handleMessage(Bundle data) {
+                Message message = new Message();
+                message.what = 1;
+                message.setData(data);
+                mHandler.sendMessage(message);
+            }
+        });
     }
 }

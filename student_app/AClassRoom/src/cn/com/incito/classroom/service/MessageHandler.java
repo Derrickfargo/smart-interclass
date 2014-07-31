@@ -88,13 +88,13 @@ public class MessageHandler implements Runnable {
                     messageService.handleMessage(msgs);
                 }
                 break;
-//            case Message.PROTOCOL_05:
-//                messageService.showPicture(message.getData());
+//            case MessageInfo.PROTOCOL_05:
+//                messageService.showPicture(messageInfo.getData());
 //                break;
-//            case Message.PROTOCOL_04:
+//            case MessageInfo.PROTOCOL_04:
 //                messageService.lock();
 //                break;
-//            case Message.PROTOCOL_06:
+//            case MessageInfo.PROTOCOL_06:
 //                messageService.unlock();
 //                break;
         }

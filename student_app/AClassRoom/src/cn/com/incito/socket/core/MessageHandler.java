@@ -1,8 +1,9 @@
 package cn.com.incito.socket.core;
 
+import android.os.Bundle;
+
 import java.nio.ByteBuffer;
 
-import cn.com.incito.classroom.utils.HandleMessageListener;
 import cn.com.incito.socket.utils.BufferUtils;
 
 import com.alibaba.fastjson.JSON;
@@ -17,16 +18,15 @@ import com.alibaba.fastjson.JSONObject;
  */
 public abstract class MessageHandler {
 
-    protected Message message;
-    protected JSONObject data;
+    protected MessageInfo messageInfo;
 
     /**
      * 消息对应的处理器 存放消息对应的处理逻辑，在消息分发时使用
      *
      * @param msg 被处理消息
      */
-    public final void handleMessage(Message msg) {
-        this.message = msg;
+    public final void handleMessage(MessageInfo msg) {
+        this.messageInfo = msg;
         ByteBuffer buffer = msg.getBodyBuffer();
         buffer.flip();
 
@@ -39,12 +39,13 @@ public abstract class MessageHandler {
         buffer.get(jsonByte);
 
         String json = BufferUtils.readUTFString(jsonByte);
-        data = JSON.parseObject(json);
-
-        handleMessage();
+        JSONObject data = JSON.parseObject(json);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("data", data);
+        handleMessage(bundle);
     }
 
-    protected abstract void handleMessage();
+    protected abstract void handleMessage(Bundle data);
 
 
 }

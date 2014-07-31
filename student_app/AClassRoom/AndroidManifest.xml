@@ -60,6 +60,12 @@
 
         <service android:name="cn.com.incito.classroom.service.MessageService" />
         <service android:name="cn.com.incito.classroom.service.SocketService" />
+        <receiver android:name="com.popoy.tookit.netstate.TANetworkStateReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="ta.android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

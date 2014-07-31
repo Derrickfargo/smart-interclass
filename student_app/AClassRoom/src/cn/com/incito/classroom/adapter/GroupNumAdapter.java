@@ -138,7 +138,7 @@ public class GroupNumAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        if (datas.get(position).getIslogin() == "0") {
+        if (datas.get(position).isLogin()) {
             holder.rlayout.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.bg_logged_user_m));
         } else {
             holder.rlayout.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.bg_not_logged_user_m));

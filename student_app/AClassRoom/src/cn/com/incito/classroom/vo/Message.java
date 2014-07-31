@@ -15,7 +15,7 @@ public class Message {
     public static final byte PROTOCOL_00 = 0;
 
     /**
-     * ��Ϣ���� data=nickname|message *
+     * ��Ϣ���� data=nickname|messageInfo *
      */
     public static final byte PROTOCOL_01 = 1;
 

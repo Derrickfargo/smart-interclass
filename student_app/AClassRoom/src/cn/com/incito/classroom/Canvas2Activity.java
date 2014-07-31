@@ -9,10 +9,9 @@ import android.os.Handler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
-import cn.com.incito.classroom.base.BaseActivity;
 
 @SuppressLint("SetJavaScriptEnabled")
-public class Canvas2Activity extends BaseActivity {
+public class Canvas2Activity extends TAActivity {
     private WebView mWebView;
     private Handler mHandler = new Handler();
 

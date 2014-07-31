@@ -24,10 +24,12 @@ public class MessageParser {
 	 */
 	private static final int HEADER_LENGTH = 7;
 	
-	private Message message;
+	private MessageInfo messageInfo;
 	private SocketChannel channel = null;
 	
-	
+	public void bindHandler(MessageHandler messageHandler){
+        messageInfo.setHandler(messageHandler);
+    }
 	/**
 	 * 得到read事件，建立与pc的socket通讯连接并进行处理
 	 * 
@@ -55,14 +57,14 @@ public class MessageParser {
 		if (parseFakeId(headerBuffer)) {
 			// 获取消息头中有用的信息,msgId,msgSize
 			parseMsgHeader(headerBuffer);
-			if(message.getMsgID() == Message.MESSAGE_HAND_SHAKE){
+			if(messageInfo.getMsgID() == MessageInfo.MESSAGE_HAND_SHAKE){
 				System.out.println("收到握手回复消息");
 				return;
 			}
 			// 解析消息体和命令
 			if (parseMsgBody()) {
 				// 执行消息命令
-				message.executeMessage();
+				messageInfo.executeMessage();
 			}
 		}
 	}
@@ -89,7 +91,7 @@ public class MessageParser {
 		}
 
 		// 如果消息的fakeId与定义的fakeId值不符，则丢弃掉该条消息
-		if (Message.MESSAGE_FAKE_ID != fakeId) {
+		if (MessageInfo.MESSAGE_FAKE_ID != fakeId) {
 			System.out.println("该消息头不是需要的消息头,fakeId:" + fakeId);
 			return false;
 		}
@@ -103,11 +105,11 @@ public class MessageParser {
 	 *            消息体字节数组
 	 */
 	private void parseMsgHeader(ByteBuffer buffer) {
-		message = new Message();
+		messageInfo = new MessageInfo();
 		//获取消息id（1个byte）
-		message.setMsgID(buffer.get());
+		messageInfo.setMsgID(buffer.get());
         //获取消息体的长度（4个byte）
-		message.setMsgSize(buffer.getInt());
+		messageInfo.setMsgSize(buffer.getInt());
 	}
 
 	/**
@@ -118,11 +120,11 @@ public class MessageParser {
 	 * @return true，解析成功，false表示为其他类型包无需压入消息队列
 	 */
 	private boolean parseMsgBody() {
-		int bodySize = message.getMsgSize();
+		int bodySize = messageInfo.getMsgSize();
 		ByteBuffer bodyBuffer = BufferUtils.prepareToReadOrPut(bodySize);
 		try {
 			channel.read(bodyBuffer);
-			message.setBodyBuffer(bodyBuffer);
+			messageInfo.setBodyBuffer(bodyBuffer);
 			return true;
 		} catch (IOException e) {
 			System.out.println("获取消息体失败:" + e.getMessage());

@@ -1,14 +1,6 @@
 package cn.com.incito.socket.core;
 
-import android.content.Context;
-import android.telephony.TelephonyManager;
-
 import com.alibaba.fastjson.JSONObject;
-import com.popoy.common.TAApplication;
-import com.popoy.tookit.http.AsyncHttpResponseHandler;
-import com.popoy.tookit.http.RequestParams;
-
-import org.apache.http.client.methods.HttpGet;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -20,6 +12,7 @@ import java.util.Set;
 
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constant;
+import cn.com.incito.classroom.transition.MessageListener;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
@@ -65,7 +58,7 @@ public final class CoreSocket extends Thread {
     }
 
     private byte[] getHandShakeMessage() {
-        MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_HAND_SHAKE);
+        MessagePacking messagePacking = new MessagePacking(MessageInfo.MESSAGE_HAND_SHAKE);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("imei", MyApplication.deviceId);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
@@ -77,30 +70,11 @@ public final class CoreSocket extends Thread {
      *
      * @param packing
      */
-    public void sendMessage(final MessagePacking packing) {
+    public void sendMessage(final MessagePacking packing, MessageHandler messageHandler) {
+        MessageHandlerResource.getHandlerResources().putHandlerResource(packing.msgId, messageHandler);
         new Thread() {
             public void run() {
-                byte[] message = packing.pack().array();
-                ByteBuffer buffer = ByteBuffer.allocate(message.length);
-                buffer.put(message);
-                buffer.flip();
-                try {
-                    channel.write(buffer);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }.start();
 
-    }
-    /**
-     * 客户端往服务端发送消息
-     *
-     * @param packing
-     */
-    public void sendMessage(final MessagePacking packing, final MessageHandler messageHandler) {
-        new Thread() {
-            public void run() {
                 byte[] message = packing.pack().array();
                 ByteBuffer buffer = ByteBuffer.allocate(message.length);
                 buffer.put(message);
