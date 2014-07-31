@@ -9,7 +9,7 @@ public class LoginRes2Vo {
     private String number;
     private String avatar;
     private String sex;
-    private String islogin;
+    private boolean login;
 
     public String getId() {
         return id;
@@ -51,11 +51,11 @@ public class LoginRes2Vo {
         this.sex = sex;
     }
 
-    public String getIslogin() {
-        return islogin;
+    public boolean isLogin() {
+        return login;
     }
 
-    public void setIslogin(String islogin) {
-        this.islogin = islogin;
+    public void setLogin(boolean login) {
+        this.login = login;
     }
 }

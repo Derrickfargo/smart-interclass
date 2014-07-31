@@ -1,6 +1,8 @@
 package cn.com.incito.classroom.ui.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -9,23 +11,27 @@ import android.view.animation.Animation.AnimationListener;
 import cn.com.incito.classroom.Canvas1Activity;
 import cn.com.incito.classroom.Canvas2Activity;
 import cn.com.incito.classroom.R;
-import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.classroom.transition.SocketMinaClient;
-import cn.com.incito.classroom.vo.LoginReqVo;
-import cn.com.incito.classroom.vo.LoginResVo;
+import cn.com.incito.classroom.constants.Constant;
+import cn.com.incito.classroom.transition.CmdClient;
+import cn.com.incito.classroom.transition.MessageListener;
 import cn.com.incito.socket.core.CoreSocket;
-import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.core.MessageHandler;
+import cn.com.incito.socket.core.MessageHandlerResource;
+import cn.com.incito.socket.core.MessageInfo;
+import cn.com.incito.socket.core.ResponseListener;
 import cn.com.incito.socket.handler.SytemInitHandler1;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.popoy.common.TAActivity;
 import com.popoy.common.TAApplication;
+import com.popoy.tookit.cache.TAFileCache;
 import com.popoy.tookit.helper.ToastHelper;
+
+import org.jboss.netty.channel.MessageEvent;
 
 /**
  * @author 白猫
@@ -35,9 +41,10 @@ import com.popoy.tookit.helper.ToastHelper;
  * @Description: 用户其启动界面时候的一个启动页面完成一些初始化工作
  * @date 2013-5-6
  */
-public class SplashActivity extends BaseActivity {
+public class SplashActivity extends TAActivity {
     private static final String SYSTEMCACHE = "adream";
     private SytemInitHandler1 handler;
+    private static final int UPDATE_UI = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,7 +53,7 @@ public class SplashActivity extends BaseActivity {
         setContentView(view);
         handler = new SytemInitHandler1();
 //		渐变展示启动屏
-        init();
+//        init();
         AlphaAnimation aa = new AlphaAnimation(0.5f, 1.0f);
         aa.setDuration(2000);
         view.startAnimation(aa);
@@ -70,11 +77,11 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onPreOnCreate(Bundle savedInstanceState) {
         super.onPreOnCreate(savedInstanceState);
-//		TAApplication application = (TAApplication) getApplication();
-//		// 配置系统的缓存,可以选择性的配置
-//		TACacheParams cacheParams = new TACacheParams(this, SYSTEMCACHE);
-//		TAFileCache fileCache = new TAFileCache(cacheParams);
-//		application.setFileCache(fileCache);
+        TAApplication application = (TAApplication) getApplication();
+        // 配置系统的缓存,可以选择性的配置
+        TAFileCache.TACacheParams cacheParams = new TAFileCache.TACacheParams(this, SYSTEMCACHE);
+        TAFileCache fileCache = new TAFileCache(cacheParams);
+        application.setFileCache(fileCache);
         // 注册activity
         getTAApplication().registerActivity(R.string.cavas1activity,
                 Canvas1Activity.class);
@@ -82,8 +89,8 @@ public class SplashActivity extends BaseActivity {
                 Canvas2Activity.class);
         getTAApplication().registerActivity(R.string.waitingactivity,
                 WaitingActivity.class);
-        getTAApplication().registerActivity(R.string.waitingactivity,
-                WaitingActivity.class);
+        getTAApplication().registerActivity(R.string.binddeskactivity,
+                BindDeskActivity.class);
 
     }
 
@@ -94,44 +101,57 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void startMain() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("imei", MyApplication.deviceId);
+        MessagePacking messagePacking = new MessagePacking(MessageInfo.MESSAGE_DEVICE_HAS_BIND);
+        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
+        CoreSocket.getInstance().sendMessage(messagePacking, new MessageHandler() {
+            @Override
+            public void handleMessage(Bundle bundle) {
+                Message message = new Message();
+                message.what = 1;
+                message.setData(bundle);
+                mHandler.sendMessage(message);
+            }
 
-        doActivity(R.string.waitingactivity);
+        });
     }
 
     void init1() {
-        SocketMinaClient socketMinaClient = SocketMinaClient.getInstance();
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("imei", MyApplication.deviceId);
+//        CmdClient.getInstance().start(this, Constant.IP, Constant.PORT);
+//
+////        SocketMinaClient socketMinaClient = SocketMinaClient.getInstance();
+//        JSONObject jsonObject = new JSONObject();
+//        jsonObject.put("imei", MyApplication.deviceId);
 
-        MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_LIST);
-        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
-//        CoreSocket.getInstance().sendMessage(messagePacking);
-        socketMinaClient.sendMessage(messagePacking);
+//        MessagePacking messagePacking = new MessagePacking(MessageInfo.MESSAGE_GROUP_LIST);
+//        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
+////        CoreSocket.getInstance().sendMessage(messagePacking);
+//        socketMinaClient.sendMessage(messagePacking);
+//        CmdClient.getInstance().sendMessage(jsonObject.toJSONString());
 //        socketMinaClient.getSocketConnector().dispose();
     }
 
-    void init() {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("imei", MyApplication.deviceId);
 
-        MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_LIST);
-        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
-        CoreSocket.getInstance().sendMessage(messagePacking);
-    }
-
-    public class SystemInitHandler extends MessageHandler {
+    private Handler mHandler = new Handler() {
 
         @Override
-        protected void handleMessage() {
-            System.out.println("收到获取分组回复消息:" + data);
-
-            String code = data.getString("code");
-            if ("0".equals(code)) {
-                LoginResVo loginResVo = data.getObject("data", LoginResVo.class);
-                ((MyApplication) TAApplication.getApplication()).setLoginResVo(loginResVo);
-            } else {
-                ToastHelper.showCustomToast(SplashActivity.this, "test");
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1: {
+                    JSONObject jsonObject = (JSONObject) msg.getData().getSerializable("data");
+                    if (!"0".equals(jsonObject.getString("code"))) {
+                        return;
+                    } else if (jsonObject.getJSONObject("data").getBoolean("isbind")) {
+                        doActivity(R.string.waitingactivity);
+                    } else {
+                        doActivity(R.string.binddeskactivity);
+                    }
+                    break;
+                }
+                default:
+                    break;
             }
         }
-    }
+    };
 }
