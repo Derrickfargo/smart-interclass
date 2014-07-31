@@ -98,8 +98,7 @@ public class ApiClient {
 	 * @param url
 	 * @throws AppException
 	 */
-	private static String http_get(String url)
-			throws AppException {
+	private static String http_get(String url) throws AppException {
 		HttpClient httpClient = null;
 		GetMethod httpGet = null;
 
@@ -260,6 +259,77 @@ public class ApiClient {
 	}
 	
 	/**
+	 * 判断设备是否已绑定
+	 * @param imei
+	 * @param roomId
+	 * @return
+	 * @throws AppException
+	 */
+	public static String isDeviceBind(String imei, int roomId) throws AppException{
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("imei", imei);
+		params.put("roomId", roomId);
+		try {
+			return _post(URLs.URL_DEVICE_HAS_BIND, params, null);
+		} catch (Exception e) {
+			if (e instanceof AppException)
+				throw (AppException) e;
+			throw AppException.network(e);
+		}
+	}
+	
+	/**
+	 * 设备绑定
+	 * @param imei
+	 * @param number
+	 * @param roomId
+	 * @return
+	 * @throws AppException
+	 */
+	public static String deviceBind(String imei, int number, int roomId) throws AppException{
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("imei", imei);
+		params.put("number", number);
+		params.put("roomId", roomId);
+		try {
+			return _post(URLs.URL_DEVICE_BIND, params, null);
+		} catch (Exception e) {
+			if (e instanceof AppException)
+				throw (AppException) e;
+			throw AppException.network(e);
+		}
+	}
+	
+	/**
+	 * 获得分组列表
+	 * @param schoolId
+	 * @param roomId
+	 * @param teacherId
+	 * @param courseId
+	 * @param classId
+	 * @param className
+	 * @return
+	 * @throws AppException
+	 */
+	public static String getGroupList(int schoolId, int roomId,int teacherId, int courseId, int classId,
+			String className) throws AppException{
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("schoolId", schoolId);
+		params.put("roomId", roomId);
+		params.put("teacherId", teacherId);
+		params.put("courseId", courseId);
+		params.put("classId", classId);
+		params.put("className", className);
+		try {
+			return _post(URLs.URL_TEACHER_GROUP, params, null);
+		} catch (Exception e) {
+			if (e instanceof AppException)
+				throw (AppException) e;
+			throw AppException.network(e);
+		}
+	}
+	
+	/**
 	 * 注册学生走这个api
 	 * @param name
 	 * @param sex
@@ -290,35 +360,6 @@ public class ApiClient {
 		params.put("imei", imei);
 		try {
 			return _post(URLs.URL_STUDENT_LOGIN, params, null);
-		} catch (Exception e) {
-			if (e instanceof AppException)
-				throw (AppException) e;
-			throw AppException.network(e);
-		}
-	}
-	
-	/**
-	 * 获得分组列表
-	 * @param schoolId
-	 * @param roomId
-	 * @param teacherId
-	 * @param courseId
-	 * @param classId
-	 * @param className
-	 * @return
-	 * @throws AppException
-	 */
-	public static String getGroupList(int schoolId, int roomId,int teacherId, int courseId, int classId,
-			String className) throws AppException{
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("schoolId", schoolId);
-		params.put("roomId", roomId);
-		params.put("teacherId", teacherId);
-		params.put("courseId", courseId);
-		params.put("classId", classId);
-		params.put("className", className);
-		try {
-			return _post(URLs.URL_TEACHER_GROUP, params, null);
 		} catch (Exception e) {
 			if (e instanceof AppException)
 				throw (AppException) e;

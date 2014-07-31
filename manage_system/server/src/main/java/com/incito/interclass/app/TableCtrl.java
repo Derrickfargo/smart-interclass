@@ -1,5 +1,8 @@
 package com.incito.interclass.app;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,6 +11,7 @@ import com.incito.base.exception.AppException;
 import com.incito.interclass.business.DeviceService;
 import com.incito.interclass.business.TableService;
 import com.incito.interclass.common.BaseCtrl;
+import com.incito.interclass.entity.Table;
 
 @RestController
 @RequestMapping("/api/table")
@@ -22,6 +26,35 @@ public class TableCtrl extends BaseCtrl {
 	private DeviceService deviceService;
 
 	/**
+	 * 判断设备是否已绑定
+	 * 
+	 * @param roomId
+	 *            教室id
+	 * @param imei
+	 *            设备号imei
+	 * @return
+	 */
+	@RequestMapping(value = "/hasBind", produces = { "application/json;charset=UTF-8" })
+	public String hasBind(int roomId, String imei) {
+		try {
+			Map<String,Object> data = new HashMap<String,Object>();
+			Table table = tableService.hasBind(roomId, imei);
+			if (table == null || table.getId() == 0) {
+				data.put("isBind", Boolean.FALSE);
+				return renderJSONString(SUCCESS, data);
+			} else {
+				data.put("isBind", Boolean.TRUE);
+				data.put("desknum", table.getId());
+				return renderJSONString(SUCCESS, data);
+			}
+		} catch (AppException e) {
+			return renderJSONString(ADD_DEVICE_ERROR);
+		}
+	}
+	
+	 
+	
+	/**
 	 * 添加设备到课桌
 	 * 
 	 * @param roomId
@@ -32,14 +65,11 @@ public class TableCtrl extends BaseCtrl {
 	 *            设备号imei
 	 * @return
 	 */
-	@RequestMapping(value = "/addDevice", produces = { "application/json;charset=UTF-8" })
-	public String addDevice(int roomId, String number, String imei) {
+	@RequestMapping(value = "/bind", produces = { "application/json;charset=UTF-8" })
+	public String addDevice(int roomId, int number, String imei) {
 		try {
-			if (tableService.addDevice(roomId, number, imei)) {
-				return renderJSONString(ADD_DEVICE_ERROR);
-			} else {
-				return renderJSONString(SUCCESS);
-			}
+			int result = tableService.addDevice(roomId, number, imei);
+			return renderJSONString(result);
 		} catch (AppException e) {
 			return renderJSONString(ADD_DEVICE_ERROR);
 		}

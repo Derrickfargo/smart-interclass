@@ -20,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.CoreSocket;
@@ -34,6 +35,7 @@ public class MainFrame extends MouseAdapter{
 	private JPanel contentPane;
 	private JButton btnBegin;
 	private MainCenterPanel centerPanel;
+	private JScrollPane scrollPane;
 	private Application app = Application.getInstance();
 	private static MainFrame instance;
 	
@@ -48,10 +50,8 @@ public class MainFrame extends MouseAdapter{
 		frame.setVisible(show);
 	}
 	
-	public void refresh(){
-		if(frame.isVisible()){
-			centerPanel.refresh();
-		}
+	public void refresh() {
+		centerPanel.refresh();
 	}
 	
 	private MainFrame(){
@@ -167,7 +167,8 @@ public class MainFrame extends MouseAdapter{
 		centerPanel = new MainCenterPanel();
 		centerPanel.setOpaque(true);
 		centerPanel.setBackground(Color.WHITE);
-		JScrollPane scrollPane = new JScrollPane(centerPanel);
+		scrollPane = new JScrollPane(centerPanel);
+		scrollPane.getVerticalScrollBar().setUnitIncrement(50);
 		scrollPane.setBorder(null);
 		scrollPane.setBounds(127, 75, 878, 618);
 		//TODO 根据分组的多少动态调整
@@ -271,10 +272,6 @@ public class MainFrame extends MouseAdapter{
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
-		//按钮按下效果
-//		if(e.getSource()==btnLogin){
-//			btnLogin.setIcon(new ImageIcon("images/login/btn_login_pressed.png"));
-//		}
 		if (e.getSource() == btnMin) {
 			btnMin.setIcon(new ImageIcon("images/login/6.png"));
 		}
@@ -285,11 +282,6 @@ public class MainFrame extends MouseAdapter{
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		//按钮释放效果
-//		if(e.getSource()==btnLogin){
-//			ImageIcon btnImage = new ImageIcon("images/login/btn_login_normal.png");
-//			btnLogin.setIcon(btnImage);
-//		}
 		if(e.getSource()==btnMin){
 			btnMin.setIcon(new ImageIcon("images/login/5.png"));
 			frame.setExtendedState(JFrame.ICONIFIED);
@@ -302,10 +294,6 @@ public class MainFrame extends MouseAdapter{
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		//鼠标进入效果
-//		if(e.getSource()==btnLogin){
-//			btnLogin.setIcon(new ImageIcon("images/login/btn_login_pressed.png"));
-//		}
 		if(e.getSource()==btnMin){
 			btnMin.setIcon(new ImageIcon("images/login/5.png"));
 		}
@@ -316,11 +304,6 @@ public class MainFrame extends MouseAdapter{
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		//鼠标退出效果
-//		if(e.getSource()==btnLogin){
-//			ImageIcon btnImage = new ImageIcon("images/login/btn_login_normal.png");
-//			btnLogin.setIcon(btnImage);
-//		}
 		if(e.getSource()==btnMin){
 			btnMin.setIcon(new ImageIcon("images/login/4.png"));
 		}

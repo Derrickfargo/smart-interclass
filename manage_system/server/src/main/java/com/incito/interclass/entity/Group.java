@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class Group implements Serializable {
+public class Group implements Serializable,Comparable<Group> {
 
 	/**
 	 * 
@@ -22,6 +22,7 @@ public class Group implements Serializable {
 	private Date ctime;
 
 	private int tableNumber;
+	private List<Device> devices;
 	private List<Student> students;
 	private String teacherName;
 
@@ -113,6 +114,14 @@ public class Group implements Serializable {
 		this.teacherName = teacherName;
 	}
 
+	public List<Device> getDevices() {
+		return devices;
+	}
+
+	public void setDevices(List<Device> devices) {
+		this.devices = devices;
+	}
+
 	public List<Student> getStudents() {
 		return students;
 	}
@@ -143,5 +152,8 @@ public class Group implements Serializable {
 		return true;
 	}
 
-	
+	@Override
+	public int compareTo(Group group) {
+		return this.tableNumber - group.tableNumber;
+	}
 }
