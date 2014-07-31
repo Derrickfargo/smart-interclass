@@ -24,7 +24,9 @@ public class GroupListHandler extends MessageHandler {
 		String imei = data.getString("imei");
 		System.out.println("IMEI:" + imei);
 		//需要给组中所以的设备发送
-		sendResponse(service.getGroupByIMEI(imei));
+		String result = service.getGroupByIMEI(imei);
+		System.out.println(result);
+		sendResponse(result);
 	}
 
 	private void sendResponse(String json) {

@@ -5,6 +5,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 
+import cn.com.incito.server.exception.NoHandlerException;
 import cn.com.incito.server.utils.BufferUtils;
 
 /**
@@ -64,7 +65,12 @@ public class MessageParser {
 			if (parseMsgBody()) {
 				message.setChannel(channel);
 				// 执行消息命令
-				message.executeMessage();
+				try {
+					message.executeMessage();
+				} catch (NoHandlerException e) {
+					System.out.println("没有找到处理该消息的处理器!" + e.getMessage());
+					e.printStackTrace();
+				}
 			}
 		}
 	}

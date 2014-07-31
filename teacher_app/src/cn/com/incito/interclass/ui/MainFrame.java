@@ -20,7 +20,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
 
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.CoreSocket;
@@ -172,7 +171,7 @@ public class MainFrame extends MouseAdapter{
 		scrollPane.setBorder(null);
 		scrollPane.setBounds(127, 75, 878, 618);
 		//TODO 根据分组的多少动态调整
-		centerPanel.setPreferredSize(new Dimension(scrollPane.getWidth() - 50, scrollPane.getHeight() * 2));
+		centerPanel.setPreferredSize(new Dimension(scrollPane.getWidth() - 50, scrollPane.getHeight() * 3));
 		contentPane.add(scrollPane);
 		centerPanel.revalidate();
 		

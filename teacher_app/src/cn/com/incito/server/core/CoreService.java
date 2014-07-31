@@ -6,6 +6,7 @@ import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.ApiClient;
 import cn.com.incito.server.api.Application;
+import cn.com.incito.server.api.result.TeacherGroupResultData;
 import cn.com.incito.server.utils.JSONUtils;
 
 import com.alibaba.fastjson.JSON;
@@ -60,6 +61,32 @@ public class CoreService {
 		return JSONUtils.renderJSONString(2);// 失败
 	}
 	
+	public void refreshGroupList(){
+		int schoolId = app.getTeacher().getSchoolId();
+		int roomId = app.getRoom().getId();
+		int teacherId = app.getTeacher().getId();
+		int courseId = app.getCourse().getId();
+		int classId = app.getClasses().getId();
+		try {
+			final String result = ApiClient.getGroupList(schoolId, roomId, teacherId,courseId,classId,"");
+			if (result != null && !result.equals("")) {
+				JSONObject jsonObject = JSON.parseObject(result);
+				if(jsonObject.getIntValue("code") != 0){
+					return;
+				}
+				String data = jsonObject.getString("data");
+				TeacherGroupResultData resultData = JSON.parseObject(data,TeacherGroupResultData.class);
+				
+				//第二步获得班级、课程、设备、课桌、分组数据
+				Application.getInstance().initMapping(resultData.getDevices(),
+						resultData.getTables(), resultData.getGroups());
+				Application.getInstance().refreshMainFrame();
+			}
+			System.out.println(result);
+		} catch (AppException e) {
+			e.printStackTrace();
+		}
+	}
 	/**
 	 * 登陆
 	 * 

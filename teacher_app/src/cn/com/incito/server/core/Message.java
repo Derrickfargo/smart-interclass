@@ -3,6 +3,8 @@ package cn.com.incito.server.core;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
+import cn.com.incito.server.exception.NoHandlerException;
+
 /**
  * 通用消息类
  * 
@@ -86,7 +88,10 @@ public class Message {
 		this.channel = channel;
 	}
 
-	public void executeMessage() {
+	public void executeMessage() throws NoHandlerException{
+		if (handler == null) {
+			throw new NoHandlerException();
+		}
 		handler.handleMessage(this);
 	}
 }

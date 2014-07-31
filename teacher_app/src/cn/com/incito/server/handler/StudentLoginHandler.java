@@ -29,13 +29,16 @@ public class StudentLoginHandler extends MessageHandler {
         switch (type){
         case 0:
         	String result = service.login(uname, sex, number, imei);
+        	System.out.println(result);
     		sendResponse(result);
         	break;
         case 1:
         	result = service.logout(uname, sex, number, imei);
+        	System.out.println(result);
     		sendResponse(result);
         case 2:
         	result = service.register(uname, sex, number, imei);
+        	System.out.println(result);
     		sendResponse(result);
         	break;
         }

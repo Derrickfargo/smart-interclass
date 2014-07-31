@@ -40,10 +40,10 @@ public class TableCtrl extends BaseCtrl {
 			Map<String,Object> data = new HashMap<String,Object>();
 			Table table = tableService.hasBind(roomId, imei);
 			if (table == null || table.getId() == 0) {
-				data.put("isBind", Boolean.FALSE);
+				data.put("isbind", Boolean.FALSE);
 				return renderJSONString(SUCCESS, data);
 			} else {
-				data.put("isBind", Boolean.TRUE);
+				data.put("isbind", Boolean.TRUE);
 				data.put("desknum", table.getId());
 				return renderJSONString(SUCCESS, data);
 			}

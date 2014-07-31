@@ -46,6 +46,8 @@ public class Application {
 	 * tableId和Table的对应关系(key:tableId,value:Table)，教师登陆完后初始化
 	 */
 	private Map<Integer, Table> tableMap;
+	
+	private Map<Integer,Table> tableNumberMap;
 
 	/**
 	 * Device id和Table的对应关系(key:deviceId,value:Table)，教师登陆完后初始化
@@ -66,6 +68,7 @@ public class Application {
 		loginedStudent = new HashMap<String, Student>();
 		imeiDevice = new HashMap<String, Device>();
 		tableMap = new HashMap<Integer, Table>();
+		tableNumberMap = new HashMap<Integer, Table>();
 		deviceTable = new HashMap<Integer, Table>();
 		tableDevice = new HashMap<Integer, List<Device>>();
 		tableGroup = new HashMap<Integer, Group>();
@@ -91,6 +94,7 @@ public class Application {
 			List<Group> groups) {
 		this.initImeiDevice(devices);
 		this.initTableMap(tables);
+		this.initTableNumberMap(tables);
 		this.initTableGroup(groups);
 		this.initDeviceTable();
 		this.initTableDevice();
@@ -103,6 +107,7 @@ public class Application {
 	 */
 	private void initImeiDevice(List<Device> devices) {
 		deviceList = devices;
+		imeiDevice.clear();
 		for (Device device : devices) {
 			imeiDevice.put(device.getImei(), device);
 		}
@@ -115,8 +120,27 @@ public class Application {
 	 */
 	private void initTableMap(List<Table> tables) {
 		tableList = tables;
+		tableMap.clear();
 		for (Table table : tables) {
 			tableMap.put(table.getId(), table);
+		}
+	}
+	
+	/**
+	 * 初始化课桌映射
+	 * 
+	 * @param tables
+	 */
+	private void initTableNumberMap(List<Table> tables) {
+		tableList = tables;
+		tableNumberMap.clear();
+		for (int i = 0; i < 16; i++) {
+			Table table = new Table();
+			table.setNumber(i + 1);
+			tableNumberMap.put(table.getNumber(), table);
+		}
+		for (Table table : tables) {
+			tableNumberMap.put(table.getNumber(), table);
 		}
 	}
 
@@ -127,6 +151,7 @@ public class Application {
 	 */
 	private void initTableGroup(List<Group> groups) {
 		groupList = groups;
+		tableGroup.clear();
 		for (Group group : groups) {
 			tableGroup.put(group.getTableId(), group);
 		}
@@ -136,6 +161,7 @@ public class Application {
 	 * 初始化设备课桌映射
 	 */
 	private void initDeviceTable() {
+		deviceTable.clear();
 		for (Device device : deviceList) {
 			Table table = tableMap.get(device.getTableId());
 			deviceTable.put(device.getId(), table);
@@ -146,6 +172,7 @@ public class Application {
 	 * 初始化课桌设备映射
 	 */
 	private void initTableDevice() {
+		tableDevice.clear();
 		for (Table table : tableList) {
 			List<Device> deviceList = tableDevice.get(table.getId());
 			if (deviceList == null) {
@@ -258,6 +285,14 @@ public class Application {
 
 	public Map<Integer, Table> getTableMap() {
 		return tableMap;
+	}
+
+	public Map<Integer, Table> getTableNumberMap() {
+		return tableNumberMap;
+	}
+
+	public void setTableNumberMap(Map<Integer, Table> tableNumberMap) {
+		this.tableNumberMap = tableNumberMap;
 	}
 
 	public Map<Integer, Table> getDeviceTable() {

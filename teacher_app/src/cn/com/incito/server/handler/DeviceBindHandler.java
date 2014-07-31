@@ -21,6 +21,7 @@ public class DeviceBindHandler extends MessageHandler {
 		String imei = data.getString("imei");
 		int number = data.getIntValue("number");
 		String result = service.deviceBind(imei, number);
+		service.refreshGroupList();
 		sendResponse(result);
 	}
 
