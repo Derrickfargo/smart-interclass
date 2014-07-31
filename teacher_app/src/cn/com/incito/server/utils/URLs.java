@@ -24,6 +24,11 @@ public class URLs {
 	public final static String URL_STUDENT_LOGIN = URL_API_HOST + "api/student/login";
 	
 	/**
+	 * 判断设备是否已绑定
+	 */
+	public final static String URL_DEVICE_HAS_BIND = URL_API_HOST + "api/table/hasBind";
+	
+	/**
 	 * 绑定课桌
 	 */
 	public final static String URL_DEVICE_BIND = URL_API_HOST + "api/table/bind";

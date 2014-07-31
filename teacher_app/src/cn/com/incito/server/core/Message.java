@@ -40,6 +40,11 @@ public class Message {
 	 * 设备绑定消息
 	 */
 	public static final Byte MESSAGE_DEVICE_BIND = 0x03;
+	
+	/**
+	 * 判断设备是否绑定
+	 */
+	public static final Byte MESSAGE_DEVICE_HAS_BIND = 0x04;
 
 	private byte msgID;
 	private int msgSize;

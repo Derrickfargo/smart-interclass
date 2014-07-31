@@ -19,6 +19,32 @@ public class CoreService {
 		app.refreshMainFrame();// 更新UI
 	}
 	
+	/**
+	 * 判断设备是否已绑定
+	 * @param imei
+	 * @return
+	 */
+	public String isDeviceBind(String imei) {
+		try {
+			int roomId = app.getRoom().getId();
+			final String result = ApiClient.isDeviceBind(imei, roomId);
+			if (result != null && !result.equals("")) {
+				return result;
+			}
+		} catch (Exception e) {
+			if (e instanceof AppException) {
+				return JSONUtils.renderJSONString(1);// 失败
+			}
+		}
+		return JSONUtils.renderJSONString(2);// 失败
+	}
+	
+	/**
+	 * 绑定设备
+	 * @param imei
+	 * @param number
+	 * @return
+	 */
 	public String deviceBind(String imei, int number) {
 		try {
 			int roomId = app.getRoom().getId();

@@ -38,15 +38,19 @@ public class TableService {
 	}
 
 	@Transactional(rollbackFor = AppException.class)
-	public boolean addDevice(int roomId, int number, String imei) throws AppException {
-		Table table = tableMapper.getTableByNumber(roomId, number);
+	public int addDevice(int roomId, int number, String imei) throws AppException {
+		Table table = tableMapper.getTableByIMEI(roomId, imei);
+		if(table != null && table.getId() > 0){
+			return 1;//该pad已绑定课桌
+		}
+		table = tableMapper.getTableByNumber(roomId, number);
 		if (table == null || table.getId() == 0) {
 			table = new Table();
 			table.setRoomId(roomId);
 			table.setNumber(number);
 			tableMapper.save(table);
 			if (table.getId() <= 0) {
-				throw AppException.database(0);
+				return 2;//创建课桌未成功
 			}
 		}
 		Device device = new Device();
@@ -54,8 +58,12 @@ public class TableService {
 		device.setTableId(table.getId());
 		deviceMapper.save(device);
 		if (device.getId() <= 0) {
-			throw AppException.database(0);
+			return 3;//绑定pad未成功
 		}
-		return true;
+		return 0;
+	}
+	
+	public Table hasBind(int roomId, String imei) throws AppException {
+		return tableMapper.getTableByIMEI(roomId, imei);
 	}
 }

@@ -17,4 +17,7 @@ public interface TableMapper {
 	
 	Table getTableByNumber(@Param("roomId") int roomId,
 			@Param("number") int number);
+	
+	Table getTableByIMEI(@Param("roomId") int roomId,
+			@Param("imei") String imei);
 }

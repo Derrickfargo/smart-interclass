@@ -17,7 +17,7 @@
 	</resultMap>
 	<select id="getTableList" resultMap="TableDeviceMap">
 		SELECT	
-			id,room_id, number,ctime
+			id,room_id AS roomId, number,ctime
 		FROM 
 			tb_table
 		ORDER BY
@@ -26,7 +26,7 @@
 	
 	<select id="getTableListByRoomId" resultMap="TableDeviceMap" parameterType="java.lang.Integer">
 		SELECT	
-			id,room_id, number,ctime
+			id,room_id AS roomId, number,ctime
 		FROM 
 			tb_table
 		WHERE
@@ -37,11 +37,22 @@
 	
 	<select id="getTableByNumber" resultType="com.incito.interclass.entity.Table" parameterType="java.util.Map">
 		SELECT	
-			id,room_id, number,ctime
+			id,room_id AS roomId, number,ctime
 		FROM 
 			tb_table
 		WHERE
 			number = #{number} AND room_id = #{roomId}
+	</select>
+	
+	<select id="getTableByIMEI" resultType="com.incito.interclass.entity.Table" parameterType="java.util.Map">
+		SELECT	
+			tb_table.id,tb_table.room_id AS roomId, tb_table.number,tb_table.ctime
+		FROM 
+			tb_table
+		INNER JOIN
+			tb_device ON tb_device.table_id = tb_table.id
+		WHERE
+			tb_table.room_id = #{roomId} AND tb_device.imei = #{imei}
 	</select>
 
 	<insert id="save" parameterType="com.incito.interclass.entity.Table" useGeneratedKeys="true" keyProperty="id">

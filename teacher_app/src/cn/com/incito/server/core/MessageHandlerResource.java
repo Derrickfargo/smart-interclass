@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.com.incito.server.handler.DeviceBindHandler;
+import cn.com.incito.server.handler.DeviceHasBindHandler;
 import cn.com.incito.server.handler.GroupListHandler;
 import cn.com.incito.server.handler.HandShakeHandler;
 import cn.com.incito.server.handler.HeartbeatHandler;
@@ -37,6 +38,8 @@ public final class MessageHandlerResource {
 		handlerResources.put(Message.MESSAGE_GROUP_LIST, GroupListHandler.class);
 		//学生登陆消息
 		handlerResources.put(Message.MESSAGE_STUDENT_LOGIN, StudentLoginHandler.class);
+		//设备是否绑定消息
+		handlerResources.put(Message.MESSAGE_DEVICE_HAS_BIND, DeviceHasBindHandler.class);
 		//设备绑定消息
 		handlerResources.put(Message.MESSAGE_DEVICE_BIND, DeviceBindHandler.class);
 	}
