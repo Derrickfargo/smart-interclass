@@ -1,7 +1,7 @@
 package cn.com.incito.classroom.constants;
 
 /**
- * Created by JOHN on 2014/7/23.
+ * Created by popoy on 2014/7/23.
  */
 public class Constant {
     public static final int PORT = 9001;

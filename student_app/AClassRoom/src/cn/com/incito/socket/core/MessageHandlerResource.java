@@ -3,11 +3,6 @@ package cn.com.incito.socket.core;
 import java.util.HashMap;
 import java.util.Map;
 
-import cn.com.incito.classroom.ui.activity.BindDeskActivity;
-import cn.com.incito.socket.handler.BindDeskHandler;
-import cn.com.incito.socket.handler.DeviceHasBindHandler;
-import cn.com.incito.socket.handler.SytemInitHandler1;
-
 /**
  * 消息处理器列表
  * 该类用来维护消息和消息处理器的关系

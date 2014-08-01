@@ -176,7 +176,7 @@ public class TANetworkStateReceiver extends BroadcastReceiver
 	/**
 	 * 注册网络连接观察者
 	 * 
-	 * @param observerKey
+	 * @param observer
 	 *            observerKey
 	 */
 	public static void registerObserver(TANetChangeObserver observer)
@@ -191,7 +191,7 @@ public class TANetworkStateReceiver extends BroadcastReceiver
 	/**
 	 * 注销网络连接观察者
 	 * 
-	 * @param resID
+	 * @param observer
 	 *            observerKey
 	 */
 	public static void removeRegisterObserver(TANetChangeObserver observer)

@@ -4,8 +4,6 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.Random;
 
-import cn.com.incito.classroom.vo.Customer;
-
 public class Utils {
 
     public static final int MARK_INT = 0xFF;
@@ -56,23 +54,6 @@ public class Utils {
                 break;
         }
         return data;
-    }
-
-    public static byte[] getCustomerInfo(Map<String, Customer> v) throws Exception {
-        StringBuffer sb = null;
-        if (v != null && v.size() > 0) {
-            sb = new StringBuffer();
-            Customer c;
-            int count = 0;
-            for (String key : v.keySet()) {
-                c = v.get(key);
-                sb.append(c.toString());
-                if ((count++) != v.size() - 1) {
-                    sb.append(CUSTOMER_MARK);
-                }
-            }
-        }
-        return sb.toString().getBytes();
     }
 
     public static String getRandomNum(int len) {

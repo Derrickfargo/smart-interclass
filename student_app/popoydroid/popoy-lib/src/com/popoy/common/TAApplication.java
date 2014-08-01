@@ -24,7 +24,6 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 
-import com.popoy.tookit.netstate.TANetWorkUtil.netType;
 import com.popoy.command.TACommandExecutor;
 import com.popoy.command.TAICommand;
 import com.popoy.command.TAIdentityCommand;
@@ -36,10 +35,11 @@ import com.popoy.mvc.common.TAIResponseListener;
 import com.popoy.mvc.common.TARequest;
 import com.popoy.mvc.common.TAResponse;
 import com.popoy.tookit.cache.TAFileCache;
+import com.popoy.tookit.cache.TAFileCache.TACacheParams;
 import com.popoy.tookit.layoutloader.TAILayoutLoader;
 import com.popoy.tookit.layoutloader.TALayoutLoader;
 import com.popoy.tookit.netstate.TANetChangeObserver;
-import com.popoy.tookit.netstate.TANetWorkUtil;
+import com.popoy.tookit.netstate.TANetWorkUtil.netType;
 import com.popoy.tookit.netstate.TANetworkStateReceiver;
 import com.popoy.tookit.resoperate.TAIConfig;
 import com.popoy.tookit.resoperate.TAPreferenceConfig;
@@ -84,7 +84,9 @@ public class TAApplication extends Application implements TAIResponseListener {
      * ThinkAndroid 文件缓存
      */
     private TAFileCache mFileCache;
-    /** ThinkAndroid数据库链接池 */
+    /**
+     * ThinkAndroid数据库链接池
+     */
 //    private TASQLiteDatabasePool mSQLiteDatabasePool;
     /**
      * ThinkAndroid 应用程序运行Activity管理器
@@ -105,7 +107,6 @@ public class TAApplication extends Application implements TAIResponseListener {
     }
 
     private void doOncreate() {
-        // TODO Auto-generated method stub
         this.application = this;
         // 注册App异常崩溃处理器
         Thread.setDefaultUncaughtExceptionHandler(getUncaughtExceptionHandler());
@@ -113,12 +114,14 @@ public class TAApplication extends Application implements TAIResponseListener {
         taNetChangeObserver = new TANetChangeObserver() {
             @Override
             public void onConnect(netType type) {
+                // TODO Auto-generated method stub
                 super.onConnect(type);
                 TAApplication.this.onConnect(type);
             }
 
             @Override
             public void onDisConnect() {
+                // TODO Auto-generated method stub
                 super.onDisConnect();
                 TAApplication.this.onDisConnect();
 
@@ -437,7 +440,7 @@ public class TAApplication extends Application implements TAIResponseListener {
 
     public TAFileCache getFileCache() {
         if (mFileCache == null) {
-            TAFileCache.TACacheParams cacheParams = new TAFileCache.TACacheParams(this, SYSTEMCACHE);
+            TACacheParams cacheParams = new TACacheParams(this, SYSTEMCACHE);
             TAFileCache fileCache = new TAFileCache(cacheParams);
             application.setFileCache(fileCache);
 
@@ -486,20 +489,20 @@ public class TAApplication extends Application implements TAIResponseListener {
         handleResponse(response);
     }
 
-//    public TASQLiteDatabasePool getSQLiteDatabasePool()
-//    {
-//        if (mSQLiteDatabasePool == null)
-//        {
-//            mSQLiteDatabasePool = TASQLiteDatabasePool.getInstance(this);
-//            mSQLiteDatabasePool.createPool();
-//        }
-//        return mSQLiteDatabasePool;
-//    }
-//
-//    public void setSQLiteDatabasePool(TASQLiteDatabasePool sqliteDatabasePool)
-//    {
-//        this.mSQLiteDatabasePool = sqliteDatabasePool;
-//    }
+//	public TASQLiteDatabasePool getSQLiteDatabasePool()
+//	{
+//		if (mSQLiteDatabasePool == null)
+//		{
+//			mSQLiteDatabasePool = TASQLiteDatabasePool.getInstance(this);
+//			mSQLiteDatabasePool.createPool();
+//		}
+//		return mSQLiteDatabasePool;
+//	}
+
+//	public void setSQLiteDatabasePool(TASQLiteDatabasePool sqliteDatabasePool)
+//	{
+//		this.mSQLiteDatabasePool = sqliteDatabasePool;
+//	}
 
     public TAAppManager getAppManager() {
         if (mAppManager == null) {

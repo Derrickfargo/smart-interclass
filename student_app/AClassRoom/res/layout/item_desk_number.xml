@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="80dp"
+    android:layout_height="80dp"
     android:id="@+id/rlayout"
-    android:orientation="vertical"
-    android:background="@drawable/bg_desk_num_nomal">
-
+    android:orientation="vertical">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/bg_desk_num"/>
     <TextView
         android:id="@+id/tv_num_name"
         android:layout_width="wrap_content"
@@ -13,6 +16,5 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textColor="@color/white"
-        android:textSize="18sp"
-        android:text="test" />
+        android:textSize="28sp" />
 </RelativeLayout>

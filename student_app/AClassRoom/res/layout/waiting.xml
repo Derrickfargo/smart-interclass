@@ -11,24 +11,17 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:background="#86222222">-->
-
-        <!--</LinearLayout>-->
-
         <GridView
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="50dp"
             android:layout_marginLeft="120dp"
             android:layout_marginRight="120dp"
             android:id="@+id/gv_group_member"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
             android:gravity="center"
             android:layout_weight="1"
-            android:columnWidth="260dp"
+            android:columnWidth="230dp"
             android:horizontalSpacing="10dp"
             android:verticalSpacing="10dp"
             android:numColumns="auto_fit"
@@ -47,7 +40,8 @@
             android:id="@+id/llayout1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <EditText
                 android:id="@+id/et_stname"
@@ -107,6 +101,6 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:layout_gravity="center"
-            android:src="@drawable/btn_join" />
+            android:src="@drawable/btn_join_normal" />
     </LinearLayout>
 </LinearLayout>
