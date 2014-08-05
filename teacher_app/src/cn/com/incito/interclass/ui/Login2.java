@@ -27,7 +27,7 @@ import cn.com.incito.interclass.ui.widget.Item;
 import cn.com.incito.server.api.ApiClient;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.api.result.TeacherGroupResultData;
-import cn.com.incito.server.core.AppException;
+import cn.com.incito.server.exception.AppException;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;

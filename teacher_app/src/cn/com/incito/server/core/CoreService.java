@@ -7,6 +7,7 @@ import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.ApiClient;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.api.result.TeacherGroupResultData;
+import cn.com.incito.server.exception.AppException;
 import cn.com.incito.server.utils.JSONUtils;
 
 import com.alibaba.fastjson.JSON;
