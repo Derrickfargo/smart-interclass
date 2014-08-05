@@ -7,7 +7,6 @@ import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -32,7 +31,6 @@ import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.adapter.GroupNumAdapter;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.classroom.ui.dialog.LoadingDialog;
 import cn.com.incito.classroom.vo.LoginReqVo;
 import cn.com.incito.classroom.vo.LoginRes2Vo;
 import cn.com.incito.classroom.vo.LoginResVo;
@@ -43,6 +41,7 @@ import cn.com.incito.socket.core.MessageInfo;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
+import cn.com.incito.wisdom.uicomp.widget.dialog.ProgressiveDialog;
 
 /**
  * 用户其启动界面
@@ -68,6 +67,7 @@ public class WaitingActivity extends BaseActivity {
     TranslateAnimation mShowAction;
     TranslateAnimation mHiddenAction;
     InputMethodManager imm;
+    private ProgressiveDialog mProgressDialog;
     /**
      * 0只显示增加按钮，1显示姓名2显示姓名、学号、性别
      */
@@ -76,6 +76,7 @@ public class WaitingActivity extends BaseActivity {
     @Override
     protected void onAfterOnCreate(Bundle savedInstanceState) {
         super.onAfterOnCreate(savedInstanceState);
+        mProgressDialog = new ProgressiveDialog(this);
         initViews();
         initListener();
         list = new ArrayList<LoginRes2Vo>();
@@ -126,7 +127,8 @@ public class WaitingActivity extends BaseActivity {
                         imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
 
                         addState = 0;
-                        LoadingDialog.show(WaitingActivity.this, "");
+                        mProgressDialog.setMessage(R.string.load_dialog_default_text);
+                        mProgressDialog.show();
                         registerStudent();
                     }
 
@@ -156,7 +158,8 @@ public class WaitingActivity extends BaseActivity {
         gv_group_member.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                LoadingDialog.show(WaitingActivity.this, "");
+                mProgressDialog.setMessage(R.string.load_dialog_default_text);
+                mProgressDialog.show();
                 if (list.get(position).isLogin() == false) {
                     login(list.get(position).getName(), list.get(position).getNumber(), list.get(position).getSex());
                 } else {
@@ -274,7 +277,7 @@ public class WaitingActivity extends BaseActivity {
             switch (msg.what) {
                 //登陆
                 case 1: {
-                    LoadingDialog.hide();
+                    mProgressDialog.hide();
                     JSONObject jsonObject = (JSONObject) msg.getData().getSerializable("data");
                     if (!"0".equals(jsonObject.getString("code"))) {
                         return;
@@ -292,7 +295,7 @@ public class WaitingActivity extends BaseActivity {
                 }
                 //取消登陆
                 case 2: {
-                    LoadingDialog.hide();
+                    mProgressDialog.hide();
                     JSONObject jsonObject = (JSONObject) msg.getData().getSerializable("data");
                     if (!"0".equals(jsonObject.getString("code"))) {
                         return;
@@ -310,7 +313,7 @@ public class WaitingActivity extends BaseActivity {
                 }
                 //注册
                 case 3: {
-                    LoadingDialog.hide();
+                    mProgressDialog.hide();
                     JSONObject jsonObject = (JSONObject) msg.getData().getSerializable("data");
                     if (!"0".equals(jsonObject.getString("code"))) {
                         return;
@@ -335,7 +338,7 @@ public class WaitingActivity extends BaseActivity {
                 }
                 //获取分组
                 case 4: {
-                    LoadingDialog.hide();
+                    mProgressDialog.hide();
                     JSONObject jsonObject = (JSONObject) msg.getData().getSerializable("data");
                     if (!"0".equals(jsonObject.getString("code"))) {
                         return;
