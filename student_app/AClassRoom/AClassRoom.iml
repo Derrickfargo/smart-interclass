@@ -13,7 +13,7 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 19 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="popoy-wigetlib" exported="" />
+    <orderEntry type="module" module-name="WisdomSdk" exported="" />
     <orderEntry type="library" exported="" name="libs" level="project" />
   </component>
 </module>

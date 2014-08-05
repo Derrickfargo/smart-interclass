@@ -7,6 +7,7 @@ import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -21,23 +22,21 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.activeandroid.util.Log;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.popoy.annotation.TAInjectView;
-import com.popoy.common.TAActivity;
-import com.popoy.tookit.helper.ToastHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.adapter.GroupNumAdapter;
+import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.ui.dialog.LoadingDialog;
 import cn.com.incito.classroom.vo.LoginReqVo;
 import cn.com.incito.classroom.vo.LoginRes2Vo;
 import cn.com.incito.classroom.vo.LoginResVo;
+import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.MessageHandler;
 import cn.com.incito.socket.core.MessageInfo;
@@ -52,25 +51,17 @@ import cn.com.incito.socket.utils.BufferUtils;
  * @author liubo
  * @version V1.0
  */
-public class WaitingActivity extends TAActivity {
+public class WaitingActivity extends BaseActivity {
     public static final String TAG = "WaitingActivity";
     //自定义的弹出框类
     EditText et_stname;
-    @TAInjectView(id = R.id.et_stnumber)
     EditText et_stnumber;
-    @TAInjectView(id = R.id.btn_join)
     ImageButton btn_join;
-    @TAInjectView(id = R.id.gender_group)
     RadioGroup gender_group;
-    @TAInjectView(id = R.id.female)
     RadioButton female;
-    @TAInjectView(id = R.id.male)
     RadioButton male;
-    @TAInjectView(id = R.id.gv_group_member)
     GridView gv_group_member;
-    @TAInjectView(id = R.id.llayout1)
     LinearLayout llayout1;
-    @TAInjectView(id = R.id.llayout2)
     LinearLayout llayout2;
     List<LoginRes2Vo> list;
     GroupNumAdapter mAdapter;
@@ -85,6 +76,8 @@ public class WaitingActivity extends TAActivity {
     @Override
     protected void onAfterOnCreate(Bundle savedInstanceState) {
         super.onAfterOnCreate(savedInstanceState);
+        initViews();
+        initListener();
         list = new ArrayList<LoginRes2Vo>();
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         mShowAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
@@ -99,6 +92,22 @@ public class WaitingActivity extends TAActivity {
 //        llayout1.setVisibility(View.GONE);
         mAdapter = new GroupNumAdapter(WaitingActivity.this, list);
         et_stnumber.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
+        getGroupUserList();
+    }
+
+    private void initViews() {
+        et_stnumber = (EditText) findViewById(R.id.et_stnumber);
+        btn_join = (ImageButton) findViewById(R.id.btn_join);
+        gender_group = (RadioGroup) findViewById(R.id.gender_group);
+        female = (RadioButton) findViewById(R.id.female);
+        male = (RadioButton) findViewById(R.id.male);
+        gv_group_member = (GridView) findViewById(R.id.gv_group_member);
+        llayout1 = (LinearLayout) findViewById(R.id.llayout1);
+        llayout2 = (LinearLayout) findViewById(R.id.llayout2);
+        et_stname = (EditText) findViewById(R.id.et_stname);
+    }
+
+    private void initListener() {
         btn_join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,8 +134,6 @@ public class WaitingActivity extends TAActivity {
 
             }
         });
-        et_stname = (EditText) findViewById(R.id.et_stname);
-
         et_stname.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -146,7 +153,6 @@ public class WaitingActivity extends TAActivity {
                 }
             }
         });
-
         gv_group_member.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -158,9 +164,7 @@ public class WaitingActivity extends TAActivity {
                 }
             }
         });
-        getGroupUserList();
     }
-
 
     @Override
     protected void onStart() {
@@ -170,7 +174,6 @@ public class WaitingActivity extends TAActivity {
 
     @Override
     public void onBackPressed() {
-        exitApp();
     }
 
     /**
@@ -192,7 +195,7 @@ public class WaitingActivity extends TAActivity {
                 Message message = new Message();
                 message.what = 1;
                 message.setData(data);
-                Log.i(message.toString());
+//                Log.i(message.toString());
                 mHandler.sendMessage(message);
             }
         });

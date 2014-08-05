@@ -1,5 +1,6 @@
 package cn.com.incito.classroom.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,16 +11,15 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 
 import com.alibaba.fastjson.JSONObject;
-import com.popoy.annotation.TAInjectView;
-import com.popoy.common.TAActivity;
-import com.popoy.tookit.helper.ToastHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.adapter.DeskNumberAdapter;
+import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.MessageHandler;
 import cn.com.incito.socket.core.MessageInfo;
@@ -30,16 +30,16 @@ import cn.com.incito.socket.utils.BufferUtils;
 /**
  * Created by popoy on 2014/7/28.
  */
-public class BindDeskActivity extends TAActivity {
-    @TAInjectView(id = R.id.gv_desk_number)
+public class BindDeskActivity extends BaseActivity {
     private GridView gv_desk_number;
-    @TAInjectView(id = R.id.btn_join)
     private ImageButton btn_join;
     private int currentPos;
 
     @Override
     protected void onAfterOnCreate(Bundle savedInstanceState) {
         super.onAfterOnCreate(savedInstanceState);
+        initViews();
+        initEvent();
         List<String> list = new ArrayList<String>();
         for (int i = 0; i < 12; i++) {
             list.add(String.valueOf(i + 1));
@@ -52,6 +52,19 @@ public class BindDeskActivity extends TAActivity {
                 currentPos = i + 1;
             }
         });
+
+    }
+
+    @Override
+    public void onBackPressed() {
+    }
+
+    private void initViews() {
+        gv_desk_number = (GridView) findViewById(R.id.gv_group_member);
+        btn_join = (ImageButton) findViewById(R.id.btn_join);
+    }
+
+    private void initEvent() {
         btn_join.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {
@@ -79,10 +92,6 @@ public class BindDeskActivity extends TAActivity {
                                     }
         );
     }
-    @Override
-    public void onBackPressed() {
-        exitApp();
-    }
 
     private Handler mHandler = new Handler() {
 
@@ -94,7 +103,9 @@ public class BindDeskActivity extends TAActivity {
                     if (!"0".equals(jsonObject.getString("code"))) {
                         return;
                     } else {
-                        doActivity(R.string.waitingactivity);
+                        startActivity(new Intent(BindDeskActivity.this,
+                                WaitingActivity.class));
+                        finish();
                     }
                     break;
                 }

@@ -33,7 +33,7 @@ public class ChannelEncoder extends SimpleChannelHandler {
     @Override
     public void writeRequested(ChannelHandlerContext ctx, MessageEvent event) throws Exception {
 
-        PowerManager.WakeLock wakeLock = WakeLockWrapper.getWakeLockInstance(MyApplication.getApplication(), ChannelEncoder.class.getSimpleName());
+        PowerManager.WakeLock wakeLock = WakeLockWrapper.getWakeLockInstance(MyApplication.getInstance(), ChannelEncoder.class.getSimpleName());
         wakeLock.acquire();
 
         try {

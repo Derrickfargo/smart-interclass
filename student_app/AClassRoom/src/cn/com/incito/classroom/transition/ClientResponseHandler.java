@@ -1,6 +1,6 @@
 package cn.com.incito.classroom.transition;
 
-import com.activeandroid.util.Log;
+import android.util.Log;
 
 import java.util.concurrent.atomic.AtomicLong;
 

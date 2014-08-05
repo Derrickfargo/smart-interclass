@@ -69,7 +69,7 @@ public class ChannelDecoder extends FrameDecoder {
     @Override
     protected Object decode(ChannelHandlerContext ctx, Channel channel, ChannelBuffer buffer) throws JSONException {
 
-        PowerManager.WakeLock wakeLock = WakeLockWrapper.getWakeLockInstance(MyApplication.getApplication(), ChannelDecoder.class.getSimpleName());
+        PowerManager.WakeLock wakeLock = WakeLockWrapper.getWakeLockInstance(MyApplication.getInstance(), ChannelDecoder.class.getSimpleName());
         wakeLock.acquire();
 
         try {

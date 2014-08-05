@@ -3,9 +3,8 @@ package cn.com.incito.classroom;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.popoy.common.TAActivity;
-
 import cn.com.incito.classroom.R;
+import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.canvas.PaletteView;
 
 import android.app.Activity;
@@ -22,7 +21,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
-public class Canvas1Activity extends TAActivity {
+public class Canvas1Activity extends BaseActivity {
     PaletteView paletteView = null;
 
     ListView picList = null;
@@ -65,7 +64,6 @@ public class Canvas1Activity extends TAActivity {
             }
         });
     }
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 

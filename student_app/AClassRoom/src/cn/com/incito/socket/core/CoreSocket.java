@@ -11,8 +11,7 @@ import java.nio.channels.SocketChannel;
 import java.util.Set;
 
 import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.classroom.constants.Constant;
-import cn.com.incito.classroom.transition.MessageListener;
+import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
@@ -107,7 +106,7 @@ public final class CoreSocket extends Thread {
             socketChannel.configureBlocking(false);
             selector = Selector.open();
             socketChannel.register(selector, SelectionKey.OP_CONNECT);
-            socketChannel.connect(new InetSocketAddress(Constant.IP, Constant.PORT));
+            socketChannel.connect(new InetSocketAddress(Constants.IP, Constants.PORT));
             while (true) {//轮询监听客户端上注册事件的发生
                 selector.select();
                 Set<SelectionKey> keySet = selector.selectedKeys();

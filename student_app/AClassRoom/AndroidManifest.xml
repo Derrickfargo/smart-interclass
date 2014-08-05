@@ -37,16 +37,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--<activity-->
-        <!--android:name="cn.com.incito.classroom.ui.activity.Home"-->
-        <!--android:configChanges="keyboardHidden|orientation"-->
-        <!--android:launchMode="singleInstance">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="android.intent.action.MAIN" />-->
-        <!--<category android:name="android.intent.category.HOME" />-->
-        <!--<category android:name="android.intent.category.DEFAULT" />-->
-        <!--</intent-filter>-->
-        <!--</activity>-->
         <activity
             android:name="cn.com.incito.classroom.Canvas1Activity"
             android:screenOrientation="landscape" />
@@ -60,12 +50,7 @@
 
         <service android:name="cn.com.incito.classroom.service.MessageService" />
         <service android:name="cn.com.incito.classroom.service.SocketService" />
-        <receiver android:name="com.popoy.tookit.netstate.TANetworkStateReceiver" >
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-                <action android:name="ta.android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-        </receiver>
+
     </application>
 
 </manifest>
