@@ -88,7 +88,7 @@ public class Message {
 		this.channel = channel;
 	}
 
-	public void executeMessage() throws NoHandlerException{
+	public void handleMessage() throws NoHandlerException{
 		if (handler == null) {
 			throw new NoHandlerException();
 		}
