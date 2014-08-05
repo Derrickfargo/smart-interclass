@@ -18,9 +18,9 @@
   <dependencies>
 		<!-- 依赖parent项目 -->
     <dependency>
-      <groupId>com.incito.base</groupId>
-			<artifactId>parent</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+      	<groupId>com.incito.base</groupId>
+		<artifactId>parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
     </dependency>
     
 		<!-- 在这里添加项目个性化依赖 -->
