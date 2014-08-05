@@ -25,7 +25,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.popoy.annotation.TAInjectView;
 import com.popoy.common.TAActivity;
-import com.popoy.common.core.AsyncTask;
 import com.popoy.tookit.helper.ToastHelper;
 
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ import java.util.List;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.adapter.GroupNumAdapter;
 import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.classroom.utils.HandleMessageListener;
+import cn.com.incito.classroom.ui.dialog.LoadingDialog;
 import cn.com.incito.classroom.vo.LoginReqVo;
 import cn.com.incito.classroom.vo.LoginRes2Vo;
 import cn.com.incito.classroom.vo.LoginResVo;
@@ -72,7 +71,7 @@ public class WaitingActivity extends TAActivity {
     LinearLayout llayout1;
     @TAInjectView(id = R.id.llayout2)
     LinearLayout llayout2;
-    List<LoginRes2Vo> list = new ArrayList<LoginRes2Vo>();
+    List<LoginRes2Vo> list;
     GroupNumAdapter mAdapter;
     TranslateAnimation mShowAction;
     TranslateAnimation mHiddenAction;
@@ -85,6 +84,7 @@ public class WaitingActivity extends TAActivity {
     @Override
     protected void onAfterOnCreate(Bundle savedInstanceState) {
         super.onAfterOnCreate(savedInstanceState);
+        list = new ArrayList<LoginRes2Vo>();
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         mShowAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
                 Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
@@ -95,7 +95,8 @@ public class WaitingActivity extends TAActivity {
                 Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
                 -1.0f);
         mHiddenAction.setDuration(500);
-        llayout1.setVisibility(View.GONE);
+//        llayout1.setVisibility(View.GONE);
+        mAdapter = new GroupNumAdapter(WaitingActivity.this, list);
         et_stnumber.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
         btn_join.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,18 +104,19 @@ public class WaitingActivity extends TAActivity {
                 if (addState == 0) {
                     llayout1.setAnimation(mShowAction);
                     llayout1.setVisibility(View.VISIBLE);
-                    llayout2.setVisibility(View.GONE);
+//                    llayout2.setVisibility(View.GONE);
                     addState = 1;
                 } else {
-                    if (checkNameRepeat()) {
+                    if (validate()) {
                         LoginRes2Vo groupNumberListRes = new LoginRes2Vo();
                         groupNumberListRes.setSex(male.isChecked() ? "1" : "2");
                         groupNumberListRes.setName(et_stname.getText().toString());
                         groupNumberListRes.setNumber(et_stnumber.getText().toString());
                         list.add(groupNumberListRes);
                         imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
-                        llayout1.setVisibility(View.GONE);
+
                         addState = 0;
+                        LoadingDialog.show(WaitingActivity.this, "");
                         registerStudent();
                     }
 
@@ -147,14 +149,12 @@ public class WaitingActivity extends TAActivity {
         gv_group_member.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                LoadingDialog.show(WaitingActivity.this, "");
                 if (list.get(position).isLogin() == false) {
-                    list.get(position).setLogin(true);
                     login(list.get(position).getName(), list.get(position).getNumber(), list.get(position).getSex());
                 } else {
-                    list.get(position).setLogin(false);
                     logout(list.get(position).getName(), list.get(position).getNumber(), list.get(position).getSex());
                 }
-                mAdapter.notifyDataSetChanged();
             }
         });
         getGroupUserList();
@@ -224,7 +224,7 @@ public class WaitingActivity extends TAActivity {
     /**
      * 检查新增的学生是否为重复录入(客户端检查)
      */
-    private boolean checkNameRepeat() {
+    private boolean validate() {
         String stName = et_stname.getText().toString();
         String stNumber = et_stnumber.getText().toString();
         if (TextUtils.isEmpty(stName)) {
@@ -238,8 +238,12 @@ public class WaitingActivity extends TAActivity {
             ToastHelper.showCustomToast(getApplicationContext(), R.string.toast_stnumber_notnull);
             return false;
         }
+        if (list.size() > 16) {
+            ToastHelper.showCustomToast(getApplicationContext(), R.string.toast_group_isfull);
+            return false;
+        }
         for (int i = 0; i < list.size(); i++) {
-            if (stName.equals(list.get(i).getName()) || stNumber.equals(list.get(i).getNumber())) {
+            if (stNumber.equals(list.get(i).getNumber())) {
                 ToastHelper.showCustomToast(getApplicationContext(), R.string.toast_stname_repeat);
                 return false;
             }
@@ -252,8 +256,10 @@ public class WaitingActivity extends TAActivity {
         if (addState == 1 || addState == 2) {
             llayout1.setVisibility(View.GONE);
             addState = 0;
+            return imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+        } else {
+            return super.onTouchEvent(event);
         }
-        return imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
     }
 
     private Handler mHandler = new Handler() {
@@ -261,54 +267,86 @@ public class WaitingActivity extends TAActivity {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
+                //登陆
                 case 1: {
+                    LoadingDialog.hide();
                     JSONObject jsonObject = (JSONObject) msg.getData().getSerializable("data");
                     if (!"0".equals(jsonObject.getString("code"))) {
                         return;
+                    } else if (jsonObject.getJSONObject("data") == null) {
                     } else {
                         LoginResVo loginResVo = JSON.parseObject(jsonObject.getJSONObject("data").toJSONString(), LoginResVo.class);
                         list = loginResVo.getStudents();
-                        ((MyApplication) getApplication()).getLoginResVo().setStudents(list);
+                        ((MyApplication) getApplication()).setLoginResVo(loginResVo);
                         if (list != null && list.size() > 0) {
                             mAdapter = new GroupNumAdapter(WaitingActivity.this, list);
                             gv_group_member.setAdapter(mAdapter);
-                            mAdapter.notifyDataSetChanged();
                         }
                     }
                     break;
                 }
+                //取消登陆
                 case 2: {
+                    LoadingDialog.hide();
                     JSONObject jsonObject = (JSONObject) msg.getData().getSerializable("data");
                     if (!"0".equals(jsonObject.getString("code"))) {
                         return;
+                    } else if (jsonObject.getJSONObject("data") == null) {
                     } else {
                         LoginResVo loginResVo = JSON.parseObject(jsonObject.getJSONObject("data").toJSONString(), LoginResVo.class);
                         list = loginResVo.getStudents();
-                        ((MyApplication) getApplication()).getLoginResVo().setStudents(list);
+                        ((MyApplication) getApplication()).setLoginResVo(loginResVo);
                         if (list != null && list.size() > 0) {
                             mAdapter = new GroupNumAdapter(WaitingActivity.this, list);
                             gv_group_member.setAdapter(mAdapter);
-                            mAdapter.notifyDataSetChanged();
                         }
                     }
                     break;
                 }
+                //注册
                 case 3: {
+                    LoadingDialog.hide();
                     JSONObject jsonObject = (JSONObject) msg.getData().getSerializable("data");
                     if (!"0".equals(jsonObject.getString("code"))) {
                         return;
+                    } else if (jsonObject.getJSONObject("data") == null) {
                     } else {
                         LoginResVo loginResVo = JSON.parseObject(jsonObject.getJSONObject("data").toJSONString(), LoginResVo.class);
                         if (loginResVo.getStudents() != null) {
                             list = loginResVo.getStudents();
                         }
-                        ((MyApplication) getApplication()).getLoginResVo().setStudents(list);
+                        ((MyApplication) getApplication()).setLoginResVo(loginResVo);
                         if (list != null && list.size() > 0) {
                             mAdapter = new GroupNumAdapter(WaitingActivity.this, list);
                             gv_group_member.setAdapter(mAdapter);
-                            mAdapter.notifyDataSetChanged();
                         }
+                        et_stnumber.setText("");
+                        et_stname.setText("");
+                        male.setChecked(true);
+                        llayout1.setVisibility(View.GONE);
                     }
+
+                    break;
+                }
+                //获取分组
+                case 4: {
+                    JSONObject jsonObject = (JSONObject) msg.getData().getSerializable("data");
+                    if (!"0".equals(jsonObject.getString("code"))) {
+                        return;
+                    } else if (jsonObject.getJSONObject("data") == null) {
+                    } else {
+                        LoginResVo loginResVo = JSON.parseObject(jsonObject.getJSONObject("data").toJSONString(), LoginResVo.class);
+                        if (loginResVo.getStudents() != null) {
+                            list = loginResVo.getStudents();
+                        }
+                        ((MyApplication) getApplication()).setLoginResVo(loginResVo);
+                        if (list != null && list.size() > 0) {
+                            mAdapter = new GroupNumAdapter(WaitingActivity.this, list);
+                            gv_group_member.setAdapter(mAdapter);
+                        }
+                        llayout1.setVisibility(View.GONE);
+                    }
+
                     break;
                 }
                 default:
@@ -323,9 +361,9 @@ public class WaitingActivity extends TAActivity {
     private void registerStudent() {
         LoginReqVo loginReqVo = new LoginReqVo();
         loginReqVo.setImei(MyApplication.deviceId);
-        loginReqVo.setName("liubo");
-        loginReqVo.setNumber("111");
-        loginReqVo.setSex("1");
+        loginReqVo.setName(et_stname.getText().toString());
+        loginReqVo.setNumber(et_stnumber.getText().toString());
+        loginReqVo.setSex(female.isChecked() ? "1" : "2");
         loginReqVo.setType("2");
         String json = JSON.toJSONString(loginReqVo);
 
@@ -355,7 +393,7 @@ public class WaitingActivity extends TAActivity {
             @Override
             protected void handleMessage(Bundle data) {
                 Message message = new Message();
-                message.what = 1;
+                message.what = 4;
                 message.setData(data);
                 mHandler.sendMessage(message);
             }

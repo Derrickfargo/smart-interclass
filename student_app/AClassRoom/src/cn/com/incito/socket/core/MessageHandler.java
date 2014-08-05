@@ -27,22 +27,27 @@ public abstract class MessageHandler {
      */
     public final void handleMessage(MessageInfo msg) {
         this.messageInfo = msg;
-        ByteBuffer buffer = msg.getBodyBuffer();
-        buffer.flip();
+        try {
+            ByteBuffer buffer = msg.getBodyBuffer();
+            buffer.flip();
 
-        // 获取JSON数据
-        byte[] intSize = new byte[4];// int
-        buffer.get(intSize);
-        int jsonLength = Integer.parseInt(BufferUtils.decodeIntLittleEndian(
-                intSize, 0, intSize.length) + "");
-        byte[] jsonByte = new byte[jsonLength];
-        buffer.get(jsonByte);
+            // 获取JSON数据
+            byte[] intSize = new byte[4];// int
+            buffer.get(intSize);
+            int jsonLength = Integer.parseInt(BufferUtils.decodeIntLittleEndian(
+                    intSize, 0, intSize.length) + "");
+            byte[] jsonByte = new byte[jsonLength];
+            buffer.get(jsonByte);
+            String json = BufferUtils.readUTFString(jsonByte);
+            JSONObject data = JSON.parseObject(json);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("data", data);
+            handleMessage(bundle);
+        } catch (Exception e) {
+            return;
+        }
 
-        String json = BufferUtils.readUTFString(jsonByte);
-        JSONObject data = JSON.parseObject(json);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("data", data);
-        handleMessage(bundle);
+
     }
 
     protected abstract void handleMessage(Bundle data);

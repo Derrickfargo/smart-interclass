@@ -12,15 +12,9 @@ import cn.com.incito.classroom.Canvas1Activity;
 import cn.com.incito.classroom.Canvas2Activity;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.classroom.constants.Constant;
-import cn.com.incito.classroom.transition.CmdClient;
-import cn.com.incito.classroom.transition.MessageListener;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.MessageHandler;
-import cn.com.incito.socket.core.MessageHandlerResource;
 import cn.com.incito.socket.core.MessageInfo;
-import cn.com.incito.socket.core.ResponseListener;
-import cn.com.incito.socket.handler.SytemInitHandler1;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
@@ -29,9 +23,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.popoy.common.TAActivity;
 import com.popoy.common.TAApplication;
 import com.popoy.tookit.cache.TAFileCache;
-import com.popoy.tookit.helper.ToastHelper;
-
-import org.jboss.netty.channel.MessageEvent;
 
 /**
  * @author 白猫
@@ -43,17 +34,13 @@ import org.jboss.netty.channel.MessageEvent;
  */
 public class SplashActivity extends TAActivity {
     private static final String SYSTEMCACHE = "adream";
-    private SytemInitHandler1 handler;
-    private static final int UPDATE_UI = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final View view = View.inflate(this, R.layout.splash, null);
         setContentView(view);
-        handler = new SytemInitHandler1();
 //		渐变展示启动屏
-//        init();
         AlphaAnimation aa = new AlphaAnimation(0.5f, 1.0f);
         aa.setDuration(2000);
         view.startAnimation(aa);

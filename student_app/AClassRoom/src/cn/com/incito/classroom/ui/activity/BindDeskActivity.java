@@ -41,7 +41,7 @@ public class BindDeskActivity extends TAActivity {
     protected void onAfterOnCreate(Bundle savedInstanceState) {
         super.onAfterOnCreate(savedInstanceState);
         List<String> list = new ArrayList<String>();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 12; i++) {
             list.add(String.valueOf(i + 1));
         }
         DeskNumberAdapter deskNumberAdapter = new DeskNumberAdapter(this, list);
@@ -55,7 +55,7 @@ public class BindDeskActivity extends TAActivity {
         btn_join.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {
-                                            if (currentPos < 2) {
+                                            if (currentPos < 1) {
                                                 ToastHelper.showCustomToast(BindDeskActivity.this, R.string.toast_choose_atleast_one_desk);
                                                 return;
                                             }
