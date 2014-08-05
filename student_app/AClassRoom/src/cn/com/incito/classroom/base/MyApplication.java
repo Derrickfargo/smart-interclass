@@ -1,5 +1,6 @@
 package cn.com.incito.classroom.base;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -30,6 +31,8 @@ import com.baidu.mapapi.SDKInitializer;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyApplication extends Application {
     private LoginResVo loginResVo;
@@ -37,7 +40,6 @@ public class MyApplication extends Application {
     private static final String TAG = MyApplication.class.getSimpleName();
     private static MyApplication mInstance = null;
     public static final String strKey = "840FFE132BB1749F265E77000ED4A8E17ECEC190";
-
     private static String IMEI;
 
     private SharedPreferences mPrefs;

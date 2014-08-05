@@ -10,9 +10,16 @@ public class BaseActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppManager.getAppManager().addActivity(this);
         onAfterOnCreate(savedInstanceState);
     }
 
     protected void onAfterOnCreate(Bundle savedInstanceState) {
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
     }
 }

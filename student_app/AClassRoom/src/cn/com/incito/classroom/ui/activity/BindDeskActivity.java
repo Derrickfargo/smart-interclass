@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -17,6 +19,7 @@ import java.util.List;
 
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.adapter.DeskNumberAdapter;
+import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.common.utils.ToastHelper;
@@ -34,6 +37,7 @@ public class BindDeskActivity extends BaseActivity {
     private GridView gv_desk_number;
     private ImageButton btn_join;
     private int currentPos;
+    protected long mExitTime;
 
     @Override
     protected void onAfterOnCreate(Bundle savedInstanceState) {
@@ -57,6 +61,12 @@ public class BindDeskActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
+        if ((System.currentTimeMillis() - mExitTime) > 2000) {// 如果两次按键时间间隔大于2000毫秒，则不退出
+            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            mExitTime = System.currentTimeMillis();// 更新mExitTime
+        } else {
+            AppManager.getAppManager().AppExit(this);
+        }
     }
 
     private void initViews() {

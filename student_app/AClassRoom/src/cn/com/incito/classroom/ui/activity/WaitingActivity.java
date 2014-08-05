@@ -7,6 +7,7 @@ import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -20,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -29,6 +31,7 @@ import java.util.List;
 
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.adapter.GroupNumAdapter;
+import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.vo.LoginReqVo;
@@ -68,6 +71,7 @@ public class WaitingActivity extends BaseActivity {
     TranslateAnimation mHiddenAction;
     InputMethodManager imm;
     private ProgressiveDialog mProgressDialog;
+    protected long mExitTime;
     /**
      * 0只显示增加按钮，1显示姓名2显示姓名、学号、性别
      */
@@ -177,7 +181,14 @@ public class WaitingActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
+        if ((System.currentTimeMillis() - mExitTime) > 2000) {// 如果两次按键时间间隔大于2000毫秒，则不退出
+            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            mExitTime = System.currentTimeMillis();// 更新mExitTime
+        } else {
+            AppManager.getAppManager().AppExit(this);
+        }
     }
+
 
     /**
      * 与后台服务建立连接，并实现登陆
