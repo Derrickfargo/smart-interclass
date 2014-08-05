@@ -16,7 +16,7 @@ import cn.com.incito.server.api.Application;
  * @author 刘世平
  *
  */
-public final class CoreSocket extends Thread implements ISocket {
+public final class CoreSocket extends Thread {
 	static boolean flag = true;
 	private static final int BAND_PORT = 9001;
 	private static CoreSocket instance = null;
@@ -38,7 +38,7 @@ public final class CoreSocket extends Thread implements ISocket {
 	/**
 	 * TODO 关闭所有通道
 	 */
-	private void closeChannel() {
+	public void closeChannel() {
 //		Application app = Application.getInstance();
 //		Map<Student, SocketChannel> clientChannel = app.getClientChannel();
 //		Collection<SocketChannel> channels =  clientChannel.values();
@@ -61,14 +61,6 @@ public final class CoreSocket extends Thread implements ISocket {
 //				selector = null;
 //			}
 //		}
-	}
-
-	/**
-	 * 开始建立连接
-	 */
-	@Override
-	public void startConnection() {
-		getInstance().start();
 	}
 
 	/**
@@ -122,36 +114,6 @@ public final class CoreSocket extends Thread implements ISocket {
 			messageParser.parseMessage(selectionKey);
 		}
 	}
-
-	/**
-	 *TODO 
-	 * 把消息推送到其他客户端
-	 * 启动线程将消息发往所有客户端端
-	 * 不用注册WRITE事件，因为大部分时间channel都是可以写
-	 * @param message
-	 */
-	public void sendMessage(final byte[] data){
-//		new Thread() {
-//			@Override
-//			public void run() {
-//				try {
-//					ByteBuffer buffer = ByteBuffer.allocate(data.length);
-//					Application app = Application.getInstance();
-//					Map<Student, SocketChannel> clientChannel = app.getClientChannel();
-//					for (Map.Entry<Student, SocketChannel> entry : clientChannel.entrySet()) {
-//						SocketChannel client = entry.getValue();
-//						// 输出到通道
-//						buffer.clear();
-//						buffer.put(data);
-//						buffer.flip();
-//						client.write(buffer);
-//					}
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//			};
-//		}.start();
-	}
 	
 	@Override
 	public void run() {
@@ -176,14 +138,6 @@ public final class CoreSocket extends Thread implements ISocket {
 		} catch (IOException e) {
 			System.out.println("CoreSocket异常IOException:\n" + e.getMessage());
 		}
-	}
-
-	/**
-	 * 关闭连接
-	 */
-	@Override
-	public void stopConnection() {
-		closeChannel();
 	}
 
 }
