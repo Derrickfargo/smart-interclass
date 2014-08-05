@@ -36,33 +36,38 @@ public class MainCenterPanel extends JPanel {
 	private List<Group> groupList = new ArrayList<Group>();
 	
 	
-	public MainCenterPanel() {//this.setSize(878, 620);
+	public MainCenterPanel() {
+		//this.setSize(878, 620);
 		this.setLayout(null);
 		this.setOpaque(false);
+		
+		//初始化界面
 		initView();
+		
+		//加载数据
+		refresh();
 	}
 
 	private void initView(){
-		//初始化界面
 		int x = 20;
 		for (int i = 1; i <= 12; i++) {
-			TablePanel pnlTable = new TablePanel(i);
+			TablePanel pnlTable = new TablePanel();
 			pnlTable.setBounds(20, x, 836, 139);
 			add(pnlTable);
 			tableList.add(pnlTable);
 			x += 150;
 		}
-		//加载数据
-		refresh();
 	}
 	
 	public void refresh(){
 		initData();
-		//遍历内存模型，修改物理模型
+//		clearView();
+		//遍历内存模型，绑定到物理模型
 		for (int i = 0; i < groupList.size(); i++) {// 遍历分组内存模型
 			Group group = groupList.get(i);
 			TablePanel tablePanel = tableList.get(i);
 			tablePanel.setVisible(true);
+			tablePanel.setTableNumber(group.getTableNumber());
 			//遍历当前组/桌的设备，内存模型 
 			List<JLabel> deviceLabelList = tablePanel.getDeviceList();
 			List<Device> deviceList = group.getDevices();
@@ -120,4 +125,23 @@ public class MainCenterPanel extends JPanel {
 		Collections.sort(groupList);
 	}
 	
+	/**
+	 * 暂时不用，会导致界面闪烁
+	 */
+	private void clearView(){
+		for (TablePanel tablePanel : tableList) {
+			List<JLabel> deviceLabelList = tablePanel.getDeviceList();
+			for(JLabel lblDevice : deviceLabelList){
+				ImageIcon imgPad = new ImageIcon(PAD_OFFLINE);
+				lblDevice.setIcon(imgPad);
+				lblDevice.setVisible(false);
+			}
+			List<JLabel> studentLabelList = tablePanel.getStudentList();
+			for(JLabel lblStudent : studentLabelList){
+				lblStudent.setText("");
+				lblStudent.setBackground(new Color(Integer.parseInt("e1e1e1", 16)));
+				lblStudent.setVisible(false);
+			}
+		}
+	}
 }

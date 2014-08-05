@@ -164,22 +164,25 @@ public class CoreService {
 	 */
 	public String register(String uname, int sex, String number, String imei) {
 		try {
-			final String result = ApiClient.loginForStudent(uname, sex, number,
-					imei);
+			final String result = ApiClient.loginForStudent(uname, sex, number, imei);
 			if (result != null && !result.equals("")) {
 				JSONObject jsonObject = JSON.parseObject(result);
 				if (jsonObject.getIntValue("code") == 0) {
 					String data = jsonObject.getString("data");
 					Group group = JSON.parseObject(data, Group.class);
 					for (Student student : group.getStudents()) {
-						if((student.getName()+student.getName()).equals(uname + number)){
+						if ((student.getName() + student.getNumber()).equals(uname + number)) {
 							student.setLogin(true);
 							app.getOnlineStudent().add(student);
+						}
+						if(app.getOnlineStudent().contains(student)){
+							student.setLogin(true);
 						}
 					}
 					app.addGroup(group);
 					app.getTableGroup().put(group.getTableId(), group);
 					app.refreshMainFrame();// 更新UI
+					JSONUtils.renderJSONString(JSONUtils.SUCCESS, group);
 				}
 				return result;
 			}

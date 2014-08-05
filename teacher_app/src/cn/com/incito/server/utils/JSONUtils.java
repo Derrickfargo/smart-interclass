@@ -7,6 +7,9 @@ import java.util.Map;
 import com.alibaba.fastjson.JSON;
 
 public class JSONUtils {
+	
+	public static final int SUCCESS = 0;
+	
 	/**
 	 * 输出为JSON字符串
 	 * 
