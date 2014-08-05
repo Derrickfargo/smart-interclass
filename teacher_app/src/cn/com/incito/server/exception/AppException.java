@@ -1,4 +1,4 @@
-package cn.com.incito.server.core;
+package cn.com.incito.server.exception;
 
 import java.io.IOException;
 import java.net.ConnectException;

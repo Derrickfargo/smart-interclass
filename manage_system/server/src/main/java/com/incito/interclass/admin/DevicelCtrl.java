@@ -18,7 +18,7 @@ public class DevicelCtrl extends BaseCtrl {
 	@Autowired
 	private DeviceService deviceService;
 	
-	/**
+	/** 
 	 * 列表
 	 */
 	@RequestMapping("/list")

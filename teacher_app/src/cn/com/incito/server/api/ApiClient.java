@@ -20,7 +20,7 @@ import org.apache.commons.httpclient.params.HttpMethodParams;
 
 import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Table;
-import cn.com.incito.server.core.AppException;
+import cn.com.incito.server.exception.AppException;
 import cn.com.incito.server.utils.JSONUtils;
 import cn.com.incito.server.utils.Md5Utils;
 import cn.com.incito.server.utils.URLs;

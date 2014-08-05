@@ -2,7 +2,13 @@ package cn.com.incito.server.handler;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
+import java.util.List;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
+import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
 import cn.com.incito.server.message.DataType;
@@ -29,17 +35,33 @@ public class StudentLoginHandler extends MessageHandler {
         switch (type){
         case 0:
         	String result = service.login(uname, sex, number, imei);
-        	System.out.println(result);
-    		sendResponse(result);
+        	Integer groupId = getGroupId(result);
+			if (groupId != -1) {
+				Application.getInstance().addSocketChannel(groupId, message.getChannel());
+        		sendResponse(result,Application.getInstance().getClientChannelByGroup(groupId));
+//				sendResponse(result);
+				System.out.println(result);
+        	}
         	break;
         case 1:
         	result = service.logout(uname, sex, number, imei);
-        	System.out.println(result);
-    		sendResponse(result);
+        	groupId = getGroupId(result);
+			if (groupId != -1) {
+				Application.getInstance().addSocketChannel(groupId, message.getChannel());
+        		sendResponse(result,Application.getInstance().getClientChannelByGroup(groupId));
+//				sendResponse(result);
+				System.out.println(result);
+        	}
+    		break;
         case 2:
         	result = service.register(uname, sex, number, imei);
-        	System.out.println(result);
-    		sendResponse(result);
+        	groupId = getGroupId(result);
+			if (groupId != -1) {
+				Application.getInstance().addSocketChannel(groupId, message.getChannel());
+        		sendResponse(result,Application.getInstance().getClientChannelByGroup(groupId));
+//				sendResponse(result);
+				System.out.println(result);
+        	}
         	break;
         }
 	}
@@ -56,5 +78,31 @@ public class StudentLoginHandler extends MessageHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+	}
+	
+	private void sendResponse(String json,List<SocketChannel> channels) {
+		for (SocketChannel channel : channels) {
+			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
+	        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
+	        byte[] messageData = messagePacking.pack().array();
+	        ByteBuffer buffer = ByteBuffer.allocate(messageData.length);
+	        buffer.put(messageData);
+	        buffer.flip();
+			try {
+				channel.write(buffer);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private Integer getGroupId(String json){
+		JSONObject jsonObject = JSON.parseObject(json);
+		if(jsonObject.getIntValue("code") != 0){
+			return -1;
+		}
+		String data = jsonObject.getString("data");
+		JSONObject dataObject = JSON.parseObject(data);
+		return dataObject.getInteger("id");
 	}
 }

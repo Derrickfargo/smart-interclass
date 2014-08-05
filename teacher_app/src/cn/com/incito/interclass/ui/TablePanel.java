@@ -35,13 +35,12 @@ public class TablePanel extends JPanel {
 		g.drawImage(iconUser, 0, 0, this.getWidth(), this.getHeight(),this);
 	}
 	
-	public TablePanel(int tableNumber){
+	public TablePanel(){
 		setLayout(null);
 		setVisible(false);
 		
 		//课桌号
-		String url = String.format("images/main/pic_%s.png", tableNumber);
-		Icon icon = new ImageIcon(url);
+		Icon icon = new ImageIcon("images/main/pic_%s.png");
 		lblNumber = new JLabel("课桌号", icon, JLabel.LEFT);
 		lblNumber.setHorizontalTextPosition(JLabel.LEFT);
 		add(lblNumber);
@@ -145,10 +144,6 @@ public class TablePanel extends JPanel {
 		return lblLogo;
 	}
 
-	public JLabel getLblNumber() {
-		return lblNumber;
-	}
-
 	public JLabel getLblGroupName() {
 		return lblGroupName;
 	}
@@ -161,4 +156,9 @@ public class TablePanel extends JPanel {
 		return studentList;
 	}
 	
+	public void setTableNumber(int tableNumber){
+		String url = String.format("images/main/pic_%s.png",tableNumber);
+		Icon icon = new ImageIcon(url);
+		lblNumber.setIcon(icon);
+	}
 }

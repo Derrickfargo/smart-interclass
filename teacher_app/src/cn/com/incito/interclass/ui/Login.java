@@ -25,7 +25,7 @@ import javax.swing.JTextField;
 import cn.com.incito.server.api.ApiClient;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.api.result.TeacherLoginResultData;
-import cn.com.incito.server.core.AppException;
+import cn.com.incito.server.exception.AppException;
 import cn.com.incito.server.utils.NetworkUtils;
 
 import com.alibaba.fastjson.JSON;
