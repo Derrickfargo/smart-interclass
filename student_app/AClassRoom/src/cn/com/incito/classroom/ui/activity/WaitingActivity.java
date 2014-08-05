@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.activeandroid.util.Log;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.popoy.annotation.TAInjectView;
@@ -191,6 +192,7 @@ public class WaitingActivity extends TAActivity {
                 Message message = new Message();
                 message.what = 1;
                 message.setData(data);
+                Log.i(message.toString());
                 mHandler.sendMessage(message);
             }
         });
@@ -330,6 +332,7 @@ public class WaitingActivity extends TAActivity {
                 }
                 //获取分组
                 case 4: {
+                    LoadingDialog.hide();
                     JSONObject jsonObject = (JSONObject) msg.getData().getSerializable("data");
                     if (!"0".equals(jsonObject.getString("code"))) {
                         return;
