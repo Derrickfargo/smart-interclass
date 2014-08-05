@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
+import android.widget.TextView;
 
 import cn.com.incito.classroom.Canvas1Activity;
 import cn.com.incito.classroom.Canvas2Activity;
@@ -34,12 +35,15 @@ import com.popoy.tookit.cache.TAFileCache;
  */
 public class SplashActivity extends TAActivity {
     private static final String SYSTEMCACHE = "adream";
+    private TextView tv_loading_msg;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final View view = View.inflate(this, R.layout.splash, null);
         setContentView(view);
+        tv_loading_msg = (TextView) view.findViewById(R.id.tv_loading_msg);
+
 //		渐变展示启动屏
         AlphaAnimation aa = new AlphaAnimation(0.5f, 1.0f);
         aa.setDuration(2000);
@@ -88,6 +92,7 @@ public class SplashActivity extends TAActivity {
     }
 
     private void startMain() {
+        tv_loading_msg.setText(R.string.loading_msg);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("imei", MyApplication.deviceId);
         MessagePacking messagePacking = new MessagePacking(MessageInfo.MESSAGE_DEVICE_HAS_BIND);
@@ -99,6 +104,7 @@ public class SplashActivity extends TAActivity {
                 message.what = 1;
                 message.setData(bundle);
                 mHandler.sendMessage(message);
+                tv_loading_msg.setText(R.string.loading_complete_msg);
             }
 
         });
@@ -141,4 +147,9 @@ public class SplashActivity extends TAActivity {
             }
         }
     };
+
+    @Override
+    public void onBackPressed() {
+        exitApp();
+    }
 }
