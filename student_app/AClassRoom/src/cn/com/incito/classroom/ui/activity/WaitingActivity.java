@@ -65,7 +65,7 @@ public class WaitingActivity extends BaseActivity {
     RadioButton male;
     GridView gv_group_member;
     LinearLayout llayout1;
-    LinearLayout llayout2;
+    LinearLayout llayout;
     List<LoginRes2Vo> list;
     GroupNumAdapter mAdapter;
     InputMethodManager imm;
@@ -99,7 +99,7 @@ public class WaitingActivity extends BaseActivity {
         male = (RadioButton) findViewById(R.id.male);
         gv_group_member = (GridView) findViewById(R.id.gv_group_member);
         llayout1 = (LinearLayout) findViewById(R.id.llayout1);
-        llayout2 = (LinearLayout) findViewById(R.id.llayout2);
+        llayout = (LinearLayout) findViewById(R.id.llayout);
         et_stname = (EditText) findViewById(R.id.et_stname);
     }
 
@@ -264,10 +264,11 @@ public class WaitingActivity extends BaseActivity {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (addState == 1 || addState == 2) {
+        if (addState == 1) {
             llayout1.setVisibility(View.GONE);
             addState = 0;
-            return imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+            imm.hideSoftInputFromWindow(llayout.getWindowToken(), 0);
+            return false;
         } else {
             return super.onTouchEvent(event);
         }

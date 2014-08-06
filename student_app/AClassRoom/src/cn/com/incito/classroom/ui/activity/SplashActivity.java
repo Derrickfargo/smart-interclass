@@ -1,6 +1,9 @@
 package cn.com.incito.classroom.ui.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,8 +16,11 @@ import android.widget.TextView;
 import cn.com.incito.classroom.Canvas1Activity;
 import cn.com.incito.classroom.Canvas2Activity;
 import cn.com.incito.classroom.R;
+import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.classroom.service.SocketService;
+import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.MessageHandler;
 import cn.com.incito.socket.core.MessageInfo;
@@ -34,10 +40,16 @@ import com.alibaba.fastjson.JSONObject;
  */
 public class SplashActivity extends BaseActivity {
     private TextView tv_loading_msg;
+    private MsgReceiver msgReceiver;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        msgReceiver = new MsgReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(SocketService.NETWORK_RECEIVER);
+        registerReceiver(msgReceiver, intentFilter);
         final View view = View.inflate(this, R.layout.splash, null);
         setContentView(view);
         tv_loading_msg = (TextView) view.findViewById(R.id.tv_loading_msg);
@@ -61,6 +73,32 @@ public class SplashActivity extends BaseActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        //注销广播
+        unregisterReceiver(msgReceiver);
+        super.onDestroy();
+    }
+
+    /**
+     * 广播接收器
+     *
+     * @author len
+     */
+    public class MsgReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction() == SocketService.NETWORK_RECEIVER) {
+                //拿到进度，更新UI
+                String exception = intent.getStringExtra("exception");
+                tv_loading_msg.setText(R.string.loading_network_disconnect);
+            }
+
+        }
+
     }
 
     private void startMain() {
@@ -126,6 +164,8 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-//        exitApp();
+        AppManager.getAppManager().AppExit(this);
     }
+
+
 }
