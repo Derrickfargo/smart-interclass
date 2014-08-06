@@ -11,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -67,8 +68,6 @@ public class WaitingActivity extends BaseActivity {
     LinearLayout llayout2;
     List<LoginRes2Vo> list;
     GroupNumAdapter mAdapter;
-    TranslateAnimation mShowAction;
-    TranslateAnimation mHiddenAction;
     InputMethodManager imm;
     private ProgressiveDialog mProgressDialog;
     protected long mExitTime;
@@ -86,15 +85,6 @@ public class WaitingActivity extends BaseActivity {
         initListener();
         list = new ArrayList<LoginRes2Vo>();
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        mShowAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
-                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
-                -1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
-        mShowAction.setDuration(500);
-        mHiddenAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF,
-                0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
-                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
-                -1.0f);
-        mHiddenAction.setDuration(500);
 //        llayout1.setVisibility(View.GONE);
         mAdapter = new GroupNumAdapter(WaitingActivity.this, list);
         et_stnumber.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
@@ -118,7 +108,8 @@ public class WaitingActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if (addState == 0) {
-                    llayout1.setAnimation(mShowAction);
+//                    mShowAction.setDuration(500);
+                    llayout1.setAnimation(AnimationUtils.loadAnimation(WaitingActivity.this, R.anim.push_bottom_in));
                     llayout1.setVisibility(View.VISIBLE);
 //                    llayout2.setVisibility(View.GONE);
                     addState = 1;
@@ -141,25 +132,25 @@ public class WaitingActivity extends BaseActivity {
 
             }
         });
-        et_stname.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (et_stname.getText().length() > 1 && addState == 1) {
-                    llayout2.setAnimation(mShowAction);
-                    llayout2.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+//        et_stname.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//                if (et_stname.getText().length() > 1 && addState == 1) {
+//                    llayout2.setAnimation(AnimationUtils.loadAnimation(WaitingActivity.this, R.anim.push_bottom_in));
+//                    llayout2.setVisibility(View.VISIBLE);
+//                }
+//            }
+//        });
         gv_group_member.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
