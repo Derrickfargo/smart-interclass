@@ -7,6 +7,7 @@
     <string name="load_dialog_default_text">请稍等</string>
     <string name="waiting_access_wifi">正在进入教室...</string>
     <!--toast-->
+    <string name="loading_network_disconnect">没能连接成功，联系老师吧~</string>
     <string name="toast_stname_notnull">要填上名字哦~</string>
     <string name="toast_stname_tooshort">名字太短了吧~</string>
     <string name="toast_stnumber_notnull">填上你的学号吧</string>
