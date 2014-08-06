@@ -71,7 +71,7 @@ public class BindDeskActivity extends BaseActivity {
     }
 
     private void initViews() {
-        gv_desk_number = (GridView) findViewById(R.id.gv_group_member);
+        gv_desk_number = (GridView) findViewById(R.id.gv_desk_number);
         btn_join = (ImageButton) findViewById(R.id.btn_join);
     }
 

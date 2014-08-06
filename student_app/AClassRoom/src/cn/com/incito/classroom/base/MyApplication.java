@@ -54,7 +54,7 @@ public class MyApplication extends Application {
         initApplication();
         // 百度地图、定位、导航
         // 在使用SDK各组件之前初始化context信息，传入ApplicationContext
-        SDKInitializer.initialize(getApplicationContext());
+        SDKInitializer.initialize(getApplicationContext());//
 
         MobclickAgent.openActivityDurationTrack(false);// 禁止友盟的自动统计功能
         mInstance = this;
