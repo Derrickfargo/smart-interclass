@@ -80,6 +80,7 @@ public class WaitingActivity extends BaseActivity {
     @Override
     protected void onAfterOnCreate(Bundle savedInstanceState) {
         super.onAfterOnCreate(savedInstanceState);
+        setContentView(R.layout.waiting);
         mProgressDialog = new ProgressiveDialog(this);
         initViews();
         initListener();

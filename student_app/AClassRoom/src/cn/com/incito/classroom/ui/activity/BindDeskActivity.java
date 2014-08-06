@@ -42,6 +42,7 @@ public class BindDeskActivity extends BaseActivity {
     @Override
     protected void onAfterOnCreate(Bundle savedInstanceState) {
         super.onAfterOnCreate(savedInstanceState);
+        setContentView(R.layout.binddesk);
         initViews();
         initEvent();
         List<String> list = new ArrayList<String>();
