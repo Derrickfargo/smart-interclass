@@ -1,10 +1,5 @@
 package cn.com.incito.socket.core;
 
-import android.content.Context;
-import android.telephony.TelephonyManager;
-
-import com.popoy.common.TAApplication;
-
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -13,6 +8,9 @@ import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.Set;
 
+import android.content.Context;
+import android.telephony.TelephonyManager;
+import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constant;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
@@ -60,7 +58,7 @@ public final class CoreSocket extends Thread {
 
     private byte[] getHandShakeMessage() {
         MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_HAND_SHAKE);
-        TelephonyManager tm = (TelephonyManager) TAApplication.getApplication().getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager tm = (TelephonyManager) MyApplication.getApplication().getSystemService(Context.TELEPHONY_SERVICE);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(tm.getDeviceId()));
         return messagePacking.pack().array();
     }

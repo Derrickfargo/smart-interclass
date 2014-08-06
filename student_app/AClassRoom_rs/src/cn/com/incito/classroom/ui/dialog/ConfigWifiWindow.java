@@ -1,5 +1,8 @@
 package cn.com.incito.classroom.ui.dialog;
 
+import java.io.Serializable;
+
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
@@ -9,16 +12,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-
-import com.popoy.common.TAActivity;
-
-import java.io.Serializable;
-
 import cn.com.incito.classroom.R;
 
 public class ConfigWifiWindow extends PopupWindow {
 
-    TAActivity mContext;
+    Activity mContext;
     private TextView et_username;
     private EditText et_password;
     private Button btn_access_wifi;
@@ -26,7 +24,7 @@ public class ConfigWifiWindow extends PopupWindow {
     String ssid;
     WifiConfigCallBack wifiConfigCallBack;
 
-    public ConfigWifiWindow(final TAActivity context, String ssidname, WifiConfigCallBack configCallBack) {
+    public ConfigWifiWindow(final Activity context, String ssidname, WifiConfigCallBack configCallBack) {
         super(context);
         this.ssid = ssidname;
         this.wifiConfigCallBack = configCallBack;
