@@ -1,18 +1,15 @@
 package cn.com.incito.classroom.ui.activity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -23,13 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.adapter.GroupNumAdapter;
 import cn.com.incito.classroom.base.AppManager;
@@ -40,12 +30,15 @@ import cn.com.incito.classroom.vo.LoginRes2Vo;
 import cn.com.incito.classroom.vo.LoginResVo;
 import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.socket.core.CoreSocket;
+import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.core.MessageHandler;
-import cn.com.incito.socket.core.MessageInfo;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
 import cn.com.incito.wisdom.uicomp.widget.dialog.ProgressiveDialog;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * 用户其启动界面
@@ -193,12 +186,12 @@ public class WaitingActivity extends BaseActivity {
         loginReqVo.setSex(sex);
         loginReqVo.setType("0");
         String json = JSON.toJSONString(loginReqVo);
-        MessagePacking messagePacking = new MessagePacking(MessageInfo.MESSAGE_STUDENT_LOGIN);
+        MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
         CoreSocket.getInstance().sendMessage(messagePacking, new MessageHandler() {
             @Override
             protected void handleMessage(Bundle data) {
-                Message message = new Message();
+                android.os.Message message = new android.os.Message();
                 message.what = 1;
                 message.setData(data);
 //                Log.i(message.toString());
@@ -219,12 +212,12 @@ public class WaitingActivity extends BaseActivity {
         loginReqVo.setSex(sex);
         loginReqVo.setType("1");
         String json = JSON.toJSONString(loginReqVo);
-        MessagePacking messagePacking = new MessagePacking(MessageInfo.MESSAGE_STUDENT_LOGIN);
+        MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
         CoreSocket.getInstance().sendMessage(messagePacking, new MessageHandler() {
             @Override
             protected void handleMessage(Bundle data) {
-                Message message = new Message();
+            	android.os.Message message = new android.os.Message();
                 message.what = 2;
                 message.setData(data);
                 mHandler.sendMessage(message);
@@ -277,7 +270,7 @@ public class WaitingActivity extends BaseActivity {
     private Handler mHandler = new Handler() {
 
         @Override
-        public void handleMessage(Message msg) {
+        public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 //登陆
                 case 1: {
@@ -380,12 +373,12 @@ public class WaitingActivity extends BaseActivity {
         loginReqVo.setType("2");
         String json = JSON.toJSONString(loginReqVo);
 
-        MessagePacking messagePacking = new MessagePacking(MessageInfo.MESSAGE_STUDENT_LOGIN);
+        MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
         CoreSocket.getInstance().sendMessage(messagePacking, new MessageHandler() {
             @Override
             protected void handleMessage(Bundle data) {
-                Message message = new Message();
+            	android.os.Message message = new android.os.Message();
                 message.what = 3;
                 message.setData(data);
                 mHandler.sendMessage(message);
@@ -400,12 +393,12 @@ public class WaitingActivity extends BaseActivity {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("imei", MyApplication.deviceId);
 
-        MessagePacking messagePacking = new MessagePacking(MessageInfo.MESSAGE_GROUP_LIST);
+        MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_LIST);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
         CoreSocket.getInstance().sendMessage(messagePacking, new MessageHandler() {
             @Override
             protected void handleMessage(Bundle data) {
-                Message message = new Message();
+            	android.os.Message message = new android.os.Message();
                 message.what = 4;
                 message.setData(data);
                 mHandler.sendMessage(message);

@@ -1,22 +1,16 @@
 package cn.com.incito.classroom.ui.activity;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.view.KeyEvent;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.GridView;
-import android.widget.ImageButton;
-import android.widget.Toast;
-
-import com.alibaba.fastjson.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.Toast;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.adapter.DeskNumberAdapter;
 import cn.com.incito.classroom.base.AppManager;
@@ -24,11 +18,13 @@ import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.socket.core.CoreSocket;
+import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.core.MessageHandler;
-import cn.com.incito.socket.core.MessageInfo;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
+
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * Created by popoy on 2014/7/28.
@@ -86,12 +82,12 @@ public class BindDeskActivity extends BaseActivity {
                                             JSONObject jsonObject = new JSONObject();
                                             jsonObject.put("imei", MyApplication.deviceId);
                                             jsonObject.put("number", currentPos);
-                                            MessagePacking messagePacking = new MessagePacking(MessageInfo.MESSAGE_DEVICE_BIND);
+                                            MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_BIND);
                                             messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
                                             CoreSocket.getInstance().sendMessage(messagePacking, new MessageHandler() {
                                                 @Override
                                                 public void handleMessage(Bundle bundle) {
-                                                    Message message = new Message();
+                                                    android.os.Message message = new android.os.Message();
                                                     message.what = 1;
                                                     message.setData(bundle);
                                                     mHandler.sendMessage(message);
@@ -107,7 +103,7 @@ public class BindDeskActivity extends BaseActivity {
     private Handler mHandler = new Handler() {
 
         @Override
-        public void handleMessage(Message msg) {
+        public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case 1: {
                     JSONObject jsonObject = (JSONObject) msg.getData().getSerializable("data");

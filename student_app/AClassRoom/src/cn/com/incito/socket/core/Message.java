@@ -9,7 +9,7 @@ import java.nio.channels.SocketChannel;
  *
  * @author 刘世平
  */
-public class MessageInfo implements Serializable{
+public class Message implements Serializable{
 
     /**
      * 消息识别码

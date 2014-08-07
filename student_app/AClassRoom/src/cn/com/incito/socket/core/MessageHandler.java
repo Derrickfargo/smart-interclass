@@ -18,14 +18,14 @@ import com.alibaba.fastjson.JSONObject;
  */
 public abstract class MessageHandler {
 
-    protected MessageInfo messageInfo;
+    protected Message messageInfo;
 
     /**
      * 消息对应的处理器 存放消息对应的处理逻辑，在消息分发时使用
      *
      * @param msg 被处理消息
      */
-    public final void handleMessage(MessageInfo msg) {
+    public final void handleMessage(Message msg) {
         this.messageInfo = msg;
         try {
             ByteBuffer buffer = msg.getBodyBuffer();

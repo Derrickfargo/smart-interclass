@@ -74,7 +74,9 @@ public class StudentLoginHandler extends MessageHandler {
         buffer.put(messageData);
         buffer.flip();
         try {
-        	message.getChannel().write(buffer);
+        	if(message.getChannel().isConnected()){
+        		message.getChannel().write(buffer);
+        	}
         } catch (IOException e) {
             e.printStackTrace();
         }

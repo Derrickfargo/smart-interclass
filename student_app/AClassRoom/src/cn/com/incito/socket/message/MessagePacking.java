@@ -4,7 +4,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.com.incito.socket.core.MessageInfo;
+import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.utils.BufferUtils;
 
 /**
@@ -73,7 +73,7 @@ public class MessagePacking {
 		//打包消息头:由fakeId,msgId,bodySize组成,共7个字节
 		//fake id
         byte[] indentifierByte = new byte[2];
-        BufferUtils.encodeIntLittleEndian(indentifierByte, MessageInfo.MESSAGE_FAKE_ID, 0, 2);//short
+        BufferUtils.encodeIntLittleEndian(indentifierByte, Message.MESSAGE_FAKE_ID, 0, 2);//short
         messageBuffer.put(indentifierByte);
         //消息ID
         messageBuffer.put(msgId);//byte

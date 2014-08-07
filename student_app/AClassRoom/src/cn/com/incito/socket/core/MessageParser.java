@@ -25,7 +25,7 @@ public class MessageParser {
      */
     private static final int HEADER_LENGTH = 7;
 
-    private MessageInfo messageInfo;
+    private Message messageInfo;
     private SocketChannel channel = null;
 
     public void bindHandler(MessageHandler messageHandler) {
@@ -58,7 +58,7 @@ public class MessageParser {
         if (parseFakeId(headerBuffer)) {
             // 获取消息头中有用的信息,msgId,msgSize
             parseMsgHeader(headerBuffer);
-            if (messageInfo.getMsgID() == MessageInfo.MESSAGE_HAND_SHAKE) {
+            if (messageInfo.getMsgID() == Message.MESSAGE_HAND_SHAKE) {
                 System.out.println("收到握手回复消息");
                 return;
             }
@@ -95,7 +95,7 @@ public class MessageParser {
         }
 
         // 如果消息的fakeId与定义的fakeId值不符，则丢弃掉该条消息
-        if (MessageInfo.MESSAGE_FAKE_ID != fakeId) {
+        if (Message.MESSAGE_FAKE_ID != fakeId) {
             System.out.println("该消息头不是需要的消息头,fakeId:" + fakeId);
             return false;
         }
@@ -108,7 +108,7 @@ public class MessageParser {
      * @param buffer 消息体字节数组
      */
     private void parseMsgHeader(ByteBuffer buffer) {
-        messageInfo = new MessageInfo();
+        messageInfo = new Message();
         //获取消息id（1个byte）
         messageInfo.setMsgID(buffer.get());
         //获取消息体的长度（4个byte）

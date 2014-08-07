@@ -57,18 +57,32 @@ public class MessageParser {
 		headerBuffer.flip();
 		System.out.println("开始解析消息..");
 		// 消息头fakeId是否正确
-		if (parseFakeId(headerBuffer)) {
-			// 获取消息头中有用的信息,msgId,msgSize
-			parseMsgHeader(headerBuffer);
-			// 解析消息体和命令
-			if (parseMsgBody()) {
-				message.setChannel(channel);
-				// 把消息压入消息队列
-				MessageManager.getInstance().addQueue(message);
-			}
+		if (!parseFakeId(headerBuffer)) {
+			return;
 		}
+		// 获取消息头中有用的信息,msgId,msgSize
+		parseMessageHeader(headerBuffer);
+		// 解析消息体和命令
+		if (!parseMessageBody()) {
+			return;
+		}
+		message.setChannel(channel);
+		if(message.getMsgID() == Message.MESSAGE_HEART_BEAT){
+			//如果为心跳消息，优先级最高，不经过队列，直接处理
+			watchHeartBeat();
+			return;
+		}
+		// 把消息压入消息队列
+		MessageManager.getInstance().addQueue(message);
 	}
 
+	/**
+	 * 处理心跳
+	 */
+	private void watchHeartBeat(){
+		
+	}
+	
 	/**
 	 * 解析消息头的Fake Id
 	 * 
@@ -104,7 +118,7 @@ public class MessageParser {
 	 * @param buffer
 	 *            消息体字节数组
 	 */
-	private void parseMsgHeader(ByteBuffer buffer) {
+	private void parseMessageHeader(ByteBuffer buffer) {
 		message = new Message();
 		//获取消息id（1个byte）
 		message.setMsgID(buffer.get());
@@ -119,7 +133,7 @@ public class MessageParser {
 	 *            消息体内容
 	 * @return true，解析成功，false表示为其他类型包无需压入消息队列
 	 */
-	private boolean parseMsgBody() {
+	private boolean parseMessageBody() {
 		int bodySize = message.getMsgSize();
 		ByteBuffer bodyBuffer = BufferUtils.prepareToReadOrPut(bodySize);
 		try {

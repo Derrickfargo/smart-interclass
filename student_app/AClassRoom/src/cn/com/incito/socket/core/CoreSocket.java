@@ -57,7 +57,7 @@ public final class CoreSocket extends Thread {
     }
 
     private byte[] getHandShakeMessage() {
-        MessagePacking messagePacking = new MessagePacking(MessageInfo.MESSAGE_HAND_SHAKE);
+        MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_HAND_SHAKE);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("imei", MyApplication.deviceId);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
