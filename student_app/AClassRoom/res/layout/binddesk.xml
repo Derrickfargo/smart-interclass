@@ -16,7 +16,6 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:layout_weight="1"
-        android:listSelector="@drawable/bg_desk_num_hover"
         android:horizontalSpacing="10dp"
         android:columnWidth="120dp"
         android:verticalSpacing="10dp"
