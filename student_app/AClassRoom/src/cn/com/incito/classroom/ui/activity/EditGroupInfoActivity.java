@@ -37,7 +37,6 @@ public class EditGroupInfoActivity extends BaseActivity {
 	@Override
 	protected void onStart(){
 		super.onStart();
-		initView();
 	}
 	
 	public void initView(){
@@ -45,7 +44,7 @@ public class EditGroupInfoActivity extends BaseActivity {
 		mBtnOk = (ImageButton)findViewById(R.id.btn_ok);
 		mListView = (HorizontalListView)findViewById(R.id.horizon_listview);
 		mPreviewImg = (ImageView)findViewById(R.id.image_preview);
-		if(mGroupIcons != null)
+		if(mGroupIcons == null)
 			mGroupIcons = getResources().obtainTypedArray(R.array.groupIcons);
 
 		mListViewAdapter = new HorizontalListViewAdapter(getApplicationContext(),mGroupIcons);
