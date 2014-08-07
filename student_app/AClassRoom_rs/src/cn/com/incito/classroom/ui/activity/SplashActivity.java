@@ -1,8 +1,5 @@
 package cn.com.incito.classroom.ui.activity;
 
-import com.alibaba.fastjson.JSON;
-import com.popoy.common.TAApplication;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
@@ -10,13 +7,12 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
-
-import cn.com.incito.classroom.Canvas1Activity;
-import cn.com.incito.classroom.Canvas2Activity;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
-import cn.com.incito.classroom.vo.LoginReqVo;
 import cn.com.incito.classroom.transition.SocketMinaClient;
+import cn.com.incito.classroom.vo.LoginReqVo;
+
+import com.alibaba.fastjson.JSON;
 
 /**
  * @author 白猫
@@ -56,28 +52,6 @@ public class SplashActivity extends BaseActivity {
         });
     }
 
-    @Override
-    protected void onPreOnCreate(Bundle savedInstanceState) {
-        super.onPreOnCreate(savedInstanceState);
-//		TAApplication application = (TAApplication) getApplication();
-//		// 配置系统的缓存,可以选择性的配置
-//		TACacheParams cacheParams = new TACacheParams(this, SYSTEMCACHE);
-//		TAFileCache fileCache = new TAFileCache(cacheParams);
-//		application.setFileCache(fileCache);
-        // 注册activity
-        // 注册activity
-//        getTAApplication().registerCommand(R.string.testmvccommand,
-//                TestMVCCommand.class);
-        getTAApplication().registerActivity(R.string.wifilistactivity,
-                WifiListActivity.class);
-        getTAApplication().registerActivity(R.string.cavas1activity,
-                Canvas1Activity.class);
-        getTAApplication().registerActivity(R.string.cavas2activity,
-                Canvas2Activity.class);
-        getTAApplication().registerActivity(R.string.waitingactivity,
-                WaitingActivity.class);
-
-    }
 
     @Override
     protected void onAfterOnCreate(Bundle savedInstanceState) {
@@ -86,11 +60,11 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void startMain() {
-        doActivity(R.string.waitingactivity);
+       //TODO 初始化完成之后进行页面跳转
     }
 
     void init() {
-        TelephonyManager tm = (TelephonyManager) TAApplication.getApplication().getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager tm = (TelephonyManager) getApplication().getSystemService(Context.TELEPHONY_SERVICE);
         SocketMinaClient socketMinaClient = new SocketMinaClient();
         LoginReqVo loginReqVo =new LoginReqVo();
         loginReqVo.setImei(tm.getDeviceId());

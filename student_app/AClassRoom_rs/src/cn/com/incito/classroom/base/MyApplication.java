@@ -1,10 +1,8 @@
 package cn.com.incito.classroom.base;
 
-import com.popoy.common.TAApplication;
+import android.app.Application;
 
-import java.util.List;
-
-public class MyApplication extends TAApplication {
+public class MyApplication extends Application {
 
 //    public static LoginResVo loginResVo;
 //    private static MenuItems item;
@@ -24,5 +22,14 @@ public class MyApplication extends TAApplication {
 //    public static void setLoginResVo(LoginResVo loginResVo) {
 //        MyApplication.loginResVo = loginResVo;
 //    }
+	static Application application ;
+	@Override
+	public void onCreate() {
+		super.onCreate();
+		application = this;
+	}
+	public static Application getApplication(){
+		return application;
+	}
 
 }

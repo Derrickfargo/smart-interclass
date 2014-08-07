@@ -15,8 +15,11 @@
  */
 package cn.com.incito.classroom.adapter;
 
+import java.util.List;
+
+import com.lidroid.xutils.ViewUtils;
+
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.net.wifi.ScanResult;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -25,18 +28,10 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
-
-import com.popoy.tookit.utils.ImageUtils;
-import com.popoy.tookit.utils.ViewUtil;
-
-import java.util.List;
-
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.ui.widget.caroursel.CarouselItemView;
-// TODO: Auto-generated Javadoc
 
 /**
  * © 2012 amsoft.cn
@@ -154,7 +149,7 @@ public class WifiListAdapter1 extends BaseAdapter {
         itemView.setIndex(position);
         holder.iv_wifi_list.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_classroom));
         holder.tv_ssid.setText(wifis.get(position).SSID);
-        ViewUtil.measureView(convertView);
+         measureView(convertView);
         LayoutParams mLayoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         mLayoutParams.gravity = Gravity.CENTER_HORIZONTAL;
         itemView.addView(convertView, mLayoutParams);
@@ -173,5 +168,30 @@ public class WifiListAdapter1 extends BaseAdapter {
         public ImageView iv_wifi_list;
     }
 
+    /**
+     * 测量这个view，最后通过getMeasuredWidth()获取宽度和高度.
+     *
+     * @param v
+     *            要测量的view
+     * @return 测量过的view
+     */
+    public static void measureView(View v) {
+        ViewGroup.LayoutParams p = v.getLayoutParams();
+        if (p == null) {
+            p = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
 
+        int childWidthSpec = ViewGroup.getChildMeasureSpec(0, 0 + 0, p.width);
+        int lpHeight = p.height;
+        int childHeightSpec;
+        if (lpHeight > 0) {
+            childHeightSpec = View.MeasureSpec.makeMeasureSpec(lpHeight,
+                    View.MeasureSpec.EXACTLY);
+        } else {
+            childHeightSpec = View.MeasureSpec.makeMeasureSpec(0,
+                    View.MeasureSpec.UNSPECIFIED);
+        }
+        v.measure(childWidthSpec, childHeightSpec);
+    }
 }

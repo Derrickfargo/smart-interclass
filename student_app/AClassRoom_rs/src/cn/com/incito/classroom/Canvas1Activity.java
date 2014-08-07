@@ -3,13 +3,6 @@ package cn.com.incito.classroom;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.popoy.common.TAActivity;
-
-import cn.com.incito.classroom.R;
-import cn.com.incito.classroom.base.BaseActivity;
-import cn.com.incito.classroom.canvas.PaletteView;
-
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -17,11 +10,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import cn.com.incito.classroom.base.BaseActivity;
+import cn.com.incito.classroom.canvas.PaletteView;
 
 public class Canvas1Activity extends BaseActivity {
     PaletteView paletteView = null;
