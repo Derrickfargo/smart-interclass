@@ -21,6 +21,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import cn.com.incito.interclass.Listener.MySystemTrayEvent;
+import cn.com.incito.interclass.Listener.MySystemTrayManager;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.CoreSocket;
 
@@ -37,7 +39,7 @@ public class MainFrame extends MouseAdapter{
 	private JScrollPane scrollPane;
 	private Application app = Application.getInstance();
 	private static MainFrame instance;
-	
+	private MySystemTrayEvent mySystemTrayEvent;
 	public static MainFrame getInstance() {
 		if (instance == null) {
 			instance = new MainFrame();
@@ -52,7 +54,9 @@ public class MainFrame extends MouseAdapter{
 	public void refresh() {
 		centerPanel.refresh();
 	}
-	
+	public JFrame getFrame(){
+		return frame;
+	}
 	private MainFrame(){
 		//启动通讯线程
 		CoreSocket.getInstance().start();
@@ -62,6 +66,7 @@ public class MainFrame extends MouseAdapter{
 	
 	//显示登陆界面
 	private void showLoginUI(){
+		mySystemTrayEvent = new MySystemTrayManager();
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		frame.setContentPane(contentPane);
@@ -310,5 +315,7 @@ public class MainFrame extends MouseAdapter{
 			btnClose.setIcon(new ImageIcon("images/login/7.png"));
 		}
 	}
-	
+	public MySystemTrayEvent getMySystemTrayEvent() {
+		return mySystemTrayEvent;
+	}
 }
