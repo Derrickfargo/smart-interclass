@@ -50,7 +50,12 @@
         <activity
             android:name="cn.com.incito.classroom.ui.activity.BindDeskActivity"
             android:screenOrientation="landscape" />
-
+        <activity android:name=".ui.activity.EditGroupInfoActivity">
+            
+        </activity>
+        <activity android:name=".ui.activity.ConfirmGroupInfoActivity">
+            
+        </activity>
         <service android:name="cn.com.incito.classroom.service.MessageService" />
         <service android:name="cn.com.incito.classroom.service.SocketService" />
 
