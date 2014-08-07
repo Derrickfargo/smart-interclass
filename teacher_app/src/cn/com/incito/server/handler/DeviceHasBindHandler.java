@@ -18,6 +18,7 @@ public class DeviceHasBindHandler extends MessageHandler {
 	 
 	@Override
 	public void handleMessage() {
+		System.out.println("收到设备是否绑定消息...");
 		String imei = data.getString("imei");
 		String result = service.isDeviceBind(imei);
 		sendResponse(result);

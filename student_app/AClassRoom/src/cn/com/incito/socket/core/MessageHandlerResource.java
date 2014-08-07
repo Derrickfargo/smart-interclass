@@ -3,6 +3,12 @@ package cn.com.incito.socket.core;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.com.incito.socket.handler.DeviceBindHandler;
+import cn.com.incito.socket.handler.DeviceHasBindHandler;
+import cn.com.incito.socket.handler.GroupListHandler;
+import cn.com.incito.socket.handler.HeartbeatHandler;
+import cn.com.incito.socket.handler.StudentLoginHandler;
+
 /**
  * 消息处理器列表
  * 该类用来维护消息和消息处理器的关系
@@ -11,48 +17,42 @@ import java.util.Map;
  */
 public final class MessageHandlerResource {
 
-    private static MessageHandlerResource resources;
-    //    private Map<Byte, Class<? extends MessageHandler>> handlerResources;
-    private Map<Byte, MessageHandler> handlerResources=new HashMap<Byte, MessageHandler>();
-
-    public static MessageHandlerResource getHandlerResources() {
-        if (resources == null) {
-            resources = new MessageHandlerResource();
-        }
-        return resources;
-    }
-
-    public void putHandlerResource(byte key, MessageHandler messageHandler) {
-        handlerResources.put(key, messageHandler);
-    }
-
-    private MessageHandlerResource() {
-//        handlerResources = new HashMap<Byte, Class<? extends MessageHandler>>();
-//        //心跳消息
-//        handlerResources.put(MessageInfo.MESSAGE_HEART_BEAT, HeartbeatHandler.class);
-//        //程序启动初始化消息
-//        handlerResources.put(MessageInfo.MESSAGE_GROUP_LIST, SytemInitHandler1.class);
-//        //学生登陆消息
-//        handlerResources.put(MessageInfo.MESSAGE_STUDENT_LOGIN, LoginHandler.class);
-//        //课桌绑定
-//        handlerResources.put(MessageInfo.MESSAGE_DEVICE_BIND, BindDeskHandler.class);
-//        //判断设备是否已经绑定课桌
-//        handlerResources.put(MessageInfo.MESSAGE_DEVICE_HAS_BIND, DeviceHasBindHandler.class);
-
-    }
-
-    public MessageHandler getMessageHandler(Byte key) {
-        // 查询是否有该消息ID的消息处理器
-        if (handlerResources.containsKey(key)) {
-            try {
-                // 通过反射取得对应的处理器
-                return handlerResources.get(key);
-            } catch (Exception e) {
-                System.out.println("获取MessageHandler出错:" + e.getMessage());
-                return null;
-            }
-        }
-        return null;
-    }
-
+	private static MessageHandlerResource resources;
+	private Map<Byte, Class<? extends MessageHandler>> handlerResources;
+	
+	public static MessageHandlerResource getHandlerResources() {
+		if (resources == null) {
+			resources = new MessageHandlerResource();
+		}
+		return resources;
+	}
+	
+	private MessageHandlerResource(){
+		handlerResources = new HashMap<Byte, Class<? extends MessageHandler>>();
+		//心跳消息
+		handlerResources.put(Message.MESSAGE_HEART_BEAT, HeartbeatHandler.class);
+		//获取分组消息
+		handlerResources.put(Message.MESSAGE_GROUP_LIST, GroupListHandler.class);
+		//学生登陆消息
+		handlerResources.put(Message.MESSAGE_STUDENT_LOGIN, StudentLoginHandler.class);
+		//设备是否绑定消息
+		handlerResources.put(Message.MESSAGE_DEVICE_HAS_BIND, DeviceHasBindHandler.class);
+		//设备绑定消息
+		handlerResources.put(Message.MESSAGE_DEVICE_BIND, DeviceBindHandler.class);
+	}
+	
+	public MessageHandler getMessageHandler(Byte key){
+		// 查询是否有该消息ID的消息处理器
+		if (handlerResources.containsKey(key)) {
+			try {
+				// 通过反射取得对应的处理器
+				return handlerResources.get(key).newInstance();
+			} catch (Exception e) {
+				System.out.println("获取MessageHandler出错:" + e.getMessage());
+				return null;
+			}
+		}
+		return null;
+	}
+	
 }

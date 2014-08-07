@@ -1,7 +1,5 @@
 package cn.com.incito.socket.core;
 
-import com.alibaba.fastjson.JSONObject;
-
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -15,6 +13,8 @@ import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
+
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * 客户端Socket
@@ -69,11 +69,9 @@ public final class CoreSocket extends Thread {
      *
      * @param packing
      */
-    public void sendMessage(final MessagePacking packing, MessageHandler messageHandler) {
-        MessageHandlerResource.getHandlerResources().putHandlerResource(packing.msgId, messageHandler);
+    public void sendMessage(final MessagePacking packing) {
         new Thread() {
             public void run() {
-
                 byte[] message = packing.pack().array();
                 ByteBuffer buffer = ByteBuffer.allocate(message.length);
                 buffer.put(message);
@@ -118,13 +116,6 @@ public final class CoreSocket extends Thread {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public boolean isConnected() {
-        if (channel == null) {
-            return false;
-        }
-        return channel.isConnected();
     }
 
 }

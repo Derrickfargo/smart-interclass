@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -16,9 +15,9 @@ import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.service.SocketService;
+import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
-import cn.com.incito.socket.core.MessageHandler;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
@@ -41,6 +40,7 @@ public class SplashActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        UIHelper.getInstance().setSplashActivity(this);
         msgReceiver = new MsgReceiver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(SocketService.NETWORK_RECEIVER);
@@ -56,7 +56,7 @@ public class SplashActivity extends BaseActivity {
         aa.setAnimationListener(new AnimationListener() {
             @Override
             public void onAnimationEnd(Animation arg0) {
-                startMain();
+            	startMain();
             }
 
             @Override
@@ -65,7 +65,7 @@ public class SplashActivity extends BaseActivity {
 
             @Override
             public void onAnimationStart(Animation animation) {
-
+            	
             }
         });
     }
@@ -102,60 +102,8 @@ public class SplashActivity extends BaseActivity {
         jsonObject.put("imei", MyApplication.deviceId);
         MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_HAS_BIND);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
-        CoreSocket.getInstance().sendMessage(messagePacking, new MessageHandler() {
-            @Override
-            public void handleMessage(Bundle bundle) {
-            	android.os.Message message = new android.os.Message();
-                message.what = 1;
-                message.setData(bundle);
-                mHandler.sendMessage(message);
-                tv_loading_msg.setText(R.string.loading_complete_msg);
-            }
-
-        });
+        CoreSocket.getInstance().sendMessage(messagePacking);
     }
-
-    void init1() {
-//        CmdClient.getInstance().start(this, Constants.IP, Constants.PORT);
-//
-////        SocketMinaClient socketMinaClient = SocketMinaClient.getInstance();
-//        JSONObject jsonObject = new JSONObject();
-//        jsonObject.put("imei", MyApplication.deviceId);
-
-//        MessagePacking messagePacking = new MessagePacking(MessageInfo.MESSAGE_GROUP_LIST);
-//        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
-////        CoreSocket.getInstance().sendMessage(messagePacking);
-//        socketMinaClient.sendMessage(messagePacking);
-//        CmdClient.getInstance().sendMessage(jsonObject.toJSONString());
-//        socketMinaClient.getSocketConnector().dispose();
-    }
-
-
-    private Handler mHandler = new Handler() {
-
-        @Override
-        public void handleMessage(android.os.Message msg) {
-            switch (msg.what) {
-                case 1: {
-                    JSONObject jsonObject = (JSONObject) msg.getData().getSerializable("data");
-                    if (!"0".equals(jsonObject.getString("code"))) {
-                        return;
-                    } else if (jsonObject.getJSONObject("data").getBoolean("isbind")) {
-                        startActivity(new Intent(SplashActivity.this,
-                                WaitingActivity.class));
-                        finish();
-                    } else {
-                        startActivity(new Intent(SplashActivity.this,
-                                BindDeskActivity.class));
-                        finish();
-                    }
-                    break;
-                }
-                default:
-                    break;
-            }
-        }
-    };
 
     @Override
     public void onBackPressed() {

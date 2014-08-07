@@ -29,6 +29,7 @@ import cn.com.incito.classroom.vo.LoginReqVo;
 import cn.com.incito.classroom.vo.LoginRes2Vo;
 import cn.com.incito.classroom.vo.LoginResVo;
 import cn.com.incito.common.utils.ToastHelper;
+import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.core.MessageHandler;
@@ -49,6 +50,8 @@ import com.alibaba.fastjson.JSONObject;
  */
 public class WaitingActivity extends BaseActivity {
     public static final String TAG = "WaitingActivity";
+    public static final int STUDENT_LIST = 1;
+    public static final int STUDENT_LOGIN = 2;
     //自定义的弹出框类
     EditText et_stname;
     EditText et_stnumber;
@@ -73,6 +76,7 @@ public class WaitingActivity extends BaseActivity {
     protected void onAfterOnCreate(Bundle savedInstanceState) {
         super.onAfterOnCreate(savedInstanceState);
         setContentView(R.layout.waiting);
+        UIHelper.getInstance().setWaitingActivity(this);
         mProgressDialog = new ProgressiveDialog(this);
         initViews();
         initListener();
@@ -188,16 +192,17 @@ public class WaitingActivity extends BaseActivity {
         String json = JSON.toJSONString(loginReqVo);
         MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
-        CoreSocket.getInstance().sendMessage(messagePacking, new MessageHandler() {
-            @Override
-            protected void handleMessage(Bundle data) {
-                android.os.Message message = new android.os.Message();
-                message.what = 1;
-                message.setData(data);
-//                Log.i(message.toString());
-                mHandler.sendMessage(message);
-            }
-        });
+        CoreSocket.getInstance().sendMessage(messagePacking);
+//        CoreSocket.getInstance().sendMessage(messagePacking, new MessageHandler() {
+//            @Override
+//            protected void handleMessage(Bundle data) {
+//                android.os.Message message = new android.os.Message();
+//                message.what = 1;
+//                message.setData(data);
+////                Log.i(message.toString());
+//                mHandler.sendMessage(message);
+//            }
+//        });
 
     }
 
@@ -214,15 +219,16 @@ public class WaitingActivity extends BaseActivity {
         String json = JSON.toJSONString(loginReqVo);
         MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
-        CoreSocket.getInstance().sendMessage(messagePacking, new MessageHandler() {
-            @Override
-            protected void handleMessage(Bundle data) {
-            	android.os.Message message = new android.os.Message();
-                message.what = 2;
-                message.setData(data);
-                mHandler.sendMessage(message);
-            }
-        });
+        CoreSocket.getInstance().sendMessage(messagePacking);
+//        CoreSocket.getInstance().sendMessage(messagePacking, new MessageHandler() {
+//            @Override
+//            protected void handleMessage(Bundle data) {
+//            	android.os.Message message = new android.os.Message();
+//                message.what = 2;
+//                message.setData(data);
+//                mHandler.sendMessage(message);
+//            }
+//        });
     }
 
     /**
@@ -273,43 +279,7 @@ public class WaitingActivity extends BaseActivity {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 //登陆
-                case 1: {
-                    mProgressDialog.hide();
-                    JSONObject jsonObject = (JSONObject) msg.getData().getSerializable("data");
-                    if (!"0".equals(jsonObject.getString("code"))) {
-                        return;
-                    } else if (jsonObject.getJSONObject("data") == null) {
-                    } else {
-                        LoginResVo loginResVo = JSON.parseObject(jsonObject.getJSONObject("data").toJSONString(), LoginResVo.class);
-                        list = loginResVo.getStudents();
-                        ((MyApplication) getApplication()).setLoginResVo(loginResVo);
-                        if (list != null && list.size() > 0) {
-                            mAdapter = new GroupNumAdapter(WaitingActivity.this, list);
-                            gv_group_member.setAdapter(mAdapter);
-                        }
-                    }
-                    break;
-                }
-                //取消登陆
-                case 2: {
-                    mProgressDialog.hide();
-                    JSONObject jsonObject = (JSONObject) msg.getData().getSerializable("data");
-                    if (!"0".equals(jsonObject.getString("code"))) {
-                        return;
-                    } else if (jsonObject.getJSONObject("data") == null) {
-                    } else {
-                        LoginResVo loginResVo = JSON.parseObject(jsonObject.getJSONObject("data").toJSONString(), LoginResVo.class);
-                        list = loginResVo.getStudents();
-                        ((MyApplication) getApplication()).setLoginResVo(loginResVo);
-                        if (list != null && list.size() > 0) {
-                            mAdapter = new GroupNumAdapter(WaitingActivity.this, list);
-                            gv_group_member.setAdapter(mAdapter);
-                        }
-                    }
-                    break;
-                }
-                //注册
-                case 3: {
+                case STUDENT_LOGIN: {
                     mProgressDialog.hide();
                     JSONObject jsonObject = (JSONObject) msg.getData().getSerializable("data");
                     if (!"0".equals(jsonObject.getString("code"))) {
@@ -334,7 +304,7 @@ public class WaitingActivity extends BaseActivity {
                     break;
                 }
                 //获取分组
-                case 4: {
+                case STUDENT_LIST: {
                     mProgressDialog.hide();
                     JSONObject jsonObject = (JSONObject) msg.getData().getSerializable("data");
                     if (!"0".equals(jsonObject.getString("code"))) {
@@ -361,6 +331,15 @@ public class WaitingActivity extends BaseActivity {
         }
     };
 
+    public void doResult(JSONObject jsonObject, int type) {
+    	android.os.Message message = new android.os.Message();
+    	message.what = type;
+    	Bundle data = new Bundle();
+    	data.putSerializable("data", jsonObject);
+    	message.setData(data);
+    	mHandler.sendMessage(message);
+    }
+    
     /**
      * 注册成员
      */
@@ -375,15 +354,16 @@ public class WaitingActivity extends BaseActivity {
 
         MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
-        CoreSocket.getInstance().sendMessage(messagePacking, new MessageHandler() {
-            @Override
-            protected void handleMessage(Bundle data) {
-            	android.os.Message message = new android.os.Message();
-                message.what = 3;
-                message.setData(data);
-                mHandler.sendMessage(message);
-            }
-        });
+        CoreSocket.getInstance().sendMessage(messagePacking);
+//        CoreSocket.getInstance().sendMessage(messagePacking, new MessageHandler() {
+//            @Override
+//            protected void handleMessage(Bundle data) {
+//            	android.os.Message message = new android.os.Message();
+//                message.what = 3;
+//                message.setData(data);
+//                mHandler.sendMessage(message);
+//            }
+//        });
     }
 
     /**
@@ -395,14 +375,15 @@ public class WaitingActivity extends BaseActivity {
 
         MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_LIST);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
-        CoreSocket.getInstance().sendMessage(messagePacking, new MessageHandler() {
-            @Override
-            protected void handleMessage(Bundle data) {
-            	android.os.Message message = new android.os.Message();
-                message.what = 4;
-                message.setData(data);
-                mHandler.sendMessage(message);
-            }
-        });
+        CoreSocket.getInstance().sendMessage(messagePacking);
+//        CoreSocket.getInstance().sendMessage(messagePacking, new MessageHandler() {
+//            @Override
+//            protected void handleMessage(Bundle data) {
+//            	android.os.Message message = new android.os.Message();
+//                message.what = 4;
+//                message.setData(data);
+//                mHandler.sendMessage(message);
+//            }
+//        });
     }
 }
