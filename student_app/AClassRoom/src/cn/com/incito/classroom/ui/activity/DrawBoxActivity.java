@@ -54,6 +54,16 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.draw_box);
+		initView();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		iv.setmLoop(true);// 重新进去界面后 重启线程进行绘图
+	}
+
+	public void initView() {
 		mLinearLayout = (LinearLayout) findViewById(R.id.line);
 		mRelativeLayout = (RelativeLayout) findViewById(R.id.main);
 		this.iv = (PaletteViewWidget) this.findViewById(R.id.iv);
@@ -127,100 +137,105 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		Translate(mImageView,0);
+		if (v.getId() != R.id.bg_select_btn && v.getId() != R.id.big
+				&& v.getId() != R.id.middle && v.getId() != R.id.small) {// 选择笔的粗细时
+																			// 跳出的笔不缩回
+			Translate(mImageView, 0);// 跳出的笔缩回到原来位置
+		}
+
 		switch (v.getId()) {
 		case R.id.color_white:
-			Translate(mWhiteIco,-0.25f);
+			Translate(mWhiteIco, -0.25f);
 			iv.setCurrentPaintTool(0);
 			iv.setCurrentColor(getResources().getColor(android.R.color.white));
 			break;
 		case R.id.color_canary_yellow:
-			Translate(mCanaryYellowIco,-0.25f);
+			Translate(mCanaryYellowIco, -0.25f);
 			iv.setCurrentPaintTool(0);
 			iv.setCurrentColor(getResources().getColor(R.color.canary_yellow));
 			break;
 		case R.id.ico_lemon_yellow:
-			Translate(mLemonYellow,-0.25f);
+			Translate(mLemonYellow, -0.25f);
 			iv.setCurrentPaintTool(0);
 			iv.setCurrentColor(getResources().getColor(R.color.lemon_yellow));
 			break;
 		case R.id.ico_salmon_orange:
-			Translate(mSalmonOrange,-0.25f);
+			Translate(mSalmonOrange, -0.25f);
 			iv.setCurrentPaintTool(0);
 			iv.setCurrentColor(getResources().getColor(R.color.salmon_orange));
 			break;
 		case R.id.ico_spanish_orange:
-			Translate(mSpanishOrange,-0.25f);
+			Translate(mSpanishOrange, -0.25f);
 			iv.setCurrentPaintTool(0);
 			iv.setCurrentColor(getResources().getColor(R.color.spanish_orange));
 			break;
 		case R.id.ico_mineral_orange:
-			Translate(mMineralOrange,-0.25f);
+			Translate(mMineralOrange, -0.25f);
 			iv.setCurrentPaintTool(0);
 			iv.setCurrentColor(getResources().getColor(R.color.mineral_orange));
 			break;
 		case R.id.ico_carmine_red:
-			Translate(mCarmineRed,-0.25f);
+			Translate(mCarmineRed, -0.25f);
 			iv.setCurrentPaintTool(0);
 			iv.setCurrentColor(getResources().getColor(R.color.carmine_red));
 			break;
 		case R.id.ico_hot_ink:
-			Translate(mHotInk,-0.25f);
+			Translate(mHotInk, -0.25f);
 			iv.setCurrentPaintTool(0);
 			iv.setCurrentColor(getResources().getColor(R.color.hot_ink));
 			break;
 		case R.id.ico_magenta:
-			Translate(mMagenta,-0.25f);
+			Translate(mMagenta, -0.25f);
 			iv.setCurrentPaintTool(0);
 			iv.setCurrentColor(getResources().getColor(R.color.magenta));
 			break;
 		case R.id.ico_powder_blue:
-			Translate(mPowderBlue,-0.25f);
+			Translate(mPowderBlue, -0.25f);
 			iv.setCurrentPaintTool(0);
 			iv.setCurrentColor(getResources().getColor(R.color.powder_blue));
 			break;
 		case R.id.ico_turquoise:
-			Translate(mTurquoise,-0.25f);
+			Translate(mTurquoise, -0.25f);
 			iv.setCurrentPaintTool(0);
 			iv.setCurrentColor(getResources().getColor(R.color.turquoise));
 			break;
 		case R.id.ico_peacpck_blue:
-			Translate(mPeacpckBlue,-0.25f);
+			Translate(mPeacpckBlue, -0.25f);
 			iv.setCurrentPaintTool(0);
 			iv.setCurrentColor(getResources().getColor(R.color.peacpck_blue));
 			break;
 		case R.id.ico_dark_purple:
-			Translate(mDarkPurple,-0.25f);
+			Translate(mDarkPurple, -0.25f);
 			iv.setCurrentPaintTool(0);
 			iv.setCurrentColor(getResources().getColor(R.color.dark_purple));
 			break;
 		case R.id.ico_dark_green:
-			Translate(mDarkGreen,-0.25f);
+			Translate(mDarkGreen, -0.25f);
 			iv.setCurrentPaintTool(0);
 			iv.setCurrentColor(getResources().getColor(R.color.dark_green));
 			break;
 		case R.id.ico_moss_green:
-			Translate(mMossGreen,-0.25f);
+			Translate(mMossGreen, -0.25f);
 			iv.setCurrentPaintTool(0);
 			iv.setCurrentColor(getResources().getColor(R.color.moss_green));
 			break;
 		case R.id.ico_parrot_green:
-			Translate(mParrotGreen,-0.25f);
+			Translate(mParrotGreen, -0.25f);
 			iv.setCurrentPaintTool(0);
 			iv.setCurrentColor(getResources().getColor(R.color.parrot_green));
 			break;
 		case R.id.ico_chocolate:
-			Translate(mChocolate,-0.25f);
+			Translate(mChocolate, -0.25f);
 			iv.setCurrentPaintTool(0);
 			iv.setCurrentColor(getResources().getColor(R.color.chocolate));
 			break;
 		case R.id.ico_black:
-			Translate(mBlack,-0.25f);
+			Translate(mBlack, -0.25f);
 			iv.setCurrentPaintTool(0);
 			iv.setCurrentColor(getResources().getColor(R.color.black));
 			break;
 		case R.id.ico_grey:
-			Translate(mGrey,-0.25f);
+			Translate(mGrey, -0.25f);
 			iv.setCurrentPaintTool(0);
 			iv.setCurrentColor(getResources().getColor(R.color.grey));
 			break;
@@ -290,12 +305,5 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener {
 		}
 		imageView.startAnimation(animationSet);
 	}
-	@Override
-	protected void onResume() {
-		super.onResume();
-	}
-	@Override
-	protected void onPause() {
-		super.onPause();
-	}
+
 }

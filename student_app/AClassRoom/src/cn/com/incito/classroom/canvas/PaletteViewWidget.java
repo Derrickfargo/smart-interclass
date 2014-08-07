@@ -56,7 +56,12 @@ public class PaletteViewWidget extends SurfaceView implements Runnable,
 	// 当前的画笔实例
 	public Action curAction = null;
 	// 线程结束标志位
-	public static boolean mLoop = true;
+	public  boolean mLoop = true;
+	
+	public void setmLoop(boolean mLoop) {
+		this.mLoop = mLoop;
+	}
+
 	SurfaceHolder mSurfaceHolder = null;
 	// 绘图区背景图片
 	Bitmap bgBitmap = null;
@@ -66,13 +71,13 @@ public class PaletteViewWidget extends SurfaceView implements Runnable,
 
 	public PaletteViewWidget(Context context, AttributeSet arr) {
 		super(context, arr);
-
+		mLoop = true;
 		mPaint = new Paint();
 		actionList = new ArrayList<Action>();
 		mSurfaceHolder = this.getHolder();
 		mSurfaceHolder.addCallback(this);
 		this.setFocusable(true);
-		mLoop = true;
+	
 		bgBitmap = ((BitmapDrawable) (getResources().getDrawable(R.drawable.bg)))
 				.getBitmap();
 		newbit = Bitmap.createBitmap(bgBitmapWidth, bgBitmapHeight,
@@ -130,11 +135,10 @@ public class PaletteViewWidget extends SurfaceView implements Runnable,
 		if (mSurfaceHolder == null || canvas == null) {
 			return;
 		}
-		// 填充背景
+//		 填充背景
 		// canvas.drawColor(Color.GREEN);
 		// 画主画板
 		drawMainPallent(canvas);
-
 		mSurfaceHolder.unlockCanvasAndPost(canvas);
 	}
 
@@ -252,10 +256,6 @@ public class PaletteViewWidget extends SurfaceView implements Runnable,
 		}
 	}
 
-	@Override
-	protected void onAttachedToWindow() {
-		super.onAttachedToWindow();
-	}
 	
 }
 
