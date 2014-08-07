@@ -27,10 +27,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout.LayoutParams;
-
-import com.popoy.tookit.utils.ImageUtils;
-import com.popoy.tookit.utils.ViewUtil;
-// TODO: Auto-generated Javadoc
+import cn.com.incito.socket.utils.ImageUtils;
 
 /**
  * © 2012 amsoft.cn
@@ -168,7 +165,7 @@ public class CarouselViewAdapter extends BaseAdapter {
                 });
 
             } else {
-                ViewUtil.measureView(view);
+             measureView(view);
                 LayoutParams mLayoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
                 mLayoutParams.gravity = Gravity.CENTER_HORIZONTAL;
                 itemView.addView(view, mLayoutParams);
@@ -190,6 +187,31 @@ public class CarouselViewAdapter extends BaseAdapter {
     void setViews(List<View> views) {
         mViews = views;
     }
+    /**
+     * 测量这个view，最后通过getMeasuredWidth()获取宽度和高度.
+     *
+     * @param v
+     *            要测量的view
+     * @return 测量过的view
+     */
+    public static void measureView(View v) {
+        ViewGroup.LayoutParams p = v.getLayoutParams();
+        if (p == null) {
+            p = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
 
+        int childWidthSpec = ViewGroup.getChildMeasureSpec(0, 0 + 0, p.width);
+        int lpHeight = p.height;
+        int childHeightSpec;
+        if (lpHeight > 0) {
+            childHeightSpec = View.MeasureSpec.makeMeasureSpec(lpHeight,
+                    View.MeasureSpec.EXACTLY);
+        } else {
+            childHeightSpec = View.MeasureSpec.makeMeasureSpec(0,
+                    View.MeasureSpec.UNSPECIFIED);
+        }
+        v.measure(childWidthSpec, childHeightSpec);
+    }
 
 }

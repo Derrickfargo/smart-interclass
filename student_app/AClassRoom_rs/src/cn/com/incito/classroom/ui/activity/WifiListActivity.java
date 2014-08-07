@@ -1,5 +1,8 @@
 package cn.com.incito.classroom.ui.activity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -7,19 +10,12 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-
-import com.activeandroid.util.Log;
-import com.popoy.annotation.TAInjectView;
-import com.popoy.common.core.AsyncTask;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.ui.dialog.ConfigWifiWindow;
@@ -42,11 +38,8 @@ public class WifiListActivity extends BaseActivity {
     //自定义的弹出框类
 //    @TAInjectView(id = R.id.gv_wifi_list)
 //    GridView gv_wifi_list;
-    @TAInjectView(id = R.id.carousel)
     CircleLayout carousel;
-    @TAInjectView(id = R.id.contentLayout)
     LinearLayout contentLayout;
-    @TAInjectView(id = R.id.rlayout)
     RelativeLayout rlayout;
     private WifiAdmin wifiAdmin;
     CarouselViewAdapter adapter;
@@ -133,12 +126,10 @@ public class WifiListActivity extends BaseActivity {
                 LoadingDialog.hide();
                 selectedPos = -1;
                 login();
-                doActivity(R.string.cavas1activity);
             }
 
             @Override
             public void onNotifyWifiConnectFailed() {
-                Log.i("test");
                 LoadingDialog.hide();
 //                adapter.changeWifiState(selectedPos, WifiListAdapter.ConnectState.CONNECT_FAIL);
 //                adapter.notifyDataSetChanged();
@@ -155,6 +146,7 @@ public class WifiListActivity extends BaseActivity {
 
         carousel.setChild(lists, wifilist);
     }
+    
     AsyncTask task = new AsyncTask() {
         @Override
         protected Object doInBackground(Object[] params) {
@@ -189,7 +181,7 @@ public class WifiListActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        exitApp();
+      //  exitApp();
     }
 
     /**
@@ -198,5 +190,11 @@ public class WifiListActivity extends BaseActivity {
     private void login() {
 //        CoreSocket.getInstance().startConnection();
 
+    }
+    
+    private void initviews(){
+    	carousel = (CircleLayout) findViewById(R.id.carousel);
+    	contentLayout = (LinearLayout) findViewById(R.id.contentLayout);
+    	rlayout = (RelativeLayout) findViewById(R.id.rlayout);
     }
 }

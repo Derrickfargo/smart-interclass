@@ -4,16 +4,12 @@ import java.util.List;
 
 import android.content.Context;
 import android.net.wifi.ScanResult;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.popoy.tookit.Enum.Enumeration;
-
 import cn.com.incito.classroom.R;
 
 public class WifiListAdapter extends BaseAdapter {

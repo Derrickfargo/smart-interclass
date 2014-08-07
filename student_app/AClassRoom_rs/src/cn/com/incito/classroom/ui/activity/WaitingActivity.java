@@ -1,5 +1,8 @@
 package cn.com.incito.classroom.ui.activity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
@@ -17,12 +20,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-
-import com.popoy.annotation.TAInjectView;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.adapter.GroupNumAdapter;
 import cn.com.incito.classroom.base.BaseActivity;
@@ -39,21 +36,13 @@ public class WaitingActivity extends BaseActivity {
     public static final String TAG = "WaitingActivity";
     //自定义的弹出框类
     EditText et_stname;
-    @TAInjectView(id = R.id.et_stnumber)
     EditText et_stnumber;
-    @TAInjectView(id = R.id.btn_join)
     ImageButton btn_join;
-    @TAInjectView(id = R.id.gender_group)
     RadioGroup gender_group;
-    @TAInjectView(id = R.id.female)
     RadioButton female;
-    @TAInjectView(id = R.id.male)
     RadioButton male;
-    @TAInjectView(id = R.id.gv_group_member)
     GridView gv_group_member;
-    @TAInjectView(id = R.id.llayout1)
     LinearLayout llayout1;
-    @TAInjectView(id = R.id.llayout2)
     LinearLayout llayout2;
     List<GroupNumberRes2Vo> list;
     GroupNumAdapter mAdapter;
@@ -68,6 +57,7 @@ public class WaitingActivity extends BaseActivity {
     @Override
     protected void onAfterOnCreate(Bundle savedInstanceState) {
         super.onAfterOnCreate(savedInstanceState);
+        initViews();
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         mShowAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
                 Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
@@ -157,6 +147,18 @@ public class WaitingActivity extends BaseActivity {
     }
 
 
+    private void initViews(){
+    	
+    	et_stnumber = (EditText) findViewById(R.id.et_stnumber);
+    	btn_join = (ImageButton) findViewById(R.id.btn_join);
+    	gender_group = (RadioGroup) findViewById(R.id.gender_group);
+    	female = (RadioButton) findViewById(R.id.female);
+    	male = (RadioButton) findViewById(R.id.male);
+    	gv_group_member = (GridView) findViewById(R.id.gv_group_member);
+    	llayout1 = (LinearLayout)findViewById(R.id.llayout1);
+    	llayout2 = (LinearLayout) findViewById(R.id.llayout2);
+    }
+    
     @Override
     protected void onStart() {
         super.onStart();
@@ -165,7 +167,7 @@ public class WaitingActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        exitApp();
+     //   exitApp();
     }
 
     /**

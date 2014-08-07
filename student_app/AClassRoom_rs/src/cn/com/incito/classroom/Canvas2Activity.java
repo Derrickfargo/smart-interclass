@@ -1,6 +1,5 @@
 package cn.com.incito.classroom;
 
-import com.popoy.common.TAActivity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -11,7 +10,7 @@ import android.webkit.WebView;
 
 import cn.com.incito.classroom.base.BaseActivity;
 
-@SuppressLint("SetJavaScriptEnabled")
+@SuppressLint({ "SetJavaScriptEnabled", "JavascriptInterface" })
 public class Canvas2Activity extends BaseActivity {
     private WebView mWebView;
     private Handler mHandler = new Handler();
