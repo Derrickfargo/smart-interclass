@@ -17,4 +17,5 @@
     <string name="loading_msg">正在处理，请等一下哦！~</string>
     <string name="loading_complete_msg">处理完毕，正在进入...</string>
 
+    <string name="input_group_name_hint">请输入小组名称</string>
 </resources>

@@ -9,4 +9,6 @@
     <string name="waitingactivity">WaitingActivity</string>
     <string name="binddeskactivity">BindDeskActivity</string>
 
+    <string name="editgroupinfoactivity">EditGroupInfoActivity</string>
+    <string name="confirmgroupactivity">ConfirmGroupInfoActivity</string>
 </resources>

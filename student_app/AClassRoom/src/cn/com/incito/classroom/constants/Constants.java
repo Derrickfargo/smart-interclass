@@ -5,7 +5,7 @@ package cn.com.incito.classroom.constants;
  */
 public class Constants {
     public static final int PORT = 9001;
-    public static final String IP = "192.168.30.147";
+    public static final String IP = "192.168.30.8";
 
     /** WisdomCityRestClient 访问API是否输出日志 */
     public static final boolean REST_CLIENT_LOG_SENABLE_LOGGING = true;

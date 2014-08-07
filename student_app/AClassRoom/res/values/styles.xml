@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -23,5 +23,10 @@
     <style name="loading_dialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:backgroundDimAmount">0.3</item>
+    </style>
+    <style name="confirm_group">
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">@color/orange</item>
+        <item name="android:layout_gravity">center</item>
     </style>
 </resources>
