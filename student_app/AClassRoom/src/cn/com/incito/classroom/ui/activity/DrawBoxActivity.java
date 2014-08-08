@@ -1,10 +1,16 @@
 package cn.com.incito.classroom.ui.activity;
 
-import cn.com.incito.classroom.R;
-import cn.com.incito.classroom.base.BaseActivity;
-import cn.com.incito.classroom.canvas.PaletteViewWidget;
+
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,6 +21,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import cn.com.incito.classroom.R;
+import cn.com.incito.classroom.base.BaseActivity;
+import cn.com.incito.classroom.canvas.PaletteViewWidget;
 
 public class DrawBoxActivity extends BaseActivity implements OnClickListener {
 	private PaletteViewWidget iv;
@@ -305,5 +314,27 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener {
 		}
 		imageView.startAnimation(animationSet);
 	}
-
+	/**
+	 * @return
+	 * 保存图片
+	 */
+	private boolean saveBitMap() {//老师收作业的时候调用此方法保存图片 然后将图片传到服务器
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+		String fname = Environment.getExternalStorageDirectory() + "/" + sdf.format(new Date()) + ".png";
+		System.out.println("图片路径："+fname);;
+		Bitmap bitmap = Bitmap.createBitmap(iv.getWidth(), iv.getHeight(), Config.ARGB_8888);
+		Canvas canvas = new Canvas(bitmap);
+		iv.drawMainPallent(canvas);
+		if (bitmap != null) {
+			try {
+				FileOutputStream out = new FileOutputStream(fname);
+				bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+				out.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return true;
+		}
+		return false;
+	}
 }

@@ -64,13 +64,13 @@ class MyPath extends Action {
 
     public void draw(Canvas canvas) {
         Paint paint = new Paint();
-        paint.setAntiAlias(true);
-        paint.setDither(true);
-        paint.setColor(color);
-        paint.setStrokeWidth(size);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeJoin(Paint.Join.ROUND);
-        paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setAntiAlias(true);//设置是否使用抗锯齿功能，会消耗较大资源，绘制图形速度会变慢。
+        paint.setDither(true);//设定是否使用图像抖动处理，会使绘制出来的图片颜色更加平滑和饱满，图像更加清晰
+        paint.setColor(color);//颜色设置
+        paint.setStrokeWidth(size);//画笔粗细设置
+        paint.setStyle(Paint.Style.STROKE);//设置画笔的样式，为FILL或STROKE
+        paint.setStrokeJoin(Paint.Join.ROUND);//设置绘制时各图形的结合方式，如平滑效果等 
+        paint.setStrokeCap(Paint.Cap.ROUND);// 当画笔样式为STROKE或FILL_OR_STROKE时，设置笔刷的图形样式，如圆形样式   
         canvas.drawPath(path, paint);
     }
 

@@ -1,6 +1,5 @@
 package cn.com.incito.classroom.canvas;
 
-
 import java.util.ArrayList;
 
 import cn.com.incito.classroom.R;
@@ -20,7 +19,7 @@ import android.view.SurfaceView;
 
 public class PaletteViewWidget extends SurfaceView implements Runnable,
 		SurfaceHolder.Callback {
-	private static final int EARISE_SIZE=30;//橡皮擦大小
+	private static final int EARISE_SIZE = 30;// 橡皮擦大小
 	public Paint mPaint = null;
 	// 画板的坐标以及宽高
 	public int bgBitmapX = 0;
@@ -28,39 +27,16 @@ public class PaletteViewWidget extends SurfaceView implements Runnable,
 	public int bgBitmapHeight = 800;
 	public int bgBitmapWidth = 1280;
 	// 当前的已经选择的画笔参数
-	public int currentPaintTool = 0; // 0和1 0为画线，1为橡皮擦
-
-	public void setCurrentPaintTool(int currentPaintTool) {
-		this.currentPaintTool = currentPaintTool;
-	}
-
-	public int currentColor = Color.BLACK;
-
-	public void setCurrentColor(int currentColor) {
-		this.currentColor = currentColor;
-	}
-
+	public int currentPaintTool = 0; // 画笔类型分为0和1 0为画线，1为橡皮擦
+	public int currentColor = Color.BLACK;//默认画笔颜色
 	public int currentSize = 3; // 1,3,5 画笔粗细
-
-	public void setCurrentSize(int currentSize) {
-		this.currentSize = currentSize;
-	}
-
 	public int currentPaintIndex = -1;
-	public boolean isBackPressed = false;
-	public boolean isForwardPressed = false;
-	// 已选选择单元背景色
-	public int selectedCellColor = 0xffADD8E6;
 	// 存储所有的动作
 	public ArrayList<Action> actionList = null;
 	// 当前的画笔实例
 	public Action curAction = null;
 	// 线程结束标志位
-	public  boolean mLoop = true;
-	
-	public void setmLoop(boolean mLoop) {
-		this.mLoop = mLoop;
-	}
+	public boolean mLoop = true;
 
 	SurfaceHolder mSurfaceHolder = null;
 	// 绘图区背景图片
@@ -77,7 +53,6 @@ public class PaletteViewWidget extends SurfaceView implements Runnable,
 		mSurfaceHolder = this.getHolder();
 		mSurfaceHolder.addCallback(this);
 		this.setFocusable(true);
-	
 		bgBitmap = ((BitmapDrawable) (getResources().getDrawable(R.drawable.bg)))
 				.getBitmap();
 		newbit = Bitmap.createBitmap(bgBitmapWidth, bgBitmapHeight,
@@ -123,8 +98,8 @@ public class PaletteViewWidget extends SurfaceView implements Runnable,
 				currentPaintIndex++;
 				curAction = null;
 			}
-			isBackPressed = false;
-			isForwardPressed = false;
+			// isBackPressed = false;
+			// isForwardPressed = false;
 		}
 		return super.onTouchEvent(event);
 	}
@@ -135,7 +110,7 @@ public class PaletteViewWidget extends SurfaceView implements Runnable,
 		if (mSurfaceHolder == null || canvas == null) {
 			return;
 		}
-//		 填充背景
+		// 填充背景
 		// canvas.drawColor(Color.GREEN);
 		// 画主画板
 		drawMainPallent(canvas);
@@ -160,15 +135,16 @@ public class PaletteViewWidget extends SurfaceView implements Runnable,
 	public void surfaceCreated(SurfaceHolder holder) {
 		new Thread(this).start();
 	}
+
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
 	}
+
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
 		mLoop = false;
 	}
-
 
 	// 检测点击事件，是否在主绘图区
 	public boolean testTouchMainPallent(float x, float y) {
@@ -200,7 +176,6 @@ public class PaletteViewWidget extends SurfaceView implements Runnable,
 		mPaint.setStyle(Paint.Style.STROKE);
 		// 画板绘图区背景图片
 		canvas.drawBitmap(bgBitmap, bgBitmapX, bgBitmapY, null);
-
 		newbit = Bitmap.createBitmap(bgBitmapWidth, bgBitmapHeight,
 				Config.ARGB_4444);
 		Canvas canvasTemp = new Canvas(newbit);
@@ -235,13 +210,11 @@ public class PaletteViewWidget extends SurfaceView implements Runnable,
 		return y - bgBitmapY;
 	}
 
-	public void setBgBitmap(Bitmap bgBitmap) {
+	public void setBgBitmap(Bitmap bgBitmap) {//设置背景图片
 		Matrix mMatrix = new Matrix();
 		mMatrix.reset();
-		float  btWidth = bgBitmap.getWidth();
-		System.out.println("图片宽度:"+btWidth);
-		float  btHeight= bgBitmap.getHeight();
-		System.out.println("图片高度:"+btHeight);
+		float btWidth = bgBitmap.getWidth();
+		float btHeight = bgBitmap.getHeight();
 		float xScale = bgBitmapWidth / btWidth;
 		float yScale = bgBitmapHeight / btHeight;
 		mMatrix.postScale(xScale, yScale);
@@ -256,6 +229,19 @@ public class PaletteViewWidget extends SurfaceView implements Runnable,
 		}
 	}
 
-	
-}
+	public void setCurrentSize(int currentSize) {
+		this.currentSize = currentSize;
+	}
 
+	public void setCurrentPaintTool(int currentPaintTool) {
+		this.currentPaintTool = currentPaintTool;
+	}
+
+	public void setCurrentColor(int currentColor) {
+		this.currentColor = currentColor;
+	}
+
+	public void setmLoop(boolean mLoop) {
+		this.mLoop = mLoop;
+	}
+}
