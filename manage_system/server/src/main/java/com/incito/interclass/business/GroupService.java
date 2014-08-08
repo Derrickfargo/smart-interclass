@@ -75,6 +75,10 @@ public class GroupService {
 		return groupMapper.getGroupByIMEI(imei, teacherId, courseId, classId);
 	}
 	
+	public void updateGroup(Group group){
+		groupMapper.updateGroup(group);
+	}
+	
 	public void deleteGroup(int groupId) {
 		groupMapper.delete(groupId);
 	}

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.incito.base.exception.AppException;
 import com.incito.interclass.business.GroupService;
 import com.incito.interclass.common.BaseCtrl;
 import com.incito.interclass.entity.Group;
@@ -15,9 +14,6 @@ import com.incito.interclass.entity.Group;
 @RequestMapping("/api/group")
 public class GroupCtrl extends BaseCtrl {
 
-	private static final int SAVE_GROUP_ERROR = 1;
-	private static final int ADD_STUDENT_ERROR = 2;
-	
 	@Autowired
 	private GroupService groupService;
 	
@@ -45,5 +41,19 @@ public class GroupCtrl extends BaseCtrl {
 	public String list(int teacherId,int courseId,int classId) {
 		List<Group> groups = groupService.getGroupList(teacherId, courseId, classId);
 		return renderJSONString(SUCCESS, groups);
+	}
+	
+	@RequestMapping(value = "/update", produces = { "application/json;charset=UTF-8" })
+	public String update(int id, String name, String logo) {
+		Group group = new Group();
+		group.setName(name);
+		group.setLogo(logo);
+		try {
+			groupService.updateGroup(group);
+			group = groupService.getGroupById(id);
+		} catch (Exception e) {
+			return renderJSONString(1);//更新失败
+		}
+		return renderJSONString(SUCCESS, group);
 	}
 }

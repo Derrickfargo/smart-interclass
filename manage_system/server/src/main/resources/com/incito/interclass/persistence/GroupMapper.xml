@@ -150,6 +150,15 @@
 			tb_group.id = #{groupId} AND tb_student.id = #{studentId}
 	</select>
 	
+	<update id="updateGroup" parameterType="com.incito.interclass.entity.Group">
+		UPDATE 
+			tb_group
+		SET 
+			name = #{name},logo = #{logo}
+		WHERE
+			tb_group.id = #{id}
+	</update>
+	
 	<insert id="save" parameterType="com.incito.interclass.entity.Group" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO 
 			tb_group(name,logo,slogan,course_id,teacher_id,class_id,table_id,ctime)

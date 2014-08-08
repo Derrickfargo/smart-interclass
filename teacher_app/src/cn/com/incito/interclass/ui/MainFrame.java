@@ -9,20 +9,35 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import com.alibaba.fastjson.JSONObject;
+
+import cn.com.incito.interclass.po.Group;
+import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.CoreSocket;
+import cn.com.incito.server.core.Message;
+import cn.com.incito.server.message.DataType;
+import cn.com.incito.server.message.MessagePacking;
+import cn.com.incito.server.utils.BufferUtils;
 
 public class MainFrame extends MouseAdapter{
 
@@ -213,6 +228,13 @@ public class MainFrame extends MouseAdapter{
 		btnBegin.setIcon(btnImage);//设置图片
 		bottom.add(btnBegin);//添加按钮
 		btnBegin.setBounds(340, -4, btnImage.getIconWidth(), btnImage.getIconHeight());
+		btnBegin.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doBegin();
+			}
+		});
 		
 		JLabel lblExpected = new JLabel("应到 %d 人",JLabel.CENTER);
 		lblExpected.setBounds(520, 15, 140, 35);
@@ -226,6 +248,39 @@ public class MainFrame extends MouseAdapter{
 		
 		initData();
 		setBgimg();//设置背景
+	}
+	
+	private void doBegin() {
+		List<Table> tableList = app.getTableList();
+		if (tableList == null || tableList.size() == 0) {
+			JOptionPane.showMessageDialog(frame, "设备还未绑定课桌，请先绑定课桌!");
+			return;
+		}
+		
+		Map<Integer,Group> tableGroup = app.getTableGroup();
+		if(tableGroup == null || tableGroup.size() == 0){
+			JOptionPane.showMessageDialog(frame, "还未进行小组分组，请先进行分组!");
+			return;
+		}
+		
+		boolean hasTeamInfo = true;
+		for(Group group : tableGroup.values()){
+			if (group.getName() == null || group.getName().equals("")) {
+				hasTeamInfo = false;
+			}
+		}
+		if(!hasTeamInfo){
+			int result = JOptionPane.showConfirmDialog(frame,
+					"还有小组未编辑小组信息，是否编辑小组信息？", "提示", JOptionPane.YES_NO_OPTION);
+			if(JOptionPane.YES_OPTION == result){
+				//编辑小组信息
+				MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_EDIT);
+				CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
+			} else if (JOptionPane.NO_OPTION == result) {
+				JOptionPane.showMessageDialog(frame, "开始上课");
+				//开始上课
+			}
+		}
 	}
 	
 	private void initData() {
