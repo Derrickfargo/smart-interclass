@@ -18,4 +18,5 @@
     <string name="loading_complete_msg">处理完毕，正在进入...</string>
 
     <string name="input_group_name_hint">请输入小组名称</string>
+    <string name="group_name_null">小组名称还没有讨论好吗？</string>
 </resources>

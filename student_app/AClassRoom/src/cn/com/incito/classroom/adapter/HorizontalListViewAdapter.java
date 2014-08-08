@@ -22,6 +22,7 @@ public class HorizontalListViewAdapter extends BaseAdapter{
 	private Bitmap iconBitmap;
 	private int selectIndex = -1;
 	private TypedArray mGroupIcons;
+	private String[] mGroupIconsName;
 
 	public HorizontalListViewAdapter(Context context, int[] ids){
 		this.mContext = context;
@@ -29,9 +30,10 @@ public class HorizontalListViewAdapter extends BaseAdapter{
 		mInflater=(LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
-	public HorizontalListViewAdapter(Context context, TypedArray groupIcons){
+	public HorizontalListViewAdapter(Context context, TypedArray groupIcons,String[] groupIconsName){
 		mContext = context;
 		mGroupIcons = groupIcons;
+		mGroupIconsName = groupIconsName;
 		mInflater=(LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	@Override
@@ -59,6 +61,7 @@ public class HorizontalListViewAdapter extends BaseAdapter{
 			holder = new ViewHolder();
 			convertView = mInflater.inflate(R.layout.horizontal_list_item, null);
 			holder.mImage=(ImageView)convertView.findViewById(R.id.img_list_item);
+			holder.mTitle = mGroupIconsName[position];
 			convertView.setTag(holder);
 		}else{
 			holder=(ViewHolder)convertView.getTag();
@@ -77,9 +80,9 @@ public class HorizontalListViewAdapter extends BaseAdapter{
 		return convertView;
 	}
 
-	private static class ViewHolder {
-		private TextView mTitle ;
-		private ImageView mImage;
+	public static class ViewHolder {
+		public String mTitle ;
+		public ImageView mImage;
 	}
 	private Bitmap getPropThumnail(int id){
 		Drawable d = mContext.getResources().getDrawable(id);
