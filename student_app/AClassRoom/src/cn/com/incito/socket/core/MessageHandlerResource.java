@@ -5,6 +5,7 @@ import java.util.Map;
 
 import cn.com.incito.socket.handler.DeviceBindHandler;
 import cn.com.incito.socket.handler.DeviceHasBindHandler;
+import cn.com.incito.socket.handler.GroupEditHandler;
 import cn.com.incito.socket.handler.GroupListHandler;
 import cn.com.incito.socket.handler.HeartbeatHandler;
 import cn.com.incito.socket.handler.StudentLoginHandler;
@@ -39,6 +40,8 @@ public final class MessageHandlerResource {
 		handlerResources.put(Message.MESSAGE_DEVICE_HAS_BIND, DeviceHasBindHandler.class);
 		//设备绑定消息
 		handlerResources.put(Message.MESSAGE_DEVICE_BIND, DeviceBindHandler.class);
+		//编辑小组信息
+		handlerResources.put(Message.MESSAGE_GROUP_EDIT, GroupEditHandler.class);
 	}
 	
 	public MessageHandler getMessageHandler(Byte key){

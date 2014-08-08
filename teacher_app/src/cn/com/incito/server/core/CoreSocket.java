@@ -3,10 +3,12 @@ package cn.com.incito.server.core;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
+import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
+import java.util.Collection;
 import java.util.Set;
 
 import cn.com.incito.server.api.Application;
@@ -140,4 +142,30 @@ public final class CoreSocket extends Thread {
 		}
 	}
 
+	/**
+	 * 启动线程将消息发往所有客户端
+	 * @param data
+	 */
+	public void sendMessage(final byte[] data){
+		Application app = Application.getInstance();
+		final Collection<SocketChannel> channels = app.getClientChannel().values();
+		new Thread() {
+			@Override
+			public void run() {
+				try {
+					ByteBuffer buffer = ByteBuffer.allocate(data.length);
+					for(SocketChannel channel: channels){
+						// 输出到通道
+						buffer.clear();
+						buffer.put(data);
+						buffer.flip();
+						channel.write(buffer);
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			};
+		}.start();
+	}
+	
 }

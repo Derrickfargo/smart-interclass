@@ -33,7 +33,8 @@ public class Application {
 	private Set<String> onlineDevice = new HashSet<String>();
 	private Set<Student> onlineStudent = new HashSet<Student>();
 
-	private Map<Integer, List<SocketChannel>> clientChannel;// 保存每组和已登录的socket
+	private Map<Integer, List<SocketChannel>> groupChannel;// 保存每组和已登录的socket
+	private Map<String,SocketChannel> clientChannel;
 	private CoreSocket coreSocket;
 	private Map<String, Student> loginedStudent;// 已登录的学生，key:name+number，value:Student
 
@@ -73,8 +74,13 @@ public class Application {
 		tableDevice = new HashMap<Integer, List<Device>>();
 		tableGroup = new HashMap<Integer, Group>();
 
-		clientChannel = new HashMap<Integer, List<SocketChannel>>();
+		clientChannel = new HashMap<String, SocketChannel>();
+		groupChannel = new HashMap<Integer, List<SocketChannel>>();
 		new Login();
+	}
+
+	public Map<String, SocketChannel> getClientChannel() {
+		return clientChannel;
 	}
 
 	public static Application getInstance() {
@@ -264,16 +270,16 @@ public class Application {
 	}
 
 	public void addSocketChannel(Integer groupId, SocketChannel channel) {
-		List<SocketChannel> channels = clientChannel.get(groupId);
+		List<SocketChannel> channels = groupChannel.get(groupId);
 		if (channels == null) {
 			channels = new ArrayList<SocketChannel>();
 		}
 		channels.add(channel);
-		clientChannel.put(groupId, channels);
+		groupChannel.put(groupId, channels);
 	}
 
 	public List<SocketChannel> getClientChannelByGroup(Integer groupId){
-		return clientChannel.get(groupId);
+		return groupChannel.get(groupId);
 	}
 	
 	public CoreSocket getCoreSocket() {

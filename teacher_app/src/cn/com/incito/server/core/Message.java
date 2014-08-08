@@ -47,6 +47,21 @@ public class Message {
 	 * 判断设备是否绑定
 	 */
 	public static final Byte MESSAGE_DEVICE_HAS_BIND = 0x04;
+	
+	/**
+	 * 编辑小组信息(pc-android)
+	 */
+	public static final Byte MESSAGE_GROUP_EDIT = 0x05;
+	
+	/**
+	 * 确认小组信息(android-pc)
+	 */
+	public static final Byte MESSAGE_GROUP_CONFIRM = 0x06;
+	
+	/**
+	 * 保存小组信息(android-pc)
+	 */
+	public static final Byte MESSAGE_GROUP_SAVE = 0x07;
 
 	private byte msgID;
 	private int msgSize;

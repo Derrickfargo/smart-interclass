@@ -29,5 +29,7 @@ public interface GroupMapper {
 	Student getStudentByStudentId(@Param("groupId") int groupId,
 			@Param("studentId") int studentId);
 	
+	void updateGroup(Group group);
+	
 	void delete(int id);
 }
