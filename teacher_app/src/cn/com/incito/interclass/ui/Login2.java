@@ -277,8 +277,8 @@ public class Login2 extends MouseAdapter{
 				Application.getInstance().setCourse(resultData.getCourse());
 				Application.getInstance().initMapping(resultData.getDevices(),
 						resultData.getTables(), resultData.getGroups());
-				
-				MainFrame.getInstance().setVisible(true);
+				new FloatWin();
+//				MainFrame.getInstance().setVisible(true);
 			}
 			System.out.println(result);
 		} catch (AppException e) {

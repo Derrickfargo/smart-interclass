@@ -4,6 +4,8 @@
  */
 package cn.com.incito.interclass.Listener;
 
+import java.awt.event.MouseAdapter;
+
 import javax.swing.*;
 
 /**

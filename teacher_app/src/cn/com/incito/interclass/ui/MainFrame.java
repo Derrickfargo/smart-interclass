@@ -14,8 +14,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -28,16 +26,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import com.alibaba.fastjson.JSONObject;
-
+import cn.com.incito.interclass.Listener.MySystemTrayEvent;
+import cn.com.incito.interclass.Listener.MySystemTrayManager;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.CoreSocket;
 import cn.com.incito.server.core.Message;
-import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
-import cn.com.incito.server.utils.BufferUtils;
 
 public class MainFrame extends MouseAdapter{
 
@@ -52,7 +48,7 @@ public class MainFrame extends MouseAdapter{
 	private JScrollPane scrollPane;
 	private Application app = Application.getInstance();
 	private static MainFrame instance;
-	
+	private MySystemTrayEvent mySystemTrayEvent;
 	public static MainFrame getInstance() {
 		if (instance == null) {
 			instance = new MainFrame();
@@ -67,7 +63,9 @@ public class MainFrame extends MouseAdapter{
 	public void refresh() {
 		centerPanel.refresh();
 	}
-	
+	public JFrame getFrame(){
+		return frame;
+	}
 	private MainFrame(){
 		//启动通讯线程
 		CoreSocket.getInstance().start();
@@ -77,6 +75,7 @@ public class MainFrame extends MouseAdapter{
 	
 	//显示登陆界面
 	private void showLoginUI(){
+		mySystemTrayEvent = new MySystemTrayManager();
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		frame.setContentPane(contentPane);
@@ -365,5 +364,7 @@ public class MainFrame extends MouseAdapter{
 			btnClose.setIcon(new ImageIcon("images/login/7.png"));
 		}
 	}
-	
+	public MySystemTrayEvent getMySystemTrayEvent() {
+		return mySystemTrayEvent;
+	}
 }

@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -52,7 +53,7 @@ public class DeskNumberAdapter extends BaseAdapter {
      * The m reflected.
      */
     private boolean mReflected = true;
-
+    private int curPos=-1;
     LayoutInflater mInflater;
 
     /**
@@ -132,10 +133,15 @@ public class DeskNumberAdapter extends BaseAdapter {
                     R.layout.item_desk_number, parent, false);
             holder = new ViewHolder();
             holder.tv_num_name = (TextView) convertView.findViewById(R.id.tv_num_name);
-            holder.rlayout = (RelativeLayout) convertView.findViewById(R.id.rlayout);
+            holder.iv_num_bg = (ImageView) convertView.findViewById(R.id.iv_num_bg);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
+        }
+        if (position == curPos) {
+            holder.iv_num_bg.setBackgroundResource(R.drawable.bg_desk_num_hover);
+        } else {
+            holder.iv_num_bg.setBackgroundResource(R.drawable.bg_desk_num_nomal);
         }
         holder.tv_num_name.setText(datas.get(position));
         return convertView;
@@ -143,7 +149,10 @@ public class DeskNumberAdapter extends BaseAdapter {
 
     static class ViewHolder {
         public TextView tv_num_name;
-        public RelativeLayout rlayout;
+        public ImageView iv_num_bg;
     }
 
+    public void setSelectPos(int positon) {
+        curPos = positon;
+    }
 }
