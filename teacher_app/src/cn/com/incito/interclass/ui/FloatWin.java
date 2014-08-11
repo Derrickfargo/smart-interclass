@@ -35,7 +35,7 @@ public class FloatWin extends JDialog implements MouseListener,
 	private static int HEIGHT = 100;
 	private JPanel jp;
 	private int x, y;
-	private MainFrame serverFrame;
+	private MainFrame mainFrame;
 	private TrayPopMenu popupMenu;
 
 	enum X {
@@ -47,10 +47,11 @@ public class FloatWin extends JDialog implements MouseListener,
 	}
 
 	public FloatWin() {
-		serverFrame = MainFrame.getInstance();
-		serverFrame.setVisible(true);
+		CoreSocket.getInstance().start();
+		mainFrame = MainFrame.getInstance();
+		mainFrame.setVisible(true);
 
-		this.mySystemTrayEvent = serverFrame.getMySystemTrayEvent();
+		this.mySystemTrayEvent = mainFrame.getMySystemTrayEvent();
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
@@ -105,7 +106,7 @@ public class FloatWin extends JDialog implements MouseListener,
 			// 弹出菜单
 			popupMenu.show(this, e.getX(), e.getY());
 		} else if (e.getClickCount() % 2 == 0) {
-			mySystemTrayEvent.openHide(serverFrame.getFrame());
+			mySystemTrayEvent.openHide(mainFrame);
 		}
 
 		// 鼠标右键

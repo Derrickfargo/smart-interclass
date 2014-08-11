@@ -1,7 +1,9 @@
 package cn.com.incito.interclass.ui;
 
 import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -9,15 +11,21 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
+import cn.com.incito.interclass.po.Quiz;
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
 
-public class MainCenterPanel extends JPanel implements UIContext {
+/**
+ * 任务缩略图列表面板
+ * 
+ * @author popoy
+ * 
+ */
+public class QuizLookupPanel extends JPanel {
 
 	/**
 	 * 
@@ -26,8 +34,9 @@ public class MainCenterPanel extends JPanel implements UIContext {
 
 	private static final String PAD_ONLINE = "images/main/ico_pad_connection.png";
 	private static final String PAD_OFFLINE = "images/main/ico_pad_disconnect.png";
-
-	private Application app = Application.getInstance();
+	GridBagLayout gridbag;
+	GridBagConstraints c;
+	private Application application = Application.getInstance();
 	/**
 	 * 当前教室所有Table，初始化界面时初始化本属性
 	 */
@@ -36,13 +45,21 @@ public class MainCenterPanel extends JPanel implements UIContext {
 	 * 当前教室所有Group，初始化数据时初始化本属性
 	 */
 	private List<Group> groupList = new ArrayList<Group>();
-	private JScrollPane scrollPane;
+	/**
+	 * 试卷列表
+	 */
+	private List<Quiz> quizs = new ArrayList<Quiz>();
 
-	public MainCenterPanel() {
+	public QuizLookupPanel() {
 		// this.setSize(878, 620);
 		this.setLayout(null);
-		this.setOpaque(true);
-		revalidate();
+		gridbag = new GridBagLayout();
+		this.setLayout(gridbag);
+		c = new GridBagConstraints();
+		// setting a default constraint value
+		c.fill = GridBagConstraints.HORIZONTAL;
+		this.setOpaque(false);
+
 		// 初始化界面
 		initView();
 
@@ -55,13 +72,13 @@ public class MainCenterPanel extends JPanel implements UIContext {
 		for (int i = 1; i <= 12; i++) {
 			TablePanel pnlTable = new TablePanel();
 			pnlTable.setBounds(20, x, 836, 139);
+			gridbag.setConstraints(pnlTable, c); // associate the label with a
 			add(pnlTable);
 			tableList.add(pnlTable);
 			x += 150;
 		}
 	}
 
-	@Override
 	public void refresh() {
 		initData();
 		// clearView();
@@ -79,7 +96,7 @@ public class MainCenterPanel extends JPanel implements UIContext {
 				Device device = deviceList.get(j);
 				String imei = device.getImei();
 				ImageIcon imgPad = null;
-				if (app.getOnlineDevice().contains(imei)) {
+				if (application.getOnlineDevice().contains(imei)) {
 					imgPad = new ImageIcon(PAD_ONLINE);
 				} else {
 					imgPad = new ImageIcon(PAD_OFFLINE);
@@ -97,7 +114,7 @@ public class MainCenterPanel extends JPanel implements UIContext {
 			for (int k = 0; k < studentList.size(); k++) {
 				Student student = studentList.get(k);
 				JLabel lblStudent = studentLabelList.get(k);
-				if (app.getOnlineStudent().contains(student)) {
+				if (application.getOnlineStudent().contains(student)) {
 					lblStudent.setText(student.getName());
 					lblStudent.setBackground(new Color(Integer.parseInt(
 							"5ec996", 16)));
@@ -115,10 +132,10 @@ public class MainCenterPanel extends JPanel implements UIContext {
 	private void initData() {
 		groupList = new ArrayList<Group>();
 		// 课桌绑定分组，生成内存模型
-		List<Table> tableList = app.getTableList();
+		List<Table> tableList = application.getTableList();
 		for (Table table : tableList) {
 			// 获得课桌对应的分组
-			Group group = app.getTableGroup().get(table.getId());
+			Group group = application.getTableGroup().get(table.getId());
 			if (group == null) {
 				group = new Group();
 			}
@@ -130,24 +147,4 @@ public class MainCenterPanel extends JPanel implements UIContext {
 		Collections.sort(groupList);
 	}
 
-	/**
-	 * 暂时不用，会导致界面闪烁
-	 */
-	private void clearView() {
-		for (TablePanel tablePanel : tableList) {
-			List<JLabel> deviceLabelList = tablePanel.getDeviceList();
-			for (JLabel lblDevice : deviceLabelList) {
-				ImageIcon imgPad = new ImageIcon(PAD_OFFLINE);
-				lblDevice.setIcon(imgPad);
-				lblDevice.setVisible(false);
-			}
-			List<JLabel> studentLabelList = tablePanel.getStudentList();
-			for (JLabel lblStudent : studentLabelList) {
-				lblStudent.setText("");
-				lblStudent.setBackground(new Color(Integer.parseInt("e1e1e1",
-						16)));
-				lblStudent.setVisible(false);
-			}
-		}
-	}
 }
