@@ -63,8 +63,8 @@
         <activity android:name=".ui.activity.ConfirmGroupInfoActivity">
             
         </activity>
-        <service android:name="cn.com.incito.classroom.service.MessageService" />
-        <service android:name="cn.com.incito.classroom.service.SocketService" />
+        <service android:name="cn.com.incito.classroom.service.SocketService"
+            />
 
     </application>
 
