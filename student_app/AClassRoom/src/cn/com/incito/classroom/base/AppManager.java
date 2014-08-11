@@ -102,7 +102,6 @@ public class AppManager {
             ActivityManager activityMgr = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
             activityMgr.restartPackage(context.getPackageName());
             MyApplication.getInstance().stopService(new Intent("cn.com.incito.classroom.service.SOCKET_SERVICE"));
-            System.exit(0);
             android.os.Process.killProcess(android.os.Process.myPid());
         } catch (Exception e) {
         }

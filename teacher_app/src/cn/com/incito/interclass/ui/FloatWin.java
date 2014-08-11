@@ -62,7 +62,6 @@ public class FloatWin extends JDialog implements MouseListener,
 	}
 
 	private void initComponent() {
-		// jPopupMenu = new MyJPopupMenu();
 		jp = new JPanel() {
 
 			@Override
