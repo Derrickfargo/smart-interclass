@@ -17,7 +17,11 @@ import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
 
 import com.alibaba.fastjson.JSONObject;
-
+/**
+ * 托盘右键菜单
+ * @author popoy
+ *
+ */
 public class TrayPopMenu extends JPopupMenu {
 	Component context;
 

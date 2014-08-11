@@ -11,7 +11,7 @@ package cn.com.incito.interclass.ui.screencapture;
 
 /**
  *
- * @author lbf
+ * @author popoy
  */
 import java.awt.*;
 import java.awt.event.*;

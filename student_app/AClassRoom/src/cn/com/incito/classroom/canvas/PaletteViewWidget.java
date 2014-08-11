@@ -57,13 +57,18 @@ public class PaletteViewWidget extends SurfaceView implements Runnable,
 				.getBitmap();
 		newbit = Bitmap.createBitmap(bgBitmapWidth, bgBitmapHeight,
 				Config.ARGB_4444);
-		new Thread(this).start();
 	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 
 		return super.onKeyDown(keyCode, event);
+	}
+
+	@Override
+	protected void onDraw(Canvas canvas) {
+		super.onDraw(canvas);
+		Draw();
 	}
 
 	@Override
@@ -101,6 +106,7 @@ public class PaletteViewWidget extends SurfaceView implements Runnable,
 			// isBackPressed = false;
 			// isForwardPressed = false;
 		}
+		invalidate();
 		return super.onTouchEvent(event);
 	}
 
@@ -119,16 +125,16 @@ public class PaletteViewWidget extends SurfaceView implements Runnable,
 
 	@Override
 	public void run() {
-		while (mLoop) {
-			try {
-				Thread.sleep(50);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			synchronized (mSurfaceHolder) {
-				Draw();
-			}
-		}
+//		while (mLoop) {
+//			try {
+//				Thread.sleep(50);
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//			synchronized (mSurfaceHolder) {
+//				Draw();
+//			}
+//		}
 	}
 
 	@Override
