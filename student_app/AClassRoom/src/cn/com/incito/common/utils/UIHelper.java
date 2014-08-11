@@ -1,5 +1,8 @@
 package cn.com.incito.common.utils;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.widget.Toast;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.ui.activity.BindDeskActivity;
