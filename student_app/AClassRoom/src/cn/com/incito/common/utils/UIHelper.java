@@ -119,6 +119,7 @@ public class UIHelper {
 		Intent intent=new Intent();
 		intent.putExtra("paper", paper);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		//FLAG_ACTIVITY_SINGLE_TOP
 		intent.setAction(Constants.ACTION_SHOW_DRAWBOX);
 		app.startActivity(intent);
 	}

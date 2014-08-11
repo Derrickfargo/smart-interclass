@@ -148,13 +148,13 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener {
 		mMiddleCheckIco = (ImageView) findViewById(R.id.ico_middle_checked);
 		mSmallCheckIco = (ImageView) findViewById(R.id.ico_small_checked);
 
-		byte[] paper = getIntent().getByteArrayExtra("paper");
-		if (paper != null) {
-			Bitmap mBitmap = BitmapUtils.fromByteArray(paper);
-			iv.setBgBitmap(mBitmap);
-			mRelativeLayout.setBackgroundDrawable(new BitmapDrawable(mBitmap));
-			mbackcolorBtn.setClickable(false);
-		}
+//		byte[] paper = getIntent().getByteArrayExtra("paper");
+//		if (paper != null) {
+//			Bitmap mBitmap = BitmapUtils.fromByteArray(paper);
+//			iv.setBgBitmap(mBitmap);
+//			mRelativeLayout.setBackgroundDrawable(new BitmapDrawable(mBitmap));
+//			mbackcolorBtn.setClickable(false);
+//		}
 	}
 
 	@Override
@@ -287,13 +287,13 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener {
 			break;
 
 		case R.id.big:// 粗笔
-			iv.setCurrentSize(5);
+			iv.setCurrentSize(10);
 			mBigCheckIco.setVisibility(View.VISIBLE);
 			mMiddleCheckIco.setVisibility(View.GONE);
 			mSmallCheckIco.setVisibility(View.GONE);
 			break;
 		case R.id.middle:// 中等笔
-			iv.setCurrentSize(3);
+			iv.setCurrentSize(5);
 			mBigCheckIco.setVisibility(View.GONE);
 			mMiddleCheckIco.setVisibility(View.VISIBLE);
 			mSmallCheckIco.setVisibility(View.GONE);

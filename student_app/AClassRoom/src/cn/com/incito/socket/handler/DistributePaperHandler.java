@@ -8,6 +8,7 @@ public class DistributePaperHandler extends MessageHandler {
     @Override
     protected void handleMessage() {
     	byte[] paper=data.getBytes("paper");
+    	System.out.println("图片内容"+paper.toString());
         UIHelper.getInstance().showDrawBoxActivity(paper);
     }
 

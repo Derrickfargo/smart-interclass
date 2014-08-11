@@ -8,7 +8,6 @@ public class SavePaperHandler extends MessageHandler {
 	@Override
 	protected void handleMessage() {
 		UIHelper.getInstance().getDrawBoxActivity().submitPaper();
-//		UIHelper.getInstance().getDrawBoxActivity().doResult(data, DrawBoxActivity.RESULT_CODE);
 	}
 
 }
