@@ -42,7 +42,14 @@
             android:screenOrientation="landscape" />
         <activity
             android:name="cn.com.incito.classroom.ui.activity.DrawBoxActivity"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape" >
+            
+            <intent-filter>
+                <action android:name="cn.com.classroom.SHOW_DRAWBOX"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            
+        </activity>
         <activity android:name="cn.com.incito.classroom.Canvas2Activity" />
         <activity
             android:name="cn.com.incito.classroom.ui.activity.WaitingActivity"
@@ -68,7 +75,6 @@
                 <action android:name="cn.com.incito.classroom.service.SOCKET_SERVICE" />
             </intent-filter>
 		</service>
-
     </application>
 
 </manifest>

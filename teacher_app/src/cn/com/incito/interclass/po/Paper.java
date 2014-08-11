@@ -1,26 +1,33 @@
 package cn.com.incito.interclass.po;
 
-public class Paper extends User {
+import java.io.Serializable;
+
+public class Paper implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1469903255940391815L;
 	private int id;
-	private String phone;
-
+	private String imei;
+	private byte[] paper;
 	public int getId() {
 		return id;
 	}
-
 	public void setId(int id) {
 		this.id = id;
 	}
-
-	public String getPhone() {
-		return phone;
+	public String getImei() {
+		return imei;
 	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setImei(String imei) {
+		this.imei = imei;
 	}
+	public byte[] getPaper() {
+		return paper;
+	}
+	public void setPaper(byte[] paper) {
+		this.paper = paper;
+	}
+	
+
 }

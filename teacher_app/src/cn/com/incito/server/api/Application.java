@@ -23,6 +23,7 @@ import cn.com.incito.interclass.ui.MainFrame;
 
 public class Application {
 	private static Application instance;
+	private String quizId;
 	private Room room;// 当前上课的教室，教师登陆完后初始化
 	private Teacher teacher;// 当前登录的老师，教师登陆完后初始化
 	private Course course;// 当前上课的课程，教师登陆完后初始化
@@ -361,6 +362,14 @@ public class Application {
 				MainFrame.getInstance().refresh();
 			}
 		}.start();
+	}
+
+	public String getQuizId() {
+		return quizId;
+	}
+
+	public void setQuizId(String quizId) {
+		this.quizId = quizId;
 	}
 	
 	
