@@ -5,9 +5,11 @@ import java.util.Map;
 
 import cn.com.incito.socket.handler.DeviceBindHandler;
 import cn.com.incito.socket.handler.DeviceHasBindHandler;
+import cn.com.incito.socket.handler.DistributePaperHandler;
 import cn.com.incito.socket.handler.GroupEditHandler;
 import cn.com.incito.socket.handler.GroupListHandler;
 import cn.com.incito.socket.handler.HeartbeatHandler;
+import cn.com.incito.socket.handler.SavePaperHandler;
 import cn.com.incito.socket.handler.StudentLoginHandler;
 
 /**
@@ -42,6 +44,10 @@ public final class MessageHandlerResource {
 		handlerResources.put(Message.MESSAGE_DEVICE_BIND, DeviceBindHandler.class);
 		//编辑小组信息
 		handlerResources.put(Message.MESSAGE_GROUP_EDIT, GroupEditHandler.class);
+		//编辑小组信息
+		handlerResources.put(Message.MESSAGE_DISTRIBUTE_PAPER, DistributePaperHandler.class);
+		//保存作业图片
+		handlerResources.put(Message.MESSAGE_SAVE_PAPER, SavePaperHandler.class);
 	}
 	
 	public MessageHandler getMessageHandler(Byte key){

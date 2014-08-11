@@ -4,6 +4,7 @@ import android.content.Intent;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.ui.activity.BindDeskActivity;
+import cn.com.incito.classroom.ui.activity.DrawBoxActivity;
 import cn.com.incito.classroom.ui.activity.SplashActivity;
 import cn.com.incito.classroom.ui.activity.WaitingActivity;
 
@@ -13,7 +14,7 @@ public class UIHelper {
 	private SplashActivity splashActivity;
 	private WaitingActivity waitingActivity;
 	private BindDeskActivity bindDeskActivity;
-	
+
 	private UIHelper() {
 		app = MyApplication.getInstance();
 	}
@@ -62,7 +63,7 @@ public class UIHelper {
 		splashActivity.finish();
 		splashActivity = null;
 	}
-	
+
 	/**
 	 * 显示课桌绑定界面
 	 */
@@ -76,7 +77,7 @@ public class UIHelper {
 		splashActivity.finish();
 		splashActivity = null;
 	}
-	
+
 	/**
 	 * 显示登录界面
 	 */
@@ -98,4 +99,10 @@ public class UIHelper {
 		intent.setAction(Constants.ACTION_SHOW_EDIT_GROUP);
 		app.startActivity(intent);
 	}
+    public void showDrawBoxActivity() {
+        Intent intent = new Intent(app.getApplicationContext(), DrawBoxActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setAction(Constants.ACTION_SHOW_EDIT_GROUP);
+        app.startActivity(intent);
+    }
 }

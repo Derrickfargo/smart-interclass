@@ -43,7 +43,7 @@ public final class MessageHandlerResource {
 		handlerResources.put(Message.MESSAGE_DEVICE_HAS_BIND, DeviceHasBindHandler.class);
 		//设备绑定消息
 		handlerResources.put(Message.MESSAGE_DEVICE_BIND, DeviceBindHandler.class);
-		//发送作业图片
+		//保存作业图片
 		handlerResources.put(Message.MESSAGE_SAVE_PAPER, SavePaperHandler.class);
 	}
 	
