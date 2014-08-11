@@ -64,7 +64,7 @@ public class Message {
 	/**
 	 * 发送作业(android-pc)
 	 */
-	public static final Byte MESSAGE_SEND_PAPER = 0x08;
+	public static final Byte MESSAGE_DISTRIBUTE_PAPER = 0x08;
 	/**
 	 * 保存作业(android-pc)
 	 */
