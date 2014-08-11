@@ -17,6 +17,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -287,29 +288,43 @@ public class MainFrame extends MouseAdapter{
 					MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_EDIT);
 					messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json.toString()));
 					final List<SocketChannel> channels = app.getClientChannelByGroup(group.getId());
-					final byte[] data = messagePacking.pack().array();
-					new Thread() {
-						@Override
-						public void run() {
-							try {
-								ByteBuffer buffer = ByteBuffer.allocate(data.length);
-								for(SocketChannel channel: channels){
-									buffer.clear();
-									buffer.put(data);
-									buffer.flip();
-									channel.write(buffer);
-								}
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
-						};
-					}.start();
+					sendMessageToGroup(messagePacking, channels);
 				}
 			} else if (JOptionPane.NO_OPTION == result) {
 				frame.setVisible(false);
 				//开始上课
 			}
 		}
+	}
+
+	private void sendMessageToGroup(final MessagePacking messagePacking,
+			final List<SocketChannel> channels) {
+		if(channels == null){
+			return;
+		}
+		new Thread() {
+			@Override
+			public void run() {
+				byte[] data = messagePacking.pack().array();
+				ByteBuffer buffer = ByteBuffer.allocate(data.length);
+				Iterator<SocketChannel> it = channels.iterator();
+				while(it.hasNext()){
+					SocketChannel channel = it.next();
+					if (!channel.isConnected()) { 
+						it.remove();
+						continue;
+					}
+					buffer.clear();
+					buffer.put(data);
+					buffer.flip();
+					try {
+						channel.write(buffer);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			};
+		}.start();
 	}
 
 	private void initData() {
