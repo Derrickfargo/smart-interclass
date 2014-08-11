@@ -5,6 +5,7 @@ import java.util.Stack;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 
 /**
  * 应用程序Activity管理类
@@ -100,6 +101,7 @@ public class AppManager {
             finishAllActivity();
             ActivityManager activityMgr = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
             activityMgr.restartPackage(context.getPackageName());
+            MyApplication.getInstance().stopService(new Intent("cn.com.incito.classroom.service.SOCKET_SERVICE"));
             System.exit(0);
         } catch (Exception e) {
         }

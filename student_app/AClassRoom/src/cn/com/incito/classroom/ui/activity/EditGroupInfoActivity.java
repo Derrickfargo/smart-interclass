@@ -16,12 +16,13 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.AdapterView.OnItemClickListener;
-
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
+import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.ui.widget.HorizontalListView;
 import cn.com.incito.classroom.adapter.HorizontalListViewAdapter;
 import cn.com.incito.classroom.adapter.HorizontalListViewAdapter.ViewHolder;
+import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
@@ -47,6 +48,7 @@ public class EditGroupInfoActivity extends BaseActivity implements View.OnClickL
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.edit_group_info);
+		UIHelper.getInstance().setEditGroupInfoActivity(this);
 		Bundle bundle = getIntent().getExtras();
 		if(bundle.containsKey("id")){
 			mGroupID = bundle.getInt("id");

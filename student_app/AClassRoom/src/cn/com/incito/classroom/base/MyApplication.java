@@ -116,7 +116,7 @@ public class MyApplication extends Application {
     private void initApplication() {
         TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         deviceId = tm.getDeviceId();
-        Intent service = new Intent(this, SocketService.class);
+        Intent service = new Intent("cn.com.incito.classroom.service.SOCKET_SERVICE");
         startService(service);
     }
 

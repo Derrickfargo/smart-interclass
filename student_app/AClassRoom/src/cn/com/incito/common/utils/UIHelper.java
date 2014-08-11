@@ -1,10 +1,14 @@
 package cn.com.incito.common.utils;
 
+import com.alibaba.fastjson.JSONObject;
+
 import android.content.Intent;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.ui.activity.BindDeskActivity;
+import cn.com.incito.classroom.ui.activity.ConfirmGroupInfoActivity;
 import cn.com.incito.classroom.ui.activity.DrawBoxActivity;
+import cn.com.incito.classroom.ui.activity.EditGroupInfoActivity;
 import cn.com.incito.classroom.ui.activity.SplashActivity;
 import cn.com.incito.classroom.ui.activity.WaitingActivity;
 
@@ -14,7 +18,8 @@ public class UIHelper {
 	private SplashActivity splashActivity;
 	private WaitingActivity waitingActivity;
 	private BindDeskActivity bindDeskActivity;
-
+	private EditGroupInfoActivity editGroupInfoActivity;
+	
 	private UIHelper() {
 		app = MyApplication.getInstance();
 	}
@@ -48,6 +53,10 @@ public class UIHelper {
 
 	public BindDeskActivity getBindDeskActivity() {
 		return bindDeskActivity;
+	}
+
+	public void setEditGroupInfoActivity(EditGroupInfoActivity editGroupInfoActivity) {
+		this.editGroupInfoActivity = editGroupInfoActivity;
 	}
 
 	/**
@@ -99,6 +108,17 @@ public class UIHelper {
 		intent.setAction(Constants.ACTION_SHOW_EDIT_GROUP);
 		app.startActivity(intent);
 	}
+	
+	public void showConfirmGroupActivity(JSONObject data){
+		Intent intent = new Intent(editGroupInfoActivity,
+				ConfirmGroupInfoActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.putExtra("data", data);
+		app.startActivity(intent);
+		editGroupInfoActivity.finish();
+		editGroupInfoActivity = null;
+	}
+	
     public void showDrawBoxActivity() {
         Intent intent = new Intent(app.getApplicationContext(), DrawBoxActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
