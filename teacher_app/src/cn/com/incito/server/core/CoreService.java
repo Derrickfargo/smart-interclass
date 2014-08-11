@@ -214,4 +214,13 @@ public class CoreService {
 		Group group = app.getTableGroup().get(table.getId());
 		return JSONUtils.renderJSONString(0,  group);
 	}
+	/**
+	 * 保存学生作业
+	 * @param imei
+	 * @return
+	 */
+	public String SavePaper(String imei,String paper) {
+		
+		return JSONUtils.renderJSONString(1);
+	}
 }
