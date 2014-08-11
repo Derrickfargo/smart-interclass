@@ -2,6 +2,7 @@ package cn.com.incito.common.utils;
 
 import android.content.Intent;
 import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.ui.activity.BindDeskActivity;
 import cn.com.incito.classroom.ui.activity.SplashActivity;
 import cn.com.incito.classroom.ui.activity.WaitingActivity;
@@ -88,5 +89,13 @@ public class UIHelper {
 		app.startActivity(intent);
 		bindDeskActivity.finish();
 		bindDeskActivity = null;
+	}
+
+	public void showEditGroupActivity(int groupID){
+		Intent intent = new Intent();
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.putExtra("id", groupID);
+		intent.setAction(Constants.ACTION_SHOW_EDIT_GROUP);
+		app.startActivity(intent);
 	}
 }
