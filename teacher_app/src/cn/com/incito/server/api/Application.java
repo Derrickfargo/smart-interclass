@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.alibaba.fastjson.JSONObject;
+
 import cn.com.incito.interclass.po.Classes;
 import cn.com.incito.interclass.po.Course;
 import cn.com.incito.interclass.po.Device;
@@ -18,7 +20,6 @@ import cn.com.incito.interclass.po.Table;
 import cn.com.incito.interclass.po.Teacher;
 import cn.com.incito.interclass.ui.Login;
 import cn.com.incito.interclass.ui.MainFrame;
-import cn.com.incito.server.core.CoreSocket;
 
 public class Application {
 	private static Application instance;
@@ -34,10 +35,12 @@ public class Application {
 	private Set<Student> onlineStudent = new HashSet<Student>();
 
 	private Map<Integer, List<SocketChannel>> groupChannel;// 保存每组和已登录的socket
-	private Map<String,SocketChannel> clientChannel;
-	private CoreSocket coreSocket;
+	private Map<String,SocketChannel> clientChannel;//保存所有设备登陆的socket，imei和socket
 	private Map<String, Student> loginedStudent;// 已登录的学生，key:name+number，value:Student
-
+	private Map<Integer,Group> groupMap = new HashMap<Integer,Group>();
+	private Map<Integer,JSONObject> tempGroup = new HashMap<Integer,JSONObject>();//修改的分组信息
+	private Map<Integer,List<Integer>> tempVote = new HashMap<Integer,List<Integer>>();//小组的投票信息
+	
 	/**
 	 * IMEI和设备的对应关系(key:imei,value:Device)，教师登陆完后初始化
 	 */
@@ -202,7 +205,9 @@ public class Application {
 		if (deviceList == null) {
 			deviceList = new ArrayList<Device>();
 		}
-		deviceList.add(device);
+		if(!deviceList.contains(device)){
+			deviceList.add(device);
+		}
 		tableDevice.put(id, deviceList);
 	}
 
@@ -214,9 +219,14 @@ public class Application {
 				break;
 			}
 		}
+		groupMap.put(group.getId(), group);
 		groupList.add(group);
 	}
 
+	public Group getGroupById(Integer id){
+		return groupMap.get(id);
+	}
+	
 	public Map<String, Student> getLoginedStudent() {
 		return loginedStudent;
 	}
@@ -269,12 +279,22 @@ public class Application {
 		this.course = course;
 	}
 
+	/**
+	 * @param imei
+	 * @param channel
+	 */
+	public void addSocketChannel(String imei, SocketChannel channel) {
+		clientChannel.put(imei, channel);
+	}
+	
 	public void addSocketChannel(Integer groupId, SocketChannel channel) {
 		List<SocketChannel> channels = groupChannel.get(groupId);
 		if (channels == null) {
 			channels = new ArrayList<SocketChannel>();
 		}
-		channels.add(channel);
+		if(!channels.contains(channel)){
+			channels.add(channel);
+		}
 		groupChannel.put(groupId, channels);
 	}
 
@@ -282,14 +302,6 @@ public class Application {
 		return groupChannel.get(groupId);
 	}
 	
-	public CoreSocket getCoreSocket() {
-		return coreSocket;
-	}
-
-	public void setCoreSocket(CoreSocket coreSocket) {
-		this.coreSocket = coreSocket;
-	}
-
 	public Map<String, Device> getImeiDevice() {
 		return imeiDevice;
 	}
@@ -334,6 +346,14 @@ public class Application {
 		this.onlineStudent = onlineStudent;
 	}
 
+	public Map<Integer, JSONObject> getTempGroup() {
+		return tempGroup;
+	}
+	
+	public Map<Integer, List<Integer>> getTempVote() {
+		return tempVote;
+	}
+
 	public void refreshMainFrame() {
 		new Thread() {
 			public void run() {
@@ -341,4 +361,6 @@ public class Application {
 			}
 		}.start();
 	}
+	
+	
 }

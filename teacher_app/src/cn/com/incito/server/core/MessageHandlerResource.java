@@ -6,6 +6,8 @@ import java.util.Map;
 import cn.com.incito.server.handler.DeviceBindHandler;
 import cn.com.incito.server.handler.DeviceHasBindHandler;
 import cn.com.incito.server.handler.GroupListHandler;
+import cn.com.incito.server.handler.GroupSubmitHandler;
+import cn.com.incito.server.handler.GroupVoteHandler;
 import cn.com.incito.server.handler.HandShakeHandler;
 import cn.com.incito.server.handler.HeartbeatHandler;
 import cn.com.incito.server.handler.StudentLoginHandler;
@@ -42,6 +44,10 @@ public final class MessageHandlerResource {
 		handlerResources.put(Message.MESSAGE_DEVICE_HAS_BIND, DeviceHasBindHandler.class);
 		//设备绑定消息
 		handlerResources.put(Message.MESSAGE_DEVICE_BIND, DeviceBindHandler.class);
+		//编辑组信息
+		handlerResources.put(Message.MESSAGE_GROUP_EDIT, GroupSubmitHandler.class);
+		//小组投票消息
+		handlerResources.put(Message.MESSAGE_GROUP_CONFIRM, GroupVoteHandler.class);
 	}
 	
 	public MessageHandler getMessageHandler(Byte key){

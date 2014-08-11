@@ -46,6 +46,7 @@ public class GroupCtrl extends BaseCtrl {
 	@RequestMapping(value = "/update", produces = { "application/json;charset=UTF-8" })
 	public String update(int id, String name, String logo) {
 		Group group = new Group();
+		group.setId(id);
 		group.setName(name);
 		group.setLogo(logo);
 		try {

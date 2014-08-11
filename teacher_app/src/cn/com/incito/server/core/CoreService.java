@@ -1,5 +1,8 @@
 package cn.com.incito.server.core;
 
+import java.nio.channels.SocketChannel;
+import java.util.List;
+
 import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Student;
@@ -213,5 +216,9 @@ public class CoreService {
 		}
 		Group group = app.getTableGroup().get(table.getId());
 		return JSONUtils.renderJSONString(0,  group);
+	}
+	
+	public List<SocketChannel> getGroupSocketChannelByGroupId(int groupId) {
+		return app.getClientChannelByGroup(groupId);
 	}
 }

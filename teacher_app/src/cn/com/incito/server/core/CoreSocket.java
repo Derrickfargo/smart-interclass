@@ -26,7 +26,6 @@ public final class CoreSocket extends Thread {
 	private ServerSocketChannel ssc = null;
 
 	private CoreSocket(){
-		Application.getInstance().setCoreSocket(this);
 	}
 	
 	public static CoreSocket getInstance() {

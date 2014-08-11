@@ -14,6 +14,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +29,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import com.alibaba.fastjson.JSONObject;
+
 import cn.com.incito.interclass.Listener.MySystemTrayEvent;
 import cn.com.incito.interclass.Listener.MySystemTrayManager;
 import cn.com.incito.interclass.po.Group;
@@ -33,7 +38,9 @@ import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.CoreSocket;
 import cn.com.incito.server.core.Message;
+import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
+import cn.com.incito.server.utils.BufferUtils;
 
 public class MainFrame extends MouseAdapter{
 
@@ -273,15 +280,38 @@ public class MainFrame extends MouseAdapter{
 					"还有小组未编辑小组信息，是否编辑小组信息？", "提示", JOptionPane.YES_NO_OPTION);
 			if(JOptionPane.YES_OPTION == result){
 				//编辑小组信息
-				MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_EDIT);
-				CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
+				List<Group> groupList = app.getGroupList();
+				for (Group group : groupList) {
+					JSONObject json = new JSONObject();
+					json.put("id", group.getId());
+					MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_EDIT);
+					messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json.toString()));
+					final List<SocketChannel> channels = app.getClientChannelByGroup(group.getId());
+					final byte[] data = messagePacking.pack().array();
+					new Thread() {
+						@Override
+						public void run() {
+							try {
+								ByteBuffer buffer = ByteBuffer.allocate(data.length);
+								for(SocketChannel channel: channels){
+									buffer.clear();
+									buffer.put(data);
+									buffer.flip();
+									channel.write(buffer);
+								}
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						};
+					}.start();
+				}
 			} else if (JOptionPane.NO_OPTION == result) {
-				JOptionPane.showMessageDialog(frame, "开始上课");
+				frame.setVisible(false);
 				//开始上课
 			}
 		}
 	}
-	
+
 	private void initData() {
 	
 	}
