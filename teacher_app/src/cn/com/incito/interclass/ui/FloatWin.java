@@ -1,10 +1,18 @@
 package cn.com.incito.interclass.ui;
 
 import cn.com.incito.interclass.Listener.MySystemTrayEvent;
+import cn.com.incito.server.api.Application;
 import cn.com.incito.server.config.BaseConfig;
+import cn.com.incito.server.core.CoreSocket;
+import cn.com.incito.server.core.Message;
+import cn.com.incito.server.message.DataType;
+import cn.com.incito.server.message.MessagePacking;
+import cn.com.incito.server.utils.BufferUtils;
 import cn.com.incito.server.utils.Pic;
 
 import javax.swing.*;
+
+import com.alibaba.fastjson.JSONObject;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -16,6 +24,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
+import java.util.UUID;
 
 public class FloatWin extends JDialog implements MouseListener,
 		MouseMotionListener {
@@ -47,14 +56,6 @@ public class FloatWin extends JDialog implements MouseListener,
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		popupMenu = new JPopupMenu();
-		JMenuItem item = new JMenuItem("Click me");
-		item.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("Hello, world!");
-			}
-		});
-		popupMenu.add(item);
 
 		initComponent();
 
@@ -82,6 +83,15 @@ public class FloatWin extends JDialog implements MouseListener,
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 		this.setVisible(true);
+		popupMenu = new JPopupMenu();
+		JMenuItem item = new JMenuItem("发作业");
+		item.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				distributePaper();
+
+			}
+		});
+		popupMenu.add(item);
 	}
 
 	@Override
@@ -131,5 +141,22 @@ public class FloatWin extends JDialog implements MouseListener,
 	@Override
 	public void mouseExited(MouseEvent e) {
 
+	}
+
+	/**
+	 * 分发试卷
+	 */
+	private void distributePaper() {
+
+		MessagePacking messagePacking = new MessagePacking(
+				Message.MESSAGE_DISTRIBUTE_PAPER);
+		JSONObject json = new JSONObject();
+		String uuid = UUID.randomUUID().toString();
+		Application.getInstance().setQuizId(uuid);
+		json.put("id", uuid);
+		json.put("paper", "");
+		messagePacking.putBodyData(DataType.INT,
+				BufferUtils.writeUTFString(json.toString()));
+		CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
 	}
 }
