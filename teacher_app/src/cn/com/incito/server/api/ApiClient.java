@@ -366,4 +366,18 @@ public class ApiClient {
 			throw AppException.network(e);
 		}
 	}
+	
+	public static String updateGroup(int id, String name, String logo) throws AppException {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", id);
+		params.put("name", name);
+		params.put("logo", logo);
+		try {
+			return _post(URLs.URL_UPDATE_GROUP, params, null);
+		} catch (Exception e) {
+			if (e instanceof AppException)
+				throw (AppException) e;
+			throw AppException.network(e);
+		}
+	}
 }
