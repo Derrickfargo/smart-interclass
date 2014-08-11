@@ -1,9 +1,11 @@
 package cn.com.incito.classroom.ui.activity;
 
-
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -11,6 +13,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,9 +24,17 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.canvas.PaletteViewWidget;
+import cn.com.incito.classroom.vo.SubmitPaperVo;
+import cn.com.incito.socket.core.CoreSocket;
+import cn.com.incito.socket.core.Message;
+import cn.com.incito.socket.message.DataType;
+import cn.com.incito.socket.message.MessagePacking;
+import cn.com.incito.socket.utils.BufferUtils;
+import cn.com.incito.wisdom.sdk.utils.BitmapUtils;
 
 public class DrawBoxActivity extends BaseActivity implements OnClickListener {
 	private PaletteViewWidget iv;
@@ -58,6 +69,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener {
 	private ImageView mMiddleCheckIco;
 	private ImageView mSmallCheckIco;
 	private ImageView mImageView = null;
+	public static final int RESULT_CODE = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -136,6 +148,13 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener {
 		mMiddleCheckIco = (ImageView) findViewById(R.id.ico_middle_checked);
 		mSmallCheckIco = (ImageView) findViewById(R.id.ico_small_checked);
 
+		byte[] paper = getIntent().getByteArrayExtra("paper");
+		if (paper != null) {
+			Bitmap mBitmap = BitmapUtils.fromByteArray(paper);
+			iv.setBgBitmap(mBitmap);
+			mRelativeLayout.setBackgroundDrawable(new BitmapDrawable(mBitmap));
+			mbackcolorBtn.setClickable(false);
+		}
 	}
 
 	@Override
@@ -314,27 +333,77 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener {
 		}
 		imageView.startAnimation(animationSet);
 	}
+
 	/**
-	 * @return
-	 * 保存图片
+	 * @return 保存图片
 	 */
-	private boolean saveBitMap() {//老师收作业的时候调用此方法保存图片 然后将图片传到服务器
+	private Bitmap getBitMap() {// 老师收作业的时候调用此方法保存图片 然后将图片传到服务器
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-		String fname = Environment.getExternalStorageDirectory() + "/" + sdf.format(new Date()) + ".png";
-		System.out.println("图片路径："+fname);;
-		Bitmap bitmap = Bitmap.createBitmap(iv.getWidth(), iv.getHeight(), Config.ARGB_8888);
+		String fname = Environment.getExternalStorageDirectory() + "/"
+				+ sdf.format(new Date()) + ".png";
+		System.out.println("图片路径：" + fname);
+		Bitmap bitmap = Bitmap.createBitmap(iv.getWidth(), iv.getHeight(),
+				Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
 		iv.drawMainPallent(canvas);
-		if (bitmap != null) {
-			try {
-				FileOutputStream out = new FileOutputStream(fname);
-				bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-				out.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return true;
-		}
-		return false;
+		// if (bitmap != null) {
+		// try {
+		// FileOutputStream out = new FileOutputStream(fname);
+		// bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+		// out.close();
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		// return true;
+		// }
+		return bitmap;
 	}
+
+	/**
+	 * 提交作业
+	 */
+	public void submitPaper() {
+		SubmitPaperVo mSubmitPaper = new SubmitPaperVo();
+		mSubmitPaper.setId("");
+		mSubmitPaper.setImei("");
+		mSubmitPaper.setName("");
+		mSubmitPaper.setPaper(BitmapUtils.bmpToByteArray(getBitMap(), true));
+		String json = JSON.toJSONString(mSubmitPaper);
+		MessagePacking messagePacking = new MessagePacking(
+				Message.MESSAGE_DISTRIBUTE_PAPER);
+		messagePacking.putBodyData(DataType.BYTE,
+				BufferUtils.writeUTFString(json));
+		CoreSocket.getInstance().sendMessage(messagePacking);
+	}
+
+	public void doResult(JSONObject jsonObject, int type) {
+		android.os.Message message = new android.os.Message();
+		message.what = RESULT_CODE;
+		Bundle data = new Bundle();
+		data.putSerializable("data", jsonObject);
+		message.setData(data);
+		mHandler.sendMessage(message);
+	}
+
+	private Handler mHandler = new Handler() {
+		@Override
+		public void handleMessage(android.os.Message msg) {
+			switch (msg.what) {
+			case RESULT_CODE:// 作业上传成功
+				JSONObject jsonObject = (JSONObject) msg.getData()
+						.getSerializable("data");
+				if (jsonObject.getIntValue("code") == 0) {
+					Toast.makeText(DrawBoxActivity.this, "作业上传成功",
+							Toast.LENGTH_SHORT).show();
+				} else {
+					Toast.makeText(DrawBoxActivity.this,
+							jsonObject.getShortValue("msg"), Toast.LENGTH_SHORT)
+							.show();
+				}
+				break;
+			default:
+				break;
+			}
+		}
+	};
 }

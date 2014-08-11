@@ -1,12 +1,18 @@
 package cn.com.incito.common.utils;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.widget.Toast;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.ui.activity.BindDeskActivity;
+import cn.com.incito.classroom.ui.activity.ConfirmGroupInfoActivity;
 import cn.com.incito.classroom.ui.activity.DrawBoxActivity;
+import cn.com.incito.classroom.ui.activity.EditGroupInfoActivity;
 import cn.com.incito.classroom.ui.activity.SplashActivity;
 import cn.com.incito.classroom.ui.activity.WaitingActivity;
+
+import com.alibaba.fastjson.JSONObject;
 
 public class UIHelper {
 	private static UIHelper instance;
@@ -14,6 +20,8 @@ public class UIHelper {
 	private SplashActivity splashActivity;
 	private WaitingActivity waitingActivity;
 	private BindDeskActivity bindDeskActivity;
+	private EditGroupInfoActivity editGroupInfoActivity;
+	private DrawBoxActivity drawBoxActivity;
 
 	private UIHelper() {
 		app = MyApplication.getInstance();
@@ -48,6 +56,19 @@ public class UIHelper {
 
 	public BindDeskActivity getBindDeskActivity() {
 		return bindDeskActivity;
+	}
+
+
+	public void setEditGroupInfoActivity(EditGroupInfoActivity editGroupInfoActivity) {
+		this.editGroupInfoActivity = editGroupInfoActivity;
+	}
+	
+	public DrawBoxActivity getDrawBoxActivity() {
+		return drawBoxActivity;
+	}
+
+	public void setDrawBoxActivity(DrawBoxActivity drawBoxActivity) {
+		this.drawBoxActivity = drawBoxActivity;
 	}
 
 	/**
@@ -91,7 +112,17 @@ public class UIHelper {
 		bindDeskActivity.finish();
 		bindDeskActivity = null;
 	}
-
+	/**
+	 * 显示电子绘画板
+	 */
+	public void showDrawBoxActivity(byte[] paper){
+		Intent intent=new Intent();
+		intent.putExtra("paper", paper);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.setAction(Constants.ACTION_SHOW_DRAWBOX);
+		app.startActivity(intent);
+	}
+	
 	public void showEditGroupActivity(int groupID){
 		Intent intent = new Intent();
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -99,6 +130,22 @@ public class UIHelper {
 		intent.setAction(Constants.ACTION_SHOW_EDIT_GROUP);
 		app.startActivity(intent);
 	}
+	
+	public void showConfirmGroupActivity(JSONObject data){
+		Intent intent = new Intent(editGroupInfoActivity,
+				ConfirmGroupInfoActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.putExtra("data", data);
+		app.startActivity(intent);
+		editGroupInfoActivity.finish();
+		editGroupInfoActivity = null;
+	}
+	
+
+	public void showToast(Activity mActivity,String mes){
+		Toast.makeText(mActivity, mes, Toast.LENGTH_SHORT);
+	}
+	
     public void showDrawBoxActivity() {
         Intent intent = new Intent(app.getApplicationContext(), DrawBoxActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

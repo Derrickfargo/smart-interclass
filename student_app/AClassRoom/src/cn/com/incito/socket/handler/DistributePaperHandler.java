@@ -7,7 +7,8 @@ public class DistributePaperHandler extends MessageHandler {
 
     @Override
     protected void handleMessage() {
-        UIHelper.getInstance().showDrawBoxActivity();
+    	byte[] paper=data.getBytes("paper");
+        UIHelper.getInstance().showDrawBoxActivity(paper);
     }
 
 }

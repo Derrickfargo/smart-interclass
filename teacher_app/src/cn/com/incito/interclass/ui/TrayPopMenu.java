@@ -71,5 +71,4 @@ public class TrayPopMenu extends JPopupMenu {
 				BufferUtils.writeUTFString(json.toString()));
 		CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
 	}
-	
 }

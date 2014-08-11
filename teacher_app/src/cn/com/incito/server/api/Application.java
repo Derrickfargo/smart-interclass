@@ -293,9 +293,10 @@ public class Application {
 		if (channels == null) {
 			channels = new ArrayList<SocketChannel>();
 		}
-		if(!channels.contains(channel)){
-			channels.add(channel);
+		if(channels.contains(channel)){
+			channels.remove(channel);
 		}
+		channels.add(channel);
 		groupChannel.put(groupId, channels);
 	}
 

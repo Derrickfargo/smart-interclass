@@ -15,7 +15,6 @@ package cn.com.incito.interclass.ui.screencapture;
  */
 import java.awt.*;
 import java.awt.event.*;
-
 import javax.swing.*;
 
 import java.io.*;
@@ -48,35 +47,6 @@ public class CaptureScreen {
 		this.jFrame = jFrame;
 	}
 
-	// private void initWindow(){
-	// start=new JButton("开始截取");
-	// cancel=new JButton("退出");
-	// save=new JButton("保存");
-	// save.setEnabled(false);
-	// save.addActionListener(this);
-	// start.addActionListener(this);
-	// cancel.addActionListener(this);
-	// JPanel buttonJP=new JPanel();
-	// c=new JPanel(new BorderLayout());
-	// JLabel jl=new JLabel("屏幕截取",JLabel.CENTER);
-	// JLabel jl1=new JLabel("作者：千里冰封",JLabel.CENTER);
-	// jl.setFont(new Font("黑体",Font.BOLD,40));
-	// jl1.setFont(new Font("宋体",Font.BOLD,20));
-	// jl.setForeground(Color.RED);
-	// jl1.setForeground(Color.BLUE);
-	// c.add(jl,BorderLayout.CENTER);
-	// c.add(jl1,BorderLayout.SOUTH);
-	// buttonJP.add(start);
-	// buttonJP.add(save);
-	// buttonJP.add(cancel);
-	// this.getContentPane().add(c,BorderLayout.CENTER);
-	// this.getContentPane().add(buttonJP,BorderLayout.SOUTH);
-	// this.setSize(300,300);
-	// this.setLocationRelativeTo(null);
-	// this.setVisible(true);
-	// this.setAlwaysOnTop(true);
-	// this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	// }
 	private void updates() {
 		if (get != null) {
 			ImageIcon ii = new ImageIcon(get);
@@ -482,5 +452,4 @@ enum States {
 	public Cursor getCursor() {
 		return cs;
 	}
-
 }
