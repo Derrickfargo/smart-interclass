@@ -57,6 +57,18 @@ public class Message {
 	 * 确认小组信息(android-pc),编辑完成后点保存
 	 */
 	public static final Byte MESSAGE_GROUP_CONFIRM = 0x06;
+	/**
+	 * 保存小组信息(android-pc)
+	 */
+	public static final Byte MESSAGE_GROUP_SAVE = 0x07;
+	/**
+	 * 发送作业(android-pc)
+	 */
+	public static final Byte MESSAGE_SEND_PAPER = 0x08;
+	/**
+	 * 保存作业(android-pc)
+	 */
+	public static final Byte MESSAGE_SAVE_PAPER = 0x09;
 	
 	private byte msgID;
 	private int msgSize;

@@ -221,4 +221,14 @@ public class CoreService {
 	public List<SocketChannel> getGroupSocketChannelByGroupId(int groupId) {
 		return app.getClientChannelByGroup(groupId);
 	}
+	
+	/**
+	 * 保存学生作业
+	 * @param imei
+	 * @return
+	 */
+	public String SavePaper(String imei,String paper) {
+		
+		return JSONUtils.renderJSONString(1);
+	}
 }
