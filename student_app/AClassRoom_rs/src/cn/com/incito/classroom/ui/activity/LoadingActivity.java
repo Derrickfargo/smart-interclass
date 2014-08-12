@@ -1,6 +1,7 @@
 package cn.com.incito.classroom.ui.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.view.View;
@@ -22,7 +23,7 @@ import com.alibaba.fastjson.JSON;
  * @Description: 用户其启动界面时候的一个启动页面完成一些初始化工作
  * @date 2013-5-6
  */
-public class SplashActivity extends BaseActivity {
+public class LoadingActivity extends BaseActivity {
     private static final String SYSTEMCACHE = "adream";
 
     @Override
@@ -61,9 +62,13 @@ public class SplashActivity extends BaseActivity {
 
     private void startMain() {
        //TODO 初始化完成之后进行页面跳转
+    	Intent intent = new Intent(this,WifiSelectorActivity.class);
+    	startActivity(intent);
+    	finish();
     }
 
     void init() {
+    	
         TelephonyManager tm = (TelephonyManager) getApplication().getSystemService(Context.TELEPHONY_SERVICE);
         SocketMinaClient socketMinaClient = new SocketMinaClient();
         LoginReqVo loginReqVo =new LoginReqVo();
