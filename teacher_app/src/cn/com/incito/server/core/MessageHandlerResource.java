@@ -50,7 +50,9 @@ public final class MessageHandlerResource {
 		//小组投票消息
 		handlerResources.put(Message.MESSAGE_GROUP_CONFIRM, GroupVoteHandler.class);
 		//发送作业图片
-		handlerResources.put(Message.MESSAGE_SAVE_PAPER, SavePaperHandler.class);
+//		handlerResources.put(Message.MESSAGE_SAVE_PAPER, SavePaperHandler.class);
+		//收作业
+		handlerResources.put(Message.MESSAGE_DISTRIBUTE_PAPER, SavePaperHandler.class);
 	}
 	
 	public MessageHandler getMessageHandler(Byte key){
