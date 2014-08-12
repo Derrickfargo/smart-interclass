@@ -2,6 +2,7 @@ package cn.com.incito.common.utils;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.widget.Toast;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
@@ -117,9 +118,10 @@ public class UIHelper {
 	 */
 	public void showDrawBoxActivity(byte[] paper){
 		Intent intent=new Intent();
-		intent.putExtra("paper", paper);
+		Bundle mBundle=new Bundle();
+		mBundle.putByteArray("paper", paper);
+		intent.putExtras(mBundle);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		//FLAG_ACTIVITY_SINGLE_TOP
 		intent.setAction(Constants.ACTION_SHOW_DRAWBOX);
 		app.startActivity(intent);
 	}

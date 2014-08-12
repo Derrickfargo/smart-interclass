@@ -25,7 +25,7 @@ public abstract class MessageHandler {
 	 * @param msg
 	 *            被处理消息
 	 */
-	public final void handleMessage(Message msg) {
+	public void handleMessage(Message msg) {
 		this.message = msg;
 		ByteBuffer buffer = msg.getBodyBuffer();
 		buffer.flip();

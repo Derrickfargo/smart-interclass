@@ -1,15 +1,23 @@
 package cn.com.incito.classroom.ui.activity;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonParseException;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
+import android.graphics.ImageFormat;
+import android.graphics.Rect;
+import android.graphics.YuvImage;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Environment;
@@ -27,8 +35,10 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
+import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.canvas.PaletteViewWidget;
 import cn.com.incito.classroom.vo.SubmitPaperVo;
+import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
@@ -76,6 +86,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.draw_box);
 		initView();
+		UIHelper.getInstance().setDrawBoxActivity(this);
 	}
 
 	@Override
@@ -148,14 +159,17 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener {
 		mMiddleCheckIco = (ImageView) findViewById(R.id.ico_middle_checked);
 		mSmallCheckIco = (ImageView) findViewById(R.id.ico_small_checked);
 
-//		byte[] paper = getIntent().getByteArrayExtra("paper");
-//		if (paper != null) {
-//			Bitmap mBitmap = BitmapUtils.fromByteArray(paper);
-//			iv.setBgBitmap(mBitmap);
-//			mRelativeLayout.setBackgroundDrawable(new BitmapDrawable(mBitmap));
-//			mbackcolorBtn.setClickable(false);
-//		}
+		byte[] paper = getIntent().getExtras().getByteArray("paper");
+		if (paper != null) {
+			ByteArrayOutputStream outPut = new ByteArrayOutputStream();
+			Bitmap bmp = BitmapFactory.decodeByteArray(paper, 0, paper.length);
+			bmp.compress(CompressFormat.PNG, 100, outPut);
+			iv.setBgBitmap(bmp);
+			mRelativeLayout.setBackgroundDrawable(new BitmapDrawable(bmp));
+			mbackcolorBtn.setClickable(false);
+		}
 	}
+
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
@@ -363,47 +377,17 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener {
 	 * 提交作业
 	 */
 	public void submitPaper() {
-		SubmitPaperVo mSubmitPaper = new SubmitPaperVo();
-		mSubmitPaper.setId("");
-		mSubmitPaper.setImei("");
-		mSubmitPaper.setName("");
-		mSubmitPaper.setPaper(BitmapUtils.bmpToByteArray(getBitMap(), true));
-		String json = JSON.toJSONString(mSubmitPaper);
-		MessagePacking messagePacking = new MessagePacking(
-				Message.MESSAGE_DISTRIBUTE_PAPER);
-		messagePacking.putBodyData(DataType.BYTE,
-				BufferUtils.writeUTFString(json));
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DISTRIBUTE_PAPER);
+		//测试ID
+		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(MyApplication.getInstance().getQuizID()));
+		//设备ID
+		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(MyApplication.getInstance().getDeviceId()));
+		//小组姓名
+		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(MyApplication.getInstance().getLoginResVo().getName()));
+		//图片
+		messagePacking.putBodyData(DataType.INT,BitmapUtils.bmpToByteArray(getBitMap(), true));
 		CoreSocket.getInstance().sendMessage(messagePacking);
+		this.finish();
 	}
 
-	public void doResult(JSONObject jsonObject, int type) {
-		android.os.Message message = new android.os.Message();
-		message.what = RESULT_CODE;
-		Bundle data = new Bundle();
-		data.putSerializable("data", jsonObject);
-		message.setData(data);
-		mHandler.sendMessage(message);
-	}
-
-	private Handler mHandler = new Handler() {
-		@Override
-		public void handleMessage(android.os.Message msg) {
-			switch (msg.what) {
-			case RESULT_CODE:// 作业上传成功
-				JSONObject jsonObject = (JSONObject) msg.getData()
-						.getSerializable("data");
-				if (jsonObject.getIntValue("code") == 0) {
-					Toast.makeText(DrawBoxActivity.this, "作业上传成功",
-							Toast.LENGTH_SHORT).show();
-				} else {
-					Toast.makeText(DrawBoxActivity.this,
-							jsonObject.getShortValue("msg"), Toast.LENGTH_SHORT)
-							.show();
-				}
-				break;
-			default:
-				break;
-			}
-		}
-	};
 }
