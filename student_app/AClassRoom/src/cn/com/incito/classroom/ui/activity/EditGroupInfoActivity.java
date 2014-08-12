@@ -48,9 +48,8 @@ public class EditGroupInfoActivity extends BaseActivity implements View.OnClickL
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.edit_group_info);
-		UIHelper.getInstance().setEditGroupInfoActivity(this);
 		Bundle bundle = getIntent().getExtras();
-		if(bundle.containsKey("id")){
+		if(bundle != null && bundle.containsKey("id")){
 			mGroupID = bundle.getInt("id");
 		}
 		initView();

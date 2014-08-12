@@ -1,7 +1,9 @@
 package cn.com.incito.interclass.ui;
 
 import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -9,16 +11,21 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
+import cn.com.incito.interclass.po.Quiz;
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
-import cn.com.incito.server.utils.LogoUtils;
 
-public class MainCenterPanel extends JPanel {
+/**
+ * 任务缩略图列表面板
+ * 
+ * @author popoy
+ * 
+ */
+public class QuizLookupPanel extends JPanel {
 
 	/**
 	 * 
@@ -27,7 +34,8 @@ public class MainCenterPanel extends JPanel {
 
 	private static final String PAD_ONLINE = "images/main/ico_pad_connection.png";
 	private static final String PAD_OFFLINE = "images/main/ico_pad_disconnect.png";
-
+	GridBagLayout gridbag;
+	GridBagConstraints c;
 	private Application app = Application.getInstance();
 	/**
 	 * 当前教室所有Table，初始化界面时初始化本属性
@@ -37,13 +45,21 @@ public class MainCenterPanel extends JPanel {
 	 * 当前教室所有Group，初始化数据时初始化本属性
 	 */
 	private List<Group> groupList = new ArrayList<Group>();
-	private JScrollPane scrollPane;
+	/**
+	 * 试卷列表
+	 */
+	private List<Quiz> quizs = new ArrayList<Quiz>();
 
-	public MainCenterPanel() {
+	public QuizLookupPanel() {
 		// this.setSize(878, 620);
 		this.setLayout(null);
-		this.setOpaque(true);
-		revalidate();
+		gridbag = new GridBagLayout();
+		this.setLayout(gridbag);
+		c = new GridBagConstraints();
+		// setting a default constraint value
+		c.fill = GridBagConstraints.HORIZONTAL;
+		this.setOpaque(false);
+
 		// 初始化界面
 		initView();
 
@@ -56,6 +72,7 @@ public class MainCenterPanel extends JPanel {
 		for (int i = 1; i <= 12; i++) {
 			TablePanel pnlTable = new TablePanel();
 			pnlTable.setBounds(20, x, 836, 139);
+			gridbag.setConstraints(pnlTable, c); // associate the label with a
 			add(pnlTable);
 			tableList.add(pnlTable);
 			x += 150;
@@ -69,19 +86,8 @@ public class MainCenterPanel extends JPanel {
 		for (int i = 0; i < groupList.size(); i++) {// 遍历分组内存模型
 			Group group = groupList.get(i);
 			TablePanel tablePanel = tableList.get(i);
-			tablePanel.setGroup(group);
 			tablePanel.setVisible(true);
 			tablePanel.setTableNumber(group.getTableNumber());
-			if (group.getName() != null) {//显示小组名称
-				tablePanel.getLblGroupName().setVisible(true);
-				tablePanel.getLblGroupName().setText(group.getName());
-			}
-			if (group.getLogo() != null) {
-				String logo = LogoUtils.getInstance().getLogo(group.getLogo());
-				ImageIcon imgLogo = new ImageIcon(logo);
-				tablePanel.getLblLogo().setIcon(imgLogo);
-				tablePanel.getLblLogo().setBounds(40, 40, 80, 80);
-			}
 			// 遍历当前组/桌的设备，内存模型
 			List<JLabel> deviceLabelList = tablePanel.getDeviceList();
 			List<Device> deviceList = group.getDevices();

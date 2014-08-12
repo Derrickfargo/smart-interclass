@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;
 
-public class GroupConfirmHandler extends MessageHandler {
+public class GroupSubmitHandler extends MessageHandler {
 
 	@Override
 	protected void handleMessage() {

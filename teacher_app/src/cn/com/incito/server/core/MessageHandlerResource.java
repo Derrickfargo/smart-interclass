@@ -48,7 +48,7 @@ public final class MessageHandlerResource {
 		//编辑组信息
 		handlerResources.put(Message.MESSAGE_GROUP_EDIT, GroupSubmitHandler.class);
 		//小组投票消息
-		handlerResources.put(Message.MESSAGE_GROUP_CONFIRM, GroupVoteHandler.class);
+		handlerResources.put(Message.MESSAGE_GROUP_VOTE, GroupVoteHandler.class);
 		//发送作业图片
 //		handlerResources.put(Message.MESSAGE_SAVE_PAPER, SavePaperHandler.class);
 		//收作业

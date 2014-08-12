@@ -123,6 +123,7 @@ public class CoreService {
 			return JSONUtils.renderJSONString(2);// 失败
 		}
 		Group group = app.getTableGroup().get(table.getId());
+		app.addGroup(group);
 		for (Student student : group.getStudents()) {
 			if (student.getUname().equals(uname)
 					&& student.getNumber().equals(number)) {

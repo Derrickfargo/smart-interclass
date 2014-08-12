@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.Random;
 
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -114,4 +115,17 @@ public class Utils {
 
         return output;
     }
+
+	public static Drawable getGroupIconByName(TypedArray iconSource,String[] iconsName, String iconName){
+		if(iconName != null && !"".equals(iconName)
+				&& iconSource != null && iconSource.length() > 0
+				&& iconsName != null && iconsName.length > 0){
+			for(int i=0;i<iconsName.length;i++){
+				if(iconName.equals(iconsName[i])){
+					return iconSource.getDrawable(i);
+				}
+			}
+		}
+		return null;
+	}
 }
