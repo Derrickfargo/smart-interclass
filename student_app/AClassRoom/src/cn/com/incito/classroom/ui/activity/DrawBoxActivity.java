@@ -37,7 +37,6 @@ import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.canvas.PaletteViewWidget;
-import cn.com.incito.classroom.vo.SubmitPaperVo;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
