@@ -4,6 +4,7 @@ import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -213,14 +214,18 @@ public class Application {
 	}
 
 	public void addGroup(Group group) {
-		tableGroup.put(group.getId(), group);
-		for (Group aGroup : groupList) {
+		//TODO 这里有修改过，以前写成了tableGroup.put(group.getId(), group);
+		tableGroup.put(group.getTableId(), group);
+		groupMap.put(group.getId(), group);
+		
+		Iterator<Group> it = groupList.iterator();
+		while (it.hasNext()) {
+			Group aGroup = it.next();
 			if (aGroup.getId() == group.getId()) {
-				groupList.remove(aGroup);
+				it.remove();
 				break;
 			}
 		}
-		groupMap.put(group.getId(), group);
 		groupList.add(group);
 	}
 
