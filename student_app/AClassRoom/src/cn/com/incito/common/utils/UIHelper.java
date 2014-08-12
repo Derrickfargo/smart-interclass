@@ -17,7 +17,6 @@ import com.alibaba.fastjson.JSONObject;
 public class UIHelper {
 	private static UIHelper instance;
 	private MyApplication app;
-	private SplashActivity splashActivity;
 	private WaitingActivity waitingActivity;
 	private BindDeskActivity bindDeskActivity;
 	private EditGroupInfoActivity editGroupInfoActivity;
@@ -34,10 +33,6 @@ public class UIHelper {
 		return instance;
 	}
 
-	public void setSplashActivity(SplashActivity splashActivity) {
-		this.splashActivity = splashActivity;
-	}
-
 	public void setWaitingActivity(WaitingActivity waitingActivity) {
 		this.waitingActivity = waitingActivity;
 	}
@@ -46,9 +41,9 @@ public class UIHelper {
 		this.bindDeskActivity = bindDeskActivity;
 	}
 
-	public SplashActivity getSplashActivity() {
+/*	public SplashActivity getSplashActivity() {
 		return splashActivity;
-	}
+	}*/
 
 	public WaitingActivity getWaitingActivity() {
 		return waitingActivity;
@@ -75,28 +70,28 @@ public class UIHelper {
 	 * 显示登录界面
 	 */
 	public void showWaitingActivity(){
-		if (splashActivity == null) {
+/*		if (splashActivity == null) {
 			return;
-		}
-		Intent intent = new Intent(splashActivity, WaitingActivity.class);
+		}*/
+		Intent intent = new Intent(app, WaitingActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		app.startActivity(intent);
-		splashActivity.finish();
-		splashActivity = null;
+		/*splashActivity.finish();
+		splashActivity = null;*/
 	}
 
 	/**
 	 * 显示课桌绑定界面
 	 */
 	public void showBindDeskActivity(){
-		if (splashActivity == null) {
+		/*if (splashActivity == null) {
 			return;
-		}
-		Intent intent = new Intent(splashActivity, BindDeskActivity.class);
+		}*/
+		Intent intent = new Intent(app, BindDeskActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		app.startActivity(intent);
-		splashActivity.finish();
-		splashActivity = null;
+/*		splashActivity.finish();
+		splashActivity = null;*/
 	}
 
 	/**
@@ -133,13 +128,13 @@ public class UIHelper {
 	}
 	
 	public void showConfirmGroupActivity(JSONObject data){
-		Intent intent = new Intent(editGroupInfoActivity,
-				ConfirmGroupInfoActivity.class);
+		/*Intent intent = new Intent(editGroupInfoActivity,
+				ConfirmGroupInfoActivity.class);*/
+		Intent intent = new Intent(Constants.ACTION_SHOW_CONFIRM_GROUP);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.putExtra("data", data);
 		app.startActivity(intent);
-		editGroupInfoActivity.finish();
-		editGroupInfoActivity = null;
+		
 	}
 	
 

@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class HorizontalListViewAdapter extends BaseAdapter{
-        private static final String TAG = "HorizontalListViewAdapter";
+    private static final String TAG = "HorizontalListViewAdapter";
 	private int[] mIconIDs;
 	private Context mContext;
 	private LayoutInflater mInflater;

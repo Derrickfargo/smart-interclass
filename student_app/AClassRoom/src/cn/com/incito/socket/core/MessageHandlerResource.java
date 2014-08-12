@@ -3,10 +3,11 @@ package cn.com.incito.socket.core;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.com.incito.socket.handler.VoteGroupInfoHandler;
 import cn.com.incito.socket.handler.DeviceBindHandler;
 import cn.com.incito.socket.handler.DeviceHasBindHandler;
 import cn.com.incito.socket.handler.DistributePaperHandler;
-import cn.com.incito.socket.handler.GroupConfirmHandler;
+import cn.com.incito.socket.handler.GroupSubmitHandler;
 import cn.com.incito.socket.handler.GroupEditHandler;
 import cn.com.incito.socket.handler.GroupListHandler;
 import cn.com.incito.socket.handler.HeartbeatHandler;
@@ -45,8 +46,10 @@ public final class MessageHandlerResource {
 		handlerResources.put(Message.MESSAGE_DEVICE_BIND, DeviceBindHandler.class);
 		//编辑小组信息
 		handlerResources.put(Message.MESSAGE_GROUP_EDIT, GroupEditHandler.class);
-		//编辑小组信息
-		handlerResources.put(Message.MESSAGE_GROUP_CONFIRM, GroupConfirmHandler.class);
+		//确认小组信息
+		handlerResources.put(Message.MESSAGE_GROUP_VOTE, VoteGroupInfoHandler.class);
+		//提交小组信息
+		handlerResources.put(Message.MESSAGE_GROUP_CONFIRM, GroupSubmitHandler.class);
 		//编辑小组信息
 		handlerResources.put(Message.MESSAGE_DISTRIBUTE_PAPER, DistributePaperHandler.class);
 		//保存作业图片

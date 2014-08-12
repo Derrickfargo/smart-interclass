@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_confirm_group_info" >
 
-    <LinearLayout
+     <LinearLayout android:id="@+id/ll_groupinfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
@@ -21,15 +21,18 @@
                 android:layout_marginTop="30dp" android:src="@drawable/icon_checked"/>
     </LinearLayout>
 
+    <TextView android:id="@+id/waiting_other_student" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:layout_marginTop="500dp"
+        android:layout_centerHorizontal="true" style="@style/confirm_group"/>
     <ImageButton
-        android:id="@+id/btn_cancel"
+        android:id="@+id/btn_disagree"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="60dp"
         android:background="@drawable/confirm_group_cancel" />
     <ImageButton
-        android:id="@+id/btn_ok"
+        android:id="@+id/btn_agree"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

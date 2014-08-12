@@ -40,7 +40,6 @@ public class SplashActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UIHelper.getInstance().setSplashActivity(this);
         msgReceiver = new MsgReceiver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(SocketService.NETWORK_RECEIVER);
