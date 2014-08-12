@@ -193,29 +193,29 @@ public class MainFrame extends MouseAdapter {
 		contentPane.add(left);
 
 		// ///////////////////center部分////////////////////////
-//		centerPanel = new MainCenterPanel();
-//		centerPanel.setBackground(Color.WHITE);
-//		scrollPane = new JScrollPane(centerPanel);
-//		scrollPane.getVerticalScrollBar().setUnitIncrement(50);
-//		scrollPane.setBorder(null);
-//		scrollPane.setBounds(127, 75, 878, 618);
-//		// TODO 根据分组的多少动态调整
-//		centerPanel.setPreferredSize(new Dimension(scrollPane.getWidth() - 50,
-//				scrollPane.getHeight() * 3));
-//		contentPane.add(scrollPane);
-//		centerPanel.revalidate();
-		// ///////////////////作业缩略图内容区////////////////////////
-		taskLookupPanel = new QuizLookupPanel();
-		taskLookupPanel.setBackground(Color.WHITE);
-		scrollPane = new JScrollPane(taskLookupPanel);
+		centerPanel = new MainCenterPanel();
+		centerPanel.setBackground(Color.WHITE);
+		scrollPane = new JScrollPane(centerPanel);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(50);
 		scrollPane.setBorder(null);
 		scrollPane.setBounds(127, 75, 878, 618);
 		// TODO 根据分组的多少动态调整
-		taskLookupPanel.setPreferredSize(new Dimension(taskLookupPanel.getWidth() - 50,
+		centerPanel.setPreferredSize(new Dimension(scrollPane.getWidth() - 50,
 				scrollPane.getHeight() * 3));
 		contentPane.add(scrollPane);
-		taskLookupPanel.revalidate();
+		centerPanel.revalidate();
+		// ///////////////////作业缩略图内容区////////////////////////
+//		taskLookupPanel = new QuizLookupPanel();
+//		taskLookupPanel.setBackground(Color.WHITE);
+//		scrollPane = new JScrollPane(taskLookupPanel);
+//		scrollPane.getVerticalScrollBar().setUnitIncrement(50);
+//		scrollPane.setBorder(null);
+//		scrollPane.setBounds(127, 75, 878, 618);
+//		// TODO 根据分组的多少动态调整
+//		taskLookupPanel.setPreferredSize(new Dimension(taskLookupPanel.getWidth() - 50,
+//				scrollPane.getHeight() * 3));
+//		contentPane.add(scrollPane);
+//		taskLookupPanel.revalidate();
 
 		// //////////////////////bottom部分////////////////////////
 		JPanel bottom = new JPanel();
