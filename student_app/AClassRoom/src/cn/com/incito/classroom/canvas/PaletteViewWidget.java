@@ -106,7 +106,6 @@ public class PaletteViewWidget extends SurfaceView implements Runnable,
 			// isBackPressed = false;
 			// isForwardPressed = false;
 		}
-		invalidate();
 		return super.onTouchEvent(event);
 	}
 
@@ -125,16 +124,16 @@ public class PaletteViewWidget extends SurfaceView implements Runnable,
 
 	@Override
 	public void run() {
-//		while (mLoop) {
+		while (mLoop) {
 //			try {
 //				Thread.sleep(50);
 //			} catch (InterruptedException e) {
 //				e.printStackTrace();
 //			}
-//			synchronized (mSurfaceHolder) {
-//				Draw();
-//			}
-//		}
+			synchronized (mSurfaceHolder) {
+				Draw();
+			}
+		}
 	}
 
 	@Override

@@ -352,10 +352,9 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener {
 	 * @return 保存图片
 	 */
 	private Bitmap getBitMap() {// 老师收作业的时候调用此方法保存图片 然后将图片传到服务器
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-		String fname = Environment.getExternalStorageDirectory() + "/"
-				+ sdf.format(new Date()) + ".png";
-		System.out.println("图片路径：" + fname);
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+//		String fname = Environment.getExternalStorageDirectory() + "/"
+//				+ sdf.format(new Date()) + ".png";
 		Bitmap bitmap = Bitmap.createBitmap(iv.getWidth(), iv.getHeight(),
 				Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
@@ -377,7 +376,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener {
 	 * 提交作业
 	 */
 	public void submitPaper() {
-		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DISTRIBUTE_PAPER);
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SAVE_PAPER);
 		//测试ID
 		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(MyApplication.getInstance().getQuizID()));
 		//设备ID
