@@ -7,10 +7,8 @@ import android.widget.Toast;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.ui.activity.BindDeskActivity;
-import cn.com.incito.classroom.ui.activity.ConfirmGroupInfoActivity;
 import cn.com.incito.classroom.ui.activity.DrawBoxActivity;
 import cn.com.incito.classroom.ui.activity.EditGroupInfoActivity;
-import cn.com.incito.classroom.ui.activity.SplashActivity;
 import cn.com.incito.classroom.ui.activity.WaitingActivity;
 
 import com.alibaba.fastjson.JSONObject;
