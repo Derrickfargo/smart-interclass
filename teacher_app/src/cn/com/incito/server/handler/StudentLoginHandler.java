@@ -5,6 +5,8 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
@@ -22,10 +24,10 @@ import cn.com.incito.server.utils.BufferUtils;
  * 
  */
 public class StudentLoginHandler extends MessageHandler {
-
+	private Logger logger = Logger.getLogger(StudentLoginHandler.class.getName());
 	@Override
 	public void handleMessage() {
-		System.out.println("消息类型为学生登陆:" + data);
+		logger.info("消息类型为学生登陆:" + data);
 		
         String uname = data.getString("name");
         int sex = data.getIntValue("sex");
@@ -40,7 +42,7 @@ public class StudentLoginHandler extends MessageHandler {
 				Application.getInstance().addSocketChannel(groupId, message.getChannel());
         		sendResponse(result,Application.getInstance().getClientChannelByGroup(groupId));
 //				sendResponse(result);
-				System.out.println(result);
+        		logger.info(result);
         	}
         	break;
         case 1:
@@ -50,7 +52,7 @@ public class StudentLoginHandler extends MessageHandler {
 				Application.getInstance().addSocketChannel(groupId, message.getChannel());
         		sendResponse(result,Application.getInstance().getClientChannelByGroup(groupId));
 //				sendResponse(result);
-				System.out.println(result);
+        		logger.info(result);
         	}
     		break;
         case 2:
@@ -60,7 +62,7 @@ public class StudentLoginHandler extends MessageHandler {
 				Application.getInstance().addSocketChannel(groupId, message.getChannel());
         		sendResponse(result,Application.getInstance().getClientChannelByGroup(groupId));
 //				sendResponse(result);
-				System.out.println(result);
+        		logger.info(result);
         	}
         	break;
         }

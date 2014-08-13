@@ -5,6 +5,8 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 
+import org.apache.log4j.Logger;
+
 import cn.com.incito.server.utils.BufferUtils;
 
 /**
@@ -13,7 +15,7 @@ import cn.com.incito.server.utils.BufferUtils;
  *
  */
 public class MessageParser {
-	
+	private Logger logger = Logger.getLogger(MessageParser.class.getName());
 	/**
 	 * fake id长度为两个字节
 	 */
@@ -46,7 +48,7 @@ public class MessageParser {
 				return;
 			}
 		} catch (IOException e) {
-			System.out.println("解析消息失败:" + e.getMessage());
+			logger.fatal("解析消息失败:" + e.getMessage());
 			try {
 				channel.close();
 			} catch (IOException e1) {
@@ -55,7 +57,7 @@ public class MessageParser {
 			return;
 		}
 		headerBuffer.flip();
-		System.out.println("开始解析消息..");
+		logger.info("开始解析消息..");
 		// 消息头fakeId是否正确
 		if (!parseFakeId(headerBuffer)) {
 			return;
@@ -100,13 +102,13 @@ public class MessageParser {
 			// 获取fake id的值
 			fakeId = Integer.parseInt(BufferUtils.decodeIntLittleEndian(fakeIdByte, 0, fakeIdByte.length) + "");
 		} catch (Exception e) {
-			System.out.println("解析fake Id出错:" + e.getMessage());
+			logger.error("解析fake Id出错:" + e.getMessage());
 			return false;
 		}
 
 		// 如果消息的fakeId与定义的fakeId值不符，则丢弃掉该条消息
 		if (Message.MESSAGE_FAKE_ID != fakeId) {
-			System.out.println("该消息头不是需要的消息头,fakeId:" + fakeId);
+			logger.error("该消息头不是需要的消息头,fakeId:" + fakeId);
 			return false;
 		}
 		return true;
@@ -142,7 +144,7 @@ public class MessageParser {
 			message.setBodyBuffer(bodyBuffer);
 			return true;
 		} catch (IOException e) {
-			System.out.println("获取消息体失败:" + e.getMessage());
+			logger.error("获取消息体失败:" + e.getMessage());
 			return false;
 		}
 	}

@@ -21,6 +21,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import org.apache.log4j.Logger;
+
 import cn.com.incito.interclass.po.Classes;
 import cn.com.incito.interclass.po.Course;
 import cn.com.incito.interclass.ui.widget.Item;
@@ -44,6 +46,7 @@ public class Login2 extends MouseAdapter{
 	private Application app = Application.getInstance();
 	private List<Classes> classList;
 	private List<Course> courseList;
+	private Logger logger = Logger.getLogger(Login2.class.getName());
 	public JFrame getFrame() {
 		return frame;
 	}
@@ -280,7 +283,7 @@ public class Login2 extends MouseAdapter{
 				new FloatWin();
 //				MainFrame.getInstance().setVisible(true);
 			}
-			System.out.println(result);
+			logger.info(result);
 		} catch (AppException e) {
 			e.printStackTrace();
 		}

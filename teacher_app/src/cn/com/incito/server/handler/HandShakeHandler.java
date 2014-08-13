@@ -3,6 +3,8 @@ package cn.com.incito.server.handler;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
+import org.apache.log4j.Logger;
+
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
@@ -15,13 +17,13 @@ import cn.com.incito.server.message.MessagePacking;
  * 
  */
 public class HandShakeHandler extends MessageHandler {
-
+	private Logger logger = Logger.getLogger(HandShakeHandler.class.getName());
 	private String imei;
 
 	@Override
 	public void handleMessage() {
 		imei = data.getString("imei");
-		System.out.println("收到设备登陆消息，IMEI:" + imei);
+		logger.info("收到设备登陆消息，IMEI:" + imei);
 		service.deviceLogin(imei);
 		Application.getInstance().addSocketChannel(imei, message.getChannel());
 		//回复握手消息

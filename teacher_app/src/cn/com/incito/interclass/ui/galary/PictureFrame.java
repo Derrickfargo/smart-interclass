@@ -1,7 +1,12 @@
 package cn.com.incito.interclass.ui.galary;
 
-import javax.swing.*;
-import java.io.*;
+import java.io.File;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+
+import org.apache.log4j.Logger;
 
 public class PictureFrame extends javax.swing.JFrame {
 
@@ -9,7 +14,8 @@ public class PictureFrame extends javax.swing.JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	private Logger logger = Logger.getLogger(PictureFrame.class.getName());
+	
 	/** Creates new form PictureFrame */
 	public PictureFrame() {
 		initComponents();
@@ -171,7 +177,7 @@ public class PictureFrame extends javax.swing.JFrame {
 		JFileChooser chooser = new JFileChooser();
 		filename = chooser.getSelectedFile().getName();
 		openPath = chooser.getCurrentDirectory().getPath();
-		System.out.println(openPath);
+		logger.info(openPath);
 		ImageIcon imag = new ImageIcon(openPath + "\\" + filename);
 		jLabel1.setIcon(imag);
 	}

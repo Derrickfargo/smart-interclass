@@ -3,6 +3,8 @@ package cn.com.incito.server.core;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import cn.com.incito.server.handler.DeviceBindHandler;
 import cn.com.incito.server.handler.DeviceHasBindHandler;
 import cn.com.incito.server.handler.GroupListHandler;
@@ -20,7 +22,7 @@ import cn.com.incito.server.handler.StudentLoginHandler;
  * @author 刘世平
  */
 public final class MessageHandlerResource {
-
+	private Logger logger = Logger.getLogger(MessageHandlerResource.class.getName());
 	private static MessageHandlerResource resources;
 	private Map<Byte, Class<? extends MessageHandler>> handlerResources;
 	
@@ -60,7 +62,7 @@ public final class MessageHandlerResource {
 				// 通过反射取得对应的处理器
 				return handlerResources.get(key).newInstance();
 			} catch (Exception e) {
-				System.out.println("获取MessageHandler出错:" + e.getMessage());
+				logger.error("获取MessageHandler出错:" + e.getMessage());
 				return null;
 			}
 		}
