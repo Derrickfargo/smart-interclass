@@ -74,7 +74,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		this.getWindow().setFlags(Constants.FLAG_HOMEKEY_DISPATCHED,
 				Constants.FLAG_HOMEKEY_DISPATCHED);
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.receive);
+		setContentView(R.layout.draw_box);
 		UIHelper.getInstance().setDrawBoxActivity(this);
 		findView();
 	}
