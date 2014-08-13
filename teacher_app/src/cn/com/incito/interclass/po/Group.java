@@ -22,6 +22,7 @@ public class Group implements Serializable, Comparable<Group> {
 	private Date ctime;
 
 	private int tableNumber;
+    private Table table;
 	private List<Device> devices;
 	private List<Student> students;
 	private List<Quiz> quizs;

@@ -26,10 +26,10 @@ import com.alibaba.fastjson.JSONObject;
 public class CoreService {
 	private Application app = Application.getInstance();
 	private Logger logger = Logger.getLogger(CoreService.class.getName());
-	
+
 	public void deviceLogin(String imei) {
 		app.getOnlineDevice().add(imei);
-		app.refreshMainFrame();// 更新UI
+		app.refreshCenterPanel();// 更新UI
 	}
 
 	/**
@@ -75,6 +75,9 @@ public class CoreService {
 		return JSONUtils.renderJSONString(2);// 失败
 	}
 
+	/**
+	 * 刷新分组、课桌界面
+	 */
 	public void refreshGroupList() {
 		int schoolId = app.getTeacher().getSchoolId();
 		int roomId = app.getRoom().getId();
@@ -96,7 +99,7 @@ public class CoreService {
 				// 第二步获得班级、课程、设备、课桌、分组数据
 				Application.getInstance().initMapping(resultData.getDevices(),
 						resultData.getTables(), resultData.getGroups());
-				Application.getInstance().refreshMainFrame();
+				Application.getInstance().refreshCenterPanel();
 			}
 			logger.info(result);
 		} catch (AppException e) {
@@ -105,7 +108,38 @@ public class CoreService {
 	}
 
 	/**
-	 * 登陆
+	 * 刷新作业缩略图列表界面
+	 */
+	public void refreshQuizLookup() {
+		int schoolId = app.getTeacher().getSchoolId();
+		int roomId = app.getRoom().getId();
+		int teacherId = app.getTeacher().getId();
+		int courseId = app.getCourse().getId();
+		int classId = app.getClasses().getId();
+		try {
+			final String result = ApiClient.getGroupList(schoolId, roomId,
+					teacherId, courseId, classId, "");
+			if (result != null && !result.equals("")) {
+				JSONObject jsonObject = JSON.parseObject(result);
+				if (jsonObject.getIntValue("code") != 0) {
+					return;
+				}
+				String data = jsonObject.getString("data");
+				TeacherGroupResultData resultData = JSON.parseObject(data,
+						TeacherGroupResultData.class);
+				// 第二步获得班级、课程、设备、课桌、分组数据
+				Application.getInstance().initMapping(resultData.getDevices(),
+						resultData.getTables(), resultData.getGroups());
+				Application.getInstance().refreshTaskLookupPanel();
+			}
+			logger.info(result);
+		} catch (AppException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 学生登陆
 	 * 
 	 * @param uname
 	 * @param sex
@@ -131,7 +165,7 @@ public class CoreService {
 					&& student.getNumber().equals(number)) {
 				student.setLogin(true);
 				app.getOnlineStudent().add(student);// 加入在线的学生
-				app.refreshMainFrame();// 更新UI
+				app.refreshCenterPanel();// 更新UI
 				return JSONUtils.renderJSONString(0, group);
 			}
 		}
@@ -164,7 +198,7 @@ public class CoreService {
 					&& student.getNumber().equals(number)) {
 				student.setLogin(false);
 				app.getOnlineStudent().remove(student);
-				app.refreshMainFrame();// 更新UI
+				app.refreshCenterPanel();// 更新UI
 				return JSONUtils.renderJSONString(0, group);
 			}
 		}
@@ -201,7 +235,7 @@ public class CoreService {
 					}
 					app.addGroup(group);
 					app.getTableGroup().put(group.getTableId(), group);
-					app.refreshMainFrame();// 更新UI
+					app.refreshCenterPanel();// 更新UI
 					JSONUtils.renderJSONString(JSONUtils.SUCCESS, group);
 				}
 				return result;
@@ -245,38 +279,38 @@ public class CoreService {
 	 * @param imei
 	 * @return
 	 */
-	public String SavePaper(String imei,String id, byte[] imageByte) {
-		File path = new File(getProjectPath()+"/"+id);
+	public String SavePaper(String imei, String id, byte[] imageByte) {
+		File path = new File(getProjectPath() + "/" + id);
 		path.mkdirs();
 		File file = new File(path, imei + ".jpg");
 		try {
-			 FileImageOutputStream imageOutput = new FileImageOutputStream(file);
-			  imageOutput.write(imageByte, 0, imageByte.length);
-			  imageOutput.close();
+			FileImageOutputStream imageOutput = new FileImageOutputStream(file);
+			imageOutput.write(imageByte, 0, imageByte.length);
+			imageOutput.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 		return JSONUtils.renderJSONString(1);
 	}
-	 /**
+
+	/**
 	 * @return 获取程序路径
 	 */
 	public static String getProjectPath() {
-	       java.net.URL url = CoreService.class.getProtectionDomain().getCodeSource().getLocation();
-	       String filePath = null ;
-	       try {
-	           filePath = java.net.URLDecoder.decode (url.getPath(), "utf-8");
-	       } catch (Exception e) {
-	           e.printStackTrace();
-	       }
-	    if (filePath.endsWith(".jar"))
-	       filePath = filePath.substring(0, filePath.lastIndexOf("/") + 1);
-	       java.io.File file = new java.io.File(filePath);
-	       filePath = file.getAbsolutePath();
-	    return filePath;
+		java.net.URL url = CoreService.class.getProtectionDomain()
+				.getCodeSource().getLocation();
+		String filePath = null;
+		try {
+			filePath = java.net.URLDecoder.decode(url.getPath(), "utf-8");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if (filePath.endsWith(".jar"))
+			filePath = filePath.substring(0, filePath.lastIndexOf("/") + 1);
+		java.io.File file = new java.io.File(filePath);
+		filePath = file.getAbsolutePath();
+		return filePath;
 
 	}
-	
-	
+
 }
