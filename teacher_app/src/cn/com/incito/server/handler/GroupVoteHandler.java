@@ -78,7 +78,7 @@ public class GroupVoteHandler extends MessageHandler {
 				//刷新主界面
 				group = JSON.parseObject(result.getString("data"), Group.class);
 				Application.getInstance().addGroup(group);
-				Application.getInstance().refreshMainFrame();
+				Application.getInstance().refreshCenterPanel();
 			} else {
 				JSONObject json = new JSONObject();
 				json.put("code", 1);

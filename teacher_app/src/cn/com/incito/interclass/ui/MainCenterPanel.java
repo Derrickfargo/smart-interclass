@@ -126,8 +126,8 @@ public class MainCenterPanel extends JPanel implements UIContext {
 	private void initData() {
 		groupList = new ArrayList<Group>();
 		// 课桌绑定分组，生成内存模型
-		List<Table> tableList = app.getTableList();
-		for (Table table : tableList) {
+		List<Table> tables = app.getTableList();
+		for (Table table : tables) {
 			// 获得课桌对应的分组
 			Group group = app.getTableGroup().get(table.getId());
 			if (group == null) {

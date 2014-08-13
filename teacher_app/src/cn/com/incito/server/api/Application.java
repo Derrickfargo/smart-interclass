@@ -24,7 +24,7 @@ import cn.com.incito.interclass.ui.MainFrame;
 
 public class Application {
 	private static Application instance;
-	private String quizId;
+	private String quizId;   //考试流水号
 	private Room room;// 当前上课的教室，教师登陆完后初始化
 	private Teacher teacher;// 当前登录的老师，教师登陆完后初始化
 	private Course course;// 当前上课的课程，教师登陆完后初始化
@@ -32,17 +32,17 @@ public class Application {
 
 	private List<Group> groupList = new ArrayList<Group>();// 本堂课的所有分组
 	private List<Table> tableList = new ArrayList<Table>();// 本教室所有的桌子
-	private List<Device> deviceList = new ArrayList<Device>();// 本教室所以的Device
+	private List<Device> deviceList = new ArrayList<Device>();// 本教室所有的Device
 	private Set<String> onlineDevice = new HashSet<String>();
 	private Set<Student> onlineStudent = new HashSet<Student>();
 
 	private Map<Integer, List<SocketChannel>> groupChannel;// 保存每组和已登录的socket
-	private Map<String,SocketChannel> clientChannel;//保存所有设备登陆的socket，imei和socket
+	private Map<String, SocketChannel> clientChannel;// 保存所有设备登陆的socket，imei和socket
 	private Map<String, Student> loginedStudent;// 已登录的学生，key:name+number，value:Student
-	private Map<Integer,Group> groupMap = new HashMap<Integer,Group>();
-	private Map<Integer,JSONObject> tempGroup = new HashMap<Integer,JSONObject>();//修改的分组信息
-	private Map<Integer,List<Integer>> tempVote = new HashMap<Integer,List<Integer>>();//小组的投票信息
-	
+	private Map<Integer, Group> groupMap = new HashMap<Integer, Group>();
+	private Map<Integer, JSONObject> tempGroup = new HashMap<Integer, JSONObject>();// 修改的分组信息
+	private Map<Integer, List<Integer>> tempVote = new HashMap<Integer, List<Integer>>();// 小组的投票信息
+
 	/**
 	 * IMEI和设备的对应关系(key:imei,value:Device)，教师登陆完后初始化
 	 */
@@ -52,8 +52,8 @@ public class Application {
 	 * tableId和Table的对应关系(key:tableId,value:Table)，教师登陆完后初始化
 	 */
 	private Map<Integer, Table> tableMap;
-	
-	private Map<Integer,Table> tableNumberMap;
+
+	private Map<Integer, Table> tableNumberMap;
 
 	/**
 	 * Device id和Table的对应关系(key:deviceId,value:Table)，教师登陆完后初始化
@@ -136,7 +136,7 @@ public class Application {
 			tableMap.put(table.getId(), table);
 		}
 	}
-	
+
 	/**
 	 * 初始化课桌映射
 	 * 
@@ -207,17 +207,17 @@ public class Application {
 		if (deviceList == null) {
 			deviceList = new ArrayList<Device>();
 		}
-		if(!deviceList.contains(device)){
+		if (!deviceList.contains(device)) {
 			deviceList.add(device);
 		}
 		tableDevice.put(id, deviceList);
 	}
 
 	public void addGroup(Group group) {
-		//TODO 这里有修改过，以前写成了tableGroup.put(group.getId(), group);
+		// TODO 这里有修改过，以前写成了tableGroup.put(group.getId(), group);
 		tableGroup.put(group.getTableId(), group);
 		groupMap.put(group.getId(), group);
-		
+
 		Iterator<Group> it = groupList.iterator();
 		while (it.hasNext()) {
 			Group aGroup = it.next();
@@ -229,10 +229,10 @@ public class Application {
 		groupList.add(group);
 	}
 
-	public Group getGroupById(Integer id){
+	public Group getGroupById(Integer id) {
 		return groupMap.get(id);
 	}
-	
+
 	public Map<String, Student> getLoginedStudent() {
 		return loginedStudent;
 	}
@@ -292,23 +292,23 @@ public class Application {
 	public void addSocketChannel(String imei, SocketChannel channel) {
 		clientChannel.put(imei, channel);
 	}
-	
+
 	public void addSocketChannel(Integer groupId, SocketChannel channel) {
 		List<SocketChannel> channels = groupChannel.get(groupId);
 		if (channels == null) {
 			channels = new ArrayList<SocketChannel>();
 		}
-		if(channels.contains(channel)){
+		if (channels.contains(channel)) {
 			channels.remove(channel);
 		}
 		channels.add(channel);
 		groupChannel.put(groupId, channels);
 	}
 
-	public List<SocketChannel> getClientChannelByGroup(Integer groupId){
+	public List<SocketChannel> getClientChannelByGroup(Integer groupId) {
 		return groupChannel.get(groupId);
 	}
-	
+
 	public Map<String, Device> getImeiDevice() {
 		return imeiDevice;
 	}
@@ -356,17 +356,16 @@ public class Application {
 	public Map<Integer, JSONObject> getTempGroup() {
 		return tempGroup;
 	}
-	
+
 	public Map<Integer, List<Integer>> getTempVote() {
 		return tempVote;
 	}
 
-	public void refreshMainFrame() {
-		new Thread() {
-			public void run() {
-				MainFrame.getInstance().refresh();
-			}
-		}.start();
+	public void refreshCenterPanel() {
+		MainFrame.getInstance().refreshDeskStatePane();
+	}
+	public void refreshTaskLookupPanel() {
+		MainFrame.getInstance().refreshQuizLookupPanel();
 	}
 
 	public String getQuizId() {
@@ -376,6 +375,5 @@ public class Application {
 	public void setQuizId(String quizId) {
 		this.quizId = quizId;
 	}
-	
-	
+
 }
