@@ -358,6 +358,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		m_sketchPad.clearAllStrokes();
 		BitmapUtil.setFree();
 	}
 
@@ -433,5 +434,4 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		CoreSocket.getInstance().sendMessage(messagePacking);
 		this.finish();
 	}
-
 }
