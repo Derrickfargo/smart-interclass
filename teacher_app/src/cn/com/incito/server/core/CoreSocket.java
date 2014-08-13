@@ -11,6 +11,8 @@ import java.nio.channels.SocketChannel;
 import java.util.Collection;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 import cn.com.incito.server.api.Application;
 
 /**
@@ -24,7 +26,8 @@ public final class CoreSocket extends Thread {
 	private static CoreSocket instance = null;
 	private static Selector selector = null;
 	private ServerSocketChannel ssc = null;
-
+	private Logger logger = Logger.getLogger(CoreSocket.class.getName());
+	
 	private CoreSocket(){
 	}
 	
@@ -67,7 +70,7 @@ public final class CoreSocket extends Thread {
 	 * 启动服务器端，配置为非阻塞，绑定端口，注册ACCEPT事件：当服务端收到客户端连接请求时，触发该事件
 	 */
 	private void init() throws IOException {
-		System.out.println("通讯线程启动");
+		logger.info("通讯线程启动");
 		ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
 		serverSocketChannel.configureBlocking(false);
 		ServerSocket serverSocket = serverSocketChannel.socket();
@@ -122,7 +125,7 @@ public final class CoreSocket extends Thread {
 			init();
 			listen();
 		} catch (IOException e) {
-			System.out.println("CoreSocket异常IOException:\n" + e.getMessage());
+			logger.fatal("CoreSocket异常IOException:\n" + e.getMessage());
 		}
 		// 调用关闭服务端Socket的方法
 		closeServerSocketChannel();
@@ -137,7 +140,7 @@ public final class CoreSocket extends Thread {
 				ssc.close();
 			}
 		} catch (IOException e) {
-			System.out.println("CoreSocket异常IOException:\n" + e.getMessage());
+			logger.fatal("CoreSocket异常IOException:\n" + e.getMessage());
 		}
 	}
 

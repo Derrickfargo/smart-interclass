@@ -3,6 +3,8 @@ package cn.com.incito.server.handler;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
+import org.apache.log4j.Logger;
+
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
 import cn.com.incito.server.message.DataType;
@@ -16,16 +18,17 @@ import cn.com.incito.server.utils.BufferUtils;
  * 
  */
 public class GroupListHandler extends MessageHandler {
-
+	private Logger logger = Logger.getLogger(GroupListHandler.class.getName());
+	
 	@Override
 	public void handleMessage() {
-		System.out.println("消息类型为获取分组:" + data);
+		logger.info("消息类型为获取分组:" + data);
 		
 		String imei = data.getString("imei");
-		System.out.println("IMEI:" + imei);
+		logger.info("IMEI:" + imei);
 		//需要给组中所以的设备发送
 		String result = service.getGroupByIMEI(imei);
-		System.out.println(result);
+		logger.info(result);
 		sendResponse(result);
 	}
 

@@ -1,13 +1,14 @@
 package cn.com.incito.server.core;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
 import java.util.Date;
 import java.util.List;
 
 import javax.imageio.stream.FileImageOutputStream;
+
+import org.apache.log4j.Logger;
 
 import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
@@ -24,7 +25,8 @@ import com.alibaba.fastjson.JSONObject;
 
 public class CoreService {
 	private Application app = Application.getInstance();
-
+	private Logger logger = Logger.getLogger(CoreService.class.getName());
+	
 	public void deviceLogin(String imei) {
 		app.getOnlineDevice().add(imei);
 		app.refreshMainFrame();// 更新UI
@@ -96,7 +98,7 @@ public class CoreService {
 						resultData.getTables(), resultData.getGroups());
 				Application.getInstance().refreshMainFrame();
 			}
-			System.out.println(result);
+			logger.info(result);
 		} catch (AppException e) {
 			e.printStackTrace();
 		}

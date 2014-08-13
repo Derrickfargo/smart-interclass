@@ -5,6 +5,8 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.alibaba.fastjson.JSONObject;
 
 import cn.com.incito.server.api.Application;
@@ -15,10 +17,11 @@ import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
 
 public class GroupSubmitHandler extends MessageHandler {
-
+	private Logger logger = Logger.getLogger(GroupSubmitHandler.class.getName());
+	
 	@Override
 	public void handleMessage() {
-		System.out.println("消息类型为分组信息提交确认:" + data);
+		logger.info("消息类型为分组信息提交确认:" + data);
 		
 		int id = data.getIntValue("id");
 		Application.getInstance().getTempGroup().put(id, data);
