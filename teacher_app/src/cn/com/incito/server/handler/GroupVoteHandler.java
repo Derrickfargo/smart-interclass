@@ -6,6 +6,7 @@ import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import cn.com.incito.interclass.po.Group;
@@ -41,7 +42,10 @@ public class GroupVoteHandler extends MessageHandler {
 			Application.getInstance().getTempVote().remove(id);
 			JSONObject json = new JSONObject();
 			json.put("code", JSONUtils.SUCCESS);
-			json.put("data", new JSONObject().put("agree", false));
+			JSONObject jsonData = new JSONObject();
+			jsonData.put("id", id);
+			jsonData.put("agree", false);
+			json.put("data", jsonData);
 			sendResponse(json.toJSONString(), channels);
 			return;
 		}
@@ -66,18 +70,29 @@ public class GroupVoteHandler extends MessageHandler {
 				//发送消息
 				JSONObject json = new JSONObject();
 				json.put("code", JSONUtils.SUCCESS);
-				json.put("data", new JSONObject().put("agree", true));
+				JSONObject jsonData = new JSONObject();
+				jsonData.put("id", id);
+				jsonData.put("agree", true);
+				json.put("data", jsonData);
 				sendResponse(json.toJSONString(), channels);
+				//刷新主界面
+				group = JSON.parseObject(result.getString("data"), Group.class);
+				Application.getInstance().addGroup(group);
+				Application.getInstance().refreshMainFrame();
 			} else {
 				JSONObject json = new JSONObject();
 				json.put("code", 1);
 				sendResponse(json.toJSONString(), channels);
 			}
+		} else {
+			JSONObject json = new JSONObject();
+			json.put("code", 1);
+			sendResponse(json.toJSONString(), channels);
 		}
 	}
 
 	private void sendResponse(String json, List<SocketChannel> channels) {
-		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_CONFIRM);
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_VOTE);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
         byte[] messageData = messagePacking.pack().array();
         ByteBuffer buffer = ByteBuffer.allocate(messageData.length);

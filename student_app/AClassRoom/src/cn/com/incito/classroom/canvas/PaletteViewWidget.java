@@ -125,16 +125,16 @@ public class PaletteViewWidget extends SurfaceView implements Runnable,
 
 	@Override
 	public void run() {
-//		while (mLoop) {
+		while (mLoop) {
 //			try {
 //				Thread.sleep(50);
 //			} catch (InterruptedException e) {
 //				e.printStackTrace();
 //			}
-//			synchronized (mSurfaceHolder) {
-//				Draw();
-//			}
-//		}
+			synchronized (mSurfaceHolder) {
+				Draw();
+			}
+		}
 	}
 
 	@Override
@@ -220,12 +220,18 @@ public class PaletteViewWidget extends SurfaceView implements Runnable,
 		Matrix mMatrix = new Matrix();
 		mMatrix.reset();
 		float btWidth = bgBitmap.getWidth();
+		if(btWidth>1280){
+			btWidth=1280;
+		}
 		float btHeight = bgBitmap.getHeight();
+		if(btHeight>800){
+			btHeight=800;
+		}
 		float xScale = bgBitmapWidth / btWidth;
 		float yScale = bgBitmapHeight / btHeight;
 		mMatrix.postScale(xScale, yScale);
-		this.bgBitmap = Bitmap.createBitmap(bgBitmap, 0, 0, bgBitmapWidth,
-				bgBitmapHeight, mMatrix, true);
+		this.bgBitmap = Bitmap.createBitmap(bgBitmap, 0, 0, (int)btWidth,
+				(int)btHeight, mMatrix, true);
 	}
 
 	// 后退前进完成后，缓存的动作

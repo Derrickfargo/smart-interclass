@@ -36,7 +36,8 @@ public class QuizLookupPanel extends JPanel {
 	private static final String PAD_OFFLINE = "images/main/ico_pad_disconnect.png";
 	GridBagLayout gridbag;
 	GridBagConstraints c;
-	private Application application = Application.getInstance();
+
+	private Application app = Application.getInstance();
 	/**
 	 * 当前教室所有Table，初始化界面时初始化本属性
 	 */
@@ -96,7 +97,7 @@ public class QuizLookupPanel extends JPanel {
 				Device device = deviceList.get(j);
 				String imei = device.getImei();
 				ImageIcon imgPad = null;
-				if (application.getOnlineDevice().contains(imei)) {
+				if (app.getOnlineDevice().contains(imei)) {
 					imgPad = new ImageIcon(PAD_ONLINE);
 				} else {
 					imgPad = new ImageIcon(PAD_OFFLINE);
@@ -114,7 +115,7 @@ public class QuizLookupPanel extends JPanel {
 			for (int k = 0; k < studentList.size(); k++) {
 				Student student = studentList.get(k);
 				JLabel lblStudent = studentLabelList.get(k);
-				if (application.getOnlineStudent().contains(student)) {
+				if (app.getOnlineStudent().contains(student)) {
 					lblStudent.setText(student.getName());
 					lblStudent.setBackground(new Color(Integer.parseInt(
 							"5ec996", 16)));
@@ -132,10 +133,10 @@ public class QuizLookupPanel extends JPanel {
 	private void initData() {
 		groupList = new ArrayList<Group>();
 		// 课桌绑定分组，生成内存模型
-		List<Table> tableList = application.getTableList();
+		List<Table> tableList = app.getTableList();
 		for (Table table : tableList) {
 			// 获得课桌对应的分组
-			Group group = application.getTableGroup().get(table.getId());
+			Group group = app.getTableGroup().get(table.getId());
 			if (group == null) {
 				group = new Group();
 			}
@@ -147,4 +148,24 @@ public class QuizLookupPanel extends JPanel {
 		Collections.sort(groupList);
 	}
 
+	/**
+	 * 暂时不用，会导致界面闪烁
+	 */
+	private void clearView() {
+		for (TablePanel tablePanel : tableList) {
+			List<JLabel> deviceLabelList = tablePanel.getDeviceList();
+			for (JLabel lblDevice : deviceLabelList) {
+				ImageIcon imgPad = new ImageIcon(PAD_OFFLINE);
+				lblDevice.setIcon(imgPad);
+				lblDevice.setVisible(false);
+			}
+			List<JLabel> studentLabelList = tablePanel.getStudentList();
+			for (JLabel lblStudent : studentLabelList) {
+				lblStudent.setText("");
+				lblStudent.setBackground(new Color(Integer.parseInt("e1e1e1",
+						16)));
+				lblStudent.setVisible(false);
+			}
+		}
+	}
 }

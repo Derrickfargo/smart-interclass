@@ -15,13 +15,16 @@ package cn.com.incito.interclass.ui.screencapture;
  */
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
 
 import java.io.*;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.imageio.*;
 
+import sun.security.provider.Sun;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.CoreSocket;
 import cn.com.incito.server.core.Message;
@@ -68,21 +71,19 @@ public class CaptureScreen {
 		MessagePacking messagePacking = new MessagePacking(
 				Message.MESSAGE_DISTRIBUTE_PAPER);
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
-		JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(os);
 		try {
-			encoder.encode(image);
-		} catch (ImageFormatException | IOException e) {
+			ImageIO.write(image,"png",os);
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		JSONObject json = new JSONObject();
 		String uuid = UUID.randomUUID().toString();
 		Application.getInstance().setQuizId(uuid);
-		json.put("id", uuid);
-		json.put("paper", os.toByteArray());
-		messagePacking.putBodyData(DataType.INT,
-				BufferUtils.writeUTFString(json.toString()));
+		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(uuid));
+		messagePacking.putBodyData(DataType.INT, os.toByteArray());
+		
 		CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
 	}
+
 
 	public void doStart() {
 		try {
@@ -414,7 +415,7 @@ public class CaptureScreen {
 								select.height);
 						jf.dispose();
 						// updates();
-						
+
 					} else {
 						int wid = select.width, het = select.height;
 						if (select.x + select.width >= this.getWidth()) {

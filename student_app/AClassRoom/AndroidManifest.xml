@@ -68,7 +68,10 @@
             </intent-filter>  -->
         </activity>
         <activity android:name=".ui.activity.ConfirmGroupInfoActivity">
-            
+            <intent-filter>
+                <action android:name="cn.com.classroom.SHOW_CONFIRM_GROUP"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <service android:name="cn.com.incito.classroom.service.SocketService" >
             <intent-filter>

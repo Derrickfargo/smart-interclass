@@ -16,6 +16,7 @@ import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
+import cn.com.incito.server.utils.LogoUtils;
 
 public class MainCenterPanel extends JPanel implements UIContext {
 
@@ -61,7 +62,6 @@ public class MainCenterPanel extends JPanel implements UIContext {
 		}
 	}
 
-	@Override
 	public void refresh() {
 		initData();
 		// clearView();
@@ -69,8 +69,19 @@ public class MainCenterPanel extends JPanel implements UIContext {
 		for (int i = 0; i < groupList.size(); i++) {// 遍历分组内存模型
 			Group group = groupList.get(i);
 			TablePanel tablePanel = tableList.get(i);
+			tablePanel.setGroup(group);
 			tablePanel.setVisible(true);
 			tablePanel.setTableNumber(group.getTableNumber());
+			if (group.getName() != null) {// 显示小组名称
+				tablePanel.getLblGroupName().setVisible(true);
+				tablePanel.getLblGroupName().setText(group.getName());
+			}
+			if (group.getLogo() != null) {
+				String logo = LogoUtils.getInstance().getLogo(group.getLogo());
+				ImageIcon imgLogo = new ImageIcon(logo);
+				tablePanel.getLblLogo().setIcon(imgLogo);
+				tablePanel.getLblLogo().setBounds(40, 40, 80, 80);
+			}
 			// 遍历当前组/桌的设备，内存模型
 			List<JLabel> deviceLabelList = tablePanel.getDeviceList();
 			List<Device> deviceList = group.getDevices();

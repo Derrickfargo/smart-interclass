@@ -54,13 +54,13 @@ public class Message {
 	public static final Byte MESSAGE_GROUP_EDIT = 0x05;
 	
 	/**
-	 * 确认小组信息(android-pc),编辑完成后点保存
+	 * 确认小组信息(pc-android),编辑完成后点保存
 	 */
 	public static final Byte MESSAGE_GROUP_CONFIRM = 0x06;
 	/**
 	 * 保存小组信息(android-pc)
 	 */
-	public static final Byte MESSAGE_GROUP_SAVE = 0x07;
+	public static final Byte MESSAGE_GROUP_VOTE = 0x07;
 	/**
 	 * 发送作业(android-pc)
 	 */

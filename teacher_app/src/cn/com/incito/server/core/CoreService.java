@@ -1,7 +1,13 @@
 package cn.com.incito.server.core;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.channels.SocketChannel;
+import java.util.Date;
 import java.util.List;
+
+import javax.imageio.stream.FileImageOutputStream;
 
 import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
@@ -19,13 +25,14 @@ import com.alibaba.fastjson.JSONObject;
 public class CoreService {
 	private Application app = Application.getInstance();
 
-	public void deviceLogin(String imei){
+	public void deviceLogin(String imei) {
 		app.getOnlineDevice().add(imei);
 		app.refreshMainFrame();// 更新UI
 	}
-	
+
 	/**
 	 * 判断设备是否已绑定
+	 * 
 	 * @param imei
 	 * @return
 	 */
@@ -43,9 +50,10 @@ public class CoreService {
 		}
 		return JSONUtils.renderJSONString(2);// 失败
 	}
-	
+
 	/**
 	 * 绑定设备
+	 * 
 	 * @param imei
 	 * @param number
 	 * @return
@@ -64,24 +72,26 @@ public class CoreService {
 		}
 		return JSONUtils.renderJSONString(2);// 失败
 	}
-	
-	public void refreshGroupList(){
+
+	public void refreshGroupList() {
 		int schoolId = app.getTeacher().getSchoolId();
 		int roomId = app.getRoom().getId();
 		int teacherId = app.getTeacher().getId();
 		int courseId = app.getCourse().getId();
 		int classId = app.getClasses().getId();
 		try {
-			final String result = ApiClient.getGroupList(schoolId, roomId, teacherId,courseId,classId,"");
+			final String result = ApiClient.getGroupList(schoolId, roomId,
+					teacherId, courseId, classId, "");
 			if (result != null && !result.equals("")) {
 				JSONObject jsonObject = JSON.parseObject(result);
-				if(jsonObject.getIntValue("code") != 0){
+				if (jsonObject.getIntValue("code") != 0) {
 					return;
 				}
 				String data = jsonObject.getString("data");
-				TeacherGroupResultData resultData = JSON.parseObject(data,TeacherGroupResultData.class);
-				
-				//第二步获得班级、课程、设备、课桌、分组数据
+				TeacherGroupResultData resultData = JSON.parseObject(data,
+						TeacherGroupResultData.class);
+
+				// 第二步获得班级、课程、设备、课桌、分组数据
 				Application.getInstance().initMapping(resultData.getDevices(),
 						resultData.getTables(), resultData.getGroups());
 				Application.getInstance().refreshMainFrame();
@@ -91,6 +101,7 @@ public class CoreService {
 			e.printStackTrace();
 		}
 	}
+
 	/**
 	 * 登陆
 	 * 
@@ -112,11 +123,12 @@ public class CoreService {
 			return JSONUtils.renderJSONString(2);// 失败
 		}
 		Group group = app.getTableGroup().get(table.getId());
+		app.addGroup(group);
 		for (Student student : group.getStudents()) {
 			if (student.getUname().equals(uname)
 					&& student.getNumber().equals(number)) {
 				student.setLogin(true);
-				app.getOnlineStudent().add(student);//加入在线的学生
+				app.getOnlineStudent().add(student);// 加入在线的学生
 				app.refreshMainFrame();// 更新UI
 				return JSONUtils.renderJSONString(0, group);
 			}
@@ -168,18 +180,20 @@ public class CoreService {
 	 */
 	public String register(String uname, int sex, String number, String imei) {
 		try {
-			final String result = ApiClient.loginForStudent(uname, sex, number, imei);
+			final String result = ApiClient.loginForStudent(uname, sex, number,
+					imei);
 			if (result != null && !result.equals("")) {
 				JSONObject jsonObject = JSON.parseObject(result);
 				if (jsonObject.getIntValue("code") == 0) {
 					String data = jsonObject.getString("data");
 					Group group = JSON.parseObject(data, Group.class);
 					for (Student student : group.getStudents()) {
-						if ((student.getName() + student.getNumber()).equals(uname + number)) {
+						if ((student.getName() + student.getNumber())
+								.equals(uname + number)) {
 							student.setLogin(true);
 							app.getOnlineStudent().add(student);
 						}
-						if(app.getOnlineStudent().contains(student)){
+						if (app.getOnlineStudent().contains(student)) {
 							student.setLogin(true);
 						}
 					}
@@ -200,6 +214,7 @@ public class CoreService {
 
 	/**
 	 * 根据IMEI获取所在组
+	 * 
 	 * @param imei
 	 * @return
 	 */
@@ -215,20 +230,32 @@ public class CoreService {
 			return JSONUtils.renderJSONString(2);// 失败
 		}
 		Group group = app.getTableGroup().get(table.getId());
-		return JSONUtils.renderJSONString(0,  group);
+		return JSONUtils.renderJSONString(0, group);
 	}
-	
+
 	public List<SocketChannel> getGroupSocketChannelByGroupId(int groupId) {
 		return app.getClientChannelByGroup(groupId);
 	}
-	
+
 	/**
 	 * 保存学生作业
+	 * 
 	 * @param imei
 	 * @return
 	 */
-	public String SavePaper(String imei,String paper) {
-		
+	public String SavePaper(String imei, byte[] imageByte) {
+		File path = new File("e:/cache/");
+		path.mkdirs();
+		String name = String.valueOf(new Date().getTime());
+		File file = new File(path, imei + ".png");
+		try {
+			 FileImageOutputStream imageOutput = new FileImageOutputStream(file);
+			  imageOutput.write(imageByte, 0, imageByte.length);
+			  imageOutput.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		return JSONUtils.renderJSONString(1);
 	}
 }

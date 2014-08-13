@@ -57,7 +57,7 @@ public class Message implements Serializable{
 	/**
 	 * 保存小组信息(android-pc)
 	 */
-	public static final Byte MESSAGE_GROUP_SAVE = 0x07;
+	public static final Byte MESSAGE_GROUP_VOTE = 0x07;
     /**
      * 发送作业(android-pc)
      */

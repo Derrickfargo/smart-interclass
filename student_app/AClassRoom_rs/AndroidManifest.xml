@@ -29,14 +29,21 @@
         android:label="@string/app_name"
         android:theme="@style/MyAppTheme"
         android:screenOrientation="landscape">
+        <!-- 初始化页面 -->
         <activity
-            android:name="cn.com.incito.classroom.ui.activity.SplashActivity"
+            android:name="cn.com.incito.classroom.ui.activity.LoadingActivity"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <!-- WIFI选择页面 -->
+        <activity android:name="cn.com.incito.classroom.ui.activity.WifiSelectorActivity"
+            android:screenOrientation="landscape"
+            />
+        
         <!--<activity-->
         <!--android:name="cn.com.incito.classroom.ui.activity.Home"-->
         <!--android:configChanges="keyboardHidden|orientation"-->

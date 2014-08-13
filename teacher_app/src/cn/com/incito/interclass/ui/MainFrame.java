@@ -49,7 +49,7 @@ import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
 
 public class MainFrame extends BaseFrame implements MouseListener {
-
+	private JFrame frame = new JFrame();
 	private Boolean isDragged;
 	private Point loc, tmp;
 	private JButton btnMin, btnClose;
@@ -68,20 +68,27 @@ public class MainFrame extends BaseFrame implements MouseListener {
 		return instance;
 	}
 
+	public void setVisible(boolean show) {
+		frame.setVisible(show);
+	}
+
 	public void refresh() {
 		centerPanel.refresh();
 	}
 
+	public JFrame getFrame() {
+		return frame;
+	}
+
 	private MainFrame() {
-		super();
 		// 启动通讯线程
+		CoreSocket.getInstance().start();
 		showLoginUI();
 		setDragable();
 	}
 
 	// 显示登陆界面
 	private void showLoginUI() {
-
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		setContentPane(contentPane);
@@ -94,6 +101,12 @@ public class MainFrame extends BaseFrame implements MouseListener {
 		setUndecorated(true);// 去除窗体
 		setAlwaysOnTop(true); // 设置界面悬浮
 
+		frame.setSize(1004, 748);
+		frame.setDefaultCloseOperation(3);
+		frame.setLocationRelativeTo(null);// 设置窗体中间位置
+		frame.setLayout(null);// 绝对布局
+		frame.setUndecorated(true);// 去除窗体
+		frame.setAlwaysOnTop(true); // 设置界面悬浮
 		// //////////////////////top部分////////////////////////
 		JPanel top = new JPanel();
 		top.setSize(1004, 73);
@@ -205,8 +218,9 @@ public class MainFrame extends BaseFrame implements MouseListener {
 		// scrollPane.setBorder(null);
 		// scrollPane.setBounds(127, 75, 878, 618);
 		// // TODO 根据分组的多少动态调整
-		// taskLookupPanel.setPreferredSize(new Dimension(taskLookupPanel
-		// .getWidth() - 50, scrollPane.getHeight() * 3));
+		// taskLookupPanel.setPreferredSize(new
+		// Dimension(taskLookupPanel.getWidth() - 50,
+		// scrollPane.getHeight() * 3));
 		// contentPane.add(scrollPane);
 		// taskLookupPanel.revalidate();
 
@@ -432,5 +446,4 @@ public class MainFrame extends BaseFrame implements MouseListener {
 			btnClose.setIcon(new ImageIcon("images/login/7.png"));
 		}
 	}
-
 }
