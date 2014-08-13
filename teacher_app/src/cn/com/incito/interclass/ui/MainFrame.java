@@ -68,21 +68,12 @@ public class MainFrame extends BaseFrame implements MouseListener {
 		return instance;
 	}
 
-	public void setVisible(boolean show) {
-		frame.setVisible(show);
-	}
-
 	public void refresh() {
 		centerPanel.refresh();
 	}
 
-	public JFrame getFrame() {
-		return frame;
-	}
-
 	private MainFrame() {
 		// 启动通讯线程
-		CoreSocket.getInstance().start();
 		showLoginUI();
 		setDragable();
 	}
