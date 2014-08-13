@@ -316,6 +316,14 @@
                 android:layout_marginTop="15dp"
                 android:id="@+id/cleanAllBtn"/>
             
+            <Button
+                android:background="@drawable/ico_send_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="50dp"
+                android:id="@+id/submit_button"/>
+            
         </LinearLayout>
     </FrameLayout>
 

@@ -66,6 +66,11 @@ public class Message implements Serializable{
      * 保存作业(android-pc)
      */
     public static final Byte MESSAGE_SAVE_PAPER = 0x09;
+    
+    /**
+	 * 保存作业后PC端传回的信息
+	 */
+	public static final Byte MESSAGE_SAVE_PAPER_RESULT=0x10;
     private byte msgID;
     private int msgSize;
     private ByteBuffer bodyBuffer;

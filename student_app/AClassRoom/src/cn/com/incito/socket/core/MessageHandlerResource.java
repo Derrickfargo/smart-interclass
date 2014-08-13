@@ -3,6 +3,7 @@ package cn.com.incito.socket.core;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.com.incito.socket.handler.SavePaperResultHandler;
 import cn.com.incito.socket.handler.VoteGroupInfoHandler;
 import cn.com.incito.socket.handler.DeviceBindHandler;
 import cn.com.incito.socket.handler.DeviceHasBindHandler;
@@ -56,6 +57,9 @@ public final class MessageHandlerResource {
 		handlerResources.put(Message.MESSAGE_DISTRIBUTE_PAPER, DistributePaperHandler.class);
 		//保存作业图片
 		handlerResources.put(Message.MESSAGE_SAVE_PAPER, SavePaperHandler.class);
+		//保存作业成功与否的信息
+		handlerResources.put(Message.MESSAGE_SAVE_PAPER_RESULT,SavePaperResultHandler.class);
+		
 	}
 	
 	public MessageHandler getMessageHandler(Byte key){
