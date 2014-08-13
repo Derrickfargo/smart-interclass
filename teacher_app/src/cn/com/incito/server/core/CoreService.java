@@ -243,11 +243,10 @@ public class CoreService {
 	 * @param imei
 	 * @return
 	 */
-	public String SavePaper(String imei, byte[] imageByte) {
-		File path = new File("e:/cache/");
+	public String SavePaper(String imei,String id, byte[] imageByte) {
+		File path = new File(getProjectPath()+"/"+id);
 		path.mkdirs();
-		String name = String.valueOf(new Date().getTime());
-		File file = new File(path, imei + ".png");
+		File file = new File(path, imei + ".jpg");
 		try {
 			 FileImageOutputStream imageOutput = new FileImageOutputStream(file);
 			  imageOutput.write(imageByte, 0, imageByte.length);
@@ -258,4 +257,24 @@ public class CoreService {
 
 		return JSONUtils.renderJSONString(1);
 	}
+	 /**
+	 * @return 获取程序路径
+	 */
+	public static String getProjectPath() {
+	       java.net.URL url = CoreService.class.getProtectionDomain().getCodeSource().getLocation();
+	       String filePath = null ;
+	       try {
+	           filePath = java.net.URLDecoder.decode (url.getPath(), "utf-8");
+	       } catch (Exception e) {
+	           e.printStackTrace();
+	       }
+	    if (filePath.endsWith(".jar"))
+	       filePath = filePath.substring(0, filePath.lastIndexOf("/") + 1);
+	       java.io.File file = new java.io.File(filePath);
+	       filePath = file.getAbsolutePath();
+	    return filePath;
+
+	}
+	
+	
 }
