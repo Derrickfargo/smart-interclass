@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.incito.interclass.persistence.CourseMapper">
+
+	<select id="getCourseList" resultType="com.incito.interclass.entity.Course">
+		SELECT	
+			id,sum,name,intro,ctime
+		FROM 
+			tb_course
+		ORDER BY
+			id
+	</select>
+
+	<select id="getCourseById" resultType="com.incito.interclass.entity.Course" parameterType="java.lang.Integer">
+		SELECT	
+			id,sum,name,intro,ctime
+		FROM 
+			tb_course
+		WHERE
+			tb_course.id = #{id}
+		ORDER BY
+			id
+	</select>
+	
+	<insert id="save" parameterType="com.incito.interclass.entity.Course" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO 
+			tb_course(sum,name,intro,ctime)
+		VALUES
+			(#{sum},#{name},#{intro},now())
+	</insert>
+	
+	<delete id="delete" parameterType="java.lang.Integer">
+		DELETE FROM tb_course WHERE id = #{id} 
+	</delete>
+</mapper>
