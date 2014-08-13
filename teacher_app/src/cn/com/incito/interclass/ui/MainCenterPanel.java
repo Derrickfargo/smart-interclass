@@ -18,7 +18,7 @@ import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.utils.LogoUtils;
 
-public class MainCenterPanel extends JPanel {
+public class MainCenterPanel extends JPanel implements UIContext {
 
 	/**
 	 * 
@@ -72,7 +72,7 @@ public class MainCenterPanel extends JPanel {
 			tablePanel.setGroup(group);
 			tablePanel.setVisible(true);
 			tablePanel.setTableNumber(group.getTableNumber());
-			if (group.getName() != null) {//显示小组名称
+			if (group.getName() != null) {// 显示小组名称
 				tablePanel.getLblGroupName().setVisible(true);
 				tablePanel.getLblGroupName().setText(group.getName());
 			}

@@ -14,7 +14,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
@@ -44,8 +48,7 @@ import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
 
-public class MainFrame extends MouseAdapter {
-
+public class MainFrame extends BaseFrame implements MouseListener {
 	private JFrame frame = new JFrame();
 	private Boolean isDragged;
 	private Point loc, tmp;
@@ -56,9 +59,7 @@ public class MainFrame extends MouseAdapter {
 	private MainCenterPanel centerPanel;
 	private QuizLookupPanel taskLookupPanel;
 	private JScrollPane scrollPane;
-	private Application app = Application.getInstance();
 	private static MainFrame instance;
-	private MySystemTrayEvent mySystemTrayEvent;
 
 	public static MainFrame getInstance() {
 		if (instance == null) {
@@ -67,32 +68,29 @@ public class MainFrame extends MouseAdapter {
 		return instance;
 	}
 
-	public void setVisible(boolean show) {
-		frame.setVisible(show);
-	}
-
 	public void refresh() {
 		centerPanel.refresh();
 	}
 
-	public JFrame getFrame() {
-		return frame;
-	}
-
 	private MainFrame() {
 		// 启动通讯线程
-		CoreSocket.getInstance().start();
 		showLoginUI();
 		setDragable();
 	}
 
 	// 显示登陆界面
 	private void showLoginUI() {
-		mySystemTrayEvent = new MySystemTrayManager();
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
-		frame.setContentPane(contentPane);
+		setContentPane(contentPane);
 		contentPane.setLayout(null);
+
+		setSize(1004, 748);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);// 设置窗体中间位置
+		setLayout(null);// 绝对布局
+		setUndecorated(true);// 去除窗体
+		setAlwaysOnTop(true); // 设置界面悬浮
 
 		frame.setSize(1004, 748);
 		frame.setDefaultCloseOperation(3);
@@ -100,7 +98,6 @@ public class MainFrame extends MouseAdapter {
 		frame.setLayout(null);// 绝对布局
 		frame.setUndecorated(true);// 去除窗体
 		frame.setAlwaysOnTop(true); // 设置界面悬浮
-
 		// //////////////////////top部分////////////////////////
 		JPanel top = new JPanel();
 		top.setSize(1004, 73);
@@ -205,17 +202,18 @@ public class MainFrame extends MouseAdapter {
 		contentPane.add(scrollPane);
 		centerPanel.revalidate();
 		// ///////////////////作业缩略图内容区////////////////////////
-//		taskLookupPanel = new QuizLookupPanel();
-//		taskLookupPanel.setBackground(Color.WHITE);
-//		scrollPane = new JScrollPane(taskLookupPanel);
-//		scrollPane.getVerticalScrollBar().setUnitIncrement(50);
-//		scrollPane.setBorder(null);
-//		scrollPane.setBounds(127, 75, 878, 618);
-//		// TODO 根据分组的多少动态调整
-//		taskLookupPanel.setPreferredSize(new Dimension(taskLookupPanel.getWidth() - 50,
-//				scrollPane.getHeight() * 3));
-//		contentPane.add(scrollPane);
-//		taskLookupPanel.revalidate();
+		// taskLookupPanel = new QuizLookupPanel();
+		// taskLookupPanel.setBackground(Color.WHITE);
+		// scrollPane = new JScrollPane(taskLookupPanel);
+		// scrollPane.getVerticalScrollBar().setUnitIncrement(50);
+		// scrollPane.setBorder(null);
+		// scrollPane.setBounds(127, 75, 878, 618);
+		// // TODO 根据分组的多少动态调整
+		// taskLookupPanel.setPreferredSize(new
+		// Dimension(taskLookupPanel.getWidth() - 50,
+		// scrollPane.getHeight() * 3));
+		// contentPane.add(scrollPane);
+		// taskLookupPanel.revalidate();
 
 		// //////////////////////bottom部分////////////////////////
 		JPanel bottom = new JPanel();
@@ -286,13 +284,13 @@ public class MainFrame extends MouseAdapter {
 	private void doBegin() {
 		List<Table> tableList = app.getTableList();
 		if (tableList == null || tableList.size() == 0) {
-			JOptionPane.showMessageDialog(frame, "设备还未绑定课桌，请先绑定课桌!");
+			JOptionPane.showMessageDialog(this, "设备还未绑定课桌，请先绑定课桌!");
 			return;
 		}
 
 		Map<Integer, Group> tableGroup = app.getTableGroup();
 		if (tableGroup == null || tableGroup.size() == 0) {
-			JOptionPane.showMessageDialog(frame, "还未进行小组分组，请先进行分组!");
+			JOptionPane.showMessageDialog(this, "还未进行小组分组，请先进行分组!");
 			return;
 		}
 
@@ -303,7 +301,7 @@ public class MainFrame extends MouseAdapter {
 			}
 		}
 		if (!hasTeamInfo) {
-			int result = JOptionPane.showConfirmDialog(frame,
+			int result = JOptionPane.showConfirmDialog(this,
 					"还有小组未编辑小组信息，是否编辑小组信息？", "提示", JOptionPane.YES_NO_OPTION);
 			if (JOptionPane.YES_OPTION == result) {
 				// 编辑小组信息
@@ -320,7 +318,7 @@ public class MainFrame extends MouseAdapter {
 					sendMessageToGroup(messagePacking, channels);
 				}
 			} else if (JOptionPane.NO_OPTION == result) {
-				frame.setVisible(false);
+				this.setVisible(false);
 				// 开始上课
 			}
 		}
@@ -362,24 +360,24 @@ public class MainFrame extends MouseAdapter {
 
 	// 拖动窗体的方法
 	private void setDragable() {
-		frame.addMouseListener(new MouseAdapter() {
+		this.addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent e) {
 				isDragged = false;
-				frame.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 
 			public void mousePressed(MouseEvent e) {
 				tmp = new Point(e.getX(), e.getY());// 获取窗体位置
 				isDragged = true;
-				frame.setCursor(new Cursor(Cursor.MOVE_CURSOR));
+				setCursor(new Cursor(Cursor.MOVE_CURSOR));
 			}
 		});
-		frame.addMouseMotionListener(new MouseMotionAdapter() {
+		this.addMouseMotionListener(new MouseMotionAdapter() {
 			public void mouseDragged(MouseEvent e) {
 				if (isDragged) {
-					loc = new Point(frame.getLocation().x + e.getX() - tmp.x,
-							frame.getLocation().y + e.getY() - tmp.y);
-					frame.setLocation(loc);
+					loc = new Point(getLocation().x + e.getX() - tmp.x,
+							getLocation().y + e.getY() - tmp.y);
+					setLocation(loc);
 				}
 			}
 		});
@@ -390,7 +388,7 @@ public class MainFrame extends MouseAdapter {
 		lblBackground = new JLabel();
 		lblBackground.setIcon(new ImageIcon("images/main/bg.png"));
 		lblBackground.setBounds(0, 0, 1004, 748);
-		frame.add(lblBackground);
+		add(lblBackground);
 	}
 
 	@Override
@@ -412,11 +410,11 @@ public class MainFrame extends MouseAdapter {
 	public void mouseReleased(MouseEvent e) {
 		if (e.getSource() == btnMin) {
 			btnMin.setIcon(new ImageIcon("images/login/5.png"));
-			frame.setExtendedState(JFrame.ICONIFIED);
+			setExtendedState(JFrame.ICONIFIED);
 		}
 		if (e.getSource() == btnClose) {
 			btnClose.setIcon(new ImageIcon("images/login/8.png"));
-			System.exit(0);
+			setExtendedState(JFrame.ICONIFIED);
 		}
 	}
 
@@ -438,9 +436,5 @@ public class MainFrame extends MouseAdapter {
 		if (e.getSource() == btnClose) {
 			btnClose.setIcon(new ImageIcon("images/login/7.png"));
 		}
-	}
-
-	public MySystemTrayEvent getMySystemTrayEvent() {
-		return mySystemTrayEvent;
 	}
 }

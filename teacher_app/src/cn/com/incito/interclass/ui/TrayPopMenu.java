@@ -61,7 +61,16 @@ public class TrayPopMenu extends JPopupMenu {
 			}
 		});
 		add(item2);
+		JMenuItem item3 = new JMenuItem("退出程序");
+		item3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+
+			}
+		});
+		add(item3);
 	}
+
 	/**
 	 * 老师主动收作业
 	 */

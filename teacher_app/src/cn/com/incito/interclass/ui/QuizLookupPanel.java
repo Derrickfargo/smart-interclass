@@ -36,6 +36,7 @@ public class QuizLookupPanel extends JPanel {
 	private static final String PAD_OFFLINE = "images/main/ico_pad_disconnect.png";
 	GridBagLayout gridbag;
 	GridBagConstraints c;
+
 	private Application app = Application.getInstance();
 	/**
 	 * 当前教室所有Table，初始化界面时初始化本属性
