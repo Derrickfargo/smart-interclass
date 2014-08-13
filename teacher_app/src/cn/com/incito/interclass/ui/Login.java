@@ -11,6 +11,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.nio.channels.SocketChannel;
+import java.util.Collection;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -21,6 +23,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
+import org.apache.log4j.Logger;
 
 import cn.com.incito.server.api.ApiClient;
 import cn.com.incito.server.api.Application;
@@ -40,7 +44,7 @@ public class Login extends MouseAdapter{
 	private JPasswordField txtPassword;
 	private JButton btnMin, btnClose,btnLogin;
 	private JLabel lblBackground;
-	
+	private Logger logger = Logger.getLogger(Login.class.getName());
 	
 	//构造函数、调用方法
 	public Login(){
@@ -256,7 +260,7 @@ public class Login extends MouseAdapter{
 				Login2 login2 = new Login2(resultData.getClasses(), resultData.getCourses());
 				login2.getFrame().setVisible(true);
 			}
-			System.out.println(result);
+			logger.info("登陆返回结果：" + result);
 		} catch (AppException e) {
 			e.printStackTrace();
 		}

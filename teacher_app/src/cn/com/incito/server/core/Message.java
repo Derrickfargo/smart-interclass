@@ -70,6 +70,12 @@ public class Message {
 	 */
 	public static final Byte MESSAGE_SAVE_PAPER = 0x09;
 	
+	/**
+	 * 保存作业后传给andorid端的保存信息
+	 */
+	public static final Byte MESSAGE_SAVE_PAPER_RESULT=0x10;
+	
+	
 	private byte msgID;
 	private int msgSize;
 	private ByteBuffer bodyBuffer;

@@ -3,6 +3,8 @@ package cn.com.incito.server.handler;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
+import org.apache.log4j.Logger;
+
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
 import cn.com.incito.server.message.DataType;
@@ -15,10 +17,11 @@ import cn.com.incito.server.utils.BufferUtils;
  *
  */
 public class DeviceHasBindHandler extends MessageHandler {
-	 
+	private Logger logger = Logger.getLogger(DeviceHasBindHandler.class.getName());
+	
 	@Override
 	public void handleMessage() {
-		System.out.println("收到设备是否绑定消息...");
+		logger.info("收到设备是否绑定消息...");
 		String imei = data.getString("imei");
 		String result = service.isDeviceBind(imei);
 		sendResponse(result);

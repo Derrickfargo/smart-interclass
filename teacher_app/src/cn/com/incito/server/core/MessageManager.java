@@ -7,6 +7,8 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.apache.log4j.Logger;
+
 import cn.com.incito.server.exception.NoHandlerException;
 
 /**
@@ -25,7 +27,8 @@ public class MessageManager {
 	private final Lock lock = new ReentrantLock();
 	private final Condition isEmpty = lock.newCondition();
 	private Queue<Message> messageQueue = new LinkedList<Message>();
-
+	private Logger logger = Logger.getLogger(MessageManager.class.getName());
+	
 	public static MessageManager getInstance() {
 		if (instance == null) {
 			instance = new MessageManager();
@@ -41,13 +44,13 @@ public class MessageManager {
 	public boolean addQueue(Message message) {
 		boolean isSuccess = false;
 		if (message == null) {
-			System.out.println("警告：压入空消息到消息队列!");
+			logger.info("警告：压入空消息到消息队列!");
 			return isSuccess;
 		}
 		lock.lock();
 		try {
 			isSuccess = messageQueue.offer(message);
-			System.out.println("消息压入是否成功：" + isSuccess);
+			logger.info("消息压入是否成功：" + isSuccess);
 			isEmpty.signal();
 		} finally {
 			lock.unlock();
@@ -65,16 +68,16 @@ public class MessageManager {
 						Message message = messageQueue.poll();
 						if (message == null) {
 							if (!isEmpty.await(TIMEOUT, TimeUnit.MILLISECONDS)) {
-								System.out.println("****正在等待新消息到达****");
+								logger.info("****正在等待新消息到达****");
 							}
 						} else {
 							message.handleMessage();
 						}
 					} catch (InterruptedException e) {
-						System.out.println("消息队列中断：" + e.getMessage());
+						logger.fatal("消息队列中断：" + e.getMessage());
 						continue;
 					}catch (NoHandlerException e) {
-						System.out.println("没有找到处理该消息的处理器!" + e.getMessage());
+						logger.error("没有找到处理该消息的处理器!" + e.getMessage());
 					}finally {
 						lock.unlock();
 					}

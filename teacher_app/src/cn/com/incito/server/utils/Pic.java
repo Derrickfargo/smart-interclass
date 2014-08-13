@@ -10,6 +10,7 @@ package cn.com.incito.server.utils;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -24,7 +25,7 @@ import java.util.logging.Logger;
  * @author tewang
  */
 public class Pic {
-
+	private static Logger logger = Logger.getLogger(Pic.class.getName());
     /** Creates a new instance of Pic */
     public Pic() {
     }
@@ -71,16 +72,16 @@ public class Pic {
      */
     public static BufferedImage doLucency(BufferedImage buf, Color c) {
         int crgb = c.getRGB();
-        System.out.println("crgb:" + crgb);
+        logger.info("crgb:" + crgb);
         int width = buf.getWidth();
         int height = buf.getHeight();
         BufferedImage temp = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         for (int j = 0; j < width; j++) {
             for (int k = 0; k < height; k++) {
                 int rgb = buf.getRGB(j, k);
-                System.out.println("rgb:" + rgb);
+                logger.info("rgb:" + rgb);
                 if ((crgb ^ rgb) == 0) {
-                    System.out.println("same");
+                	logger.info("same");
                     temp.setRGB(j, k, 0x00FFFFFF);
                 } else {
                     temp.setRGB(j, k, rgb);

@@ -1,14 +1,20 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/mainlayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
 
-    <cn.com.incito.classroom.canvas.PaletteViewWidget
-        android:id="@+id/iv"
+    <FrameLayout
+        android:id="@+id/line"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+        android:layout_height="fill_parent" >
+
+        <cn.com.incito.classroom.widget.canvas.SketchPadView
+            android:id="@+id/sketchpad"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+    </FrameLayout>
 
     <FrameLayout
         android:layout_width="fill_parent"
@@ -16,7 +22,7 @@
         android:layout_alignParentBottom="true" >
 
         <LinearLayout
-            android:id="@+id/line"
+            android:id="@+id/frameLayout1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
@@ -24,11 +30,11 @@
             <!-- 背景选择按钮 -->
 
             <Button
-                android:layout_marginTop="15dp"
                 android:id="@+id/bg_select_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
+                android:layout_marginTop="15dp"
                 android:background="@drawable/bg_cgbg_white" >
             </Button>
 
@@ -213,10 +219,10 @@
             <!-- 铅笔粗细选择 -->
 
             <RelativeLayout
-                android:layout_marginTop="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp" >
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp" >
 
                 <RelativeLayout
                     android:id="@+id/big"
@@ -294,13 +300,30 @@
             <!-- 橡皮擦选项 -->
 
             <ImageView
-                android:layout_marginTop="15dp"
                 android:id="@+id/earise"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="20dp"
+                android:layout_marginTop="15dp"
                 android:src="@drawable/ico_eraser" />
+            <Button
+                android:background="@drawable/del_all_bg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="15dp"
+                android:id="@+id/cleanAllBtn"/>
+            
+            <Button
+                android:background="@drawable/ico_send_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="50dp"
+                android:id="@+id/submit_button"/>
+            
         </LinearLayout>
     </FrameLayout>
 

@@ -3,6 +3,8 @@ package cn.com.incito.server.handler;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
+import org.apache.log4j.Logger;
+
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
 import cn.com.incito.server.message.DataType;
@@ -16,6 +18,7 @@ import cn.com.incito.server.utils.BufferUtils;
  * 
  */
 public class SavePaperHandler extends MessageHandler {
+	private Logger logger = Logger.getLogger(SavePaperHandler.class.getName());
 	private String imei;
 	private String id;
 	private String name;
@@ -24,10 +27,10 @@ public class SavePaperHandler extends MessageHandler {
 		this.message = msg;
 		ByteBuffer buffer = msg.getBodyBuffer();
 		buffer.flip();
-		// 获取imei
-		 imei = getInfo(buffer);
-		//获取id号
+		// 获取id号
 		 id = getInfo(buffer);
+		//获取imei
+		 imei = getInfo(buffer);
 		//获取小组姓名
 		 name = getInfo(buffer);
 		// 获取图片信息
@@ -40,14 +43,14 @@ public class SavePaperHandler extends MessageHandler {
 		handleMessage(imageByte);
 	}
 	public void handleMessage(byte[] imageByte) {
-		System.out.println("消息类型为获取作业:" );
+		logger.info("消息类型为获取作业:" );
 		//需要给组中所以的设备发送
-		String result = service.SavePaper(imei, imageByte);
+		String result = service.SavePaper(imei,id, imageByte);
 //		sendResponse(result);
 	}
 
 	private void sendResponse(String json) {
-		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SAVE_PAPER);
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SAVE_PAPER_RESULT);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
         byte[] messageData = messagePacking.pack().array();
         ByteBuffer buffer = ByteBuffer.allocate(messageData.length);
@@ -59,6 +62,10 @@ public class SavePaperHandler extends MessageHandler {
             e.printStackTrace();
         }
 	}
+	/**
+	 * @param buffer
+	 * @return 获得android端传过来的数据
+	 */
 	private String getInfo(ByteBuffer buffer){
 		byte[] intSize = new byte[4];// int
 		buffer.get(intSize);

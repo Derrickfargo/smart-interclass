@@ -6,6 +6,8 @@ import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
@@ -27,10 +29,11 @@ import cn.com.incito.server.utils.JSONUtils;
  * 
  */
 public class GroupVoteHandler extends MessageHandler {
-
+	private Logger logger = Logger.getLogger(GroupVoteHandler.class.getName());
+	
 	@Override
 	public void handleMessage() {
-		System.out.println("消息类型为小组投票:" + data);
+		logger.info("消息类型为小组投票:" + data);
 		Integer id = data.getInteger("id");
 		Integer vote = data.getInteger("vote");
 		List<SocketChannel> channels = service.getGroupSocketChannelByGroupId(id);
@@ -76,7 +79,9 @@ public class GroupVoteHandler extends MessageHandler {
 				json.put("data", jsonData);
 				sendResponse(json.toJSONString(), channels);
 				//刷新主界面
-				group = JSON.parseObject(result.getString("data"), Group.class);
+				Group temp = JSON.parseObject(result.getString("data"), Group.class);
+				group.setName(temp.getName());
+				group.setLogo(temp.getLogo());
 				Application.getInstance().addGroup(group);
 				Application.getInstance().refreshCenterPanel();
 			} else {
