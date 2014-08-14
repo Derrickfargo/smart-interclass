@@ -192,8 +192,7 @@ public class CaptureScreen {
 			this.height = height;
 			this.addMouseListener(this);
 			this.addMouseMotionListener(this);
-			Image icon = Toolkit.getDefaultToolkit().createImage(
-					this.getClass().getResource("icon.png"));
+			Image icon = Toolkit.getDefaultToolkit().createImage("images/screenshot/icon.png");
 			cs = Toolkit.getDefaultToolkit().createCustomCursor(icon,
 					new Point(0, 0), "icon");
 			this.setCursor(cs);

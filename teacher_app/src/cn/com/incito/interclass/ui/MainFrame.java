@@ -278,13 +278,14 @@ public class MainFrame extends BaseFrame implements MouseListener {
         quizLookupPanel.revalidate();
         //////////////////////卡片部分////////////////////////////////
         cardLayout = new CardLayout();
-        cardContentPanel = new JPanel();
 
+        cardContentPanel = new JPanel();
+        cardContentPanel.setSize(400, 200);
         cardContentPanel.add(deskStateScrollPanel, "0");
         cardContentPanel.add(quizLookupScrollPanel, "1");
         cardContentPanel.setLayout(cardLayout);
         contentPane.add(leftMenuPanel, BorderLayout.LINE_START);
-        contentPane.add(deskStateScrollPanel, BorderLayout.LINE_END);
+        contentPane.add(cardContentPanel, BorderLayout.LINE_END);
         contentPane.setLayout(new BorderLayout());
 
 
