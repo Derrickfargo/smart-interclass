@@ -105,16 +105,17 @@ public class MainFrame extends MouseAdapter {
 		frame.setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		frame.setSize(1004, 748);
+		frame.setSize(1024, 728);
 		frame.setDefaultCloseOperation(3);
 		frame.setLocationRelativeTo(null);// 设置窗体中间位置
 		frame.setLayout(null);// 绝对布局
 		frame.setUndecorated(true);// 去除窗体
 		frame.setAlwaysOnTop(true); // 设置界面悬浮
+		frame.setBackground(new Color(0,0,0,0));//窗体透明
 
 		// //////////////////////top部分////////////////////////
 		JPanel top = new JPanel();
-		top.setSize(1004, 73);
+		top.setSize(1024, 73);
 		top.setLayout(null);
 		top.setOpaque(false);
 
@@ -125,7 +126,7 @@ public class MainFrame extends MouseAdapter {
 		ImageIcon imgMin = new ImageIcon("images/login/4.png");
 		btnMin.setIcon(imgMin);// 设置图片
 		top.add(btnMin);// 添加按钮
-		btnMin.setBounds(938, -1, imgMin.getIconWidth(), imgMin.getIconHeight());
+		btnMin.setBounds(948, 9, imgMin.getIconWidth(), imgMin.getIconHeight());
 		btnMin.addMouseListener(this);
 
 		// 关闭按钮
@@ -135,25 +136,8 @@ public class MainFrame extends MouseAdapter {
 		ImageIcon imgMax = new ImageIcon("images/login/7.png");
 		btnClose.setIcon(imgMax);// 设置图片
 		top.add(btnClose);// 添加按钮
-		btnClose.setBounds(965, -1, imgMax.getIconWidth(),
-				imgMax.getIconHeight());
+		btnClose.setBounds(975, 9, imgMax.getIconWidth(), imgMax.getIconHeight());
 		btnClose.addMouseListener(this);
-
-		// logo
-		JLabel lblLogo = new JLabel();
-		ImageIcon imgLogo = new ImageIcon("images/main/logo.png");
-		lblLogo.setIcon(imgLogo);
-		top.add(lblLogo);
-		lblLogo.setBounds(13, 23, imgLogo.getIconWidth(),
-				imgLogo.getIconHeight());
-
-		// menu
-		JLabel btnHome = new JLabel();
-		ImageIcon imgHome = new ImageIcon("images/main/ico_home_foucs.png");
-		btnHome.setIcon(imgHome);
-		top.add(btnHome);
-		btnHome.setBounds(150, 40, imgLogo.getIconWidth(),
-				imgLogo.getIconHeight());
 
 		contentPane.add(top);
 
@@ -203,10 +187,8 @@ public class MainFrame extends MouseAdapter {
 
 			@Override
 			protected void paintComponent(Graphics g) {
-				Image iconUser = new ImageIcon("images/main/bg_user.png")
-						.getImage();
-				g.drawImage(iconUser, 0, 0, this.getWidth(), this.getHeight(),
-						this);
+				Image iconUser = new ImageIcon("images/main/bg_user.png").getImage();
+				g.drawImage(iconUser, 0, 0, this.getWidth(), this.getHeight(), this);
 			}
 
 		};
@@ -219,22 +201,22 @@ public class MainFrame extends MouseAdapter {
 		pnlUser.setBounds(0, 110, 127, 95);
 
 		JLabel lblCopyRight = new JLabel("Copy Right © 2014", JLabel.CENTER);
-		lblCopyRight.setBounds(0, 605, 127, 20);
+		lblCopyRight.setBounds(0, 585, 127, 20);
 		left.add(lblCopyRight);
 		JLabel lblCompany1 = new JLabel("四川灵动", JLabel.CENTER);
-		lblCompany1.setBounds(0, 630, 127, 20);
+		lblCompany1.setBounds(0, 610, 127, 20);
 		left.add(lblCompany1);
 		JLabel lblCompany2 = new JLabel("信息技术有限公司", JLabel.CENTER);
-		lblCompany2.setBounds(0, 645, 127, 20);
+		lblCompany2.setBounds(0, 625, 127, 20);
 		left.add(lblCompany2);
 
-		left.setBounds(0, 73, 127, 930);
+		left.setBounds(10, 73, 127, 930);
 		contentPane.add(left);
 
 		// ///////////////////center部分////////////////////////
 		cardLayout = new CardLayout();
 		cardPanel = new JPanel(cardLayout);
-		cardPanel.setBounds(128, 75, 878, 618);
+		cardPanel.setBounds(138, 35, 876, 620);
 		contentPane.add(cardPanel);
 		
 		//准备上课card
@@ -243,7 +225,7 @@ public class MainFrame extends MouseAdapter {
 		JScrollPane deskScrollPane = new JScrollPane(preparePanel);
 		deskScrollPane.getVerticalScrollBar().setUnitIncrement(50);
 		deskScrollPane.setBorder(null);
-		deskScrollPane.setBounds(0, 0, 878, 618);
+		deskScrollPane.setBounds(0, 0, 876, 630);
 		 //TODO 根据分组的多少动态调整
 		preparePanel.setPreferredSize(new Dimension(deskScrollPane.getWidth() - 50, deskScrollPane.getHeight() * 3));
 		preparePanel.revalidate();
@@ -259,17 +241,15 @@ public class MainFrame extends MouseAdapter {
 		bottom.setSize(878, 48);
 		bottom.setLayout(null);
 		bottom.setOpaque(false);
-		bottom.setBounds(127, 694, 878, 54);
+		bottom.setBounds(137, 664, 878, 54);
 
 		JPanel pnlClass = new JPanel() {
 			private static final long serialVersionUID = 5365972834168199801L;
 
 			@Override
 			protected void paintComponent(Graphics g) {
-				Image iconClass = new ImageIcon("images/main/bg_input_kc.png")
-						.getImage();
-				g.drawImage(iconClass, 0, 0, this.getWidth(), this.getHeight(),
-						this);
+				Image iconClass = new ImageIcon("images/main/bg_input_kc.png").getImage();
+				g.drawImage(iconClass, 0, 0, this.getWidth(), this.getHeight(), this);
 			}
 		};
 		pnlClass.setLayout(null);
@@ -281,10 +261,8 @@ public class MainFrame extends MouseAdapter {
 
 			@Override
 			protected void paintComponent(Graphics g) {
-				Image iconClass = new ImageIcon("images/main/bg_input_kc.png")
-						.getImage();
-				g.drawImage(iconClass, 0, 0, this.getWidth(), this.getHeight(),
-						this);
+				Image iconClass = new ImageIcon("images/main/bg_input_kc.png").getImage();
+				g.drawImage(iconClass, 0, 0, this.getWidth(), this.getHeight(), this);
 			}
 		};
 		pnlCourse.setLayout(null);
@@ -349,12 +327,9 @@ public class MainFrame extends MouseAdapter {
 				for (Group group : groupList) {
 					JSONObject json = new JSONObject();
 					json.put("id", group.getId());
-					MessagePacking messagePacking = new MessagePacking(
-							Message.MESSAGE_GROUP_EDIT);
-					messagePacking.putBodyData(DataType.INT,
-							BufferUtils.writeUTFString(json.toString()));
-					final List<SocketChannel> channels = app
-							.getClientChannelByGroup(group.getId());
+					MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_EDIT);
+					messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json.toString()));
+					final List<SocketChannel> channels = app.getClientChannelByGroup(group.getId());
 					sendMessageToGroup(messagePacking, channels);
 				}
 			} else if (JOptionPane.NO_OPTION == result) {
@@ -427,7 +402,7 @@ public class MainFrame extends MouseAdapter {
 	public void setBackground() {
 		lblBackground = new JLabel();
 		lblBackground.setIcon(new ImageIcon("images/main/bg.png"));
-		lblBackground.setBounds(0, 0, 1004, 748);
+		lblBackground.setBounds(0, 0, 1024, 728);
 		frame.add(lblBackground);
 	}
 

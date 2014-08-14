@@ -48,10 +48,10 @@ public class PreparePanel extends JPanel implements UIContext {
 	}
 
 	private void initView() {
-		int x = 20;
+		int x = 10;
 		for (int i = 1; i <= 12; i++) {
 			TablePanel pnlTable = new TablePanel();
-			pnlTable.setBounds(20, x, 836, 139);
+			pnlTable.setBounds(10, x, 836, 139);
 			add(pnlTable);
 			tableList.add(pnlTable);
 			x += 150;

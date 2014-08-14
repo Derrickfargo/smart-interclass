@@ -53,7 +53,7 @@ public class QuizPanel extends JPanel {
 //			
 //		}
 		GroupPanel pnlGroup = new GroupPanel();
-		pnlGroup.setBounds(20, 20, 836, 139);
+		pnlGroup.setBounds(10, 10, 410, 500);
 		add(pnlGroup);
 	}
 
