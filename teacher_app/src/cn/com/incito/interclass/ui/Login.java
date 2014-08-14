@@ -244,6 +244,7 @@ public class Login extends MouseAdapter{
 			String uname = txtUserName.getText();
 			String password = new String(txtPassword.getPassword());
 			final String result = ApiClient.loginForTeacher(mac, uname, password);
+			logger.info("登陆返回结果：" + result);
 			if (result != null && !result.equals("")) {
 				JSONObject jsonObject = JSON.parseObject(result);
 				if(jsonObject.getIntValue("code") == 1){
@@ -260,7 +261,6 @@ public class Login extends MouseAdapter{
 				Login2 login2 = new Login2(resultData.getClasses(), resultData.getCourses());
 				login2.getFrame().setVisible(true);
 			}
-			logger.info("登陆返回结果：" + result);
 		} catch (AppException e) {
 			e.printStackTrace();
 		}
