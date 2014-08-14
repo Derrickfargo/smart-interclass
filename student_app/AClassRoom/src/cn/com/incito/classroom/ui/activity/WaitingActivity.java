@@ -105,6 +105,7 @@ public class WaitingActivity extends BaseActivity {
                     addState = 1;
                 } else {
                     if (validate()) {
+                        addState = 0;
                         LoginRes2Vo groupNumberListRes = new LoginRes2Vo();
                         groupNumberListRes.setSex(male.isChecked() ? "1" : "2");
                         groupNumberListRes.setName(et_stname.getText().toString());
