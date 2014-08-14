@@ -51,9 +51,8 @@ public class GroupNumAdapter extends BaseAdapter {
 
     LayoutInflater mInflater;
 
-    public GroupNumAdapter(Context context, List<LoginRes2Vo> datas) {
+    public GroupNumAdapter(Context context) {
         this.mContext = context;
-        this.datas = datas;
         mInflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -102,5 +101,7 @@ public class GroupNumAdapter extends BaseAdapter {
 
     public void setDatas(List<LoginRes2Vo> datas) {
         this.datas = datas;
+        notifyDataSetInvalidated();
+		notifyDataSetChanged();
     }
 }
