@@ -46,7 +46,7 @@ public class SavePaperHandler extends MessageHandler {
 		logger.info("消息类型为获取作业:" );
 		//需要给组中所以的设备发送
 		String result = service.SavePaper(imei,id, imageByte);
-//		sendResponse(result);
+		sendResponse(result);
 	}
 
 	private void sendResponse(String json) {
