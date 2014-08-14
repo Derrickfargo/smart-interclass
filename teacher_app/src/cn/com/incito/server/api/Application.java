@@ -361,11 +361,8 @@ public class Application {
 		return tempVote;
 	}
 
-	public void refreshCenterPanel() {
-		MainFrame.getInstance().refreshDeskStatePane();
-	}
-	public void refreshTaskLookupPanel() {
-		MainFrame.getInstance().refreshQuizLookupPanel();
+	public void refreshFrame() {
+		MainFrame.getInstance().refreshUI();
 	}
 
 	public String getQuizId() {

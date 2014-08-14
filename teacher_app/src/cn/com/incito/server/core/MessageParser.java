@@ -7,6 +7,7 @@ import java.nio.channels.SocketChannel;
 
 import org.apache.log4j.Logger;
 
+import cn.com.incito.server.exception.NoHandlerException;
 import cn.com.incito.server.utils.BufferUtils;
 
 /**
@@ -70,6 +71,7 @@ public class MessageParser {
 		}
 		message.setChannel(channel);
 		if(message.getMsgID() == Message.MESSAGE_HEART_BEAT){
+			logger.info("心跳消息");
 			//如果为心跳消息，优先级最高，不经过队列，直接处理
 			watchHeartBeat();
 			return;
@@ -83,6 +85,11 @@ public class MessageParser {
 	 */
 	private void watchHeartBeat(){
 		
+		try {
+			message.handleMessage();
+		} catch (NoHandlerException e) {
+			logger.error("缺少处理器：" + e.getMessage());
+		}
 	}
 	
 	/**

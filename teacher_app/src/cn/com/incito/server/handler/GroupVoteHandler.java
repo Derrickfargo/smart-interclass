@@ -53,6 +53,7 @@ public class GroupVoteHandler extends MessageHandler {
 			return;
 		}
 		voteList.add(vote);
+		Application.getInstance().getTempVote().put(id, voteList);
 		Group group = Application.getInstance().getGroupById(id);
 		if (group != null && group.getDevices().size() == voteList.size()) {
 			//更新数据库....
@@ -83,7 +84,7 @@ public class GroupVoteHandler extends MessageHandler {
 				group.setName(temp.getName());
 				group.setLogo(temp.getLogo());
 				Application.getInstance().addGroup(group);
-				Application.getInstance().refreshCenterPanel();
+				Application.getInstance().refreshFrame();
 			} else {
 				JSONObject json = new JSONObject();
 				json.put("code", 1);

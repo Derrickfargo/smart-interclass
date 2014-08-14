@@ -53,6 +53,7 @@ public class MainFrame extends BaseFrame implements MouseListener {
     private JScrollPane quizLookupScrollPanel;
     CardLayout cardLayout;
     private static MainFrame instance;
+    public static int tabPos;
     JPanel leftMenuPanel;
 
     public static MainFrame getInstance() {
@@ -62,12 +63,13 @@ public class MainFrame extends BaseFrame implements MouseListener {
         return instance;
     }
 
-    public void refreshDeskStatePane() {
-        deskStatePanel.refresh();
-    }
+    public void refreshUI() {
+        if (tabPos == 0) {
+            deskStatePanel.refresh();
+        } else if (tabPos == 1) {
+            quizLookupPanel.refresh();
+        }
 
-    public void refreshQuizLookupPanel() {
-        quizLookupPanel.refresh();
     }
 
     private MainFrame() {
@@ -160,10 +162,11 @@ public class MainFrame extends BaseFrame implements MouseListener {
         jLabel2.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                tabPos = 0;
                 cardLayout.show(cardContentPanel, "0");
                 CoreService service = new CoreService();
                 service.refreshQuizLookup();
-//                app.refreshTaskLookupPanel();// 更新UI
+//                app.refreshFrame();// 更新UI
             }
 
             @Override
@@ -202,7 +205,8 @@ public class MainFrame extends BaseFrame implements MouseListener {
         pnlUser.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                app.refreshCenterPanel();// 更新UI
+                tabPos = 1;
+                app.refreshFrame();// 更新UI
                 cardLayout.show(cardContentPanel, "1");
             }
 
@@ -280,7 +284,7 @@ public class MainFrame extends BaseFrame implements MouseListener {
         cardContentPanel.add(quizLookupScrollPanel, "1");
         cardContentPanel.setLayout(cardLayout);
         contentPane.add(leftMenuPanel, BorderLayout.LINE_START);
-        contentPane.add(quizLookupScrollPanel, BorderLayout.LINE_END);
+        contentPane.add(deskStateScrollPanel, BorderLayout.LINE_END);
         contentPane.setLayout(new BorderLayout());
 
 
