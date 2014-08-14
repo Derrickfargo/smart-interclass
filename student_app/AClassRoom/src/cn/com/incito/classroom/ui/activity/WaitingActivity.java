@@ -105,14 +105,13 @@ public class WaitingActivity extends BaseActivity {
                     addState = 1;
                 } else {
                     if (validate()) {
+                        addState = 0;
                         LoginRes2Vo groupNumberListRes = new LoginRes2Vo();
                         groupNumberListRes.setSex(male.isChecked() ? "1" : "2");
                         groupNumberListRes.setName(et_stname.getText().toString());
                         groupNumberListRes.setNumber(et_stnumber.getText().toString());
                         loginResList.add(groupNumberListRes);
                         imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
-
-                        addState = 0;
                         mProgressDialog.setMessage(R.string.load_dialog_default_text);
                         mProgressDialog.show();
                         registerStudent();
@@ -125,6 +124,7 @@ public class WaitingActivity extends BaseActivity {
         gv_group_member.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                addState = 0;
                 mProgressDialog.setMessage(R.string.load_dialog_default_text);
                 mProgressDialog.show();
                 if (loginResList.get(position).isLogin() == false) {
@@ -155,6 +155,7 @@ public class WaitingActivity extends BaseActivity {
 
     /**
      * 与后台服务建立连接，并实现登陆
+     *
      * @param name
      * @param number
      * @param sex
@@ -175,6 +176,7 @@ public class WaitingActivity extends BaseActivity {
 
     /**
      * 取消登陆
+     *
      * @param name
      * @param number
      * @param sex
