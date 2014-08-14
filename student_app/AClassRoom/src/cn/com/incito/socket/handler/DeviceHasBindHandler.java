@@ -4,7 +4,10 @@ import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;
 
 import com.alibaba.fastjson.JSONObject;
-
+/**
+ * 判定设备是否绑定hanlder
+ * Created by liushiping on 2014/7/28.
+ */
 public class DeviceHasBindHandler extends MessageHandler {
 
 	@Override

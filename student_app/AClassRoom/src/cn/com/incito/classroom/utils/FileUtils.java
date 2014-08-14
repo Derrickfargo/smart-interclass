@@ -15,8 +15,8 @@ import android.os.Environment;
 import android.widget.Toast;
 
 /**
- * @author hefeng
- * @version 创建时间：2013-10-21 下午3:44:55 类说明
+ * 文件操作工具类
+ * Created by popoy on 2014/7/28.
  */
 
 public class FileUtils {

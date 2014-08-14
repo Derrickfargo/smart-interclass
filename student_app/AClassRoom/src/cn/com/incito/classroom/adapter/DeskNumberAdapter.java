@@ -29,13 +29,8 @@ import java.util.List;
 import cn.com.incito.classroom.R;
 
 /**
- * © 2012 amsoft.cn
- * 名称：CarouselViewAdapter.java
- * 描述：自定义View适配的Carousel
- *
- * @author 还如一梦中
- * @version v1.0
- * @date：2013-8-22 下午4:05:09
+ * 课桌号选择适配器
+ * Created by popoy on 2014/7/28.
  */
 public class DeskNumberAdapter extends BaseAdapter {
 
@@ -53,15 +48,10 @@ public class DeskNumberAdapter extends BaseAdapter {
      * The m reflected.
      */
     private boolean mReflected = true;
-    private int curPos=-1;
+    private int curPos = -1;
     LayoutInflater mInflater;
 
-    /**
-     * Instantiates a new carousel view adapter.
-     *
-     * @param context the c
-     * @param datas   the views
-     */
+
     public DeskNumberAdapter(Context context, List<String> datas) {
         this.mContext = context;
         this.datas = datas;
@@ -69,62 +59,23 @@ public class DeskNumberAdapter extends BaseAdapter {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    /**
-     * 描述：TODO.
-     *
-     * @return the count
-     * @version v1.0
-     * @author: amsoft.cn
-     * @date：2013-8-22 下午4:07:39
-     * @see android.widget.Adapter#getCount()
-     */
     @Override
     public int getCount() {
         return datas.size();
     }
 
-    /**
-     * 描述：TODO.
-     *
-     * @param position the position
-     * @return the item
-     * @version v1.0
-     * @author: amsoft.cn
-     * @date：2013-8-22 下午4:07:39
-     * @see android.widget.Adapter#getItem(int)
-     */
     @Override
     public Object getItem(int position) {
         return datas.get(position);
     }
 
-    /**
-     * 描述：TODO.
-     *
-     * @param position the position
-     * @return the item id
-     * @version v1.0
-     * @author: amsoft.cn
-     * @date：2013-8-22 下午4:07:39
-     * @see android.widget.Adapter#getItemId(int)
-     */
+
     @Override
     public long getItemId(int position) {
         return position;
     }
 
-    /**
-     * 描述：TODO
-     *
-     * @param position    the position
-     * @param convertView the convert view
-     * @param parent      the parent
-     * @return the view
-     * @version v1.0
-     * @author: amsoft.cn
-     * @date：2013-8-22 下午4:07:39
-     * @see android.widget.Adapter#getView(int, android.view.View, android.view.ViewGroup)
-     */
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;

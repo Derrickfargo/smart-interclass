@@ -14,6 +14,7 @@
     <string name="toast_stname_repeat">你已经加入了</string>
     <string name="toast_choose_atleast_one_desk">请选择绑定的课桌</string>
     <string name="toast_group_isfull">小组已满员，换个桌子吧</string>
+    <string name="toast_quit_app">再按一次退出程序</string>
     <string name="loading_msg">正在处理，请等一下哦！~</string>
     <string name="loading_complete_msg">处理完毕，正在进入...</string>
 

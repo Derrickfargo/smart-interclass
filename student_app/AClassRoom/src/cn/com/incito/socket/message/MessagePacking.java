@@ -8,8 +8,8 @@ import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.utils.BufferUtils;
 
 /**
- * 消息打包工具
- * @author 刘世平
+ * 消息包装器
+ * Created by liushiping on 2014/7/28.
  *
  */
 public class MessagePacking {

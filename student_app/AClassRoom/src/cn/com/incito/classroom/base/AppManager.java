@@ -9,8 +9,7 @@ import android.content.Intent;
 
 /**
  * 应用程序Activity管理类
- *
- * @author liux
+ * Created by popoy on 2014/7/28.
  */
 public class AppManager {
 

@@ -15,7 +15,6 @@ import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.service.SocketService;
-import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
@@ -25,25 +24,22 @@ import cn.com.incito.socket.utils.BufferUtils;
 import com.alibaba.fastjson.JSONObject;
 
 /**
- * @author 白猫
- * @version V1.0
- * @Title: 用户其启动界面
- * @Package com.cat.activity
- * @Description: 用户其启动界面时候的一个启动页面完成一些初始化工作
- * @date 2013-5-6
+ * 用户其启动界面时候的一个启动页面完成一些初始化工作
+ * Created by popoy on 2014/7/28.
  */
+
 public class SplashActivity extends BaseActivity {
     private TextView tv_loading_msg;
-    private MsgReceiver msgReceiver;
+    private ServiceConnectReceiver serviceConnectReceiver;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        msgReceiver = new MsgReceiver();
+        serviceConnectReceiver = new ServiceConnectReceiver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(SocketService.NETWORK_RECEIVER);
-        registerReceiver(msgReceiver, intentFilter);
+        registerReceiver(serviceConnectReceiver, intentFilter);
         final View view = View.inflate(this, R.layout.splash, null);
         setContentView(view);
         tv_loading_msg = (TextView) view.findViewById(R.id.tv_loading_msg);
@@ -72,16 +68,14 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         //注销广播
-        unregisterReceiver(msgReceiver);
+        unregisterReceiver(serviceConnectReceiver);
         super.onDestroy();
     }
 
     /**
-     * 广播接收器
-     *
-     * @author len
+     * service连接广播接收器
      */
-    public class MsgReceiver extends BroadcastReceiver {
+    public class ServiceConnectReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -95,6 +89,9 @@ public class SplashActivity extends BaseActivity {
 
     }
 
+    /**
+     * 启动主界面
+     */
     private void startMain() {
         tv_loading_msg.setText(R.string.loading_msg);
         JSONObject jsonObject = new JSONObject();

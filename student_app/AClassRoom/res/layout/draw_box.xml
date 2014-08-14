@@ -1,17 +1,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mainlayout"
+    android:id="@id/rlayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
 
     <FrameLayout
-        android:id="@+id/line"
+        android:id="@id/line"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
 
         <cn.com.incito.classroom.widget.canvas.SketchPadView
-            android:id="@+id/sketchpad"
+            android:id="@id/sketchpad"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />
     </FrameLayout>
@@ -22,7 +22,7 @@
         android:layout_alignParentBottom="true" >
 
         <LinearLayout
-            android:id="@+id/frameLayout1"
+            android:id="@id/llayout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
@@ -47,7 +47,7 @@
                 android:orientation="horizontal" >
 
                 <ImageView
-                    android:id="@+id/color_white"
+                    android:id="@id/color_white"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -308,7 +308,7 @@
                 android:layout_marginTop="15dp"
                 android:src="@drawable/ico_eraser" />
             <Button
-                android:background="@drawable/del_all_bg"
+                android:background="@drawable/btn_erasure"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -317,7 +317,7 @@
                 android:id="@+id/cleanAllBtn"/>
             
             <Button
-                android:background="@drawable/ico_send_btn"
+                android:background="@drawable/ic_send_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"

@@ -26,6 +26,7 @@ import cn.com.incito.socket.utils.BufferUtils;
 import com.alibaba.fastjson.JSONObject;
 
 /**
+ * 绑定课桌activity
  * Created by popoy on 2014/7/28.
  */
 public class BindDeskActivity extends BaseActivity {
@@ -62,7 +63,7 @@ public class BindDeskActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         if ((System.currentTimeMillis() - mExitTime) > 2000) {// 如果两次按键时间间隔大于2000毫秒，则不退出
-            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.toast_quit_app, Toast.LENGTH_SHORT).show();
             mExitTime = System.currentTimeMillis();// 更新mExitTime
         } else {
             AppManager.getAppManager().AppExit(this);
@@ -71,7 +72,7 @@ public class BindDeskActivity extends BaseActivity {
 
     private void initViews() {
         gv_desk_number = (GridView) findViewById(R.id.gv_desk_number);
-        btn_join = (ImageButton) findViewById(R.id.btn_join);
+        btn_join = (ImageButton) findViewById(R.id.btn_bind);
     }
 
     private void initEvent() {

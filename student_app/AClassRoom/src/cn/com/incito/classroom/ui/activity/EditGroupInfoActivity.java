@@ -29,10 +29,11 @@ import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
 
-
+/**
+ * 修改分组信息activity
+ * Created by liguangming on 2014/7/28.
+ */
 public class EditGroupInfoActivity extends BaseActivity implements View.OnClickListener{
-
-	private static final String TAG = "EditGroupInfoActivity";
 
 	private HorizontalListView mListView;
 	private HorizontalListViewAdapter mListViewAdapter;

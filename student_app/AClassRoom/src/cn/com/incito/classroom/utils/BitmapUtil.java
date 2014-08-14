@@ -32,6 +32,11 @@ import android.os.Environment;
 import android.util.Base64;
 import android.view.View;
 
+/**
+ * Bitmap 工具类
+ * Created by popoy on 2014/7/28.
+ */
+
 public class BitmapUtil {
 
 	private static Bitmap bitmap = null;
@@ -39,9 +44,13 @@ public class BitmapUtil {
 	static byte[] data;
 	private static Map<String, Bitmap> bms = new HashMap<String, Bitmap>();
 
-	/**
-	 * 计算图片的缩放值
-	 */
+    /**
+     * 计算图片的缩放值
+     * @param options
+     * @param reqWidth
+     * @param reqHeight
+     * @return
+     */
 	public static int calculateInSampleSize(BitmapFactory.Options options,
 			int reqWidth, int reqHeight) {
 		final int height = options.outHeight;
@@ -57,16 +66,13 @@ public class BitmapUtil {
 		return inSampleSize;
 	}
 
-	/**
-	 * 根据路径获得图片并压缩，返回bitmap用于显示
-	 * 
-	 * @author hefeng
-	 * @version 创建时间：2013-10-9 上午11:05:11
-	 * @param filePath
-	 * @param width
-	 * @param heigh
-	 * @return
-	 */
+    /**
+     * 根据路径获得图片并压缩，返回bitmap用于显示
+     * @param filePath
+     * @param width
+     * @param heigh
+     * @return
+     */
 	public static Bitmap getSmallBitmap(String filePath, int width, int heigh) {
 		final BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;
