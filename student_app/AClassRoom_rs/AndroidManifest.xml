@@ -48,6 +48,16 @@
         <activity android:name="cn.com.incito.classroom.ui.activity.MoudleSelectorActivity"
             android:screenOrientation="landscape"
             />
+        
+        <!-- 屏幕锁定,等待老师上课 -->
+        <activity android:name="cn.com.incito.classroom.ui.activity.ClassReadyActivity"
+            android:screenOrientation="landscape"
+            />
+        <!-- 输入小组暗号页面 -->
+        <activity android:name="cn.com.incito.classroom.ui.activity.GroupActivity"
+            android:screenOrientation="landscape"
+            />
+        
         <!--<activity-->
         <!--android:name="cn.com.incito.classroom.ui.activity.Home"-->
         <!--android:configChanges="keyboardHidden|orientation"-->

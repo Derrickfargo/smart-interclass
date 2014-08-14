@@ -1,7 +1,6 @@
 package cn.com.incito.interclass.ui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -9,7 +8,6 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
@@ -37,13 +35,11 @@ public class PreparePanel extends JPanel implements UIContext {
 	 * 当前教室所有Group，初始化数据时初始化本属性
 	 */
 	private List<Group> groupList = new ArrayList<Group>();
-	private JScrollPane scrollPane;
 
 	public PreparePanel() {
 		// this.setSize(878, 620);
 		this.setLayout(null);
 		this.setOpaque(true);
-		revalidate();
 		// 初始化界面
 		initView();
 
@@ -139,26 +135,5 @@ public class PreparePanel extends JPanel implements UIContext {
 			groupList.add(group);
 		}
 		Collections.sort(groupList);
-	}
-
-	/**
-	 * 暂时不用，会导致界面闪烁
-	 */
-	private void clearView() {
-		for (TablePanel tablePanel : tableList) {
-			List<JLabel> deviceLabelList = tablePanel.getDeviceList();
-			for (JLabel lblDevice : deviceLabelList) {
-				ImageIcon imgPad = new ImageIcon(PAD_OFFLINE);
-				lblDevice.setIcon(imgPad);
-				lblDevice.setVisible(false);
-			}
-			List<JLabel> studentLabelList = tablePanel.getStudentList();
-			for (JLabel lblStudent : studentLabelList) {
-				lblStudent.setText("");
-				lblStudent.setBackground(new Color(Integer.parseInt("e1e1e1",
-						16)));
-				lblStudent.setVisible(false);
-			}
-		}
 	}
 }

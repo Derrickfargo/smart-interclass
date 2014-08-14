@@ -23,7 +23,7 @@ public class MoudleSelectorActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.moudleselector_main);
+		setContentView(R.layout.activity_moudleselector);
 		initViews();
 	}
 
@@ -97,6 +97,11 @@ public class MoudleSelectorActivity extends BaseActivity {
 	 */
 	private void startClass() {
 
+		Intent intent = new Intent(this,ClassReadyActivity.class);
+		startActivity(intent);
+		finish();
+		
+		
 	}
 
 	/**
@@ -117,7 +122,10 @@ public class MoudleSelectorActivity extends BaseActivity {
 	 * 互联网
 	 */
 	private void internet() {
-
+		//暂时调整到小组选择页面
+		Intent intent = new Intent(this,GroupActivity.class);
+		startActivity(intent);
+		finish();
 	}
 
 	/**
