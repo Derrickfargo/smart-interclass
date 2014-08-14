@@ -32,8 +32,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import com.alibaba.fastjson.JSONObject;
-
 import cn.com.incito.interclass.Listener.MySystemTrayEvent;
 import cn.com.incito.interclass.Listener.MySystemTrayManager;
 import cn.com.incito.interclass.po.Group;
@@ -44,6 +42,8 @@ import cn.com.incito.server.core.Message;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
+
+import com.alibaba.fastjson.JSONObject;
 
 public class MainFrame extends MouseAdapter {
 	private static MainFrame instance;
@@ -60,10 +60,14 @@ public class MainFrame extends MouseAdapter {
 	private JButton btnBegin;
 	private JPanel contentPane;
 	
+	// menu
+	private JButton btnStatus;
+	private JButton btnQuiz;
+	
 	private CardLayout cardLayout;
-	private JPanel centerPanel;
+	private JPanel cardPanel;
 	private PreparePanel preparePanel;
-	private QuizLookupPanel quizLookupPanel;
+	private QuizPanel quizPanel;
 //	private JScrollPane deskScrollPane;
 	private MySystemTrayEvent mySystemTrayEvent;
 
@@ -160,26 +164,36 @@ public class MainFrame extends MouseAdapter {
 		left.setOpaque(false);
 
 		// 准备菜单
-		Icon icon = new ImageIcon("images/main/ico_menu_1.png");
-		JButton lblStatus = new JButton(" 准备", icon);
-		lblStatus.setOpaque(false);
-		left.add(lblStatus);
-		lblStatus.setBounds(0, 0, 127, 56);
-		lblStatus.addActionListener(new ActionListener(){
+		Icon icon = new ImageIcon("images/main/bg_ready_hover.png");
+		btnStatus = new JButton();
+		btnStatus.setFocusPainted(false);
+		btnStatus.setIcon(icon);
+		btnStatus.setBorderPainted(false);// 设置边框不可见
+		btnStatus.setContentAreaFilled(false);// 设置透明
+		left.add(btnStatus);
+		btnStatus.setBounds(0, 0, icon.getIconWidth(), icon.getIconHeight());
+		btnStatus.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                cardLayout.show(centerPanel, CARD_PREPARE);
+                cardLayout.show(cardPanel, CARD_PREPARE);
+                btnStatus.setIcon(new ImageIcon("images/main/bg_ready_hover.png"));
+                btnQuiz.setIcon(new ImageIcon("images/main/bg_works.png"));
             }
         });
 		
 		// 作业菜单
-		Icon iconQuiz = new ImageIcon("images/main/ico_menu_1.png");
-		JButton lblQuiz = new JButton(" 作业", iconQuiz);
-		lblQuiz.setOpaque(false);
-		left.add(lblQuiz);
-		lblQuiz.setBounds(0, 55, 127, 56);
-		lblQuiz.addActionListener(new ActionListener(){
+		Icon iconQuiz = new ImageIcon("images/main/bg_works.png");
+		btnQuiz = new JButton();
+		btnQuiz.setIcon(iconQuiz);
+		btnQuiz.setFocusPainted(false);
+		btnQuiz.setBorderPainted(false);// 设置边框不可见
+		btnQuiz.setContentAreaFilled(false);// 设置透明
+		left.add(btnQuiz);
+		btnQuiz.setBounds(0, 55, iconQuiz.getIconWidth(), iconQuiz.getIconHeight());
+		btnQuiz.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                cardLayout.show(centerPanel, CARD_QUIZ);
+                cardLayout.show(cardPanel, CARD_QUIZ);
+                btnQuiz.setIcon(new ImageIcon("images/main/bg_works_hover.png"));
+                btnStatus.setIcon(new ImageIcon("images/main/bg_ready.png"));
             }
         });
 		
@@ -219,26 +233,26 @@ public class MainFrame extends MouseAdapter {
 
 		// ///////////////////center部分////////////////////////
 		cardLayout = new CardLayout();
-		centerPanel = new JPanel(cardLayout);
-		centerPanel.setBounds(127, 75, 878, 618);
-		contentPane.add(centerPanel);
+		cardPanel = new JPanel(cardLayout);
+		cardPanel.setBounds(128, 75, 878, 618);
+		contentPane.add(cardPanel);
 		
 		//准备上课card
 		preparePanel = new PreparePanel();
 		preparePanel.setBackground(Color.WHITE);
-//		deskScrollPane = new JScrollPane(deskPanel);
-//		deskScrollPane.getVerticalScrollBar().setUnitIncrement(50);
-//		deskScrollPane.setBorder(null);
-//		deskScrollPane.setBounds(127, 75, 878, 618);
-		// TODO 根据分组的多少动态调整
-//		deskPanel.setPreferredSize(new Dimension(deskScrollPane.getWidth() - 50, deskScrollPane.getHeight() * 3));
-//		deskPanel.revalidate();
-		centerPanel.add(preparePanel, CARD_PREPARE);
+		JScrollPane deskScrollPane = new JScrollPane(preparePanel);
+		deskScrollPane.getVerticalScrollBar().setUnitIncrement(50);
+		deskScrollPane.setBorder(null);
+		deskScrollPane.setBounds(0, 0, 878, 618);
+		 //TODO 根据分组的多少动态调整
+		preparePanel.setPreferredSize(new Dimension(deskScrollPane.getWidth() - 50, deskScrollPane.getHeight() * 3));
+		preparePanel.revalidate();
+		cardPanel.add(deskScrollPane, CARD_PREPARE);
 		
 		//作业card
-		quizLookupPanel = new QuizLookupPanel();
-        quizLookupPanel.setBackground(Color.WHITE);
-		centerPanel.add(quizLookupPanel, CARD_QUIZ);
+		quizPanel = new QuizPanel();
+        quizPanel.setBackground(Color.WHITE);
+		cardPanel.add(quizPanel, CARD_QUIZ);
         
 		// //////////////////////bottom部分////////////////////////
 		JPanel bottom = new JPanel();
@@ -278,6 +292,7 @@ public class MainFrame extends MouseAdapter {
 		pnlCourse.setBounds(190, 10, 120, 35);
 
 		btnBegin = new JButton();// 创建按钮对象
+		btnStatus.setFocusPainted(false);
 		btnBegin.setBorderPainted(false);// 设置边框不可见
 		btnBegin.setContentAreaFilled(false);// 设置透明
 		ImageIcon btnImage = new ImageIcon("images/main/btn_begin.png");
@@ -303,7 +318,7 @@ public class MainFrame extends MouseAdapter {
 		contentPane.add(bottom);
 
 		initData();
-		setBgimg();// 设置背景
+		setBackground();// 设置背景
 	}
 
 	private void doBegin() {
@@ -409,7 +424,7 @@ public class MainFrame extends MouseAdapter {
 	}
 
 	// 设置背景
-	public void setBgimg() {
+	public void setBackground() {
 		lblBackground = new JLabel();
 		lblBackground.setIcon(new ImageIcon("images/main/bg.png"));
 		lblBackground.setBounds(0, 0, 1004, 748);

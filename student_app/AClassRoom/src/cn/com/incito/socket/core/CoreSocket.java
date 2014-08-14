@@ -166,7 +166,7 @@ public final class CoreSocket extends Thread {
                 }
                 keySet.clear();
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             restart();
         }
     }
