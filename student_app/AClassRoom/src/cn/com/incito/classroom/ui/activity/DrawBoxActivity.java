@@ -1,11 +1,6 @@
 package cn.com.incito.classroom.ui.activity;
 
 import java.io.ByteArrayOutputStream;
-
-
-
-
-
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
@@ -25,6 +20,7 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -160,7 +156,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		mBigCheckIco = (ImageView) findViewById(R.id.ico_big_checked);
 		mMiddleCheckIco = (ImageView) findViewById(R.id.ico_middle_checked);
 		mSmallCheckIco = (ImageView) findViewById(R.id.ico_small_checked);
-		mSubmitButton=(Button)findViewById(R.id.submit_button);
+		mSubmitButton = (Button) findViewById(R.id.submit_button);
 		mSubmitButton.setOnClickListener(this);
 		m_sketchPad = (SketchPadView) findViewById(R.id.sketchpad);
 		m_sketchPad.setCallback(DrawBoxActivity.this);
@@ -170,10 +166,25 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 			ByteArrayOutputStream outPut = new ByteArrayOutputStream();
 			bitmap = BitmapFactory.decodeByteArray(paper, 0, paper.length);
 			bitmap.compress(CompressFormat.PNG, 100, outPut);
+			float compressHeight;
+			float compressWidth;
+			if (bitmap.getHeight() > 800) {
+				compressHeight = 800;
+			} else {
+				compressHeight = bitmap.getHeight();
+			}
+			if (bitmap.getWidth() > 1280) {
+				compressWidth = 1280;
+			} else {
+				compressWidth = bitmap.getWidth();
+			}
+			bitmap = BitmapUtil
+					.zoomImage(bitmap, compressWidth, compressHeight);
 			changeBtn.setClickable(false);
 		} else {
-			 bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.bg);
-			 changeBtn.setClickable(true);
+			bitmap = BitmapFactory
+					.decodeResource(getResources(), R.drawable.bg);
+			changeBtn.setClickable(true);
 		}
 		initPaint(bitmap);
 	}
@@ -331,7 +342,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 			// view.clean();
 			break;
 		case R.id.submit_button:
-			
+
 			showDialog();
 			break;
 		case R.id.cleanAllBtn:
@@ -340,11 +351,13 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 			break;
 		case R.id.bg_select_btn:
 			if (isBlack) {
-				m_sketchPad.setBkBitmap(((BitmapDrawable) (getResources().getDrawable(R.drawable.bg_white))).getBitmap());
+				m_sketchPad.setBkBitmap(((BitmapDrawable) (getResources()
+						.getDrawable(R.drawable.bg_white))).getBitmap());
 				changeBtn.setBackgroundResource(R.drawable.bg_cgbg_bb);
 				isBlack = false;
 			} else {
-				m_sketchPad.setBkBitmap(((BitmapDrawable) (getResources().getDrawable(R.drawable.bg))).getBitmap());
+				m_sketchPad.setBkBitmap(((BitmapDrawable) (getResources()
+						.getDrawable(R.drawable.bg))).getBitmap());
 				changeBtn.setBackgroundResource(R.drawable.bg_cgbg_white);
 				isBlack = true;
 			}
@@ -411,23 +424,23 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	public void onDestroy(SketchPadView obj) {
 
 	}
-	
-	public void showDialog(){
-		new AlertDialog.Builder(this) .setTitle("确认")
-	 	.setMessage("确定提交作业吗？")
-	 	.setPositiveButton("是", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				submitPaper();
-			}
-		})
-	 	.setNegativeButton("否", new DialogInterface.OnClickListener(){
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-			}
-	 	}).show();
+
+	public void showDialog() {
+		new AlertDialog.Builder(this).setTitle("确认").setMessage("确定提交作业吗？")
+				.setPositiveButton("是", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						submitPaper();
+					}
+				})
+				.setNegativeButton("否", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				}).show();
 	}
+
 	/**
 	 * @return 保存图片
 	 */
@@ -442,7 +455,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	 * 提交作业
 	 */
 	public void submitPaper() {
-		
+
 		MessagePacking messagePacking = new MessagePacking(
 				Message.MESSAGE_SAVE_PAPER);
 		// 测试ID

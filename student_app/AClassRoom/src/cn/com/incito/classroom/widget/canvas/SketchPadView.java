@@ -130,12 +130,6 @@ public class SketchPadView extends View implements IUndoCommand {
 		return m_foreBitmap;
 	}
 
-	public void setBkBitmap(Bitmap bmp) {
-		if (m_bkBitmap != bmp) {
-			m_bkBitmap = bmp;
-			invalidate();
-		}
-	}
 
 	public Bitmap getBkBitmap() {
 		return m_bkBitmap;
@@ -361,7 +355,7 @@ public class SketchPadView extends View implements IUndoCommand {
 		canvas.drawBitmap(m_bkBitmap, 0, 0, null);
 		// Draw background bitmap.
 		if (null != m_bkBitmap) {
-			RectF dst = new RectF(getLeft(), getTop(), 2048, 1080);
+			RectF dst = new RectF(getLeft(), getTop(), m_bkBitmap.getWidth(), m_bkBitmap.getHeight());
 			Rect rst = new Rect(0, 0, m_bkBitmap.getWidth(),
 					m_bkBitmap.getHeight());
 			canvas.drawBitmap(m_bkBitmap, rst, dst, m_bitmapPaint);
@@ -638,5 +632,11 @@ public class SketchPadView extends View implements IUndoCommand {
 			return (m_redoStack.size() > 0);
 		}
 
+	}
+	public void setBkBitmap(Bitmap bmp) {
+		if (m_bkBitmap != bmp) {
+			m_bkBitmap = bmp;
+			invalidate();
+		}
 	}
 }
