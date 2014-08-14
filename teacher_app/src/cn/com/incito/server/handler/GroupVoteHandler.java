@@ -83,7 +83,7 @@ public class GroupVoteHandler extends MessageHandler {
 				group.setName(temp.getName());
 				group.setLogo(temp.getLogo());
 				Application.getInstance().addGroup(group);
-				Application.getInstance().refreshCenterPanel();
+				Application.getInstance().refreshFrame();
 			} else {
 				JSONObject json = new JSONObject();
 				json.put("code", 1);

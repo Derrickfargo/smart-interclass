@@ -3,7 +3,6 @@ package cn.com.incito.server.core;
 import java.io.File;
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
-import java.util.Date;
 import java.util.List;
 
 import javax.imageio.stream.FileImageOutputStream;
@@ -29,7 +28,7 @@ public class CoreService {
 
 	public void deviceLogin(String imei) {
 		app.getOnlineDevice().add(imei);
-		app.refreshCenterPanel();// 更新UI
+		app.refreshFrame();// 更新UI
 	}
 
 	/**
@@ -99,7 +98,7 @@ public class CoreService {
 				// 第二步获得班级、课程、设备、课桌、分组数据
 				Application.getInstance().initMapping(resultData.getDevices(),
 						resultData.getTables(), resultData.getGroups());
-				Application.getInstance().refreshCenterPanel();
+				Application.getInstance().refreshFrame();
 			}
 			logger.info(result);
 		} catch (AppException e) {
@@ -130,7 +129,7 @@ public class CoreService {
 				// 第二步获得班级、课程、设备、课桌、分组数据
 				Application.getInstance().initMapping(resultData.getDevices(),
 						resultData.getTables(), resultData.getGroups());
-				Application.getInstance().refreshTaskLookupPanel();
+				Application.getInstance().refreshFrame();
 			}
 			logger.info(result);
 		} catch (AppException e) {
@@ -165,7 +164,7 @@ public class CoreService {
 					&& student.getNumber().equals(number)) {
 				student.setLogin(true);
 				app.getOnlineStudent().add(student);// 加入在线的学生
-				app.refreshCenterPanel();// 更新UI
+				app.refreshFrame();// 更新UI
 				return JSONUtils.renderJSONString(0, group);
 			}
 		}
@@ -198,7 +197,7 @@ public class CoreService {
 					&& student.getNumber().equals(number)) {
 				student.setLogin(false);
 				app.getOnlineStudent().remove(student);
-				app.refreshCenterPanel();// 更新UI
+				app.refreshFrame();// 更新UI
 				return JSONUtils.renderJSONString(0, group);
 			}
 		}
@@ -235,7 +234,7 @@ public class CoreService {
 					}
 					app.addGroup(group);
 					app.getTableGroup().put(group.getTableId(), group);
-					app.refreshCenterPanel();// 更新UI
+					app.refreshFrame();// 更新UI
 					JSONUtils.renderJSONString(JSONUtils.SUCCESS, group);
 				}
 				return result;
