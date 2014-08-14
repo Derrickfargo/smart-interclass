@@ -289,7 +289,7 @@ public class CoreService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return JSONUtils.renderJSONString(1);
+		return JSONUtils.renderJSONString(0);
 	}
 
 	/**
