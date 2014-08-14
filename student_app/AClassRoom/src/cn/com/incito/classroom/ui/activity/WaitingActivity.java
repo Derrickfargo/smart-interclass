@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.adapter.GroupNumAdapter;
 import cn.com.incito.classroom.base.AppManager;
@@ -332,14 +333,14 @@ public class WaitingActivity extends BaseActivity {
     };
 
     public void doResult(JSONObject jsonObject, int type) {
-    	android.os.Message message = new android.os.Message();
-    	message.what = type;
-    	Bundle data = new Bundle();
-    	data.putSerializable("data", jsonObject);
-    	message.setData(data);
-    	mHandler.sendMessage(message);
+        android.os.Message message = new android.os.Message();
+        message.what = type;
+        Bundle data = new Bundle();
+        data.putSerializable("data", jsonObject);
+        message.setData(data);
+        mHandler.sendMessage(message);
     }
-    
+
     /**
      * 注册成员
      */
@@ -355,15 +356,7 @@ public class WaitingActivity extends BaseActivity {
         MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
         CoreSocket.getInstance().sendMessage(messagePacking);
-//        CoreSocket.getInstance().sendMessage(messagePacking, new MessageHandler() {
-//            @Override
-//            protected void handleMessage(Bundle data) {
-//            	android.os.Message message = new android.os.Message();
-//                message.what = 3;
-//                message.setData(data);
-//                mHandler.sendMessage(message);
-//            }
-//        });
+
     }
 
     /**
@@ -376,14 +369,6 @@ public class WaitingActivity extends BaseActivity {
         MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_LIST);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
         CoreSocket.getInstance().sendMessage(messagePacking);
-//        CoreSocket.getInstance().sendMessage(messagePacking, new MessageHandler() {
-//            @Override
-//            protected void handleMessage(Bundle data) {
-//            	android.os.Message message = new android.os.Message();
-//                message.what = 4;
-//                message.setData(data);
-//                mHandler.sendMessage(message);
-//            }
-//        });
+
     }
 }
