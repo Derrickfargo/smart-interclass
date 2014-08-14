@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" 
+        android:gravity="center_horizontal"
+        >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="请输入你们小组的暗号"
+            android:textSize="26sp"
+            android:gravity="center"
+             />
+        
+       <EditText 
+           android:id="@+id/groupPassword_password"
+           android:layout_width="200dp"
+           android:layout_height="wrap_content"
+           android:textSize="26sp"
+           android:inputType="textPassword"
+           />
+        
+    </LinearLayout>
+
+    <!-- 填好了按钮 -->
+
+    <Button
+        android:id="@+id/groupPassword_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="填好了" 
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        />
+
+   
+</RelativeLayout>
