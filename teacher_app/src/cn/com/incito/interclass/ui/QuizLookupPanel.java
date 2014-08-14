@@ -85,7 +85,6 @@ public class QuizLookupPanel extends JPanel {
 			QuizItemPanel quizItemPanel = new QuizItemPanel(group);
 			quizItemPanel.setVisible(true);
 			gridBagLayout.setConstraints(quizItemPanel, c); // associate the
-															// label with
 			// a constraint object
 			add(quizItemPanel);
 		}
