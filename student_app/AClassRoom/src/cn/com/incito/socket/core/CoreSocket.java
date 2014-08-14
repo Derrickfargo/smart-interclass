@@ -15,7 +15,6 @@ import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
-import cn.com.incito.wisdom.sdk.log.WLog;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -33,7 +32,7 @@ public final class CoreSocket extends Thread {
     private TimerTask actTask;
     private Selector selector;
     private SocketChannel channel;
-
+    
     public static CoreSocket getInstance() {
         if (instance == null) {
             instance = new CoreSocket();
@@ -61,44 +60,45 @@ public final class CoreSocket extends Thread {
             messageParser.parseMessage(selectionKey);
         }
     }
-
+    
     //开启心跳线程
     private void startHeartBeatThread() {
-        actTask = new TimerTask() {
-            @Override
-            public void run() {
-                MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_HEART_BEAT);
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("imei", MyApplication.deviceId);
-                messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
-                byte[] actData = messagePacking.pack().array();
-                ByteBuffer buffer = ByteBuffer.allocate(actData.length);
-                buffer.put(actData);
-                buffer.flip();
-                try {
-                    channel.write(buffer);
-                } catch (IOException e) {
-                    WLog.e(CoreSocket.class, "heartbeat connection failed, restart later!" + e.getMessage());
-                    restart();
-                }
-            }
-        };
-        new Timer().schedule(actTask, ACT_TIME, ACT_TIME);
-    }
-
+    	actTask = new TimerTask() {
+			@Override
+			public void run() {
+				MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_HEART_BEAT);
+		        JSONObject jsonObject = new JSONObject();
+		        jsonObject.put("imei", MyApplication.deviceId);
+		        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
+		        byte[] actData = messagePacking.pack().array();
+		        ByteBuffer buffer = ByteBuffer.allocate(actData.length);
+		        buffer.put(actData);
+		        buffer.flip();
+		        try {
+					channel.write(buffer);
+				} catch (IOException e) {
+					restart();
+				}
+			}
+		};
+		new Timer().schedule(actTask, ACT_TIME, ACT_TIME);
+	}
+    
     //心跳自动重连机制
-    private void restart() {
-        isRunning = false;
-        new Timer().schedule(new TimerTask() {
-
-            @Override
-            public void run() {
-                actTask.cancel();
-                CoreSocket.this.start();
-            }
-        }, RECONN_TIME);
+    private void restart(){
+		isRunning = false;
+		new Timer().schedule(new TimerTask() {
+			
+			@Override
+			public void run() {
+				if (actTask != null) {
+					actTask.cancel();
+				}
+				CoreSocket.this.start();
+			}
+		}, RECONN_TIME);
     }
-
+    
     //TODO 该方法  发送握手消息至服务器
     private void sendDeviceLoginMessage() {
         MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_HAND_SHAKE);
@@ -110,10 +110,10 @@ public final class CoreSocket extends Thread {
         buffer.put(handSharkData);
         buffer.flip();
         try {
-            channel.write(buffer);
-        } catch (IOException e) {
-            WLog.e(CoreSocket.class, "Failed to send device login Message" + e.getMessage());
-        }
+			channel.write(buffer);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
 
     /**
@@ -131,7 +131,7 @@ public final class CoreSocket extends Thread {
                 try {
                     channel.write(buffer);
                 } catch (IOException e) {
-                    WLog.e(CoreSocket.class, "Failed to send Message" + e.getMessage());
+                    e.printStackTrace();
                 }
             }
         }.start();
@@ -145,15 +145,13 @@ public final class CoreSocket extends Thread {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            WLog.e(CoreSocket.class, "connection stop exception!" + e.getMessage());
         }
     }
 
     @Override
     public void run() {
-//        try {
         try {
-            isRunning = true;
+        	isRunning = true;
             //客户端向服务器端发起建立连接请求
             SocketChannel socketChannel = SocketChannel.open();
             socketChannel.configureBlocking(false);
@@ -168,10 +166,8 @@ public final class CoreSocket extends Thread {
                 }
                 keySet.clear();
             }
-        } catch (IOException e) {
-            WLog.e(CoreSocket.class, "socket monitor failed,please check the network!" + e.getMessage());
-        } catch (Exception ex) {
-            WLog.e(CoreSocket.class, "uncauched exception" + ex.getMessage());
+        } catch (Exception e) {
+            restart();
         }
     }
 

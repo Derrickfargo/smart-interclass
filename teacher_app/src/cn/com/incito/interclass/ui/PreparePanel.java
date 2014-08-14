@@ -18,7 +18,7 @@ import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.utils.LogoUtils;
 
-public class MainCenterPanel extends JPanel implements UIContext {
+public class PreparePanel extends JPanel implements UIContext {
 
 	/**
 	 * 
@@ -39,7 +39,7 @@ public class MainCenterPanel extends JPanel implements UIContext {
 	private List<Group> groupList = new ArrayList<Group>();
 	private JScrollPane scrollPane;
 
-	public MainCenterPanel() {
+	public PreparePanel() {
 		// this.setSize(878, 620);
 		this.setLayout(null);
 		this.setOpaque(true);

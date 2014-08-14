@@ -4,9 +4,7 @@
  */
 package cn.com.incito.interclass.Listener;
 
-import java.awt.event.MouseAdapter;
-
-import javax.swing.*;
+import cn.com.incito.interclass.ui.MainFrame;
 
 /**
  * 
@@ -14,7 +12,7 @@ import javax.swing.*;
  */
 public interface MySystemTrayEvent {
 	// "打开/隐藏主页面(O)",
-	public void openHide(JFrame frame);
+	public void openHide(MainFrame frame);
 
 	public void config();
 

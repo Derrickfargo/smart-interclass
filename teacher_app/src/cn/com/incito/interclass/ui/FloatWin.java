@@ -1,30 +1,21 @@
 package cn.com.incito.interclass.ui;
 
-import cn.com.incito.interclass.Listener.MySystemTrayEvent;
-import cn.com.incito.server.api.Application;
-import cn.com.incito.server.config.BaseConfig;
-import cn.com.incito.server.core.CoreSocket;
-import cn.com.incito.server.core.Message;
-import cn.com.incito.server.message.DataType;
-import cn.com.incito.server.message.MessagePacking;
-import cn.com.incito.server.utils.BufferUtils;
-import cn.com.incito.server.utils.Pic;
-
-import javax.swing.*;
-
-import com.alibaba.fastjson.JSONObject;
-
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Toolkit;
 import java.awt.event.InputEvent;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.net.InetSocketAddress;
-import java.nio.charset.Charset;
-import java.util.UUID;
+
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.UIManager;
+
+import cn.com.incito.interclass.Listener.MySystemTrayEvent;
+import cn.com.incito.server.core.CoreSocket;
+import cn.com.incito.server.utils.Pic;
 
 public class FloatWin extends JDialog implements MouseListener,
 		MouseMotionListener {
@@ -47,7 +38,6 @@ public class FloatWin extends JDialog implements MouseListener,
 	}
 
 	public FloatWin() {
-		CoreSocket.getInstance().start();
 		mainFrame = MainFrame.getInstance();
 		mainFrame.setVisible(true);
 
@@ -110,7 +100,6 @@ public class FloatWin extends JDialog implements MouseListener,
 		}
 
 		// 鼠标右键
-
 	}
 
 	@Override

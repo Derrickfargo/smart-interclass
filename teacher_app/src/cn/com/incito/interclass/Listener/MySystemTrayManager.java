@@ -6,13 +6,15 @@ package cn.com.incito.interclass.Listener;
 
 import javax.swing.*;
 
+import cn.com.incito.interclass.ui.MainFrame;
+
 /**
  * 
  * @author tewang
  */
 public class MySystemTrayManager implements MySystemTrayEvent {
 
-	public synchronized void openHide(JFrame frame) {
+	public synchronized void openHide(MainFrame frame) {
 		if (!frame.isVisible()) {
 			frame.setVisible(true);
 		} else {

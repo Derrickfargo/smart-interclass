@@ -362,7 +362,7 @@ public class Application {
 	}
 
 	public void refreshFrame() {
-		MainFrame.getInstance().refreshUI();
+		MainFrame.getInstance().refresh();
 	}
 
 	public String getQuizId() {
