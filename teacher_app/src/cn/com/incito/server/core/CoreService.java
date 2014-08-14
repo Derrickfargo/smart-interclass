@@ -235,7 +235,7 @@ public class CoreService {
 					app.addGroup(group);
 					app.getTableGroup().put(group.getTableId(), group);
 					app.refreshFrame();// 更新UI
-					JSONUtils.renderJSONString(JSONUtils.SUCCESS, group);
+					return JSONUtils.renderJSONString(JSONUtils.SUCCESS, group);
 				}
 				return result;
 			}
