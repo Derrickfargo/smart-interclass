@@ -40,7 +40,7 @@ public class SocketService extends Service {
     class MyUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
         @Override
         public void uncaughtException(Thread t, Throwable e) {
-            WLog.e(SocketService.class, "network exception exception:" + e);
+            WLog.e(SocketService.class, "network unreachble exception:" + e);
             Intent intent = new Intent(NETWORK_RECEIVER);
             intent.putExtra("exception", e.getMessage());
             sendBroadcast(intent);
