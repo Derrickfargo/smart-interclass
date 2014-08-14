@@ -80,7 +80,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:button="@null"
-                        android:background="@drawable/gender_radio_btn_male"
+                        android:background="@drawable/btn_gender_male"
                         android:id="@+id/male"
                         android:checked="true"/>
 
@@ -88,7 +88,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:button="@null"
-                        android:background="@drawable/gender_radio_btn_female"
+                        android:background="@drawable/btn_gender_female"
                         android:id="@+id/female" />
                 </RadioGroup>
 

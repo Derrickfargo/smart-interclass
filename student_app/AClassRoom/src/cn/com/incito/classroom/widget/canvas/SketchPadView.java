@@ -28,10 +28,7 @@ import android.view.View;
  * a bitmap which is hold by a canvas, and then draw the bitmap to canvas to
  * display these strokes to user.
  * 
- * @author Li Hong
- * 
- * @date 2010/07/30
- * 
+ *
  */
 public class SketchPadView extends View implements IUndoCommand {
 	public static final int STROKE_NONE = 0;

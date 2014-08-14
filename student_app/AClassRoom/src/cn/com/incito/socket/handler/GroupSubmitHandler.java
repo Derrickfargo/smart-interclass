@@ -4,7 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;
-
+/**
+ * 分组提交修改hanlder
+ * Created by bianshijian on 2014/7/28.
+ */
 public class GroupSubmitHandler extends MessageHandler {
 
 	@Override

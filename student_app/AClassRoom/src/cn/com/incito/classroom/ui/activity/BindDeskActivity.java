@@ -26,6 +26,7 @@ import cn.com.incito.socket.utils.BufferUtils;
 import com.alibaba.fastjson.JSONObject;
 
 /**
+ * 绑定课桌activity
  * Created by popoy on 2014/7/28.
  */
 public class BindDeskActivity extends BaseActivity {
@@ -71,7 +72,7 @@ public class BindDeskActivity extends BaseActivity {
 
     private void initViews() {
         gv_desk_number = (GridView) findViewById(R.id.gv_desk_number);
-        btn_join = (ImageButton) findViewById(R.id.btn_join);
+        btn_join = (ImageButton) findViewById(R.id.btn_bind);
     }
 
     private void initEvent() {

@@ -6,6 +6,7 @@ import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
 /**
+ * activity基类
  * Created by popoy on 2014/8/5.
  */
 public class BaseActivity extends FragmentActivity {

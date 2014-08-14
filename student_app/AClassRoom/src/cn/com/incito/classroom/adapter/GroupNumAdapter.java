@@ -29,13 +29,8 @@ import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.vo.LoginRes2Vo;
 
 /**
- * © 2012 amsoft.cn
- * 名称：CarouselViewAdapter.java
- * 描述：自定义View适配的Carousel
- *
- * @author 还如一梦中
- * @version v1.0
- * @date：2013-8-22 下午4:05:09
+ * 组成员列表适配器
+ * Created by popoy on 2014/7/28.
  */
 public class GroupNumAdapter extends BaseAdapter {
 
@@ -56,12 +51,6 @@ public class GroupNumAdapter extends BaseAdapter {
 
     LayoutInflater mInflater;
 
-    /**
-     * Instantiates a new carousel view adapter.
-     *
-     * @param context the c
-     * @param datas   the views
-     */
     public GroupNumAdapter(Context context, List<LoginRes2Vo> datas) {
         this.mContext = context;
         this.datas = datas;
@@ -69,62 +58,21 @@ public class GroupNumAdapter extends BaseAdapter {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    /**
-     * 描述：TODO.
-     *
-     * @return the count
-     * @version v1.0
-     * @author: amsoft.cn
-     * @date：2013-8-22 下午4:07:39
-     * @see android.widget.Adapter#getCount()
-     */
     @Override
     public int getCount() {
         return datas.size();
     }
 
-    /**
-     * 描述：TODO.
-     *
-     * @param position the position
-     * @return the item
-     * @version v1.0
-     * @author: amsoft.cn
-     * @date：2013-8-22 下午4:07:39
-     * @see android.widget.Adapter#getItem(int)
-     */
     @Override
     public Object getItem(int position) {
         return datas.get(position);
     }
 
-    /**
-     * 描述：TODO.
-     *
-     * @param position the position
-     * @return the item id
-     * @version v1.0
-     * @author: amsoft.cn
-     * @date：2013-8-22 下午4:07:39
-     * @see android.widget.Adapter#getItemId(int)
-     */
     @Override
     public long getItemId(int position) {
         return position;
     }
 
-    /**
-     * 描述：TODO.
-     *
-     * @param position    the position
-     * @param convertView the convert view
-     * @param parent      the parent
-     * @return the view
-     * @version v1.0
-     * @author: amsoft.cn
-     * @date：2013-8-22 下午4:07:39
-     * @see android.widget.Adapter#getView(int, android.view.View, android.view.ViewGroup)
-     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;

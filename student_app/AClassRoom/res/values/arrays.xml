@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-    <array name="entries">
-        <item>@drawable/ic_classroom</item>
-        <item>@drawable/ic_classroom</item>
-        <item>@drawable/ic_classroom</item>
-        <item>@drawable/ic_classroom</item>
-        <item>@drawable/ic_classroom</item>
-        <item>@drawable/ic_classroom</item>
-    </array>
+    <!--<array name="entries">-->
+        <!--<item>@drawable/ic_classroom</item>-->
+        <!--<item>@drawable/ic_classroom</item>-->
+        <!--<item>@drawable/ic_classroom</item>-->
+        <!--<item>@drawable/ic_classroom</item>-->
+        <!--<item>@drawable/ic_classroom</item>-->
+        <!--<item>@drawable/ic_classroom</item>-->
+    <!--</array>-->
     <array name="groupIcons">
         <item>@drawable/badges_diamond</item>
         <item>@drawable/badges_paper_plane</item>
         <item>@drawable/badges_pen</item>
         <item>@drawable/badges_rainbow</item>
-		<item>@drawable/badges_support</item>
-		<item>@drawable/badges_support</item>
-		<item>@drawable/badges_support</item>
-		<item>@drawable/badges_support</item>
-		<item>@drawable/badges_support</item>
-		<item>@drawable/badges_support</item>
-		<item>@drawable/badges_support</item>
+        <item>@drawable/badges_support</item>
+        <item>@drawable/badges_support</item>
+        <item>@drawable/badges_support</item>
+        <item>@drawable/badges_support</item>
+        <item>@drawable/badges_support</item>
+        <item>@drawable/badges_support</item>
+        <item>@drawable/badges_support</item>
     </array>
     <array name="groupicons_name">
         <item>diamond</item>

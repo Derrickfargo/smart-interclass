@@ -3,6 +3,7 @@ package cn.com.incito.classroom.service;
 import cn.com.incito.classroom.R;
 import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.socket.core.CoreSocket;
+import cn.com.incito.wisdom.sdk.log.WLog;
 
 import android.app.Service;
 import android.content.Intent;
@@ -11,7 +12,10 @@ import android.os.IBinder;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
-
+/**
+ * socket服务Service，保持通信连接
+ * Created by liushiping on 2014/7/28.
+ */
 public class SocketService extends Service {
 
     public static final String NETWORK_RECEIVER = "cn.com.incito.network.RECEIVER";
@@ -24,20 +28,19 @@ public class SocketService extends Service {
 
     @Override
     public void onCreate() {
-//		super.onCreate();
-//        CoreSocket.getInstance().start();
+        super.onCreate();
         Thread.setDefaultUncaughtExceptionHandler(
                 new MyUncaughtExceptionHandler());
         exec = Executors
                 .newCachedThreadPool(new HandlerThreadFactory());
         exec.execute(CoreSocket.getInstance());
-//        SocketMinaClient.getInstance().start();
+        WLog.i(SocketService.class, "socket started");
     }
 
     class MyUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
         @Override
         public void uncaughtException(Thread t, Throwable e) {
-            System.out.println("caught " + e);
+            WLog.e(SocketService.class, "network exception exception:" + e);
             Intent intent = new Intent(NETWORK_RECEIVER);
             intent.putExtra("exception", e.getMessage());
             sendBroadcast(intent);
@@ -50,7 +53,6 @@ public class SocketService extends Service {
         public Thread newThread(Runnable r) {
             Thread t = new Thread(r);
             t.setUncaughtExceptionHandler(new MyUncaughtExceptionHandler());
-            System.out.println("eh=" + t.getUncaughtExceptionHandler());
             return t;
         }
     }
@@ -59,5 +61,6 @@ public class SocketService extends Service {
     public void onDestroy() {
         super.onDestroy();
         CoreSocket.getInstance().stopConnection();
+        WLog.i(SocketService.class, "socket disconnected");
     }
 }

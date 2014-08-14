@@ -7,6 +7,7 @@ import java.nio.channels.SocketChannel;
 import java.text.ParseException;
 
 import cn.com.incito.socket.utils.BufferUtils;
+import cn.com.incito.wisdom.sdk.log.WLog;
 
 /**
  * 消息解析器
@@ -49,17 +50,17 @@ public class MessageParser {
                 return;
             }
         } catch (IOException e) {
-            System.out.println("解析消息失败:" + e.getMessage());
+            WLog.e(MessageParser.class, "获取MessageHandler出错:" + e.getMessage());
             return;
         }
         headerBuffer.flip();
-        System.out.println("开始解析消息..");
+        WLog.i(MessageParser.class, "开始解析消息...");
         // 消息头fakeId是否正确
         if (parseFakeId(headerBuffer)) {
             // 获取消息头中有用的信息,msgId,msgSize
             parseMsgHeader(headerBuffer);
             if (messageInfo.getMsgID() == Message.MESSAGE_HAND_SHAKE) {
-                System.out.println("收到握手回复消息");
+                WLog.i(MessageParser.class, "收到握手回复消息!");
                 return;
             }
             // 解析消息体和命令
@@ -88,15 +89,15 @@ public class MessageParser {
             fakeId = Integer.parseInt(BufferUtils.decodeIntLittleEndian(fakeIdByte, 0, fakeIdByte.length) + "");
         } catch (NumberFormatException ex) {
             ex.printStackTrace();
-            System.out.print("number format error");
+            WLog.e(MessageParser.class, "ilegal Number parser");
         } catch (Exception e) {
-            System.out.println("解析fake Id出错:" + e.getMessage());
+            WLog.e(MessageParser.class, "unknow fake Id parser failed");
             return false;
         }
 
         // 如果消息的fakeId与定义的fakeId值不符，则丢弃掉该条消息
         if (Message.MESSAGE_FAKE_ID != fakeId) {
-            System.out.println("该消息头不是需要的消息头,fakeId:" + fakeId);
+            WLog.e(MessageParser.class, "unknow fake Id parser failed");
             return false;
         }
         return true;
@@ -125,12 +126,12 @@ public class MessageParser {
         int bodySize = messageInfo.getMsgSize();
         ByteBuffer bodyBuffer = BufferUtils.prepareToReadOrPut(bodySize);
         try {
-        	while(bodyBuffer.position() < bodyBuffer.capacity())
-            channel.read(bodyBuffer);
+            while (bodyBuffer.position() < bodyBuffer.capacity())
+                channel.read(bodyBuffer);
             messageInfo.setBodyBuffer(bodyBuffer);
             return true;
         } catch (IOException e) {
-            System.out.println("获取消息体失败:" + e.getMessage());
+            WLog.e(MessageParser.class, "failed to fetch message body :" + e.getMessage());
             return false;
         }
     }

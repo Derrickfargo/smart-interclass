@@ -33,7 +33,6 @@ import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
-import cn.com.incito.socket.core.MessageHandler;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
@@ -43,17 +42,13 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 /**
- * 用户其启动界面
- * 用户其启动界面时候的一个启动页面完成一些初始化工作
- *
- * @author liubo
- * @version V1.0
+ * 用户登录等待界面
+ * Created by popoy on 2014/7/28.
  */
+
 public class WaitingActivity extends BaseActivity {
-    public static final String TAG = "WaitingActivity";
     public static final int STUDENT_LIST = 1;
     public static final int STUDENT_LOGIN = 2;
-    //自定义的弹出框类
     EditText et_stname;
     EditText et_stnumber;
     ImageButton btn_join;
@@ -63,7 +58,7 @@ public class WaitingActivity extends BaseActivity {
     GridView gv_group_member;
     LinearLayout llayout1;
     LinearLayout llayout;
-    List<LoginRes2Vo> list;
+    List<LoginRes2Vo> loginResList;
     GroupNumAdapter mAdapter;
     InputMethodManager imm;
     private ProgressiveDialog mProgressDialog;
@@ -81,10 +76,9 @@ public class WaitingActivity extends BaseActivity {
         mProgressDialog = new ProgressiveDialog(this);
         initViews();
         initListener();
-        list = new ArrayList<LoginRes2Vo>();
+        loginResList = new ArrayList<LoginRes2Vo>();
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//        llayout1.setVisibility(View.GONE);
-        mAdapter = new GroupNumAdapter(WaitingActivity.this, list);
+        mAdapter = new GroupNumAdapter(WaitingActivity.this, loginResList);
         et_stnumber.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
         getGroupUserList();
     }
@@ -106,10 +100,8 @@ public class WaitingActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if (addState == 0) {
-//                    mShowAction.setDuration(500);
                     llayout1.setAnimation(AnimationUtils.loadAnimation(WaitingActivity.this, R.anim.push_bottom_in));
                     llayout1.setVisibility(View.VISIBLE);
-//                    llayout2.setVisibility(View.GONE);
                     addState = 1;
                 } else {
                     if (validate()) {
@@ -117,7 +109,7 @@ public class WaitingActivity extends BaseActivity {
                         groupNumberListRes.setSex(male.isChecked() ? "1" : "2");
                         groupNumberListRes.setName(et_stname.getText().toString());
                         groupNumberListRes.setNumber(et_stnumber.getText().toString());
-                        list.add(groupNumberListRes);
+                        loginResList.add(groupNumberListRes);
                         imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
 
                         addState = 0;
@@ -130,34 +122,15 @@ public class WaitingActivity extends BaseActivity {
 
             }
         });
-//        et_stname.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable editable) {
-//                if (et_stname.getText().length() > 1 && addState == 1) {
-//                    llayout2.setAnimation(AnimationUtils.loadAnimation(WaitingActivity.this, R.anim.push_bottom_in));
-//                    llayout2.setVisibility(View.VISIBLE);
-//                }
-//            }
-//        });
         gv_group_member.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 mProgressDialog.setMessage(R.string.load_dialog_default_text);
                 mProgressDialog.show();
-                if (list.get(position).isLogin() == false) {
-                    login(list.get(position).getName(), list.get(position).getNumber(), list.get(position).getSex());
+                if (loginResList.get(position).isLogin() == false) {
+                    login(loginResList.get(position).getName(), loginResList.get(position).getNumber(), loginResList.get(position).getSex());
                 } else {
-                    logout(list.get(position).getName(), list.get(position).getNumber(), list.get(position).getSex());
+                    logout(loginResList.get(position).getName(), loginResList.get(position).getNumber(), loginResList.get(position).getSex());
                 }
             }
         });
@@ -172,7 +145,7 @@ public class WaitingActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         if ((System.currentTimeMillis() - mExitTime) > 2000) {// 如果两次按键时间间隔大于2000毫秒，则不退出
-            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.toast_quit_app, Toast.LENGTH_SHORT).show();
             mExitTime = System.currentTimeMillis();// 更新mExitTime
         } else {
             AppManager.getAppManager().AppExit(this);
@@ -182,6 +155,9 @@ public class WaitingActivity extends BaseActivity {
 
     /**
      * 与后台服务建立连接，并实现登陆
+     * @param name
+     * @param number
+     * @param sex
      */
     private void login(String name, String number, String sex) {
         LoginReqVo loginReqVo = new LoginReqVo();
@@ -194,21 +170,14 @@ public class WaitingActivity extends BaseActivity {
         MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
         CoreSocket.getInstance().sendMessage(messagePacking);
-//        CoreSocket.getInstance().sendMessage(messagePacking, new MessageHandler() {
-//            @Override
-//            protected void handleMessage(Bundle data) {
-//                android.os.Message message = new android.os.Message();
-//                message.what = 1;
-//                message.setData(data);
-////                Log.i(message.toString());
-//                mHandler.sendMessage(message);
-//            }
-//        });
 
     }
 
     /**
      * 取消登陆
+     * @param name
+     * @param number
+     * @param sex
      */
     private void logout(String name, String number, String sex) {
         LoginReqVo loginReqVo = new LoginReqVo();
@@ -221,15 +190,6 @@ public class WaitingActivity extends BaseActivity {
         MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
         CoreSocket.getInstance().sendMessage(messagePacking);
-//        CoreSocket.getInstance().sendMessage(messagePacking, new MessageHandler() {
-//            @Override
-//            protected void handleMessage(Bundle data) {
-//            	android.os.Message message = new android.os.Message();
-//                message.what = 2;
-//                message.setData(data);
-//                mHandler.sendMessage(message);
-//            }
-//        });
     }
 
     /**
@@ -249,12 +209,12 @@ public class WaitingActivity extends BaseActivity {
             ToastHelper.showCustomToast(getApplicationContext(), R.string.toast_stnumber_notnull);
             return false;
         }
-        if (list.size() > 16) {
+        if (loginResList.size() > 16) {
             ToastHelper.showCustomToast(getApplicationContext(), R.string.toast_group_isfull);
             return false;
         }
-        for (int i = 0; i < list.size(); i++) {
-            if (stNumber.equals(list.get(i).getNumber())) {
+        for (int i = 0; i < loginResList.size(); i++) {
+            if (stNumber.equals(loginResList.get(i).getNumber())) {
                 ToastHelper.showCustomToast(getApplicationContext(), R.string.toast_stname_repeat);
                 return false;
             }
@@ -289,11 +249,11 @@ public class WaitingActivity extends BaseActivity {
                     } else {
                         LoginResVo loginResVo = JSON.parseObject(jsonObject.getJSONObject("data").toJSONString(), LoginResVo.class);
                         if (loginResVo.getStudents() != null) {
-                            list = loginResVo.getStudents();
+                            loginResList = loginResVo.getStudents();
                         }
                         ((MyApplication) getApplication()).setLoginResVo(loginResVo);
-                        if (list != null && list.size() > 0) {
-                            mAdapter = new GroupNumAdapter(WaitingActivity.this, list);
+                        if (loginResList != null && loginResList.size() > 0) {
+                            mAdapter = new GroupNumAdapter(WaitingActivity.this, loginResList);
                             gv_group_member.setAdapter(mAdapter);
                         }
                         et_stnumber.setText("");
@@ -314,11 +274,11 @@ public class WaitingActivity extends BaseActivity {
                     } else {
                         LoginResVo loginResVo = JSON.parseObject(jsonObject.getJSONObject("data").toJSONString(), LoginResVo.class);
                         if (loginResVo.getStudents() != null) {
-                            list = loginResVo.getStudents();
+                            loginResList = loginResVo.getStudents();
                         }
                         ((MyApplication) getApplication()).setLoginResVo(loginResVo);
-                        if (list != null && list.size() > 0) {
-                            mAdapter = new GroupNumAdapter(WaitingActivity.this, list);
+                        if (loginResList != null && loginResList.size() > 0) {
+                            mAdapter = new GroupNumAdapter(WaitingActivity.this, loginResList);
                             gv_group_member.setAdapter(mAdapter);
                         }
                         llayout1.setVisibility(View.GONE);
