@@ -15,6 +15,8 @@ import java.util.concurrent.ThreadFactory;
 public class SocketService extends Service {
 
     public static final String NETWORK_RECEIVER = "cn.com.incito.network.RECEIVER";
+    ExecutorService exec;
+
     @Override
     public IBinder onBind(Intent arg0) {
         return null;
@@ -26,7 +28,7 @@ public class SocketService extends Service {
 //        CoreSocket.getInstance().start();
         Thread.setDefaultUncaughtExceptionHandler(
                 new MyUncaughtExceptionHandler());
-        ExecutorService exec = Executors
+        exec = Executors
                 .newCachedThreadPool(new HandlerThreadFactory());
         exec.execute(CoreSocket.getInstance());
 //        SocketMinaClient.getInstance().start();
@@ -53,4 +55,9 @@ public class SocketService extends Service {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        CoreSocket.getInstance().stopConnection();
+    }
 }
