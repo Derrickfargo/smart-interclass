@@ -33,6 +33,7 @@ import cn.com.incito.server.api.Application;
 import cn.com.incito.server.api.result.TeacherGroupResultData;
 import cn.com.incito.server.core.CoreSocket;
 import cn.com.incito.server.exception.AppException;
+import cn.com.incito.server.utils.UIHelper;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -102,19 +103,23 @@ public class Login2 extends MouseAdapter {
 
 		// 班级
 		lblClass = new JLabel();
+		lblClass.setForeground(UIHelper.getDefaultFontColor());
 		lblClass.setText("请选择班级:");
 		lblClass.setBounds(60, 65, 265, 35);
 		frame.add(lblClass);
 		jcbClass = new JComboBox();
+		jcbClass.setForeground(UIHelper.getDefaultFontColor());
 		jcbClass.setBounds(140, 65, 265, 35);// 设定位置
 		jcbClass.setEditable(true);
 		frame.add(jcbClass);// 添加到界面
 		// 课程
 		lblCourse = new JLabel();
+		lblCourse.setForeground(UIHelper.getDefaultFontColor());
 		lblCourse.setText("请选择课程:");
 		lblCourse.setBounds(60, 115, 265, 35);
 		frame.add(lblCourse);
 		jcbCourse = new JComboBox();
+		jcbCourse.setForeground(UIHelper.getDefaultFontColor());
 		jcbCourse.setBounds(140, 115, 265, 35);
 		frame.add(jcbCourse);
 

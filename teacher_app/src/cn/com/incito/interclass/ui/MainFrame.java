@@ -42,6 +42,7 @@ import cn.com.incito.server.core.Message;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
+import cn.com.incito.server.utils.UIHelper;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -195,18 +196,22 @@ public class MainFrame extends MouseAdapter {
 		pnlUser.setLayout(null);
 		String user = String.format("您好,%s!", app.getTeacher().getName());
 		JLabel lblTeacher = new JLabel(user, JLabel.CENTER);
+		lblTeacher.setForeground(UIHelper.getDefaultFontColor());
 		pnlUser.add(lblTeacher);
 		lblTeacher.setBounds(0, 70, 127, 20);
 		left.add(pnlUser);
 		pnlUser.setBounds(0, 110, 127, 95);
 
 		JLabel lblCopyRight = new JLabel("Copy Right © 2014", JLabel.CENTER);
+		lblCopyRight.setForeground(UIHelper.getDefaultFontColor());
 		lblCopyRight.setBounds(0, 585, 127, 20);
 		left.add(lblCopyRight);
 		JLabel lblCompany1 = new JLabel("四川灵动", JLabel.CENTER);
+		lblCompany1.setForeground(UIHelper.getDefaultFontColor());
 		lblCompany1.setBounds(0, 610, 127, 20);
 		left.add(lblCompany1);
 		JLabel lblCompany2 = new JLabel("信息技术有限公司", JLabel.CENTER);
+		lblCompany2.setForeground(UIHelper.getDefaultFontColor());
 		lblCompany2.setBounds(0, 625, 127, 20);
 		left.add(lblCompany2);
 
@@ -222,19 +227,25 @@ public class MainFrame extends MouseAdapter {
 		//准备上课card
 		preparePanel = new PreparePanel();
 		preparePanel.setBackground(Color.WHITE);
-		JScrollPane deskScrollPane = new JScrollPane(preparePanel);
-		deskScrollPane.getVerticalScrollBar().setUnitIncrement(50);
-		deskScrollPane.setBorder(null);
-		deskScrollPane.setBounds(0, 0, 876, 630);
+		JScrollPane prepareScrollPane = new JScrollPane(preparePanel);
+		prepareScrollPane.getVerticalScrollBar().setUnitIncrement(50);
+		prepareScrollPane.setBorder(null);
+		prepareScrollPane.setBounds(0, 0, 876, 630);
 		 //TODO 根据分组的多少动态调整
-		preparePanel.setPreferredSize(new Dimension(deskScrollPane.getWidth() - 50, deskScrollPane.getHeight() * 3));
+		preparePanel.setPreferredSize(new Dimension(prepareScrollPane.getWidth() - 50, prepareScrollPane.getHeight() * 3));
 		preparePanel.revalidate();
-		cardPanel.add(deskScrollPane, CARD_PREPARE);
+		cardPanel.add(prepareScrollPane, CARD_PREPARE);
 		
 		//作业card
 		quizPanel = new QuizPanel();
         quizPanel.setBackground(Color.WHITE);
-		cardPanel.add(quizPanel, CARD_QUIZ);
+        JScrollPane quizScrollPane = new JScrollPane(quizPanel);
+        quizScrollPane.getVerticalScrollBar().setUnitIncrement(100);
+        quizScrollPane.setBorder(null);
+        quizScrollPane.setBounds(0, 0, 876, 630);
+        quizPanel.setPreferredSize(new Dimension(quizScrollPane.getWidth() - 50, (quizScrollPane.getHeight() - 50) * 4));
+		cardPanel.add(quizScrollPane, CARD_QUIZ);
+		
         
 		// //////////////////////bottom部分////////////////////////
 		JPanel bottom = new JPanel();
@@ -243,6 +254,11 @@ public class MainFrame extends MouseAdapter {
 		bottom.setOpaque(false);
 		bottom.setBounds(137, 664, 878, 54);
 
+		JLabel lblExpected = new JLabel("应到 %d 人  | 实到 %d 人", JLabel.CENTER);
+		lblExpected.setForeground(UIHelper.getDefaultFontColor());
+		lblExpected.setBounds(10, 15, 150, 35);
+		bottom.add(lblExpected);
+		
 		JPanel pnlClass = new JPanel() {
 			private static final long serialVersionUID = 5365972834168199801L;
 
@@ -254,7 +270,7 @@ public class MainFrame extends MouseAdapter {
 		};
 		pnlClass.setLayout(null);
 		bottom.add(pnlClass);
-		pnlClass.setBounds(50, 10, 120, 35);
+		pnlClass.setBounds(180, 10, 120, 35);
 
 		JPanel pnlCourse = new JPanel() {
 			private static final long serialVersionUID = 5365972834168199801L;
@@ -267,7 +283,7 @@ public class MainFrame extends MouseAdapter {
 		};
 		pnlCourse.setLayout(null);
 		bottom.add(pnlCourse);
-		pnlCourse.setBounds(190, 10, 120, 35);
+		pnlCourse.setBounds(320, 10, 120, 35);
 
 		btnBegin = new JButton();// 创建按钮对象
 		btnStatus.setFocusPainted(false);
@@ -276,7 +292,7 @@ public class MainFrame extends MouseAdapter {
 		ImageIcon btnImage = new ImageIcon("images/main/btn_begin.png");
 		btnBegin.setIcon(btnImage);// 设置图片
 		bottom.add(btnBegin);// 添加按钮
-		btnBegin.setBounds(340, -4, btnImage.getIconWidth(),
+		btnBegin.setBounds(470, -4, btnImage.getIconWidth(),
 				btnImage.getIconHeight());
 		btnBegin.addActionListener(new ActionListener() {
 
@@ -285,13 +301,6 @@ public class MainFrame extends MouseAdapter {
 				doBegin();
 			}
 		});
-
-		JLabel lblExpected = new JLabel("应到 %d 人", JLabel.CENTER);
-		lblExpected.setBounds(520, 15, 140, 35);
-		bottom.add(lblExpected);
-		JLabel lblActual = new JLabel("实到 %d 人", JLabel.CENTER);
-		lblActual.setBounds(670, 15, 140, 35);
-		bottom.add(lblActual);
 
 		contentPane.add(bottom);
 
