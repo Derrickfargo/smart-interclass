@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import cn.com.incito.interclass.po.Group;
+import cn.com.incito.server.utils.UIHelper;
 
 public class TablePanel extends JPanel {
 
@@ -42,12 +43,14 @@ public class TablePanel extends JPanel {
 		//课桌号
 		Icon icon = new ImageIcon("images/main/pic_%s.png");
 		lblNumber = new JLabel("课桌号", icon, JLabel.LEFT);
+		lblNumber.setForeground(UIHelper.getDefaultFontColor());
 		lblNumber.setHorizontalTextPosition(JLabel.LEFT);
 		add(lblNumber);
 		lblNumber.setBounds(15, 5, 70, 30);
 
 		//小组名称
 		lblGroupName = new JLabel();
+		lblGroupName.setForeground(UIHelper.getDefaultFontColor());
 		add(lblGroupName);
 		lblGroupName.setBounds(80, 5, 80,30);
 		lblGroupName.setVisible(false);
@@ -128,7 +131,7 @@ public class TablePanel extends JPanel {
 		JLabel lblName = new JLabel("", JLabel.CENTER);
 		lblName.setOpaque(true);
 		lblName.setBackground(new Color(Integer.parseInt("e1e1e1", 16)));
-		lblName.setForeground(new Color(Integer.parseInt("000000", 16)));
+		lblName.setForeground(new Color(Integer.parseInt("454545", 16)));
 		return lblName;
 	}
 

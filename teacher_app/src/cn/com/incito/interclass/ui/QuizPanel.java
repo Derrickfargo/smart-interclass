@@ -33,14 +33,16 @@ public class QuizPanel extends JPanel {
 	 */
 	private List<Group> groupList = new ArrayList<Group>();
 	/**
-	 * 试卷列表
+	 * 当前教室所有试题，初始化界面时初始化本属性
 	 */
-	private List<Quiz> quizs = new ArrayList<Quiz>();
+	private List<QuizGroupPanel> quizGroupList = new ArrayList<QuizGroupPanel>();
 	
 	public QuizPanel() {
 		// this.setSize(878, 620);
 		this.setLayout(null);
 		this.setOpaque(true);
+		groupList = app.getGroupList();
+		
 		// 初始化界面
 		initView();
 
@@ -49,16 +51,27 @@ public class QuizPanel extends JPanel {
 	}
 
 	private void initView() {
-//		for (Group group : groupList) {
-//			
-//		}
-		GroupPanel pnlGroup = new GroupPanel();
-		pnlGroup.setBounds(10, 10, 410, 500);
-		add(pnlGroup);
+		int i = 0;
+		int y = 10;
+		while (i < 12) {
+			QuizGroupPanel pnlLeft = new QuizGroupPanel();
+			pnlLeft.setBounds(10, y, 410, 374);
+			add(pnlLeft);
+			quizGroupList.add(pnlLeft);
+			if (++i < 12) {
+				QuizGroupPanel pnlRight = new QuizGroupPanel();
+				pnlRight.setBounds(438, y, 410, 374);
+				add(pnlRight);
+				quizGroupList.add(pnlRight);
+			}
+			i++;
+			y += 380;
+		}
 	}
 
 	public void refresh() {
-	
+		initData();
+		
 	}
 
 	private void initData() {

@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import cn.com.incito.classroom.R;
+import cn.com.incito.classroom.constants.Constant;
+import cn.com.incito.classroom.entry.IGroupInfo;
 
 /**
  * 小组信息编辑页面
@@ -24,6 +26,7 @@ public class GroupEditorFragment extends CommonFragment {
 	private EditText editText_name ;
 	private GridView gridView_icons; 
 	private ArrayList<IIconItem> iconItems = new ArrayList<IIconItem>();
+	private IGroupInfo groupInfo ;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,6 +77,10 @@ public class GroupEditorFragment extends CommonFragment {
 		
 		iconItem = new IIconItem(R.drawable.icon);
 		iconItems.add(iconItem);
+		
+		
+		groupInfo = getArguments().getParcelable(Constant.GROUP_INTENT_BUNDLE_NAME);
+		
 	}
 	
 	/**
@@ -92,9 +99,15 @@ public class GroupEditorFragment extends CommonFragment {
 			}
 		});
 		
+	
+		
+		if(groupInfo!=null){
+			editText_name.setText(groupInfo.getGroupName());
+		}
+		
+		
 		IIconAdapter iconAdapter = new IIconAdapter();
 		gridView_icons.setAdapter(iconAdapter);
-		
 	}
 	
 	/**
@@ -176,8 +189,14 @@ public class GroupEditorFragment extends CommonFragment {
 	 * 确定
 	 */
 	private void sure(){
+		if(groupInfo==null)
+			groupInfo = new IGroupInfo();
+		
+		groupInfo.setGroupName(editText_name.getText().toString().trim());
+		
+		
 		if(mActivity instanceof GroupActivity){
-			((GroupActivity)mActivity).skipToGroupInfoShowPage();
+			((GroupActivity)mActivity).skipToGroupInfoShowPage(groupInfo);
 			
 		}
 		
