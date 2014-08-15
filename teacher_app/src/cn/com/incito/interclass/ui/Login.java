@@ -32,6 +32,7 @@ import cn.com.incito.server.api.Application;
 import cn.com.incito.server.api.result.TeacherLoginResultData;
 import cn.com.incito.server.exception.AppException;
 import cn.com.incito.server.utils.NetworkUtils;
+import cn.com.incito.server.utils.UIHelper;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -105,6 +106,7 @@ public class Login extends MouseAdapter{
 		headb.setBounds(20, 60, icmr.getIconWidth(), icmr.getIconHeight());
 		//用户信息栏
 		txtUserName = new JTextField();//创建对象
+		txtUserName.setForeground(UIHelper.getDefaultFontColor());
 		txtUserName.setText("用户名");
 		txtUserName.setBounds(160, 65, 265, 35);//设定位置
 		frame.add(txtUserName);//添加到界面
@@ -121,6 +123,7 @@ public class Login extends MouseAdapter{
 		remind.setBounds(30,235,150, 20);
 		remind.addMouseListener(this);
 		remind.setText("记住用户名和密码");
+		remind.setForeground(UIHelper.getDefaultFontColor());
 				
 		//登录按钮
 		btnLogin = new JButton();//创建按钮对象

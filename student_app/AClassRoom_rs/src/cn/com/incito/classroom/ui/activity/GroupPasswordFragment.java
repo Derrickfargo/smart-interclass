@@ -51,7 +51,7 @@ public class GroupPasswordFragment extends CommonFragment {
 		// TODO 此处可对学生填写的暗号进行正则验证
 		
 		if(mActivity instanceof GroupActivity){
-			((GroupActivity)mActivity).skipToGroupEditorPage();
+			((GroupActivity)mActivity).skipToGroupEditorPage(null);
 			
 		}
 
