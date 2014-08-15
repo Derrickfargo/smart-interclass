@@ -55,6 +55,7 @@ public class GroupVoteHandler extends MessageHandler {
 		voteList.add(vote);
 		Application.getInstance().getTempVote().put(id, voteList);
 		Group group = Application.getInstance().getGroupById(id);
+		//错误出现处
 		if (group != null && group.getDevices().size() == voteList.size()) {
 			//更新数据库....
 			JSONObject data = Application.getInstance().getTempGroup().get(id);

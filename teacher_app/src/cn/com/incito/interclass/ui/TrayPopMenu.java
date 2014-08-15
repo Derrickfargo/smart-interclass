@@ -1,6 +1,6 @@
 package cn.com.incito.interclass.ui;
 
-import java.awt.Component;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.UUID;
@@ -30,21 +30,22 @@ public class TrayPopMenu extends JPopupMenu {
 
     public TrayPopMenu() {
         super();
-        initComponent();
+        addItems();
     }
 
     public TrayPopMenu(String label) {
         super(label);
-        initComponent();
+        addItems();
     }
 
     public TrayPopMenu(Component component) {
+        super();
         context = component;
-        initComponent();
+        addItems();
 
     }
 
-    public void initComponent() {
+    public void addItems() {
         if (Application.operationState != Constants.STATE_QUIZING) {
             JMenuItem item1 = new JMenuItem("发作业");
             item1.addActionListener(new ActionListener() {
@@ -72,7 +73,6 @@ public class TrayPopMenu extends JPopupMenu {
         JMenuItem item3 = new JMenuItem("退出程序");
         item3.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                LockUtils.unlockFile();
                 System.exit(0);
 
             }
