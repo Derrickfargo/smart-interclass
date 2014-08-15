@@ -107,6 +107,7 @@ public class FloatWin implements MouseListener,
         int mods = e.getModifiers();
         if ((mods & InputEvent.BUTTON3_MASK) != 0) {
             // 弹出菜单
+            popupMenu.revalidate();
             popupMenu.show(dialog, e.getX(), e.getY());
         } else if (e.getClickCount() % 2 == 0) {
             mySystemTrayEvent.openHide(mainFrame);
