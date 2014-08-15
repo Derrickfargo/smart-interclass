@@ -7,17 +7,19 @@ import java.util.List;
 
 import javax.imageio.stream.FileImageOutputStream;
 
-import cn.com.incito.server.utils.FileUtils;
 import org.apache.log4j.Logger;
 
 import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
+import cn.com.incito.interclass.po.Quiz;
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.ApiClient;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.api.result.TeacherGroupResultData;
 import cn.com.incito.server.exception.AppException;
+import cn.com.incito.server.utils.FileUtils;
+import cn.com.incito.server.utils.ImageUtil;
 import cn.com.incito.server.utils.JSONUtils;
 
 import com.alibaba.fastjson.JSON;
@@ -29,7 +31,7 @@ public class CoreService {
 
     public void deviceLogin(String imei) {
         app.getOnlineDevice().add(imei);
-        app.refreshFrame();// 更新UI
+        app.refreshPrepare();// 更新UI
     }
 
     /**
@@ -99,7 +101,7 @@ public class CoreService {
                 // 第二步获得班级、课程、设备、课桌、分组数据
                 Application.getInstance().initMapping(resultData.getDevices(),
                         resultData.getTables(), resultData.getGroups());
-                Application.getInstance().refreshFrame();
+                Application.getInstance().refreshPrepare();
             }
             logger.info(result);
         } catch (AppException e) {
@@ -130,7 +132,7 @@ public class CoreService {
                 // 第二步获得班级、课程、设备、课桌、分组数据
                 Application.getInstance().initMapping(resultData.getDevices(),
                         resultData.getTables(), resultData.getGroups());
-                Application.getInstance().refreshFrame();
+                Application.getInstance().refreshPrepare();
             }
             logger.info(result);
         } catch (AppException e) {
@@ -165,7 +167,7 @@ public class CoreService {
                     && student.getNumber().equals(number)) {
                 student.setLogin(true);
                 app.getOnlineStudent().add(student);// 加入在线的学生
-                app.refreshFrame();// 更新UI
+                app.refreshPrepare();// 更新UI
                 return JSONUtils.renderJSONString(0, group);
             }
         }
@@ -198,7 +200,7 @@ public class CoreService {
                     && student.getNumber().equals(number)) {
                 student.setLogin(false);
                 app.getOnlineStudent().remove(student);
-                app.refreshFrame();// 更新UI
+                app.refreshPrepare();// 更新UI
                 return JSONUtils.renderJSONString(0, group);
             }
         }
@@ -235,7 +237,7 @@ public class CoreService {
                     }
                     app.addGroup(group);
                     app.getTableGroup().put(group.getTableId(), group);
-                    app.refreshFrame();// 更新UI
+                    app.refreshPrepare();// 更新UI
                     return JSONUtils.renderJSONString(JSONUtils.SUCCESS, group);
                 }
                 return result;
@@ -282,15 +284,26 @@ public class CoreService {
     public String SavePaper(String imei, String id, byte[] imageByte) {
         File path = new File(FileUtils.getProjectPath() + "/" + id);
         path.mkdirs();
+        
         File file = new File(path, imei + ".jpg");
-        try {
-            FileImageOutputStream imageOutput = new FileImageOutputStream(file);
-            imageOutput.write(imageByte, 0, imageByte.length);
-            imageOutput.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return JSONUtils.renderJSONString(0);
+		File thumbnail = new File(path, imei + "_thumbnail.jpg");
+		try {
+			FileImageOutputStream imageOutput = new FileImageOutputStream(file);
+			imageOutput.write(imageByte, 0, imageByte.length);
+			imageOutput.close();
+			ImageUtil.resize(file, thumbnail, 186, 1f);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		Quiz quiz = new Quiz();
+		quiz.setId(id);
+		quiz.setImei(imei);
+		quiz.setQuizUrl(file.getAbsolutePath());
+		quiz.setThumbnail(thumbnail.getAbsolutePath());
+		app.getTempQuiz().put(imei, quiz);
+		app.refreshQuiz();
+		return JSONUtils.renderJSONString(0);
     }
 
 }

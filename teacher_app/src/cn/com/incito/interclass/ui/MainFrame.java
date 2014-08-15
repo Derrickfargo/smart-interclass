@@ -83,8 +83,13 @@ public class MainFrame extends MouseAdapter {
 		frame.setVisible(show);
 	}
 
-	public void refresh() {
+	public void refreshPrepare() {
 		preparePanel.refresh();
+		quizPanel.refresh();
+	}
+	
+	public void refreshQuiz(){
+		quizPanel.refresh();
 	}
 
 	public JFrame getFrame() {
