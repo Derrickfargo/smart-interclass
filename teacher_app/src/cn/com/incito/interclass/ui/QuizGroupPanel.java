@@ -12,11 +12,17 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.server.utils.UIHelper;
 
+/**
+ * 小组作业Panel
+ * @author 刘世平
+ *
+ */
 public class QuizGroupPanel extends JPanel implements MouseListener{
 
 	private static final long serialVersionUID = 882552987989905663L;
@@ -46,27 +52,27 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 	
 	public QuizGroupPanel(){
 		setLayout(null);
-//		setVisible(false);
+		setVisible(false);
 		
 		JPanel quiz1 = createImagePanel(14,15);
 		quizList.add(quiz1);
 		add(quiz1);
-//		quiz1.setVisible(false);
+		quiz1.setVisible(false);
 		
 		JPanel quiz2 = createImagePanel(208,15);
 		quizList.add(quiz2);
 		add(quiz2);
-//		quiz2.setVisible(false);
+		quiz2.setVisible(false);
 		
 		JPanel quiz3 = createImagePanel(14,165);
 		quizList.add(quiz3);
 		add(quiz3);
-//		quiz3.setVisible(false);
+		quiz3.setVisible(false);
 		
 		JPanel quiz4 = createImagePanel(208,165);
 		quizList.add(quiz4);
 		add(quiz4);
-//		quiz4.setVisible(false);
+		quiz4.setVisible(false);
 		
 		//小组课桌号
 		lblDesk = createDeskLabel();
@@ -119,7 +125,7 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 	}
 	
 	private JLabel createScoreLabel(){
-		JLabel lblDesk = new JLabel("15分", JLabel.CENTER);
+		JLabel lblDesk = new JLabel("0分", JLabel.CENTER);
 		lblDesk.setOpaque(true);
 		lblDesk.setBounds(210,331, 40, 24);
 		lblDesk.setBackground(Color.RED);
@@ -190,12 +196,28 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 		this.group = group;
 	}
 
+	public JLabel getLblDesk() {
+		return lblDesk;
+	}
+
+	public JLabel getLblScore() {
+		return lblScore;
+	}
+
 	public JLabel getLblLogo() {
 		return lblLogo;
 	}
 
 	public JLabel getLblGroupName() {
 		return lblGroupName;
+	}
+
+	public List<JPanel> getQuizList() {
+		return quizList;
+	}
+
+	public List<JLabel> getNameList() {
+		return nameList;
 	}
 
 	@Override
@@ -213,20 +235,20 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-//		if (e.getSource() == btnPlus) {
-//			btnPlus.setIcon(new ImageIcon(BTN_PLUS_NORMAL));
-//		}
-//		if (e.getSource() == btnMinus) {
-//			btnMinus.setIcon(new ImageIcon(BTN_MINUS_NORMAL));
-//		}
-//		if (e.getSource() == btnMedal) {
-//			btnMedal.setIcon(new ImageIcon(BTN_MEDAL_NORMAL));
-//		}
+		
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-
+		if (e.getSource() == btnPlus) {
+			JOptionPane.showMessageDialog(getParent().getParent(), "小组加分!");
+		}
+		if (e.getSource() == btnMinus) {
+			JOptionPane.showMessageDialog(getParent().getParent(), "小组减分!");
+		}
+		if (e.getSource() == btnMedal) {
+			JOptionPane.showMessageDialog(getParent().getParent(), "小组颁发勋章!");
+		}
 	}
 	
 	@Override

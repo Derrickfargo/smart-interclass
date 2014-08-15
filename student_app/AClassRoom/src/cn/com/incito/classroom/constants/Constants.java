@@ -32,4 +32,6 @@ public class Constants {
 	public final static int LARGE_PEN_WIDTH = 15;
 	public final static int MIDDLE_PEN_WIDTH = 10;
 	public final static int SMALL_PEN_WIDTH = 5;
+	//注册学生最大数量
+    public static final int STUDENT_MAX_NUM=15;
 }

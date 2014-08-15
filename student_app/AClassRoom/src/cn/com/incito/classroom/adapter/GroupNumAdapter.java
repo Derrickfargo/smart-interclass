@@ -29,79 +29,90 @@ import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.vo.LoginRes2Vo;
 
 /**
- * 组成员列表适配器
- * Created by popoy on 2014/7/28.
+ * 组成员列表适配器 Created by popoy on 2014/7/28.
  */
 public class GroupNumAdapter extends BaseAdapter {
 
-    /**
-     * The m context.
-     */
-    private Context mContext;
+	/**
+	 * The m context.
+	 */
+	private Context mContext;
 
-    /**
-     * The m views.
-     */
-    private List<LoginRes2Vo> datas;
+	/**
+	 * The m views.
+	 */
+	private List<LoginRes2Vo> datas;
 
-    /**
-     * The m reflected.
-     */
-    private boolean mReflected = true;
+	/**
+	 * The m reflected.
+	 */
+	private boolean mReflected = true;
 
-    LayoutInflater mInflater;
+	LayoutInflater mInflater;
 
-    public GroupNumAdapter(Context context) {
-        this.mContext = context;
-        mInflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    }
+	public GroupNumAdapter(Context context) {
+		this.mContext = context;
+		mInflater = (LayoutInflater) context
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	}
 
-    @Override
-    public int getCount() {
-        return datas.size();
-    }
+	@Override
+	public int getCount() {
+		return datas.size();
+	}
 
-    @Override
-    public Object getItem(int position) {
-        return datas.get(position);
-    }
+	@Override
+	public Object getItem(int position) {
+		return datas.get(position);
+	}
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
+	@Override
+	public long getItemId(int position) {
+		return position;
+	}
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        final ViewHolder holder;
-        if (convertView == null) {
-            convertView = mInflater.inflate(
-                    R.layout.item_group_mem, parent, false);
-            holder = new ViewHolder();
-            holder.tv_num_name = (TextView) convertView.findViewById(R.id.tv_num_name);
-            holder.rlayout = (RelativeLayout) convertView.findViewById(R.id.rlayout);
-            convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
-        }
-        if (datas.get(position).isLogin()) {
-            holder.rlayout.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.bg_logged_user_m));
-        } else {
-            holder.rlayout.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.bg_not_logged_user_m));
-        }
-        holder.tv_num_name.setText(datas.get(position).getName());
-        return convertView;
-    }
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		final ViewHolder holder;
+		if (convertView == null) {
+			convertView = mInflater.inflate(R.layout.item_group_mem, parent,
+					false);
+			holder = new ViewHolder();
+			holder.tv_num_name = (TextView) convertView
+					.findViewById(R.id.tv_num_name);
+			holder.rlayout = (RelativeLayout) convertView
+					.findViewById(R.id.rlayout);
+			convertView.setTag(holder);
+		} else {
+			holder = (ViewHolder) convertView.getTag();
+		}
+		if ("1".equals(datas.get(position).getSex())) {// 男
+			if (datas.get(position).isLogin()) {
+				holder.rlayout.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.bg_logged_user_m));
+			} else {
+				holder.rlayout.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.bg_not_logged_user_m));
+			}
 
-    static class ViewHolder {
-        public TextView tv_num_name;
-        public RelativeLayout rlayout;
-    }
+		}else{//女
+			if (datas.get(position).isLogin()) {
+				holder.rlayout.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.bg_logged_user_w));
+			} else {
+				holder.rlayout.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.bg_not_logged_user_w));
+			}
+		}
 
-    public void setDatas(List<LoginRes2Vo> datas) {
-        this.datas = datas;
-        notifyDataSetInvalidated();
+		holder.tv_num_name.setText(datas.get(position).getName());
+		return convertView;
+	}
+
+	static class ViewHolder {
+		public TextView tv_num_name;
+		public RelativeLayout rlayout;
+	}
+
+	public void setDatas(List<LoginRes2Vo> datas) {
+		this.datas = datas;
+		notifyDataSetInvalidated();
 		notifyDataSetChanged();
-    }
+	}
 }

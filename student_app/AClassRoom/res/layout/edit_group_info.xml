@@ -23,7 +23,7 @@
                 android:background="@drawable/bg_groupname"
                 android:clickable="true"
                 android:hint="@string/input_group_name_hint"
-                android:maxLength="20"
+                android:maxLength="8"
                 android:paddingLeft="40dp"
                 android:singleLine="true" />
 

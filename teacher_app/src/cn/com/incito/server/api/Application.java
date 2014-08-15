@@ -1,10 +1,5 @@
 package cn.com.incito.server.api;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.channels.FileChannel;
-import java.nio.channels.FileLock;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,22 +9,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import cn.com.incito.server.utils.FileUtils;
-import cn.com.incito.server.utils.LockUtils;
-import com.alibaba.fastjson.JSONObject;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import cn.com.incito.interclass.po.Classes;
 import cn.com.incito.interclass.po.Course;
 import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
+import cn.com.incito.interclass.po.Quiz;
 import cn.com.incito.interclass.po.Room;
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.po.Table;
 import cn.com.incito.interclass.po.Teacher;
 import cn.com.incito.interclass.ui.Login;
 import cn.com.incito.interclass.ui.MainFrame;
+import cn.com.incito.server.utils.LockUtils;
 
-import javax.swing.*;
+import com.alibaba.fastjson.JSONObject;
 
 public class Application {
     private static Application instance;
@@ -53,7 +49,8 @@ public class Application {
     private Map<Integer, Group> groupMap = new HashMap<Integer, Group>();
     private Map<Integer, JSONObject> tempGroup = new HashMap<Integer, JSONObject>();// 修改的分组信息
     private Map<Integer, List<Integer>> tempVote = new HashMap<Integer, List<Integer>>();// 小组的投票信息
-
+    private Map<String, Quiz> tempQuiz = new HashMap<String, Quiz>();//随堂联系
+    
     /**
      * IMEI和设备的对应关系(key:imei,value:Device)，教师登陆完后初始化
      */
@@ -379,9 +376,18 @@ public class Application {
         return tempVote;
     }
 
-    public void refreshFrame() {
-        MainFrame.getInstance().refresh();
-    }
+	public Map<String, Quiz> getTempQuiz() {
+		return tempQuiz;
+	}
+	
+	public void refreshPrepare() {
+		MainFrame.getInstance().refreshPrepare();
+		MainFrame.getInstance().refreshQuiz();
+	}
+
+	public void refreshQuiz() {
+		MainFrame.getInstance().refreshQuiz();
+	}
 
     public String getQuizId() {
         return quizId;

@@ -7,15 +7,17 @@ public class Quiz implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -1469903255940391815L;
-	private int id;
+	private String id;
 	private String imei;
+	private String name;
 	private String quizUrl;
+	private String thumbnail;
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -33,6 +35,22 @@ public class Quiz implements Serializable {
 
 	public void setQuizUrl(String quizUrl) {
 		this.quizUrl = quizUrl;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getThumbnail() {
+		return thumbnail;
+	}
+
+	public void setThumbnail(String thumbnail) {
+		this.thumbnail = thumbnail;
 	}
 
 
