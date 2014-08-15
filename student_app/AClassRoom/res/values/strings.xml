@@ -20,5 +20,6 @@
 
     <string name="input_group_name_hint">请输入小组名称</string>
     <string name="group_name_null">小组名称还没有讨论好吗？</string>
+    <string name="group_name_short_notice">小组名称不能少于两个字哦！</string>
     <string name="waiting_other_confirm_tip">稍等一下哦，其他同学还没有确认的哈！</string>
 </resources>
