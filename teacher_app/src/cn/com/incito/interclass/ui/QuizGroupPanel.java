@@ -41,7 +41,8 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 	private JLabel lblGroupName;
 	private JLabel lblScore;
 	private JButton btnPlus,btnMinus,btnMedal;
-	private List<JPanel> quizList = new ArrayList<JPanel>();
+	private List<JLabel> quizList = new ArrayList<JLabel>();
+	private List<JPanel> quizPanel = new ArrayList<JPanel>();
 	private List<JLabel> nameList = new ArrayList<JLabel>();
 	
 	@Override
@@ -55,24 +56,24 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 		setVisible(false);
 		
 		JPanel quiz1 = createImagePanel(14,15);
-		quizList.add(quiz1);
-		add(quiz1);
 		quiz1.setVisible(false);
+		add(quiz1);
+		quizPanel.add(quiz1);
 		
 		JPanel quiz2 = createImagePanel(208,15);
-		quizList.add(quiz2);
-		add(quiz2);
 		quiz2.setVisible(false);
+		add(quiz2);
+		quizPanel.add(quiz2);
 		
 		JPanel quiz3 = createImagePanel(14,165);
-		quizList.add(quiz3);
-		add(quiz3);
 		quiz3.setVisible(false);
+		add(quiz3);
+		quizPanel.add(quiz3);
 		
 		JPanel quiz4 = createImagePanel(208,165);
-		quizList.add(quiz4);
-		add(quiz4);
 		quiz4.setVisible(false);
+		add(quiz4);
+		quizPanel.add(quiz4);
 		
 		//小组课桌号
 		lblDesk = createDeskLabel();
@@ -180,6 +181,11 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 		};
 		imagePanel.setLayout(null);
 		imagePanel.setBounds(x, y, icon.getIconWidth(), icon.getIconHeight());
+		JLabel lblImage = new JLabel();
+		quizList.add(lblImage);
+		lblImage.setBounds(2, 2, icon.getIconWidth() - 4, icon.getIconHeight() - 4);
+		imagePanel.add(lblImage);
+		
 		JLabel lblName = new JLabel("测试测试从测试", JLabel.CENTER);
 		lblName.setForeground(UIHelper.getDefaultFontColor());
 		nameList.add(lblName);
@@ -212,12 +218,16 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 		return lblGroupName;
 	}
 
-	public List<JPanel> getQuizList() {
+	public List<JLabel> getQuizList() {
 		return quizList;
 	}
 
 	public List<JLabel> getNameList() {
 		return nameList;
+	}
+
+	public List<JPanel> getQuizPanel() {
+		return quizPanel;
 	}
 
 	@Override
