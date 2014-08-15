@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import cn.com.incito.server.utils.LockUtils;
 import org.apache.log4j.Logger;
 
 import cn.com.incito.server.api.ApiClient;
@@ -205,7 +206,9 @@ public class Login extends MouseAdapter{
 		}
 		if(e.getSource()==btnClose){
 			btnClose.setIcon(new ImageIcon("images/login/8.png"));
+            LockUtils.unlockFile();
 			System.exit(0);
+
 		}
 	}
 
