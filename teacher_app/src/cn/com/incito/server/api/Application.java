@@ -35,6 +35,8 @@ public class Application {
     private Course course;// 当前上课的课程，教师登陆完后初始化
     private Classes classes;// 当前上课的班级，教师登陆完后初始化
 
+    public static int operationState;//0正常1课堂练习中
+
     private List<Group> groupList = new ArrayList<Group>();// 本堂课的所有分组
     private List<Table> tableList = new ArrayList<Table>();// 本教室所有的桌子
     private List<Device> deviceList = new ArrayList<Device>();// 本教室所有的Device
@@ -78,7 +80,7 @@ public class Application {
 
     private Application() {
 //        if (LockUtils.isFileLocked(FileUtils.getProjectPath() + "/" + "ss.txt")){
-        if (LockUtils.isFileLocked()){
+        if (LockUtils.isFileLocked()) {
             JFrame jFrame = new JFrame();
             JOptionPane.showMessageDialog(jFrame, "程序已经在运行!");
             LockUtils.unlockFile();
@@ -228,7 +230,6 @@ public class Application {
     }
 
     public void addGroup(Group group) {
-        // TODO 这里有修改过，以前写成了tableGroup.put(group.getId(), group);
         tableGroup.put(group.getTableId(), group);
         groupMap.put(group.getId(), group);
 

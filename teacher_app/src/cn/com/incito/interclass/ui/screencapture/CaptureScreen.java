@@ -25,6 +25,7 @@ import java.util.UUID;
 
 import javax.imageio.*;
 
+import cn.com.incito.interclass.constant.Constants;
 import sun.security.provider.Sun;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.CoreSocket;
@@ -85,6 +86,7 @@ public class CaptureScreen {
         messagePacking.putBodyData(DataType.INT, os.toByteArray());
 
         CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
+        Application.operationState= Constants.STATE_QUIZING;
     }
 
 
@@ -451,6 +453,8 @@ public class CaptureScreen {
                         // updates();
                     }
                     distributePaper(get);
+
+
                 }
             }
         }

@@ -1,6 +1,6 @@
 package cn.com.incito.interclass.ui;
 
-import java.awt.Component;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.UUID;
@@ -8,6 +8,7 @@ import java.util.UUID;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import cn.com.incito.interclass.constant.Constants;
 import cn.com.incito.interclass.ui.screencapture.CaptureScreen;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.CoreSocket;
@@ -29,40 +30,46 @@ public class TrayPopMenu extends JPopupMenu {
 
     public TrayPopMenu() {
         super();
-        initComponent();
+        addItems();
     }
 
     public TrayPopMenu(String label) {
         super(label);
-        initComponent();
+        addItems();
     }
 
     public TrayPopMenu(Component component) {
+        super();
         context = component;
-        initComponent();
+        addItems();
 
     }
 
-    public void initComponent() {
-        JMenuItem item1 = new JMenuItem("发作业");
-        item1.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // distributePaper();
-                CaptureScreen captureScreen = new CaptureScreen(context);
-                captureScreen.doStart();
+    public void addItems() {
+        if (Application.operationState != Constants.STATE_QUIZING) {
+            JMenuItem item1 = new JMenuItem("发作业");
+            item1.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    // distributePaper();
+                    CaptureScreen captureScreen = new CaptureScreen(context);
+                    captureScreen.doStart();
 
-            }
-        });
-        add(item1);
-        JMenuItem item2 = new JMenuItem("收作业");
-        item2.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // distributePaper();
-                collectPaper();
+                }
+            });
+            add(item1);
+        }
+        if (Application.operationState == Constants.STATE_QUIZING) {
+            JMenuItem item2 = new JMenuItem("收作业");
+            item2.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    // distributePaper();
+                    collectPaper();
 
-            }
-        });
-        add(item2);
+                }
+            });
+            add(item2);
+        }
+
         JMenuItem item3 = new JMenuItem("退出程序");
         item3.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -86,5 +93,6 @@ public class TrayPopMenu extends JPopupMenu {
         messagePacking.putBodyData(DataType.INT,
                 BufferUtils.writeUTFString(json.toString()));
         CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
+        Application.operationState = Constants.STATE_NORMAL;
     }
 }
