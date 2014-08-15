@@ -8,6 +8,7 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -182,8 +183,8 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 		imagePanel.setLayout(null);
 		imagePanel.setBounds(x, y, icon.getIconWidth(), icon.getIconHeight());
 		JLabel lblImage = new JLabel();
+		lblImage.setBounds(2, 2, 185, 109);
 		quizList.add(lblImage);
-		lblImage.setBounds(2, 2, icon.getIconWidth() - 4, icon.getIconHeight() - 4);
 		imagePanel.add(lblImage);
 		
 		JLabel lblName = new JLabel("测试测试从测试", JLabel.CENTER);
@@ -192,6 +193,11 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 		lblName.setBounds(0, icon.getIconHeight()- 25 , icon.getIconWidth(), 25);
 		imagePanel.add(lblName);
 		return imagePanel;
+	}
+	
+	public void addImage(int i, String url) {
+		Icon icon1 = new ImageIcon(url);
+		quizList.get(i).setIcon(icon1);
 	}
 	
 	public Group getGroup() {

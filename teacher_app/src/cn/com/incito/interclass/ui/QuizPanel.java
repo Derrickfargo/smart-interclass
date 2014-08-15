@@ -90,10 +90,9 @@ public class QuizPanel extends JPanel {
 			String imei = device.getImei();
 			Quiz quiz = app.getTempQuiz().get(imei);
 			if (quiz != null) {
-				String thumbnail = quiz.getThumbnail();
-				ImageIcon icon = new ImageIcon(thumbnail);
-				JLabel lblQuiz = quizList.get(i);
-				lblQuiz.setIcon(icon);
+				panel.addImage(i, quiz.getThumbnail());
+				JLabel lblName = quizList.get(i);
+				lblName.setText(quiz.getName());
 			}
 		}
 	}
