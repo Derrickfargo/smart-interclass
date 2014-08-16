@@ -10,11 +10,11 @@ public class DeviceBindHandler extends MessageHandler {
 
 	@Override
 	protected void handleMessage() {
-		if (data.getIntValue("code") != 0) {
-			return;
+		if("0".equals(data.getString("code"))) {
+			UIHelper uiHelper = UIHelper.getInstance();
+			uiHelper.showLoginActivity();
 		}
-		UIHelper uiHelper = UIHelper.getInstance();
-		uiHelper.showLoginActivity();
+		
 	}
 
 }
