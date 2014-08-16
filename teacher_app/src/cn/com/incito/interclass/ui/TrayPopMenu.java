@@ -17,7 +17,6 @@ import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
 
-import cn.com.incito.server.utils.LockUtils;
 import com.alibaba.fastjson.JSONObject;
 
 /**

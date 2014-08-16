@@ -24,7 +24,6 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import cn.com.incito.server.utils.LockUtils;
 import org.apache.log4j.Logger;
 
 import cn.com.incito.server.api.ApiClient;

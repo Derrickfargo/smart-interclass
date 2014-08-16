@@ -23,7 +23,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import cn.com.incito.server.utils.LockUtils;
 import org.apache.log4j.Logger;
 
 import cn.com.incito.interclass.po.Classes;
