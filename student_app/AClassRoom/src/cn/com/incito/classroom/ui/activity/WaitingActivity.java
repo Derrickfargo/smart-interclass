@@ -3,7 +3,9 @@ package cn.com.incito.classroom.ui.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -153,14 +155,31 @@ public class WaitingActivity extends BaseActivity {
 
 	@Override
 	public void onBackPressed() {
-		if ((System.currentTimeMillis() - mExitTime) > 2000) {// 如果两次按键时间间隔大于2000毫秒，则不退出
-			Toast.makeText(this, R.string.toast_quit_app, Toast.LENGTH_SHORT)
-					.show();
-			mExitTime = System.currentTimeMillis();// 更新mExitTime
-		} else {
-			AppManager.getAppManager().AppExit(this);
-		}
+		showDialog();
+//		if ((System.currentTimeMillis() - mExitTime) > 2000) {// 如果两次按键时间间隔大于2000毫秒，则不退出
+//			Toast.makeText(this, R.string.toast_quit_app, Toast.LENGTH_SHORT)
+//					.show();
+//			mExitTime = System.currentTimeMillis();// 更新mExitTime
+//		} else {
+//		
+//		}
 	}
+	 public void showDialog() {
+	        new AlertDialog.Builder(this)
+	                .setMessage("确定退出？")
+	                .setPositiveButton("是", new DialogInterface.OnClickListener() {
+	                    @Override
+	                    public void onClick(DialogInterface dialog, int which) {
+	                    	AppManager.getAppManager().AppExit(WaitingActivity.this);
+	                    }
+	                })
+	                .setNegativeButton("否", new DialogInterface.OnClickListener() {
+	                    @Override
+	                    public void onClick(DialogInterface dialog, int which) {
+	                        dialog.dismiss();
+	                    }
+	                }).show();
+	    }
 
 	/**
 	 * 与后台服务建立连接，并实现登陆
