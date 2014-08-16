@@ -203,7 +203,7 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 		String url = quiz.getThumbnail();
 		Icon icon1 = new ImageIcon(url);
 		quizList.get(i).setIcon(icon1);
-		quizList.get(i).setName(url);
+		quizList.get(i).setName(quiz.getQuizUrl());
 		quizMap.put(quiz.getImei(), quiz);
 	}
 	
