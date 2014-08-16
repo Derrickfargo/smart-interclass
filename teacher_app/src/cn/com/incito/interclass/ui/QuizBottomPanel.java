@@ -6,14 +6,30 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.UUID;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import com.alibaba.fastjson.JSONObject;
+import com.sun.image.codec.jpeg.ImageFormatException;
+
+import cn.com.incito.interclass.constant.Constants;
+import cn.com.incito.interclass.ui.screencapture.CaptureScreen;
 import cn.com.incito.server.api.Application;
+import cn.com.incito.server.core.CoreSocket;
+import cn.com.incito.server.core.Message;
+import cn.com.incito.server.message.DataType;
+import cn.com.incito.server.message.MessagePacking;
+import cn.com.incito.server.utils.BufferUtils;
 import cn.com.incito.server.utils.UIHelper;
 
 public class QuizBottomPanel extends JPanel implements MouseListener{
@@ -77,20 +93,30 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 		btnQuiz.addMouseListener(this);
 	}
 
-	private void doSendQuiz(){
+	public void doSendQuiz(){
+		
 		int result = JOptionPane.showConfirmDialog(getParent().getParent(),
 				"是否截图发送作业？", "提示", JOptionPane.YES_NO_OPTION);
-		if (JOptionPane.YES_OPTION == result) {
-			//TODO 截图发送
-			
+		if(result==-1){
 			return;
 		}
+		hasQuiz = true;
+		btnQuiz.setIcon(new ImageIcon(BTN_ACCEPT_HOVER));
+		if (JOptionPane.YES_OPTION == result) {
+			//TODO 截图发送
+			MainFrame.getInstance().setState(JFrame.ICONIFIED);
+			 CaptureScreen captureScreen = new CaptureScreen(this);
+             captureScreen.doStart();
+		}else{
 		//TODO 发送白板
-		
+			distributePaper();
+		}
 	}
 	
-	private void doAcceptQuiz(){
-		
+	public void doAcceptQuiz(){
+		collectPaper();
+		hasQuiz = false;
+		btnQuiz.setIcon(new ImageIcon(BTN_SEND_HOVER));
 	}
 	
 	@Override
@@ -99,7 +125,6 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 			if (hasQuiz) {// 有作业，收作业
 				btnQuiz.setIcon(new ImageIcon(BTN_ACCEPT_HOVER));
 			} else {// 没作业，发作业
-				doAcceptQuiz();
 				btnQuiz.setIcon(new ImageIcon(BTN_SEND_HOVER));
 			}
 		}
@@ -113,13 +138,9 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (hasQuiz) {// 有作业，收作业
-			doSendQuiz();
-			hasQuiz = false;
-			btnQuiz.setIcon(new ImageIcon(BTN_SEND_HOVER));
-		} else {// 没作业，发作业
 			doAcceptQuiz();
-			hasQuiz = true;
-			btnQuiz.setIcon(new ImageIcon(BTN_ACCEPT_HOVER));
+		} else {// 没作业，发作业
+			doSendQuiz();
 		}
 	}
 	
@@ -146,6 +167,36 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 			}
 		}
 	}
-	
+	  /**
+     * 老师主动收作业
+     */
+    public void collectPaper() {
 
+        MessagePacking messagePacking = new MessagePacking(
+                Message.MESSAGE_SAVE_PAPER);
+        JSONObject json = new JSONObject();
+        json.put("id", Application.getInstance().getQuizId());
+        messagePacking.putBodyData(DataType.INT,
+                BufferUtils.writeUTFString(json.toString()));
+        CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
+        Application.operationState = Constants.STATE_NORMAL;
+    }
+    /**
+     * 分发空白试卷
+     *
+     * @throws IOException
+     * @throws ImageFormatException
+     */
+    public void distributePaper() {
+
+        MessagePacking messagePacking = new MessagePacking(
+                Message.MESSAGE_DISTRIBUTE_PAPER);
+        String uuid = UUID.randomUUID().toString();
+        Application.getInstance().setQuizId(uuid);
+        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(uuid));
+        messagePacking.putBodyData(DataType.INT,  BufferUtils.writeUTFString("false"));
+        CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
+        Application.operationState= Constants.STATE_QUIZING;
+        Application.getInstance().getTempQuiz().clear();
+    }
 }

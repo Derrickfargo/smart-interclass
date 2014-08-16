@@ -50,9 +50,9 @@ public class TrayPopMenu extends JPopupMenu {
             item1.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     // distributePaper();
-                    CaptureScreen captureScreen = new CaptureScreen(context);
-                    captureScreen.doStart();
-
+//                    CaptureScreen captureScreen = new CaptureScreen(context);
+//                    captureScreen.doStart();
+                	MainFrame.getInstance().doSendQuiz();
                 }
             });
             add(item1);
@@ -62,8 +62,8 @@ public class TrayPopMenu extends JPopupMenu {
             item2.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     // distributePaper();
-                    collectPaper();
-
+//                    collectPaper();
+                	MainFrame.getInstance().doAcceptQuiz();
                 }
             });
             add(item2);

@@ -83,6 +83,7 @@ public class CaptureScreen {
         String uuid = UUID.randomUUID().toString();
         Application.getInstance().setQuizId(uuid);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(uuid));
+        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString("true"));
         messagePacking.putBodyData(DataType.INT, os.toByteArray());
 
         CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
@@ -93,6 +94,7 @@ public class CaptureScreen {
 
     public void doStart() {
         try {
+        	Thread.sleep(300);
             Robot ro = new Robot();
             Toolkit tk = Toolkit.getDefaultToolkit();
             Dimension di = tk.getScreenSize();
