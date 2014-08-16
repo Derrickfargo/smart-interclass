@@ -4,18 +4,30 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.utils.UIHelper;
 
-public class QuizBottomPanel extends JPanel{
+public class QuizBottomPanel extends JPanel implements MouseListener{
 	private static final long serialVersionUID = -9135075807085951600L;
-	private JButton btnSend;
+	
+	private static final String BTN_SEND_NORMAL = "images/quiz/btn_send_works.png";
+	private static final String BTN_SEND_HOVER = "images/quiz/btn_send_works_hover.png";
+	
+	private static final String BTN_ACCEPT_NORMAL = "images/quiz/btn_accept_works.png";
+	private static final String BTN_ACCEPT_HOVER = "images/quiz/btn_accept_works_hover.png";
+	
+	private boolean hasQuiz = false;//是否在作业
+	
+	private JButton btnQuiz;
 	private Application app = Application.getInstance();
 	
 	public QuizBottomPanel(){
@@ -54,22 +66,85 @@ public class QuizBottomPanel extends JPanel{
 		add(pnlCourse);
 		pnlCourse.setBounds(320, 10, 120, 35);
 		
-		btnSend = new JButton();// 创建按钮对象
-		btnSend.setFocusPainted(false);
-		btnSend.setBorderPainted(false);// 设置边框不可见
-		btnSend.setContentAreaFilled(false);// 设置透明
-		ImageIcon btnImage = new ImageIcon("images/quiz/btn_send_works.png");
-		btnSend.setIcon(btnImage);// 设置图片
-		add(btnSend);// 添加按钮
-		btnSend.setBounds(470, -4, btnImage.getIconWidth(),
-				btnImage.getIconHeight());
-		btnSend.addActionListener(new ActionListener() {
+		btnQuiz = new JButton();// 创建按钮对象
+		btnQuiz.setFocusPainted(false);
+		btnQuiz.setBorderPainted(false);// 设置边框不可见
+		btnQuiz.setContentAreaFilled(false);// 设置透明
+		ImageIcon btnImage = new ImageIcon(BTN_SEND_NORMAL);
+		btnQuiz.setIcon(btnImage);// 设置图片
+		add(btnQuiz);// 添加按钮
+		btnQuiz.setBounds(470, -4, btnImage.getIconWidth(), btnImage.getIconHeight());
+		btnQuiz.addMouseListener(this);
+	}
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
+	private void doSendQuiz(){
+		int result = JOptionPane.showConfirmDialog(getParent().getParent(),
+				"是否截图发送作业？", "提示", JOptionPane.YES_NO_OPTION);
+		if (JOptionPane.YES_OPTION == result) {
+			//TODO 截图发送
+			
+			return;
+		}
+		//TODO 发送白板
+		
+	}
+	
+	private void doAcceptQuiz(){
+		
+	}
+	
+	@Override
+	public void mousePressed(MouseEvent e) {
+		if (e.getSource() == btnQuiz) {
+			if (hasQuiz) {// 有作业，收作业
+				btnQuiz.setIcon(new ImageIcon(BTN_ACCEPT_HOVER));
+			} else {// 没作业，发作业
+				doAcceptQuiz();
+				btnQuiz.setIcon(new ImageIcon(BTN_SEND_HOVER));
 			}
-		});
+		}
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if (hasQuiz) {// 有作业，收作业
+			doSendQuiz();
+			hasQuiz = false;
+			btnQuiz.setIcon(new ImageIcon(BTN_SEND_HOVER));
+		} else {// 没作业，发作业
+			doAcceptQuiz();
+			hasQuiz = true;
+			btnQuiz.setIcon(new ImageIcon(BTN_ACCEPT_HOVER));
+		}
+	}
+	
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		if (e.getSource() == btnQuiz) {
+			if (hasQuiz) {// 有作业，收作业
+				btnQuiz.setIcon(new ImageIcon(BTN_ACCEPT_HOVER));
+			} else {// 没作业，发作业
+				doAcceptQuiz();
+				btnQuiz.setIcon(new ImageIcon(BTN_SEND_HOVER));
+			}
+		}
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		if (e.getSource() == btnQuiz) {
+			if (hasQuiz) {// 有作业，收作业
+				btnQuiz.setIcon(new ImageIcon(BTN_ACCEPT_NORMAL));
+			} else {// 没作业，发作业
+				doAcceptQuiz();
+				btnQuiz.setIcon(new ImageIcon(BTN_SEND_NORMAL));
+			}
+		}
 	}
 	
 
