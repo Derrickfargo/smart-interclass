@@ -13,6 +13,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -25,15 +27,21 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
+import cn.com.incito.http.AsyncHttpConnection;
+import cn.com.incito.http.StringResponseHandler;
+import cn.com.incito.http.support.ParamsWrapper;
 import cn.com.incito.interclass.po.Classes;
 import cn.com.incito.interclass.po.Course;
 import cn.com.incito.interclass.ui.widget.Item;
 import cn.com.incito.server.api.ApiClient;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.api.result.TeacherGroupResultData;
+import cn.com.incito.server.api.result.TeacherLoginResultData;
 import cn.com.incito.server.core.CoreSocket;
 import cn.com.incito.server.exception.AppException;
+import cn.com.incito.server.utils.Md5Utils;
 import cn.com.incito.server.utils.UIHelper;
+import cn.com.incito.server.utils.URLs;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -274,32 +282,53 @@ public class Login2 extends MouseAdapter {
             JOptionPane.showMessageDialog(frame, "请输入班级!");
             return;
         }
-        try {
-            final String result = ApiClient.getGroupList(schoolId, roomId,
-                    teacherId, courseId, classId, className);
-            if (result != null && !result.equals("")) {
-                JSONObject jsonObject = JSON.parseObject(result);
-                if (jsonObject.getIntValue("code") == 2) {
-                    JOptionPane.showMessageDialog(frame, "保存班级出现错误!");
-                    return;
-                }
-                String data = jsonObject.getString("data");
-                TeacherGroupResultData resultData = JSON.parseObject(data,
-                        TeacherGroupResultData.class);
+        AsyncHttpConnection http = AsyncHttpConnection.getInstance();
+        ParamsWrapper params = new ParamsWrapper();
+        params.put("schoolId", schoolId);
+		params.put("roomId", roomId);
+		params.put("teacherId", teacherId);
+		params.put("courseId", courseId);
+		params.put("classId", classId);
+		params.put("className", className);
+        http.get(URLs.URL_TEACHER_GROUP, params, new StringResponseHandler() {
+            @Override
+            protected void onResponse(String content, URL url) {
+                 if (content != null && !content.equals("")) {
+                     JSONObject jsonObject = JSON.parseObject(content);
+                     if (jsonObject.getIntValue("code") == 2) {
+                         JOptionPane.showMessageDialog(frame, "保存班级出现错误!");
+                         return;
+                     }
+                     String data = jsonObject.getString("data");
+                     TeacherGroupResultData resultData = JSON.parseObject(data,
+                             TeacherGroupResultData.class);
 
-                frame.setVisible(false);
-                // 第二步获得班级、课程、设备、课桌、分组数据
-                Application.getInstance().setClasses(resultData.getClasses());
-                Application.getInstance().setCourse(resultData.getCourse());
-                Application.getInstance().initMapping(resultData.getDevices(),
-                        resultData.getTables(), resultData.getGroups());
-                FloatWin.getInstance();
-                // MainFrame.getInstance().setVisible(true);
+                     frame.setVisible(false);
+                     // 第二步获得班级、课程、设备、课桌、分组数据
+                     Application.getInstance().setClasses(resultData.getClasses());
+                     Application.getInstance().setCourse(resultData.getCourse());
+                     Application.getInstance().initMapping(resultData.getDevices(),
+                             resultData.getTables(), resultData.getGroups());
+                     FloatWin.getInstance();
+                     // MainFrame.getInstance().setVisible(true);
+                 }
+                 logger.info(content);
             }
-            logger.info(result);
-        } catch (AppException e) {
-            e.printStackTrace();
-        }
+
+            @Override
+            public void onSubmit(URL url, ParamsWrapper params) {
+            }
+
+            @Override
+            public void onConnectError(IOException exp) {
+            	JOptionPane.showMessageDialog(frame, "获取分组课程信息失败，请检查网络！");
+            }
+
+            @Override
+            public void onStreamError(IOException exp) {
+            	JOptionPane.showMessageDialog(frame, "数据解析错误！");
+            }
+        });
     }
 
 }
