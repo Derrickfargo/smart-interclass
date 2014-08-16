@@ -6,7 +6,6 @@ import java.net.CookieStore;
 import java.net.URL;
 
 import cn.com.incito.http.support.ParamsWrapper;
-
 /**
  * @author : 桥下一粒砂 chenyoca@gmail.com
  * date   : 2012-10-22
