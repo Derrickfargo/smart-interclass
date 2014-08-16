@@ -16,40 +16,27 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.channels.SocketChannel;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import cn.com.incito.interclass.Listener.MySystemTrayEvent;
 import cn.com.incito.interclass.Listener.MySystemTrayManager;
-import cn.com.incito.interclass.po.Group;
-import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.CoreSocket;
-import cn.com.incito.server.core.Message;
-import cn.com.incito.server.message.DataType;
-import cn.com.incito.server.message.MessagePacking;
-import cn.com.incito.server.utils.BufferUtils;
 import cn.com.incito.server.utils.UIHelper;
-
-import com.alibaba.fastjson.JSONObject;
 
 public class MainFrame extends MouseAdapter {
 	private static MainFrame instance;
 	private static final String CARD_PREPARE = "PREPARE";
 	private static final String CARD_QUIZ = "QUIZ";
+	private static final String CARD_PREPARE_BOTTOM = "PREPARE_BOTTOM";
+	private static final String CARD_QUIZ_BOTTOM = "QUIZ_BOTTOM";
 	
 	private Application app = Application.getInstance();
 	
@@ -58,17 +45,22 @@ public class MainFrame extends MouseAdapter {
 	private Point loc, tmp;
 	private JButton btnMin, btnClose;
 	private JLabel lblBackground;
-	private JButton btnBegin;
 	private JPanel contentPane;
 	
 	// menu
 	private JButton btnStatus;
 	private JButton btnQuiz;
 	
-	private CardLayout cardLayout;
-	private JPanel cardPanel;
+	private CardLayout centerCardLayout;
+	private JPanel centerCardPanel;
 	private PreparePanel preparePanel;
 	private QuizPanel quizPanel;
+	
+	private CardLayout bottomCardLayout;
+	private JPanel bottomCardPanel;
+	private PrepareBottomPanel prepareBottomPanel;
+	private QuizBottomPanel quizBottomPanel;
+	
 //	private JScrollPane deskScrollPane;
 	private MySystemTrayEvent mySystemTrayEvent;
 
@@ -164,7 +156,9 @@ public class MainFrame extends MouseAdapter {
 		btnStatus.setBounds(0, 0, icon.getIconWidth(), icon.getIconHeight());
 		btnStatus.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                cardLayout.show(cardPanel, CARD_PREPARE);
+                centerCardLayout.show(centerCardPanel, CARD_PREPARE);
+                bottomCardLayout.show(bottomCardPanel, CARD_PREPARE_BOTTOM);
+                
                 btnStatus.setIcon(new ImageIcon("images/main/bg_ready_hover.png"));
                 btnQuiz.setIcon(new ImageIcon("images/main/bg_works.png"));
             }
@@ -181,7 +175,9 @@ public class MainFrame extends MouseAdapter {
 		btnQuiz.setBounds(0, 55, iconQuiz.getIconWidth(), iconQuiz.getIconHeight());
 		btnQuiz.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                cardLayout.show(cardPanel, CARD_QUIZ);
+                centerCardLayout.show(centerCardPanel, CARD_QUIZ);
+                bottomCardLayout.show(bottomCardPanel, CARD_QUIZ_BOTTOM);
+                
                 btnQuiz.setIcon(new ImageIcon("images/main/bg_works_hover.png"));
                 btnStatus.setIcon(new ImageIcon("images/main/bg_ready.png"));
             }
@@ -224,10 +220,10 @@ public class MainFrame extends MouseAdapter {
 		contentPane.add(left);
 
 		// ///////////////////center部分////////////////////////
-		cardLayout = new CardLayout();
-		cardPanel = new JPanel(cardLayout);
-		cardPanel.setBounds(138, 35, 876, 620);
-		contentPane.add(cardPanel);
+		centerCardLayout = new CardLayout();
+		centerCardPanel = new JPanel(centerCardLayout);
+		centerCardPanel.setBounds(138, 35, 876, 620);
+		contentPane.add(centerCardPanel);
 		
 		//准备上课card
 		preparePanel = new PreparePanel();
@@ -239,7 +235,7 @@ public class MainFrame extends MouseAdapter {
 		 //TODO 根据分组的多少动态调整
 		preparePanel.setPreferredSize(new Dimension(prepareScrollPane.getWidth() - 50, prepareScrollPane.getHeight() * 3));
 		preparePanel.revalidate();
-		cardPanel.add(prepareScrollPane, CARD_PREPARE);
+		centerCardPanel.add(prepareScrollPane, CARD_PREPARE);
 		
 		//作业card
 		quizPanel = new QuizPanel();
@@ -249,138 +245,25 @@ public class MainFrame extends MouseAdapter {
         quizScrollPane.setBorder(null);
         quizScrollPane.setBounds(0, 0, 876, 630);
         quizPanel.setPreferredSize(new Dimension(quizScrollPane.getWidth() - 50, (quizScrollPane.getHeight() - 50) * 4));
-		cardPanel.add(quizScrollPane, CARD_QUIZ);
+		centerCardPanel.add(quizScrollPane, CARD_QUIZ);
 		
         
 		// //////////////////////bottom部分////////////////////////
-		JPanel bottom = new JPanel();
-		bottom.setSize(878, 48);
-		bottom.setLayout(null);
-		bottom.setOpaque(false);
-		bottom.setBounds(137, 664, 878, 54);
-
-		JLabel lblExpected = new JLabel("应到 %d 人  | 实到 %d 人", JLabel.CENTER);
-		lblExpected.setForeground(UIHelper.getDefaultFontColor());
-		lblExpected.setBounds(10, 15, 150, 35);
-		bottom.add(lblExpected);
+		bottomCardLayout = new CardLayout();
+		bottomCardPanel = new JPanel(bottomCardLayout);
+		bottomCardPanel.setOpaque(false);
+		bottomCardPanel.setBounds(137, 664, 878, 54);
+		contentPane.add(bottomCardPanel);
 		
-		JPanel pnlClass = new JPanel() {
-			private static final long serialVersionUID = 5365972834168199801L;
-
-			@Override
-			protected void paintComponent(Graphics g) {
-				Image iconClass = new ImageIcon("images/main/bg_input_kc.png").getImage();
-				g.drawImage(iconClass, 0, 0, this.getWidth(), this.getHeight(), this);
-			}
-		};
-		pnlClass.setLayout(null);
-		bottom.add(pnlClass);
-		pnlClass.setBounds(180, 10, 120, 35);
-
-		JPanel pnlCourse = new JPanel() {
-			private static final long serialVersionUID = 5365972834168199801L;
-
-			@Override
-			protected void paintComponent(Graphics g) {
-				Image iconClass = new ImageIcon("images/main/bg_input_kc.png").getImage();
-				g.drawImage(iconClass, 0, 0, this.getWidth(), this.getHeight(), this);
-			}
-		};
-		pnlCourse.setLayout(null);
-		bottom.add(pnlCourse);
-		pnlCourse.setBounds(320, 10, 120, 35);
-
-		btnBegin = new JButton();// 创建按钮对象
-		btnStatus.setFocusPainted(false);
-		btnBegin.setBorderPainted(false);// 设置边框不可见
-		btnBegin.setContentAreaFilled(false);// 设置透明
-		ImageIcon btnImage = new ImageIcon("images/main/btn_begin.png");
-		btnBegin.setIcon(btnImage);// 设置图片
-		bottom.add(btnBegin);// 添加按钮
-		btnBegin.setBounds(470, -4, btnImage.getIconWidth(),
-				btnImage.getIconHeight());
-		btnBegin.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				doBegin();
-			}
-		});
-
-		contentPane.add(bottom);
-
+		//prepare
+		prepareBottomPanel = new PrepareBottomPanel();
+		bottomCardPanel.add(prepareBottomPanel, CARD_PREPARE_BOTTOM);
+		//quiz
+		quizBottomPanel = new QuizBottomPanel();
+		bottomCardPanel.add(quizBottomPanel, CARD_QUIZ_BOTTOM);
+				
 		initData();
 		setBackground();// 设置背景
-	}
-
-	private void doBegin() {
-		List<Table> tableList = app.getTableList();
-		if (tableList == null || tableList.size() == 0) {
-			JOptionPane.showMessageDialog(frame, "设备还未绑定课桌，请先绑定课桌!");
-			return;
-		}
-
-		Map<Integer, Group> tableGroup = app.getTableGroup();
-		if (tableGroup == null || tableGroup.size() == 0) {
-			JOptionPane.showMessageDialog(frame, "还未进行小组分组，请先进行分组!");
-			return;
-		}
-
-		boolean hasTeamInfo = true;
-		for (Group group : tableGroup.values()) {
-			if (group.getName() == null || group.getName().equals("")) {
-				hasTeamInfo = false;
-			}
-		}
-		if (!hasTeamInfo) {
-			int result = JOptionPane.showConfirmDialog(frame,
-					"还有小组未编辑小组信息，是否编辑小组信息？", "提示", JOptionPane.YES_NO_OPTION);
-			if (JOptionPane.YES_OPTION == result) {
-				// 编辑小组信息
-				List<Group> groupList = app.getGroupList();
-				for (Group group : groupList) {
-					JSONObject json = new JSONObject();
-					json.put("id", group.getId());
-					MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_EDIT);
-					messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json.toString()));
-					final List<SocketChannel> channels = app.getClientChannelByGroup(group.getId());
-					sendMessageToGroup(messagePacking, channels);
-				}
-			} else if (JOptionPane.NO_OPTION == result) {
-				frame.setVisible(false);
-				// 开始上课
-			}
-		}
-	}
-
-	private void sendMessageToGroup(final MessagePacking messagePacking,
-			final List<SocketChannel> channels) {
-		if (channels == null) {
-			return;
-		}
-		new Thread() {
-			@Override
-			public void run() {
-				byte[] data = messagePacking.pack().array();
-				ByteBuffer buffer = ByteBuffer.allocate(data.length);
-				Iterator<SocketChannel> it = channels.iterator();
-				while (it.hasNext()) {
-					SocketChannel channel = it.next();
-					if (!channel.isConnected()) {
-						it.remove();
-						continue;
-					}
-					buffer.clear();
-					buffer.put(data);
-					buffer.flip();
-					try {
-						channel.write(buffer);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-			};
-		}.start();
 	}
 
 	private void initData() {
