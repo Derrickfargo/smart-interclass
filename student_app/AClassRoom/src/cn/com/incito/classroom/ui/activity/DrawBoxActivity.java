@@ -160,12 +160,14 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		m_sketchPad = (SketchPadView) findViewById(R.id.sketchpad);
 		m_sketchPad.setCallback(DrawBoxActivity.this);
 		Bitmap bitmap = null;
-		byte[] paper = getIntent().getExtras().getByteArray("paper");
-		if (paper != null) {
-			ByteArrayOutputStream outPut = new ByteArrayOutputStream();
-			bitmap = BitmapFactory.decodeByteArray(paper, 0, paper.length);
-			bitmap.compress(CompressFormat.PNG, 100, outPut);
-			changeBtn.setClickable(false);
+		if (getIntent().getExtras() != null) {
+			byte[] paper = getIntent().getExtras().getByteArray("paper");
+			if (paper != null) {
+				ByteArrayOutputStream outPut = new ByteArrayOutputStream();
+				bitmap = BitmapFactory.decodeByteArray(paper, 0, paper.length);
+				bitmap.compress(CompressFormat.PNG, 100, outPut);
+				changeBtn.setClickable(false);
+			}
 		} else {
 			bitmap = BitmapFactory
 					.decodeResource(getResources(), R.drawable.bg);
@@ -439,30 +441,34 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	 * 提交作业
 	 */
 	public void submitPaper() {
-    	String name = "";
-    	for (int i = 0; i <MyApplication.getInstance().getLoginResVo().getStudents().size(); i++) {
-    		if(MyApplication.getInstance().getLoginResVo().getStudents().get(i).isLogin()){
-    			name=name+MyApplication.getInstance().getLoginResVo().getStudents().get(i).getName()+",";
-    		}
-    	}
-    	if(name.endsWith(",")){
-    		name=name.substring(0,name.length()-1);
-    	}
-        MessagePacking messagePacking = new MessagePacking(
-                Message.MESSAGE_SAVE_PAPER);
-        // 测试ID
-        messagePacking.putBodyData(DataType.INT, BufferUtils
-                .writeUTFString(MyApplication.getInstance().getQuizID()));
-        // 设备ID
-        messagePacking.putBodyData(DataType.INT, BufferUtils
-                .writeUTFString(MyApplication.getInstance().getDeviceId()));
-        // 小组姓名
-        messagePacking.putBodyData(
-                DataType.INT,BufferUtils.writeUTFString(name.toString()));
-        // 图片
-        messagePacking.putBodyData(DataType.INT,
-                BitmapUtils.bmpToByteArray(getBitMap(), true));
-        CoreSocket.getInstance().sendMessage(messagePacking);
-        this.finish();
-    }
+		String name = "";
+		for (int i = 0; i < MyApplication.getInstance().getLoginResVo()
+				.getStudents().size(); i++) {
+			if (MyApplication.getInstance().getLoginResVo().getStudents()
+					.get(i).isLogin()) {
+				name = name
+						+ MyApplication.getInstance().getLoginResVo()
+								.getStudents().get(i).getName() + ",";
+			}
+		}
+		if (name.endsWith(",")) {
+			name = name.substring(0, name.length() - 1);
+		}
+		MessagePacking messagePacking = new MessagePacking(
+				Message.MESSAGE_SAVE_PAPER);
+		// 测试ID
+		messagePacking.putBodyData(DataType.INT, BufferUtils
+				.writeUTFString(MyApplication.getInstance().getQuizID()));
+		// 设备ID
+		messagePacking.putBodyData(DataType.INT, BufferUtils
+				.writeUTFString(MyApplication.getInstance().getDeviceId()));
+		// 小组姓名
+		messagePacking.putBodyData(DataType.INT,
+				BufferUtils.writeUTFString(name.toString()));
+		// 图片
+		messagePacking.putBodyData(DataType.INT,
+				BitmapUtils.bmpToByteArray(getBitMap(), true));
+		CoreSocket.getInstance().sendMessage(messagePacking);
+		this.finish();
+	}
 }
