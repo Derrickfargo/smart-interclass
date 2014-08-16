@@ -90,7 +90,7 @@ public class QuizPanel extends JPanel {
 			String imei = device.getImei();
 			Quiz quiz = app.getTempQuiz().get(imei);
 			if (quiz != null) {
-				panel.addImage(i, quiz.getThumbnail());
+				panel.addImage(i, quiz);
 				JLabel lblName = quizList.get(i);
 				lblName.setText(quiz.getName());
 			}

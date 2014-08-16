@@ -6,7 +6,9 @@ import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -16,6 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import cn.com.incito.interclass.po.Group;
+import cn.com.incito.interclass.po.Quiz;
 import cn.com.incito.server.utils.UIHelper;
 
 /**
@@ -44,6 +47,7 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 	private List<JLabel> quizList = new ArrayList<JLabel>();
 	private List<JPanel> quizPanel = new ArrayList<JPanel>();
 	private List<JLabel> nameList = new ArrayList<JLabel>();
+	private Map<String,Quiz> quizMap = new HashMap<String, Quiz>();
 	
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -185,6 +189,7 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 		lblImage.setBounds(2, 2, 185, 109);
 		quizList.add(lblImage);
 		imagePanel.add(lblImage);
+		imagePanel.addMouseListener(this);
 		
 		JLabel lblName = new JLabel("", JLabel.CENTER);
 		lblName.setForeground(UIHelper.getDefaultFontColor());
@@ -194,9 +199,12 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 		return imagePanel;
 	}
 	
-	public void addImage(int i, String url) {
+	public void addImage(int i, Quiz quiz) {
+		String url = quiz.getThumbnail();
 		Icon icon1 = new ImageIcon(url);
 		quizList.get(i).setIcon(icon1);
+		quizList.get(i).setName(url);
+		quizMap.put(quiz.getImei(), quiz);
 	}
 	
 	public Group getGroup() {
@@ -263,6 +271,15 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 		}
 		if (e.getSource() == btnMedal) {
 			JOptionPane.showMessageDialog(getParent().getParent(), "小组颁发勋章!");
+		}
+		if (quizPanel.contains(e.getSource())) {
+			if (e.getClickCount() == 2) {
+				JLabel lblImage = (JLabel) e.getSource();
+				String url = lblImage.getName();
+				if (url != null && !url.equals("")) {
+					new PhotoFrame(url, 0, null);
+				}
+			}
 		}
 	}
 	
