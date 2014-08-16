@@ -1,5 +1,10 @@
 package cn.com.incito.server.api;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.channels.FileLock;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,9 +14,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
+import cn.com.incito.interclass.constant.Constants;
 import cn.com.incito.interclass.po.Classes;
 import cn.com.incito.interclass.po.Course;
 import cn.com.incito.interclass.po.Device;
@@ -23,7 +28,7 @@ import cn.com.incito.interclass.po.Table;
 import cn.com.incito.interclass.po.Teacher;
 import cn.com.incito.interclass.ui.Login;
 import cn.com.incito.interclass.ui.MainFrame;
-import cn.com.incito.server.utils.LockUtils;
+import cn.com.incito.server.utils.FileUtils;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -50,7 +55,7 @@ public class Application {
     private Map<Integer, JSONObject> tempGroup = new HashMap<Integer, JSONObject>();// 修改的分组信息
     private Map<Integer, List<Integer>> tempVote = new HashMap<Integer, List<Integer>>();// 小组的投票信息
     private Map<String, Quiz> tempQuiz = new HashMap<String, Quiz>();//随堂联系
-    
+    FileLock fl;
     /**
      * IMEI和设备的对应关系(key:imei,value:Device)，教师登陆完后初始化
      */
@@ -79,11 +84,38 @@ public class Application {
     private Map<Integer, Group> tableGroup;
 
     private Application() {
-//        if (LockUtils.isFileLocked(FileUtils.getProjectPath() + "/" + "ss.txt")){
-        if (LockUtils.isFileLocked()) {
-            JFrame jFrame = new JFrame();
-            JOptionPane.showMessageDialog(jFrame, "程序已经在运行!");
-            LockUtils.unlockFile();
+//        FileOutputStream fos;
+        try {
+            File locFile = new File(FileUtils.getProjectPath(), Constants.LOC_FILE);
+            if (!locFile.exists()) {
+                locFile.createNewFile();
+            }
+            RandomAccessFile raf = new RandomAccessFile(locFile, "rw");
+//            fos = new FileOutputStream(locFile);
+            fl = raf.getChannel().tryLock();//得到锁
+            if (fl != null) {//调用自己的操作
+//                doSomething();//这是一个会一直运行下去的操作
+                new Thread() {
+                    public void run() {
+                        for (int i = 0; ; i++) {
+                            try {
+                                sleep(100);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }.start();
+
+            } else {
+                //得不到锁,退出程序，这能保证该进程同时只能执行一个
+                JFrame jFrame = new JFrame();
+                JOptionPane.showMessageDialog(jFrame, "程序已经在运行!");
+                System.exit(1);
+            }
+//            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
             System.exit(1);
         }
         loginedStudent = new HashMap<String, Student>();
@@ -376,18 +408,18 @@ public class Application {
         return tempVote;
     }
 
-	public Map<String, Quiz> getTempQuiz() {
-		return tempQuiz;
-	}
-	
-	public void refreshPrepare() {
-		MainFrame.getInstance().refreshPrepare();
-		MainFrame.getInstance().refreshQuiz();
-	}
+    public Map<String, Quiz> getTempQuiz() {
+        return tempQuiz;
+    }
 
-	public void refreshQuiz() {
-		MainFrame.getInstance().refreshQuiz();
-	}
+    public void refreshPrepare() {
+        MainFrame.getInstance().refreshPrepare();
+        MainFrame.getInstance().refreshQuiz();
+    }
+
+    public void refreshQuiz() {
+        MainFrame.getInstance().refreshQuiz();
+    }
 
     public String getQuizId() {
         return quizId;

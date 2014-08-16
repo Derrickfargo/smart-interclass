@@ -73,7 +73,6 @@ public class TrayPopMenu extends JPopupMenu {
         JMenuItem item3 = new JMenuItem("退出程序");
         item3.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                LockUtils.unlockFile();
                 System.exit(0);
 
             }

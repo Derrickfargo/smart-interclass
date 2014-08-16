@@ -221,7 +221,6 @@ public class Login2 extends MouseAdapter {
         }
         if (e.getSource() == btnClose) {
             btnClose.setIcon(new ImageIcon("images/login/8.png"));
-            LockUtils.unlockFile();
             System.exit(0);
         }
     }
