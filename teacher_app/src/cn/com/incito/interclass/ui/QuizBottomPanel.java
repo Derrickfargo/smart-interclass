@@ -179,7 +179,7 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
         messagePacking.putBodyData(DataType.INT,
                 BufferUtils.writeUTFString(json.toString()));
         CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
-        Application.operationState = Constants.STATE_NORMAL;
+//        Application.operationState = Constants.STATE_NORMAL;
     }
     /**
      * 分发空白试卷

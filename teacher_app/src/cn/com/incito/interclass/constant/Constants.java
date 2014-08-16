@@ -12,9 +12,10 @@ public class Constants {
     public static final String LOC_DIR = "E:\\";
     public static final String LOC_FILE = "lock.txt";
 
-    public static int STATE_NORMAL = 0;     //0正常
+//    public static int STATE_NORMAL = 0;     //0正常
     public static int STATE_QUIZING = 1;      //1课堂练习中
     public static int STATE_GROUPING = 2;     //2分组中
     public static int STATE_SCREEN_LOCKING = 3;     //3 锁屏中
     public static int STATE_WAITING = 4;     //3 准备上课
+    public static int STATE_PROCESSING = 5;     //5 正在上课
 }
