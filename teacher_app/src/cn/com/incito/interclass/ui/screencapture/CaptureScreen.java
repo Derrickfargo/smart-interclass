@@ -87,6 +87,7 @@ public class CaptureScreen {
 
         CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
         Application.operationState= Constants.STATE_QUIZING;
+        Application.getInstance().getTempQuiz().clear();
     }
 
 
