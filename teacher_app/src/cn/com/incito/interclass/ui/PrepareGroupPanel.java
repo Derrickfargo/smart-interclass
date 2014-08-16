@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.server.utils.UIHelper;
 
-public class TablePanel extends JPanel {
+public class PrepareGroupPanel extends JPanel {
 
 	private static final long serialVersionUID = 882552987989905663L;
 	private static final String PAD_OFFLINE = "images/main/ico_pad_disconnect.png";
@@ -36,7 +36,7 @@ public class TablePanel extends JPanel {
 		g.drawImage(iconUser, 0, 0, this.getWidth(), this.getHeight(),this);
 	}
 	
-	public TablePanel(){
+	public PrepareGroupPanel(){
 		setLayout(null);
 		setVisible(false);
 		

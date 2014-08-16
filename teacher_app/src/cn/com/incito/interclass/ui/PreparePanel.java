@@ -30,7 +30,7 @@ public class PreparePanel extends JPanel implements UIContext {
 	/**
 	 * 当前教室所有Table，初始化界面时初始化本属性
 	 */
-	private List<TablePanel> tableList = new ArrayList<TablePanel>();
+	private List<PrepareGroupPanel> tableList = new ArrayList<PrepareGroupPanel>();
 	/**
 	 * 当前教室所有Group，初始化数据时初始化本属性
 	 */
@@ -50,7 +50,7 @@ public class PreparePanel extends JPanel implements UIContext {
 	private void initView() {
 		int x = 10;
 		for (int i = 1; i <= 12; i++) {
-			TablePanel pnlTable = new TablePanel();
+			PrepareGroupPanel pnlTable = new PrepareGroupPanel();
 			pnlTable.setBounds(10, x, 836, 139);
 			add(pnlTable);
 			tableList.add(pnlTable);
@@ -64,7 +64,7 @@ public class PreparePanel extends JPanel implements UIContext {
 		// 遍历内存模型，绑定到物理模型
 		for (int i = 0; i < groupList.size(); i++) {// 遍历分组内存模型
 			Group group = groupList.get(i);
-			TablePanel tablePanel = tableList.get(i);
+			PrepareGroupPanel tablePanel = tableList.get(i);
 			tablePanel.setGroup(group);
 			tablePanel.setVisible(true);
 			tablePanel.setTableNumber(group.getTableNumber());

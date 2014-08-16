@@ -1,21 +1,17 @@
 package cn.com.incito.interclass.ui;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingWorker;
 
 import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
+import cn.com.incito.interclass.po.Quiz;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.utils.LogoUtils;
-import cn.com.incito.server.utils.ScaleImageUtils;
 
 /**
  * 任务缩略图列表面板
@@ -86,38 +82,19 @@ public class QuizPanel extends JPanel {
 		panel.getLblGroupName().setText(group.getName());
 		
 		List<Device> deviceList = group.getDevices();
-		List<JPanel> quizList = panel.getQuizList();
+		List<JPanel> quizPanel = panel.getQuizPanel();
+		List<JLabel> quizList = panel.getNameList();
 		for (int i = 0; i < deviceList.size(); i++) {
 			Device device = deviceList.get(i);
-			JPanel quizPanel = quizList.get(i);
-			quizPanel.setVisible(true);
-			
+			quizPanel.get(i).setVisible(true);
+			String imei = device.getImei();
+			Quiz quiz = app.getTempQuiz().get(imei);
+			if (quiz != null) {
+				panel.addImage(i, quiz.getThumbnail());
+				JLabel lblName = quizList.get(i);
+				lblName.setText(quiz.getName());
+			}
 		}
 	}
-
-	private SwingWorker worker = new SwingWorker<List<String>, Void>() {
-
-		@Override
-		protected List<String> doInBackground() throws Exception {
-			List<String> quizPath = getQuizById(Application.getInstance().getQuizId());
-			return quizPath;
-		}
-		
-		private List<String> getQuizById(String quizId) {
-			File dir = new File("c:/image2.jpg");
-			List<String> list = new ArrayList<String>();
-			File[] files = dir.listFiles();
-			try {
-				for (File f : files) {
-					BufferedImage bufferedImage = ImageIO.read(f);
-					String path = ScaleImageUtils.resize(100, 100, "c:/temp/image2.jpg", bufferedImage);
-					list.add(path);
-				}
-			} catch (IOException e) {
-				e.printStackTrace(); 
-			}
-			return list;
-		}
-	};
 
 }

@@ -281,7 +281,7 @@ public class CoreService {
      * @param imei
      * @return
      */
-    public String SavePaper(String imei, String id, byte[] imageByte) {
+    public String SavePaper(String imei, String id,String name, byte[] imageByte) {
         File path = new File(FileUtils.getProjectPath() + "/" + id);
         path.mkdirs();
         
@@ -299,6 +299,7 @@ public class CoreService {
 		Quiz quiz = new Quiz();
 		quiz.setId(id);
 		quiz.setImei(imei);
+		quiz.setName(name);
 		quiz.setQuizUrl(file.getAbsolutePath());
 		quiz.setThumbnail(thumbnail.getAbsolutePath());
 		app.getTempQuiz().put(imei, quiz);

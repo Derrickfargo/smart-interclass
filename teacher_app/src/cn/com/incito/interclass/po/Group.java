@@ -13,7 +13,7 @@ public class Group implements Serializable, Comparable<Group> {
 
 	private int id;
 	private String name;
-	private String logo;
+	private String logo = "rainbow";
 	private String slogan;
 	private int courseId;
 	private int teacherId;

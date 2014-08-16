@@ -41,7 +41,8 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 	private JLabel lblGroupName;
 	private JLabel lblScore;
 	private JButton btnPlus,btnMinus,btnMedal;
-	private List<JPanel> quizList = new ArrayList<JPanel>();
+	private List<JLabel> quizList = new ArrayList<JLabel>();
+	private List<JPanel> quizPanel = new ArrayList<JPanel>();
 	private List<JLabel> nameList = new ArrayList<JLabel>();
 	
 	@Override
@@ -55,24 +56,24 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 		setVisible(false);
 		
 		JPanel quiz1 = createImagePanel(14,15);
-		quizList.add(quiz1);
-		add(quiz1);
 		quiz1.setVisible(false);
+		add(quiz1);
+		quizPanel.add(quiz1);
 		
 		JPanel quiz2 = createImagePanel(208,15);
-		quizList.add(quiz2);
-		add(quiz2);
 		quiz2.setVisible(false);
+		add(quiz2);
+		quizPanel.add(quiz2);
 		
 		JPanel quiz3 = createImagePanel(14,165);
-		quizList.add(quiz3);
-		add(quiz3);
 		quiz3.setVisible(false);
+		add(quiz3);
+		quizPanel.add(quiz3);
 		
 		JPanel quiz4 = createImagePanel(208,165);
-		quizList.add(quiz4);
-		add(quiz4);
 		quiz4.setVisible(false);
+		add(quiz4);
+		quizPanel.add(quiz4);
 		
 		//小组课桌号
 		lblDesk = createDeskLabel();
@@ -101,7 +102,7 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 	}
 	
 	private JLabel createDeskLabel(){
-		JLabel lblDesk = new JLabel("12号桌", JLabel.CENTER);
+		JLabel lblDesk = new JLabel("", JLabel.CENTER);
 		lblDesk.setOpaque(true);
 		lblDesk.setBounds(14,331, 60, 24);
 		lblDesk.setBackground(new Color(Integer.parseInt("39a2de", 16)));
@@ -111,14 +112,14 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 	
 	private JLabel createLogoLabel(){
 		JLabel lblLogo = new JLabel();
-		final ImageIcon icon = new ImageIcon("images/logo/24/pen.png");
+		final ImageIcon icon = new ImageIcon("images/logo/24/rainbow.png");
 		lblLogo.setIcon(icon);
 		lblLogo.setBounds(76, 331, 24, 24);
 		return lblLogo;
 	}
 	
 	private JLabel createGroupName(){
-		JLabel lblName = new JLabel("哇哈哈小组哈哈哈哇哈哈");
+		JLabel lblName = new JLabel("");
 		lblName.setBounds(105,331, 100, 24);
 		lblName.setForeground(UIHelper.getDefaultFontColor());
 		return lblName;
@@ -180,12 +181,22 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 		};
 		imagePanel.setLayout(null);
 		imagePanel.setBounds(x, y, icon.getIconWidth(), icon.getIconHeight());
-		JLabel lblName = new JLabel("测试测试从测试", JLabel.CENTER);
+		JLabel lblImage = new JLabel();
+		lblImage.setBounds(2, 2, 185, 109);
+		quizList.add(lblImage);
+		imagePanel.add(lblImage);
+		
+		JLabel lblName = new JLabel("", JLabel.CENTER);
 		lblName.setForeground(UIHelper.getDefaultFontColor());
 		nameList.add(lblName);
 		lblName.setBounds(0, icon.getIconHeight()- 25 , icon.getIconWidth(), 25);
 		imagePanel.add(lblName);
 		return imagePanel;
+	}
+	
+	public void addImage(int i, String url) {
+		Icon icon1 = new ImageIcon(url);
+		quizList.get(i).setIcon(icon1);
 	}
 	
 	public Group getGroup() {
@@ -212,12 +223,16 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 		return lblGroupName;
 	}
 
-	public List<JPanel> getQuizList() {
+	public List<JLabel> getQuizList() {
 		return quizList;
 	}
 
 	public List<JLabel> getNameList() {
 		return nameList;
+	}
+
+	public List<JPanel> getQuizPanel() {
+		return quizPanel;
 	}
 
 	@Override
