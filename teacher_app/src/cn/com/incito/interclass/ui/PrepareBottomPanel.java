@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 
 import com.alibaba.fastjson.JSONObject;
 
+import cn.com.incito.interclass.constant.Constants;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
@@ -123,6 +124,7 @@ public class PrepareBottomPanel extends JPanel{
 			} else if (JOptionPane.NO_OPTION == result) {
 				this.getParent().getParent().setVisible(false);
 				// 开始上课
+				app.operationState = Constants.STATE_PROCESSING;
 			}
 		}else{
 			//TODO JOptionPane.showMessageDialog(getParent().getParent(), "哈哈");

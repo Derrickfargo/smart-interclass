@@ -5,8 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.UUID;
 
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
+import javax.swing.*;
 
 import cn.com.incito.interclass.constant.Constants;
 import cn.com.incito.interclass.ui.screencapture.CaptureScreen;
@@ -50,8 +49,13 @@ public class TrayPopMenu extends JPopupMenu {
             item1.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     // distributePaper();
-                    CaptureScreen captureScreen = new CaptureScreen(context);
-                    captureScreen.doStart();
+                    if (Application.operationState == Constants.STATE_PROCESSING) {
+                        CaptureScreen captureScreen = new CaptureScreen(context);
+                        captureScreen.doStart();
+                    } else {
+                        JOptionPane.showMessageDialog(context, "请先点击开始上课！");
+                    }
+
 
                 }
             });
@@ -91,6 +95,6 @@ public class TrayPopMenu extends JPopupMenu {
         messagePacking.putBodyData(DataType.INT,
                 BufferUtils.writeUTFString(json.toString()));
         CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
-        Application.operationState = Constants.STATE_NORMAL;
+        Application.operationState = Constants.STATE_PROCESSING;
     }
 }
