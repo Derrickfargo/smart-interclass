@@ -110,13 +110,17 @@ public class MyApplication extends Application {
     private void initApplication() {
         TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         deviceId = tm.getDeviceId();
-        Intent service = new Intent(
-                "cn.com.incito.classroom.service.SOCKET_SERVICE");
+        Intent service = new Intent("cn.com.incito.classroom.service.SOCKET_SERVICE");
         startService(service);
         WLog.i(MyApplication.class, "socket service started");
 
     }
 
+    public void stopSocketService(){
+    	Intent service = new Intent("cn.com.incito.classroom.service.SOCKET_SERVICE");
+        stopService(service);
+    }
+    
     public LoginResVo getLoginResVo() {
         return loginResVo;
     }

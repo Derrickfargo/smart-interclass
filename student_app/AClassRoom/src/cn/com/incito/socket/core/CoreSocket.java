@@ -30,6 +30,7 @@ public final class CoreSocket extends Thread {
     private static final int RECONN_TIME = 3 * 1000;//间隔3秒重连
     private boolean isRunning = false;
     private TimerTask actTask;
+    private TimerTask restart;
     private Selector selector;
     private SocketChannel channel;
     
@@ -44,17 +45,21 @@ public final class CoreSocket extends Thread {
 
     }
 
-    private void handle(SelectionKey selectionKey) throws IOException {
+    private void handle(SelectionKey selectionKey) {
         if (selectionKey.isConnectable()) {//连接建立事件，已成功连接至服务器
-            channel = (SocketChannel) selectionKey.channel();
-            if (channel.isConnectionPending()) {
-                channel.finishConnect();
-                //启动心跳
-                startHeartBeatThread();
-                //发送设备登陆消息
-                sendDeviceLoginMessage();
-            }
-            channel.register(selector, SelectionKey.OP_READ);// 注册读事件
+			channel = (SocketChannel) selectionKey.channel();
+			try {
+				if (channel.isConnectionPending()) {
+					channel.finishConnect();
+					// 启动心跳
+					startHeartBeatThread();
+					// 发送设备登陆消息
+					sendDeviceLoginMessage();
+				}
+ 				channel.register(selector, SelectionKey.OP_READ);// 注册读事件
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
         } else if (selectionKey.isReadable()) {// 若为可读的事件，则进行消息解析
             MessageParser messageParser = new MessageParser();
             messageParser.parseMessage(selectionKey);
@@ -62,7 +67,10 @@ public final class CoreSocket extends Thread {
     }
     
     //开启心跳线程
-    private void startHeartBeatThread() {
+    public void startHeartBeatThread() {
+		if (actTask != null) {
+			return;
+		}
     	actTask = new TimerTask() {
 			@Override
 			public void run() {
@@ -87,7 +95,10 @@ public final class CoreSocket extends Thread {
     //心跳自动重连机制
     private void restart(){
 		isRunning = false;
-		new Timer().schedule(new TimerTask() {
+		if (restart != null) {
+			restart.cancel();
+		}
+		restart = new TimerTask() {
 			
 			@Override
 			public void run() {
@@ -96,11 +107,12 @@ public final class CoreSocket extends Thread {
 				}
 				CoreSocket.this.start();
 			}
-		}, RECONN_TIME);
+		};
+		new Timer().schedule(restart, RECONN_TIME);
     }
     
     //TODO 该方法  发送握手消息至服务器
-    private void sendDeviceLoginMessage() {
+    private void sendDeviceLoginMessage() throws IOException{
         MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_HAND_SHAKE);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("imei", MyApplication.deviceId);
@@ -109,11 +121,7 @@ public final class CoreSocket extends Thread {
         ByteBuffer buffer = ByteBuffer.allocate(handSharkData.length);
         buffer.put(handSharkData);
         buffer.flip();
-        try {
-			channel.write(buffer);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		channel.write(buffer);
     }
 
     /**
@@ -141,6 +149,15 @@ public final class CoreSocket extends Thread {
     public void stopConnection() {
         try {
             if (channel != null) {
+            	MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_LOGOUT);
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("imei", MyApplication.deviceId);
+                messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
+                byte[] logoutData = messagePacking.pack().array();
+                ByteBuffer buffer = ByteBuffer.allocate(logoutData.length);
+                buffer.put(logoutData);
+                buffer.flip();
+        		channel.write(buffer);
                 channel.close();
             }
         } catch (IOException e) {
@@ -155,11 +172,11 @@ public final class CoreSocket extends Thread {
             //客户端向服务器端发起建立连接请求
             SocketChannel socketChannel = SocketChannel.open();
             socketChannel.configureBlocking(false);
-            selector = Selector.open();
+            selector = Selector.open().wakeup();
             socketChannel.register(selector, SelectionKey.OP_CONNECT);
             socketChannel.connect(new InetSocketAddress(Constants.IP, Constants.PORT));
             while (isRunning) {//轮询监听客户端上注册事件的发生
-                selector.select(TIME_OUT);
+                selector.select();
                 Set<SelectionKey> keySet = selector.selectedKeys();
                 for (final SelectionKey key : keySet) {
                     handle(key);

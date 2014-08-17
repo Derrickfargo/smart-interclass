@@ -73,8 +73,12 @@ public class Message {
 	/**
 	 * 保存作业后传给andorid端的保存信息
 	 */
-	public static final Byte MESSAGE_SAVE_PAPER_RESULT=0x10;
+	public static final Byte MESSAGE_SAVE_PAPER_RESULT=0x0A;
 	
+	/**
+	 * 设备退出
+	 */
+	public static final Byte MESSAGE_DEVICE_LOGOUT=0x0B;
 	
 	private byte msgID;
 	private int msgSize;

@@ -34,6 +34,12 @@ public class CoreService {
         app.refreshPrepare();// 更新UI
     }
 
+    public void deviceLogout(String imei) {
+        app.getOnlineDevice().remove(imei);
+        app.refreshPrepare();// 更新UI
+        Application.getInstance().getClientChannel().remove(imei);
+    }
+    
     /**
      * 判断设备是否已绑定
      *

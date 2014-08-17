@@ -2,6 +2,7 @@ package cn.com.incito.classroom.base;
 
 import java.util.Stack;
 
+import cn.com.incito.common.utils.UIHelper;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
@@ -98,11 +99,12 @@ public class AppManager {
     public void AppExit(Context context) {
         try {
             finishAllActivity();
+            MyApplication.getInstance().stopSocketService();
+            android.os.Process.killProcess(android.os.Process.myPid());
             ActivityManager activityMgr = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
             activityMgr.restartPackage(context.getPackageName());
-            MyApplication.getInstance().stopService(new Intent("cn.com.incito.classroom.service.SOCKET_SERVICE"));
-            android.os.Process.killProcess(android.os.Process.myPid());
         } catch (Exception e) {
+        	e.printStackTrace();
         }
     }
 } 
