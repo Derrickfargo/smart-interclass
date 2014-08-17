@@ -52,7 +52,7 @@ public class TrayPopMenu extends JPopupMenu {
                     if (Application.operationState == Constants.STATE_PROCESSING) {
                     	MainFrame.getInstance().doSendQuiz();
                     } else {
-                        JOptionPane.showMessageDialog(context, "请先点击开始上课！");
+                        JOptionPane.showMessageDialog(null, "请先点击开始上课！");
                     }
 
 

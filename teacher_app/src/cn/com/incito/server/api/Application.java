@@ -110,7 +110,7 @@ public class Application {
             } else {
                 //得不到锁,退出程序，这能保证该进程同时只能执行一个
                 JFrame jFrame = new JFrame();
-                JOptionPane.showMessageDialog(jFrame, "程序已经在运行!");
+                JOptionPane.showMessageDialog(null, "程序已经在运行!");
                 System.exit(1);
             }
 //            fos.close();
