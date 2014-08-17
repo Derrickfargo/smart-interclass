@@ -118,6 +118,8 @@ public class PreparePanel extends JPanel implements UIContext {
 				}
 			}
 		}
+		repaint();
+		revalidate();
 	}
 
 	private void initData() {
