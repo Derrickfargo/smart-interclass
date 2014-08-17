@@ -34,6 +34,25 @@ public class CoreService {
         app.refreshPrepare();// 更新UI
     }
 
+    public void deviceLogout(String imei) {
+    	app.removeLoginStudent(imei);
+        app.getOnlineDevice().remove(imei);
+        Device device = app.getImeiDevice().get(imei);
+        if (device == null) {
+            return ;
+        }
+        Table table = app.getDeviceTable().get(device.getId());
+        if (table == null) {
+            return ;
+        }
+        Group group = app.getTableGroup().get(table.getId());
+        for (Student student : group.getStudents()) {
+        	student.setLogin(false);
+        }
+        Application.getInstance().getClientChannel().remove(imei);
+        app.refreshPrepare();// 更新UI
+    }
+    
     /**
      * 判断设备是否已绑定
      *
@@ -109,36 +128,6 @@ public class CoreService {
         }
     }
 
-    /**
-     * 刷新作业缩略图列表界面
-     */
-    public void refreshQuizLookup() {
-        int schoolId = app.getTeacher().getSchoolId();
-        int roomId = app.getRoom().getId();
-        int teacherId = app.getTeacher().getId();
-        int courseId = app.getCourse().getId();
-        int classId = app.getClasses().getId();
-        try {
-            final String result = ApiClient.getGroupList(schoolId, roomId,
-                    teacherId, courseId, classId, "");
-            if (result != null && !result.equals("")) {
-                JSONObject jsonObject = JSON.parseObject(result);
-                if (jsonObject.getIntValue("code") != 0) {
-                    return;
-                }
-                String data = jsonObject.getString("data");
-                TeacherGroupResultData resultData = JSON.parseObject(data,
-                        TeacherGroupResultData.class);
-                // 第二步获得班级、课程、设备、课桌、分组数据
-                Application.getInstance().initMapping(resultData.getDevices(),
-                        resultData.getTables(), resultData.getGroups());
-                Application.getInstance().refreshPrepare();
-            }
-            logger.info(result);
-        } catch (AppException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * 学生登陆
@@ -167,6 +156,7 @@ public class CoreService {
                     && student.getNumber().equals(number)) {
                 student.setLogin(true);
                 app.getOnlineStudent().add(student);// 加入在线的学生
+                app.addLoginStudent(imei, student);
                 app.refreshPrepare();// 更新UI
                 return JSONUtils.renderJSONString(0, group);
             }
@@ -200,6 +190,7 @@ public class CoreService {
                     && student.getNumber().equals(number)) {
                 student.setLogin(false);
                 app.getOnlineStudent().remove(student);
+                app.removeLoginStudent(imei, student);
                 app.refreshPrepare();// 更新UI
                 return JSONUtils.renderJSONString(0, group);
             }
@@ -230,6 +221,7 @@ public class CoreService {
                                 .equals(uname + number)) {
                             student.setLogin(true);
                             app.getOnlineStudent().add(student);
+                            app.addLoginStudent(imei, student);
                         }
                         if (app.getOnlineStudent().contains(student)) {
                             student.setLogin(true);

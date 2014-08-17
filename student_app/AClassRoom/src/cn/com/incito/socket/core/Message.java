@@ -70,7 +70,13 @@ public class Message implements Serializable{
     /**
 	 * 保存作业后PC端传回的信息
 	 */
-	public static final Byte MESSAGE_SAVE_PAPER_RESULT=0x10;
+	public static final Byte MESSAGE_SAVE_PAPER_RESULT=0x0A;
+	
+	/**
+	 * 设备退出
+	 */
+	public static final Byte MESSAGE_DEVICE_LOGOUT=0x0B;
+	
     private byte msgID;
     private int msgSize;
     private ByteBuffer bodyBuffer;

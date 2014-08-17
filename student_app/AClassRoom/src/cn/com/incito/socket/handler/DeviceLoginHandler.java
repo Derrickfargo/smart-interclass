@@ -5,11 +5,11 @@ import cn.com.incito.socket.core.MessageHandler;
  * 登陆处理hanlder
  * Created by liushiping on 2014/7/28.
  */
-public class HeartbeatHandler extends MessageHandler {
+public class DeviceLoginHandler extends MessageHandler {
 
 	@Override
 	protected void handleMessage() {
-		
+		//启动心跳检测
 	}
 
 }

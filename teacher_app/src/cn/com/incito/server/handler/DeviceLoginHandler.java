@@ -16,8 +16,8 @@ import cn.com.incito.server.message.MessagePacking;
  * @author 刘世平
  * 
  */
-public class HandShakeHandler extends MessageHandler {
-	private Logger logger = Logger.getLogger(HandShakeHandler.class.getName());
+public class DeviceLoginHandler extends MessageHandler {
+	private Logger logger = Logger.getLogger(DeviceLoginHandler.class.getName());
 	private String imei;
 
 	@Override

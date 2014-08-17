@@ -8,7 +8,6 @@ import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.ui.activity.BindDeskActivity;
 import cn.com.incito.classroom.ui.activity.DrawBoxActivity;
-import cn.com.incito.classroom.ui.activity.EditGroupInfoActivity;
 import cn.com.incito.classroom.ui.activity.WaitingActivity;
 
 import com.alibaba.fastjson.JSONObject;
@@ -18,7 +17,6 @@ public class UIHelper {
 	private MyApplication app;
 	private WaitingActivity waitingActivity;
 	private BindDeskActivity bindDeskActivity;
-	private EditGroupInfoActivity editGroupInfoActivity;
 	private DrawBoxActivity drawBoxActivity;
 
 	private UIHelper() {
@@ -50,11 +48,6 @@ public class UIHelper {
 
 	public BindDeskActivity getBindDeskActivity() {
 		return bindDeskActivity;
-	}
-
-	public void setEditGroupInfoActivity(
-			EditGroupInfoActivity editGroupInfoActivity) {
-		this.editGroupInfoActivity = editGroupInfoActivity;
 	}
 
 	public DrawBoxActivity getDrawBoxActivity() {

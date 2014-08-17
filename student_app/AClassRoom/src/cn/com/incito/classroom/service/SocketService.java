@@ -60,7 +60,7 @@ public class SocketService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        CoreSocket.getInstance().stopConnection();
+        System.out.println("SocketService.onDestroy");
         WLog.i(SocketService.class, "socket disconnected");
     }
 }

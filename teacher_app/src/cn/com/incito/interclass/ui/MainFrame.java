@@ -16,6 +16,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowStateListener;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -116,7 +121,12 @@ public class MainFrame extends MouseAdapter {
 		frame.setUndecorated(true);// 去除窗体
 		frame.setAlwaysOnTop(true); // 设置界面悬浮
 		frame.setBackground(new Color(0,0,0,0));//窗体透明
-
+		frame.addWindowListener(new WindowAdapter() {
+			public void windowActivated(WindowEvent e) {
+				refreshPrepare();
+				refreshQuiz();
+			}
+		});
 		// //////////////////////top部分////////////////////////
 		JPanel top = new JPanel();
 		top.setSize(1024, 73);

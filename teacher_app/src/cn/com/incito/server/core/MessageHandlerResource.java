@@ -7,10 +7,11 @@ import org.apache.log4j.Logger;
 
 import cn.com.incito.server.handler.DeviceBindHandler;
 import cn.com.incito.server.handler.DeviceHasBindHandler;
+import cn.com.incito.server.handler.DeviceLoginHandler;
+import cn.com.incito.server.handler.DeviceLogoutHandler;
 import cn.com.incito.server.handler.GroupListHandler;
 import cn.com.incito.server.handler.GroupSubmitHandler;
 import cn.com.incito.server.handler.GroupVoteHandler;
-import cn.com.incito.server.handler.HandShakeHandler;
 import cn.com.incito.server.handler.HeartbeatHandler;
 import cn.com.incito.server.handler.SavePaperHandler;
 import cn.com.incito.server.handler.StudentLoginHandler;
@@ -36,7 +37,7 @@ public final class MessageHandlerResource {
 	private MessageHandlerResource(){
 		handlerResources = new HashMap<Byte, Class<? extends MessageHandler>>();
 		//握手消息
-		handlerResources.put(Message.MESSAGE_HAND_SHAKE, HandShakeHandler.class);
+		handlerResources.put(Message.MESSAGE_HAND_SHAKE, DeviceLoginHandler.class);
 		//心跳消息
 		handlerResources.put(Message.MESSAGE_HEART_BEAT, HeartbeatHandler.class);
 		//获取分组消息
@@ -53,6 +54,8 @@ public final class MessageHandlerResource {
 		handlerResources.put(Message.MESSAGE_GROUP_VOTE, GroupVoteHandler.class);
 		//收作业信息
 		handlerResources.put(Message.MESSAGE_SAVE_PAPER, SavePaperHandler.class);
+		//设备退出
+		handlerResources.put(Message.MESSAGE_DEVICE_LOGOUT, DeviceLogoutHandler.class);
 	}
 	
 	public MessageHandler getMessageHandler(Byte key){
