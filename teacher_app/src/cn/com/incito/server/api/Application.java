@@ -1,7 +1,6 @@
 package cn.com.incito.server.api;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileLock;
@@ -14,7 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import cn.com.incito.interclass.constant.Constants;
 import cn.com.incito.interclass.po.Classes;
@@ -49,8 +49,8 @@ public class Application {
     private Set<Student> onlineStudent = new HashSet<Student>();
 
     private Map<Integer, List<SocketChannel>> groupChannel;// 保存每组和已登录的socket
+    private Map<String, List<Student>> imeiStudent = new HashMap<String, List<Student>>();
     private Map<String, SocketChannel> clientChannel;// 保存所有设备登陆的socket，imei和socket
-    private Map<String, Student> loginedStudent;// 已登录的学生，key:name+number，value:Student
     private Map<Integer, Group> groupMap = new HashMap<Integer, Group>();
     private Map<Integer, JSONObject> tempGroup = new HashMap<Integer, JSONObject>();// 修改的分组信息
     private Map<Integer, List<Integer>> tempVote = new HashMap<Integer, List<Integer>>();// 小组的投票信息
@@ -118,7 +118,6 @@ public class Application {
             e.printStackTrace();
             System.exit(1);
         }
-        loginedStudent = new HashMap<String, Student>();
         imeiDevice = new HashMap<String, Device>();
         tableMap = new HashMap<Integer, Table>();
         tableNumberMap = new HashMap<Integer, Table>();
@@ -132,6 +131,67 @@ public class Application {
         new Login();
     }
 
+    public void addLoginStudent(String imei,Student student){
+    	List<Student> studentList = imeiStudent.get(imei);
+        if (studentList == null) {
+        	studentList = new ArrayList<Student>();
+        }
+        boolean isLogin = false;
+        for(Student aStudent : studentList){
+			if (aStudent.getName().equals(student.getName())
+					&& aStudent.getNumber().equals(student.getNumber())) {
+        		isLogin = true;
+        		break;
+        	}
+        }
+		if (!isLogin) {
+			studentList.add(student);
+			imeiStudent.put(imei, studentList);
+		}
+    }
+    //需要移除两个容器
+    public void removeLoginStudent(String imei){
+    	List<Student> studentList = imeiStudent.get(imei);
+    	if (studentList == null) {
+        	studentList = new ArrayList<Student>();
+        }
+    	
+    	for(Student aStudent : studentList){
+    		Iterator<Student> it = onlineStudent.iterator();
+			while (it.hasNext()) {
+				Student student = it.next();
+				if (aStudent.getName().equals(student.getName())
+						&& aStudent.getNumber().equals(student.getNumber())) {
+					it.remove();
+				}
+			}
+    	}
+    	imeiStudent.remove(imei);
+    }
+    
+    public void removeLoginStudent(String imei,Student student){
+    	List<Student> studentList = imeiStudent.get(imei);
+    	if (studentList == null) {
+        	studentList = new ArrayList<Student>();
+        }
+    	Iterator<Student> it = studentList.iterator();
+    	while (it.hasNext()) {
+    		Student aStudent = it.next();
+    		if (aStudent.getName().equals(student.getName())
+					&& aStudent.getNumber().equals(student.getNumber())) {
+				it.remove();
+			}
+    	}
+    	it = onlineStudent.iterator();
+    	while (it.hasNext()) {
+			Student aStudent = it.next();
+			if (aStudent.getName().equals(student.getName())
+					&& aStudent.getNumber().equals(student.getNumber())) {
+				it.remove();
+			}
+		}
+    }
+    
     public Map<String, SocketChannel> getClientChannel() {
         return clientChannel;
     }
@@ -280,13 +340,6 @@ public class Application {
         return groupMap.get(id);
     }
 
-    public Map<String, Student> getLoginedStudent() {
-        return loginedStudent;
-    }
-
-    public void setLoginedStudent(Map<String, Student> loginedStudent) {
-        this.loginedStudent = loginedStudent;
-    }
 
     public List<Group> getGroupList() {
         return groupList;
