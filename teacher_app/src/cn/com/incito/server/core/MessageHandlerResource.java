@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import cn.com.incito.server.handler.DeviceBindHandler;
 import cn.com.incito.server.handler.DeviceHasBindHandler;
 import cn.com.incito.server.handler.DeviceLoginHandler;
+import cn.com.incito.server.handler.DeviceLogoutHandler;
 import cn.com.incito.server.handler.GroupListHandler;
 import cn.com.incito.server.handler.GroupSubmitHandler;
 import cn.com.incito.server.handler.GroupVoteHandler;
@@ -53,6 +54,8 @@ public final class MessageHandlerResource {
 		handlerResources.put(Message.MESSAGE_GROUP_VOTE, GroupVoteHandler.class);
 		//收作业信息
 		handlerResources.put(Message.MESSAGE_SAVE_PAPER, SavePaperHandler.class);
+		//设备退出
+		handlerResources.put(Message.MESSAGE_DEVICE_LOGOUT, DeviceLogoutHandler.class);
 	}
 	
 	public MessageHandler getMessageHandler(Byte key){

@@ -1,15 +1,11 @@
 package cn.com.incito.server.handler;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
 import org.apache.log4j.Logger;
 
-import cn.com.incito.server.api.Application;
-import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
-import cn.com.incito.server.message.MessagePacking;
 
 /**
  * 设备退出

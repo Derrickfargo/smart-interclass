@@ -61,7 +61,6 @@ public class SocketService extends Service {
     public void onDestroy() {
         super.onDestroy();
         System.out.println("SocketService.onDestroy");
-        CoreSocket.getInstance().stopConnection();
         WLog.i(SocketService.class, "socket disconnected");
     }
 }

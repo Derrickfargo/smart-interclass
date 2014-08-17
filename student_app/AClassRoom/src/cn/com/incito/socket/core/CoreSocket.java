@@ -146,24 +146,28 @@ public final class CoreSocket extends Thread {
 
     }
 
-    public void stopConnection() {
-        try {
-            if (channel != null) {
-            	MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_LOGOUT);
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("imei", MyApplication.deviceId);
-                messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
-                byte[] logoutData = messagePacking.pack().array();
-                ByteBuffer buffer = ByteBuffer.allocate(logoutData.length);
-                buffer.put(logoutData);
-                buffer.flip();
-        		channel.write(buffer);
-                channel.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	public void stopConnection() {
+		new Thread() {
+			public void run() {
+				if (channel != null) {
+					MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_LOGOUT);
+					JSONObject jsonObject = new JSONObject();
+					jsonObject.put("imei", MyApplication.deviceId);
+					messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
+					byte[] logoutData = messagePacking.pack().array();
+					ByteBuffer buffer = ByteBuffer.allocate(logoutData.length);
+					buffer.put(logoutData);
+					buffer.flip();
+					try {
+						channel.write(buffer);
+						channel.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}.start();
+	}
 
     @Override
     public void run() {

@@ -9,7 +9,7 @@ public class DeviceLoginHandler extends MessageHandler {
 
 	@Override
 	protected void handleMessage() {
-		
+		//启动心跳检测
 	}
 
 }

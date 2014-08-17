@@ -93,6 +93,7 @@ public class PreparePanel extends JPanel implements UIContext {
 				}
 				JLabel lblDevice = deviceLabelList.get(j);
 				lblDevice.setIcon(imgPad);
+				lblDevice.repaint();
 				lblDevice.setVisible(true);
 			}
 			// 遍历当前组/桌的学生，内存模型
