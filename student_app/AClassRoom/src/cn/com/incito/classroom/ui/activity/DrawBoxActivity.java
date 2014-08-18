@@ -469,6 +469,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		messagePacking.putBodyData(DataType.INT,
 				BitmapUtils.bmpToByteArray(getBitMap(), true));
 		CoreSocket.getInstance().sendMessage(messagePacking);
+		MyApplication.getInstance().setSubmitPaper(true);
 		this.finish();
 	}
 }

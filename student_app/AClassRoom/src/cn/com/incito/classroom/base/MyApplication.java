@@ -44,7 +44,16 @@ public class MyApplication extends Application {
     private static MyApplication mInstance = null;
     public static final String strKey = "840FFE132BB1749F265E77000ED4A8E17ECEC190";
     private static String IMEI;
-    /**
+    private boolean isSubmitPaper;
+    public boolean isSubmitPaper() {
+		return isSubmitPaper;
+	}
+
+	public void setSubmitPaper(boolean isSubmitPaper) {
+		this.isSubmitPaper = isSubmitPaper;
+	}
+
+	/**
      * 作业ID用于学生提交作业或者老师收作业
      */
     private String quizID;

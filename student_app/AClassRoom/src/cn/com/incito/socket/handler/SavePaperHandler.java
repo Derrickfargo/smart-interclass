@@ -1,5 +1,6 @@
 package cn.com.incito.socket.handler;
 
+import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;
 /**
@@ -10,7 +11,12 @@ public class SavePaperHandler extends MessageHandler {
 
 	@Override
 	protected void handleMessage() {
-		UIHelper.getInstance().getDrawBoxActivity().submitPaper();
+		if(MyApplication.getInstance().isSubmitPaper()){
+			MyApplication.getInstance().setSubmitPaper(false);
+		}else{
+			UIHelper.getInstance().getDrawBoxActivity().submitPaper();
+		}
+		
 	}
 
 }
