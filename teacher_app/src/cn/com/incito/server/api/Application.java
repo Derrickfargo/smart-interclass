@@ -41,6 +41,7 @@ public class Application {
     private Classes classes;// 当前上课的班级，教师登陆完后初始化
 
     public static int operationState;//0正常1课堂练习中
+    public static boolean isOnClass;//正在上课
 
     private List<Group> groupList = new ArrayList<Group>();// 本堂课的所有分组
     private List<Table> tableList = new ArrayList<Table>();// 本教室所有的桌子
