@@ -117,6 +117,7 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 		collectPaper();
 		hasQuiz = false;
 		btnQuiz.setIcon(new ImageIcon(BTN_SEND_HOVER));
+		Application.operationState = Constants.STATE_GROUPING;
 	}
 	
 	@Override
@@ -137,11 +138,16 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (hasQuiz) {// 有作业，收作业
-			doAcceptQuiz();
-		} else {// 没作业，发作业
-			doSendQuiz();
-		}
+		
+		if (Application.operationState == Constants.STATE_PROCESSING) {
+			if (hasQuiz) {// 有作业，收作业
+				doAcceptQuiz();
+			} else {// 没作业，发作业
+				doSendQuiz();
+			}
+        } else {
+            JOptionPane.showMessageDialog(this, "请先点击开始上课！");
+        }
 	}
 	
 	@Override

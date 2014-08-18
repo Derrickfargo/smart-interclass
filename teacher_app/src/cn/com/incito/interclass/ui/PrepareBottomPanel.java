@@ -125,11 +125,14 @@ public class PrepareBottomPanel extends JPanel{
 				this.getParent().getParent().setVisible(false);
 				// 开始上课
 				app.operationState = Constants.STATE_PROCESSING;
+				Application.operationState = Constants.STATE_PROCESSING;
+				ImageIcon btnImage = new ImageIcon("images/main/btn_begin_hover.png");
+				btnBegin.setIcon(btnImage);// 设置图片
 			}
 		}else{
 			//TODO JOptionPane.showMessageDialog(getParent().getParent(), "哈哈");
 		}
-		Application.operationState = Constants.STATE_PROCESSING;
+		
 	}
 
 	private void sendMessageToGroup(final MessagePacking messagePacking,
