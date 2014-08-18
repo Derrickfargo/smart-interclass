@@ -19,7 +19,6 @@ import javax.swing.JPanel;
 
 import com.alibaba.fastjson.JSONObject;
 
-import cn.com.incito.interclass.constant.Constants;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
@@ -87,7 +86,7 @@ public class PrepareBottomPanel extends JPanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (app.isOnClass) {
+				if (Application.isOnClass) {
 					setOnClass(false);
 				} else {
 					doBegin();
@@ -147,15 +146,14 @@ public class PrepareBottomPanel extends JPanel{
 	}
 
 	public void setOnClass(boolean isOnClass) {
-		ImageIcon btnImage;
 		if (isOnClass) {
-			btnImage = new ImageIcon("images/main/btn_begin_hover.png");
-			app.isOnClass = true;
+			btnBegin.setIcon(new ImageIcon("images/main/btn_begin_hover.png"));// 设置图片
+			Application.isOnClass = true;
 		} else {
-			btnImage = new ImageIcon("images/main/btn_begin.png");
-			app.isOnClass = false;
+			btnBegin.setIcon(new ImageIcon("images/main/btn_begin.png"));// 设置图片
+			Application.isOnClass = false;
 		}
-		btnBegin.setIcon(btnImage);// 设置图片
+		
 	}
 
 	private void sendMessageToGroup(final MessagePacking messagePacking,
