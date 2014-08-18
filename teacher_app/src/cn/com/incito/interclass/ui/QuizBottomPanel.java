@@ -117,6 +117,7 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 		collectPaper();
 		hasQuiz = false;
 		btnQuiz.setIcon(new ImageIcon(BTN_SEND_HOVER));
+		Application.operationState = Constants.STATE_GROUPING;
 	}
 	
 	@Override
