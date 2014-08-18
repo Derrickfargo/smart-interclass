@@ -22,7 +22,7 @@ import cn.com.incito.server.utils.Pic;
 
 public class FloatWin implements MouseListener,
         MouseMotionListener {
-    // private ServerSocket server = null;
+	private static final String ICON = "images/float/ico_floatmenu.png";
     private MySystemTrayEvent mySystemTrayEvent;
     private Toolkit tool;
     private static int WIDTH = 100;
@@ -56,11 +56,6 @@ public class FloatWin implements MouseListener,
             mainFrame = MainFrame.getInstance();
             mainFrame.setVisible(true);
             this.mySystemTrayEvent = mainFrame.getMySystemTrayEvent();
-            try {
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
             initComponent();
 //        }
     }
