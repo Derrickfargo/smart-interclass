@@ -107,6 +107,7 @@ public class UIHelper {
 	 */
 	public void showDrawBoxActivity(byte[] paper) {
 		Intent intent = new Intent();
+		MyApplication.getInstance().setSubmitPaper(false);
 		if (paper != null) {
 			Bundle mBundle = new Bundle();
 			mBundle.putByteArray("paper", paper);

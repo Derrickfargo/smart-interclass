@@ -1,8 +1,11 @@
 package cn.com.incito.interclass.ui;
 import java.awt.AWTException;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.SystemTray;
+import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -36,7 +39,7 @@ public class FloatIcon extends MouseAdapter {
 	private static final String ICON_EXIT_NORMAL = "images/float/ico_floatmenu4.png";
 	private static final String ICON_EXIT_HOVER = "images/float/ico_floatmenu4_hover.png";
 	private static FloatIcon instance;
-    private JDialog frame = new JDialog();
+    private JDialog dialog = new JDialog();
 	private boolean isDragged, isShowing, hasQuiz;
     private Point loc, tmp;
 	private JLabel lblIcon, lblBackground;
@@ -78,25 +81,25 @@ public class FloatIcon extends MouseAdapter {
 	}
     
     public void setVisible(boolean visible){
-    	frame.setVisible(visible);
+    	dialog.setVisible(visible);
     }
     
-    public JDialog getFrame() {
-        return frame;
-    }
-
     public void showUI() {
-        frame.setSize(270, 270);
-        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        frame.setLocationRelativeTo(null);//设置窗体中间位置
-        frame.setLayout(null);//绝对布局
-        frame.setUndecorated(true);//去除窗体
-        frame.setAlwaysOnTop(true); //设置界面悬浮
-        frame.setBackground(new Color(0, 0, 0, 0));//窗体透明
+        dialog.setSize(270, 270);
+        dialog.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        dialog.setLayout(null);//绝对布局
+        dialog.setUndecorated(true);//去除窗体
+        dialog.setAlwaysOnTop(true); //设置界面悬浮
+        dialog.setBackground(new Color(0, 0, 0, 0));//窗体透明
         createControlPanel();
         setIcon();
         setBackground();//设置背景
-        frame.setVisible(true);
+		//屏幕大小
+		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+		//x, y为坐标定位
+		dialog.setBounds((int) (d.getWidth() - 300),
+				(int) (d.getHeight() - 300), 270, 270);
+        dialog.setVisible(true);
     }
 
     private void createControlPanel(){
@@ -109,7 +112,7 @@ public class FloatIcon extends MouseAdapter {
         btnQuiz.setBounds(17, 70, iconQuiz.getIconWidth(), iconQuiz.getIconHeight());
         btnQuiz.setVisible(false);//默认不显示
         btnQuiz.addMouseListener(this);
-		frame.add(btnQuiz);
+		dialog.add(btnQuiz);
 		
 		btnPraise = new JButton();
         Icon iconPraise = new ImageIcon(ICON_PRAISE_NORMAL);
@@ -120,7 +123,7 @@ public class FloatIcon extends MouseAdapter {
         btnPraise.setBounds(114, 70, iconPraise.getIconWidth(), iconPraise.getIconHeight());
         btnPraise.setVisible(false);//默认不显示
         btnPraise.addMouseListener(this);
-		frame.add(btnPraise);
+		dialog.add(btnPraise);
 		
 		btnLock = new JButton();
         Icon iconLock = new ImageIcon(ICON_LOCK_NORMAL);
@@ -131,7 +134,7 @@ public class FloatIcon extends MouseAdapter {
         btnLock.setBounds(17, 174, iconLock.getIconWidth(), iconLock.getIconHeight());
         btnLock.setVisible(false);//默认不显示
         btnLock.addMouseListener(this);
-		frame.add(btnLock);
+		dialog.add(btnLock);
 		
 		btnExit = new JButton();
         Icon iconExit = new ImageIcon(ICON_EXIT_NORMAL);
@@ -142,7 +145,7 @@ public class FloatIcon extends MouseAdapter {
         btnExit.setBounds(114, 174, iconExit.getIconWidth(), iconExit.getIconHeight());
         btnExit.setVisible(false);//默认不显示
         btnExit.addMouseListener(this);
-		frame.add(btnExit);
+		dialog.add(btnExit);
     }
     
     private void setIcon() {
@@ -150,7 +153,7 @@ public class FloatIcon extends MouseAdapter {
     	lblIcon.addMouseListener(this);
     	lblIcon.setIcon(new ImageIcon(ICON));
     	lblIcon.setBounds(180, 10, 80, 80);
-        frame.add(lblIcon);
+        dialog.add(lblIcon);
 	}
 
     //设置背景
@@ -159,7 +162,7 @@ public class FloatIcon extends MouseAdapter {
         lblBackground.setIcon(new ImageIcon(BACKGROUND));
         lblBackground.setBounds(0, 50, 220, 220);
         lblBackground.setVisible(false);//默认不显示
-        frame.add(lblBackground);
+        dialog.add(lblBackground);
     }
     
     private void showMenu(boolean isShowing){
@@ -185,10 +188,10 @@ public class FloatIcon extends MouseAdapter {
     	lblIcon.addMouseMotionListener(new MouseMotionAdapter() {
             public void mouseDragged(MouseEvent e) {
                 if (isDragged) {
-                    loc = new Point(frame.getLocation().x + e.getX()
-                            - tmp.x, frame.getLocation().y + e.getY()
+                    loc = new Point(dialog.getLocation().x + e.getX()
+                            - tmp.x, dialog.getLocation().y + e.getY()
                             - tmp.y);
-                    frame.setLocation(loc);
+                    dialog.setLocation(loc);
                 }
             }
         });
@@ -218,7 +221,7 @@ public class FloatIcon extends MouseAdapter {
 				if (Application.isOnClass) {
                 	MainFrame.getInstance().doSendQuiz();
                 } else {
-                    JOptionPane.showMessageDialog(frame, "请先点击开始上课！");
+                    JOptionPane.showMessageDialog(dialog, "请先点击开始上课！");
                 }
 			}
 		}
