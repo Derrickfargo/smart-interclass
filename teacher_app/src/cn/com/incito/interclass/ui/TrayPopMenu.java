@@ -49,7 +49,7 @@ public class TrayPopMenu extends JPopupMenu {
             item1.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     // distributePaper();
-                    if (Application.operationState == Constants.STATE_PROCESSING) {
+                    if (Application.isOnClass) {
                     	MainFrame.getInstance().doSendQuiz();
                     } else {
                         JOptionPane.showMessageDialog(context, "请先点击开始上课！");
@@ -94,6 +94,6 @@ public class TrayPopMenu extends JPopupMenu {
         messagePacking.putBodyData(DataType.INT,
                 BufferUtils.writeUTFString(json.toString()));
         CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
-        Application.operationState = Constants.STATE_PROCESSING;
+        Application.isOnClass=true;
     }
 }
