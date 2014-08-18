@@ -141,6 +141,8 @@ public class PrepareBottomPanel extends JPanel{
 				setOnClass(true);
 			}
 		}else{
+			MainFrame.getInstance().setVisible(false);
+			setOnClass(true); 
 			//TODO JOptionPane.showMessageDialog(getParent().getParent(), "哈哈");
 		}
 	}
