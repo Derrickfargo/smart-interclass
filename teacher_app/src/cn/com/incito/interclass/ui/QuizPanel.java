@@ -63,15 +63,16 @@ public class QuizPanel extends JPanel {
 		List<Group> groupList = app.getGroupList();
 		int i = 0;
 		while (i < groupList.size()) {
-			Group group = groupList.get(i);
 			QuizGroupPanel pnlLeft = quizGroupList.get(i);
-			showQuizGroup(pnlLeft, group);
+			showQuizGroup(pnlLeft, groupList.get(i));
 			if (++i < groupList.size()) {
 				QuizGroupPanel pnlRight = quizGroupList.get(i);
-				showQuizGroup(pnlRight, group);
+				showQuizGroup(pnlRight, groupList.get(i));
 			}
 			i++;
 		}
+		repaint();
+		revalidate();
 	}
 
 	private void showQuizGroup(QuizGroupPanel panel, Group group) {
