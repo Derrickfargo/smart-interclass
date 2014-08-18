@@ -13,6 +13,7 @@ public class SavePaperHandler extends MessageHandler {
 	protected void handleMessage() {
 		if(MyApplication.getInstance().isSubmitPaper()){
 			MyApplication.getInstance().setSubmitPaper(false);
+			System.out.println("是否学生已经提交作业"+MyApplication.getInstance().isSubmitPaper());
 		}else{
 			UIHelper.getInstance().getDrawBoxActivity().submitPaper();
 		}
