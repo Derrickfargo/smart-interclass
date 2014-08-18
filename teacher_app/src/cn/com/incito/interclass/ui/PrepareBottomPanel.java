@@ -154,10 +154,10 @@ public class PrepareBottomPanel extends JPanel {
 		ImageIcon btnImage;
 		if (state) {
 			btnImage = new ImageIcon("images/main/btn_begin_hover.png");
-			app.isOnClass = true;
+			//app.isOnClass = true;
 		} else {
 			btnImage = new ImageIcon("images/main/btn_begin.png");
-			app.isOnClass = false;
+			//app.isOnClass = false;
 		}
 		btnBegin.setIcon(btnImage);// 设置图片
 	}
