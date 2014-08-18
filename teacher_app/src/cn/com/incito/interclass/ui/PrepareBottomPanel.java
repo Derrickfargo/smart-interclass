@@ -146,7 +146,7 @@ public class PrepareBottomPanel extends JPanel{
 	}
 
 	public void setOnClass(boolean isOnClass) {
-		if (isOnClass) {
+		if (isOnClass) { 
 			btnBegin.setIcon(new ImageIcon("images/main/btn_begin_hover.png"));// 设置图片
 			Application.isOnClass = true;
 		} else {
