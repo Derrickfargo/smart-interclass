@@ -18,9 +18,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
-import java.awt.event.WindowListener;
-import java.awt.event.WindowStateListener;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -30,8 +27,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import cn.com.incito.interclass.Listener.MySystemTrayEvent;
-import cn.com.incito.interclass.Listener.MySystemTrayManager;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.CoreSocket;
 import cn.com.incito.server.utils.UIHelper;
@@ -66,9 +61,6 @@ public class MainFrame extends MouseAdapter {
 	private PrepareBottomPanel prepareBottomPanel;
 	private QuizBottomPanel quizBottomPanel;
 	
-//	private JScrollPane deskScrollPane;
-	private MySystemTrayEvent mySystemTrayEvent;
-
 	public static MainFrame getInstance() {
 		if (instance == null) {
 			instance = new MainFrame();
@@ -108,7 +100,6 @@ public class MainFrame extends MouseAdapter {
 
 	// 显示登陆界面
 	private void showLoginUI() {
-		mySystemTrayEvent = new MySystemTrayManager();
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		frame.setContentPane(contentPane);
@@ -333,18 +324,21 @@ public class MainFrame extends MouseAdapter {
 	public void mouseReleased(MouseEvent e) {
 		if (e.getSource() == btnMin) {
 			btnMin.setIcon(new ImageIcon("images/login/5.png"));
-			frame.setExtendedState(JFrame.ICONIFIED);
 		}
 		if (e.getSource() == btnClose) {
 			btnClose.setIcon(new ImageIcon("images/login/8.png"));
-			//点击关闭按钮不关闭，而是隐藏
-			frame.setVisible(false);
 		}
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-
+		if (e.getSource() == btnMin) {
+			frame.setExtendedState(JFrame.ICONIFIED);
+		}
+		if (e.getSource() == btnClose) {
+			//点击关闭按钮不关闭，而是隐藏
+			frame.setVisible(false);
+		}
 	}
 	
 	@Override
@@ -367,11 +361,6 @@ public class MainFrame extends MouseAdapter {
 		}
 	}
 
-	public MySystemTrayEvent getMySystemTrayEvent() {
-		return mySystemTrayEvent;
-	}
-	
-	    
 	public boolean isVisible(){
 		return frame.isVisible();
 	}

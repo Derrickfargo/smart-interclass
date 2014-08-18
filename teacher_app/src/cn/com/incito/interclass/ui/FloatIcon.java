@@ -3,7 +3,6 @@ package cn.com.incito.interclass.ui;
 import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Insets;
 import java.awt.Point;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
@@ -71,19 +70,17 @@ public class FloatIcon extends MouseAdapter {
 		}
 		trayIcon.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 2) {
-					MainFrame.getInstance().setVisible(true);
+				if (e.getClickCount() == 2){
+					MainFrame frame = MainFrame.getInstance();
+					frame.getFrame().setExtendedState(JFrame.NORMAL);
+					frame.setVisible(true);
 				}
 			}
 		});
-		showUI();
-		setDragable();
-	}
-
-	public static void main(String[] args) {
-		new FloatIcon();
-	}
-
+        showUI();
+        setDragable();
+    }
+    
 	public void setVisible(boolean visible) {
 		dialog.setVisible(visible);
 	}
@@ -213,7 +210,9 @@ public class FloatIcon extends MouseAdapter {
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() == lblIcon) {
 			if (e.getClickCount() == 2) {
-				MainFrame.getInstance().setVisible(true);
+				MainFrame frame = MainFrame.getInstance();
+				frame.getFrame().setExtendedState(JFrame.NORMAL);
+				frame.setVisible(true);
 				return;
 			}
 			if (isShowing) {
