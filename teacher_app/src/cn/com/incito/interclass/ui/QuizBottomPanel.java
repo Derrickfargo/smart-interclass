@@ -139,7 +139,7 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		
-		if (Application.operationState == Constants.STATE_PROCESSING) {
+		if (Application.isOnClass) {
 			if (hasQuiz) {// 有作业，收作业
 				doAcceptQuiz();
 			} else {// 没作业，发作业
