@@ -108,7 +108,7 @@ public class PrepareBottomPanel extends JPanel{
 			}
 		}
 		if (!hasTeamInfo) {
-			int result = JOptionPane.showConfirmDialog(getParent().getParent(),
+			int result = JOptionPane.showConfirmDialog(MainFrame.getInstance().getFrame(),
 					"还有小组未编辑小组信息，是否编辑小组信息？", "提示", JOptionPane.YES_NO_OPTION);
 			if (JOptionPane.YES_OPTION == result) {
 				// 编辑小组信息
@@ -122,17 +122,15 @@ public class PrepareBottomPanel extends JPanel{
 					sendMessageToGroup(messagePacking, channels);
 				}
 			} else if (JOptionPane.NO_OPTION == result) {
-				this.getParent().getParent().setVisible(false);
+				MainFrame.getInstance().setVisible(false);
 				// 开始上课
 				app.operationState = Constants.STATE_PROCESSING;
-				Application.operationState = Constants.STATE_PROCESSING;
 				ImageIcon btnImage = new ImageIcon("images/main/btn_begin_hover.png");
 				btnBegin.setIcon(btnImage);// 设置图片
 			}
 		}else{
 			//TODO JOptionPane.showMessageDialog(getParent().getParent(), "哈哈");
 		}
-		
 	}
 
 	private void sendMessageToGroup(final MessagePacking messagePacking,
