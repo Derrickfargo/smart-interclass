@@ -16,7 +16,7 @@ import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.utils.LogoUtils;
 
-public class PreparePanel extends JPanel implements UIContext {
+public class PreparePanel extends JPanel{
 
 	/**
 	 * 
