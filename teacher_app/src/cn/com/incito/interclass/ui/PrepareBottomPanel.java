@@ -87,8 +87,8 @@ public class PrepareBottomPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (app.operationState == Constants.STATE_PROCESSING) {
-
+				if (app.isOnClass) {
+					setOnClass(false);
 				} else {
 					doBegin();
 				}
@@ -139,10 +139,7 @@ public class PrepareBottomPanel extends JPanel {
 			} else if (JOptionPane.NO_OPTION == result) {
 				MainFrame.getInstance().setVisible(false);
 				// 开始上课
-				app.isOnClass =true;
-				ImageIcon btnImage = new ImageIcon(
-						"images/main/btn_begin_hover.png");
-				btnBegin.setIcon(btnImage);// 设置图片
+				setOnClass(true);
 			}
 		} else {
 			// TODO JOptionPane.showMessageDialog(getParent().getParent(),
@@ -150,14 +147,14 @@ public class PrepareBottomPanel extends JPanel {
 		}
 	}
 
-	public void setOnClass(boolean state) {
+	public void setOnClass(boolean isOnClass) {
 		ImageIcon btnImage;
-		if (state) {
+		if (isOnClass) {
 			btnImage = new ImageIcon("images/main/btn_begin_hover.png");
-			//app.isOnClass = true;
+			app.isOnClass = true;
 		} else {
 			btnImage = new ImageIcon("images/main/btn_begin.png");
-			//app.isOnClass = false;
+			app.isOnClass = false;
 		}
 		btnBegin.setIcon(btnImage);// 设置图片
 	}
