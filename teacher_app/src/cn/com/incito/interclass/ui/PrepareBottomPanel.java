@@ -132,7 +132,6 @@ public class PrepareBottomPanel extends JPanel{
 		}else{
 			//TODO JOptionPane.showMessageDialog(getParent().getParent(), "哈哈");
 		}
-		
 	}
 
 	private void sendMessageToGroup(final MessagePacking messagePacking,
