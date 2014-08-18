@@ -1,6 +1,9 @@
 package cn.com.incito.interclass.ui;
+import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Point;
+import java.awt.SystemTray;
+import java.awt.TrayIcon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -8,16 +11,22 @@ import java.awt.event.MouseMotionAdapter;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
+
+import cn.com.incito.server.api.Application;
 
 /**
  * 浮动菜单图标
  * @author 刘世平
  */
 public class FloatIcon extends MouseAdapter {
+	private static final String ICON = "images/float/ico_floatmenu.png";
+	private static final String BACKGROUND = "images/float/bg_floatmenu.png";
 	private static final String ICON_QUIZ_NORMAL = "images/float/ico_floatmenu1.png";
 	private static final String ICON_QUIZ_HOVER = "images/float/ico_floatmenu1_hover.png";
 	private static final String ICON_PRAISE_NORMAL = "images/float/ico_floatmenu2.png";
@@ -27,11 +36,13 @@ public class FloatIcon extends MouseAdapter {
 	private static final String ICON_EXIT_NORMAL = "images/float/ico_floatmenu4.png";
 	private static final String ICON_EXIT_HOVER = "images/float/ico_floatmenu4_hover.png";
 	private static FloatIcon instance;
-    private JFrame frame = new JFrame();
+    private JDialog frame = new JDialog();
 	private boolean isDragged, isShowing, hasQuiz;
     private Point loc, tmp;
 	private JLabel lblIcon, lblBackground;
 	private JButton btnQuiz, btnPraise, btnLock, btnExit;
+	private TrayIcon trayIcon; // 托盘图标
+	private SystemTray tray; // 托盘的实例
     private Logger logger = Logger.getLogger(Login.class.getName());
 
     public static FloatIcon getInstance() {
@@ -42,6 +53,22 @@ public class FloatIcon extends MouseAdapter {
     }
     
     private FloatIcon() {
+    	tray = SystemTray.getSystemTray();
+    	ImageIcon icon = new ImageIcon(ICON);
+    	trayIcon = new TrayIcon(icon.getImage(),"互动课堂");
+    	trayIcon.setImageAutoSize(true);
+    	try {
+			tray.add(trayIcon);
+		} catch (AWTException e) {
+			e.printStackTrace();
+		}
+		trayIcon.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2){
+					MainFrame.getInstance().setVisible(true);
+				}
+			}
+		});
         showUI();
         setDragable();
     }
@@ -54,7 +81,7 @@ public class FloatIcon extends MouseAdapter {
     	frame.setVisible(visible);
     }
     
-    public JFrame getFrame() {
+    public JDialog getFrame() {
         return frame;
     }
 
@@ -121,7 +148,7 @@ public class FloatIcon extends MouseAdapter {
     private void setIcon() {
     	lblIcon = new JLabel();
     	lblIcon.addMouseListener(this);
-    	lblIcon.setIcon(new ImageIcon("images/float/ico_floatmenu.png"));
+    	lblIcon.setIcon(new ImageIcon(ICON));
     	lblIcon.setBounds(180, 10, 80, 80);
         frame.add(lblIcon);
 	}
@@ -129,7 +156,7 @@ public class FloatIcon extends MouseAdapter {
     //设置背景
     private void setBackground() {
     	lblBackground = new JLabel();
-        lblBackground.setIcon(new ImageIcon("images/float/bg_floatmenu.png"));
+        lblBackground.setIcon(new ImageIcon(BACKGROUND));
         lblBackground.setBounds(0, 50, 220, 220);
         lblBackground.setVisible(false);//默认不显示
         frame.add(lblBackground);
@@ -170,6 +197,10 @@ public class FloatIcon extends MouseAdapter {
     @Override
     public void mouseClicked(MouseEvent e) {
 		if (e.getSource() == lblIcon) {
+			if (e.getClickCount() == 2) {
+				MainFrame.getInstance().setVisible(true);
+				return;
+			}
 			if(isShowing){
 				isShowing = false;
 				lblBackground.setVisible(false);
@@ -182,13 +213,17 @@ public class FloatIcon extends MouseAdapter {
 		}
 		if(e.getSource() == btnQuiz){
 			if (hasQuiz) {// 有作业，收作业
-				//TODO doAcceptQuiz();
+				MainFrame.getInstance().doAcceptQuiz();
 			} else {// 没作业，发作业
-				//TODO doSendQuiz();
+				if (Application.isOnClass) {
+                	MainFrame.getInstance().doSendQuiz();
+                } else {
+                    JOptionPane.showMessageDialog(frame, "请先点击开始上课！");
+                }
 			}
 		}
 		if(e.getSource() == btnExit){
-			//TODO exit
+			 System.exit(0);
 		}
     }
 
