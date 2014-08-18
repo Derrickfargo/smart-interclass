@@ -49,8 +49,10 @@ public class PrepareBottomPanel extends JPanel{
 
 			@Override
 			protected void paintComponent(Graphics g) {
-				Image iconClass = new ImageIcon("images/main/bg_input_kc.png").getImage();
-				g.drawImage(iconClass, 0, 0, this.getWidth(), this.getHeight(), this);
+				Image iconClass = new ImageIcon("images/main/bg_input_kc.png")
+						.getImage();
+				g.drawImage(iconClass, 0, 0, this.getWidth(), this.getHeight(),
+						this);
 			}
 		};
 		pnlClass.setLayout(null);
@@ -62,8 +64,10 @@ public class PrepareBottomPanel extends JPanel{
 
 			@Override
 			protected void paintComponent(Graphics g) {
-				Image iconClass = new ImageIcon("images/main/bg_input_kc.png").getImage();
-				g.drawImage(iconClass, 0, 0, this.getWidth(), this.getHeight(), this);
+				Image iconClass = new ImageIcon("images/main/bg_input_kc.png")
+						.getImage();
+				g.drawImage(iconClass, 0, 0, this.getWidth(), this.getHeight(),
+						this);
 			}
 		};
 		pnlCourse.setLayout(null);
@@ -83,7 +87,12 @@ public class PrepareBottomPanel extends JPanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				doBegin();
+				if (app.isOnClass) {
+					setOnClass(false);
+				} else {
+					doBegin();
+				}
+
 			}
 		});
 	}
@@ -91,13 +100,15 @@ public class PrepareBottomPanel extends JPanel{
 	private void doBegin() {
 		List<Table> tableList = app.getTableList();
 		if (tableList == null || tableList.size() == 0) {
-			JOptionPane.showMessageDialog(getParent().getParent(), "设备还未绑定课桌，请先绑定课桌!");
+			JOptionPane.showMessageDialog(getParent().getParent(),
+					"设备还未绑定课桌，请先绑定课桌!");
 			return;
 		}
 
 		Map<Integer, Group> tableGroup = app.getTableGroup();
 		if (tableGroup == null || tableGroup.size() == 0) {
-			JOptionPane.showMessageDialog(getParent().getParent(), "还未进行小组分组，请先进行分组!");
+			JOptionPane.showMessageDialog(getParent().getParent(),
+					"还未进行小组分组，请先进行分组!");
 			return;
 		}
 
@@ -108,26 +119,27 @@ public class PrepareBottomPanel extends JPanel{
 			}
 		}
 		if (!hasTeamInfo) {
-			int result = JOptionPane.showConfirmDialog(getParent().getParent(),
-					"还有小组未编辑小组信息，是否编辑小组信息？", "提示", JOptionPane.YES_NO_OPTION);
+			int result = JOptionPane.showConfirmDialog(MainFrame.getInstance()
+					.getFrame(), "还有小组未编辑小组信息，是否编辑小组信息？", "提示",
+					JOptionPane.YES_NO_OPTION);
 			if (JOptionPane.YES_OPTION == result) {
 				// 编辑小组信息
 				List<Group> groupList = app.getGroupList();
 				for (Group group : groupList) {
 					JSONObject json = new JSONObject();
 					json.put("id", group.getId());
-					MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_EDIT);
-					messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json.toString()));
-					final List<SocketChannel> channels = app.getClientChannelByGroup(group.getId());
+					MessagePacking messagePacking = new MessagePacking(
+							Message.MESSAGE_GROUP_EDIT);
+					messagePacking.putBodyData(DataType.INT,
+							BufferUtils.writeUTFString(json.toString()));
+					final List<SocketChannel> channels = app
+							.getClientChannelByGroup(group.getId());
 					sendMessageToGroup(messagePacking, channels);
 				}
 			} else if (JOptionPane.NO_OPTION == result) {
-				this.getParent().getParent().setVisible(false);
+				MainFrame.getInstance().setVisible(false);
 				// 开始上课
-				app.operationState = Constants.STATE_PROCESSING;
-				Application.operationState = Constants.STATE_PROCESSING;
-				ImageIcon btnImage = new ImageIcon("images/main/btn_begin_hover.png");
-				btnBegin.setIcon(btnImage);// 设置图片
+				setOnClass(true);
 			}
 		}else{
 			//TODO JOptionPane.showMessageDialog(getParent().getParent(), "哈哈");
