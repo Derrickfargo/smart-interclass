@@ -41,8 +41,6 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 	private static final String BTN_ACCEPT_NORMAL = "images/quiz/btn_accept_works.png";
 	private static final String BTN_ACCEPT_HOVER = "images/quiz/btn_accept_works_hover.png";
 	
-	private boolean hasQuiz = false;//是否在作业
-	
 	private JButton btnQuiz;
 	private Application app = Application.getInstance();
 	
@@ -100,7 +98,7 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 		if(result==-1){
 			return;
 		}
-		hasQuiz = true;
+		Application.hasQuiz = true;
 		btnQuiz.setIcon(new ImageIcon(BTN_ACCEPT_HOVER));
 		if (JOptionPane.YES_OPTION == result) {
 			//TODO 截图发送
@@ -115,7 +113,7 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 	
 	public void doAcceptQuiz(){
 		collectPaper();
-		hasQuiz = false;
+		Application.hasQuiz = false;
 		btnQuiz.setIcon(new ImageIcon(BTN_SEND_HOVER));
 		Application.operationState = Constants.STATE_GROUPING;
 	}
@@ -123,7 +121,7 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if (e.getSource() == btnQuiz) {
-			if (hasQuiz) {
+			if (Application.hasQuiz) {
 				btnQuiz.setIcon(new ImageIcon(BTN_ACCEPT_HOVER));
 			} else {
 				btnQuiz.setIcon(new ImageIcon(BTN_SEND_HOVER));
@@ -139,8 +137,8 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		
-		if (Application.operationState == Constants.STATE_PROCESSING) {
-			if (hasQuiz) {// 有作业，收作业
+		if (Application.isOnClass) {
+			if (Application.hasQuiz) {// 有作业，收作业
 				doAcceptQuiz();
 			} else {// 没作业，发作业
 				doSendQuiz();
@@ -153,7 +151,7 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		if (e.getSource() == btnQuiz) {
-			if (hasQuiz) {
+			if (Application.hasQuiz) {
 				btnQuiz.setIcon(new ImageIcon(BTN_ACCEPT_HOVER));
 			} else {
 				btnQuiz.setIcon(new ImageIcon(BTN_SEND_HOVER));
@@ -164,7 +162,7 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 	@Override
 	public void mouseExited(MouseEvent e) {
 		if (e.getSource() == btnQuiz) {
-			if (hasQuiz) {
+			if (Application.hasQuiz) {
 				btnQuiz.setIcon(new ImageIcon(BTN_ACCEPT_NORMAL));
 			} else {
 				btnQuiz.setIcon(new ImageIcon(BTN_SEND_NORMAL));
