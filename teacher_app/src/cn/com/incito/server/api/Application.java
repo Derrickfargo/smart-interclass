@@ -42,7 +42,7 @@ public class Application {
 
     public static int operationState;//0正常1课堂练习中
     public static boolean isOnClass;//正在上课
-
+    public static boolean hasQuiz;//是否在作业
     private List<Group> groupList = new ArrayList<Group>();// 本堂课的所有分组
     private List<Table> tableList = new ArrayList<Table>();// 本教室所有的桌子
     private List<Device> deviceList = new ArrayList<Device>();// 本教室所有的Device
