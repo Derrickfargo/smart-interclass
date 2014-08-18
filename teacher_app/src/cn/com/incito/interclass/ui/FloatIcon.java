@@ -10,8 +10,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
+
+import cn.com.incito.server.api.Application;
 
 /**
  * 浮动菜单图标
@@ -182,13 +185,17 @@ public class FloatIcon extends MouseAdapter {
 		}
 		if(e.getSource() == btnQuiz){
 			if (hasQuiz) {// 有作业，收作业
-				//TODO doAcceptQuiz();
+				MainFrame.getInstance().doAcceptQuiz();
 			} else {// 没作业，发作业
-				//TODO doSendQuiz();
+				if (Application.isOnClass) {
+                	MainFrame.getInstance().doSendQuiz();
+                } else {
+                    JOptionPane.showMessageDialog(frame, "请先点击开始上课！");
+                }
 			}
 		}
 		if(e.getSource() == btnExit){
-			//TODO exit
+			 System.exit(0);
 		}
     }
 
