@@ -146,6 +146,18 @@ public class PrepareBottomPanel extends JPanel{
 		}
 	}
 
+	public void setOnClass(boolean isOnClass) {
+		ImageIcon btnImage;
+		if (isOnClass) {
+			btnImage = new ImageIcon("images/main/btn_begin_hover.png");
+			app.isOnClass = true;
+		} else {
+			btnImage = new ImageIcon("images/main/btn_begin.png");
+			app.isOnClass = false;
+		}
+		btnBegin.setIcon(btnImage);// 设置图片
+	}
+
 	private void sendMessageToGroup(final MessagePacking messagePacking,
 			final List<SocketChannel> channels) {
 		if (channels == null) {
