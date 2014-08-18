@@ -117,14 +117,15 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 		collectPaper();
 		hasQuiz = false;
 		btnQuiz.setIcon(new ImageIcon(BTN_SEND_HOVER));
+		Application.operationState = Constants.STATE_GROUPING;
 	}
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if (e.getSource() == btnQuiz) {
-			if (hasQuiz) {// 有作业，收作业
+			if (hasQuiz) {
 				btnQuiz.setIcon(new ImageIcon(BTN_ACCEPT_HOVER));
-			} else {// 没作业，发作业
+			} else {
 				btnQuiz.setIcon(new ImageIcon(BTN_SEND_HOVER));
 			}
 		}
@@ -147,10 +148,9 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		if (e.getSource() == btnQuiz) {
-			if (hasQuiz) {// 有作业，收作业
+			if (hasQuiz) {
 				btnQuiz.setIcon(new ImageIcon(BTN_ACCEPT_HOVER));
-			} else {// 没作业，发作业
-				doAcceptQuiz();
+			} else {
 				btnQuiz.setIcon(new ImageIcon(BTN_SEND_HOVER));
 			}
 		}
@@ -159,10 +159,9 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 	@Override
 	public void mouseExited(MouseEvent e) {
 		if (e.getSource() == btnQuiz) {
-			if (hasQuiz) {// 有作业，收作业
+			if (hasQuiz) {
 				btnQuiz.setIcon(new ImageIcon(BTN_ACCEPT_NORMAL));
-			} else {// 没作业，发作业
-				doAcceptQuiz();
+			} else {
 				btnQuiz.setIcon(new ImageIcon(BTN_SEND_NORMAL));
 			}
 		}
