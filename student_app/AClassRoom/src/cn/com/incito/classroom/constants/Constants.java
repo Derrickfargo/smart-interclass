@@ -12,7 +12,7 @@ import cn.com.incito.classroom.widget.canvas.ISketchPadTool;
  */
 public class Constants {
     public static final int PORT = 9001;
-    public static final String IP = "192.168.30.135";
+    public static final String IP = "192.168.30.7";
 
 	/** WisdomCityRestClient 访问API是否输出日志 */
 	public static final boolean REST_CLIENT_LOG_SENABLE_LOGGING = true;
