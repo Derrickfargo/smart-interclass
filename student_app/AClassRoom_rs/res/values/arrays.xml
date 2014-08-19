@@ -16,4 +16,33 @@
         <item>二年级二班</item>
         <item>一年级三班</item>
     </array>
+    <array name="groupIcons">
+        <item>@drawable/badges_diamond</item>
+        <item>@drawable/badges_paper_plane</item>
+        <item>@drawable/badges_pen</item>
+        <item>@drawable/badges_rainbow</item>
+        <item>@drawable/badges_support</item>
+        <item>@drawable/badges_support</item>
+        <item>@drawable/badges_support</item>
+        <item>@drawable/badges_support</item>
+        <item>@drawable/badges_support</item>
+        <item>@drawable/badges_support</item>
+        <item>@drawable/badges_support</item>
+    </array>
+    <array name="groupicons_name">
+        <item>diamond</item>
+        <item>paperplane</item>
+        <item>pen</item>
+        <item>rainbow</item>
+        <item>support</item>
+        <item>support</item>
+        <item>support</item>
+        <item>support</item>
+        <item>support</item>
+        <item>support</item>
+        <item>support</item>
+    </array>
+    
+    
+    
 </resources>

@@ -58,7 +58,7 @@ public final class CoreSocket extends Thread {
 
     private byte[] getHandShakeMessage() {
         MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_HAND_SHAKE);
-        TelephonyManager tm = (TelephonyManager) MyApplication.getApplication().getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager tm = (TelephonyManager) MyApplication.getInstance().getSystemService(Context.TELEPHONY_SERVICE);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(tm.getDeviceId()));
         return messagePacking.pack().array();
     }

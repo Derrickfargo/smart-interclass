@@ -4,7 +4,17 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.Random;
 
-import cn.com.incito.classroom.vo.Customer;
+import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PixelFormat;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.Bitmap.Config;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.drawable.Drawable;
 
 public class Utils {
 
@@ -58,23 +68,6 @@ public class Utils {
         return data;
     }
 
-    public static byte[] getCustomerInfo(Map<String, Customer> v) throws Exception {
-        StringBuffer sb = null;
-        if (v != null && v.size() > 0) {
-            sb = new StringBuffer();
-            Customer c;
-            int count = 0;
-            for (String key : v.keySet()) {
-                c = v.get(key);
-                sb.append(c.toString());
-                if ((count++) != v.size() - 1) {
-                    sb.append(CUSTOMER_MARK);
-                }
-            }
-        }
-        return sb.toString().getBytes();
-    }
-
     public static String getRandomNum(int len) {
         String s = "";
         while (s.length() <= len) {
@@ -90,4 +83,49 @@ public class Utils {
         }
         System.out.println(Utils.byteToint(b));
     }
+
+    public static Bitmap drawableToBitmap(Drawable drawable) {
+		int w = drawable.getIntrinsicWidth();
+		int h = drawable.getIntrinsicHeight();
+
+		Bitmap.Config config = drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
+				: Bitmap.Config.RGB_565;
+		Bitmap bitmap = Bitmap.createBitmap(w, h, config);
+		Canvas canvas = new Canvas(bitmap);
+		drawable.setBounds(0, 0, w, h);
+		drawable.draw(canvas);
+		return bitmap;
+	}
+
+	public static Bitmap getRoundedCornerBitmap(Bitmap bitmap, float roundPx) {
+        int w = bitmap.getWidth();
+        int h = bitmap.getHeight();
+        Bitmap output = Bitmap.createBitmap(w, h, Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, w, h);
+        final RectF rectF = new RectF(rect);
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+        paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+
+        return output;
+    }
+
+	public static Drawable getGroupIconByName(TypedArray iconSource,String[] iconsName, String iconName){
+		if(iconName != null && !"".equals(iconName)
+				&& iconSource != null && iconSource.length() > 0
+				&& iconsName != null && iconsName.length > 0){
+			for(int i=0;i<iconsName.length;i++){
+				if(iconName.equals(iconsName[i])){
+					return iconSource.getDrawable(i);
+				}
+			}
+		}
+		return null;
+	}
 }

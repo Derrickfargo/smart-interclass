@@ -43,32 +43,32 @@ public class GroupActivity extends BaseActivity {
 	}
 
 	/**
-	 * 跳转到小组信息编辑页面
+	 * 跳转到小组信息编辑页面  EditGroupInfoActivity
 	 */
 	void skipToGroupEditorPage(IGroupInfo groupInfo) {
 		FragmentTransaction fragmentTransaction = fragmentManager
 				.beginTransaction();
-		GroupEditorFragment editorFragment = new GroupEditorFragment();
+//		GroupEditorFragment editorFragment = new GroupEditorFragment();
 		Bundle bundle = new Bundle();
 		bundle.putParcelable(Constant.GROUP_INTENT_BUNDLE_NAME, groupInfo);
-		editorFragment.setArguments(bundle);
-		fragmentTransaction.replace(fragmentId, editorFragment);
-		fragmentTransaction.commitAllowingStateLoss();
+//		editorFragment.setArguments(bundle);
+//		fragmentTransaction.replace(fragmentId, editorFragment);
+//		fragmentTransaction.commitAllowingStateLoss();
 
 	}
 
 	/**
-	 * 跳转到小组信息展示页面
+	 * 跳转到小组信息展示页面 ConfirmGroupInfoActivity
 	 */
 	void skipToGroupInfoShowPage(IGroupInfo groupInfo) {
-		FragmentTransaction fragmentTransaction = fragmentManager
-				.beginTransaction();
-		GroupInfoShowFragment infoShowFragment = new GroupInfoShowFragment();
-		Bundle bundle = new Bundle();
-		bundle.putParcelable(Constant.GROUP_INTENT_BUNDLE_NAME, groupInfo);
-		infoShowFragment.setArguments(bundle);
-		fragmentTransaction.replace(fragmentId, infoShowFragment);
-		fragmentTransaction.commitAllowingStateLoss();
+//		FragmentTransaction fragmentTransaction = fragmentManager
+//				.beginTransaction();
+//		GroupInfoShowFragment infoShowFragment = new GroupInfoShowFragment();
+//		Bundle bundle = new Bundle();
+//		bundle.putParcelable(Constant.GROUP_INTENT_BUNDLE_NAME, groupInfo);
+//		infoShowFragment.setArguments(bundle);
+//		fragmentTransaction.replace(fragmentId, infoShowFragment);
+//		fragmentTransaction.commitAllowingStateLoss();
 	}
 
 }
