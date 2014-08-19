@@ -228,9 +228,11 @@ public class FloatIcon extends MouseAdapter {
 		if (e.getSource() == btnQuiz) {
 			if (Application.hasQuiz) {// 有作业，收作业
 				MainFrame.getInstance().doAcceptQuiz();
+				btnQuiz.setIcon(new ImageIcon(ICON_QUIZ_NORMAL));
 			} else {// 没作业，发作业
 				if (Application.isOnClass) {
 					MainFrame.getInstance().doSendQuiz();
+					btnQuiz.setIcon(new ImageIcon(ICON_HANDIN_NORMAL));
 				} else {
 					JOptionPane.showMessageDialog(dialog, "请先点击开始上课！");
 				}
@@ -267,7 +269,6 @@ public class FloatIcon extends MouseAdapter {
 			} else {
 				btnQuiz.setIcon(new ImageIcon(ICON_QUIZ_HOVER));
 			}
-			
 		}
 		if (e.getSource() == btnPraise) {
 			btnPraise.setIcon(new ImageIcon(ICON_PRAISE_HOVER));
@@ -285,11 +286,10 @@ public class FloatIcon extends MouseAdapter {
 		// 鼠标退出效果
 		if (e.getSource() == btnQuiz) {
 			if (Application.hasQuiz) {
-				btnQuiz.setIcon(new ImageIcon(ICON_QUIZ_NORMAL));
+				btnQuiz.setIcon(new ImageIcon(ICON_HANDIN_NORMAL));
 			} else {
 				btnQuiz.setIcon(new ImageIcon(ICON_QUIZ_NORMAL));
 			}
-			
 		}
 		if (e.getSource() == btnPraise) {
 			btnPraise.setIcon(new ImageIcon(ICON_PRAISE_NORMAL));
