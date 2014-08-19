@@ -33,8 +33,8 @@ public class FloatIcon extends MouseAdapter {
 	private static final String BACKGROUND = "images/float/bg_floatmenu.png";
 	private static final String ICON_QUIZ_NORMAL = "images/float/ico_floatmenu1.png";
 	private static final String ICON_QUIZ_HOVER = "images/float/ico_floatmenu1_hover.png";
-	private static final String ICON_HANDIN_NORMAL = "images/float/ico_floatmenu1_1.png";
-	private static final String ICON_HANDIN_HOVER = "images/float/ico_floatmenu1_1_hover.png";
+	private static final String ICON_HANDIN_NORMAL = "images/float/ico_floatmenu5.png";
+	private static final String ICON_HANDIN_HOVER = "images/float/ico_floatmenu5_hover.png";
 	private static final String ICON_PRAISE_NORMAL = "images/float/ico_floatmenu2.png";
 	private static final String ICON_PRAISE_HOVER = "images/float/ico_floatmenu2_hover.png";
 	private static final String ICON_LOCK_NORMAL = "images/float/ico_floatmenu3.png";
@@ -244,25 +244,30 @@ public class FloatIcon extends MouseAdapter {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// 按钮按下效果
-		if (e.getSource() == btnQuiz) {
-			btnQuiz.setIcon(new ImageIcon(ICON_QUIZ_HOVER));
-		}
-		if (e.getSource() == btnPraise) {
-			btnPraise.setIcon(new ImageIcon(ICON_PRAISE_HOVER));
-		}
-		if (e.getSource() == btnLock) {
-			btnLock.setIcon(new ImageIcon(ICON_LOCK_HOVER));
-		}
-		if (e.getSource() == btnExit) {
-			btnExit.setIcon(new ImageIcon(ICON_EXIT_HOVER));
-		}
+//		if (e.getSource() == btnQuiz) {
+//			btnQuiz.setIcon(new ImageIcon(ICON_QUIZ_HOVER));
+//		}
+//		if (e.getSource() == btnPraise) {
+//			btnPraise.setIcon(new ImageIcon(ICON_PRAISE_HOVER));
+//		}
+//		if (e.getSource() == btnLock) {
+//			btnLock.setIcon(new ImageIcon(ICON_LOCK_HOVER));
+//		}
+//		if (e.getSource() == btnExit) {
+//			btnExit.setIcon(new ImageIcon(ICON_EXIT_HOVER));
+//		}
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// 鼠标进入效果
 		if (e.getSource() == btnQuiz) {
-			btnQuiz.setIcon(new ImageIcon(ICON_QUIZ_HOVER));
+			if (Application.hasQuiz) {
+				btnQuiz.setIcon(new ImageIcon(ICON_HANDIN_HOVER));
+			} else {
+				btnQuiz.setIcon(new ImageIcon(ICON_QUIZ_HOVER));
+			}
+			
 		}
 		if (e.getSource() == btnPraise) {
 			btnPraise.setIcon(new ImageIcon(ICON_PRAISE_HOVER));
@@ -279,7 +284,12 @@ public class FloatIcon extends MouseAdapter {
 	public void mouseExited(MouseEvent e) {
 		// 鼠标退出效果
 		if (e.getSource() == btnQuiz) {
-			btnQuiz.setIcon(new ImageIcon(ICON_QUIZ_NORMAL));
+			if (Application.hasQuiz) {
+				btnQuiz.setIcon(new ImageIcon(ICON_QUIZ_NORMAL));
+			} else {
+				btnQuiz.setIcon(new ImageIcon(ICON_QUIZ_NORMAL));
+			}
+			
 		}
 		if (e.getSource() == btnPraise) {
 			btnPraise.setIcon(new ImageIcon(ICON_PRAISE_NORMAL));
