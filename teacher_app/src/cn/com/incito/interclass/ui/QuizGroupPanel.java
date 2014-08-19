@@ -203,7 +203,7 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 		String url = quiz.getThumbnail();
 		Icon icon1 = new ImageIcon(url);
 		quizList.get(i).setIcon(icon1);
-		quizList.get(i).setName(quiz.getQuizUrl());
+		quizList.get(i).getParent().setName(quiz.getQuizUrl());
 		quizMap.put(quiz.getImei(), quiz);
 	}
 	
@@ -274,8 +274,8 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 		}
 		if (quizPanel.contains(e.getSource())) {
 			if (e.getClickCount() == 2) {
-				JLabel lblImage = (JLabel) e.getSource();
-				String url = lblImage.getName();
+				JPanel lblPanel = (JPanel) e.getSource();
+				String url = lblPanel.getName();
 				if (url != null && !url.equals("")) {
 					new PhotoFrame(url, 0, null);
 				}
