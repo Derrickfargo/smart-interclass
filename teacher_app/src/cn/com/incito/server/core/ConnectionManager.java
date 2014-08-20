@@ -1,60 +1,48 @@
 package cn.com.incito.server.core;
 
-import java.io.IOException;
 import java.nio.channels.SocketChannel;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
+/**
+ * 连接管理器，主要管理客户端连接，心跳机制
+ * @author 刘世平
+ *
+ */
 public class ConnectionManager {
-	/**
-	 * 心跳周期（单位：毫秒）
-	 */
-	private volatile static long activeCycle = 10000;
 
 	/**
 	 * 存放产生的长连接
 	 */
-	private static Set<Connection> pool = Collections
-			.synchronizedSet(new HashSet<Connection>());
+	private static Map<String, Connection> pool = Collections
+			.synchronizedMap(new HashMap<String, Connection>());
 
-	/**
-	 * 用于定时发送心跳包
-	 */
-	private static ConnectActiveMonitor monitor = new ConnectActiveMonitor();
-
-	static {
-		monitor.start();
+	public static void addConnection(String imei, SocketChannel channel){
+		Connection connection = pool.get(imei);
+		if (connection == null) {
+			
+		}
+		pool.put(imei, new Connection(imei, channel));
 	}
 
-	public static Connection createConnection(SocketChannel channel)
-			throws IOException {
-		Connection conn = new Connection(channel);
-		pool.add(conn);
-		return conn;
-	}
-
-	public static void removeConnection(Connection conn) {
-		pool.remove(conn);
-	}
-
-	static class ConnectActiveMonitor extends Thread {
-		private volatile boolean running = true;
-
-		public void run() {
-			while (running) {
-				long time = System.currentTimeMillis();
-				for (Connection con : pool) {
-					if (con.getLastActTime() + activeCycle < time) {
-						// TODO
-					}
-				}
-				yield();
+	public static void removeConnection(Connection connection) {
+		Set<Entry<String, Connection>> set = pool.entrySet();
+		Iterator<Entry<String, Connection>> it = set.iterator();
+		while (it.hasNext()) {
+			Entry<String, Connection> entry = it.next();
+//			String key = entry.getKey();
+			if (entry.getValue().equals(connection)) {
+				it.remove();
 			}
 		}
-
-		void setRunning(boolean b) {
-			running = b;
-		}
 	}
+	
+	public static void removeConnection(String imei) {
+		pool.remove(imei);
+	}
+
 }

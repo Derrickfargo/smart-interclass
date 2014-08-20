@@ -1,28 +1,29 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <modelVersion>4.0.0</modelVersion>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
 
 	<!-- 继承产品设置 -->
-  <parent>
-    <groupId>com.incito.interclass</groupId>
-    <artifactId>product</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
+	<parent>
+		<groupId>com.incito.interclass</groupId>
+		<artifactId>product</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
 
 	<!-- 设置本模块的标识，和生成类型 -->
-  <artifactId>server</artifactId>
-  <packaging>jar</packaging>
-  <name>server</name>
-  
-  <dependencies>
+	<artifactId>server</artifactId>
+	<packaging>jar</packaging>
+	<name>server</name>
+
+	<dependencies>
 		<!-- 依赖parent项目 -->
-    <dependency>
-      	<groupId>com.incito.base</groupId>
-		<artifactId>parent</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-    </dependency>
-    
+		<dependency>
+			<groupId>com.incito.base</groupId>
+			<artifactId>parent</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
 		<!-- 在这里添加项目个性化依赖 -->
 		<!-- 加入spring测试依赖包 -->
 		<dependency>
@@ -31,14 +32,14 @@
 			<version>4.0.0.RELEASE</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>commons-dbcp</groupId>
 			<artifactId>commons-dbcp</artifactId>
@@ -46,6 +47,10 @@
 			<type>jar</type>
 			<scope>test</scope>
 		</dependency>
-		
-  </dependencies>
+		<dependency>
+			<groupId>org.codehaus.plexus</groupId>
+			<artifactId>plexus-compiler-eclipse</artifactId>
+			<version>2.1</version>
+		</dependency>
+	</dependencies>
 </project>
