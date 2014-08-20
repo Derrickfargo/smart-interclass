@@ -240,7 +240,7 @@ public class MainFrame extends MouseAdapter {
 		prepareScrollPane.setBorder(null);
 		prepareScrollPane.setBounds(0, 0, 876, 630);
 		 //TODO 根据分组的多少动态调整
-		preparePanel.setPreferredSize(new Dimension(prepareScrollPane.getWidth() - 50, prepareScrollPane.getHeight() * 3));
+		preparePanel.setPreferredSize(new Dimension(prepareScrollPane.getWidth() - 50, (prepareScrollPane.getHeight() + 30) * 2));
 		preparePanel.revalidate();
 		centerCardPanel.add(prepareScrollPane, CARD_PREPARE);
 		

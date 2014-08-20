@@ -34,23 +34,30 @@ public class CoreService {
         app.refreshPrepare();// 更新UI
     }
 
-    public void deviceLogout(String imei) {
-    	app.removeLoginStudent(imei);
-        app.getOnlineDevice().remove(imei);
+    public Group deviceLogout(String imei) {
         Device device = app.getImeiDevice().get(imei);
         if (device == null) {
-            return ;
+            return null;
         }
         Table table = app.getDeviceTable().get(device.getId());
         if (table == null) {
-            return ;
+            return null;
         }
         Group group = app.getTableGroup().get(table.getId());
-        for (Student student : group.getStudents()) {
-        	student.setLogin(false);
+        List<Student> students = app.getStudentByImei(imei);
+        for(Student student : students){
+        	for (Student aStudent : group.getStudents()) {
+        		if(student.getName().equals(aStudent.getName())
+        				&& student.getNumber().equals(aStudent.getNumber())){
+        			aStudent.setLogin(false);
+        		}
+            }
         }
+        app.removeLoginStudent(imei);
+        app.getOnlineDevice().remove(imei);
         Application.getInstance().getClientChannel().remove(imei);
         app.refreshPrepare();// 更新UI
+        return group;
     }
     
     /**

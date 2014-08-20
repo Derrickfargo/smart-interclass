@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.swing.JFrame;
@@ -170,25 +171,52 @@ public class Application {
     	imeiStudent.remove(imei);
     }
     
+    /**
+     * TODO 界面有更改，现需要遍历所有的在线学生
+     * @param imei
+     * @param student
+     */
     public void removeLoginStudent(String imei,Student student){
     	List<Student> studentList = imeiStudent.get(imei);
     	if (studentList == null) {
         	studentList = new ArrayList<Student>();
         }
+    	//先在当前IMEI下找
+    	boolean hasStudent = false;
     	Iterator<Student> it = studentList.iterator();
     	while (it.hasNext()) {
     		Student aStudent = it.next();
     		if (aStudent.getName().equals(student.getName())
 					&& aStudent.getNumber().equals(student.getNumber())) {
 				it.remove();
+				hasStudent = true;
+				break;
 			}
     	}
+		if (!hasStudent) {
+			Set<Entry<String, List<Student>>> set = imeiStudent.entrySet();
+			Iterator<Entry<String, List<Student>>> its = set.iterator();
+			while (its.hasNext()) {
+				Entry<String, List<Student>> entry = its.next();
+				List<Student> students = entry.getValue();
+				Iterator<Student> iterator = students.iterator();
+				while (iterator.hasNext()) {
+					Student s = iterator.next();
+					if (s.getName().equals(student.getName())
+							&& s.getNumber().equals(student.getNumber())) {
+						iterator.remove();
+						break;
+					}
+				}
+			}
+		}
     	it = onlineStudent.iterator();
     	while (it.hasNext()) {
 			Student aStudent = it.next();
 			if (aStudent.getName().equals(student.getName())
 					&& aStudent.getNumber().equals(student.getNumber())) {
 				it.remove();
+				break;
 			}
 		}
     }
@@ -482,5 +510,9 @@ public class Application {
     public void setQuizId(String quizId) {
         this.quizId = quizId;
     }
+
+	public List<Student> getStudentByImei(String imei) {
+		return imeiStudent.get(imei);
+	}
 
 }
