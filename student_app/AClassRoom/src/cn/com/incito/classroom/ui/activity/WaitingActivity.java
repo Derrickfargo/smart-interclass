@@ -240,6 +240,10 @@ public class WaitingActivity extends BaseActivity {
 			ToastHelper.showCustomToast(getApplicationContext(),
 					R.string.toast_stname_tooshort);
 			return false;
+		}else if(stName.contains(" ")){
+			ToastHelper.showCustomToast(getApplicationContext(),
+					R.string.toast_stname_blank);
+			return false;
 		}
 		if (TextUtils.isEmpty(stNumber)) {
 			ToastHelper.showCustomToast(getApplicationContext(),

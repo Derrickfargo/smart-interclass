@@ -10,6 +10,7 @@
     <string name="loading_network_disconnect">没能连接成功，联系老师吧~</string>
     <string name="toast_stname_notnull">要填上名字哦~</string>
     <string name="toast_stname_tooshort">名字太短了吧~</string>
+    <string name="toast_stname_blank">名字中不能包含空格哦~</string>
     <string name="toast_stnumber_notnull">填上你的学号吧</string>
     <string name="toast_stname_repeat">你已经加入了</string>
     <string name="toast_choose_atleast_one_desk">请选择绑定的课桌</string>
