@@ -5,24 +5,13 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
 
-    <FrameLayout
-        android:id="@id/line"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
-
-        <cn.com.incito.classroom.widget.canvas.SketchPadView
-            android:id="@id/sketchpad"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
-    </FrameLayout>
-
-    <FrameLayout
+    <LinearLayout
+        android:id="@+id/line1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" >
 
         <LinearLayout
-            android:id="@id/llayout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
@@ -306,25 +295,30 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="15dp"
-                android:src="@drawable/ico_eraser" />
+                android:background="@drawable/ico_eraser_big" />
+
+
             <Button
-                android:background="@drawable/btn_erasure"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="15dp"
-                android:id="@+id/cleanAllBtn"/>
-            
-            <Button
-                android:background="@drawable/ic_send_btn"
+                android:id="@+id/submit_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="50dp"
-                android:id="@+id/submit_button"/>
-            
+                android:background="@drawable/ic_send_btn" />
         </LinearLayout>
+    </LinearLayout>
+
+    <FrameLayout
+         android:layout_above="@id/line1"
+        android:id="@+id/line"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <cn.com.incito.classroom.widget.canvas.SketchPadView
+            android:id="@id/sketchpad"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            />
     </FrameLayout>
 
 </RelativeLayout>

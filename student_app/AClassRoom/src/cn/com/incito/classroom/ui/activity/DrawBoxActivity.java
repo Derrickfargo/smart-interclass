@@ -1,7 +1,6 @@
 package cn.com.incito.classroom.ui.activity;
 
 import java.io.ByteArrayOutputStream;
-import java.text.Normalizer.Form;
 
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
@@ -22,18 +21,23 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
 /**
@@ -43,8 +47,9 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		ISketchPadCallback {
 
 	private ImageView cleanBtn;
-	private Button delAllBtn;
+	private ImageButton delAllBtn;
 	private FrameLayout line;
+	private LinearLayout line1;
 	private SketchPadView m_sketchPad = null;
 	private Button changeBtn;
 	private ImageView color_white;
@@ -76,6 +81,10 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	private int PEN_WIDTH = 10;
 	private boolean isBlack = true;
 	private Button mSubmitButton;
+	private PopupWindow mPopupWindow;
+	private ImageButton earise_big;
+	private ImageButton earise_middle;
+	private ImageButton earise_small;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -142,8 +151,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		// saveBtn.setOnClickListener(this);
 		cleanBtn = (ImageView) findViewById(R.id.earise);
 		cleanBtn.setOnClickListener(this);
-		delAllBtn = (Button) findViewById(R.id.cleanAllBtn); // 清屏按钮
-		delAllBtn.setOnClickListener(this);
+		
 		line = (FrameLayout) findViewById(R.id.line);
 		// 画笔大小选择
 		mBigRelativeLayout = (RelativeLayout) findViewById(R.id.big);
@@ -324,17 +332,48 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		// 橡皮擦(擦出)
 		case R.id.earise:
 			// view.isDel = true;
-			m_sketchPad.setStrokeType(SketchPadView.STROKE_ERASER);
+			if(mPopupWindow==null){
+				initPopwindow();
+				showPopwindow();
+			}else{
+				if(mPopupWindow.isShowing()){
+					mPopupWindow.dismiss();
+				}else{
+					showPopwindow();
+				}
+			}
+			
 			// 全擦出
 			// view.clean();
 			break;
+			
+	//设置相别擦大小
+		case R.id.earise_big:
+			  m_sketchPad.setStrokeSize(40,SketchPadView.STROKE_ERASER);
+			  m_sketchPad.setStrokeType(SketchPadView.STROKE_ERASER);
+			  cleanBtn.setBackgroundResource(R.drawable.ico_eraser_big);
+			  mPopupWindow.dismiss();
+			  
+			break;
+		case R.id.earise_middle:
+			  m_sketchPad.setStrokeSize(20,SketchPadView.STROKE_ERASER);
+			  m_sketchPad.setStrokeType(SketchPadView.STROKE_ERASER);
+			  cleanBtn.setBackgroundResource(R.drawable.ico_eraser_mid);
+			  mPopupWindow.dismiss();
+			break;
+		case R.id.earise_small:
+			  m_sketchPad.setStrokeSize(10,SketchPadView.STROKE_ERASER);
+			  m_sketchPad.setStrokeType(SketchPadView.STROKE_ERASER);
+			  cleanBtn.setBackgroundResource(R.drawable.ico_eraser_sml);
+			  mPopupWindow.dismiss();
+			break;
 		case R.id.submit_button:
-
 			showDialog();
 			break;
 		case R.id.cleanAllBtn:
 			// view.clean();
 			m_sketchPad.clearAllStrokes();
+			mPopupWindow.dismiss();
 			break;
 		case R.id.bg_select_btn:
 			if (isBlack) {
@@ -471,5 +510,27 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		CoreSocket.getInstance().sendMessage(messagePacking);
 		MyApplication.getInstance().setSubmitPaper(true);
 		this.finish();
+	}
+	public void initPopwindow(){
+		 line1=(LinearLayout) findViewById(R.id.line1);
+		 LayoutInflater layoutInflater = LayoutInflater.from(this); 
+	     View popupWindow = layoutInflater.inflate(R.layout.popup_window, null); 
+	     mPopupWindow = new PopupWindow(popupWindow,LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+	     mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+	     mPopupWindow.setOutsideTouchable(true);
+	     earise_big=(ImageButton)popupWindow.findViewById(R.id.earise_big);
+	     earise_big.setOnClickListener(this);
+	     earise_middle=(ImageButton)popupWindow.findViewById(R.id.earise_middle);
+	     earise_middle.setOnClickListener(this);
+	     earise_small=(ImageButton)popupWindow.findViewById(R.id.earise_small);
+	     earise_small.setOnClickListener(this);
+	     delAllBtn = (ImageButton)popupWindow.findViewById(R.id.cleanAllBtn); // 清屏按钮
+	     delAllBtn.setOnClickListener(this);
+	}
+	public void showPopwindow(){
+		 int[] location = new int[2];
+	     cleanBtn.getLocationOnScreen(location);
+	     mPopupWindow.showAtLocation(cleanBtn, Gravity.NO_GRAVITY, location[0]-160, 570);
+	   
 	}
 }

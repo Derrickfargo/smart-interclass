@@ -139,7 +139,7 @@ public class SketchPadView extends View implements IUndoCommand {
 			break;
 
 		case STROKE_ERASER:
-			m_curTool = new SketchPadEraser(m_penSize);
+			m_curTool = new SketchPadEraser(m_eraserSize);
 			break;
 		}
 
