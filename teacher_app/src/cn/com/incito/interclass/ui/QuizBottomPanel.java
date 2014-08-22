@@ -178,8 +178,7 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
                 Message.MESSAGE_SAVE_PAPER);
         JSONObject json = new JSONObject();
         json.put("id", Application.getInstance().getQuizId());
-        messagePacking.putBodyData(DataType.INT,
-                BufferUtils.writeUTFString(json.toString()));
+        messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(json.toString()));
         CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
 //        Application.operationState = Constants.STATE_NORMAL;
     }

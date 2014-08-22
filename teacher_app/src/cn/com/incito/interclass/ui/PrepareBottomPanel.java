@@ -22,6 +22,7 @@ import com.alibaba.fastjson.JSONObject;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
+import cn.com.incito.server.core.CoreSocket;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
@@ -143,11 +144,17 @@ public class PrepareBottomPanel extends JPanel{
 		}else{
 			MainFrame.getInstance().setVisible(false);
 			setOnClass(true); 
-			//TODO JOptionPane.showMessageDialog(getParent().getParent(), "哈哈");
+			
 		}
 	}
 
 	public void setOnClass(boolean isOnClass) {
+		//TODO
+		MessagePacking messagePacking = new MessagePacking(
+				Message.MESSAGE_LOCK_SCREEN);
+		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString("true"));
+		CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
+		
 		if (isOnClass) { 
 			btnBegin.setIcon(new ImageIcon("images/main/btn_begin_hover.png"));// 设置图片
 			Application.isOnClass = true;
