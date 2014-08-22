@@ -9,5 +9,8 @@
 	<classpathentry kind="lib" path="libs/fastjson-1.1.37.jar" sourcepath="E:/Program/apache-maven-3.2.2/repository/com/alibaba/fastjson/1.1.37/fastjson-1.1.37-sources.jar"/>
 	<classpathentry kind="lib" path="libs/commons-logging-1.0.4.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="libs/quartz-2.1.7.jar"/>
+	<classpathentry kind="lib" path="libs/slf4j-api-1.7.5.jar"/>
+	<classpathentry kind="lib" path="libs/slf4j-log4j12-1.7.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

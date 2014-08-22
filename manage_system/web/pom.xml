@@ -11,9 +11,9 @@
   </parent>
   
   <!-- 设置本模块的标识，和生成类型 -->
-  <artifactId>cloud</artifactId>
+  <artifactId>web</artifactId>
   <packaging>war</packaging>
-  <name>cloud</name>
+  <name>web</name>
    
   <dependencies>
 		<!-- 依赖server模块 -->
@@ -25,6 +25,6 @@
   </dependencies>
   
   <build>
-    <finalName>cloud</finalName>
+    <finalName>web</finalName>
   </build>
 </project>
