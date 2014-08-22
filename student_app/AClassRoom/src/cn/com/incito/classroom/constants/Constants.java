@@ -34,4 +34,6 @@ public class Constants {
 	public final static int SMALL_PEN_WIDTH = 5;
 	//注册学生最大数量
     public static final int STUDENT_MAX_NUM=15;
+    //
+    public static final boolean OPEN_LOCK_SCREEN=false;
 }
