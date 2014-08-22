@@ -76,6 +76,10 @@ public class Message implements Serializable{
 	 * 设备退出
 	 */
 	public static final Byte MESSAGE_DEVICE_LOGOUT=0x0B;
+	/**
+	 * 锁屏
+	 */
+	public static final Byte MESSAGE_LOCK_SCREEN=0x0C;
 	
     private byte msgID;
     private int msgSize;

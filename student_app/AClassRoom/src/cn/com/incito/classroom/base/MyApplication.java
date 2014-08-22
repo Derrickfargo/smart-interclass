@@ -44,8 +44,18 @@ public class MyApplication extends Application {
     private static MyApplication mInstance = null;
     public static final String strKey = "840FFE132BB1749F265E77000ED4A8E17ECEC190";
     private static String IMEI;
-    private boolean isSubmitPaper;
-    public boolean isSubmitPaper() {
+    private boolean isSubmitPaper;//学生是否已提交作业
+    private boolean isLockScreen;//是否锁定屏幕
+    
+    public boolean isLockScreen() {
+		return isLockScreen;
+	}
+
+	public void setLockScreen(boolean isLockScreen) {
+		this.isLockScreen = isLockScreen;
+	}
+
+	public boolean isSubmitPaper() {
 		return isSubmitPaper;
 	}
 
