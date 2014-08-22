@@ -10,6 +10,7 @@ import java.awt.TrayIcon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.Date;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -21,6 +22,8 @@ import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 
+import cn.com.incito.interclass.task.JobPaperUpload;
+import cn.com.incito.interclass.task.QuartzManager;
 import cn.com.incito.server.api.Application;
 
 /**
@@ -70,17 +73,18 @@ public class FloatIcon extends MouseAdapter {
 		}
 		trayIcon.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 2){
+				if (e.getClickCount() == 2) {
 					MainFrame frame = MainFrame.getInstance();
 					frame.getFrame().setExtendedState(JFrame.NORMAL);
 					frame.setVisible(true);
 				}
 			}
 		});
-        showUI();
-        setDragable();
-    }
-    
+		showUI();
+		setDragable();
+		startUploadJob();
+	}
+
 	public void setVisible(boolean visible) {
 		dialog.setVisible(visible);
 	}
@@ -246,18 +250,18 @@ public class FloatIcon extends MouseAdapter {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// 按钮按下效果
-//		if (e.getSource() == btnQuiz) {
-//			btnQuiz.setIcon(new ImageIcon(ICON_QUIZ_HOVER));
-//		}
-//		if (e.getSource() == btnPraise) {
-//			btnPraise.setIcon(new ImageIcon(ICON_PRAISE_HOVER));
-//		}
-//		if (e.getSource() == btnLock) {
-//			btnLock.setIcon(new ImageIcon(ICON_LOCK_HOVER));
-//		}
-//		if (e.getSource() == btnExit) {
-//			btnExit.setIcon(new ImageIcon(ICON_EXIT_HOVER));
-//		}
+		// if (e.getSource() == btnQuiz) {
+		// btnQuiz.setIcon(new ImageIcon(ICON_QUIZ_HOVER));
+		// }
+		// if (e.getSource() == btnPraise) {
+		// btnPraise.setIcon(new ImageIcon(ICON_PRAISE_HOVER));
+		// }
+		// if (e.getSource() == btnLock) {
+		// btnLock.setIcon(new ImageIcon(ICON_LOCK_HOVER));
+		// }
+		// if (e.getSource() == btnExit) {
+		// btnExit.setIcon(new ImageIcon(ICON_EXIT_HOVER));
+		// }
 	}
 
 	@Override
@@ -300,6 +304,11 @@ public class FloatIcon extends MouseAdapter {
 		if (e.getSource() == btnExit) {
 			btnExit.setIcon(new ImageIcon(ICON_EXIT_NORMAL));
 		}
+	}
+
+	private void startUploadJob() {
+		QuartzManager qManager = new QuartzManager();
+		qManager.addJob("paperUpload", JobPaperUpload.class, new Date());
 	}
 
 }
