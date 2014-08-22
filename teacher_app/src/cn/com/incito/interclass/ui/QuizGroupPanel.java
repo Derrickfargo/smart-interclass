@@ -245,15 +245,7 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if (e.getSource() == btnPlus) {
-			btnPlus.setIcon(new ImageIcon(BTN_PLUS_HOVER));
-		}
-		if (e.getSource() == btnMinus) {
-			btnMinus.setIcon(new ImageIcon(BTN_MINUS_HOVER));
-		}
-		if (e.getSource() == btnMedal) {
-			btnMedal.setIcon(new ImageIcon(BTN_MEDAL_HOVER));
-		}
+		
 	}
 
 	@Override
@@ -277,7 +269,7 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 				JPanel lblPanel = (JPanel) e.getSource();
 				String url = lblPanel.getName();
 				if (url != null && !url.equals("")) {
-					new PhotoFrame(url, 0, null);
+					new PhotoFrame(url);
 				}
 			}
 		}

@@ -270,6 +270,20 @@ public class CoreService {
         return JSONUtils.renderJSONString(0, group);
     }
 
+    public Group getGroupObjectByIMEI(String imei) {
+        Device device = app.getImeiDevice().get(imei);
+        if (device == null) {
+            // 系统中无此设备
+            return null;
+        }
+        Table table = app.getDeviceTable().get(device.getId());
+        if (table == null) {
+            // 此设备未绑定课桌
+            return null;
+        }
+        return app.getTableGroup().get(table.getId());
+    }
+    
     public List<SocketChannel> getGroupSocketChannelByGroupId(int groupId) {
         return app.getClientChannelByGroup(groupId);
     }
@@ -299,9 +313,13 @@ public class CoreService {
 		quiz.setId(id);
 		quiz.setImei(imei);
 		quiz.setName(name);
+		Group group = getGroupObjectByIMEI(imei);
+		quiz.setGroupId(group.getId());
+		quiz.setGroup(group);
 		quiz.setQuizUrl(file.getAbsolutePath());
 		quiz.setThumbnail(thumbnail.getAbsolutePath());
 		app.getTempQuiz().put(imei, quiz);
+		app.getQuizList().add(quiz);
 		app.refreshQuiz();
 		return JSONUtils.renderJSONString(0);
     }

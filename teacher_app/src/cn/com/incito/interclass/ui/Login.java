@@ -262,6 +262,7 @@ public class Login extends MouseAdapter {
 
     private void doLogin() {
         final String mac = NetworkUtils.getLocalMac();
+        logger.info("mac:" + mac);
 //        try {
             String uname = txtUserName.getText();
             String password = new String(txtPassword.getPassword());
@@ -280,10 +281,12 @@ public class Login extends MouseAdapter {
                         JSONObject jsonObject = JSON.parseObject(content);
                         if (jsonObject.getIntValue("code") == 1) {
                             JOptionPane.showMessageDialog(frame, "用户名或密码错误!");
+                            logger.info("用户名或密码错误!");
                             return;
                             //增加当教师端未注册或网络连接错误的提示 
                         }else if(jsonObject.getIntValue("code") == 2){
                         	JOptionPane.showMessageDialog(frame, "本教室未有效注册或网络连接配置错误!");
+                        	logger.info("本教室未有效注册或网络连接配置错误!");
                             return;
                         }
                         String data = jsonObject.getString("data");
@@ -291,6 +294,11 @@ public class Login extends MouseAdapter {
 
                         frame.setVisible(false);
                         //第一步获取教室、教师数据
+                        if(resultData.getRoom() == null){
+                        	JOptionPane.showMessageDialog(frame, "本教室未有效注册!");
+                        	logger.info("本教室未有效注册!");
+                            return;
+                        }
                         Application.getInstance().setRoom(resultData.getRoom());
                         Application.getInstance().setTeacher(resultData.getTeacher());
                         Login2 login2 = new Login2(resultData.getClasses(), resultData.getCourses());

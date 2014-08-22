@@ -57,7 +57,8 @@ public class Application {
     private Map<Integer, JSONObject> tempGroup = new HashMap<Integer, JSONObject>();// 修改的分组信息
     private Map<Integer, List<Integer>> tempVote = new HashMap<Integer, List<Integer>>();// 小组的投票信息
     private Map<String, Quiz> tempQuiz = new HashMap<String, Quiz>();//随堂联系
-    FileLock fl;
+    private List<Quiz> quizList = new ArrayList<Quiz>();//作业
+    private FileLock fl;
     /**
      * IMEI和设备的对应关系(key:imei,value:Device)，教师登陆完后初始化
      */
@@ -493,8 +494,12 @@ public class Application {
     public Map<String, Quiz> getTempQuiz() {
         return tempQuiz;
     }
+    
+	public List<Quiz> getQuizList() {
+		return quizList;
+	}
 
-    public void refreshPrepare() {
+	public void refreshPrepare() {
         MainFrame.getInstance().refreshPrepare();
         MainFrame.getInstance().refreshQuiz();
     }
