@@ -9,6 +9,7 @@ package cn.com.incito.interclass.constant;
  */
 public class Constants {
 
+	//文件锁存储位置
     public static final String LOC_DIR = "E:\\";
     public static final String LOC_FILE = "lock.txt";
 

@@ -1,4 +1,4 @@
-package com.incito.interclass.entity.cloud;
+package cn.com.incito.interclass.po;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -12,11 +12,10 @@ public class PaperWork implements Serializable{
 	 * 随堂测试作业
 	 */
 	private String type;
-	private String teacher_id;
+	private String student_id;
 	private String author_name;
 	private String quizid;
 	private String path;
-	private String imei;
 	private String filename;
 	private String filesize;
 	private Date ctime;
@@ -26,11 +25,11 @@ public class PaperWork implements Serializable{
 	public void setType(String type) {
 		this.type = type;
 	}
-	public String getTeacher_id() {
-		return teacher_id;
+	public String getStudent_id() {
+		return student_id;
 	}
-	public void setTeacher_id(String teacher_id) {
-		this.teacher_id = teacher_id;
+	public void setStudent_id(String student_id) {
+		this.student_id = student_id;
 	}
 	public String getAuthor_name() {
 		return author_name;
@@ -49,12 +48,6 @@ public class PaperWork implements Serializable{
 	}
 	public void setPath(String path) {
 		this.path = path;
-	}
-	public String getImei() {
-		return imei;
-	}
-	public void setImei(String imei) {
-		this.imei = imei;
 	}
 	public String getFilename() {
 		return filename;

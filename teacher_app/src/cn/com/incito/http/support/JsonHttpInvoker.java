@@ -12,12 +12,12 @@ import java.net.*;
 
 
 /**
- * @author : 桥下一粒砂
- * email  : chenyoca@gmail.com
- * date   : 2012-10-23
- * desc   : 简单的HTTP实现
+ * @author : popoy
+ * email  : popoyliu@hotmail.com
+ * date   : 2014-08-23
+ * desc   : json传递HTTP实现
  */
-public class SimpleHttpInvoker extends RequestInvoker {
+public class JsonHttpInvoker extends RequestInvoker {
 	
 	public final static String DEFAULT_USER_AGENT = String.format("AsyncHttpConnection (chenyoca@gmail.com) version %s", AsyncHttpConnection.VERSION);
 	
@@ -26,9 +26,7 @@ public class SimpleHttpInvoker extends RequestInvoker {
 	private static final String END_MP_BOUNDARY = "--" + BOUNDARY + "--";
 	private static final String END_MP_BLOCK = "\r\n\r\n";
 	private static final String MULTIPART_FORM_DATA = "multipart/form-data";
-	private static final String XWWW_FORM_URLENCODED = "application/x-www-form-urlencoded";
-//	private static final String XWWW_FORM_URLENCODED = "application/json;charset=UTF-8";
-//	private static final String XWWW_FORM_URLENCODED = "text/plain;charset=UTF-8";
+	private static final String XWWW_FORM_URLENCODED = "application/json;charset=UTF-8";
 
     private static final CookieManager COOKIE_MANAGER;
     static {

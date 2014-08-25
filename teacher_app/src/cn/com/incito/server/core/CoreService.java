@@ -295,7 +295,7 @@ public class CoreService {
      * @return
      */
     public String SavePaper(String imei, String id,String name, byte[] imageByte) {
-        File path = new File(FileUtils.getProjectPath() + "/" + id);
+        File path = new File(FileUtils.getProjectPath() + "/paper/" + id);
         path.mkdirs();
         
         File file = new File(path, imei + ".jpg");

@@ -20,7 +20,7 @@ public abstract class RequestInvoker implements Runnable{
 		GET,POST,PUT,DELETE,OPTIONS,HEAD,TRACE,CONNECT;
 	}
 
-	private final static int HTTP_CONNECT_TIMEOUT = 10 * 1000;
+	private final static int HTTP_CONNECT_TIMEOUT = 12 * 1000;
 	private final static int HTTP_SOCKET_TIMEOUT = 10 * 1000;
 
 	protected HttpMethod method;

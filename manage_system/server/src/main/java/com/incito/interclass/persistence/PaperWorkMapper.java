@@ -1,4 +1,4 @@
-package com.incito.interclass.persistence.cloud;
+package com.incito.interclass.persistence;
 
 import java.util.List;
 
