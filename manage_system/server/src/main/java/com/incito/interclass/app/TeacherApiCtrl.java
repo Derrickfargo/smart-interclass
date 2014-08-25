@@ -29,7 +29,7 @@ import com.incito.interclass.entity.Teacher;
 
 @RestController
 @RequestMapping("/api/teacher")
-public class TeacherCtrl extends BaseCtrl {
+public class TeacherApiCtrl extends BaseCtrl {
 
 	/**
 	 * 登陆失败，用户名或者密码错误
