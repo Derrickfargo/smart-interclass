@@ -52,12 +52,9 @@ public class PhotoFrame extends JFrame {
 		photoDialog.setVisible(true);
 	}
 	
-	public static void main(String[] args) {
-		new PhotoFrame("");
-	}
-	
 	public class PhotoDialog extends JDialog implements MouseListener{
 		private static final long serialVersionUID = -2216276219179107707L;
+		private static final int PAGE_COUNT = 6;
 		private static final String BACKGROUND = "images/quiz/bg_main.png";
 		private static final String BTN_CLOSE_NORMAL = "images/quiz/ico_close.png";
 		private static final String BTN_CLOSE_HOVER = "images/quiz/ico_close_hover.png";
@@ -79,9 +76,14 @@ public class PhotoFrame extends JFrame {
 			private JLabel lblBackground;
 			private JLabel lblImage;
 			private boolean isSelected;
+			private Quiz quiz;
 
 			public ImagePanel() {
 				setLayout(null);
+				
+				lblImage = new JLabel();
+				lblImage.setBounds(15, 8, 100, 70);
+				add(lblImage);
 				
 				lblBackground = new JLabel();
 				ImageIcon imgBack = new ImageIcon(BACKGROUND_NORMAL);
@@ -89,16 +91,8 @@ public class PhotoFrame extends JFrame {
 				lblBackground.setBounds(0, 0, 132, 87);
 				add(lblBackground);
 
-				lblImage = new JLabel();
-				lblImage.setBounds(1, 1, 130, 85);
-				add(lblImage);
 			}
 
-			public void setPicture(String url) {
-				ImageIcon image = new ImageIcon(url);
-				lblImage.setIcon(image);
-			}
-			
 			public void setSelected(boolean isSelected){
 				this.isSelected = isSelected;
 				if(isSelected){
@@ -121,13 +115,28 @@ public class PhotoFrame extends JFrame {
 					}
 				}
 			}
+
+			public Quiz getQuiz() {
+				return quiz;
+			}
+
+			public void setQuiz(Quiz quiz) {
+				this.quiz = quiz;
+				if (quiz == null) {
+					ImageIcon image = new ImageIcon();
+					lblImage.setIcon(image);
+				} else {
+					ImageIcon image = new ImageIcon(quiz.getThumbnail());
+					lblImage.setIcon(image);
+				}
+			}
+			
 		}
 		
 		
 		public PhotoDialog(PhotoFrame coverFrame, String url) {
 			super(coverFrame, true);
 			this.coverFrame = coverFrame;
-			initData(url);
 			
 			setSize(972, 698);
 			setUndecorated(true);//去除窗体
@@ -138,6 +147,7 @@ public class PhotoFrame extends JFrame {
 			setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 			
 			btnClose = new JButton();
+			btnClose.setFocusable(false);
 			btnClose.setBorderPainted(false);//设置边框不可见
 	        btnClose.setContentAreaFilled(false);//设置透明
 	        ImageIcon imgMax = new ImageIcon(BTN_CLOSE_NORMAL);
@@ -165,8 +175,6 @@ public class PhotoFrame extends JFrame {
 	        pnlImage.setBounds(54, 45, 867, 542);
 	        add(pnlImage);
 	        lblImage = new JLabel();
-	        ImageIcon image = new ImageIcon(url);
-	        lblImage.setIcon(image);
 	        lblImage.setBounds(1, 1, 865, 540);
 	        pnlImage.add(lblImage);
 	        
@@ -197,8 +205,12 @@ public class PhotoFrame extends JFrame {
 	        btnNext.setBounds(950, 611, next.getIconWidth(), next.getIconHeight());
 	        add(btnNext);
 	        btnNext.addMouseListener(this);
-	        
+	        //设置背景
 			setBackground();
+			//查找当前url对应的位置
+			initData(url);
+			//根据当前位置加载数据
+			refresh();
 		}
 		
 		//设置背景
@@ -209,7 +221,7 @@ public class PhotoFrame extends JFrame {
 	        add(lblBackground);
 	    }
 	    
-		private void initData(String url) {
+	    private void initData(String url) {
 			//所有作业
 			quizList = Application.getInstance().getQuizList();
 			for (int i = 0; i < quizList.size(); i++) {
@@ -220,7 +232,60 @@ public class PhotoFrame extends JFrame {
 				}
 			}
 		}
-
+	    
+	    public void refresh(){
+			List<Quiz> page = getPage(-1);
+			if(page.size() == 0){
+				return ;
+			}
+			Quiz quiz = page.get(0);
+			ImageIcon image = new ImageIcon(quiz.getQuizUrl());
+	        lblImage.setIcon(image);
+			for (int i = 0; i < 6; i++) {//6个缩略图
+				ImagePanel panel = imageList.get(i);
+				if (i < page.size()) {
+					panel.setQuiz(page.get(i));
+				} else {
+					panel.setQuiz(null);
+				}
+			}
+			for (int j = 0; j < imageList.size(); j++) {
+				ImagePanel panel = imageList.get(j);
+				if (j == 0) {
+					panel.setSelected(true);
+					quiz = panel.getQuiz();
+					if (quiz != null && quiz.getGroup() != null) {
+						String title = quiz.getGroup().getName() + "[%s]";
+						lblTitle.setText(String.format(title, quiz.getName()));
+					}
+				} else {
+					panel.setSelected(false);
+				}
+			}
+	    }
+	    
+		/**
+		 * 
+		 * @param index 当前页,暂时不用
+		 * @return 某页数据,最多6个
+		 */
+		private List<Quiz> getPage(int index) {
+			List<Quiz> quizzes = new ArrayList<Quiz>();
+			if (position >= quizList.size()) {
+				return quizzes;
+			}
+			int count = 1;
+			while (position < quizList.size()) {
+				quizzes.add(quizList.get(position));
+				position++;
+				if (count == PAGE_COUNT) {
+					break;
+				}
+				count++;
+			}
+			return quizzes;
+		}
+		
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			if (e.getSource() == btnClose) {
@@ -234,8 +299,28 @@ public class PhotoFrame extends JFrame {
 					panel.setSelected(false);
 					if(panel == e.getSource()){
 						panel.setSelected(true);
+						Quiz quiz = panel.getQuiz();
+						if (quiz == null) {
+							continue;
+						}
+						ImageIcon icon = new ImageIcon(quiz.getQuizUrl());
+						lblImage.setIcon(icon);
 					}
 				}
+			}
+			if (e.getSource() == btnPrevious) {
+				position -= 6;
+				if (position < 0) {
+					position = 0;
+				}
+				refresh();
+			}
+			if (e.getSource() == btnNext) {
+//				position += 6;
+//				if (position > quizList.size()) {
+//					position = quizList.size();
+//				}
+				refresh();
 			}
 		}
 
@@ -289,5 +374,7 @@ public class PhotoFrame extends JFrame {
 				btnNext.setIcon(new ImageIcon(BTN_NEXT_NORMAL));
 			}
 		}
+		
 	}
+	
 }
