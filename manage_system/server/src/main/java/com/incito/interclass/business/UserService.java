@@ -19,7 +19,26 @@ public class UserService {
 
 	@Autowired
 	private UserMapper userMapper;
-	
+
+	/**
+	 * 改变学生的分数
+	 * 
+	 * @param studentIdList
+	 * @param changeScore
+	 */
+	public Integer changePoint(String studentId, int score) {
+		int Score=0;
+		String[] x = studentId.split(",");
+		for (int k = 0; k < x.length; k++) {
+			userMapper.changePoint(x[k], score);
+		}
+		for (int j = 0; j < x.length; j++) {
+			Integer i=userMapper.getScore(x[j]);
+			Score=Score+i;
+		}
+		return Score;
+	};
+
 	/**
 	 * 管理员登陆
 	 * 
@@ -33,36 +52,34 @@ public class UserService {
 		return userMapper.loginForAdmin(admin);
 	}
 
-	public Teacher loginForTeacher(Teacher teacher){
+	public Teacher loginForTeacher(Teacher teacher) {
 		return userMapper.loginForTeacher(teacher);
 	}
-	
-	public Student loginForStudent(Student student){
+
+	public Student loginForStudent(Student student) {
 		return userMapper.loginForStudent(student);
 	}
-	
+
 	public List<Student> getStudentByGroupId(int groupId) {
 		return userMapper.getStudentByGroupId(groupId);
 	}
-	
-	public List<Teacher> getTeacherList(Object parameterObject, int skipResults,
-			int maxResults) {
+
+	public List<Teacher> getTeacherList(Object parameterObject, int skipResults, int maxResults) {
 		return userMapper.getTeacherList();
 	}
-	
-	public List<Student> getStudentList(Object parameterObject, int skipResults,
-			int maxResults) {
+
+	public List<Student> getStudentList(Object parameterObject, int skipResults, int maxResults) {
 		return userMapper.getStudentList();
 	}
-	
+
 	public Student getStudent(String name, String number) {
 		return userMapper.getStudent(name, number);
 	}
-	
+
 	@Transactional(rollbackFor = AppException.class)
 	public boolean saveTeacher(Teacher teacher) throws AppException {
 		userMapper.saveUser(teacher);
-		if(teacher.getId() <= 0){
+		if (teacher.getId() <= 0) {
 			throw AppException.database(0);
 		}
 		int result = userMapper.saveTeacher(teacher);
@@ -72,7 +89,7 @@ public class UserService {
 	@Transactional(rollbackFor = AppException.class)
 	public boolean saveStudent(Student student) throws AppException {
 		userMapper.saveUser(student);
-		if(student.getId() <= 0){
+		if (student.getId() <= 0) {
 			throw AppException.database(0);
 		}
 		int result = userMapper.saveStudent(student);
@@ -83,7 +100,7 @@ public class UserService {
 		userMapper.deleteUser(teacherId);
 		userMapper.deleteTeacher(teacherId);
 	}
-	
+
 	public void deleteStudent(int studentId) {
 		userMapper.deleteUser(studentId);
 		userMapper.deleteStudent(studentId);

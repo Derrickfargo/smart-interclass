@@ -1,10 +1,13 @@
 package cn.com.incito.interclass.ui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,9 +20,22 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import org.apache.log4j.Logger;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
+import cn.com.incito.http.AsyncHttpConnection;
+import cn.com.incito.http.StringResponseHandler;
+import cn.com.incito.http.support.ParamsWrapper;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Quiz;
+import cn.com.incito.server.api.Application;
+import cn.com.incito.server.api.result.TeacherLoginResultData;
+import cn.com.incito.server.utils.Md5Utils;
+import cn.com.incito.server.utils.NetworkUtils;
 import cn.com.incito.server.utils.UIHelper;
+import cn.com.incito.server.utils.URLs;
 
 /**
  * 小组作业Panel
@@ -27,7 +43,7 @@ import cn.com.incito.server.utils.UIHelper;
  *
  */
 public class QuizGroupPanel extends JPanel implements MouseListener{
-
+	 private Logger logger = Logger.getLogger(QuizGroupPanel.class.getName());
 	private static final long serialVersionUID = 882552987989905663L;
 	private static final String BTN_PLUS_NORMAL = "images/quiz/ico_add.png";
 	private static final String BTN_PLUS_HOVER = "images/quiz/ico_add_hover.png";
@@ -256,9 +272,12 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() == btnPlus) {
+			changePoint(3);//更改分数
 			JOptionPane.showMessageDialog(getParent().getParent(), "小组加分!");
+			
 		}
 		if (e.getSource() == btnMinus) {
+			changePoint(-1);//更改分数
 			JOptionPane.showMessageDialog(getParent().getParent(), "小组减分!");
 		}
 		if (e.getSource() == btnMedal) {
@@ -300,4 +319,43 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 			btnMedal.setIcon(new ImageIcon(BTN_MEDAL_NORMAL));
 		}
 	}
+	 private void changePoint(int updateScore) {
+		 logger.info("分数奖励调用");
+//	        try {
+	            //使用Get方法，取得服务端响应流：
+	            AsyncHttpConnection http = AsyncHttpConnection.getInstance();
+	            ParamsWrapper params = new ParamsWrapper();
+	            params.put("studentId","295");
+	            params.put("score",updateScore);
+	            http.post(URLs.URL_UPDATE_SCORE, params, new StringResponseHandler() {
+	                @Override
+	                protected void onResponse(String content, URL url) {
+	                    if (content != null && !content.equals("")) {
+	                    	System.out.println("返回的数据"+content);
+	                        JSONObject jsonObject = JSON.parseObject(content);
+	                        if (jsonObject.getIntValue("code") == 1) {
+	                            logger.info("分数奖励失败!");
+	                            return;
+	                        }else{
+	                        	
+	                        }
+	                        logger.info("分数奖励" + content);
+	                    }
+	                }
+
+	                @Override
+	                public void onSubmit(URL url, ParamsWrapper params) {
+	                }
+
+	                @Override
+	                public void onConnectError(IOException exp) {
+	                	JOptionPane.showMessageDialog((Component) quizPanel, "连接错误，请检查网络！");
+	                }
+
+	                @Override
+	                public void onStreamError(IOException exp) {
+	                	JOptionPane.showMessageDialog((Component) quizPanel, "数据解析错误！");
+	                }
+	            });
+	    }
 }

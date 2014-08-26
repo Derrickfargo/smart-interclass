@@ -157,7 +157,6 @@ public class PhotoFrame extends JFrame {
 	        btnClose.addMouseListener(this);
 	        
 	        lblTitle = new JLabel();
-			lblTitle.setText("哇哈哈小组-[哈哈哈，呵呵呵]");
 			lblTitle.setForeground(UIHelper.getDefaultFontColor());
 			lblTitle.setBounds(54, 20, 200, 25);
 			add(lblTitle);
