@@ -9,6 +9,12 @@ public class URLs {
 	private final static String URL_API_HOST = HTTP + HOST + URL_SPLITTER;
 	private final static String URL_API_HOST2 = HTTP + HOST2 + URL_SPLITTER;
 
+	
+	/**
+	 * 分数奖励
+	 */
+	public final static String URL_UPDATE_SCORE = URL_API_HOST2
+			+ "api/student/changepoint";
 	/**
 	 * 老师登陆
 	 */
