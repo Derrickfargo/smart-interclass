@@ -35,15 +35,18 @@ public class MainFrame extends MouseAdapter {
 	private static MainFrame instance;
 	private static final String CARD_PREPARE = "PREPARE";
 	private static final String CARD_QUIZ = "QUIZ";
+	private static final String CARD_PRAISE = "PRAISE";
 	private static final String CARD_PREPARE_BOTTOM = "PREPARE_BOTTOM";
 	private static final String CARD_QUIZ_BOTTOM = "QUIZ_BOTTOM";
+	private static final String CARD_PRAISE_BOTTOM = "PRAISE_BOTTOM";
+	
 	
 	private Application app = Application.getInstance();
 	
 	private JFrame frame = new JFrame();
 	private Boolean isDragged;
 	private Point loc, tmp;
-	private JButton btnMin, btnClose;
+	private JButton btnMin, btnClose, btnPraise;
 	private JLabel lblBackground;
 	private JPanel contentPane;
 	
@@ -55,11 +58,13 @@ public class MainFrame extends MouseAdapter {
 	private JPanel centerCardPanel;
 	private PreparePanel preparePanel;
 	private QuizPanel quizPanel;
+	private PraisePanel praisePanel;
 	
 	private CardLayout bottomCardLayout;
 	private JPanel bottomCardPanel;
 	private PrepareBottomPanel prepareBottomPanel;
 	private QuizBottomPanel quizBottomPanel;
+	private PraiseBottomPanel praiseBottomPanel;
 	
 	public static MainFrame getInstance() {
 		if (instance == null) {
@@ -168,6 +173,7 @@ public class MainFrame extends MouseAdapter {
                 
                 btnStatus.setIcon(new ImageIcon("images/main/bg_ready_hover.png"));
                 btnQuiz.setIcon(new ImageIcon("images/main/bg_works.png"));
+                btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
             }
         });
 		
@@ -187,8 +193,29 @@ public class MainFrame extends MouseAdapter {
                 
                 btnQuiz.setIcon(new ImageIcon("images/main/bg_works_hover.png"));
                 btnStatus.setIcon(new ImageIcon("images/main/bg_ready.png"));
+                btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
             }
         });
+		
+		//表扬菜单
+		Icon iconPraise = new ImageIcon("images/main/bg_praise.png");
+		btnPraise = new JButton();
+		btnPraise.setIcon(iconPraise);
+		btnPraise.setFocusPainted(false);
+		btnPraise.setBorderPainted(false);// 设置边框不可见
+		btnPraise.setContentAreaFilled(false);// 设置透明
+		left.add(btnPraise);
+		btnPraise.setBounds(0, 110, iconQuiz.getIconWidth(), iconQuiz.getIconHeight());
+		btnPraise.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				centerCardLayout.show(centerCardPanel, CARD_PRAISE);
+				bottomCardLayout.show(bottomCardPanel, CARD_PRAISE_BOTTOM);
+		                
+				btnQuiz.setIcon(new ImageIcon("images/main/bg_works.png"));
+				btnStatus.setIcon(new ImageIcon("images/main/bg_ready.png"));
+				btnPraise.setIcon(new ImageIcon("images/main/bg_praise_hover.png"));
+			}
+		});
 		
 		// 用户信息
 		JPanel pnlUser = new JPanel() {
@@ -208,7 +235,7 @@ public class MainFrame extends MouseAdapter {
 		pnlUser.add(lblTeacher);
 		lblTeacher.setBounds(0, 70, 127, 20);
 		left.add(pnlUser);
-		pnlUser.setBounds(0, 110, 127, 95);
+		pnlUser.setBounds(0, 165, 127, 95);
 
 		JLabel lblCopyRight = new JLabel("Copy Right © 2014", JLabel.CENTER);
 		lblCopyRight.setForeground(UIHelper.getDefaultFontColor());
@@ -254,6 +281,15 @@ public class MainFrame extends MouseAdapter {
         quizPanel.setPreferredSize(new Dimension(quizScrollPane.getWidth() - 50, (quizScrollPane.getHeight() - 50) * 4));
 		centerCardPanel.add(quizScrollPane, CARD_QUIZ);
 		
+		//表扬card
+		praisePanel = new PraisePanel();
+		praisePanel.setBackground(Color.WHITE);
+        JScrollPane praiseScrollPane = new JScrollPane(praisePanel);
+        praiseScrollPane.getVerticalScrollBar().setUnitIncrement(100);
+        praiseScrollPane.setBorder(null);
+        praiseScrollPane.setBounds(0, 0, 876, 630);
+        praisePanel.setPreferredSize(new Dimension(praiseScrollPane.getWidth() - 50, (praiseScrollPane.getHeight() - 100) * 2));
+		centerCardPanel.add(praiseScrollPane, CARD_PRAISE);
         
 		// //////////////////////bottom部分////////////////////////
 		bottomCardLayout = new CardLayout();
@@ -268,6 +304,9 @@ public class MainFrame extends MouseAdapter {
 		//quiz
 		quizBottomPanel = new QuizBottomPanel();
 		bottomCardPanel.add(quizBottomPanel, CARD_QUIZ_BOTTOM);
+		//Praise
+		praiseBottomPanel = new PraiseBottomPanel();
+		bottomCardPanel.add(praiseBottomPanel, CARD_PRAISE_BOTTOM);
 				
 		initData();
 		setBackground();// 设置背景
