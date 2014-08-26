@@ -17,4 +17,12 @@ public interface PaperWorkMapper {
 	 */
 	Integer save(PaperWork paperWork);
 
+	/**
+	 * 保存随堂练习
+	 * 
+	 * @param paperWork
+	 * @return
+	 */
+	List<PaperWork> loadIndex(@Param("teacher_id") String teacher_id, @Param("quizid") String quizid);
+
 }

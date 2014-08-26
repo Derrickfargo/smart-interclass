@@ -14,30 +14,11 @@ import com.incito.interclass.entity.cloud.PaperWork;
 import com.incito.interclass.persistence.PaperWorkMapper;
 
 @Service
-public class PaperWorkService {
+public class CourseWareService {
 
-	@Autowired
-	private PaperWorkMapper classMapper;
-
-	public int savePaperWork(List<PaperWork> paperWorks) {
-		int count = 0;
-		for (PaperWork p : paperWorks) {
-			int c = classMapper.save(p);
-			if (c > 0) {
-				count = count + c;
-			}
-
-		}
-
-		return count;
-	}
-
-	@Transactional
-	public int upload(PaperWork paperWorks, MultipartFile file) {
+	public int save(MultipartFile file) {
 		String filename = file.getOriginalFilename();
-		File f = new File(Constants.PAPER_DIR + "\\"
-				+ paperWorks.getTeacher_id() + "\\" + paperWorks.getQuizid(),
-				filename);
+		File f = new File(Constants.COURSEWARE_DIR, filename);
 		f.mkdirs();
 		try {
 			file.transferTo(f);
@@ -48,8 +29,6 @@ public class PaperWorkService {
 			e.printStackTrace();
 			return -1;
 		}
-		int result = classMapper.save(paperWorks);
-		return result;
+		return 1;
 	}
-
 }

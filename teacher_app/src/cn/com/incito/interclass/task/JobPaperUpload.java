@@ -2,12 +2,14 @@ package cn.com.incito.interclass.task;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-
-import javax.swing.JOptionPane;
+import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.quartz.Job;
@@ -17,14 +19,10 @@ import org.quartz.JobExecutionException;
 import cn.com.incito.http.AsyncHttpConnection;
 import cn.com.incito.http.StringResponseHandler;
 import cn.com.incito.http.support.ParamsWrapper;
-import cn.com.incito.interclass.po.PaperWork;
-import cn.com.incito.interclass.ui.Login;
-import cn.com.incito.interclass.ui.Login2;
+import cn.com.incito.http.utility.ResponseCallbackTrace;
+import cn.com.incito.interclass.constant.Constants;
 import cn.com.incito.server.api.Application;
-import cn.com.incito.server.api.result.TeacherLoginResultData;
 import cn.com.incito.server.utils.FileUtils;
-import cn.com.incito.server.utils.JSONUtils;
-import cn.com.incito.server.utils.Md5Utils;
 import cn.com.incito.server.utils.URLs;
 
 import com.alibaba.fastjson.JSON;
@@ -40,14 +38,30 @@ public class JobPaperUpload implements Job {
 	private Logger logger = Logger.getLogger(getClass());
 	public final static String PAPER_PATH = FileUtils.getProjectPath()
 			+ "/paper";
+	AsyncHttpConnection http = AsyncHttpConnection.getInstance();
+	protected final ResponseCallbackTrace callbackTrace = new ResponseCallbackTrace();
 
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		Logger.getLogger(getClass()).info("job start excuting ...");
-		AsyncHttpConnection http = AsyncHttpConnection.getInstance();
-		List<ParamsWrapper> params = wrapParam();
-		http.post(URLs.URL_CLOUD_SYN_PAPER, params.get(0),
-				new StringResponseHandler() {
+		for (ParamsWrapper p : wrapParam()) {
+			uploadFile(p);
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+	}
+	/**
+	 * 上传文件到云端
+	 * @param param
+	 */
+	private void uploadFile(ParamsWrapper param) {
+		http.post(URLs.URL_CLOUD_SYN_ADD, param,
+				callbackTrace.trace(new StringResponseHandler() {
 					@Override
 					protected void onResponse(String content, URL url) {
 						if (content != null && !content.equals("")) {
@@ -59,6 +73,7 @@ public class JobPaperUpload implements Job {
 							int num = jsonObject.getIntValue("count");
 							logger.info("随堂作业同步数量：" + num);
 						}
+
 					}
 
 					@Override
@@ -74,9 +89,14 @@ public class JobPaperUpload implements Job {
 					public void onStreamError(IOException exp) {
 						logger.info("结果解析失败" + exp.getMessage());
 					}
-				});
+				}));
 	}
 
+	/**
+	 * 扫描最新的随堂作业，并生成Wrapper
+	 * 
+	 * @return
+	 */
 	private List<ParamsWrapper> wrapParam() {
 		List<ParamsWrapper> list = new ArrayList<ParamsWrapper>();
 		File path = new File(PAPER_PATH);
@@ -85,7 +105,16 @@ public class JobPaperUpload implements Job {
 			@Override
 			public boolean accept(File pathname) {
 				try {
-					if (pathname.getName().length() > 2)
+					Properties properties = new Properties();
+					FileReader reader = new FileReader(
+							new File(FileUtils.getProjectPath() + "/"
+									+ Constants.PROPERTIES_FILE));
+					properties.load(reader);
+					String last_syn_quizid = properties.getProperty(
+							"last_syn_quizid", "1");
+
+					if (pathname.lastModified() > Integer
+							.parseInt(last_syn_quizid))
 						return true;
 				} catch (Exception e) {
 					return false;
@@ -93,7 +122,7 @@ public class JobPaperUpload implements Job {
 				return false;
 			}
 		});
-		if (files.length < 1)
+		if (files == null || files.length < 1)
 			return null;
 		for (File file : files) {
 			String[] strs = file.list();
@@ -114,4 +143,5 @@ public class JobPaperUpload implements Job {
 
 		return list;
 	}
+
 }

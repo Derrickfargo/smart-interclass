@@ -3,11 +3,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.incito.interclass.persistence.PaperWorkMapper">
 
-	<insert id="save" parameterType="com.incito.interclass.entity.cloud.PaperWork" useGeneratedKeys="true" keyProperty="id">
+	<insert id="save" parameterType="com.incito.interclass.entity.cloud.PaperWork"
+		useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO
-			tb_cld_quizpaper(type,filesize,path,imei,filename,teacher_id,author_name,quizid,ctime)
+		tb_cld_quizpaper(type,filesize,path,imei,filename,teacher_id,author_name,quizid,class_start,class_end,classes,course_id,course_name,term,ctime)
 		VALUES
-			(#{type},#{filesize},#{path},#{imei},#{filename},#{teacher_id},#{author_name},#{quizid},now())
+		(#{type},#{filesize},#{path},#{imei},#{filename},#{teacher_id},#{author_name},#{quizid},#{class_start},#{class_end},#{classes},#{course_id},#{course_name},#{term},now())
 	</insert>
-	
+	<select id="loadIndex" resultType="com.incito.interclass.entity.cloud.PaperWork">
+		SELECT
+		type,filesize,path, filename,teacher_id,author_name,
+		imei,quizid,ctime
+		FROM
+		tb_cld_quizpaper
+		WHERE
+		teacher_id = #{teacher_id}
+		AND quizid = #{quizid}
+		ORDER BY
+		ctime
+	</select>
 </mapper>

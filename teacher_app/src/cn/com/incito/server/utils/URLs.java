@@ -9,6 +9,12 @@ public class URLs {
 	private final static String URL_API_HOST = HTTP + HOST + URL_SPLITTER;
 	private final static String URL_API_HOST2 = HTTP + HOST2 + URL_SPLITTER;
 
+	
+	/**
+	 * 分数奖励
+	 */
+	public final static String URL_UPDATE_SCORE = URL_API_HOST2
+			+ "api/student/changepoint";
 	/**
 	 * 老师登陆
 	 */
@@ -48,6 +54,6 @@ public class URLs {
 	/**
 	 * 随堂作业云同步
 	 */
-	public final static String URL_CLOUD_SYN_PAPER = URL_API_HOST2
-			+ "api/paper/add";
+	public final static String URL_CLOUD_SYN_ADD = URL_API_HOST2
+			+ "api/paper/upload";
 }
