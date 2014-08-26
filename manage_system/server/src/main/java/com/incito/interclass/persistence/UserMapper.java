@@ -35,5 +35,6 @@ public interface UserMapper {
 	void deleteTeacher(int teacherId);
 
 	void deleteStudent(int studentId);
-
+	
+	Integer changePoint(String studentId,int changeScore);
 }

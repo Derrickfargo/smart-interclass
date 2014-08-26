@@ -1,7 +1,12 @@
 package com.incito.interclass.app;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.incito.base.exception.AppException;
@@ -16,27 +21,32 @@ import com.incito.interclass.entity.Student;
 public class StudentCtrl extends BaseCtrl {
 
 	private static final int REGISTER_ERROR = 3;
+
 	private static final int LOGIN_ERROR = 1;
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private GroupService groupService;
-	
 
 	/**
 	 * 注册学生
-	 * @param courseId 课程id
-	 * @param classId 课程id
-	 * @param teacherId 教师id
-	 * @param tableId 课桌id
-	 * @param studentId 学生id
+	 * 
+	 * @param courseId
+	 *            课程id
+	 * @param classId
+	 *            课程id
+	 * @param teacherId
+	 *            教师id
+	 * @param tableId
+	 *            课桌id
+	 * @param studentId
+	 *            学生id
 	 * @return
 	 */
 	@RequestMapping(value = "/login", produces = { "application/json;charset=UTF-8" })
-	public String addStudent(int courseId, int classId, int teacherId,
-			int tableId, String name, String number, int sex, String imei) {
+	public String addStudent(int courseId, int classId, int teacherId, int tableId, String name, String number, int sex, String imei) {
 		// 查学生是否存在
 		Student student = userService.getStudent(name, number);
 		// 不存在保存学生
@@ -52,8 +62,8 @@ public class StudentCtrl extends BaseCtrl {
 				return renderJSONString(REGISTER_ERROR);
 			}
 		}
-		
-		//根据学生id保存组
+
+		// 根据学生id保存组
 		try {
 			Group group = groupService.addStudent(courseId, classId, teacherId, tableId, student.getId());
 			if (group == null || group.getId() == 0) {
@@ -66,9 +76,27 @@ public class StudentCtrl extends BaseCtrl {
 			return renderJSONString(REGISTER_ERROR);
 		}
 	}
-	
+
+	/**
+	 * 学生增减分
+	 * 
+	 * @param studentId
+	 * @param changeScore
+	 * @return
+	 */
+	@RequestMapping(value = "/changepoint", produces = { "application/json;charset=UTF-8" })
+	@ResponseBody
+	public Map<String, Object> changePoint(@RequestBody String studentIdList, int score) {
+		int count = userService.changePoint(studentIdList, score);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("code", "0");
+		map.put("count", count);
+		return map;
+
+	}
+
 	@RequestMapping(value = "/test", produces = { "application/json;charset=UTF-8" })
-	public String test(){
+	public String test() {
 		Group group = groupService.getGroupById(2);
 		return renderJSONString(SUCCESS, group);
 	}

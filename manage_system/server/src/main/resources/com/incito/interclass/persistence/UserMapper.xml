@@ -143,4 +143,13 @@
 	<delete id="deleteStudent" parameterType="java.lang.Integer">
 		DELETE FROM tb_student WHERE id = #{id}
 	</delete>
+	<update id="changePoint" parameterType="java.lang.Integer" > 
+	    UPDATE 
+	    	tb_student 
+	    SET 
+		    score = score + #{changeScore}
+	    WHERE 
+	    	tb_student = #{studentId}
+	</update>
+	
 </mapper>
