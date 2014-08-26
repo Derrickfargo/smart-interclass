@@ -143,13 +143,24 @@
 	<delete id="deleteStudent" parameterType="java.lang.Integer">
 		DELETE FROM tb_student WHERE id = #{id}
 	</delete>
-	<update id="changePoint" parameterType="java.lang.Integer" > 
+	<update id="changePoint" parameterType="java.util.Map" > 
 	    UPDATE 
 	    	tb_student 
 	    SET 
-		    score = score + #{changeScore}
+		    score = score+#{score}
 	    WHERE 
-	    	tb_student = #{studentId}
+	    	id = #{studentId}
 	</update>
+	
+	<select id="getScore" parameterType="java.lang.String">
+	    SELECT 
+	    	score
+	    FROM
+	    	tb_student
+	    WHERE
+	    	id=#{studentId}
+	</select>
+	
+	
 	
 </mapper>

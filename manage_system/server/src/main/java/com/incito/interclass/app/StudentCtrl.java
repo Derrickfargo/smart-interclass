@@ -84,13 +84,13 @@ public class StudentCtrl extends BaseCtrl {
 	 * @param changeScore
 	 * @return
 	 */
-	@RequestMapping(value = "/changepoint", produces = { "application/json;charset=UTF-8" })
+	@RequestMapping(value = "/changepoint", produces = {"application/json;charset=UTF-8" })
 	@ResponseBody
-	public Map<String, Object> changePoint(@RequestBody String studentIdList, int score) {
-		int count = userService.changePoint(studentIdList, score);
+	public Map<String, Object> changePoint(String studentId, int score) {
+		int count = userService.changePoint(studentId, score);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("code", "0");
-		map.put("count", count);
+		map.put("score", count);
 		return map;
 
 	}

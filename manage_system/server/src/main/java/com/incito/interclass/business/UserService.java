@@ -26,14 +26,17 @@ public class UserService {
 	 * @param studentIdList
 	 * @param changeScore
 	 */
-	public Integer changePoint(String studentId, int changeScore) {
-		int j = 0;
+	public Integer changePoint(String studentId, int score) {
+		int Score=0;
 		String[] x = studentId.split(",");
 		for (int k = 0; k < x.length; k++) {
-			Integer i = userMapper.changePoint(x[k], changeScore);
-			j = j + i;
+			userMapper.changePoint(x[k], score);
 		}
-		return j;
+		for (int j = 0; j < x.length; j++) {
+			Integer i=userMapper.getScore(x[j]);
+			Score=Score+i;
+		}
+		return Score;
 	};
 
 	/**
