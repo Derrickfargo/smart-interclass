@@ -1,6 +1,7 @@
 package cn.com.incito.interclass.ui;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -61,6 +62,7 @@ public class QuizPanel extends JPanel {
 
 	public void refresh() {
 		List<Group> groupList = app.getGroupList();
+		Collections.sort(groupList);
 		int i = 0;
 		while (i < groupList.size()) {
 			QuizGroupPanel pnlLeft = quizGroupList.get(i);
