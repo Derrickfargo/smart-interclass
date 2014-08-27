@@ -49,6 +49,9 @@ public class PaperWorkService {
 			return -1;
 		}
 		paperWorks.setFilename(filename);
+		paperWorks.setPath(Constants.PAPER_DIR + "\\"
+				+ paperWorks.getTeacher_id() + "\\" + paperWorks.getQuizid()
+				+ "\\" + filename);
 		int result = classMapper.save(paperWorks);
 		return result;
 	}

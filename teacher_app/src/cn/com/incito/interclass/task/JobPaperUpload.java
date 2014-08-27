@@ -63,7 +63,7 @@ public class JobPaperUpload implements Job {
 		}
 		List<ParamsWrapper> params = wrapParam();
 		if (params == null || params.size() < 1) {
-			Logger.getLogger(getClass()).info("no new paper found");
+			Logger.getLogger(getClass()).info("no new paper to update!!");
 			return;
 		}
 		Long syn_interval_between_file = Long.valueOf(properties
