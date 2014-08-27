@@ -76,6 +76,7 @@ public class PunishDialog extends JDialog implements MouseListener {
 		pnlMedal.setBounds(0, 35, 392, 140);
 		add(pnlMedal);
 		btnPoint1 = createPointLabel(1);
+		btnPoint1.setFocusable(false);
 		btnPoint1.setBounds(147, 20, 98, 98);
 		pnlMedal.add(btnPoint1);
 		btnPoint1.addMouseListener(this);
