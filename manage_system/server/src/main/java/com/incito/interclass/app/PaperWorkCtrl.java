@@ -59,7 +59,11 @@ public class PaperWorkCtrl extends BaseCtrl {
 		paperWork.setAuthor_name(author_name);
 		paperWork.setPath(path);
 		paperWork.setFilename(filename);
+		paperWork.setCourse_name(course_id);
+		paperWork.setTerm(term);
+		paperWork.setClasses(classes);
 		paperWork.setFilesize(filesize);
+		paperWork.setCourse_id(course_id);
 		Date class_st = DateTimeUtil.getDateByFormat(class_start,
 				Constants.DATE_TIME_FORMAT);
 		Date class_ed = DateTimeUtil.getDateByFormat(class_end,
