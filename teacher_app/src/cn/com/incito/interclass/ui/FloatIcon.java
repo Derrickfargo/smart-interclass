@@ -21,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
+import org.quartz.SimpleTrigger;
 
 import cn.com.incito.interclass.task.JobPaperUpload;
 import cn.com.incito.interclass.task.QuartzManager;

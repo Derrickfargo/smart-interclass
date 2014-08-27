@@ -1,5 +1,9 @@
 package cn.com.incito.interclass.task;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.text.ParseException;
 
 import static org.quartz.JobBuilder.newJob;
@@ -7,8 +11,11 @@ import static org.quartz.TriggerBuilder.newTrigger;
 import static org.quartz.DateBuilder.*;
 
 import java.util.Date;
+import java.util.Properties;
 
 import org.apache.log4j.Logger;
+import org.quartz.CronScheduleBuilder;
+import org.quartz.CronTrigger;
 import org.quartz.Job;
 import org.quartz.JobDetail;
 import org.quartz.JobKey;
@@ -17,6 +24,9 @@ import org.quartz.SchedulerFactory;
 import org.quartz.Trigger;
 import org.quartz.TriggerKey;
 import org.quartz.impl.StdSchedulerFactory;
+
+import cn.com.incito.interclass.constant.Constants;
+import cn.com.incito.server.utils.FileUtils;
 
 /**
  * 定时任务管理类
@@ -28,6 +38,24 @@ public class QuartzManager {
 	private static String JOB_GROUP_NAME = "EXTJWEB_JOBGROUP_NAME";
 	private static String TRIGGER_GROUP_NAME = "EXTJWEB_TRIGGERGROUP_NAME";
 	Logger log = Logger.getLogger(QuartzManager.class);
+	Properties properties;
+	public final static String PROPERTY_PATH = FileUtils.getProjectPath() + "\\"
+			+ Constants.PROPERTIES_FILE;
+
+	public QuartzManager() {
+		super();
+		FileReader reader;
+		try {
+			properties = new Properties();
+			reader = new FileReader(new File(PROPERTY_PATH));
+			properties.load(reader);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
 
 	/**
 	 * 添加一个定时任务，使用默认的任务组名，触发器名，触发器组名
@@ -84,9 +112,12 @@ public class QuartzManager {
 					.withIdentity(jobName, jobGroupName).build();
 
 			// Trigger the job to run on the next round minute
-			Trigger trigger = newTrigger()
+			String interval = properties.getProperty("syn_interval");
+			CronTrigger trigger = newTrigger()
 					.withIdentity(triggerName, triggerGroupName)
-					.startAt(runTime).build();
+					.withSchedule(
+							CronScheduleBuilder.cronSchedule("0/" + interval
+									+ " * * * * ?")).startAt(runTime).build();
 
 			// Tell quartz to schedule the job using our trigger
 			sched.scheduleJob(job, trigger);

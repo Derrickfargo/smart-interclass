@@ -2,20 +2,28 @@ package cn.com.incito.interclass.task;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
+import java.util.Collections;
+
+import javax.swing.event.ListSelectionEvent;
 
 import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import sun.misc.Sort;
 import cn.com.incito.http.AsyncHttpConnection;
 import cn.com.incito.http.StringResponseHandler;
 import cn.com.incito.http.support.ParamsWrapper;
@@ -40,11 +48,27 @@ public class JobPaperUpload implements Job {
 			+ "/paper";
 	AsyncHttpConnection http = AsyncHttpConnection.getInstance();
 	protected final ResponseCallbackTrace callbackTrace = new ResponseCallbackTrace();
+	int count = 0;
+	Properties properties = new Properties();
 
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
+		try {
+
+			FileReader reader = new FileReader(new File(
+					QuartzManager.PROPERTY_PATH));
+			properties.load(reader);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		List<ParamsWrapper> params = wrapParam();
+		if (params == null || params.size() < 1) {
+			Logger.getLogger(getClass()).info("no new paper found");
+			return;
+		}
+
 		Logger.getLogger(getClass()).info("job start excuting ...");
-		for (ParamsWrapper p : wrapParam()) {
+		for (ParamsWrapper p : params) {
 			uploadFile(p);
 			try {
 				Thread.sleep(1000);
@@ -55,11 +79,14 @@ public class JobPaperUpload implements Job {
 		}
 
 	}
+
 	/**
 	 * 上传文件到云端
+	 * 
 	 * @param param
 	 */
 	private void uploadFile(ParamsWrapper param) {
+
 		http.post(URLs.URL_CLOUD_SYN_ADD, param,
 				callbackTrace.trace(new StringResponseHandler() {
 					@Override
@@ -71,7 +98,22 @@ public class JobPaperUpload implements Job {
 								// 增加当教师端未注册或网络连接错误的提示
 							}
 							int num = jsonObject.getIntValue("count");
+							String lastupdatetime = jsonObject
+									.getString("lastupdatetime");
+							properties.put("last_syn_time", lastupdatetime);
+							FileOutputStream fos;
+							try {
+								fos = new FileOutputStream(
+										QuartzManager.PROPERTY_PATH);
+								properties.store(fos, "");
+							} catch (FileNotFoundException e) {
+								e.printStackTrace();
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+
 							logger.info("随堂作业同步数量：" + num);
+							count++;
 						}
 
 					}
@@ -104,27 +146,32 @@ public class JobPaperUpload implements Job {
 
 			@Override
 			public boolean accept(File pathname) {
-				try {
-					Properties properties = new Properties();
-					FileReader reader = new FileReader(
-							new File(FileUtils.getProjectPath() + "/"
-									+ Constants.PROPERTIES_FILE));
-					properties.load(reader);
-					String last_syn_quizid = properties.getProperty(
-							"last_syn_quizid", "1");
 
-					if (pathname.lastModified() > Integer
-							.parseInt(last_syn_quizid))
-						return true;
-				} catch (Exception e) {
-					return false;
-				}
+				String last_syn_time = properties.getProperty("last_syn_time",
+						"1");
+
+				if (pathname.lastModified() > Long.parseLong(last_syn_time))
+					return true;
+
 				return false;
 			}
 		});
 		if (files == null || files.length < 1)
 			return null;
-		for (File file : files) {
+		List<File> filelist = Arrays.asList(files);
+		Collections.sort(filelist, new Comparator<File>() {
+			public int compare(File file, File newFile) {
+				if (file.lastModified() < newFile.lastModified()) {
+					return 1;
+				} else if (file.lastModified() == newFile.lastModified()) {
+					return 0;
+				} else {
+					return -1;
+				}
+
+			}
+		});
+		for (File file : filelist) {
 			String[] strs = file.list();
 			if (strs.length < 1)
 				continue;
@@ -135,6 +182,7 @@ public class JobPaperUpload implements Job {
 						.getIdcard());
 				params.put("imei", str.substring(0, str.lastIndexOf(".")));
 				params.put("quizid", file.getName());
+				params.put("lastupdatetime", file.lastModified());
 				params.put("file", str, file.getAbsolutePath() + "\\" + str);
 				list.add(params);
 			}
@@ -143,5 +191,4 @@ public class JobPaperUpload implements Job {
 
 		return list;
 	}
-
 }
