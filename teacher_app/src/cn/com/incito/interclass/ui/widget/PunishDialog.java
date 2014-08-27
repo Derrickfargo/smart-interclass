@@ -8,6 +8,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -17,7 +20,16 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
+import cn.com.incito.http.AsyncHttpConnection;
+import cn.com.incito.http.StringResponseHandler;
+import cn.com.incito.http.support.ParamsWrapper;
 import cn.com.incito.interclass.po.Group;
+import cn.com.incito.interclass.po.Student;
+import cn.com.incito.interclass.ui.PraiseGroupPanel;
+import cn.com.incito.server.utils.URLs;
 
 public class PunishDialog extends JDialog implements MouseListener {
 	private static final long serialVersionUID = 281738161264828396L;
@@ -26,9 +38,11 @@ public class PunishDialog extends JDialog implements MouseListener {
 	private Group group;
 	private JLabel lblBackground;
 	private JButton btnClose, btnOK, btnCancel, btnPoint1;
-
-	public PunishDialog(JFrame frame, Group group) {
-		super(frame, true);
+	private PraiseGroupPanel frame;
+	int score=0;
+	public PunishDialog(PraiseGroupPanel panel, Group group) {
+		super();
+		this.frame = panel;
 		this.group = group;
 		setSize(392, 228);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -137,10 +151,12 @@ public class PunishDialog extends JDialog implements MouseListener {
 			dispose();
 		}
 		if (e.getSource() == btnOK) {
-
+			changePoint(score);
+			dispose();
 		}
 		if (e.getSource() == btnPoint1) {
-			JOptionPane.showMessageDialog(this, "小组加一分");
+//			JOptionPane.showMessageDialog(this, "小组减一分");
+			score=-1;
 		}
 	}
 
@@ -179,4 +195,54 @@ public class PunishDialog extends JDialog implements MouseListener {
 			btnCancel.setIcon(new ImageIcon("images/dialog/bg_btn2.png"));
 		}
 	}
+	/**
+	 * 分数奖励
+	 * 
+	 * @param updateScore
+	 */
+	public void changePoint(int updateScore) {
+		String studentId = "";
+		List<Student> studentList = group.getStudents();
+		for (int i = 0; i < studentList.size(); i++) {
+			studentId = studentId + studentList.get(i).getId() + ",";
+		}
+		if (studentId == null || "".equals(studentId)) {
+			return;
+		}
+		// 使用Get方法，取得服务端响应流：
+		AsyncHttpConnection http = AsyncHttpConnection.getInstance();
+		ParamsWrapper params = new ParamsWrapper();
+		params.put("studentId", studentId);
+		params.put("score", updateScore);
+		http.post(URLs.URL_UPDATE_SCORE, params, new StringResponseHandler() {
+			@Override
+			protected void onResponse(String content, URL url) {
+				if (content != null && !content.equals("")) {
+					System.out.println("返回的数据" + content);
+					JSONObject jsonObject = JSON.parseObject(content);
+					if (jsonObject.getIntValue("code") == 1) {
+						return;
+					} else {
+						String score = String.valueOf((int) (jsonObject.getIntValue("score") / group.getStudents().size()));
+						// 设置小组总分
+						frame.setScore(score);
+					}
+				}
+			}
+			@Override
+			public void onSubmit(URL url, ParamsWrapper params) {
+			}
+
+			@Override
+			public void onConnectError(IOException exp) {
+				// JOptionPane.showMessageDialog((Component) quizPanel, "连接错误，请检查网络！");
+			}
+
+			@Override
+			public void onStreamError(IOException exp) {
+				// JOptionPane.showMessageDialog((Component) quizPanel, "数据解析错误！");
+			}
+		});
+	}
+
 }
