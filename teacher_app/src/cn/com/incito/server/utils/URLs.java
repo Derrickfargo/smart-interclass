@@ -54,6 +54,6 @@ public class URLs {
 	/**
 	 * 随堂作业云同步
 	 */
-	public final static String URL_CLOUD_SYN_PAPER = URL_API_HOST2
-			+ "api/paper/add";
+	public final static String URL_CLOUD_SYN_ADD = URL_API_HOST2
+			+ "api/paper/upload";
 }

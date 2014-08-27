@@ -10,8 +10,8 @@ package cn.com.incito.interclass.constant;
 public class Constants {
 
 	//文件锁存储位置
-    public static final String LOC_DIR = "E:\\";
     public static final String LOC_FILE = "lock.txt";
+    public static final String PROPERTIES_FILE = "parameter.properties";
 
 //    public static int STATE_NORMAL = 0;     //0正常
     public static int STATE_QUIZING = 1;      //1课堂练习中

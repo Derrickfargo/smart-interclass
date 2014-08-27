@@ -21,7 +21,7 @@ public class AsyncHttpConnection {
 	static final int THREAD_POOL_SIZE = Runtime.getRuntime().availableProcessors()*2;
 	static final ExecutorService THREAD_POOL = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 	
-	private AsyncHttpConnection(){}
+	public AsyncHttpConnection(){}
 	private static class SingletonProvider {
 		private static AsyncHttpConnection instance = new AsyncHttpConnection();
 	}
