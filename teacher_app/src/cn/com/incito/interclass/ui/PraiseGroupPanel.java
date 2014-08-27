@@ -26,6 +26,7 @@ import cn.com.incito.http.StringResponseHandler;
 import cn.com.incito.http.support.ParamsWrapper;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Student;
+import cn.com.incito.interclass.ui.widget.MedalDialog;
 import cn.com.incito.interclass.ui.widget.MultilineLabel;
 import cn.com.incito.server.utils.URLs;
 
@@ -229,6 +230,7 @@ public class PraiseGroupPanel extends JPanel implements MouseListener{
 		}
 		if (e.getSource() == btnMedal) {
 			JOptionPane.showMessageDialog(getParent().getParent(), "小组颁发勋章!");
+			new MedalDialog(MainFrame.getInstance().getFrame(), group);
 		}
 	}
 	
