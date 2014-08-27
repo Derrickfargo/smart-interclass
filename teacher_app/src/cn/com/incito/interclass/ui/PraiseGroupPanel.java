@@ -1,15 +1,11 @@
 package cn.com.incito.interclass.ui;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.IOException;
-import java.net.URL;
-import java.util.List;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -29,6 +25,7 @@ import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.ui.widget.MedalDialog;
 import cn.com.incito.interclass.ui.widget.MultilineLabel;
 import cn.com.incito.interclass.ui.widget.PraiseDialog;
+import cn.com.incito.interclass.ui.widget.PraiseDialog.setScoreCallback;
 import cn.com.incito.interclass.ui.widget.PunishDialog;
 import cn.com.incito.server.utils.URLs;
 
@@ -37,7 +34,7 @@ import cn.com.incito.server.utils.URLs;
  * @author 刘世平
  *
  */
-public class PraiseGroupPanel extends JPanel implements MouseListener{
+public class PraiseGroupPanel extends JPanel implements MouseListener,setScoreCallback{
 
 	private static final long serialVersionUID = 882552987989905663L;
 	private static final String BTN_PRAISE_NORMAL = "images/praise/ico_praise.png";
@@ -223,12 +220,10 @@ public class PraiseGroupPanel extends JPanel implements MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() == btnPraise) {
-			new PraiseDialog(MainFrame.getInstance().getFrame(), group);
-//			changePoint(3);
+			new PraiseDialog(this, group);
 		}
 		if (e.getSource() == btnPunish) {
-			new PunishDialog(MainFrame.getInstance().getFrame(), group);
-//			changePoint(-1);
+			new PunishDialog(this, group);
 		}
 		if (e.getSource() == btnMedal) {
 			new MedalDialog(MainFrame.getInstance().getFrame(), group);
@@ -260,55 +255,9 @@ public class PraiseGroupPanel extends JPanel implements MouseListener{
 			btnMedal.setIcon(new ImageIcon(BTN_MEDAL_NORMAL));
 		}
 	}
-	/**
-	  * 分数奖励
-	 * @param updateScore
-	 */
-	public void changePoint(int updateScore) {
-		 String studentId="";
-		 List<Student> studentList = group.getStudents();
-		 for (int i = 0; i < studentList.size(); i++) {
-			studentId=studentId+studentList.get(i).getId()+",";
-		}
-		 if(studentId==null||"".equals(studentId)){
-			 return;
-		 }
-//		 logger.info("分数奖励人员ID:"+studentId);
-//	        try {
-	            //使用Get方法，取得服务端响应流：
-	            AsyncHttpConnection http = AsyncHttpConnection.getInstance();
-	            ParamsWrapper params = new ParamsWrapper();
-	            params.put("studentId",studentId);
-	            params.put("score",updateScore);
-	            http.post(URLs.URL_UPDATE_SCORE, params, new StringResponseHandler() {
-	                @Override
-	                protected void onResponse(String content, URL url) {
-	                    if (content != null && !content.equals("")) {
-	                    	System.out.println("返回的数据"+content);
-	                        JSONObject jsonObject = JSON.parseObject(content);
-	                        if (jsonObject.getIntValue("code") == 1) {
-	                            return;
-	                        }else{
-	                        	 String score = String.valueOf((int)(jsonObject.getIntValue("score")/group.getStudents().size()));
-	                        	//设置小组总分
-	                        	 lblScore.setText(score);
-	                        }
-	                    }
-	                }
 
-	                @Override
-	                public void onSubmit(URL url, ParamsWrapper params) {
-	                }
-
-	                @Override
-	                public void onConnectError(IOException exp) {
-//	                	JOptionPane.showMessageDialog((Component) quizPanel, "连接错误，请检查网络！");
-	                }
-
-	                @Override
-	                public void onStreamError(IOException exp) {
-//	                	JOptionPane.showMessageDialog((Component) quizPanel, "数据解析错误！");
-	                }
-	            });
-	    }
+	@Override
+	public void setScore(String score) {
+			lblScore.setText(score);
+	}
 }

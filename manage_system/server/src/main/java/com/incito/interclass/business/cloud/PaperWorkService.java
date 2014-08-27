@@ -48,6 +48,7 @@ public class PaperWorkService {
 			e.printStackTrace();
 			return -1;
 		}
+		paperWorks.setFilename(filename);
 		int result = classMapper.save(paperWorks);
 		return result;
 	}

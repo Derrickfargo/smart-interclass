@@ -7,6 +7,8 @@ import java.awt.Point;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -19,9 +21,9 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 
 import org.apache.log4j.Logger;
-import org.quartz.SimpleTrigger;
 
 import cn.com.incito.interclass.task.JobPaperUpload;
 import cn.com.incito.interclass.task.QuartzManager;
@@ -46,6 +48,7 @@ public class FloatIcon extends MouseAdapter {
 	private static final String ICON_EXIT_NORMAL = "images/float/ico_floatmenu4.png";
 	private static final String ICON_EXIT_HOVER = "images/float/ico_floatmenu4_hover.png";
 	private static FloatIcon instance;
+	private Timer mouseTimer = null;
 	private JDialog dialog = new JDialog();
 	private boolean isDragged, isShowing;
 	private Point loc, tmp;
@@ -212,39 +215,50 @@ public class FloatIcon extends MouseAdapter {
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		if (e.getSource() == lblIcon) {
-			if (e.getClickCount() == 2) {
+	public void mouseClicked(final MouseEvent e) {
+		if (e.getClickCount() == 1) {
+			ActionListener taskPerformer = new ActionListener(){ // 创建一个ActionListener侦听器对象
+				public void actionPerformed(ActionEvent evt) {
+					mouseTimer.stop(); // 停止 Timer，使它停止向其侦听器发送动作事件
+					if (e.getSource() == lblIcon) {
+						if (isShowing) {
+							isShowing = false;
+							lblBackground.setVisible(false);
+							showMenu(false);
+						} else {
+							isShowing = true;
+							lblBackground.setVisible(true);
+							showMenu(true);
+						}
+					}
+					if (e.getSource() == btnQuiz) {
+						if (Application.hasQuiz) {// 有作业，收作业
+							MainFrame.getInstance().doAcceptQuiz();
+							btnQuiz.setIcon(new ImageIcon(ICON_QUIZ_NORMAL));
+						} else {// 没作业，发作业
+							if (Application.isOnClass) {
+								MainFrame.getInstance().doSendQuiz();
+								btnQuiz.setIcon(new ImageIcon(ICON_HANDIN_NORMAL));
+							} else {
+								JOptionPane.showMessageDialog(dialog, "请先点击开始上课！");
+							}
+						}
+					}
+					if (e.getSource() == btnExit) {
+						System.exit(0);
+					}
+				}
+			};
+			mouseTimer = new javax.swing.Timer(200, taskPerformer);// 每隔0.2s触发一次ActionListener事件，执行相应的动作代码
+			mouseTimer.restart(); // 重新启动 Timer，取消所有挂起的触发并使它按初始延迟触发。
+		} else if (e.getClickCount() == 2 && mouseTimer.isRunning()) {
+			mouseTimer.stop();
+			if (e.getSource() == lblIcon) {
 				MainFrame frame = MainFrame.getInstance();
 				frame.getFrame().setExtendedState(JFrame.NORMAL);
 				frame.setVisible(true);
 				return;
 			}
-			if (isShowing) {
-				isShowing = false;
-				lblBackground.setVisible(false);
-				showMenu(false);
-			} else {
-				isShowing = true;
-				lblBackground.setVisible(true);
-				showMenu(true);
-			}
-		}
-		if (e.getSource() == btnQuiz) {
-			if (Application.hasQuiz) {// 有作业，收作业
-				MainFrame.getInstance().doAcceptQuiz();
-				btnQuiz.setIcon(new ImageIcon(ICON_QUIZ_NORMAL));
-			} else {// 没作业，发作业
-				if (Application.isOnClass) {
-					MainFrame.getInstance().doSendQuiz();
-					btnQuiz.setIcon(new ImageIcon(ICON_HANDIN_NORMAL));
-				} else {
-					JOptionPane.showMessageDialog(dialog, "请先点击开始上课！");
-				}
-			}
-		}
-		if (e.getSource() == btnExit) {
-			System.exit(0);
 		}
 	}
 
