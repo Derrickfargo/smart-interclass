@@ -66,12 +66,13 @@ public class JobPaperUpload implements Job {
 			Logger.getLogger(getClass()).info("no new paper found");
 			return;
 		}
-
+		Long syn_interval_between_file = Long.valueOf(properties
+				.getProperty("syn_interval_between_file"));
 		Logger.getLogger(getClass()).info("job start excuting ...");
 		for (ParamsWrapper p : params) {
 			uploadFile(p);
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(syn_interval_between_file);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -182,6 +183,15 @@ public class JobPaperUpload implements Job {
 						.getIdcard());
 				params.put("imei", str.substring(0, str.lastIndexOf(".")));
 				params.put("quizid", file.getName());
+				params.put("author_name", "");
+				params.put("classes", Application.getInstance().getClasses()
+						.getName());
+				params.put("course_id", Application.getInstance().getCourse()
+						.getId());
+				params.put("course_name", Application.getInstance().getCourse()
+						.getName());
+				params.put("term", Application.getInstance().getClasses()
+						.getYear());
 				params.put("lastupdatetime", file.lastModified());
 				params.put("file", str, file.getAbsolutePath() + "\\" + str);
 				list.add(params);

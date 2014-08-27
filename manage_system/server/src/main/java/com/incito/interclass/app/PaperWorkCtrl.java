@@ -1,6 +1,7 @@
 package com.incito.interclass.app;
 
 import java.io.File;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -25,8 +26,10 @@ import com.alibaba.fastjson.JSON;
 import com.incito.interclass.app.result.ApiResult;
 import com.incito.interclass.business.cloud.PaperWorkService;
 import com.incito.interclass.common.BaseCtrl;
+import com.incito.interclass.constant.Constants;
 import com.incito.interclass.entity.cloud.PaperWork;
 import com.incito.interclass.entity.cloud.TestEntity;
+import com.incito.interclass.utils.DateTimeUtil;
 
 @RestController
 @RequestMapping("/api/paper")
@@ -39,16 +42,30 @@ public class PaperWorkCtrl extends BaseCtrl {
 	 * 保存练习题
 	 * 
 	 * @return
+	 * 
 	 */
 	@RequestMapping(value = "/upload", method = RequestMethod.POST, produces = { "application/json;charset=UTF-8" })
 	@ResponseBody
 	public Map<String, Object> upload(String type, String teacher_id,
-			String imei, String quizid,String lastupdatetime, MultipartFile file) {
+			String author_name, String path, String filename, String filesize,
+			String class_start, String class_end, String classes,
+			String course_id, String course_name, String term, String imei,
+			String quizid, String lastupdatetime, MultipartFile file) {
 		PaperWork paperWork = new PaperWork();
 		paperWork.setType(type);
 		paperWork.setTeacher_id(teacher_id);
 		paperWork.setImei(imei);
 		paperWork.setQuizid(quizid);
+		paperWork.setAuthor_name(author_name);
+		paperWork.setPath(path);
+		paperWork.setFilename(filename);
+		paperWork.setFilesize(filesize);
+		Date class_st = DateTimeUtil.getDateByFormat(class_start,
+				Constants.DATE_TIME_FORMAT);
+		Date class_ed = DateTimeUtil.getDateByFormat(class_end,
+				Constants.DATE_TIME_FORMAT);
+		paperWork.setClass_start(class_st);
+		paperWork.setClass_end(class_ed);
 		int count = paperService.upload(paperWork, file);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("code", "0");
