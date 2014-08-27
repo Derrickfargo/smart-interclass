@@ -10,7 +10,7 @@ public class Group implements Serializable,Comparable<Group> {
 	 * 
 	 */
 	private static final long serialVersionUID = -6517861100227656945L;
-
+	private String medals;
 	private int id;
 	private String name;
 	private String logo;
@@ -20,12 +20,20 @@ public class Group implements Serializable,Comparable<Group> {
 	private int classId;
 	private int tableId;
 	private Date ctime;
-
+	
 	private int tableNumber;
 	private List<Device> devices;
 	private List<Student> students;
 	private String teacherName;
-
+	
+	public String getMedals() {
+		return medals;
+	}
+	
+	public void setMedals(String medals) {
+		this.medals = medals;
+	}
+	
 	public int getId() {
 		return id;
 	}

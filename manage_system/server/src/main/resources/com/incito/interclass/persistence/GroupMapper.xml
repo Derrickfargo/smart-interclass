@@ -12,6 +12,7 @@
 	    <result column="class_id" property="classId"/>
 	    <result column="table_id" property="tableId"/>
 	    <result column="ctime" property="ctime"/>
+	     <result column="medals" property="medals"/>
 		<collection property="students" column="id" ofType="com.incito.interclass.entity.Student" 
 			select="com.incito.interclass.persistence.UserMapper.getStudentByGroupId">  
 		    <id column="id" property="id"/>
@@ -25,6 +26,8 @@
 		    <result column="ctime" property="ctime"/>
 		    <result column="number" property="number"/>
 		    <result column="avatar" property="avatar"/>
+		     <result column="score" property="score"/>
+		    
 	    </collection>
 	    <collection property="devices" column="id" ofType="com.incito.interclass.entity.Device" 
 			select="com.incito.interclass.persistence.DeviceMapper.getDeviceByGroupId">  
@@ -62,7 +65,7 @@
 
 	<select id="getGroupById" resultMap="GroupUserMap" parameterType="java.lang.Integer">
 		SELECT DISTINCT
-			tb_group.id,tb_group.name,tb_group.logo,tb_group.slogan,
+			tb_group.id,tb_group.name,tb_group.logo,tb_group.slogan,tb_group.medals,
 			tb_group.course_id AS courseId,tb_group.teacher_id AS teacherId,
 			tb_group.class_id AS classId,tb_group.table_id AS tableId,tb_table.number AS tableNumber
 		FROM 
@@ -85,7 +88,7 @@
 	
 	<select id="getGroupByTableId" resultMap="GroupUserMap" parameterType="java.util.Map">
 		SELECT DISTINCT
-			tb_group.id,tb_group.name,tb_group.logo,tb_group.slogan,
+			tb_group.id,tb_group.name,tb_group.logo,tb_group.slogan,tb_group.medals,
 			tb_group.course_id AS courseId,tb_group.teacher_id AS teacherId,
 			tb_group.class_id AS classId,tb_group.table_id AS tableId,tb_table.number AS tableNumber
 		FROM 
@@ -111,7 +114,7 @@
 	
 	<select id="getGroupByIMEI" resultMap="GroupUserMap" parameterType="java.util.Map">
 		SELECT DISTINCT
-			tb_group.id,tb_group.name,tb_group.logo,tb_group.slogan,
+			tb_group.id,tb_group.name,tb_group.logo,tb_group.slogan,tb_group.medals,
 			tb_group.course_id AS courseId,tb_group.teacher_id AS teacherId,
 			tb_group.class_id AS classId,tb_group.table_id AS tableId,tb_table.number AS tableNumber
 		FROM 
@@ -161,9 +164,9 @@
 	
 	<insert id="save" parameterType="com.incito.interclass.entity.Group" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO 
-			tb_group(name,logo,slogan,course_id,teacher_id,class_id,table_id,ctime)
+			tb_group(name,logo,slogan,course_id,teacher_id,class_id,table_id,ctime,medals)
 		VALUES
-			(#{name},#{logo},#{slogan},#{courseId},#{teacherId},#{classId},#{tableId},now())
+			(#{name},#{logo},#{slogan},#{courseId},#{teacherId},#{classId},#{tableId},now(),#{medals})
 	</insert>
 	
 	<insert id="saveStudentGroup" parameterType="com.incito.interclass.entity.StudentGroup" useGeneratedKeys="true" keyProperty="id">
