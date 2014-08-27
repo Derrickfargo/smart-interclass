@@ -23,8 +23,13 @@ public class RoomService {
 	}
 
 	public boolean saveRoom(Room room) {
-		roomMapper.save(room);
-		return room.getId() != 0;
+		try {
+			roomMapper.save(room);
+			return room.getId() != 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	public void deleteRoom(int roomId) {
