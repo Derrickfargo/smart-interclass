@@ -29,11 +29,15 @@ public class UserService {
 	public Integer changePoint(String studentId, int score) {
 		int Score=0;
 		String[] x = studentId.split(",");
+		
 		for (int k = 0; k < x.length; k++) {
 			userMapper.changePoint(x[k], score);
+			System.out.println(x[k]);
 		}
+		
 		for (int j = 0; j < x.length; j++) {
-			Integer i=userMapper.getScore(x[j]);
+			Student mStudent=userMapper.getScore(x[j]);
+			int i=mStudent.getScore();
 			Score=Score+i;
 		}
 		return Score;
