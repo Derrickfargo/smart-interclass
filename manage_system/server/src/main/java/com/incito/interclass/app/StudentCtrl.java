@@ -94,6 +94,27 @@ public class StudentCtrl extends BaseCtrl {
 		return map;
 
 	}
+	
+	/**
+	 * 
+	 * 更新勋章
+	 * @param studentId
+	 * @param changeScore
+	 * @return
+	 */
+	@RequestMapping(value = "/medals", produces = {"application/json;charset=UTF-8" })
+	@ResponseBody
+	public Map<String, Object> updateMedals(int groupId,String medals) {
+		int count = userService.updateMedals(groupId, medals);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("code", "0");
+		map.put("msg", "勋章奖励成功");
+		return map;
+
+	}
+	
+	
+	
 
 	@RequestMapping(value = "/test", produces = { "application/json;charset=UTF-8" })
 	public String test() {

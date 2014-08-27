@@ -40,4 +40,7 @@ public interface UserMapper {
 	Integer changePoint(@Param("studentId")String studentId,@Param("score")int score);
 	@Transactional
 	Student getScore(String studentId);
+	@Transactional
+	Integer updateMedals(@Param("groupId")int groupId,@Param("medals")String medals);
+	
 }

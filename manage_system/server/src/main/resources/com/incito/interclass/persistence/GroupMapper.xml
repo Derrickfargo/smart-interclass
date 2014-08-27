@@ -40,7 +40,7 @@
   
 	<select id="getGroupList" resultMap="GroupUserMap" parameterType="java.util.Map">
 		SELECT DISTINCT
-			tb_group.id,tb_group.name,tb_group.logo,tb_group.slogan,
+			tb_group.id,tb_group.name,tb_group.logo,tb_group.slogan,tb_group.medals,
 			tb_group.course_id AS courseId,tb_group.teacher_id AS teacherId,
 			tb_group.class_id AS classId,tb_group.table_id AS tableId,tb_table.number AS tableNumber
 		FROM 
