@@ -28,6 +28,8 @@ import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.ui.widget.MedalDialog;
 import cn.com.incito.interclass.ui.widget.MultilineLabel;
+import cn.com.incito.interclass.ui.widget.PraiseDialog;
+import cn.com.incito.interclass.ui.widget.PunishDialog;
 import cn.com.incito.server.utils.URLs;
 
 /**
@@ -221,15 +223,14 @@ public class PraiseGroupPanel extends JPanel implements MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() == btnPraise) {
-//			JOptionPane.showMessageDialog(getParent().getParent(), "小组加分!");
-			changePoint(3);
+			new PraiseDialog(MainFrame.getInstance().getFrame(), group);
+//			changePoint(3);
 		}
 		if (e.getSource() == btnPunish) {
-//			JOptionPane.showMessageDialog(getParent().getParent(), "小组减分!");
-			changePoint(-1);
+			new PunishDialog(MainFrame.getInstance().getFrame(), group);
+//			changePoint(-1);
 		}
 		if (e.getSource() == btnMedal) {
-			JOptionPane.showMessageDialog(getParent().getParent(), "小组颁发勋章!");
 			new MedalDialog(MainFrame.getInstance().getFrame(), group);
 		}
 	}
