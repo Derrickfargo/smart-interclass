@@ -28,6 +28,7 @@ import cn.com.incito.http.StringResponseHandler;
 import cn.com.incito.http.support.ParamsWrapper;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Student;
+import cn.com.incito.interclass.ui.MainFrame;
 import cn.com.incito.interclass.ui.PraiseGroupPanel;
 import cn.com.incito.server.utils.URLs;
 
@@ -51,7 +52,7 @@ public class PraiseDialog extends JDialog implements MouseListener {
 	int score = 0;
 
 	public PraiseDialog(PraiseGroupPanel panel, Group group) {
-		super();
+		super(MainFrame.getInstance().getFrame(),true);
 		this.frame = panel;
 		this.group = group;
 		setSize(392, 228);
@@ -86,16 +87,19 @@ public class PraiseDialog extends JDialog implements MouseListener {
 		pnlMedal.setBounds(0, 35, 392, 140);
 		add(pnlMedal);
 		btnPoint1 = createPointLabel(1);
+		btnPoint1.setFocusable(false);
 		btnPoint1.setBounds(49, 20, 98, 98);
 		pnlMedal.add(btnPoint1);
 		btnPoint1.addMouseListener(this);
 
 		btnPoint2 = createPointLabel(2);
+		btnPoint2.setFocusable(false);
 		btnPoint2.setBounds(147, 20, 98, 98);
 		pnlMedal.add(btnPoint2);
 		btnPoint2.addMouseListener(this);
 
 		btnPoint3 = createPointLabel(3);
+		btnPoint3.setFocusable(false);
 		btnPoint3.setBounds(245, 20, 98, 98);
 		pnlMedal.add(btnPoint3);
 		btnPoint3.addMouseListener(this);
@@ -127,7 +131,7 @@ public class PraiseDialog extends JDialog implements MouseListener {
 		JButton lblPointLabel = new JButton();
 		lblPointLabel.setBorderPainted(false);// 设置边框不可见
 		lblPointLabel.setContentAreaFilled(false);// 设置透明
-		String url = "images/dialog/ico_medal_%d_no.png";
+		String url = "images/dialog/ico_add%d.png";
 		ImageIcon icon = new ImageIcon(String.format(url, number));
 		lblPointLabel.setIcon(icon);
 		return lblPointLabel;
@@ -173,14 +177,30 @@ public class PraiseDialog extends JDialog implements MouseListener {
 		
 		if (e.getSource() == btnPoint1) {
 			score = 1;
+			btnPoint1.setName("true");
+			btnPoint2.setName("false");
+			btnPoint3.setName("false");
+			btnPoint1.setIcon(new ImageIcon("images/dialog/ico_add1_hover.png"));
+			btnPoint2.setIcon(new ImageIcon("images/dialog/ico_add2.png"));
+			btnPoint3.setIcon(new ImageIcon("images/dialog/ico_add3.png"));
 		}
 		if (e.getSource() == btnPoint2) {
-			// JOptionPane.showMessageDialog(this, "小组加二分");
 			score = 2;
+			btnPoint1.setName("false");
+			btnPoint2.setName("true");
+			btnPoint3.setName("false");
+			btnPoint1.setIcon(new ImageIcon("images/dialog/ico_add1.png"));
+			btnPoint2.setIcon(new ImageIcon("images/dialog/ico_add2_hover.png"));
+			btnPoint3.setIcon(new ImageIcon("images/dialog/ico_add3.png"));
 		}
 		if (e.getSource() == btnPoint3) {
-			// JOptionPane.showMessageDialog(this, "小组加三分");
 			score = 3;
+			btnPoint1.setName("false");
+			btnPoint2.setName("false");
+			btnPoint3.setName("true");
+			btnPoint1.setIcon(new ImageIcon("images/dialog/ico_add1.png"));
+			btnPoint2.setIcon(new ImageIcon("images/dialog/ico_add2.png"));
+			btnPoint3.setIcon(new ImageIcon("images/dialog/ico_add3_hover.png"));
 		}
 		if (e.getSource() == btnOK) {
 			if (score == 0) {
@@ -214,6 +234,15 @@ public class PraiseDialog extends JDialog implements MouseListener {
 		if (e.getSource() == btnCancel) {
 			btnCancel.setIcon(new ImageIcon("images/dialog/bg_btn2_hover.png"));
 		}
+		if (e.getSource() == btnPoint1) {
+			btnPoint1.setIcon(new ImageIcon("images/dialog/ico_add1_hover.png"));
+		}
+		if (e.getSource() == btnPoint2) {
+			btnPoint2.setIcon(new ImageIcon("images/dialog/ico_add2_hover.png"));
+		}
+		if (e.getSource() == btnPoint3) {
+			btnPoint3.setIcon(new ImageIcon("images/dialog/ico_add3_hover.png"));
+		}
 	}
 
 	@Override
@@ -226,6 +255,27 @@ public class PraiseDialog extends JDialog implements MouseListener {
 		}
 		if (e.getSource() == btnCancel) {
 			btnCancel.setIcon(new ImageIcon("images/dialog/bg_btn2.png"));
+		}
+		if (e.getSource() == btnPoint1) {
+			if(Boolean.parseBoolean(btnPoint1.getName())){
+				btnPoint1.setIcon(new ImageIcon("images/dialog/ico_add1_hover.png"));
+			}else{
+				btnPoint1.setIcon(new ImageIcon("images/dialog/ico_add1.png"));
+			}
+		}
+		if (e.getSource() == btnPoint2) {
+			if(Boolean.parseBoolean(btnPoint2.getName())){
+				btnPoint2.setIcon(new ImageIcon("images/dialog/ico_add2_hover.png"));
+			}else{
+				btnPoint2.setIcon(new ImageIcon("images/dialog/ico_add2.png"));
+			}
+		}
+		if (e.getSource() == btnPoint3) {
+			if(Boolean.parseBoolean(btnPoint3.getName())){
+				btnPoint3.setIcon(new ImageIcon("images/dialog/ico_add3_hover.png"));
+			}else{
+				btnPoint3.setIcon(new ImageIcon("images/dialog/ico_add3.png"));
+			}
 		}
 	}
 

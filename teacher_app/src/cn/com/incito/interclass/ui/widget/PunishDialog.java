@@ -15,21 +15,20 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 
 import cn.com.incito.http.AsyncHttpConnection;
 import cn.com.incito.http.StringResponseHandler;
 import cn.com.incito.http.support.ParamsWrapper;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Student;
+import cn.com.incito.interclass.ui.MainFrame;
 import cn.com.incito.interclass.ui.PraiseGroupPanel;
 import cn.com.incito.server.utils.URLs;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 public class PunishDialog extends JDialog implements MouseListener {
 	private static final long serialVersionUID = 281738161264828396L;
@@ -41,7 +40,7 @@ public class PunishDialog extends JDialog implements MouseListener {
 	private PraiseGroupPanel frame;
 	int score=0;
 	public PunishDialog(PraiseGroupPanel panel, Group group) {
-		super();
+		super(MainFrame.getInstance().getFrame(),true);
 		this.frame = panel;
 		this.group = group;
 		setSize(392, 228);
@@ -108,7 +107,7 @@ public class PunishDialog extends JDialog implements MouseListener {
 		JButton lblPointLabel = new JButton();
 		lblPointLabel.setBorderPainted(false);// 设置边框不可见
 		lblPointLabel.setContentAreaFilled(false);// 设置透明
-		String url = "images/dialog/ico_medal_%d_no.png";
+		String url = "images/dialog/ico_jian%d.png";
 		ImageIcon icon = new ImageIcon(String.format(url, number));
 		lblPointLabel.setIcon(icon);
 		return lblPointLabel;
@@ -155,7 +154,8 @@ public class PunishDialog extends JDialog implements MouseListener {
 			dispose();
 		}
 		if (e.getSource() == btnPoint1) {
-//			JOptionPane.showMessageDialog(this, "小组减一分");
+			btnPoint1.setName("true");
+			btnPoint1.setIcon(new ImageIcon("images/dialog/ico_jian1_hover.png"));
 			score=-1;
 		}
 	}
@@ -181,6 +181,9 @@ public class PunishDialog extends JDialog implements MouseListener {
 		if (e.getSource() == btnCancel) {
 			btnCancel.setIcon(new ImageIcon("images/dialog/bg_btn2_hover.png"));
 		}
+		if (e.getSource() == btnPoint1) {
+			btnPoint1.setIcon(new ImageIcon("images/dialog/ico_jian1_hover.png"));
+		}
 	}
 
 	@Override
@@ -193,6 +196,13 @@ public class PunishDialog extends JDialog implements MouseListener {
 		}
 		if (e.getSource() == btnCancel) {
 			btnCancel.setIcon(new ImageIcon("images/dialog/bg_btn2.png"));
+		}
+		if (e.getSource() == btnPoint1) {
+			if(Boolean.parseBoolean(btnPoint1.getName())){
+				btnPoint1.setIcon(new ImageIcon("images/dialog/ico_jian1_hover.png"));
+			}else{
+				btnPoint1.setIcon(new ImageIcon("images/dialog/ico_jian1.png"));
+			}
 		}
 	}
 	/**
