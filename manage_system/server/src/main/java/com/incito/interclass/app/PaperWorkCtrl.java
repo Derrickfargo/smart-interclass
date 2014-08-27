@@ -43,7 +43,7 @@ public class PaperWorkCtrl extends BaseCtrl {
 	@RequestMapping(value = "/upload", method = RequestMethod.POST, produces = { "application/json;charset=UTF-8" })
 	@ResponseBody
 	public Map<String, Object> upload(String type, String teacher_id,
-			String imei, String quizid, MultipartFile file) {
+			String imei, String quizid,String lastupdatetime, MultipartFile file) {
 		PaperWork paperWork = new PaperWork();
 		paperWork.setType(type);
 		paperWork.setTeacher_id(teacher_id);
@@ -52,6 +52,7 @@ public class PaperWorkCtrl extends BaseCtrl {
 		int count = paperService.upload(paperWork, file);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("code", "0");
+		map.put("lastupdatetime", lastupdatetime);
 		map.put("count", count);
 		return map;
 	}
