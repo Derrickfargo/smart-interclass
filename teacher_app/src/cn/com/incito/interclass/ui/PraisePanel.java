@@ -65,10 +65,12 @@ public class PraisePanel extends JPanel{
 	
 	private void showPraiseGroupPanel(PraiseGroupPanel panel, Group group) {
 		panel.setVisible(true);
+		panel.setGroup(group);
 		String logo = LogoUtils.getInstance().getLogo(group.getLogo());
 		ImageIcon icon = new ImageIcon(logo);
 		panel.getLblLogo().setIcon(icon);
 		panel.getLblGroupName().setText(group.getName());
 //		panel.getLblScore().setText(group.get);
+		panel.changePoint(0);
 	}
 }

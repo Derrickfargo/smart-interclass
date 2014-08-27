@@ -12,4 +12,5 @@ public class Constants {
 	//云端随堂练习存储参数
     public static final String PAPER_DIR = "E:\\paper\\";
     public static final String COURSEWARE_DIR = "E:\\courseware\\";
+    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 }
