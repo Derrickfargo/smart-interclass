@@ -24,12 +24,14 @@ import org.apache.log4j.Logger;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.sun.xml.internal.ws.util.StringUtils;
 
 import cn.com.incito.http.AsyncHttpConnection;
 import cn.com.incito.http.StringResponseHandler;
 import cn.com.incito.http.support.ParamsWrapper;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Quiz;
+import cn.com.incito.interclass.po.Student;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.api.result.TeacherLoginResultData;
 import cn.com.incito.server.utils.Md5Utils;
@@ -119,6 +121,7 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 		btnMedal = createMedalButton();
 		btnMedal.addMouseListener(this);
 		add(btnMedal);
+
 	}
 	
 	private JLabel createDeskLabel(){
@@ -273,12 +276,12 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() == btnPlus) {
 			changePoint(3);//更改分数
-			JOptionPane.showMessageDialog(getParent().getParent(), "小组加分!");
+//			JOptionPane.showMessageDialog(getParent().getParent(), "小组加分!");
 			
 		}
 		if (e.getSource() == btnMinus) {
 			changePoint(-1);//更改分数
-			JOptionPane.showMessageDialog(getParent().getParent(), "小组减分!");
+//			JOptionPane.showMessageDialog(getParent().getParent(), "小组减分!");
 		}
 		if (e.getSource() == btnMedal) {
 			JOptionPane.showMessageDialog(getParent().getParent(), "小组颁发勋章!");
@@ -319,13 +322,25 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 			btnMedal.setIcon(new ImageIcon(BTN_MEDAL_NORMAL));
 		}
 	}
-	 private void changePoint(int updateScore) {
-		 logger.info("分数奖励调用");
+	 /**
+	  * 分数奖励
+	 * @param updateScore
+	 */
+	public void changePoint(int updateScore) {
+		 String studentId="";
+		 List<Student> studentList = group.getStudents();
+		 for (int i = 0; i < studentList.size(); i++) {
+			studentId=studentId+studentList.get(i).getId()+",";
+		}
+		 if(studentId==null||"".equals(studentId)){
+			 return;
+		 }
+		 logger.info("分数奖励人员ID:"+studentId);
 //	        try {
 	            //使用Get方法，取得服务端响应流：
 	            AsyncHttpConnection http = AsyncHttpConnection.getInstance();
 	            ParamsWrapper params = new ParamsWrapper();
-	            params.put("studentId","295");
+	            params.put("studentId",studentId);
 	            params.put("score",updateScore);
 	            http.post(URLs.URL_UPDATE_SCORE, params, new StringResponseHandler() {
 	                @Override
@@ -337,7 +352,9 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 	                            logger.info("分数奖励失败!");
 	                            return;
 	                        }else{
-	                        	
+	                        	 String score = String.valueOf((int)(jsonObject.getIntValue("score")/group.getStudents().size()));
+	                        	//设置小组总分
+	                        	 lblScore.setText(score);
 	                        }
 	                        logger.info("分数奖励" + content);
 	                    }

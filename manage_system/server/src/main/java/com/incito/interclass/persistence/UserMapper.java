@@ -3,6 +3,7 @@ package com.incito.interclass.persistence;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.incito.interclass.entity.Admin;
 import com.incito.interclass.entity.Student;
@@ -35,8 +36,8 @@ public interface UserMapper {
 	void deleteTeacher(int teacherId);
 
 	void deleteStudent(int studentId);
-	
+	@Transactional
 	Integer changePoint(@Param("studentId")String studentId,@Param("score")int score);
-	
-	Integer getScore(String studentId);
+	@Transactional
+	Student getScore(String studentId);
 }
