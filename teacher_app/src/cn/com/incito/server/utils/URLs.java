@@ -15,6 +15,13 @@ public class URLs {
 	 */
 	public final static String URL_UPDATE_SCORE = URL_API_HOST
 			+ "api/student/changepoint";
+	
+	/**
+	 * 勋章奖励
+	 */
+	 public final static String URL_UPDATE_MEDALS = URL_API_HOST
+			+ "api/student/medals";
+	
 	/**
 	 * 老师登陆
 	 */
