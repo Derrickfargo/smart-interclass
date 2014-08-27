@@ -8,6 +8,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
+import java.io.IOException;
+import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -16,19 +18,42 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
+import cn.com.incito.http.AsyncHttpConnection;
+import cn.com.incito.http.StringResponseHandler;
+import cn.com.incito.http.support.ParamsWrapper;
 import cn.com.incito.interclass.po.Group;
+import cn.com.incito.server.utils.URLs;
 
 public class MedalDialog extends JDialog implements MouseListener {
+
 	private static final long serialVersionUID = 281738161264828396L;
+
 	private static final String SELECTED = "SELECTED";
+
 	private static final String UNSELECTED = "UNSELECTED";
+
 	private static final String TEMP_SELECTED = "TEMP_SELECTED";
+
 	private Boolean isDragged;
+
 	private Point loc, tmp;
+
 	private Group group;
+
 	private JLabel lblBackground;
+
 	private JButton btnClose, btnOK, btnCancel;
+
 	private JButton btnMedal1, btnMedal2, btnMedal3, btnMedal4;
+
+	private StringBuffer medalsStr=new StringBuffer();
+
+	private String medalSelect;
+
+	private String medals;
 
 	public MedalDialog(JFrame frame, Group group) {
 		super(frame, true);
@@ -48,8 +73,7 @@ public class MedalDialog extends JDialog implements MouseListener {
 		ImageIcon imgMax = new ImageIcon("images/login/7.png");
 		btnClose.setIcon(imgMax);// 设置图片
 		add(btnClose);// 添加按钮
-		btnClose.setBounds(352, 0, imgMax.getIconWidth(),
-				imgMax.getIconHeight());
+		btnClose.setBounds(352, 0, imgMax.getIconWidth(), imgMax.getIconHeight());
 		btnClose.addMouseListener(this);
 
 		JLabel lblMessage = new JLabel("", JLabel.CENTER);
@@ -66,61 +90,86 @@ public class MedalDialog extends JDialog implements MouseListener {
 		pnlMedal.setBounds(0, 35, 392, 140);
 		add(pnlMedal);
 		btnMedal1 = createMedal(1);
-		btnMedal1.setName(UNSELECTED);
+		if (group.getMedals() != null && !"".equals(group.getMedals())) {
+			medals = group.getMedals();
+		} else {
+			medals = " ";
+		}
+		if (medals.contains("1")) {
+			btnMedal1.setIcon(new ImageIcon("images/dialog/ico_medal_1.png"));
+			btnMedal1.setName(SELECTED);
+		} else {
+			btnMedal1.setName(UNSELECTED);
+		}
 		btnMedal1.setFocusable(false);
 		btnMedal1.setBounds(0, 20, 98, 98);
 		pnlMedal.add(btnMedal1);
 		btnMedal1.addMouseListener(this);
-		
+
 		btnMedal2 = createMedal(2);
-		btnMedal2.setName(UNSELECTED);
+		if (medals.contains("2")) {
+			btnMedal2.setIcon(new ImageIcon("images/dialog/ico_medal_2.png"));
+			btnMedal2.setName(SELECTED);
+		} else {
+			btnMedal2.setName(UNSELECTED);
+		}
 		btnMedal2.setFocusable(false);
 		btnMedal2.setBounds(98, 20, 98, 98);
 		pnlMedal.add(btnMedal2);
 		btnMedal2.addMouseListener(this);
-		
+
 		btnMedal3 = createMedal(3);
-		btnMedal3.setName(UNSELECTED);
+		if (medals.contains("3")) {
+			btnMedal3.setIcon(new ImageIcon("images/dialog/ico_medal_3.png"));
+			btnMedal3.setName(SELECTED);
+		} else {
+			btnMedal3.setName(UNSELECTED);
+		}
 		btnMedal3.setFocusable(false);
 		btnMedal3.setBounds(196, 20, 98, 98);
 		pnlMedal.add(btnMedal3);
 		btnMedal3.addMouseListener(this);
-		
+
 		btnMedal4 = createMedal(4);
-		btnMedal4.setName(UNSELECTED);
+		if (medals.contains("4")) {
+			btnMedal4.setIcon(new ImageIcon("images/dialog/ico_medal_4.png"));
+			btnMedal4.setName(SELECTED);
+		} else {
+			btnMedal4.setName(UNSELECTED);
+		}
 		btnMedal4.setFocusable(false);
 		btnMedal4.setBounds(294, 20, 98, 98);
 		pnlMedal.add(btnMedal4);
 		btnMedal4.addMouseListener(this);
-		
-//		int x = 0;
-//		for (int i = 0; i < 4; i++) {
-//			JButton btnMedal = createMedal(i + 1);
-//			btnMedal.setName("false");
-//			btnMedal.setBounds(x, 20, 98, 98);
-//			pnlMedal.add(btnMedal);
-//			medalList.add(btnMedal);
-//			x += 98;
-//		}
+
+		// int x = 0;
+		// for (int i = 0; i < 4; i++) {
+		// JButton btnMedal = createMedal(i + 1);
+		// btnMedal.setName("false");
+		// btnMedal.setBounds(x, 20, 98, 98);
+		// pnlMedal.add(btnMedal);
+		// medalList.add(btnMedal);
+		// x += 98;
+		// }
 
 		btnOK = new JButton();
 		btnOK.setBorderPainted(false);
 		btnOK.setContentAreaFilled(false);
-        ImageIcon imgOK = new ImageIcon("images/dialog/bg_btn.png");
-        btnOK.setIcon(imgOK);
-        add(btnOK);//添加按钮
-        btnOK.setBounds(96, 170, imgOK.getIconWidth(), imgOK.getIconHeight());
-        btnOK.addMouseListener(this);
-        
-        btnCancel = new JButton();
-        btnCancel.setBorderPainted(false);
-        btnCancel.setContentAreaFilled(false);
-        ImageIcon imgCancel = new ImageIcon("images/dialog/bg_btn2.png");
-        btnCancel.setIcon(imgCancel);
-        add(btnCancel);//添加按钮
-        btnCancel.setBounds(212, 170, imgCancel.getIconWidth(), imgCancel.getIconHeight());
-        btnCancel.addMouseListener(this);
-        
+		ImageIcon imgOK = new ImageIcon("images/dialog/bg_btn.png");
+		btnOK.setIcon(imgOK);
+		add(btnOK);// 添加按钮
+		btnOK.setBounds(96, 170, imgOK.getIconWidth(), imgOK.getIconHeight());
+		btnOK.addMouseListener(this);
+
+		btnCancel = new JButton();
+		btnCancel.setBorderPainted(false);
+		btnCancel.setContentAreaFilled(false);
+		ImageIcon imgCancel = new ImageIcon("images/dialog/bg_btn2.png");
+		btnCancel.setIcon(imgCancel);
+		add(btnCancel);// 添加按钮
+		btnCancel.setBounds(212, 170, imgCancel.getIconWidth(), imgCancel.getIconHeight());
+		btnCancel.addMouseListener(this);
+
 		setBackground();
 		setDragable();
 		setVisible(true);
@@ -145,6 +194,7 @@ public class MedalDialog extends JDialog implements MouseListener {
 
 	private void setDragable() {
 		addMouseListener(new MouseAdapter() {
+
 			public void mouseReleased(MouseEvent e) {
 				isDragged = false;
 				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
@@ -157,10 +207,10 @@ public class MedalDialog extends JDialog implements MouseListener {
 			}
 		});
 		addMouseMotionListener(new MouseMotionAdapter() {
+
 			public void mouseDragged(MouseEvent e) {
 				if (isDragged) {
-					loc = new Point(getLocation().x + e.getX() - tmp.x,
-							getLocation().y + e.getY() - tmp.y);
+					loc = new Point(getLocation().x + e.getX() - tmp.x, getLocation().y + e.getY() - tmp.y);
 					setLocation(loc);
 				}
 			}
@@ -173,10 +223,17 @@ public class MedalDialog extends JDialog implements MouseListener {
 			dispose();
 		}
 		if (e.getSource() == btnOK) {
+			medalsStr.append(medals);
+			if (medalSelect != null && !"".equals(medalSelect)) {
+				medalsStr.append(",");
+				medalsStr.append(medalSelect);
+			}
+			updateMedals(medalsStr.toString());
+			dispose();
 
 		}
 		if (e.getSource() == btnMedal1) {
-			if (!btnMedal1.getName().equals(SELECTED)) {//该组未获得勋章
+			if (!btnMedal1.getName().equals(SELECTED)) {// 该组未获得勋章
 				btnMedal1.setName(TEMP_SELECTED);
 				btnMedal1.setIcon(new ImageIcon("images/dialog/ico_medal_1_no_hover.png"));
 			}
@@ -192,6 +249,7 @@ public class MedalDialog extends JDialog implements MouseListener {
 				btnMedal4.setName(UNSELECTED);
 				btnMedal4.setIcon(new ImageIcon("images/dialog/ico_medal_4_no.png"));
 			}
+			medalSelect = "1";
 		}
 		if (e.getSource() == btnMedal2) {
 			if (!btnMedal1.getName().equals(SELECTED)) {
@@ -210,6 +268,7 @@ public class MedalDialog extends JDialog implements MouseListener {
 				btnMedal4.setName(UNSELECTED);
 				btnMedal4.setIcon(new ImageIcon("images/dialog/ico_medal_4_no.png"));
 			}
+			medalSelect = "2";
 		}
 		if (e.getSource() == btnMedal3) {
 			if (!btnMedal1.getName().equals(SELECTED)) {
@@ -228,6 +287,7 @@ public class MedalDialog extends JDialog implements MouseListener {
 				btnMedal4.setName(UNSELECTED);
 				btnMedal4.setIcon(new ImageIcon("images/dialog/ico_medal_4_no.png"));
 			}
+			medalSelect = "3";
 		}
 		if (e.getSource() == btnMedal4) {
 			if (!btnMedal1.getName().equals(SELECTED)) {
@@ -246,7 +306,9 @@ public class MedalDialog extends JDialog implements MouseListener {
 				btnMedal4.setName(TEMP_SELECTED);
 				btnMedal4.setIcon(new ImageIcon("images/dialog/ico_medal_4_no_hover.png"));
 			}
+			medalSelect = "4";
 		}
+
 	}
 
 	@Override
@@ -304,28 +366,66 @@ public class MedalDialog extends JDialog implements MouseListener {
 			btnCancel.setIcon(new ImageIcon("images/dialog/bg_btn2.png"));
 		}
 		if (e.getSource() == btnMedal1) {
-			if (!btnMedal1.getName().equals(SELECTED)
-					&& !btnMedal1.getName().equals(TEMP_SELECTED)) {
+			if (!btnMedal1.getName().equals(SELECTED) && !btnMedal1.getName().equals(TEMP_SELECTED)) {
 				btnMedal1.setIcon(new ImageIcon("images/dialog/ico_medal_1_no.png"));
 			}
 		}
 		if (e.getSource() == btnMedal2) {
-			if (!btnMedal2.getName().equals(SELECTED)
-					&& !btnMedal2.getName().equals(TEMP_SELECTED)) {
+			if (!btnMedal2.getName().equals(SELECTED) && !btnMedal2.getName().equals(TEMP_SELECTED)) {
 				btnMedal2.setIcon(new ImageIcon("images/dialog/ico_medal_2_no.png"));
 			}
 		}
 		if (e.getSource() == btnMedal3) {
-			if (!btnMedal3.getName().equals(SELECTED)
-					&& !btnMedal3.getName().equals(TEMP_SELECTED)) {
+			if (!btnMedal3.getName().equals(SELECTED) && !btnMedal3.getName().equals(TEMP_SELECTED)) {
 				btnMedal3.setIcon(new ImageIcon("images/dialog/ico_medal_3_no.png"));
 			}
 		}
 		if (e.getSource() == btnMedal4) {
-			if (!btnMedal4.getName().equals(SELECTED)
-					&& !btnMedal4.getName().equals(TEMP_SELECTED)) {
+			if (!btnMedal4.getName().equals(SELECTED) && !btnMedal4.getName().equals(TEMP_SELECTED)) {
 				btnMedal4.setIcon(new ImageIcon("images/dialog/ico_medal_4_no.png"));
 			}
 		}
+	}
+
+	/**
+	 * 勋章 奖励
+	 * 
+	 * @param medals
+	 */
+	public void updateMedals(String medals) {
+		// 使用Get方法，取得服务端响应流：
+		AsyncHttpConnection http = AsyncHttpConnection.getInstance();
+		ParamsWrapper params = new ParamsWrapper();
+		params.put("groupId", group.getId());
+		params.put("medals", medals);
+		http.post(URLs.URL_UPDATE_MEDALS, params, new StringResponseHandler() {
+
+			@Override
+			protected void onResponse(String content, URL url) {
+				
+				
+				if (content != null && !content.equals("")) {
+					System.out.println("返回的数据" + content);
+					JSONObject jsonObject = JSON.parseObject(content);
+					if (jsonObject.getIntValue("code") == 1) {
+						return;
+					} else {
+						group.setMedals(medalsStr.toString());
+						}
+				}
+			}
+
+			@Override
+			public void onSubmit(URL url, ParamsWrapper params) {
+			}
+
+			@Override
+			public void onConnectError(IOException exp) {
+			}
+
+			@Override
+			public void onStreamError(IOException exp) {
+			}
+		});
 	}
 }

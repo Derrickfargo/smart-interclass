@@ -42,7 +42,14 @@ public class UserService {
 		}
 		return Score;
 	};
-
+	/**
+	 * 获得勋章
+	 * @param groupId
+	 * @param medals
+	 */
+	public Integer updateMedals(int groupId,String medals)  {
+		return userMapper.updateMedals(groupId,medals);
+	};
 	/**
 	 * 管理员登陆
 	 * 

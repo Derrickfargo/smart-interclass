@@ -162,4 +162,14 @@
 	    WHERE
 	    	id=#{studentId}
 	</select>
+	<update id="updateMedals" parameterType="java.util.Map">
+	    UPDATE
+	     	tb_group
+	    SET 
+	    	medals=#{medals}
+	    WHERE
+	    	id=#{groupId}
+	    
+	    
+	</update>
 </mapper>

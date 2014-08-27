@@ -10,6 +10,16 @@ public class Group implements Serializable, Comparable<Group> {
 	 * 
 	 */
 	private static final long serialVersionUID = -6517861100227656945L;
+	private String medals;
+	
+	public String getMedals() {
+		return medals;
+	}
+
+	
+	public void setMedals(String medals) {
+		this.medals = medals;
+	}
 
 	private int id;
 	private String name;
