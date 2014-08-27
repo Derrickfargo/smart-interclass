@@ -55,8 +55,13 @@ public class RoomCtrl extends BaseCtrl {
 	 */
 	@RequestMapping(value = "/save")
 	public ModelAndView save(Room room,Model model) {
-		roomService.saveRoom(room);
-		return new ModelAndView("redirect:list");
+		boolean success = roomService.saveRoom(room);
+		if(success){
+			return new ModelAndView("redirect:list");
+		}else {
+			return new ModelAndView("redirect:list");
+		}
+		
 	}
 	
 	@RequestMapping(value = "/delete")
