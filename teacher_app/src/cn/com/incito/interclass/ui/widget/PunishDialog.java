@@ -31,16 +31,25 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 public class PunishDialog extends JDialog implements MouseListener {
+
 	private static final long serialVersionUID = 281738161264828396L;
+
 	private Boolean isDragged;
+
 	private Point loc, tmp;
+
 	private Group group;
+
 	private JLabel lblBackground;
+
 	private JButton btnClose, btnOK, btnCancel, btnPoint1;
+
 	private PraiseGroupPanel frame;
-	int score=0;
+
+	int score = 0;
+
 	public PunishDialog(PraiseGroupPanel panel, Group group) {
-		super(MainFrame.getInstance().getFrame(),true);
+		super(MainFrame.getInstance().getFrame(), true);
 		this.frame = panel;
 		this.group = group;
 		setSize(392, 228);
@@ -58,8 +67,7 @@ public class PunishDialog extends JDialog implements MouseListener {
 		ImageIcon imgMax = new ImageIcon("images/login/7.png");
 		btnClose.setIcon(imgMax);// 设置图片
 		add(btnClose);// 添加按钮
-		btnClose.setBounds(352, 0, imgMax.getIconWidth(),
-				imgMax.getIconHeight());
+		btnClose.setBounds(352, 0, imgMax.getIconWidth(), imgMax.getIconHeight());
 		btnClose.addMouseListener(this);
 
 		JLabel lblMessage = new JLabel("", JLabel.CENTER);
@@ -84,21 +92,21 @@ public class PunishDialog extends JDialog implements MouseListener {
 		btnOK = new JButton();
 		btnOK.setBorderPainted(false);
 		btnOK.setContentAreaFilled(false);
-        ImageIcon imgOK = new ImageIcon("images/dialog/bg_btn.png");
-        btnOK.setIcon(imgOK);
-        add(btnOK);//添加按钮
-        btnOK.setBounds(96, 170, imgOK.getIconWidth(), imgOK.getIconHeight());
-        btnOK.addMouseListener(this);
-        
-        btnCancel = new JButton();
-        btnCancel.setBorderPainted(false);
-        btnCancel.setContentAreaFilled(false);
-        ImageIcon imgCancel = new ImageIcon("images/dialog/bg_btn2.png");
-        btnCancel.setIcon(imgCancel);
-        add(btnCancel);//添加按钮
-        btnCancel.setBounds(212, 170, imgCancel.getIconWidth(), imgCancel.getIconHeight());
-        btnCancel.addMouseListener(this);
-        
+		ImageIcon imgOK = new ImageIcon("images/dialog/bg_btn.png");
+		btnOK.setIcon(imgOK);
+		add(btnOK);// 添加按钮
+		btnOK.setBounds(96, 170, imgOK.getIconWidth(), imgOK.getIconHeight());
+		btnOK.addMouseListener(this);
+
+		btnCancel = new JButton();
+		btnCancel.setBorderPainted(false);
+		btnCancel.setContentAreaFilled(false);
+		ImageIcon imgCancel = new ImageIcon("images/dialog/bg_btn2.png");
+		btnCancel.setIcon(imgCancel);
+		add(btnCancel);// 添加按钮
+		btnCancel.setBounds(212, 170, imgCancel.getIconWidth(), imgCancel.getIconHeight());
+		btnCancel.addMouseListener(this);
+
 		setBackground();
 		setDragable();
 		setVisible(true);
@@ -123,6 +131,7 @@ public class PunishDialog extends JDialog implements MouseListener {
 
 	private void setDragable() {
 		addMouseListener(new MouseAdapter() {
+
 			public void mouseReleased(MouseEvent e) {
 				isDragged = false;
 				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
@@ -135,10 +144,10 @@ public class PunishDialog extends JDialog implements MouseListener {
 			}
 		});
 		addMouseMotionListener(new MouseMotionAdapter() {
+
 			public void mouseDragged(MouseEvent e) {
 				if (isDragged) {
-					loc = new Point(getLocation().x + e.getX() - tmp.x,
-							getLocation().y + e.getY() - tmp.y);
+					loc = new Point(getLocation().x + e.getX() - tmp.x, getLocation().y + e.getY() - tmp.y);
 					setLocation(loc);
 				}
 			}
@@ -157,7 +166,7 @@ public class PunishDialog extends JDialog implements MouseListener {
 		if (e.getSource() == btnPoint1) {
 			btnPoint1.setName("true");
 			btnPoint1.setIcon(new ImageIcon("images/dialog/ico_jian1_hover.png"));
-			score=-1;
+			score = -1;
 		}
 	}
 
@@ -199,13 +208,14 @@ public class PunishDialog extends JDialog implements MouseListener {
 			btnCancel.setIcon(new ImageIcon("images/dialog/bg_btn2.png"));
 		}
 		if (e.getSource() == btnPoint1) {
-			if(Boolean.parseBoolean(btnPoint1.getName())){
+			if (Boolean.parseBoolean(btnPoint1.getName())) {
 				btnPoint1.setIcon(new ImageIcon("images/dialog/ico_jian1_hover.png"));
-			}else{
+			} else {
 				btnPoint1.setIcon(new ImageIcon("images/dialog/ico_jian1.png"));
 			}
 		}
 	}
+
 	/**
 	 * 分数奖励
 	 * 
@@ -226,6 +236,7 @@ public class PunishDialog extends JDialog implements MouseListener {
 		params.put("studentId", studentId);
 		params.put("score", updateScore);
 		http.post(URLs.URL_UPDATE_SCORE, params, new StringResponseHandler() {
+
 			@Override
 			protected void onResponse(String content, URL url) {
 				if (content != null && !content.equals("")) {
@@ -236,10 +247,13 @@ public class PunishDialog extends JDialog implements MouseListener {
 					} else {
 						String score = String.valueOf((int) (jsonObject.getIntValue("score") / group.getStudents().size()));
 						// 设置小组总分
-						frame.setScore(score);
+						if (frame != null) {
+							frame.setScore(score);
+						}
 					}
 				}
 			}
+
 			@Override
 			public void onSubmit(URL url, ParamsWrapper params) {
 			}

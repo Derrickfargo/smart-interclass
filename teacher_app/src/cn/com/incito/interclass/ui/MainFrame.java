@@ -214,6 +214,8 @@ public class MainFrame extends MouseAdapter {
 				btnQuiz.setIcon(new ImageIcon("images/main/bg_works.png"));
 				btnStatus.setIcon(new ImageIcon("images/main/bg_ready.png"));
 				btnPraise.setIcon(new ImageIcon("images/main/bg_praise_hover.png"));
+				
+				praisePanel.refresh();
 			}
 		});
 		

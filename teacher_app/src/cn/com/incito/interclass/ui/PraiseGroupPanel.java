@@ -77,7 +77,7 @@ public class PraiseGroupPanel extends JPanel implements MouseListener,setScoreCa
 		lblTitle = createTitle();
 		pnlTitle.add(lblTitle);
 		
-		MultilineLabel lblMember = createGroupMember();
+		lblMember = createGroupMember();
 		add(lblMember);
 		
 		btnPraise = createPraiseButton();
@@ -102,7 +102,7 @@ public class PraiseGroupPanel extends JPanel implements MouseListener,setScoreCa
 	}
 	
 	private JLabel createScoreLabel(){
-		JLabel lblScore = new JLabel("30", JLabel.CENTER);
+		JLabel lblScore = new JLabel("0", JLabel.CENTER);
 		lblScore.setBounds(165,5, 78, 78);
 		lblScore.setFont(new Font("Impact", Font.PLAIN, 48));
 		lblScore.setForeground(new Color(Integer.parseInt("39a2de", 16)));
@@ -110,7 +110,7 @@ public class PraiseGroupPanel extends JPanel implements MouseListener,setScoreCa
 	}
 	
 	private JLabel createGroupName(){
-		JLabel lblName = new JLabel("哈哈哈哈哈哈哈哈哈哈哈");
+		JLabel lblName = new JLabel();
 		lblName.setBounds(15,82, 100, 24);
 		lblName.setFont(new Font("Microsoft YaHei", Font.BOLD, 18));
 		lblName.setForeground(new Color(Integer.parseInt("535353", 16)));
@@ -138,7 +138,7 @@ public class PraiseGroupPanel extends JPanel implements MouseListener,setScoreCa
 	}
 	
 	private MultilineLabel createGroupMember(){
-		MultilineLabel lblMember = new MultilineLabel("刘世平，测试，刘世平，测试，刘世平，测试，刘世平，测试");
+		MultilineLabel lblMember = new MultilineLabel("");
 		lblMember.setBounds(15,115, 240, 35);
 		lblMember.setForeground(new Color(Integer.parseInt("a1a1a1", 16)));
 		return lblMember;

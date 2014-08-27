@@ -411,7 +411,7 @@ public class MedalDialog extends JDialog implements MouseListener {
 						return;
 					} else {
 						group.setMedals(medalsStr.toString());
-						}
+					}
 				}
 			}
 

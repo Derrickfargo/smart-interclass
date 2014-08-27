@@ -32,6 +32,8 @@ import cn.com.incito.http.support.ParamsWrapper;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Quiz;
 import cn.com.incito.interclass.po.Student;
+import cn.com.incito.interclass.ui.widget.PraiseDialog;
+import cn.com.incito.interclass.ui.widget.PunishDialog;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.api.result.TeacherLoginResultData;
 import cn.com.incito.server.utils.Md5Utils;
@@ -275,16 +277,14 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() == btnPlus) {
-			changePoint(3);//更改分数
-//			JOptionPane.showMessageDialog(getParent().getParent(), "小组加分!");
+			new PraiseDialog(null, group);
 			
 		}
 		if (e.getSource() == btnMinus) {
-			changePoint(-1);//更改分数
-//			JOptionPane.showMessageDialog(getParent().getParent(), "小组减分!");
+			new PunishDialog(null, group);
 		}
 		if (e.getSource() == btnMedal) {
-			JOptionPane.showMessageDialog(getParent().getParent(), "小组颁发勋章!");
+			
 		}
 		if (quizPanel.contains(e.getSource())) {
 			if (e.getClickCount() == 2) {
@@ -322,57 +322,4 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 			btnMedal.setIcon(new ImageIcon(BTN_MEDAL_NORMAL));
 		}
 	}
-	 /**
-	  * 分数奖励
-	 * @param updateScore
-	 */
-	public void changePoint(int updateScore) {
-		 String studentId="";
-		 List<Student> studentList = group.getStudents();
-		 for (int i = 0; i < studentList.size(); i++) {
-			studentId=studentId+studentList.get(i).getId()+",";
-		}
-		 if(studentId==null||"".equals(studentId)){
-			 return;
-		 }
-		 logger.info("分数奖励人员ID:"+studentId);
-//	        try {
-	            //使用Get方法，取得服务端响应流：
-	            AsyncHttpConnection http = AsyncHttpConnection.getInstance();
-	            ParamsWrapper params = new ParamsWrapper();
-	            params.put("studentId",studentId);
-	            params.put("score",updateScore);
-	            http.post(URLs.URL_UPDATE_SCORE, params, new StringResponseHandler() {
-	                @Override
-	                protected void onResponse(String content, URL url) {
-	                    if (content != null && !content.equals("")) {
-	                    	System.out.println("返回的数据"+content);
-	                        JSONObject jsonObject = JSON.parseObject(content);
-	                        if (jsonObject.getIntValue("code") == 1) {
-	                            logger.info("分数奖励失败!");
-	                            return;
-	                        }else{
-	                        	 String score = String.valueOf((int)(jsonObject.getIntValue("score")/group.getStudents().size()));
-	                        	//设置小组总分
-	                        	 lblScore.setText(score);
-	                        }
-	                        logger.info("分数奖励" + content);
-	                    }
-	                }
-
-	                @Override
-	                public void onSubmit(URL url, ParamsWrapper params) {
-	                }
-
-	                @Override
-	                public void onConnectError(IOException exp) {
-	                	JOptionPane.showMessageDialog((Component) quizPanel, "连接错误，请检查网络！");
-	                }
-
-	                @Override
-	                public void onStreamError(IOException exp) {
-	                	JOptionPane.showMessageDialog((Component) quizPanel, "数据解析错误！");
-	                }
-	            });
-	    }
 }

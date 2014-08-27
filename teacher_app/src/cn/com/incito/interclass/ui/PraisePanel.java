@@ -81,6 +81,11 @@ public class PraisePanel extends JPanel{
 		panel.getLblLogo().setIcon(icon);
 		panel.getLblGroupName().setText(group.getName());
 //		panel.getLblScore().setText(group.get);
+		String memberStr="";
+		for (int i = 0; i < group.getStudents().size(); i++) {
+			memberStr+=group.getStudents().get(i).getName();
+		}
+		panel.getLblMember().setText(memberStr);
 		changePoint(0,group,panel);
 	}
 	/**
