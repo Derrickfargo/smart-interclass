@@ -1,9 +1,7 @@
 package cn.com.incito.interclass.ui;
 
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
@@ -17,8 +15,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import com.alibaba.fastjson.JSONObject;
-
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
@@ -29,9 +25,11 @@ import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
 import cn.com.incito.server.utils.UIHelper;
 
-public class PrepareBottomPanel extends JPanel{
+import com.alibaba.fastjson.JSONObject;
+
+public class PrepareBottomPanel extends JPanel implements MouseListener{
 	private static final long serialVersionUID = -9135075807085951600L;
-	private JButton btnBegin;
+	private JButton btnBegin, btnGroup;
 	private Application app = Application.getInstance();
 	
 	public PrepareBottomPanel(){
@@ -44,36 +42,28 @@ public class PrepareBottomPanel extends JPanel{
 		lblExpected.setBounds(10, 15, 150, 35);
 		add(lblExpected);
 		
-		JPanel pnlClass = new JPanel() {
-			private static final long serialVersionUID = 5365972834168199801L;
+		JLabel lblClassBackground = new JLabel();
+		ImageIcon iconClass = new ImageIcon("images/main/btn_gray.png");
+		lblClassBackground.setIcon(iconClass);
+		add(lblClassBackground);
+		lblClassBackground.setBounds(180, -4, iconClass.getIconWidth(), iconClass.getIconHeight());
+		
+		JLabel lblCourseBackground = new JLabel();
+		ImageIcon iconCourse = new ImageIcon("images/main/btn_gray.png");
+		lblCourseBackground.setIcon(iconCourse);
+		add(lblCourseBackground);
+		lblCourseBackground.setBounds(340, -4, iconCourse.getIconWidth(), iconCourse.getIconHeight());
 
-			@Override
-			protected void paintComponent(Graphics g) {
-				Image iconClass = new ImageIcon("images/main/bg_input_kc.png")
-						.getImage();
-				g.drawImage(iconClass, 0, 0, this.getWidth(), this.getHeight(),
-						this);
-			}
-		};
-		pnlClass.setLayout(null);
-		add(pnlClass);
-		pnlClass.setBounds(180, 10, 120, 35);
-
-		JPanel pnlCourse = new JPanel() {
-			private static final long serialVersionUID = 5365972834168199801L;
-
-			@Override
-			protected void paintComponent(Graphics g) {
-				Image iconClass = new ImageIcon("images/main/bg_input_kc.png")
-						.getImage();
-				g.drawImage(iconClass, 0, 0, this.getWidth(), this.getHeight(),
-						this);
-			}
-		};
-		pnlCourse.setLayout(null);
-		add(pnlCourse);
-		pnlCourse.setBounds(320, 10, 120, 35);
-
+		btnGroup = new JButton();// 创建按钮对象
+		btnGroup.setFocusPainted(false);
+		btnGroup.setBorderPainted(false);// 设置边框不可见
+		btnGroup.setContentAreaFilled(false);// 设置透明
+		ImageIcon iconGroup = new ImageIcon("images/main/btn_group.png");
+		btnGroup.setIcon(iconGroup);// 设置图片
+		add(btnGroup);// 添加按钮
+		btnGroup.setBounds(500, -4, iconGroup.getIconWidth(), iconGroup.getIconHeight());
+		btnGroup.addMouseListener(this);
+		
 		btnBegin = new JButton();// 创建按钮对象
 		btnBegin.setFocusPainted(false);
 		btnBegin.setBorderPainted(false);// 设置边框不可见
@@ -81,20 +71,8 @@ public class PrepareBottomPanel extends JPanel{
 		ImageIcon btnImage = new ImageIcon("images/main/btn_begin.png");
 		btnBegin.setIcon(btnImage);// 设置图片
 		add(btnBegin);// 添加按钮
-		btnBegin.setBounds(470, -4, btnImage.getIconWidth(),
-				btnImage.getIconHeight());
-		btnBegin.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (Application.isOnClass) {
-					setOnClass(false);
-				} else {
-					doBegin();
-				}
-
-			}
-		});
+		btnBegin.setBounds(660, -4, btnImage.getIconWidth(), btnImage.getIconHeight());
+		btnBegin.addMouseListener(this);
 	}
 	
 	private void doBegin() {
@@ -123,19 +101,7 @@ public class PrepareBottomPanel extends JPanel{
 					.getFrame(), "还有小组未编辑小组信息，是否编辑小组信息？", "提示",
 					JOptionPane.YES_NO_OPTION);
 			if (JOptionPane.YES_OPTION == result) {
-				// 编辑小组信息
-				List<Group> groupList = app.getGroupList();
-				for (Group group : groupList) {
-					JSONObject json = new JSONObject();
-					json.put("id", group.getId());
-					MessagePacking messagePacking = new MessagePacking(
-							Message.MESSAGE_GROUP_EDIT);
-					messagePacking.putBodyData(DataType.INT,
-							BufferUtils.writeUTFString(json.toString()));
-					final List<SocketChannel> channels = app
-							.getClientChannelByGroup(group.getId());
-					sendMessageToGroup(messagePacking, channels);
-				}
+				doEditGroup();
 			} else if (JOptionPane.NO_OPTION == result) {
 				MainFrame.getInstance().setVisible(false);
 				// 开始上课
@@ -148,10 +114,24 @@ public class PrepareBottomPanel extends JPanel{
 		}
 	}
 
+	private void doEditGroup() {
+		// 编辑小组信息
+		List<Group> groupList = app.getGroupList();
+		for (Group group : groupList) {
+			JSONObject json = new JSONObject();
+			json.put("id", group.getId());
+			MessagePacking messagePacking = new MessagePacking(
+					Message.MESSAGE_GROUP_EDIT);
+			messagePacking.putBodyData(DataType.INT,
+					BufferUtils.writeUTFString(json.toString()));
+			final List<SocketChannel> channels = app
+					.getClientChannelByGroup(group.getId());
+			sendMessageToGroup(messagePacking, channels);
+		}
+	}
+
 	public void setOnClass(boolean isOnClass) {
-		//TODO
-		MessagePacking messagePacking = new MessagePacking(
-				Message.MESSAGE_LOCK_SCREEN);
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_LOCK_SCREEN);
 		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString("true"));
 		CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
 		
@@ -193,5 +173,49 @@ public class PrepareBottomPanel extends JPanel{
 				}
 			};
 		}.start();
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if (e.getSource() == btnBegin) {
+			if (Application.isOnClass) {
+				setOnClass(false);
+			} else {
+				doBegin();
+			}
+		}
+		if(e.getSource() == btnGroup){
+			doEditGroup();
+		}
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		if (e.getSource() == btnBegin) {
+			btnBegin.setIcon(new ImageIcon("images/main/btn_begin_hover.png"));
+		}
+		if (e.getSource() == btnGroup) {
+			btnGroup.setIcon(new ImageIcon("images/main/btn_group_hover.png"));
+		}
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		if (e.getSource() == btnBegin) {
+			btnBegin.setIcon(new ImageIcon("images/main/btn_begin.png"));
+		}
+		if (e.getSource() == btnGroup) {
+			btnGroup.setIcon(new ImageIcon("images/main/btn_group.png"));
+		}
 	}
 }
