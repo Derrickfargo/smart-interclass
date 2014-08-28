@@ -1,8 +1,6 @@
 /*
  * CaptureScreen.java
- *
  * Created on 2006年9月7日, 上午10:59
- *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
@@ -10,7 +8,6 @@
 package cn.com.incito.interclass.ui.screencapture;
 
 /**
- *
  * @author popoy
  */
 
@@ -42,11 +39,12 @@ import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import java.awt.image.*;
 
 public class CaptureScreen {
-	public final static String SCREENSHOT_ICON = "images/screenshot/icon.png";
+
 	private JPanel c;
+
 	private BufferedImage get;
+
 	private Component jFrame;
-	private boolean isBarShow = false;
 
 	/**
 	 * Creates a new instance of CaptureScreen
@@ -74,8 +72,7 @@ public class CaptureScreen {
 	 */
 	public void distributePaper(BufferedImage image) {
 
-		MessagePacking messagePacking = new MessagePacking(
-				Message.MESSAGE_DISTRIBUTE_PAPER);
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DISTRIBUTE_PAPER);
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		try {
 			ImageIO.write(image, "png", os);
@@ -85,10 +82,8 @@ public class CaptureScreen {
 		if (Application.getInstance().getOnlineStudent().size() > 0) {
 			String uuid = UUID.randomUUID().toString();
 			Application.getInstance().setQuizId(uuid);
-			messagePacking.putBodyData(DataType.INT,
-					BufferUtils.writeUTFString(uuid));
-			messagePacking.putBodyData(DataType.INT,
-					BufferUtils.writeUTFString("true"));
+			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(uuid));
+			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString("true"));
 			messagePacking.putBodyData(DataType.INT, os.toByteArray());
 
 			CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
@@ -109,8 +104,7 @@ public class CaptureScreen {
 			Rectangle rec = new Rectangle(0, 0, di.width, di.height);
 			BufferedImage bi = ro.createScreenCapture(rec);
 			JFrame jf = new JFrame();
-			jf.getContentPane().add(
-					new ContentPanel(jf, bi, di.width, di.height));
+			jf.getContentPane().add(new ContentPanel(jf, bi, di.width, di.height));
 			jf.setUndecorated(true);
 			jf.setSize(di);
 			jf.setVisible(true);
@@ -157,14 +151,13 @@ public class CaptureScreen {
 
 	// 一个文件后缀名选择器
 	private class JPGfilter extends javax.swing.filechooser.FileFilter {
+
 		public JPGfilter() {
 
 		}
 
 		public boolean accept(File file) {
-			if (file.toString().toLowerCase().endsWith(".jpg")
-					|| file.toString().toLowerCase().endsWith(".jpeg")
-					|| file.isDirectory()) {
+			if (file.toString().toLowerCase().endsWith(".jpg") || file.toString().toLowerCase().endsWith(".jpeg") || file.isDirectory()) {
 				return true;
 			} else
 				return false;
@@ -176,9 +169,9 @@ public class CaptureScreen {
 	}
 
 	private class PNGfilter extends javax.swing.filechooser.FileFilter {
+
 		public boolean accept(File file) {
-			if (file.toString().toLowerCase().endsWith(".png")
-					|| file.isDirectory()) {
+			if (file.toString().toLowerCase().endsWith(".png") || file.isDirectory()) {
 				return true;
 			} else
 				return false;
@@ -190,15 +183,22 @@ public class CaptureScreen {
 	}
 
 	// 一个暂时类，用于显示当前的屏幕图像
-	private class ContentPanel extends JPanel implements MouseListener,
-			MouseMotionListener {
+	private class ContentPanel extends JPanel implements MouseListener, MouseMotionListener {
+
 		private BufferedImage bi;
+
 		private int width, height;
+
 		private int startX, startY, endX, endY, tempX, tempY;
+
 		private JFrame jf;
+
 		private Rectangle select = new Rectangle(0, 0, 0, 0);// 表示选中的区域
+
 		private Cursor cs;// 表示一般情况下的鼠标状态
+
 		private States current = States.DEFAULT;// 表示当前的编辑状态
+
 		private Rectangle[] rec;// 表示八个编辑点的区域
 
 		public ContentPanel(JFrame jf, BufferedImage bi, int width, int height) {
@@ -210,6 +210,7 @@ public class CaptureScreen {
 			this.addMouseMotionListener(this);
 			final Toolkit toolkit = Toolkit.getDefaultToolkit();
 			toolkit.addAWTEventListener(new AWTEventListener() {
+
 				@Override
 				public void eventDispatched(AWTEvent e) {
 					if (e.getID() == KeyEvent.KEY_PRESSED) {
@@ -231,10 +232,8 @@ public class CaptureScreen {
 			// }
 			// }
 			// });
-			Image icon = Toolkit.getDefaultToolkit().createImage(
-					SCREENSHOT_ICON);
-			cs = Toolkit.getDefaultToolkit().createCustomCursor(icon,
-					new Point(0, 0), "icon");
+			Image icon = Toolkit.getDefaultToolkit().createImage("images/screenshot/icon.png");
+			cs = Toolkit.getDefaultToolkit().createCustomCursor(icon, new Point(0, 0), "icon");
 			this.setCursor(cs);
 			initRecs();
 		}
@@ -255,8 +254,7 @@ public class CaptureScreen {
 			g.drawLine(endX, startY, endX, endY);
 			int x = startX < endX ? startX : endX;
 			int y = startY < endY ? startY : endY;
-			select = new Rectangle(x, y, Math.abs(endX - startX), Math.abs(endY
-					- startY));
+			select = new Rectangle(x, y, Math.abs(endX - startX), Math.abs(endY - startY));
 			int x1 = (startX + endX) / 2;
 			int y1 = (startY + endY) / 2;
 			g.fillRect(x1 - 2, startY - 2, 5, 5);
@@ -269,16 +267,11 @@ public class CaptureScreen {
 			g.fillRect(endX - 2, endY - 2, 5, 5);
 			rec[0] = new Rectangle(x - 5, y - 5, 10, 10);
 			rec[1] = new Rectangle(x1 - 5, y - 5, 10, 10);
-			rec[2] = new Rectangle((startX > endX ? startX : endX) - 5, y - 5,
-					10, 10);
-			rec[3] = new Rectangle((startX > endX ? startX : endX) - 5, y1 - 5,
-					10, 10);
-			rec[4] = new Rectangle((startX > endX ? startX : endX) - 5,
-					(startY > endY ? startY : endY) - 5, 10, 10);
-			rec[5] = new Rectangle(x1 - 5, (startY > endY ? startY : endY) - 5,
-					10, 10);
-			rec[6] = new Rectangle(x - 5, (startY > endY ? startY : endY) - 5,
-					10, 10);
+			rec[2] = new Rectangle((startX > endX ? startX : endX) - 5, y - 5, 10, 10);
+			rec[3] = new Rectangle((startX > endX ? startX : endX) - 5, y1 - 5, 10, 10);
+			rec[4] = new Rectangle((startX > endX ? startX : endX) - 5, (startY > endY ? startY : endY) - 5, 10, 10);
+			rec[5] = new Rectangle(x1 - 5, (startY > endY ? startY : endY) - 5, 10, 10);
+			rec[6] = new Rectangle(x - 5, (startY > endY ? startY : endY) - 5, 10, 10);
 			rec[7] = new Rectangle(x - 5, y1 - 5, 10, 10);
 		}
 
@@ -435,13 +428,9 @@ public class CaptureScreen {
 				} else {
 					jf.dispose();
 					updates();
-					setBarVisbility(false);
 				}
 
-			} else if (!isBarShow) {
-				JOptionPane.showMessageDialog(this, "ceshi！");
 			}
-
 		}
 
 		public void mouseClicked(MouseEvent me) {
@@ -450,10 +439,8 @@ public class CaptureScreen {
 				// Rectangle(startX,startY,Math.abs(endX-startX),Math.abs(endY-startY));
 				Point p = me.getPoint();
 				if (select.contains(p)) {
-					if (select.x + select.width < this.getWidth()
-							&& select.y + select.height < this.getHeight()) {
-						get = bi.getSubimage(select.x, select.y, select.width,
-								select.height);
+					if (select.x + select.width < this.getWidth() && select.y + select.height < this.getHeight()) {
+						get = bi.getSubimage(select.x, select.y, select.width, select.height);
 						jf.dispose();
 						// updates();
 
@@ -476,21 +463,13 @@ public class CaptureScreen {
 		}
 
 	}
-
-	private void setBarVisbility(boolean isShow) {
-		isBarShow = isShow;
-	}
 }
 
 enum States {
 	NORTH_WEST(new Cursor(Cursor.NW_RESIZE_CURSOR)), // 表示西北角
-	NORTH(new Cursor(Cursor.N_RESIZE_CURSOR)), NORTH_EAST(new Cursor(
-			Cursor.NE_RESIZE_CURSOR)), EAST(new Cursor(Cursor.E_RESIZE_CURSOR)), SOUTH_EAST(
-			new Cursor(Cursor.SE_RESIZE_CURSOR)), SOUTH(new Cursor(
-			Cursor.S_RESIZE_CURSOR)), SOUTH_WEST(new Cursor(
-			Cursor.SW_RESIZE_CURSOR)), WEST(new Cursor(Cursor.W_RESIZE_CURSOR)), MOVE(
-			new Cursor(Cursor.MOVE_CURSOR)), DEFAULT(new Cursor(
-			Cursor.DEFAULT_CURSOR));
+	NORTH(new Cursor(Cursor.N_RESIZE_CURSOR)), NORTH_EAST(new Cursor(Cursor.NE_RESIZE_CURSOR)), EAST(new Cursor(Cursor.E_RESIZE_CURSOR)), SOUTH_EAST(new Cursor(Cursor.SE_RESIZE_CURSOR)), SOUTH(new Cursor(Cursor.S_RESIZE_CURSOR)), SOUTH_WEST(new Cursor(Cursor.SW_RESIZE_CURSOR)), WEST(new Cursor(Cursor.W_RESIZE_CURSOR)), MOVE(new Cursor(Cursor.MOVE_CURSOR)), DEFAULT(
+			new Cursor(Cursor.DEFAULT_CURSOR));
+
 	private Cursor cs;
 
 	States(Cursor cs) {
@@ -500,5 +479,4 @@ enum States {
 	public Cursor getCursor() {
 		return cs;
 	}
-
 }

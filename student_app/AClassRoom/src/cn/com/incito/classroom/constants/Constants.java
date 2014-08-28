@@ -13,7 +13,7 @@ import cn.com.incito.classroom.widget.canvas.ISketchPadTool;
 public class Constants {
 	public static final boolean LOG_OPEN = true;
     public static final int PORT = 9001;
-    public static final String IP = "192.168.30.135";
+    public static final String IP = "192.168.30.7";
 
 	/** WisdomCityRestClient 访问API是否输出日志 */
 	public static final boolean REST_CLIENT_LOG_SENABLE_LOGGING = true;
@@ -36,5 +36,5 @@ public class Constants {
 	//注册学生最大数量
     public static final int STUDENT_MAX_NUM=15;
     //
-    public static final boolean OPEN_LOCK_SCREEN=false;
+    public static final boolean OPEN_LOCK_SCREEN=true;
 }

@@ -51,7 +51,7 @@ public class PreparePanel extends JPanel{
 				PrepareGroupPanel pnlRight = new PrepareGroupPanel();
 				pnlRight.setBounds(438, y, 410, 210);
 				add(pnlRight);
-				tableList.add(pnlLeft);
+				tableList.add(pnlRight);
 			}
 			i++;
 			y += 220;
@@ -71,12 +71,6 @@ public class PreparePanel extends JPanel{
 				tablePanel.getLblGroupName().setVisible(true);
 				tablePanel.getLblGroupName().setText(group.getName());
 			}
-//			if (group.getLogo() != null) {
-//				String logo = LogoUtils.getInstance().getLogo(group.getLogo());
-//				ImageIcon imgLogo = new ImageIcon(logo);
-//				tablePanel.getLblLogo().setIcon(imgLogo);
-//				tablePanel.getLblLogo().setBounds(40, 40, 80, 80);
-//			}
 			// 遍历当前组/桌的设备，内存模型
 			List<PadPanel> devicePanelList = tablePanel.getDeviceList();
 			List<Device> deviceList = group.getDevices();
@@ -89,11 +83,6 @@ public class PreparePanel extends JPanel{
 				pnlPad.setStudents(app.getStudentByImei(imei));
 				pnlPad.repaint();
 				pnlPad.setVisible(true);
-			}
-			// 遍历当前组/桌的学生，内存模型
-			List<Student> studentList = group.getStudents();
-			if (studentList == null || studentList.size() == 0) {
-				return;
 			}
 		}
 		repaint();

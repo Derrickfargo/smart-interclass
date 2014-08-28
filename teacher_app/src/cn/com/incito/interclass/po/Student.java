@@ -11,7 +11,18 @@ public class Student extends User {
 	private int id;
 	private String number;
 	private String avatar;
+	private int score;
 	
+	
+	public int getScore() {
+		return score;
+	}
+
+	
+	public void setScore(int score) {
+		this.score = score;
+	}
+
 	private boolean isLogin;
 
 	public int getId() {
