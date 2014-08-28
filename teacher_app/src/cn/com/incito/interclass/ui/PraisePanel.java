@@ -17,6 +17,7 @@ import cn.com.incito.http.StringResponseHandler;
 import cn.com.incito.http.support.ParamsWrapper;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Student;
+import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.utils.LogoUtils;
 import cn.com.incito.server.utils.URLs;
@@ -24,6 +25,7 @@ import cn.com.incito.server.utils.URLs;
 public class PraisePanel extends JPanel{
 	private static final long serialVersionUID = 6316121486627261595L;
 	private Application app = Application.getInstance();
+	private List<Group> groupList = new ArrayList<Group>();
 	private List<PraiseGroupPanel> praiseGroupList = new ArrayList<PraiseGroupPanel>();
 
 	public PraisePanel() {
@@ -52,8 +54,7 @@ public class PraisePanel extends JPanel{
 	}
 
 	public void refresh() {
-		List<Group> groupList = app.getGroupList();
-		Collections.sort(groupList);
+		initData();
 		int i = 0;
 		while (i < groupList.size()) {
 			PraiseGroupPanel pnlLeft = praiseGroupList.get(i);
@@ -62,12 +63,10 @@ public class PraisePanel extends JPanel{
 				PraiseGroupPanel pnlMiddle = praiseGroupList.get(i);
 				showPraiseGroupPanel(pnlMiddle, groupList.get(i));
 			}
-			i++;
 			if (++i < groupList.size()) {
 				PraiseGroupPanel pnlRight = praiseGroupList.get(i);
 				showPraiseGroupPanel(pnlRight, groupList.get(i));
 			}
-			i++;
 		}
 		repaint();
 		revalidate();
@@ -80,64 +79,34 @@ public class PraisePanel extends JPanel{
 		ImageIcon icon = new ImageIcon(logo);
 		panel.getLblLogo().setIcon(icon);
 		panel.getLblGroupName().setText(group.getName());
-//		panel.getLblScore().setText(group.get);
 		String memberStr="";
-		for (int i = 0; i < group.getStudents().size(); i++) {
-			memberStr+=group.getStudents().get(i).getName();
+		int score = 0;
+		if (group.getStudents() != null) {
+			for (Student student : group.getStudents()) {
+				memberStr += student.getName();
+				score += student.getScore();
+			}
+			score = score / group.getStudents().size();
 		}
 		panel.getLblMember().setText(memberStr);
-		changePoint(0,group,panel);
+		panel.getLblScore().setText(String.valueOf(score));
 	}
-	/**
-	  * 分数奖励
-	 * @param updateScore
-	 */
-	public void changePoint(int updateScore, final Group group,final PraiseGroupPanel panel) {
-		 String studentId="";
-		 List<Student> studentList =group.getStudents();
-		 for (int i = 0; i < studentList.size(); i++) {
-			studentId=studentId+studentList.get(i).getId()+",";
+	
+	private void initData() {
+		groupList = new ArrayList<Group>();
+		// 课桌绑定分组，生成内存模型
+		List<Table> tables = app.getTableList();
+		for (Table table : tables) {
+			// 获得课桌对应的分组
+			Group group = app.getTableGroup().get(table.getId());
+			if (group == null) {
+				group = new Group();
+			}
+			group.setTableId(table.getId());
+			group.setTableNumber(table.getNumber());
+			group.setDevices(table.getDevices());
+			groupList.add(group);
 		}
-		 if(studentId==null||"".equals(studentId)){
-			 return;
-		 }
-//		 logger.info("分数奖励人员ID:"+studentId);
-//	        try {
-	            //使用Get方法，取得服务端响应流：
-	            AsyncHttpConnection http = AsyncHttpConnection.getInstance();
-	            ParamsWrapper params = new ParamsWrapper();
-	            params.put("studentId",studentId);
-	            params.put("score",updateScore);
-	            http.post(URLs.URL_UPDATE_SCORE, params, new StringResponseHandler() {
-
-					@Override
-	                protected void onResponse(String content, URL url) {
-	                    if (content != null && !content.equals("")) {
-	                    	System.out.println("返回的数据"+content);
-	                        JSONObject jsonObject = JSON.parseObject(content);
-	                        if (jsonObject.getIntValue("code") == 1) {
-	                            return;
-	                        }else{
-	                        	 String score = String.valueOf((int)(jsonObject.getIntValue("score")/group.getStudents().size()));
-	                        	//设置小组总分
-	                        	 panel.getLblScore().setText(score);
-	                        }
-	                    }
-	                }
-
-	                @Override
-	                public void onSubmit(URL url, ParamsWrapper params) {
-	                }
-
-	                @Override
-	                public void onConnectError(IOException exp) {
-//	                	JOptionPane.showMessageDialog((Component) quizPanel, "连接错误，请检查网络！");
-	                }
-
-	                @Override
-	                public void onStreamError(IOException exp) {
-//	                	JOptionPane.showMessageDialog((Component) quizPanel, "数据解析错误！");
-	                }
-	            });
-	    }
+		Collections.sort(groupList);
+	}
 }

@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Quiz;
+import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.utils.LogoUtils;
 
@@ -31,6 +32,7 @@ public class QuizPanel extends JPanel {
 	 * 当前教室所有试题，初始化界面时初始化本属性
 	 */
 	private List<QuizGroupPanel> quizGroupList = new ArrayList<QuizGroupPanel>();
+	private List<Group> groupList = new ArrayList<Group>();
 	
 	public QuizPanel() {
 		this.setLayout(null);
@@ -61,8 +63,7 @@ public class QuizPanel extends JPanel {
 	}
 
 	public void refresh() {
-		List<Group> groupList = app.getGroupList();
-		Collections.sort(groupList);
+		initData();
 		int i = 0;
 		while (i < groupList.size()) {
 			QuizGroupPanel pnlLeft = quizGroupList.get(i);
@@ -100,4 +101,21 @@ public class QuizPanel extends JPanel {
 		}
 	}
 
+	private void initData() {
+		groupList = new ArrayList<Group>();
+		// 课桌绑定分组，生成内存模型
+		List<Table> tables = app.getTableList();
+		for (Table table : tables) {
+			// 获得课桌对应的分组
+			Group group = app.getTableGroup().get(table.getId());
+			if (group == null) {
+				group = new Group();
+			}
+			group.setTableId(table.getId());
+			group.setTableNumber(table.getNumber());
+			group.setDevices(table.getDevices());
+			groupList.add(group);
+		}
+		Collections.sort(groupList);
+	}
 }
