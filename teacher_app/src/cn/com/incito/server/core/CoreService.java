@@ -31,7 +31,7 @@ public class CoreService {
 
 	public void deviceLogin(String imei) {
 		app.getOnlineDevice().add(imei);
-		app.refreshPrepare();// 更新UI
+		app.refresh();// 更新UI
 	}
 
 	public Group deviceLogout(String imei) {
@@ -58,7 +58,7 @@ public class CoreService {
 		app.removeLoginStudent(imei);
 		app.getOnlineDevice().remove(imei);
 		Application.getInstance().getClientChannel().remove(imei);
-		app.refreshPrepare();// 更新UI
+		app.refresh();// 更新UI
 		return group;
 	}
 
@@ -129,7 +129,7 @@ public class CoreService {
 				// 第二步获得班级、课程、设备、课桌、分组数据
 				Application.getInstance().initMapping(resultData.getDevices(),
 						resultData.getTables(), resultData.getGroups());
-				Application.getInstance().refreshPrepare();
+				Application.getInstance().refresh();
 			}
 			logger.info(result);
 		} catch (AppException e) {
@@ -165,7 +165,7 @@ public class CoreService {
 				student.setLogin(true);
 				app.getOnlineStudent().add(student);// 加入在线的学生
 				app.addLoginStudent(imei, student);
-				app.refreshPrepare();// 更新UI
+				app.refresh();// 更新UI
 				return JSONUtils.renderJSONString(0, group);
 			}
 		}
@@ -199,7 +199,7 @@ public class CoreService {
 				student.setLogin(false);
 				app.getOnlineStudent().remove(student);
 				app.removeLoginStudent(imei, student);
-				app.refreshPrepare();// 更新UI
+				app.refresh();// 更新UI
 				return JSONUtils.renderJSONString(0, group);
 			}
 		}
@@ -237,7 +237,7 @@ public class CoreService {
 					}
 					app.addGroup(group);
 					app.getTableGroup().put(group.getTableId(), group);
-					app.refreshPrepare();// 更新UI
+					app.refresh();// 更新UI
 					return JSONUtils.renderJSONString(JSONUtils.SUCCESS, group);
 				}
 				return result;

@@ -101,6 +101,9 @@ public class MainFrame extends MouseAdapter {
 		quizPanel.refresh();
 	}
 
+	public void refreshPraise(){
+		praisePanel.refresh();
+	}
 	public JFrame getFrame() {
 		return frame;
 	}

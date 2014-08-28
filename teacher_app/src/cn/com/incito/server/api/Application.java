@@ -499,9 +499,10 @@ public class Application {
 		return quizList;
 	}
 
-	public void refreshPrepare() {
+	public void refresh() {
         MainFrame.getInstance().refreshPrepare();
         MainFrame.getInstance().refreshQuiz();
+        MainFrame.getInstance().refreshPrepare();
     }
 
     public void refreshQuiz() {
