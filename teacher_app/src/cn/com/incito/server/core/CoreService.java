@@ -45,11 +45,13 @@ public class CoreService {
 		}
 		Group group = app.getTableGroup().get(table.getId());
 		List<Student> students = app.getStudentByImei(imei);
-		for (Student student : students) {
-			for (Student aStudent : group.getStudents()) {
-				if (student.getName().equals(aStudent.getName())
-						&& student.getNumber().equals(aStudent.getNumber())) {
-					aStudent.setLogin(false);
+		if (students != null) {
+			for (Student student : students) {
+				for (Student aStudent : group.getStudents()) {
+					if (student.getName().equals(aStudent.getName())
+							&& student.getNumber().equals(aStudent.getNumber())) {
+						aStudent.setLogin(false);
+					}
 				}
 			}
 		}
