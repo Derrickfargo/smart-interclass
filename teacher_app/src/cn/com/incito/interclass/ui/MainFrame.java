@@ -102,6 +102,38 @@ public class MainFrame extends MouseAdapter {
 		showLoginUI();
 		setDragable();
 	}
+	
+	public void showPrepare() {
+		setVisible(true);
+		centerCardLayout.show(centerCardPanel, CARD_PREPARE);
+        bottomCardLayout.show(bottomCardPanel, CARD_PREPARE_BOTTOM);
+        
+        btnStatus.setIcon(new ImageIcon("images/main/bg_ready_hover.png"));
+        btnQuiz.setIcon(new ImageIcon("images/main/bg_works.png"));
+        btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
+	}
+	
+	public void showQuiz() {
+		setVisible(true);
+		centerCardLayout.show(centerCardPanel, CARD_QUIZ);
+        bottomCardLayout.show(bottomCardPanel, CARD_QUIZ_BOTTOM);
+        
+        btnQuiz.setIcon(new ImageIcon("images/main/bg_works_hover.png"));
+        btnStatus.setIcon(new ImageIcon("images/main/bg_ready.png"));
+        btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
+	}
+	
+	public void showPraise() {
+		setVisible(true);
+		centerCardLayout.show(centerCardPanel, CARD_PRAISE);
+		bottomCardLayout.show(bottomCardPanel, CARD_PRAISE_BOTTOM);
+                
+		btnQuiz.setIcon(new ImageIcon("images/main/bg_works.png"));
+		btnStatus.setIcon(new ImageIcon("images/main/bg_ready.png"));
+		btnPraise.setIcon(new ImageIcon("images/main/bg_praise_hover.png"));
+		
+		praisePanel.refresh();
+	}
 
 	// 显示登陆界面
 	private void showLoginUI() {
@@ -168,12 +200,7 @@ public class MainFrame extends MouseAdapter {
 		btnStatus.setBounds(0, 0, icon.getIconWidth(), icon.getIconHeight());
 		btnStatus.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                centerCardLayout.show(centerCardPanel, CARD_PREPARE);
-                bottomCardLayout.show(bottomCardPanel, CARD_PREPARE_BOTTOM);
-                
-                btnStatus.setIcon(new ImageIcon("images/main/bg_ready_hover.png"));
-                btnQuiz.setIcon(new ImageIcon("images/main/bg_works.png"));
-                btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
+                showPrepare();
             }
         });
 		
@@ -188,12 +215,7 @@ public class MainFrame extends MouseAdapter {
 		btnQuiz.setBounds(0, 55, iconQuiz.getIconWidth(), iconQuiz.getIconHeight());
 		btnQuiz.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                centerCardLayout.show(centerCardPanel, CARD_QUIZ);
-                bottomCardLayout.show(bottomCardPanel, CARD_QUIZ_BOTTOM);
-                
-                btnQuiz.setIcon(new ImageIcon("images/main/bg_works_hover.png"));
-                btnStatus.setIcon(new ImageIcon("images/main/bg_ready.png"));
-                btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
+                showQuiz();
             }
         });
 		
@@ -208,14 +230,7 @@ public class MainFrame extends MouseAdapter {
 		btnPraise.setBounds(0, 110, iconQuiz.getIconWidth(), iconQuiz.getIconHeight());
 		btnPraise.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				centerCardLayout.show(centerCardPanel, CARD_PRAISE);
-				bottomCardLayout.show(bottomCardPanel, CARD_PRAISE_BOTTOM);
-		                
-				btnQuiz.setIcon(new ImageIcon("images/main/bg_works.png"));
-				btnStatus.setIcon(new ImageIcon("images/main/bg_ready.png"));
-				btnPraise.setIcon(new ImageIcon("images/main/bg_praise_hover.png"));
-				
-				praisePanel.refresh();
+				showPraise();
 			}
 		});
 		
