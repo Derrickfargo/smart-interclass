@@ -71,7 +71,6 @@ public class PadPanel extends JPanel {
 		JLabel lblPad = new JLabel("", JLabel.CENTER);
 		lblPad.setOpaque(true);
 		lblPad.setBackground(new Color(Integer.parseInt("E1E1E1", 16)));
-		lblPad.setForeground(new Color(Integer.parseInt("FFFFFF", 16)));
 		return lblPad;
 	}
 	
