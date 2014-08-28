@@ -1,13 +1,10 @@
 package cn.com.incito.interclass.ui;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,29 +14,15 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.sun.xml.internal.ws.util.StringUtils;
-
-import cn.com.incito.http.AsyncHttpConnection;
-import cn.com.incito.http.StringResponseHandler;
-import cn.com.incito.http.support.ParamsWrapper;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Quiz;
-import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.ui.widget.PraiseDialog;
 import cn.com.incito.interclass.ui.widget.PunishDialog;
-import cn.com.incito.server.api.Application;
-import cn.com.incito.server.api.result.TeacherLoginResultData;
-import cn.com.incito.server.utils.Md5Utils;
-import cn.com.incito.server.utils.NetworkUtils;
 import cn.com.incito.server.utils.UIHelper;
-import cn.com.incito.server.utils.URLs;
 
 /**
  * 小组作业Panel
@@ -60,9 +43,9 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 	
 	private Group group;
 	private JLabel lblDesk;
-	private JLabel lblLogo;
+//	private JLabel lblLogo;
 	private JLabel lblGroupName;
-	private JLabel lblScore;
+//	private JLabel lblScore;
 	private JButton btnPlus,btnMinus,btnMedal;
 	private List<JLabel> quizList = new ArrayList<JLabel>();
 	private List<JPanel> quizPanel = new ArrayList<JPanel>();
@@ -102,15 +85,15 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 		//小组课桌号
 		lblDesk = createDeskLabel();
 		add(lblDesk);
-		//小组logo
-		lblLogo = createLogoLabel();
-		add(lblLogo);
+		//TODO 去掉小组logo
+//		lblLogo = createLogoLabel();
+//		add(lblLogo);
 		//小组名字
 		lblGroupName = createGroupName();
 		add(lblGroupName);
-		//小组积分
-		lblScore = createScoreLabel();
-		add(lblScore);
+		//TODO 去掉小组积分
+//		lblScore = createScoreLabel();
+//		add(lblScore);
 		//小组加分按钮
 		btnPlus = createPlusButton();
 		btnPlus.addMouseListener(this);
@@ -145,7 +128,8 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 	
 	private JLabel createGroupName(){
 		JLabel lblName = new JLabel("");
-		lblName.setBounds(105,331, 100, 24);
+//		lblName.setBounds(105,331, 100, 24);
+		lblName.setBounds(76,331, 100, 24);
 		lblName.setForeground(UIHelper.getDefaultFontColor());
 		return lblName;
 	}
@@ -240,13 +224,13 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 		return lblDesk;
 	}
 
-	public JLabel getLblScore() {
-		return lblScore;
-	}
+//	public JLabel getLblScore() {
+//		return lblScore;
+//	}
 
-	public JLabel getLblLogo() {
-		return lblLogo;
-	}
+//	public JLabel getLblLogo() {
+//		return lblLogo;
+//	}
 
 	public JLabel getLblGroupName() {
 		return lblGroupName;
