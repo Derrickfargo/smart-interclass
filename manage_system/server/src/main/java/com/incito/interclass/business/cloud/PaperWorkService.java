@@ -35,9 +35,9 @@ public class PaperWorkService {
 	@Transactional
 	public int upload(PaperWork paperWorks, MultipartFile file) {
 		String filename = file.getOriginalFilename();
-		File f = new File(Constants.PAPER_DIR + "\\"
-				+ paperWorks.getTeacher_id() + "\\" + paperWorks.getQuizid(),
-				filename);
+		File f = new File(Constants.PAPER_DIR + Constants.PATH_SEPARATOR
+				+ paperWorks.getTeacher_id() + Constants.PATH_SEPARATOR
+				+ paperWorks.getQuizid(), filename);
 		f.mkdirs();
 		try {
 			file.transferTo(f);
@@ -49,9 +49,9 @@ public class PaperWorkService {
 			return -1;
 		}
 		paperWorks.setFilename(filename);
-		paperWorks.setPath(Constants.PAPER_DIR + "\\"
-				+ paperWorks.getTeacher_id() + "\\" + paperWorks.getQuizid()
-				+ "\\" + filename);
+		paperWorks.setPath(Constants.PAPER_DIR + Constants.PATH_SEPARATOR
+				+ paperWorks.getTeacher_id() + Constants.PATH_SEPARATOR + paperWorks.getQuizid()
+				+ Constants.PATH_SEPARATOR + filename);
 		int result = classMapper.save(paperWorks);
 		return result;
 	}

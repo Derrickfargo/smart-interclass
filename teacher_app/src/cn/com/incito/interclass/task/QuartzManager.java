@@ -39,7 +39,7 @@ public class QuartzManager {
 	private static String TRIGGER_GROUP_NAME = "EXTJWEB_TRIGGERGROUP_NAME";
 	Logger log = Logger.getLogger(QuartzManager.class);
 	Properties properties;
-	public final static String PROPERTY_PATH = FileUtils.getProjectPath() + "\\"
+	public final static String PROPERTY_PATH = FileUtils.getProjectPath() + File.separator
 			+ Constants.PROPERTIES_FILE;
 
 	public QuartzManager() {

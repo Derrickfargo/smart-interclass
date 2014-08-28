@@ -11,6 +11,7 @@ import cn.com.incito.classroom.widget.canvas.ISketchPadTool;
  * Created by popoy on 2014/7/28.
  */
 public class Constants {
+	public static final boolean LOG_OPEN = true;
     public static final int PORT = 9001;
     public static final String IP = "192.168.30.135";
 
