@@ -88,11 +88,14 @@ public class PraisePanel extends JPanel {
 		int score = 0;
 		if (group.getStudents() != null) {
 			for (Student student : group.getStudents()) {
-				memberStr += student.getName();
+				memberStr += student.getName() + ",";
 				score += student.getScore();
 			}
 			score = score / group.getStudents().size();
 			group.setScore(score);
+		}
+		if (memberStr != null && !memberStr.equals("")) {
+			memberStr = memberStr.substring(0, memberStr.length() - 1);
 		}
 		panel.getLblMember().setText(memberStr);
 		panel.getLblScore().setText(String.valueOf(score));
@@ -112,12 +115,13 @@ public class PraisePanel extends JPanel {
 			group.setTableNumber(table.getNumber());
 			group.setDevices(table.getDevices());
 			groupList.add(group);
-			Collections.sort(groupList,new Comparator<Group>() {
+			Collections.sort(groupList, new Comparator<Group>() {
+
 				@Override
 				public int compare(Group o1, Group o2) {
-					return o2.getScore()-o1.getScore();
+					return o2.getScore() - o1.getScore();
 				}
-			});	
+			});
 		}
 	}
 
