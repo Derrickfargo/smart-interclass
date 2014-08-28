@@ -45,7 +45,7 @@ import com.alibaba.fastjson.JSONObject;
 public class JobPaperUpload implements Job {
 	private Logger logger = Logger.getLogger(getClass());
 	public final static String PAPER_PATH = FileUtils.getProjectPath()
-			+ "/paper";
+			+ File.separator + "paper";
 	AsyncHttpConnection http = AsyncHttpConnection.getInstance();
 	protected final ResponseCallbackTrace callbackTrace = new ResponseCallbackTrace();
 	int count = 0;
@@ -193,7 +193,8 @@ public class JobPaperUpload implements Job {
 				params.put("term", Application.getInstance().getClasses()
 						.getYear());
 				params.put("lastupdatetime", file.lastModified());
-				params.put("file", str, file.getAbsolutePath() + File.separator + str);
+				params.put("file", str, file.getAbsolutePath() + File.separator
+						+ str);
 				list.add(params);
 			}
 

@@ -26,7 +26,7 @@ public class SimpleHttpInvoker extends RequestInvoker {
 	private static final String END_MP_BOUNDARY = "--" + BOUNDARY + "--";
 	private static final String END_MP_BLOCK = "\r\n\r\n";
 	private static final String MULTIPART_FORM_DATA = "multipart/form-data";
-	private static final String XWWW_FORM_URLENCODED = "application/x-www-form-urlencoded";
+	private static final String XWWW_FORM_URLENCODED = "application/x-www-form-urlencoded;charset=UTF-8";
 //	private static final String XWWW_FORM_URLENCODED = "application/json;charset=UTF-8";
 //	private static final String XWWW_FORM_URLENCODED = "text/plain;charset=UTF-8";
 
