@@ -28,6 +28,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import cn.com.incito.interclass.po.Group;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.CoreSocket;
 
@@ -86,6 +87,14 @@ public class MainFrame extends MouseAdapter {
 	public void refreshPrepare() {
 		preparePanel.refresh();
 		quizPanel.refresh();
+		int total = 0;
+		for (Group group : app.getGroupList()) {
+			total += group.getStudents().size();
+		}
+		String msg = "应到 %d 人  | 实到 %d 人";
+		String text = String.format(msg, total, app
+				.getOnlineStudent().size());
+		prepareBottomPanel.getLblExpected().setText(text);
 	}
 	
 	public void refreshQuiz(){
