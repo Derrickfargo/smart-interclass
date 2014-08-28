@@ -114,6 +114,7 @@ public class MainFrame extends MouseAdapter {
 	
 	public void showPrepare() {
 		setVisible(true);
+		frame.setExtendedState(JFrame.NORMAL);
 		centerCardLayout.show(centerCardPanel, CARD_PREPARE);
         bottomCardLayout.show(bottomCardPanel, CARD_PREPARE_BOTTOM);
         
@@ -124,6 +125,7 @@ public class MainFrame extends MouseAdapter {
 	
 	public void showQuiz() {
 		setVisible(true);
+		frame.setExtendedState(JFrame.NORMAL);
 		centerCardLayout.show(centerCardPanel, CARD_QUIZ);
         bottomCardLayout.show(bottomCardPanel, CARD_QUIZ_BOTTOM);
         
@@ -134,6 +136,7 @@ public class MainFrame extends MouseAdapter {
 	
 	public void showPraise() {
 		setVisible(true);
+		frame.setExtendedState(JFrame.NORMAL);
 		centerCardLayout.show(centerCardPanel, CARD_PRAISE);
 		bottomCardLayout.show(bottomCardPanel, CARD_PRAISE_BOTTOM);
                 
