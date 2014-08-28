@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -50,6 +52,18 @@ public class PhotoFrame extends JFrame {
 		
 		photoDialog.setModal(true);
 		photoDialog.setVisible(true);
+		
+		addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(photoDialog != null){
+					photoDialog.dispose();
+				}
+				dispose();
+			}
+			
+		});
 	}
 	
 	public class PhotoDialog extends JDialog implements MouseListener{
@@ -134,7 +148,7 @@ public class PhotoFrame extends JFrame {
 		}
 		
 		
-		public PhotoDialog(PhotoFrame coverFrame, String url) {
+		public PhotoDialog(final PhotoFrame coverFrame, String url) {
 			super(coverFrame, true);
 			this.coverFrame = coverFrame;
 			
@@ -210,6 +224,18 @@ public class PhotoFrame extends JFrame {
 			initData(url);
 			//根据当前位置加载数据
 			refresh();
+			
+			addKeyListener(new KeyAdapter() {
+
+				@Override
+				public void keyPressed(KeyEvent e) {
+					dispose();
+					if(coverFrame != null){
+						coverFrame.dispose();
+					}
+				}
+				
+			});
 		}
 		
 		//设置背景
