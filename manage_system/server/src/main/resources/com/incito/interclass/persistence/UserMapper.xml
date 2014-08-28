@@ -127,9 +127,9 @@
 	
 	<insert id="saveStudent" parameterType="com.incito.interclass.entity.Student">
 		INSERT INTO 
-			tb_student(id,number,avatar)
+			tb_student(id,number,avatar,score)
 		VALUES
-			(#{id},#{number},#{avatar})
+			(#{id},#{number},#{avatar},0)
 	</insert>
 	
 	<delete id="deleteUser" parameterType="java.lang.Integer">
