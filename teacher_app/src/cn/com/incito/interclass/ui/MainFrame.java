@@ -8,6 +8,7 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
@@ -29,7 +30,6 @@ import javax.swing.JScrollPane;
 
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.CoreSocket;
-import cn.com.incito.server.utils.UIHelper;
 
 public class MainFrame extends MouseAdapter {
 	private static MainFrame instance;
@@ -102,6 +102,38 @@ public class MainFrame extends MouseAdapter {
 		showLoginUI();
 		setDragable();
 	}
+	
+	public void showPrepare() {
+		setVisible(true);
+		centerCardLayout.show(centerCardPanel, CARD_PREPARE);
+        bottomCardLayout.show(bottomCardPanel, CARD_PREPARE_BOTTOM);
+        
+        btnStatus.setIcon(new ImageIcon("images/main/bg_ready_hover.png"));
+        btnQuiz.setIcon(new ImageIcon("images/main/bg_works.png"));
+        btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
+	}
+	
+	public void showQuiz() {
+		setVisible(true);
+		centerCardLayout.show(centerCardPanel, CARD_QUIZ);
+        bottomCardLayout.show(bottomCardPanel, CARD_QUIZ_BOTTOM);
+        
+        btnQuiz.setIcon(new ImageIcon("images/main/bg_works_hover.png"));
+        btnStatus.setIcon(new ImageIcon("images/main/bg_ready.png"));
+        btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
+	}
+	
+	public void showPraise() {
+		setVisible(true);
+		centerCardLayout.show(centerCardPanel, CARD_PRAISE);
+		bottomCardLayout.show(bottomCardPanel, CARD_PRAISE_BOTTOM);
+                
+		btnQuiz.setIcon(new ImageIcon("images/main/bg_works.png"));
+		btnStatus.setIcon(new ImageIcon("images/main/bg_ready.png"));
+		btnPraise.setIcon(new ImageIcon("images/main/bg_praise_hover.png"));
+		
+		praisePanel.refresh();
+	}
 
 	// 显示登陆界面
 	private void showLoginUI() {
@@ -168,12 +200,7 @@ public class MainFrame extends MouseAdapter {
 		btnStatus.setBounds(0, 0, icon.getIconWidth(), icon.getIconHeight());
 		btnStatus.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                centerCardLayout.show(centerCardPanel, CARD_PREPARE);
-                bottomCardLayout.show(bottomCardPanel, CARD_PREPARE_BOTTOM);
-                
-                btnStatus.setIcon(new ImageIcon("images/main/bg_ready_hover.png"));
-                btnQuiz.setIcon(new ImageIcon("images/main/bg_works.png"));
-                btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
+                showPrepare();
             }
         });
 		
@@ -188,12 +215,7 @@ public class MainFrame extends MouseAdapter {
 		btnQuiz.setBounds(0, 55, iconQuiz.getIconWidth(), iconQuiz.getIconHeight());
 		btnQuiz.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                centerCardLayout.show(centerCardPanel, CARD_QUIZ);
-                bottomCardLayout.show(bottomCardPanel, CARD_QUIZ_BOTTOM);
-                
-                btnQuiz.setIcon(new ImageIcon("images/main/bg_works_hover.png"));
-                btnStatus.setIcon(new ImageIcon("images/main/bg_ready.png"));
-                btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
+                showQuiz();
             }
         });
 		
@@ -208,14 +230,7 @@ public class MainFrame extends MouseAdapter {
 		btnPraise.setBounds(0, 110, iconQuiz.getIconWidth(), iconQuiz.getIconHeight());
 		btnPraise.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				centerCardLayout.show(centerCardPanel, CARD_PRAISE);
-				bottomCardLayout.show(bottomCardPanel, CARD_PRAISE_BOTTOM);
-		                
-				btnQuiz.setIcon(new ImageIcon("images/main/bg_works.png"));
-				btnStatus.setIcon(new ImageIcon("images/main/bg_ready.png"));
-				btnPraise.setIcon(new ImageIcon("images/main/bg_praise_hover.png"));
-				
-				praisePanel.refresh();
+				showPraise();
 			}
 		});
 		
@@ -233,24 +248,17 @@ public class MainFrame extends MouseAdapter {
 		pnlUser.setLayout(null);
 		String user = String.format("您好,%s!", app.getTeacher().getName());
 		JLabel lblTeacher = new JLabel(user, JLabel.CENTER);
-		lblTeacher.setForeground(UIHelper.getDefaultFontColor());
+		lblTeacher.setForeground(Color.WHITE);
 		pnlUser.add(lblTeacher);
 		lblTeacher.setBounds(0, 70, 127, 20);
 		left.add(pnlUser);
-		pnlUser.setBounds(0, 165, 127, 95);
+		pnlUser.setBounds(0, 504, 127, 95);
 
-		JLabel lblCopyRight = new JLabel("Copy Right © 2014", JLabel.CENTER);
-		lblCopyRight.setForeground(UIHelper.getDefaultFontColor());
-		lblCopyRight.setBounds(0, 585, 127, 20);
+		JLabel lblCopyRight = new JLabel("Copyright © Incito", JLabel.CENTER);
+		lblCopyRight.setFont(new Font("Microsoft YaHei", Font.PLAIN, 10));
+		lblCopyRight.setForeground(Color.WHITE);
+		lblCopyRight.setBounds(0, 615, 127, 20);
 		left.add(lblCopyRight);
-		JLabel lblCompany1 = new JLabel("四川灵动", JLabel.CENTER);
-		lblCompany1.setForeground(UIHelper.getDefaultFontColor());
-		lblCompany1.setBounds(0, 610, 127, 20);
-		left.add(lblCompany1);
-		JLabel lblCompany2 = new JLabel("信息技术有限公司", JLabel.CENTER);
-		lblCompany2.setForeground(UIHelper.getDefaultFontColor());
-		lblCompany2.setBounds(0, 625, 127, 20);
-		left.add(lblCompany2);
 
 		left.setBounds(10, 73, 127, 930);
 		contentPane.add(left);

@@ -1,26 +1,15 @@
 package cn.com.incito.interclass.ui;
 
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
-import com.alibaba.fastjson.JSONObject;
-import com.sun.image.codec.jpeg.ImageFormatException;
 
 import cn.com.incito.interclass.constant.Constants;
 import cn.com.incito.interclass.ui.screencapture.CaptureScreen;
@@ -30,7 +19,9 @@ import cn.com.incito.server.core.Message;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
-import cn.com.incito.server.utils.UIHelper;
+
+import com.alibaba.fastjson.JSONObject;
+import com.sun.image.codec.jpeg.ImageFormatException;
 
 public class QuizBottomPanel extends JPanel implements MouseListener{
 	private static final long serialVersionUID = -9135075807085951600L;
@@ -42,43 +33,11 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 	private static final String BTN_ACCEPT_HOVER = "images/quiz/btn_accept_works_hover.png";
 	
 	private JButton btnQuiz;
-	private Application app = Application.getInstance();
 	
 	public QuizBottomPanel(){
 		setSize(878, 48);
 		setLayout(null);
 		setOpaque(false);
-		
-		JLabel lblExpected = new JLabel("应到 %d 人  | 实到 %d 人", JLabel.CENTER);
-		lblExpected.setForeground(UIHelper.getDefaultFontColor());
-		lblExpected.setBounds(10, 15, 150, 35);
-		add(lblExpected);
-		
-		JPanel pnlClass = new JPanel() {
-			private static final long serialVersionUID = 5365972834168199801L;
-
-			@Override
-			protected void paintComponent(Graphics g) {
-				Image iconClass = new ImageIcon("images/main/bg_input_kc.png").getImage();
-				g.drawImage(iconClass, 0, 0, this.getWidth(), this.getHeight(), this);
-			}
-		};
-		pnlClass.setLayout(null);
-		add(pnlClass);
-		pnlClass.setBounds(180, 10, 120, 35);
-
-		JPanel pnlCourse = new JPanel() {
-			private static final long serialVersionUID = 5365972834168199801L;
-
-			@Override
-			protected void paintComponent(Graphics g) {
-				Image iconClass = new ImageIcon("images/main/bg_input_kc.png").getImage();
-				g.drawImage(iconClass, 0, 0, this.getWidth(), this.getHeight(), this);
-			}
-		};
-		pnlCourse.setLayout(null);
-		add(pnlCourse);
-		pnlCourse.setBounds(320, 10, 120, 35);
 		
 		btnQuiz = new JButton();// 创建按钮对象
 		btnQuiz.setFocusPainted(false);
@@ -87,7 +46,7 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 		ImageIcon btnImage = new ImageIcon(BTN_SEND_NORMAL);
 		btnQuiz.setIcon(btnImage);// 设置图片
 		add(btnQuiz);// 添加按钮
-		btnQuiz.setBounds(470, -4, btnImage.getIconWidth(), btnImage.getIconHeight());
+		btnQuiz.setBounds(360, -4, btnImage.getIconWidth(), btnImage.getIconHeight());
 		btnQuiz.addMouseListener(this);
 	}
 

@@ -174,7 +174,7 @@ public class JobPaperUpload implements Job {
 		});
 		for (File file : filelist) {
 			String[] strs = file.list();
-			if (strs.length < 1)
+			if (strs == null || strs.length < 1)
 				continue;
 			for (String str : strs) {
 				ParamsWrapper params = new ParamsWrapper();
@@ -193,7 +193,7 @@ public class JobPaperUpload implements Job {
 				params.put("term", Application.getInstance().getClasses()
 						.getYear());
 				params.put("lastupdatetime", file.lastModified());
-				params.put("file", str, file.getAbsolutePath() + "\\" + str);
+				params.put("file", str, file.getAbsolutePath() + File.separator + str);
 				list.add(params);
 			}
 
