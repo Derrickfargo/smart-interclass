@@ -174,7 +174,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
 		
 		if (isOnClass) { 
-			btnBegin.setIcon(new ImageIcon("images/main/btn_begin_hover.png"));// 设置图片
+			btnBegin.setIcon(new ImageIcon("images/main/btn_end.png"));// 设置图片
 			Application.isOnClass = true;
 		} else {
 			btnBegin.setIcon(new ImageIcon("images/main/btn_begin.png"));// 设置图片
@@ -217,7 +217,13 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() == btnBegin) {
 			if (Application.isOnClass) {
-				setOnClass(false);
+//				setOnClass(false);
+				int result = JOptionPane.showConfirmDialog(MainFrame.getInstance()
+						.getFrame(), "确定要下课吗？", "提示",
+						JOptionPane.YES_NO_OPTION);
+				if (result == JOptionPane.YES_OPTION) {
+					System.exit(0);
+				}
 			} else {
 				doBegin();
 			}
@@ -240,7 +246,11 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		if (e.getSource() == btnBegin) {
-			btnBegin.setIcon(new ImageIcon("images/main/btn_begin_hover.png"));
+			if (Application.isOnClass) {
+				btnBegin.setIcon(new ImageIcon("images/main/btn_end_hover.png"));
+			} else {
+				btnBegin.setIcon(new ImageIcon("images/main/btn_begin_hover.png"));
+			}
 		}
 		if (e.getSource() == btnGroup) {
 			btnGroup.setIcon(new ImageIcon("images/main/btn_group_hover.png"));
@@ -250,7 +260,11 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 	@Override
 	public void mouseExited(MouseEvent e) {
 		if (e.getSource() == btnBegin) {
-			btnBegin.setIcon(new ImageIcon("images/main/btn_begin.png"));
+			if (Application.isOnClass) {
+				btnBegin.setIcon(new ImageIcon("images/main/btn_end.png"));
+			} else {
+				btnBegin.setIcon(new ImageIcon("images/main/btn_begin.png"));
+			}
 		}
 		if (e.getSource() == btnGroup) {
 			btnGroup.setIcon(new ImageIcon("images/main/btn_group.png"));
