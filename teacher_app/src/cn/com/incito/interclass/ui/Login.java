@@ -274,7 +274,7 @@ public class Login extends MouseAdapter {
             params.put("mac", mac);
             params.put("uname", uname);
             params.put("password", Md5Utils.md5(password));
-            http.get(URLs.URL_TEACHER_LOGIN, params, new StringResponseHandler() {
+            http.post(URLs.URL_TEACHER_LOGIN, params, new StringResponseHandler() {
                 @Override
                 protected void onResponse(String content, URL url) {
                     if (content != null && !content.equals("")) {

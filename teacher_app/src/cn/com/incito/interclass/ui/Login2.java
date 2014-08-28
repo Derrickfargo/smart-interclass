@@ -290,7 +290,7 @@ public class Login2 extends MouseAdapter {
 		params.put("courseId", courseId);
 		params.put("classId", classId);
 		params.put("className", className);
-        http.get(URLs.URL_TEACHER_GROUP, params, new StringResponseHandler() {
+        http.post(URLs.URL_TEACHER_GROUP, params, new StringResponseHandler() {
             @Override
             protected void onResponse(String content, URL url) {
                  if (content != null && !content.equals("")) {

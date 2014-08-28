@@ -76,6 +76,12 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 	}
 	
 	private void doBegin() {
+		if(app.getOnlineStudent().size() == 0){
+			JOptionPane.showMessageDialog(getParent().getParent(),
+					"当前还没有学生登陆，不能开始上课!");
+			return;
+		}
+		
 		List<Table> tableList = app.getTableList();
 		if (tableList == null || tableList.size() == 0) {
 			JOptionPane.showMessageDialog(getParent().getParent(),
