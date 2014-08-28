@@ -76,6 +76,12 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 	}
 	
 	private void doBegin() {
+		if(app.getOnlineStudent().size() == 0){
+			JOptionPane.showMessageDialog(getParent().getParent(),
+					"当前还没有学生登陆，请先登录后再上课!");
+			return;
+		}
+		
 		List<Table> tableList = app.getTableList();
 		if (tableList == null || tableList.size() == 0) {
 			JOptionPane.showMessageDialog(getParent().getParent(),
@@ -115,6 +121,17 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 	}
 
 	private void doEditGroup() {
+		if(app.getOnlineStudent().size() == 0){
+			JOptionPane.showMessageDialog(getParent().getParent(),
+					"当前还没有学生登陆，请先登陆后再分组!");
+			return;
+		}
+		List<Table> tableList = app.getTableList();
+		if (tableList == null || tableList.size() == 0) {
+			JOptionPane.showMessageDialog(getParent().getParent(),
+					"设备还未绑定课桌，请先绑定课桌!");
+			return;
+		}
 		// 编辑小组信息
 		List<Group> groupList = app.getGroupList();
 		for (Group group : groupList) {

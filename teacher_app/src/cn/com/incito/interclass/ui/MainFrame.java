@@ -8,6 +8,7 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
@@ -29,7 +30,6 @@ import javax.swing.JScrollPane;
 
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.CoreSocket;
-import cn.com.incito.server.utils.UIHelper;
 
 public class MainFrame extends MouseAdapter {
 	private static MainFrame instance;
@@ -219,38 +219,31 @@ public class MainFrame extends MouseAdapter {
 			}
 		});
 		
-//		// 用户信息
-//		JPanel pnlUser = new JPanel() {
-//			private static final long serialVersionUID = 1778895558158714379L;
-//
-//			@Override
-//			protected void paintComponent(Graphics g) {
-//				Image iconUser = new ImageIcon("images/main/bg_user.png").getImage();
-//				g.drawImage(iconUser, 0, 0, this.getWidth(), this.getHeight(), this);
-//			}
-//
-//		};
-//		pnlUser.setLayout(null);
-//		String user = String.format("您好,%s!", app.getTeacher().getName());
-//		JLabel lblTeacher = new JLabel(user, JLabel.CENTER);
-//		lblTeacher.setForeground(UIHelper.getDefaultFontColor());
-//		pnlUser.add(lblTeacher);
-//		lblTeacher.setBounds(0, 70, 127, 20);
-//		left.add(pnlUser);
-//		pnlUser.setBounds(0, 165, 127, 95);
-//
-//		JLabel lblCopyRight = new JLabel("Copy Right © 2014", JLabel.CENTER);
-//		lblCopyRight.setForeground(UIHelper.getDefaultFontColor());
-//		lblCopyRight.setBounds(0, 585, 127, 20);
-//		left.add(lblCopyRight);
-//		JLabel lblCompany1 = new JLabel("四川灵动", JLabel.CENTER);
-//		lblCompany1.setForeground(UIHelper.getDefaultFontColor());
-//		lblCompany1.setBounds(0, 610, 127, 20);
-//		left.add(lblCompany1);
-//		JLabel lblCompany2 = new JLabel("信息技术有限公司", JLabel.CENTER);
-//		lblCompany2.setForeground(UIHelper.getDefaultFontColor());
-//		lblCompany2.setBounds(0, 625, 127, 20);
-//		left.add(lblCompany2);
+		// 用户信息
+		JPanel pnlUser = new JPanel() {
+			private static final long serialVersionUID = 1778895558158714379L;
+
+			@Override
+			protected void paintComponent(Graphics g) {
+				Image iconUser = new ImageIcon("images/main/bg_user.png").getImage();
+				g.drawImage(iconUser, 0, 0, this.getWidth(), this.getHeight(), this);
+			}
+
+		};
+		pnlUser.setLayout(null);
+		String user = String.format("您好,%s!", app.getTeacher().getName());
+		JLabel lblTeacher = new JLabel(user, JLabel.CENTER);
+		lblTeacher.setForeground(Color.WHITE);
+		pnlUser.add(lblTeacher);
+		lblTeacher.setBounds(0, 70, 127, 20);
+		left.add(pnlUser);
+		pnlUser.setBounds(0, 504, 127, 95);
+
+		JLabel lblCopyRight = new JLabel("Copyright © Incito", JLabel.CENTER);
+		lblCopyRight.setFont(new Font("Microsoft YaHei", Font.PLAIN, 10));
+		lblCopyRight.setForeground(Color.WHITE);
+		lblCopyRight.setBounds(0, 615, 127, 20);
+		left.add(lblCopyRight);
 
 		left.setBounds(10, 73, 127, 930);
 		contentPane.add(left);
