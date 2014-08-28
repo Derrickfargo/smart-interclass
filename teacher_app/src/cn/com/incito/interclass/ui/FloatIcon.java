@@ -238,11 +238,11 @@ public class FloatIcon extends MouseAdapter {
 							btnQuiz.setIcon(new ImageIcon(ICON_QUIZ_NORMAL));
 							MainFrame.getInstance().showQuiz();
 						} else {// 没作业，发作业
+							showMenu(false);
 							if (Application.isOnClass) {
 								MainFrame.getInstance().doSendQuiz();
 								btnQuiz.setIcon(new ImageIcon(ICON_HANDIN_NORMAL));
 							} else {
-								showMenu(false);
 								JOptionPane.showMessageDialog(dialog, "请先点击准备界面的开始上课！");
 								MainFrame.getInstance().showPrepare();
 							}

@@ -206,7 +206,7 @@ public class MainFrame extends MouseAdapter {
 		btnStatus.setBorderPainted(false);// 设置边框不可见
 		btnStatus.setContentAreaFilled(false);// 设置透明
 		left.add(btnStatus);
-		btnStatus.setBounds(0, 0, icon.getIconWidth(), icon.getIconHeight());
+		btnStatus.setBounds(0, 10, icon.getIconWidth(), icon.getIconHeight());
 		btnStatus.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 showPrepare();
@@ -221,7 +221,7 @@ public class MainFrame extends MouseAdapter {
 		btnQuiz.setBorderPainted(false);// 设置边框不可见
 		btnQuiz.setContentAreaFilled(false);// 设置透明
 		left.add(btnQuiz);
-		btnQuiz.setBounds(0, 55, iconQuiz.getIconWidth(), iconQuiz.getIconHeight());
+		btnQuiz.setBounds(0, 58, iconQuiz.getIconWidth(), iconQuiz.getIconHeight());
 		btnQuiz.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 showQuiz();
@@ -236,7 +236,7 @@ public class MainFrame extends MouseAdapter {
 		btnPraise.setBorderPainted(false);// 设置边框不可见
 		btnPraise.setContentAreaFilled(false);// 设置透明
 		left.add(btnPraise);
-		btnPraise.setBounds(0, 110, iconQuiz.getIconWidth(), iconQuiz.getIconHeight());
+		btnPraise.setBounds(0, 106, iconQuiz.getIconWidth(), iconQuiz.getIconHeight());
 		btnPraise.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				showPraise();
