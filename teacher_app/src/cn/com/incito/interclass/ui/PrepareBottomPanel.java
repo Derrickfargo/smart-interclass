@@ -29,27 +29,48 @@ import com.alibaba.fastjson.JSONObject;
 
 public class PrepareBottomPanel extends JPanel implements MouseListener{
 	private static final long serialVersionUID = -9135075807085951600L;
+	private JLabel lblExpected;
 	private JButton btnBegin, btnGroup;
 	private Application app = Application.getInstance();
 	
+	public JLabel getLblExpected() {
+		return lblExpected;
+	}
+
 	public PrepareBottomPanel(){
 		setSize(878, 48);
 		setLayout(null);
 		setOpaque(false);
 		
-		JLabel lblExpected = new JLabel("应到 %d 人  | 实到 %d 人", JLabel.CENTER);
+		int total = 0;
+		for (Group group : app.getGroupList()) {
+			total += group.getStudents().size();
+		}
+		String msg = "应到 %d 人  | 实到 %d 人";
+		lblExpected = new JLabel(String.format(msg, total, app
+				.getOnlineStudent().size()), JLabel.CENTER);
 		lblExpected.setForeground(UIHelper.getDefaultFontColor());
 		lblExpected.setBounds(10, 15, 150, 35);
 		add(lblExpected);
 		
-		JLabel lblClassBackground = new JLabel();
 		ImageIcon iconClass = new ImageIcon("images/main/btn_gray.png");
+		JLabel lblClass = new JLabel("", JLabel.CENTER);
+		lblClass.setText(app.getClasses().getName());
+		lblClass.setForeground(UIHelper.getDefaultFontColor());
+		add(lblClass);
+		lblClass.setBounds(180, 0, iconClass.getIconWidth(), iconClass.getIconHeight() - 4);
+		JLabel lblClassBackground = new JLabel();
 		lblClassBackground.setIcon(iconClass);
 		add(lblClassBackground);
 		lblClassBackground.setBounds(180, -4, iconClass.getIconWidth(), iconClass.getIconHeight());
 		
-		JLabel lblCourseBackground = new JLabel();
 		ImageIcon iconCourse = new ImageIcon("images/main/btn_gray.png");
+		JLabel lblCourse = new JLabel("", JLabel.CENTER);
+		lblCourse.setText(app.getCourse().getName());
+		lblCourse.setForeground(UIHelper.getDefaultFontColor());
+		add(lblCourse);
+		lblCourse.setBounds(340, 0, iconCourse.getIconWidth(), iconCourse.getIconHeight() -4 );
+		JLabel lblCourseBackground = new JLabel();
 		lblCourseBackground.setIcon(iconCourse);
 		add(lblCourseBackground);
 		lblCourseBackground.setBounds(340, -4, iconCourse.getIconWidth(), iconCourse.getIconHeight());
