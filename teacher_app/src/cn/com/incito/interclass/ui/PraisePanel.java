@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -22,10 +23,14 @@ import cn.com.incito.server.api.Application;
 import cn.com.incito.server.utils.LogoUtils;
 import cn.com.incito.server.utils.URLs;
 
-public class PraisePanel extends JPanel{
+public class PraisePanel extends JPanel {
+
 	private static final long serialVersionUID = 6316121486627261595L;
+
 	private Application app = Application.getInstance();
+
 	private List<Group> groupList = new ArrayList<Group>();
+
 	private List<PraiseGroupPanel> praiseGroupList = new ArrayList<PraiseGroupPanel>();
 
 	public PraisePanel() {
@@ -71,7 +76,7 @@ public class PraisePanel extends JPanel{
 		repaint();
 		revalidate();
 	}
-	
+
 	private void showPraiseGroupPanel(PraiseGroupPanel panel, Group group) {
 		panel.setVisible(true);
 		panel.setGroup(group);
@@ -79,7 +84,7 @@ public class PraisePanel extends JPanel{
 		ImageIcon icon = new ImageIcon(logo);
 		panel.getLblLogo().setIcon(icon);
 		panel.getLblGroupName().setText(group.getName());
-		String memberStr="";
+		String memberStr = "";
 		int score = 0;
 		if (group.getStudents() != null) {
 			for (Student student : group.getStudents()) {
@@ -87,11 +92,12 @@ public class PraisePanel extends JPanel{
 				score += student.getScore();
 			}
 			score = score / group.getStudents().size();
+			group.setScore(score);
 		}
 		panel.getLblMember().setText(memberStr);
 		panel.getLblScore().setText(String.valueOf(score));
 	}
-	
+
 	private void initData() {
 		groupList = new ArrayList<Group>();
 		// 课桌绑定分组，生成内存模型
@@ -106,7 +112,13 @@ public class PraisePanel extends JPanel{
 			group.setTableNumber(table.getNumber());
 			group.setDevices(table.getDevices());
 			groupList.add(group);
+			Collections.sort(groupList,new Comparator<Group>() {
+				@Override
+				public int compare(Group o1, Group o2) {
+					return o2.getScore()-o1.getScore();
+				}
+			});	
 		}
-		Collections.sort(groupList);
 	}
+
 }
