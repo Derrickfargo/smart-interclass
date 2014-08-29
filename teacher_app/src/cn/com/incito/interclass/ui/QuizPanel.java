@@ -1,5 +1,6 @@
 package cn.com.incito.interclass.ui;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -88,6 +89,7 @@ public class QuizPanel extends JPanel {
 		List<Device> deviceList = group.getDevices();
 		List<JPanel> quizPanel = panel.getQuizPanel();
 		List<JLabel> quizList = panel.getNameList();
+		List<JLabel> orderList = panel.getOrderList();
 		for (int i = 0; i < deviceList.size(); i++) {
 			Device device = deviceList.get(i);
 			quizPanel.get(i).setVisible(true);
@@ -97,7 +99,25 @@ public class QuizPanel extends JPanel {
 				panel.addImage(i, quiz);
 				JLabel lblName = quizList.get(i);
 				lblName.setText(quiz.getName());
-				//设置作业为排名  Application.getInstance().getQuizList().indexOf(quiz);
+				//设置作业为排名
+				JLabel lblOrder = orderList.get(i);
+				lblOrder.setVisible(true);
+				int order = Application.getInstance().getQuizList().indexOf(quiz) + 1;
+				lblOrder.setText(String.valueOf(order));
+				switch (order) {
+				case 1:
+					lblOrder.setBackground(new Color(Integer.parseInt("BC3412", 16)));
+					break;
+				case 2:
+					lblOrder.setBackground(new Color(Integer.parseInt("E07C00", 16)));
+					break;
+				case 3:
+					lblOrder.setBackground(new Color(Integer.parseInt("F5DB00", 16)));
+					break;
+				default:
+					lblOrder.setBackground(new Color(Integer.parseInt("ADADAD", 16)));
+				}
+				
 			}
 		}
 	}
