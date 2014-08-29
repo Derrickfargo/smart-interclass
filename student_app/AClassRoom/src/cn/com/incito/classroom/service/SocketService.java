@@ -1,10 +1,10 @@
 package cn.com.incito.classroom.service;
 
 import cn.com.incito.classroom.R;
+import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.wisdom.sdk.log.WLog;
-
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
@@ -12,55 +12,56 @@ import android.os.IBinder;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+
 /**
- * socket服务Service，保持通信连接
- * Created by liushiping on 2014/7/28.
+ * socket服务Service，保持通信连接 Created by liushiping on 2014/7/28.
  */
 public class SocketService extends Service {
 
-    public static final String NETWORK_RECEIVER = "cn.com.incito.network.RECEIVER";
-    ExecutorService exec;
+	public static final String NETWORK_RECEIVER = "cn.com.incito.network.RECEIVER";
+	ExecutorService exec;
 
-    @Override
-    public IBinder onBind(Intent arg0) {
-        return null;
-    }
+	@Override
+	public IBinder onBind(Intent arg0) {
+		return null;
+	}
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        Thread.setDefaultUncaughtExceptionHandler(
-                new MyUncaughtExceptionHandler());
-        exec = Executors
-                .newCachedThreadPool(new HandlerThreadFactory());
-        exec.execute(CoreSocket.getInstance());
-        WLog.i(SocketService.class, "socket started");
-    }
+	@Override
+	public void onCreate() {
+		super.onCreate();
+		Thread.setDefaultUncaughtExceptionHandler(new MyUncaughtExceptionHandler());
+		exec = Executors.newCachedThreadPool(new HandlerThreadFactory());
+		exec.execute(CoreSocket.getInstance());
+		WLog.i(SocketService.class, "socket started");
+	}
 
-    class MyUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
-        @Override
-        public void uncaughtException(Thread t, Throwable e) {
-            WLog.e(SocketService.class, "network unreachble exception:" + e);
-            Intent intent = new Intent(NETWORK_RECEIVER);
-            intent.putExtra("exception", e.getMessage());
-            sendBroadcast(intent);
+	class MyUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
+		@Override
+		public void uncaughtException(Thread t, Throwable e) {
+			WLog.e(SocketService.class, "uncatched transmit exception:" + e);
+			Intent intent = new Intent(NETWORK_RECEIVER);
+			intent.putExtra("exception", e.getMessage());
+			sendBroadcast(intent);
 
-        }
-    }
+		}
+	}
 
-    class HandlerThreadFactory implements ThreadFactory {
-        @Override
-        public Thread newThread(Runnable r) {
-            Thread t = new Thread(r);
-            t.setUncaughtExceptionHandler(new MyUncaughtExceptionHandler());
-            return t;
-        }
-    }
+	class HandlerThreadFactory implements ThreadFactory {
+		@Override
+		public Thread newThread(Runnable r) {
+			Thread t = new Thread(r);
+			if (Constants.UNCATCHED_EXCEPION_HANLED) {
+				t.setUncaughtExceptionHandler(new MyUncaughtExceptionHandler());
+			}
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        System.out.println("SocketService.onDestroy");
-        WLog.i(SocketService.class, "socket disconnected");
-    }
+			return t;
+		}
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		System.out.println("SocketService.onDestroy");
+		WLog.i(SocketService.class, "socket disconnected");
+	}
 }

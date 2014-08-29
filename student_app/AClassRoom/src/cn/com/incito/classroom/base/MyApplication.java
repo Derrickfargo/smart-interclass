@@ -1,12 +1,19 @@
 package cn.com.incito.classroom.base;
 
 import android.app.Application;
+import android.content.ContentProvider;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.graphics.Bitmap;
 import android.os.Build;
+import android.os.SystemProperties;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.service.LogService;
@@ -45,6 +52,7 @@ public class MyApplication extends Application {
 	private static String IMEI;
 	private boolean isSubmitPaper;// 学生是否已提交作业
 	private boolean isLockScreen;// 是否锁定屏幕
+	ContentResolver mContentResolver;
 
 	public boolean isLockScreen() {
 		return isLockScreen;
@@ -52,6 +60,12 @@ public class MyApplication extends Application {
 
 	public void setLockScreen(boolean isLockScreen) {
 		this.isLockScreen = isLockScreen;
+	}
+
+	public void closeSysScreenLock() {
+		mContentResolver = getContentResolver();
+		android.provider.Settings.System.putInt(mContentResolver,
+				android.provider.Settings.System.LOCK_PATTERN_ENABLED, 0);
 	}
 
 	public boolean isSubmitPaper() {
@@ -76,6 +90,7 @@ public class MyApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		closeSysScreenLock();
 		initApplication();
 		MobclickAgent.openActivityDurationTrack(false);// 禁止友盟的自动统计功能
 		mInstance = this;
@@ -130,7 +145,8 @@ public class MyApplication extends Application {
 		startService(service);
 		WLog.i(MyApplication.class, "socket service started");
 		if (Constants.LOG_OPEN) {
-			Intent logservice = new Intent(this, LogService.class);
+			Intent logservice = new Intent(
+					"cn.com.incito.classroom.service.LOG_SERVICE");
 			startService(logservice);
 			WLog.i(MyApplication.class, "log service started");
 		}

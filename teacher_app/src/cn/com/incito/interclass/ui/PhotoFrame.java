@@ -18,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import cn.com.incito.interclass.po.Quiz;
@@ -57,10 +58,13 @@ public class PhotoFrame extends JFrame {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if(photoDialog != null){
-					photoDialog.dispose();
+				if(e.getKeyCode() == 27){
+					JOptionPane.showMessageDialog(null, "开始退出1");
+					if(photoDialog != null){
+						photoDialog.dispose();
+					}
+					dispose();
 				}
-				dispose();
 			}
 			
 		});
@@ -229,9 +233,12 @@ public class PhotoFrame extends JFrame {
 
 				@Override
 				public void keyPressed(KeyEvent e) {
-					dispose();
-					if(coverFrame != null){
-						coverFrame.dispose();
+					if(e.getKeyCode() == 27){
+						JOptionPane.showMessageDialog(null, "开始退出2");
+						dispose();
+						if(coverFrame != null){
+							coverFrame.dispose();
+						}
 					}
 				}
 				

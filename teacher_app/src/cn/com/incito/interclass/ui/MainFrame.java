@@ -84,6 +84,9 @@ public class MainFrame extends MouseAdapter {
 	public void doAcceptQuiz(){
 		quizBottomPanel.doAcceptQuiz();
 	}
+	public void showNoQuiz(){
+		quizBottomPanel.showNoQuiz();
+	}
 	public void refreshPrepare() {
 		preparePanel.refresh();
 		quizPanel.refresh();

@@ -14,6 +14,17 @@ public class Quiz implements Serializable,Comparable<Quiz> {
 	private String quizUrl;
 	private String thumbnail;
 	private Group group;
+	private float time;
+
+	
+	public float getTime() {
+		return time;
+	}
+
+	
+	public void setTime(float time) {
+		this.time = time;
+	}
 
 	public String getId() {
 		return id;
