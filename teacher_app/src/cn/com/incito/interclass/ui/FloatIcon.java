@@ -36,6 +36,7 @@ import cn.com.incito.server.api.Application;
  */
 public class FloatIcon extends MouseAdapter {
 	private static final String ICON = "images/float/ico_floatmenu.png";
+	private static final String ICON_QUIZ = "images/float/ico_floatmenu_null.png";
 	private static final String BACKGROUND = "images/float/bg_floatmenu.png";
 	private static final String ICON_QUIZ_NORMAL = "images/float/ico_floatmenu1.png";
 	private static final String ICON_QUIZ_HOVER = "images/float/ico_floatmenu1_hover.png";
@@ -52,7 +53,7 @@ public class FloatIcon extends MouseAdapter {
 	private JDialog dialog = new JDialog();
 	private boolean isDragged, isShowing;
 	private Point loc, tmp;
-	private JLabel lblIcon, lblBackground;
+	private JLabel lblIcon, iblTips,lblBackground;
 	private JButton btnQuiz, btnPraise, btnLock, btnExit;
 	private TrayIcon trayIcon; // 托盘图标
 	private SystemTray tray; // 托盘的实例
@@ -167,6 +168,10 @@ public class FloatIcon extends MouseAdapter {
 	}
 
 	private void setIcon() {
+		iblTips = new JLabel("",JLabel.CENTER);
+		iblTips.setBounds(180, 10, 80, 80);
+		dialog.add(iblTips);
+		
 		lblIcon = new JLabel();
 		lblIcon.addMouseListener(this);
 		lblIcon.setIcon(new ImageIcon(ICON));
@@ -174,6 +179,11 @@ public class FloatIcon extends MouseAdapter {
 		dialog.add(lblIcon);
 	}
 
+	public void showQuizMessage(String message){
+		lblIcon.setIcon(new ImageIcon(ICON_QUIZ));
+		iblTips.setText(message);
+	}
+	
 	// 设置背景
 	private void setBackground() {
 		lblBackground = new JLabel();
@@ -270,6 +280,12 @@ public class FloatIcon extends MouseAdapter {
 		}
 	}
 
+	public void showNoQuiz() {
+		lblIcon.setIcon(new ImageIcon(ICON));
+		iblTips.setText("");
+		btnQuiz.setIcon(new ImageIcon(ICON_QUIZ_NORMAL));
+	}
+	
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// 按钮按下效果
