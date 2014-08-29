@@ -130,7 +130,7 @@ public class MyApplication extends Application {
 		startService(service);
 		WLog.i(MyApplication.class, "socket service started");
 		if (Constants.LOG_OPEN) {
-			Intent logservice = new Intent(this, LogService.class);
+			Intent logservice = new Intent("cn.com.incito.classroom.service.LOG_SERVICE");
 			startService(logservice);
 			WLog.i(MyApplication.class, "log service started");
 		}

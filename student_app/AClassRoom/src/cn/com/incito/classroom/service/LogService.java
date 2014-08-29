@@ -17,6 +17,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import cn.com.incito.wisdom.sdk.log.WLog;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -116,7 +117,7 @@ public class LogService extends Service {
 		wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
 
 		CURR_LOG_TYPE = getCurrLogType();
-		Log.i(TAG, "LogService onCreate");
+		WLog.i(LogService.class, "LogService onCreate");
 	}
 
 	private void register() {
