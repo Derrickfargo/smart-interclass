@@ -11,7 +11,20 @@ public class Group implements Serializable, Comparable<Group> {
 	 */
 	private static final long serialVersionUID = -6517861100227656945L;
 	private String medals;
+	private int score;
 	
+	
+	public int getScore() {
+		return score;
+	}
+
+
+	
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+
 	public String getMedals() {
 		return medals;
 	}
@@ -174,6 +187,6 @@ public class Group implements Serializable, Comparable<Group> {
 
 	@Override
 	public int compareTo(Group group) {
-		return this.tableNumber - group.tableNumber;
+		return this.tableNumber-group.tableNumber;
 	}
 }
