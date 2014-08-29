@@ -39,6 +39,7 @@ public class PhotoFrame extends JFrame {
 
 	public PhotoFrame(String image) {
 		this.photoDialog = new PhotoDialog(this, image);
+		setIconImage(new ImageIcon("images/main/icon.png").getImage());
 		setUndecorated(true);// 去除窗体
 		setAlwaysOnTop(true); // 设置界面悬浮
 		getContentPane().setBackground(Color.BLACK);

@@ -74,6 +74,8 @@ public class Login2 extends MouseAdapter {
 
     // 显示登陆界面
     private void showLoginUI() {
+    	ImageIcon icon = new ImageIcon("images/main/icon.png");
+		frame.setIconImage(icon.getImage());
         frame.setSize(460, 290);
         frame.setDefaultCloseOperation(3);
         frame.setLocationRelativeTo(null);// 设置窗体中间位置

@@ -155,6 +155,7 @@ public class MainFrame extends MouseAdapter {
 
 	// 显示登陆界面
 	private void showLoginUI() {
+		frame.setIconImage(new ImageIcon("images/main/icon.png").getImage());
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		frame.setContentPane(contentPane);
