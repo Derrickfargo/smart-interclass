@@ -20,6 +20,7 @@ import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
+import cn.com.incito.wisdom.sdk.log.WLog;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -99,6 +100,7 @@ public class SplashActivity extends BaseActivity {
         MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_HAS_BIND);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
         CoreSocket.getInstance().sendMessage(messagePacking);
+        WLog.i(SplashActivity.class, "开始判定设备是否绑定...");
     }
 
     @Override

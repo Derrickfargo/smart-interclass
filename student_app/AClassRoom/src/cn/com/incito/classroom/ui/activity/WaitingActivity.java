@@ -39,6 +39,7 @@ import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
+import cn.com.incito.wisdom.sdk.log.WLog;
 import cn.com.incito.wisdom.uicomp.widget.dialog.ProgressiveDialog;
 
 import com.alibaba.fastjson.JSON;
@@ -83,7 +84,7 @@ public class WaitingActivity extends BaseActivity {
 		mAdapter = new GroupNumAdapter(WaitingActivity.this);
 		et_stnumber.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
 		getGroupUserList();
-		LockScreenReceiver mLockScreenReceiver=new LockScreenReceiver();
+		LockScreenReceiver mLockScreenReceiver = new LockScreenReceiver();
 		mLockScreenReceiver.registerScreenActionReceiver(this);
 	}
 
@@ -159,30 +160,33 @@ public class WaitingActivity extends BaseActivity {
 	@Override
 	public void onBackPressed() {
 		showDialog();
-//		if ((System.currentTimeMillis() - mExitTime) > 2000) {// 如果两次按键时间间隔大于2000毫秒，则不退出
-//			Toast.makeText(this, R.string.toast_quit_app, Toast.LENGTH_SHORT)
-//					.show();
-//			mExitTime = System.currentTimeMillis();// 更新mExitTime
-//		} else {
-//		
-//		}
+		// if ((System.currentTimeMillis() - mExitTime) > 2000) {//
+		// 如果两次按键时间间隔大于2000毫秒，则不退出
+		// Toast.makeText(this, R.string.toast_quit_app, Toast.LENGTH_SHORT)
+		// .show();
+		// mExitTime = System.currentTimeMillis();// 更新mExitTime
+		// } else {
+		//
+		// }
 	}
-	 public void showDialog() {
-	        new AlertDialog.Builder(this)
-	                .setMessage("确定退出？")
-	                .setPositiveButton("是", new DialogInterface.OnClickListener() {
-	                    @Override
-	                    public void onClick(DialogInterface dialog, int which) {
-	                    	AppManager.getAppManager().AppExit(WaitingActivity.this);
-	                    }
-	                })
-	                .setNegativeButton("否", new DialogInterface.OnClickListener() {
-	                    @Override
-	                    public void onClick(DialogInterface dialog, int which) {
-	                        dialog.dismiss();
-	                    }
-	                }).show();
-	    }
+
+	public void showDialog() {
+		new AlertDialog.Builder(this)
+				.setMessage("确定退出？")
+				.setPositiveButton("是", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						AppManager.getAppManager()
+								.AppExit(WaitingActivity.this);
+					}
+				})
+				.setNegativeButton("否", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				}).show();
+	}
 
 	/**
 	 * 与后台服务建立连接，并实现登陆
@@ -204,7 +208,7 @@ public class WaitingActivity extends BaseActivity {
 		messagePacking.putBodyData(DataType.INT,
 				BufferUtils.writeUTFString(json));
 		CoreSocket.getInstance().sendMessage(messagePacking);
-
+		WLog.i(WaitingActivity.class, "启动登录...");
 	}
 
 	/**
@@ -227,6 +231,7 @@ public class WaitingActivity extends BaseActivity {
 		messagePacking.putBodyData(DataType.INT,
 				BufferUtils.writeUTFString(json));
 		CoreSocket.getInstance().sendMessage(messagePacking);
+		WLog.i(WaitingActivity.class, "启动取消登录...");
 	}
 
 	/**
@@ -243,7 +248,7 @@ public class WaitingActivity extends BaseActivity {
 			ToastHelper.showCustomToast(getApplicationContext(),
 					R.string.toast_stname_tooshort);
 			return false;
-		}else if(stName.contains(" ")){
+		} else if (stName.contains(" ")) {
 			ToastHelper.showCustomToast(getApplicationContext(),
 					R.string.toast_stname_blank);
 			return false;
@@ -290,6 +295,7 @@ public class WaitingActivity extends BaseActivity {
 				mProgressDialog.hide();
 				JSONObject jsonObject = (JSONObject) msg.getData()
 						.getSerializable("data");
+				WLog.i(WaitingActivity.class, "获取登录信息..." + jsonObject);
 				if (!"0".equals(jsonObject.getString("code"))) {
 					return;
 				} else if (jsonObject.getJSONObject("data") == null) {
@@ -319,6 +325,7 @@ public class WaitingActivity extends BaseActivity {
 				mProgressDialog.hide();
 				JSONObject jsonObject = (JSONObject) msg.getData()
 						.getSerializable("data");
+				WLog.i(WaitingActivity.class, "得到分组学生信息..." + jsonObject.toString());
 				if (!"0".equals(jsonObject.getString("code"))) {
 					return;
 				} else if (jsonObject.getJSONObject("data") == null) {
@@ -347,6 +354,7 @@ public class WaitingActivity extends BaseActivity {
 	};
 
 	public void doResult(JSONObject jsonObject, int type) {
+		
 		android.os.Message message = new android.os.Message();
 		message.what = type;
 		Bundle data = new Bundle();
@@ -359,23 +367,24 @@ public class WaitingActivity extends BaseActivity {
 	 * 注册成员
 	 */
 	private void registerStudent() {
-//		if (loginResList.size() > Constants.STUDENT_MAX_NUM) {
-//			ToastHelper.showCustomToast(this, "注册人数已满");
-//		} else {
-			LoginReqVo loginReqVo = new LoginReqVo();
-			loginReqVo.setImei(MyApplication.deviceId);
-			loginReqVo.setName(et_stname.getText().toString());
-			loginReqVo.setNumber(et_stnumber.getText().toString());
-			loginReqVo.setSex(female.isChecked() ? "2" : "1");
-			loginReqVo.setType("2");
-			String json = JSON.toJSONString(loginReqVo);
+		// if (loginResList.size() > Constants.STUDENT_MAX_NUM) {
+		// ToastHelper.showCustomToast(this, "注册人数已满");
+		// } else {
+		LoginReqVo loginReqVo = new LoginReqVo();
+		loginReqVo.setImei(MyApplication.deviceId);
+		loginReqVo.setName(et_stname.getText().toString());
+		loginReqVo.setNumber(et_stnumber.getText().toString());
+		loginReqVo.setSex(female.isChecked() ? "2" : "1");
+		loginReqVo.setType("2");
+		String json = JSON.toJSONString(loginReqVo);
 
-			MessagePacking messagePacking = new MessagePacking(
-					Message.MESSAGE_STUDENT_LOGIN);
-			messagePacking.putBodyData(DataType.INT,
-					BufferUtils.writeUTFString(json));
-			CoreSocket.getInstance().sendMessage(messagePacking);
-//		}
+		MessagePacking messagePacking = new MessagePacking(
+				Message.MESSAGE_STUDENT_LOGIN);
+		messagePacking.putBodyData(DataType.INT,
+				BufferUtils.writeUTFString(json));
+		CoreSocket.getInstance().sendMessage(messagePacking);
+		WLog.i(SplashActivity.class, "启动注册学生...");
+		// }
 	}
 
 	/**
@@ -389,6 +398,7 @@ public class WaitingActivity extends BaseActivity {
 		messagePacking.putBodyData(DataType.INT,
 				BufferUtils.writeUTFString(jsonObject.toJSONString()));
 		CoreSocket.getInstance().sendMessage(messagePacking);
+		WLog.i(SplashActivity.class, "启动获取组成员列表...");
 
 	}
 }

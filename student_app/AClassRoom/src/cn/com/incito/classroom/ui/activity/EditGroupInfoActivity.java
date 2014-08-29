@@ -29,6 +29,7 @@ import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
+import cn.com.incito.wisdom.sdk.log.WLog;
 
 /**
  * 修改分组信息activity Created by liguangming on 2014/7/28.
@@ -133,6 +134,7 @@ public class EditGroupInfoActivity extends BaseActivity implements
 					messagePacking.putBodyData(DataType.INT,
 							BufferUtils.writeUTFString(json.toJSONString()));
 					CoreSocket.getInstance().sendMessage(messagePacking);
+					WLog.i(EditGroupInfoActivity.class, "启动修改分组...");
 				}
 			}
 			break;

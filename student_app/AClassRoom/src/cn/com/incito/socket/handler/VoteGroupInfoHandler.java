@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;
+import cn.com.incito.wisdom.sdk.log.WLog;
 
 /**
  * 分组投票处理hanlder
@@ -34,11 +35,13 @@ public class VoteGroupInfoHandler extends MessageHandler {
             if (json.containsKey("masterimei"))
                 masterImei = json.getString("masterimei");
             if (agree) {
+            	WLog.i(VoteGroupInfoHandler.class, "同意分组");
                 //show bind activity
                 UIHelper.getInstance().showWaitingActivity();
             } else {
                 //show edit group activity
                 UIHelper.getInstance().showEditGroupActivity(groupID);
+                WLog.i(VoteGroupInfoHandler.class, "不同意分组");
             }
         }
     }

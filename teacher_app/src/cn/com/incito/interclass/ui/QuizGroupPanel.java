@@ -50,6 +50,7 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 	private List<JLabel> quizList = new ArrayList<JLabel>();
 	private List<JPanel> quizPanel = new ArrayList<JPanel>();
 	private List<JLabel> nameList = new ArrayList<JLabel>();
+	private List<JLabel> orderList = new ArrayList<JLabel>();
 	private Map<String,Quiz> quizMap = new HashMap<String, Quiz>();
 	
 	@Override
@@ -62,21 +63,41 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 		setLayout(null);
 		setVisible(false);
 		
+		JLabel lblOrder1 = getOrderLabel();
+		lblOrder1.setVisible(false);
+		lblOrder1.setBounds(16, 17, 15, 15);
+		add(lblOrder1);
+		orderList.add(lblOrder1);
 		JPanel quiz1 = createImagePanel(14,15);
 		quiz1.setVisible(false);
 		add(quiz1);
 		quizPanel.add(quiz1);
 		
+		JLabel lblOrder2 = getOrderLabel();
+		lblOrder2.setVisible(false);
+		lblOrder2.setBounds(210, 17, 15, 15);
+		add(lblOrder2);
+		orderList.add(lblOrder2);
 		JPanel quiz2 = createImagePanel(208,15);
 		quiz2.setVisible(false);
 		add(quiz2);
 		quizPanel.add(quiz2);
 		
+		JLabel lblOrder3 = getOrderLabel();
+		lblOrder3.setVisible(false);
+		lblOrder3.setBounds(16, 167, 15, 15);
+		add(lblOrder3);
+		orderList.add(lblOrder3);
 		JPanel quiz3 = createImagePanel(14,165);
 		quiz3.setVisible(false);
 		add(quiz3);
 		quizPanel.add(quiz3);
 		
+		JLabel lblOrder4 = getOrderLabel();
+		lblOrder4.setVisible(false);
+		lblOrder4.setBounds(210, 167, 15, 15);
+		add(lblOrder4);
+		orderList.add(lblOrder4);
 		JPanel quiz4 = createImagePanel(208,165);
 		quiz4.setVisible(false);
 		add(quiz4);
@@ -132,6 +153,13 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 		lblName.setBounds(76,331, 100, 24);
 		lblName.setForeground(UIHelper.getDefaultFontColor());
 		return lblName;
+	}
+	
+	private JLabel getOrderLabel() {
+		JLabel lblPad = new JLabel("", JLabel.CENTER);
+		lblPad.setForeground(new Color(Integer.parseInt("FFFFFF", 16)));
+		lblPad.setOpaque(true);
+		return lblPad;
 	}
 	
 	private JLabel createScoreLabel(){
@@ -234,6 +262,10 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 
 	public JLabel getLblGroupName() {
 		return lblGroupName;
+	}
+
+	public List<JLabel> getOrderList() {
+		return orderList;
 	}
 
 	public List<JLabel> getQuizList() {
