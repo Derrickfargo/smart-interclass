@@ -47,6 +47,10 @@
 			<type>jar</type>
 			<scope>test</scope>
 		</dependency>
-		
+		<dependency>
+			<groupId>org.codehaus.plexus</groupId>
+			<artifactId>plexus-compiler-eclipse</artifactId>
+			<version>2.1</version>
+		</dependency>
 	</dependencies>
 </project>

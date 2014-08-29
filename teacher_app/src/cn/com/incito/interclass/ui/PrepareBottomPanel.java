@@ -15,6 +15,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import org.apache.log4j.Logger;
+
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
@@ -32,7 +34,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 	private JLabel lblExpected;
 	private JButton btnBegin, btnGroup;
 	private Application app = Application.getInstance();
-	
+	Logger logger =  Logger.getLogger(PrepareBottomPanel.class.getName());
 	public JLabel getLblExpected() {
 		return lblExpected;
 	}
@@ -190,6 +192,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_LOCK_SCREEN);
 		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString("true"));
 		CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
+		logger.info("锁屏信息发出");
 		
 		if (isOnClass) { 
 			btnBegin.setIcon(new ImageIcon("images/main/btn_end.png"));// 设置图片

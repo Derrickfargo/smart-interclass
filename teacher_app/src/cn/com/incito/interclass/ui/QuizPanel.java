@@ -97,6 +97,7 @@ public class QuizPanel extends JPanel {
 				panel.addImage(i, quiz);
 				JLabel lblName = quizList.get(i);
 				lblName.setText(quiz.getName());
+				//设置作业为排名  Application.getInstance().getQuizList().indexOf(quiz);
 			}
 		}
 	}
