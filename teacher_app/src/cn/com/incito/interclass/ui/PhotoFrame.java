@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -13,6 +14,7 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -20,6 +22,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 
 import cn.com.incito.interclass.po.Quiz;
 import cn.com.incito.server.api.Application;
@@ -54,21 +57,6 @@ public class PhotoFrame extends JFrame {
 		
 		photoDialog.setModal(true);
 		photoDialog.setVisible(true);
-		
-		addKeyListener(new KeyAdapter() {
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == 27){
-					JOptionPane.showMessageDialog(null, "开始退出1");
-					if(photoDialog != null){
-						photoDialog.dispose();
-					}
-					dispose();
-				}
-			}
-			
-		});
 	}
 	
 	public class PhotoDialog extends JDialog implements MouseListener{
@@ -229,21 +217,17 @@ public class PhotoFrame extends JFrame {
 			initData(url);
 			//根据当前位置加载数据
 			refresh();
-			
-			addKeyListener(new KeyAdapter() {
-
-				@Override
-				public void keyPressed(KeyEvent e) {
-					if(e.getKeyCode() == 27){
-						JOptionPane.showMessageDialog(null, "开始退出2");
-						dispose();
-						if(coverFrame != null){
-							coverFrame.dispose();
-						}
+			//按ESC退出
+			rootPane.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE , 0), "close");
+			rootPane.getActionMap().put("close", new AbstractAction() {
+				private static final long serialVersionUID = -7001796667148557833L;
+				public void actionPerformed(ActionEvent e) {
+					dispose();
+					if(coverFrame != null){
+						coverFrame.dispose();
 					}
 				}
-				
-			});
+			 });
 		}
 		
 		//设置背景

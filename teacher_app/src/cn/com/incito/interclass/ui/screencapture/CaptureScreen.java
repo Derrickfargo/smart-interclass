@@ -263,29 +263,16 @@ public class CaptureScreen {
 			this.height = height;
 			this.addMouseListener(this);
 			this.addMouseMotionListener(this);
-			final Toolkit toolkit = Toolkit.getDefaultToolkit();
-			toolkit.addAWTEventListener(new AWTEventListener() {
+			ContentPanel.this.jf.addKeyListener(new KeyAdapter() {
 				@Override
-				public void eventDispatched(AWTEvent e) {
-					if (e.getID() == KeyEvent.KEY_PRESSED) {
-						KeyEvent evt = (KeyEvent) e;
-						if (evt.getKeyCode() == KeyEvent.VK_ESCAPE) {
-							ContentPanel.this.jf.dispose();
-							updates();
-						}
+				public void keyReleased(KeyEvent e) {
+					super.keyReleased(e);
+					if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+						ContentPanel.this.jf.dispose();
+						updates();
 					}
 				}
-			}, AWTEvent.KEY_EVENT_MASK);
-			// this.addKeyListener(new KeyAdapter() {
-			// @Override
-			// public void keyReleased(KeyEvent e) {
-			// super.keyReleased(e);
-			// if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			// ContentPanel.this.jf.dispose();
-			// updates();
-			// }
-			// }
-			// });
+			});
 			Image icon = Toolkit.getDefaultToolkit().createImage(
 					SCREENSHOT_ICON);
 			cs = Toolkit.getDefaultToolkit().createCustomCursor(icon,
@@ -488,8 +475,8 @@ public class CaptureScreen {
 					endY = 0;
 					repaint();
 				} else {
-					jf.dispose();
 					updates();
+					jf.dispose();
 					isBarShow = false;
 				}
 
