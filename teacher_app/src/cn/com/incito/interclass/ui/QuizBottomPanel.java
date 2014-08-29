@@ -51,7 +51,6 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 	}
 
 	public void doSendQuiz(){
-		
 		int result = JOptionPane.showConfirmDialog(getParent().getParent(),
 				"是否截图发送作业？", "提示", JOptionPane.YES_NO_OPTION);
 		if(result==-1){
@@ -65,13 +64,21 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 			 CaptureScreen captureScreen = new CaptureScreen(this);
              captureScreen.doStart();
 		}else{
-		//TODO 发送白板
+			//TODO 发送白板
 			distributePaper();
 		}
+		Application app = Application.getInstance();
+		String message = String.format(Constants.MESSAGE_QUIZ, 0, app
+				.getClientChannel().size());
+		FloatIcon.getInstance().showQuizMessage(message);
 	}
 	
 	public void doAcceptQuiz(){
 		collectPaper();
+		showNoQuiz();
+	}
+	
+	public void showNoQuiz() {
 		Application.hasQuiz = false;
 		btnQuiz.setIcon(new ImageIcon(BTN_SEND_HOVER));
 		Application.operationState = Constants.STATE_GROUPING;
