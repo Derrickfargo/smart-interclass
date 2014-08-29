@@ -1,7 +1,9 @@
 package cn.com.incito.socket.handler;
 
+import cn.com.incito.classroom.ui.activity.DrawBoxActivity;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;
+import cn.com.incito.wisdom.sdk.log.WLog;
 
 import com.alibaba.fastjson.JSONObject;
 /**
@@ -19,8 +21,10 @@ public class DeviceHasBindHandler extends MessageHandler {
 		UIHelper uiHelper = UIHelper.getInstance();
 		if (jsonObject.getBoolean("isbind")) {
 			uiHelper.showWaitingActivity();
+			WLog.i(DeviceBindHandler.class, "已绑定设备，进入等待界面...");
 		} else {
 			uiHelper.showBindDeskActivity();
+			WLog.i(DeviceBindHandler.class, "未绑定设备，进入绑定界面...");
 		}
 	}
 

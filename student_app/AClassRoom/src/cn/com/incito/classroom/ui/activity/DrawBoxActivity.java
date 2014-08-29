@@ -15,6 +15,7 @@ import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
+import cn.com.incito.wisdom.sdk.log.WLog;
 import cn.com.incito.wisdom.sdk.utils.BitmapUtils;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -508,6 +509,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		messagePacking.putBodyData(DataType.INT,
 				BitmapUtils.bmpToByteArray(getBitMap(), true));
 		CoreSocket.getInstance().sendMessage(messagePacking);
+		WLog.i(DrawBoxActivity.class, "启动作业提交...");
 		MyApplication.getInstance().setSubmitPaper(true);
 		this.finish();
 	}

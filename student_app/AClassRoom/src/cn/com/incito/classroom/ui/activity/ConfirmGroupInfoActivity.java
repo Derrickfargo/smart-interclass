@@ -16,7 +16,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
-
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.ui.widget.HorizontalListView;
@@ -24,9 +23,11 @@ import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.classroom.adapter.HorizontalListViewAdapter;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
+import cn.com.incito.socket.handler.GroupEditHandler;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
+import cn.com.incito.wisdom.sdk.log.WLog;
 
 
 /**
@@ -88,6 +89,7 @@ public class ConfirmGroupInfoActivity extends BaseActivity implements View.OnCli
         MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_VOTE);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json.toJSONString()));
         CoreSocket.getInstance().sendMessage(messagePacking);
+        WLog.i(ConfirmGroupInfoActivity.class, "启动分组确认...");
         if (id == R.id.btn_agree) {
             mWaitingStudentTip.setText(R.string.waiting_other_confirm_tip);
         }
