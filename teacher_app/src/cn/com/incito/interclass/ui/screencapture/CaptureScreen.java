@@ -22,7 +22,10 @@ import java.util.UUID;
 
 import javax.imageio.*;
 
+import org.apache.log4j.Logger;
+
 import cn.com.incito.interclass.constant.Constants;
+import cn.com.incito.interclass.ui.PrepareBottomPanel;
 import sun.security.provider.Sun;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.CoreSocket;
@@ -39,6 +42,7 @@ import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import java.awt.image.*;
 
 public class CaptureScreen {
+	Logger logger =  Logger.getLogger(CaptureScreen.class.getName());
 
 	private JPanel c;
 
@@ -90,6 +94,7 @@ public class CaptureScreen {
 			Application.operationState = Constants.STATE_QUIZING;
 			Application.getInstance().getTempQuiz().clear();
 			Application.getInstance().getQuizList().clear();
+			logger.info("截图作业已经发出");
 		} else {
 			JOptionPane.showMessageDialog(jFrame, "没有学生登录，无法进行随堂练习");
 		}
