@@ -7,13 +7,14 @@ import cn.com.incito.classroom.widget.canvas.Action;
 import cn.com.incito.classroom.widget.canvas.ISketchPadTool;
 
 /**
- * 常量文件
- * Created by popoy on 2014/7/28.
+ * 常量文件 Created by popoy on 2014/7/28.
  */
 public class Constants {
 	public static final boolean LOG_OPEN = true;
-    public static final int PORT = 9001;
-    public static final String IP = "192.168.30.7";
+	public static final boolean OPEN_LOCK_SCREEN = true;
+	public static final boolean UNCATCHED_EXCEPION_HANLED = false;
+	public static final int PORT = 9001;
+	public static final String IP = "192.168.30.186";
 
 	/** WisdomCityRestClient 访问API是否输出日志 */
 	public static final boolean REST_CLIENT_LOG_SENABLE_LOGGING = true;
@@ -33,8 +34,8 @@ public class Constants {
 	public final static int LARGE_PEN_WIDTH = 15;
 	public final static int MIDDLE_PEN_WIDTH = 10;
 	public final static int SMALL_PEN_WIDTH = 5;
-	//注册学生最大数量
-    public static final int STUDENT_MAX_NUM=15;
-    //
-    public static final boolean OPEN_LOCK_SCREEN=true;
+	// 注册学生最大数量
+	public static final int STUDENT_MAX_NUM = 15;
+	//
+
 }
