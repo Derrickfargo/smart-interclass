@@ -54,16 +54,19 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		lblExpected.setForeground(UIHelper.getDefaultFontColor());
 		lblExpected.setBounds(10, 15, 150, 35);
 		add(lblExpected);
+		lblExpected.setVisible(false);
 		
 		ImageIcon iconClass = new ImageIcon("images/main/btn_gray.png");
 		JLabel lblClass = new JLabel("", JLabel.CENTER);
 		lblClass.setText(app.getClasses().getName());
 		lblClass.setForeground(UIHelper.getDefaultFontColor());
 		add(lblClass);
+		lblClass.setVisible(false);
 		lblClass.setBounds(180, 0, iconClass.getIconWidth(), iconClass.getIconHeight() - 4);
 		JLabel lblClassBackground = new JLabel();
 		lblClassBackground.setIcon(iconClass);
 		add(lblClassBackground);
+		lblClassBackground.setVisible(false);
 		lblClassBackground.setBounds(180, -4, iconClass.getIconWidth(), iconClass.getIconHeight());
 		
 		ImageIcon iconCourse = new ImageIcon("images/main/btn_gray.png");
@@ -71,10 +74,12 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		lblCourse.setText(app.getCourse().getName());
 		lblCourse.setForeground(UIHelper.getDefaultFontColor());
 		add(lblCourse);
+		lblCourse.setVisible(false);
 		lblCourse.setBounds(340, 0, iconCourse.getIconWidth(), iconCourse.getIconHeight() -4 );
 		JLabel lblCourseBackground = new JLabel();
 		lblCourseBackground.setIcon(iconCourse);
 		add(lblCourseBackground);
+		lblCourseBackground.setVisible(false);
 		lblCourseBackground.setBounds(340, -4, iconCourse.getIconWidth(), iconCourse.getIconHeight());
 
 		btnGroup = new JButton();// 创建按钮对象
@@ -86,6 +91,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		add(btnGroup);// 添加按钮
 		btnGroup.setBounds(500, -4, iconGroup.getIconWidth(), iconGroup.getIconHeight());
 		btnGroup.addMouseListener(this);
+		btnGroup.setVisible(false);
 		
 		btnBegin = new JButton();// 创建按钮对象
 		btnBegin.setFocusPainted(false);
@@ -96,6 +102,18 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		add(btnBegin);// 添加按钮
 		btnBegin.setBounds(660, -4, btnImage.getIconWidth(), btnImage.getIconHeight());
 		btnBegin.addMouseListener(this);
+		btnBegin.setVisible(false);
+		
+		List<Table> tables = app.getTableList();
+		if (tables.size() != 0) {
+			lblExpected.setVisible(true);
+			lblClass.setVisible(true);
+			lblClassBackground.setVisible(true);
+			lblCourse.setVisible(true);
+			lblCourseBackground.setVisible(true);
+			btnGroup.setVisible(true);
+			btnBegin.setVisible(true);
+		}
 	}
 	
 	private void doBegin() {
