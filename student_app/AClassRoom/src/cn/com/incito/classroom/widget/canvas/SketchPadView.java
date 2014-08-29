@@ -27,40 +27,63 @@ import android.view.View;
  * are drawing real time. When touch up event is occurring, we draw the path to
  * a bitmap which is hold by a canvas, and then draw the bitmap to canvas to
  * display these strokes to user.
- * 
- *
  */
 public class SketchPadView extends View implements IUndoCommand {
+
 	public static final int STROKE_NONE = 0;
+
 	public static final int STROKE_PEN = 1;
+
 	public static final int STROKE_ERASER = 2;
+
 	public static final int UNDO_SIZE = 20;
 
 	private boolean m_isEnableDraw = true;
+
 	private boolean m_isDirty = false;
+
 	private boolean m_isTouchUp = false;
+
 	private boolean m_isSetForeBmp = false;
+
 	private int m_bkColor = Color.WHITE;
 
 	private int m_strokeType = STROKE_PEN;
+
 	private int m_strokeColor = Color.BLACK;
+
 	private int m_penSize = Constants.MIDDLE_PEN_WIDTH;
+
 	private int m_eraserSize = Constants.MIDDLE_PEN_WIDTH;
+
 	private int m_canvasWidth = 100;
+
 	private int m_canvasHeight = 100;
+
 	private boolean m_canClear = true;
 
 	private Paint m_bitmapPaint = null;
+
 	private Bitmap m_foreBitmap = null;
+
 	private SketchPadUndoStack m_undoStack = null;
+
 	private Bitmap m_tempForeBitmap = null;
+
 	private Bitmap m_bkBitmap;
+
 	private Canvas m_canvas = null;
+
 	private ISketchPadTool m_curTool = null;
+
 	private ISketchPadCallback m_callback = null;
+
 	private boolean isfirst = false;
+
 	private Context context;
+
 	private RectF mImgDesRect;
+
 	private Paint paint;
 
 	public SketchPadView(Context context) {
@@ -71,8 +94,7 @@ public class SketchPadView extends View implements IUndoCommand {
 		super(context, attrs);
 		this.context = context;
 		isfirst = true;
-		Bitmap bitmap = BitmapFactory.decodeResource(getResources(),
-				R.drawable.bg);
+		Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bg);
 		m_bkBitmap = bitmap;
 		initialize();
 	}
@@ -126,7 +148,6 @@ public class SketchPadView extends View implements IUndoCommand {
 	public Bitmap getForeBitmap() {
 		return m_foreBitmap;
 	}
-
 
 	public Bitmap getBkBitmap() {
 		return m_bkBitmap;
@@ -196,8 +217,7 @@ public class SketchPadView extends View implements IUndoCommand {
 		Bitmap bmp = getDrawingCache(true);
 
 		if (null == bmp) {
-			android.util.Log.d("leehong2",
-					"getCanvasSnapshot getDrawingCache == null");
+			android.util.Log.d("leehong2", "getCanvasSnapshot getDrawingCache == null");
 		}
 
 		return BitmapUtil.duplicateBitmap(bmp);
@@ -348,15 +368,17 @@ public class SketchPadView extends View implements IUndoCommand {
 	protected void onDraw(Canvas canvas) {
 		// Draw background color.
 		canvas.drawColor(m_bkColor);
-
-		canvas.drawBitmap(m_bkBitmap, 0, 0, null);
-		// Draw background bitmap.
-		if (null != m_bkBitmap) {
-			RectF dst = new RectF(getLeft(), getTop(), m_bkBitmap.getWidth(), m_bkBitmap.getHeight());
-			Rect rst = new Rect(0, 0, m_bkBitmap.getWidth(),
-					m_bkBitmap.getHeight());
-			canvas.drawBitmap(m_bkBitmap, rst, dst, m_bitmapPaint);
+		if (m_bkBitmap.getWidth() < 1280 && m_bkBitmap.getHeight() < 800) {
+			canvas.drawBitmap(m_bkBitmap, 640-m_bkBitmap.getWidth()/2, 400-m_bkBitmap.getHeight()/2, null);
+		} else {
+			canvas.drawBitmap(m_bkBitmap, 0, 0, null);
 		}
+		// Draw background bitmap.
+//		if (null != m_bkBitmap) {
+//			Rect dst = new Rect(getLeft(), getTop(), m_bkBitmap.getWidth(), m_bkBitmap.getHeight());
+//			Rect rst = new Rect(0, 0, m_bkBitmap.getWidth(), m_bkBitmap.getHeight());
+//			canvas.drawBitmap(m_bkBitmap, rst, dst, m_bitmapPaint);
+//		}
 		//
 		if (null != m_foreBitmap) {
 			canvas.drawBitmap(m_foreBitmap, 0, 0, m_bitmapPaint);
@@ -464,8 +486,7 @@ public class SketchPadView extends View implements IUndoCommand {
 	protected void createStrokeBitmap(int w, int h) {
 		m_canvasWidth = w;
 		m_canvasHeight = h;
-		Bitmap bitmap = Bitmap.createBitmap(m_canvasWidth, m_canvasHeight,
-				Bitmap.Config.ARGB_8888);
+		Bitmap bitmap = Bitmap.createBitmap(m_canvasWidth, m_canvasHeight, Bitmap.Config.ARGB_8888);
 		// Bitmap bitmap = null;
 		// try {
 		// bitmap =
@@ -482,10 +503,15 @@ public class SketchPadView extends View implements IUndoCommand {
 	}
 
 	public class SketchPadUndoStack {
+
 		private int m_stackSize = 0;
+
 		private SketchPadView m_sketchPad = null;
+
 		private ArrayList<ISketchPadTool> m_undoStack = new ArrayList<ISketchPadTool>();
+
 		private ArrayList<ISketchPadTool> m_redoStack = new ArrayList<ISketchPadTool>();
+
 		private ArrayList<ISketchPadTool> m_removedStack = new ArrayList<ISketchPadTool>();
 
 		public SketchPadUndoStack(SketchPadView sketchPad, int stackSize) {
@@ -523,8 +549,7 @@ public class SketchPadView extends View implements IUndoCommand {
 
 		public void undo() {
 			if (canUndo() && null != m_sketchPad) {
-				ISketchPadTool removedTool = m_undoStack
-						.get(m_undoStack.size() - 1);
+				ISketchPadTool removedTool = m_undoStack.get(m_undoStack.size() - 1);
 				m_redoStack.add(removedTool);
 				m_undoStack.remove(m_undoStack.size() - 1);
 
@@ -533,8 +558,7 @@ public class SketchPadView extends View implements IUndoCommand {
 					m_sketchPad.setTempForeBitmap(m_sketchPad.m_tempForeBitmap);
 				} else {
 					// Create a new bitmap and set to canvas.
-					m_sketchPad.createStrokeBitmap(m_sketchPad.m_canvasWidth,
-							m_sketchPad.m_canvasHeight);
+					m_sketchPad.createStrokeBitmap(m_sketchPad.m_canvasWidth, m_sketchPad.m_canvasHeight);
 				}
 
 				Canvas canvas = m_sketchPad.m_canvas;
@@ -571,8 +595,7 @@ public class SketchPadView extends View implements IUndoCommand {
 					m_sketchPad.setTempForeBitmap(m_sketchPad.m_tempForeBitmap);
 				} else {
 					// Create a new bitmap and set to canvas.
-					m_sketchPad.createStrokeBitmap(m_sketchPad.m_canvasWidth,
-							m_sketchPad.m_canvasHeight);
+					m_sketchPad.createStrokeBitmap(m_sketchPad.m_canvasWidth, m_sketchPad.m_canvasHeight);
 				}
 
 				Canvas canvas = m_sketchPad.m_canvas;
@@ -602,8 +625,7 @@ public class SketchPadView extends View implements IUndoCommand {
 					m_sketchPad.setTempForeBitmap(m_sketchPad.m_tempForeBitmap);
 				} else {
 					// Create a new bitmap and set to canvas.
-					m_sketchPad.createStrokeBitmap(m_sketchPad.m_canvasWidth,
-							m_sketchPad.m_canvasHeight);
+					m_sketchPad.createStrokeBitmap(m_sketchPad.m_canvasWidth, m_sketchPad.m_canvasHeight);
 				}
 
 				Canvas canvas = m_sketchPad.m_canvas;
@@ -630,6 +652,7 @@ public class SketchPadView extends View implements IUndoCommand {
 		}
 
 	}
+
 	public void setBkBitmap(Bitmap bmp) {
 		if (m_bkBitmap != bmp) {
 			m_bkBitmap = bmp;
