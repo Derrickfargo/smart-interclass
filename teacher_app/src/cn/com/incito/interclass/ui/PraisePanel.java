@@ -101,6 +101,9 @@ public class PraisePanel extends JPanel {
 		panel.getLblScore().setText(String.valueOf(score));
 	}
 
+	/**
+	 * 初始化数据
+	 */
 	private void initData() {
 		groupList = new ArrayList<Group>();
 		// 课桌绑定分组，生成内存模型
@@ -115,14 +118,13 @@ public class PraisePanel extends JPanel {
 			group.setTableNumber(table.getNumber());
 			group.setDevices(table.getDevices());
 			groupList.add(group);
-			Collections.sort(groupList, new Comparator<Group>() {
-
-				@Override
-				public int compare(Group o1, Group o2) {
-					return o2.getScore() - o1.getScore();
-				}
-			});
 		}
+		Collections.sort(groupList, new Comparator<Group>() {
+			@Override
+			public int compare(Group o1, Group o2) {
+				return o2.getScore() - o1.getScore();
+			}
+		});
 	}
 
 }
