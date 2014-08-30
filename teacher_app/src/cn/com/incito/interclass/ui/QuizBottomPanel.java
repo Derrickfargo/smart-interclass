@@ -163,7 +163,6 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
      * @throws ImageFormatException
      */
     public void distributePaper() {
-    	if(Application.getInstance().getOnlineStudent().size()>0){
         MessagePacking messagePacking = new MessagePacking(
                 Message.MESSAGE_DISTRIBUTE_PAPER);
         String uuid = UUID.randomUUID().toString();
@@ -173,8 +172,5 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
         CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
         Application.operationState= Constants.STATE_QUIZING;
         Application.getInstance().getTempQuiz().clear();
-    	}else{
-    		JOptionPane.showMessageDialog(this, "没有学生登录，无法进行随堂练习");
-    	}
     }
 }
