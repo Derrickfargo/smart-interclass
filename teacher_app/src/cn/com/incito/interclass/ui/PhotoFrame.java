@@ -7,7 +7,6 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -20,7 +19,6 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
@@ -182,6 +180,7 @@ public class PhotoFrame extends JFrame {
 	        add(pnlImage);
 	        lblImage = new JLabel();
 	        lblImage.setBounds(1, 1, 865, 540);
+	        lblImage.setHorizontalAlignment(JLabel.CENTER);
 	        pnlImage.add(lblImage);
 	        
 	        int x = 56;

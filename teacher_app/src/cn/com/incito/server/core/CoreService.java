@@ -313,6 +313,7 @@ public class CoreService {
 			FileImageOutputStream imageOutput = new FileImageOutputStream(file);
 			imageOutput.write(imageByte, 0, imageByte.length);
 			imageOutput.close();
+			ImageUtil.resize(file, file, 865, 1f);
 			ImageUtil.resize(file, thumbnail, 186, 1f);
 		} catch (IOException e) {
 			e.printStackTrace();

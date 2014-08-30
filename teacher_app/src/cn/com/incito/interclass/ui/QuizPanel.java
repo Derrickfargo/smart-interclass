@@ -118,7 +118,9 @@ public class QuizPanel extends JPanel {
 						name.append(",");
 					}
 				}
-				lblName.setText(name.deleteCharAt(name.length() - 1).toString());
+				if(name.length() != 0){
+					lblName.setText(name.deleteCharAt(name.length() - 1).toString());
+				}
 				//设置作业为排名
 				JLabel lblOrder = orderList.get(i);
 				lblOrder.setVisible(true);
