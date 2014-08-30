@@ -5,16 +5,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Quiz;
+import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
-import cn.com.incito.server.utils.LogoUtils;
 
 /**
  * 任务缩略图列表面板
@@ -98,7 +97,15 @@ public class QuizPanel extends JPanel {
 			if (quiz != null) {
 				panel.addImage(i, quiz);
 				JLabel lblName = quizList.get(i);
-				lblName.setText(quiz.getName());
+				StringBuffer name = new StringBuffer();
+				List<Student> students = app.getStudentByImei(imei);
+				if (students != null) {
+					for (Student student : students) {
+						name.append(student.getName());
+						name.append(",");
+					}
+				}
+				lblName.setText(name.deleteCharAt(name.length() - 1).toString());
 				//设置作业为排名
 				JLabel lblOrder = orderList.get(i);
 				lblOrder.setVisible(true);
