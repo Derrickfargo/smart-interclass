@@ -12,7 +12,7 @@ public class HeartbeatHandler extends MessageHandler {
 	@Override
 	protected void handleMessage() {
 		//收到心跳回复
-		Log.d("HeartbeatHandler", "收到心跳回复!");
+		Log.d("HeartbeatHandler", "收到服务端心跳包!");
 		ConnectionManager.getInstance(message.getChannel()).heartbeat();
 	}
 

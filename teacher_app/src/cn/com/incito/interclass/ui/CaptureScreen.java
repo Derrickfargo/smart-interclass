@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package cn.com.incito.interclass.ui.screencapture;
+package cn.com.incito.interclass.ui;
 
 /**
  *
@@ -28,7 +28,6 @@ import javax.imageio.*;
 import org.apache.log4j.Logger;
 
 import cn.com.incito.interclass.constant.Constants;
-import cn.com.incito.interclass.ui.PrepareBottomPanel;
 import sun.security.provider.Sun;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.CoreSocket;

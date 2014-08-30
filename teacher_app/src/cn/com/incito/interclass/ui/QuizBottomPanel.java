@@ -12,7 +12,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import cn.com.incito.interclass.constant.Constants;
-import cn.com.incito.interclass.ui.screencapture.CaptureScreen;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.CoreSocket;
 import cn.com.incito.server.core.Message;
