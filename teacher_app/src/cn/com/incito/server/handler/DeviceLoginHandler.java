@@ -11,11 +11,12 @@ import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
+import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
-import cn.com.incito.server.utils.JSONUtils;
+import cn.com.incito.server.utils.BufferUtils;
 
 /**
- * 握手消息处理器
+ * 设备登陆消息处理器
  * 
  * @author 刘世平
  * 
@@ -42,10 +43,10 @@ public class DeviceLoginHandler extends MessageHandler {
         		}
         	}
         }
-        
 		
-		//回复握手消息
+		//回复设备登陆消息
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_HAND_SHAKE);
+		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(data.toJSONString()));
 		byte[] handShakResponse = messagePacking.pack().array();
         ByteBuffer buffer = ByteBuffer.allocate(handShakResponse.length);
         buffer.put(handShakResponse);

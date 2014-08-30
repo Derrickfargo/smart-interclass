@@ -2,12 +2,10 @@ package cn.com.incito.classroom.base;
 
 import java.util.Stack;
 
-import cn.com.incito.common.utils.UIHelper;
-import cn.com.incito.socket.core.CoreSocket;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
-import android.content.Intent;
+import cn.com.incito.socket.core.CoreSocket;
 
 /**
  * 应用程序Activity管理类

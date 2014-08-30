@@ -3,6 +3,8 @@ package cn.com.incito.server.core;
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
 
+import org.apache.log4j.Logger;
+
 import cn.com.incito.server.api.Application;
 
 /**
@@ -12,10 +14,9 @@ import cn.com.incito.server.api.Application;
  * 
  */
 public class Connection {
-	/**
-	 * 心跳扫描周期（单位：毫秒）
-	 */
-	private volatile static long activeCycle = 30000;
+	private final static long TIMEOUT = 30000;//超时时间
+	private final static long SCAN_CYCLE = 10000;//心跳扫描周期10s
+	private final static Logger log = Logger.getLogger(Connection.class);
 	private String imei;
 	private SocketChannel channel;
 	private long lastActTime = 0;
@@ -24,38 +25,70 @@ public class Connection {
 	Connection(String imei, SocketChannel channel) {
 		this.imei = imei;
 		this.channel = channel;
+		lastActTime = System.currentTimeMillis();
 		monitor = new ConnectActiveMonitor();
 		monitor.start();
 	}
 
-	public synchronized void close() throws IOException {
+	/**
+	 * 最后一次心跳时间
+	 */
+	public void heartbeat(){
 		lastActTime = System.currentTimeMillis();
-		ConnectionManager.removeConnection(imei);
-		if (channel != null && channel.isConnected()){
-			channel.close();
-		}
-		//TODO remove cache...
-		Application app = Application.getInstance();
-		
-	}
-
-	public synchronized long getLastActTime() {
-		return lastActTime;
 	}
 	
+	public synchronized void close() {
+		//停止检测心跳
+		monitor.setRunning(false);
+		Application app = Application.getInstance();
+		SocketChannel sc = app.getClientChannel().remove(imei);
+		// TODO 测试代码
+		if (sc != channel) {
+			log.debug("关闭连接");
+			if (sc != null && sc.isConnected()) {
+				try {
+					sc.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		if (channel != null && channel.isConnected()) {
+			try {
+				channel.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public String getImei() {
+		return imei;
+	}
+
+	public SocketChannel getChannel() {
+		return channel;
+	}
+
 	class ConnectActiveMonitor extends Thread {
 		private volatile boolean isRunning = true;
 
 		public void run() {
 			while (isRunning) {
+				try {
+					Thread.sleep(SCAN_CYCLE);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 				long time = System.currentTimeMillis();
-				if (getLastActTime() + activeCycle < time) {
-					
+				if (time - lastActTime > TIMEOUT) {
+					close();
+					break;
 				}
 			}
 		}
 
-		void setRunning(boolean isRunning) {
+		public void setRunning(boolean isRunning) {
 			this.isRunning = isRunning;
 		}
 	}

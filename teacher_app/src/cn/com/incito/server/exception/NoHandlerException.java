@@ -1,6 +1,6 @@
 package cn.com.incito.server.exception;
 
-public class NoHandlerException extends Exception{
+public class NoHandlerException extends RuntimeException{
     private static final long serialVersionUID = 1L;
     
     /**

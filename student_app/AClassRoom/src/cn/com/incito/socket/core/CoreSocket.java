@@ -7,8 +7,6 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
@@ -25,12 +23,7 @@ import com.alibaba.fastjson.JSONObject;
  */
 public final class CoreSocket extends Thread {
     private static CoreSocket instance = null;
-    private static final int TIME_OUT = 300;
-    private static final int ACT_TIME = 10 * 1000;//10秒钟心跳一次
-    private static final int RECONN_TIME = 3 * 1000;//间隔3秒重连
     private boolean isRunning = false;
-    private TimerTask actTask;
-    private TimerTask restart;
     private Selector selector;
     private SocketChannel channel;
     
@@ -51,8 +44,6 @@ public final class CoreSocket extends Thread {
 			try {
 				if (channel.isConnectionPending()) {
 					channel.finishConnect();
-					// 启动心跳
-					startHeartBeatThread();
 					// 发送设备登陆消息
 					sendDeviceLoginMessage();
 				}
@@ -66,52 +57,7 @@ public final class CoreSocket extends Thread {
         }
     }
     
-    //开启心跳线程
-    public void startHeartBeatThread() {
-		if (actTask != null) {
-			return;
-		}
-    	actTask = new TimerTask() {
-			@Override
-			public void run() {
-				MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_HEART_BEAT);
-		        JSONObject jsonObject = new JSONObject();
-		        jsonObject.put("imei", MyApplication.deviceId);
-		        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
-		        byte[] actData = messagePacking.pack().array();
-		        ByteBuffer buffer = ByteBuffer.allocate(actData.length);
-		        buffer.put(actData);
-		        buffer.flip();
-		        try {
-					channel.write(buffer);
-				} catch (IOException e) {
-					restart();
-				}
-			}
-		};
-		new Timer().schedule(actTask, ACT_TIME, ACT_TIME);
-	}
-    
-    //心跳自动重连机制
-    private void restart(){
-		isRunning = false;
-		if (restart != null) {
-			restart.cancel();
-		}
-		restart = new TimerTask() {
-			
-			@Override
-			public void run() {
-				if (actTask != null) {
-					actTask.cancel();
-				}
-				CoreSocket.this.start();
-			}
-		};
-		new Timer().schedule(restart, RECONN_TIME);
-    }
-    
-    //TODO 该方法  发送握手消息至服务器
+    //发送设备登陆消息至服务器
     private void sendDeviceLoginMessage() throws IOException{
         MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_HAND_SHAKE);
         JSONObject jsonObject = new JSONObject();
@@ -137,7 +83,9 @@ public final class CoreSocket extends Thread {
                 buffer.put(message);
                 buffer.flip();
                 try {
-                    channel.write(buffer);
+                	if(channel != null && channel.isConnected()) {
+                		channel.write(buffer);
+                	}
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -159,8 +107,10 @@ public final class CoreSocket extends Thread {
 					buffer.put(logoutData);
 					buffer.flip();
 					try {
-						channel.write(buffer);
-						channel.close();
+						if(channel.isConnected()){
+							channel.write(buffer);
+							channel.close();
+						}
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -188,7 +138,7 @@ public final class CoreSocket extends Thread {
                 keySet.clear();
             }
         } catch (IOException e) {
-            restart();
+        	e.printStackTrace();
         }
     }
 

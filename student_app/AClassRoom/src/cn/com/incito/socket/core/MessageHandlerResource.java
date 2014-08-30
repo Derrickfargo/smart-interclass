@@ -3,6 +3,7 @@ package cn.com.incito.socket.core;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.com.incito.socket.handler.DeviceLoginHandler;
 import cn.com.incito.socket.handler.LockScreenHandler;
 import cn.com.incito.socket.handler.SavePaperResultHandler;
 import cn.com.incito.socket.handler.VoteGroupInfoHandler;
@@ -37,6 +38,8 @@ public final class MessageHandlerResource {
 
     private MessageHandlerResource() {
         handlerResources = new HashMap<Byte, Class<? extends MessageHandler>>();
+        //设备登陆消息回复，用于启动心跳
+        handlerResources.put(Message.MESSAGE_HAND_SHAKE, DeviceLoginHandler.class);
         //心跳消息
         handlerResources.put(Message.MESSAGE_HEART_BEAT, HeartbeatHandler.class);
         //获取分组消息
@@ -49,8 +52,6 @@ public final class MessageHandlerResource {
         handlerResources.put(Message.MESSAGE_DEVICE_BIND, DeviceBindHandler.class);
         //编辑小组信息
         handlerResources.put(Message.MESSAGE_GROUP_EDIT, GroupEditHandler.class);
-        //编辑小组信息
-//		handlerResources.put(Message.MESSAGE_GROUP_CONFIRM, GroupConfirmHandler.class);
         //确认小组信息
         handlerResources.put(Message.MESSAGE_GROUP_VOTE, VoteGroupInfoHandler.class);
         //提交小组信息

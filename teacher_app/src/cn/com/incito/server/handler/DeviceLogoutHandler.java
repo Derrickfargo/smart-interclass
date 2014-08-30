@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.server.api.Application;
+import cn.com.incito.server.core.ConnectionManager;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
 import cn.com.incito.server.message.DataType;
@@ -39,10 +40,14 @@ public class DeviceLogoutHandler extends MessageHandler {
 		json.put("data", group);
 		sendResponse(json.toJSONString(), channels);
 		
+		//设备退出，心跳检测终止
+		ConnectionManager.stopMonitor(imei);
 		SocketChannel channel = message.getChannel();
 		if (channel != null) {
 			try {
-				channel.close();
+				if (channel != null) {
+					channel.close();
+				}
 			} catch (IOException e) {
 				
 			}

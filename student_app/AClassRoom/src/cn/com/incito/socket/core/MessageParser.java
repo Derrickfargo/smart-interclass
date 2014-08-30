@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
-import java.text.ParseException;
 
 import cn.com.incito.socket.utils.BufferUtils;
 import cn.com.incito.wisdom.sdk.log.WLog;
@@ -26,11 +25,11 @@ public class MessageParser {
      */
     private static final int HEADER_LENGTH = 7;
 
-    private Message messageInfo;
+    private Message message;
     private SocketChannel channel = null;
 
     public void bindHandler(MessageHandler messageHandler) {
-        messageInfo.setHandler(messageHandler);
+        message.setHandler(messageHandler);
     }
 
     /**
@@ -59,14 +58,11 @@ public class MessageParser {
         if (parseFakeId(headerBuffer)) {
             // 获取消息头中有用的信息,msgId,msgSize
             parseMsgHeader(headerBuffer);
-            if (messageInfo.getMsgID() == Message.MESSAGE_HAND_SHAKE) {
-                WLog.i(MessageParser.class, "收到握手回复消息!");
-                return;
-            }
             // 解析消息体和命令
             if (parseMsgBody()) {
+            	message.setChannel(channel);
                 // 执行消息命令
-                messageInfo.executeMessage();
+                message.executeMessage();
             }
         }
     }
@@ -109,11 +105,11 @@ public class MessageParser {
      * @param buffer 消息体字节数组
      */
     private void parseMsgHeader(ByteBuffer buffer) {
-        messageInfo = new Message();
+        message = new Message();
         //获取消息id（1个byte）
-        messageInfo.setMsgID(buffer.get());
+        message.setMsgID(buffer.get());
         //获取消息体的长度（4个byte）
-        messageInfo.setMsgSize(buffer.getInt());
+        message.setMsgSize(buffer.getInt());
     }
 
     /**
@@ -123,12 +119,12 @@ public class MessageParser {
      * @return true，解析成功，false表示为其他类型包无需压入消息队列
      */
     private boolean parseMsgBody() {
-        int bodySize = messageInfo.getMsgSize();
+        int bodySize = message.getMsgSize();
         ByteBuffer bodyBuffer = BufferUtils.prepareToReadOrPut(bodySize);
         try {
             while (bodyBuffer.position() < bodyBuffer.capacity())
                 channel.read(bodyBuffer);
-            messageInfo.setBodyBuffer(bodyBuffer);
+            message.setBodyBuffer(bodyBuffer);
             return true;
         } catch (IOException e) {
             WLog.e(MessageParser.class, "failed to fetch message body :" + e.getMessage());

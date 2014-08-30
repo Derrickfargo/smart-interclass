@@ -3,6 +3,8 @@ package cn.com.incito.server.core;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
+import org.apache.log4j.Logger;
+
 import cn.com.incito.server.exception.NoHandlerException;
 
 /**
@@ -84,7 +86,7 @@ public class Message {
 	 */
 	public static final Byte MESSAGE_LOCK_SCREEN=0x0C;
 	
-	
+	private Logger log = Logger.getLogger(Message.class);
 	
 	private byte msgID;
 	private int msgSize;
@@ -128,6 +130,7 @@ public class Message {
 
 	public void handleMessage() throws NoHandlerException{
 		if (handler == null) {
+			log.error("执行命令出错：没有找到想应的Handler!");
 			throw new NoHandlerException();
 		}
 		handler.handleMessage(this);

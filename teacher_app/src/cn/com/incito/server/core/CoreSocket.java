@@ -92,7 +92,7 @@ public final class CoreSocket extends Thread {
 					handle(key);
 				}
 				selectionKeys.clear();// 清除处理过的事件
-			} catch (Exception e) {
+			} catch (IOException e) {
 				e.printStackTrace();
 				break;
 			}
