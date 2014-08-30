@@ -1,34 +1,26 @@
 package cn.com.incito.interclass.ui;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-
-import cn.com.incito.http.AsyncHttpConnection;
-import cn.com.incito.http.StringResponseHandler;
-import cn.com.incito.http.support.ParamsWrapper;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.utils.LogoUtils;
-import cn.com.incito.server.utils.URLs;
 
 public class PraisePanel extends JPanel {
 
 	private static final long serialVersionUID = 6316121486627261595L;
-
+	private static final String ICON_NO_DESK = "images/main/bg_binding_desk.png";
 	private Application app = Application.getInstance();
-
+	private JLabel lblNoDesk;
 	private List<Group> groupList = new ArrayList<Group>();
 
 	private List<PraiseGroupPanel> praiseGroupList = new ArrayList<PraiseGroupPanel>();
@@ -56,10 +48,21 @@ public class PraisePanel extends JPanel {
 			x = 15;
 			y += 265;
 		}
+		lblNoDesk = new JLabel();
+		ImageIcon icon = new ImageIcon(ICON_NO_DESK);
+		lblNoDesk.setIcon(icon);
+		lblNoDesk.setBounds(288, 235, 300, 160);
+		lblNoDesk.setVisible(false);
+		add(lblNoDesk);
 	}
 
 	public void refresh() {
 		initData();
+		if (groupList.size() == 0) {//未绑定 
+			lblNoDesk.setVisible(true);
+			return;
+		}
+		lblNoDesk.setVisible(false);
 		int i = 0;
 		while (i < groupList.size()) {
 			PraiseGroupPanel pnlLeft = praiseGroupList.get(i);

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -26,7 +27,8 @@ public class QuizPanel extends JPanel {
      *
      */
 	private static final long serialVersionUID = 6316121486627261595L;
-
+	private static final String ICON_NO_DESK = "images/main/bg_binding_desk.png";
+	private JLabel lblNoDesk;
 	private Application app = Application.getInstance();
 	/**
 	 * 当前教室所有试题，初始化界面时初始化本属性
@@ -60,10 +62,21 @@ public class QuizPanel extends JPanel {
 			i++;
 			y += 380;
 		}
+		lblNoDesk = new JLabel();
+		ImageIcon icon = new ImageIcon(ICON_NO_DESK);
+		lblNoDesk.setIcon(icon);
+		lblNoDesk.setBounds(288, 235, 300, 160);
+		lblNoDesk.setVisible(false);
+		add(lblNoDesk);
 	}
 
 	public void refresh() {
 		initData();
+		if (groupList.size() == 0) {//未绑定 
+			lblNoDesk.setVisible(true);
+			return;
+		}
+		lblNoDesk.setVisible(false);
 		int i = 0;
 		while (i < groupList.size()) {
 			QuizGroupPanel pnlLeft = quizGroupList.get(i);

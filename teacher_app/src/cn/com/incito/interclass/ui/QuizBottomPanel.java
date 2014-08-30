@@ -3,6 +3,7 @@ package cn.com.incito.interclass.ui;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 import javax.swing.ImageIcon;
@@ -12,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import cn.com.incito.interclass.constant.Constants;
+import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.CoreSocket;
 import cn.com.incito.server.core.Message;
@@ -45,8 +47,15 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 		ImageIcon btnImage = new ImageIcon(BTN_SEND_NORMAL);
 		btnQuiz.setIcon(btnImage);// 设置图片
 		add(btnQuiz);// 添加按钮
+		btnQuiz.setVisible(false);
 		btnQuiz.setBounds(360, -4, btnImage.getIconWidth(), btnImage.getIconHeight());
 		btnQuiz.addMouseListener(this);
+		
+		Application app = Application.getInstance();
+		List<Table> tables = app.getTableList();
+		if (tables.size() != 0) {
+			btnQuiz.setVisible(true);
+		}
 	}
 
 	public void doSendQuiz(){
