@@ -17,7 +17,7 @@ public class HeartbeatHandler extends MessageHandler {
 	 
 	@Override
 	public void handleMessage() {
-		logger.info("收到心跳消息");
+		logger.info("收到客户端心跳包");
 		String imei = data.getString("imei");
 		//通知心跳
 		ConnectionManager.notification(imei, message.getChannel());

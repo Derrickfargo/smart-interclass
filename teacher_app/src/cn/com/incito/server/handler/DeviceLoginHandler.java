@@ -28,7 +28,7 @@ public class DeviceLoginHandler extends MessageHandler {
 	@Override
 	public void handleMessage() {
 		imei = data.getString("imei");
-		logger.info("收到设备登陆消息，IMEI:" + imei);
+		logger.info("收到设备登陆消息，通讯建立成功，IMEI:" + imei);
 		service.deviceLogin(imei);
 		Application app = Application.getInstance();
 		app.addSocketChannel(imei, message.getChannel());
