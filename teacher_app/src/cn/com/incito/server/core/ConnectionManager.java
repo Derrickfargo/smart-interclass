@@ -28,10 +28,14 @@ public class ConnectionManager {
 	}
 	
 	public static void stopMonitor(String imei) {
-		Connection connection = pool.remove(imei);
+		Connection connection = removeConnection(imei);
 		if (connection != null) {
 			connection.close();
 		}
+	}
+	
+	static Connection removeConnection(String imei){
+		return pool.remove(imei);
 	}
 
 }

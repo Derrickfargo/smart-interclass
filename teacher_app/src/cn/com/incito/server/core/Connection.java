@@ -52,19 +52,8 @@ public class Connection {
 	public synchronized void close() {
 		//停止检测心跳
 		monitor.setRunning(false);
-		Application app = Application.getInstance();
-		SocketChannel sc = app.getClientChannel().remove(imei);
-		// TODO 测试代码
-		if (sc != channel) {
-			log.debug("关闭连接");
-			if (sc != null && sc.isConnected()) {
-				try {
-					sc.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+		ConnectionManager.removeConnection(imei);
+		Application.getInstance().getClientChannel().remove(imei);
 		if (channel != null && channel.isConnected()) {
 			try {
 				channel.close();
@@ -120,7 +109,7 @@ public class Connection {
 	        buffer.put(messageData);
 	        buffer.flip();
 			try {
-				if (channel.isConnected()) { 
+				if (this.channel != channel && channel.isConnected()) { 
 					channel.write(buffer);
 				}
 			} catch (IOException e) {
@@ -149,6 +138,7 @@ public class Connection {
 				}
 				long time = System.currentTimeMillis();
 				if (time - lastActTime > TIMEOUT) {
+					log.info("30秒内没有检测到心跳，设备退出!");
 					close();
 					break;
 				}

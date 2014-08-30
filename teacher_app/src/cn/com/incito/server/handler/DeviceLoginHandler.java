@@ -9,6 +9,7 @@ import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
+import cn.com.incito.server.core.ConnectionManager;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
 import cn.com.incito.server.message.DataType;
@@ -30,6 +31,7 @@ public class DeviceLoginHandler extends MessageHandler {
 		imei = data.getString("imei");
 		logger.info("收到设备登陆消息，通讯建立成功，IMEI:" + imei);
 		service.deviceLogin(imei);
+		ConnectionManager.notification(imei, message.getChannel());
 		Application app = Application.getInstance();
 		app.addSocketChannel(imei, message.getChannel());
 		Device device = app.getImeiDevice().get(imei);
