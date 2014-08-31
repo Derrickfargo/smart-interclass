@@ -1,5 +1,8 @@
 package cn.com.incito.classroom.service;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
@@ -12,7 +15,8 @@ import cn.com.incito.wisdom.sdk.log.WLog;
 public class SocketService extends Service {
 
 	public static final String NETWORK_RECEIVER = "cn.com.incito.network.RECEIVER";
-
+	private ExecutorService exec;
+	
 	@Override
 	public IBinder onBind(Intent arg0) {
 		return null;
@@ -21,7 +25,8 @@ public class SocketService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		CoreSocket.getInstance().start();
+		exec = Executors.newCachedThreadPool();
+		exec.execute(CoreSocket.getInstance());
 		WLog.i(SocketService.class, "socket started");
 	}
 
