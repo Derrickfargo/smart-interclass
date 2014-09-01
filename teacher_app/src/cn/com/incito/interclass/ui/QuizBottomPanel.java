@@ -50,7 +50,9 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 		btnQuiz.setVisible(false);
 		btnQuiz.setBounds(360, -4, btnImage.getIconWidth(), btnImage.getIconHeight());
 		btnQuiz.addMouseListener(this);
-		
+	}
+	
+	public void refresh(){
 		Application app = Application.getInstance();
 		List<Table> tables = app.getTableList();
 		if (tables.size() != 0) {

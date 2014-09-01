@@ -3,9 +3,6 @@ package cn.com.incito.server.core;
 import java.io.File;
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.imageio.stream.FileImageOutputStream;
@@ -331,8 +328,7 @@ public class CoreService {
 		quiz.setThumbnail(thumbnail.getAbsolutePath());
 		app.getTempQuiz().put(imei, quiz);
 		app.getQuizList().add(quiz);
-		app.getQuizList();
-		app.refreshQuiz();
+		app.refresh();
 		if (app.getQuizList().size() == app.getClientChannel().size()) {
 			FloatIcon.getInstance().showNoQuiz();
 			MainFrame.getInstance().showNoQuiz();

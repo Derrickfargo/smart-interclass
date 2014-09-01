@@ -33,7 +33,7 @@ import com.alibaba.fastjson.JSONObject;
 
 public class PrepareBottomPanel extends JPanel implements MouseListener{
 	private static final long serialVersionUID = -9135075807085951600L;
-	private JLabel lblExpected;
+	private JLabel lblExpected,lblClass,lblClassBackground,lblCourse,lblCourseBackground;
 	private JButton btnBegin, btnGroup;
 	private Application app = Application.getInstance();
 	Logger logger =  Logger.getLogger(PrepareBottomPanel.class.getName());
@@ -59,26 +59,26 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		lblExpected.setVisible(false);
 		
 		ImageIcon iconClass = new ImageIcon("images/main/btn_gray.png");
-		JLabel lblClass = new JLabel("", JLabel.CENTER);
+		lblClass = new JLabel("", JLabel.CENTER);
 		lblClass.setText(app.getClasses().getName());
 		lblClass.setForeground(UIHelper.getDefaultFontColor());
 		add(lblClass);
 		lblClass.setVisible(false);
 		lblClass.setBounds(180, 0, iconClass.getIconWidth(), iconClass.getIconHeight() - 4);
-		JLabel lblClassBackground = new JLabel();
+		lblClassBackground = new JLabel();
 		lblClassBackground.setIcon(iconClass);
 		add(lblClassBackground);
 		lblClassBackground.setVisible(false);
 		lblClassBackground.setBounds(180, -4, iconClass.getIconWidth(), iconClass.getIconHeight());
 		
 		ImageIcon iconCourse = new ImageIcon("images/main/btn_gray.png");
-		JLabel lblCourse = new JLabel("", JLabel.CENTER);
+		lblCourse = new JLabel("", JLabel.CENTER);
 		lblCourse.setText(app.getCourse().getName());
 		lblCourse.setForeground(UIHelper.getDefaultFontColor());
 		add(lblCourse);
 		lblCourse.setVisible(false);
 		lblCourse.setBounds(340, 0, iconCourse.getIconWidth(), iconCourse.getIconHeight() -4 );
-		JLabel lblCourseBackground = new JLabel();
+		lblCourseBackground = new JLabel();
 		lblCourseBackground.setIcon(iconCourse);
 		add(lblCourseBackground);
 		lblCourseBackground.setVisible(false);
@@ -105,7 +105,9 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		btnBegin.setBounds(660, -4, btnImage.getIconWidth(), btnImage.getIconHeight());
 		btnBegin.addMouseListener(this);
 		btnBegin.setVisible(false);
-		
+	}
+	
+	public void refresh(){
 		List<Table> tables = app.getTableList();
 		if (tables.size() != 0) {
 			lblExpected.setVisible(true);
@@ -117,7 +119,6 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 			btnBegin.setVisible(true);
 		}
 	}
-	
 	private void doBegin() {
 		if(app.getOnlineStudent().size() == 0){
 			JOptionPane.showMessageDialog(getParent().getParent(),
@@ -192,7 +193,9 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 
 	public void setOnClass(boolean isOnClass) {
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_LOCK_SCREEN);
-		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString("true"));
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("lockkey", "true");
+		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(JSON.toJSONString(map)));
 		CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
 		logger.info("锁屏信息发出");
 		

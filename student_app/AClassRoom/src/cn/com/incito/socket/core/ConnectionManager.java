@@ -28,6 +28,9 @@ public class ConnectionManager {
 	private HeartbeatGenerator generator;//用于产生心跳
 	
 	static ConnectionManager getInstance(){
+		if (instance == null) {
+			instance = new ConnectionManager(null);
+		}
 		return instance;
 	}
 	
@@ -168,7 +171,7 @@ public class ConnectionManager {
 
 	private void sleep(int seconds) {
 		try {
-			Thread.sleep(10000);
+			Thread.sleep(seconds);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

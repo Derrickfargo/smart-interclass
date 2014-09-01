@@ -14,13 +14,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.CookieStore;
 import java.net.URL;
-import java.nio.channels.SocketChannel;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -32,18 +26,14 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import cn.com.incito.http.AsyncHttpConnection;
-import cn.com.incito.http.ResponseCallback;
-import cn.com.incito.http.StringResponseHandler;
-import cn.com.incito.http.support.ParamsWrapper;
-import cn.com.incito.server.utils.Md5Utils;
-
 import org.apache.log4j.Logger;
 
-import cn.com.incito.server.api.ApiClient;
+import cn.com.incito.http.AsyncHttpConnection;
+import cn.com.incito.http.StringResponseHandler;
+import cn.com.incito.http.support.ParamsWrapper;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.api.result.TeacherLoginResultData;
-import cn.com.incito.server.exception.AppException;
+import cn.com.incito.server.utils.Md5Utils;
 import cn.com.incito.server.utils.NetworkUtils;
 import cn.com.incito.server.utils.UIHelper;
 import cn.com.incito.server.utils.URLs;
@@ -139,7 +129,7 @@ public class Login extends MouseAdapter {
 		frame.add(remind);// 添加按钮
 		remind.setBounds(30, 235, 150, 20);
 		remind.addMouseListener(this);
-		remind.setText("记住用户名和密码");
+		remind.setText("记住用户名");
 		remind.setForeground(UIHelper.getDefaultFontColor());
 
 		// 登录按钮
