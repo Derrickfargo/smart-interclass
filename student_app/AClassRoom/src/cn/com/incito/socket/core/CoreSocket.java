@@ -21,9 +21,10 @@ import com.alibaba.fastjson.JSONObject;
  *
  * @author 刘世平
  */
-public final class CoreSocket extends Thread {
+public final class CoreSocket implements Runnable {
     private static CoreSocket instance = null;
     private boolean isRunning = false;
+    private boolean isConnected = false;
     private Selector selector;
     private SocketChannel channel;
     
@@ -38,7 +39,11 @@ public final class CoreSocket extends Thread {
 
     }
 
-    private void handle(SelectionKey selectionKey) {
+    public boolean isConnected() {
+		return isConnected;
+	}
+
+	private void handle(SelectionKey selectionKey) {
         if (selectionKey.isConnectable()) {//连接建立事件，已成功连接至服务器
 			channel = (SocketChannel) selectionKey.channel();
 			try {
@@ -47,8 +52,10 @@ public final class CoreSocket extends Thread {
 					// 发送设备登陆消息
 					sendDeviceLoginMessage();
 				}
+				isConnected = true;
  				channel.register(selector, SelectionKey.OP_READ);// 注册读事件
 			} catch (IOException e) {
+				isConnected = false;
 				e.printStackTrace();
 			}
         } else if (selectionKey.isReadable()) {// 若为可读的事件，则进行消息解析
@@ -109,7 +116,8 @@ public final class CoreSocket extends Thread {
 					try {
 						if(channel.isConnected()){
 							channel.write(buffer);
-							channel.close();
+							ConnectionManager.getInstance().close(true);
+//							channel.close();
 						}
 					} catch (IOException e) {
 						e.printStackTrace();
@@ -119,6 +127,10 @@ public final class CoreSocket extends Thread {
 		}.start();
 	}
 
+	public void disconnect(){
+		isRunning = false;
+	}
+	
     @Override
     public void run() {
         try {
@@ -126,11 +138,12 @@ public final class CoreSocket extends Thread {
             //客户端向服务器端发起建立连接请求
             SocketChannel socketChannel = SocketChannel.open();
             socketChannel.configureBlocking(false);
+            socketChannel.socket().setSoTimeout(3000);
             selector = Selector.open().wakeup();
             socketChannel.register(selector, SelectionKey.OP_CONNECT);
             socketChannel.connect(new InetSocketAddress(Constants.IP, Constants.PORT));
             while (isRunning) {//轮询监听客户端上注册事件的发生
-                selector.select();
+                selector.select(300);
                 Set<SelectionKey> keySet = selector.selectedKeys();
                 for (final SelectionKey key : keySet) {
                     handle(key);

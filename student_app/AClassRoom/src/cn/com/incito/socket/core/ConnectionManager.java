@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
-import com.alibaba.fastjson.JSONObject;
-
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
+
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * 单个客户端连接，主要管理心跳
@@ -23,8 +23,13 @@ public class ConnectionManager {
 	private static ConnectionManager instance;
 	private SocketChannel channel;
 	private long lastActTime = 0;
+	private Thread thread;
 	private ConnectActiveMonitor monitor;//用于定时扫描服务端心跳
 	private HeartbeatGenerator generator;//用于产生心跳
+	
+	static ConnectionManager getInstance(){
+		return instance;
+	}
 	
 	public static ConnectionManager getInstance(SocketChannel channel) {
 		if (instance == null) {
@@ -52,10 +57,15 @@ public class ConnectionManager {
 		lastActTime = System.currentTimeMillis();
 	}
 	
-	public synchronized void close() {
+	/**
+	 * 网络退出
+	 * @param isNormal 是否正常退出
+	 */
+	public synchronized void close(boolean isNormal) {
 		//停止检测心跳
 		monitor.setRunning(false);
 		generator.setRunning(false);
+		CoreSocket.getInstance().disconnect();
 		if (channel != null && channel.isConnected()) {
 			try {
 				channel.close();
@@ -63,12 +73,21 @@ public class ConnectionManager {
 				e.printStackTrace();
 			}
 		}
+		//非正常退出,重连
+		if (!isNormal) {
+			restartConnector();
+		}
 	}
 	
 	public SocketChannel getChannel() {
 		return channel;
 	}
 
+	/**
+	 * 心跳监控器
+	 * @author 刘世平
+	 *
+	 */
 	class ConnectActiveMonitor extends Thread {
 		private volatile boolean isRunning = true;
 
@@ -81,7 +100,7 @@ public class ConnectionManager {
 				}
 				long time = System.currentTimeMillis();
 				if (time - lastActTime > TIMEOUT) {
-					close();
+					close(Boolean.FALSE);//非正常退出
 					break;
 				}
 			}
@@ -92,6 +111,11 @@ public class ConnectionManager {
 		}
 	}
 	
+	/**
+	 * 心跳发生器
+	 * @author 刘世平
+	 *
+	 */
 	class HeartbeatGenerator extends Thread{
 		private volatile boolean isRunning = true;
 		public void run() {
@@ -122,6 +146,31 @@ public class ConnectionManager {
 
 		public void setRunning(boolean isRunning) {
 			this.isRunning = isRunning;
+		}
+	}
+	
+	/**
+	 * 重新建立连接
+	 */
+	public void restartConnector() {
+		while (Boolean.TRUE) {
+			thread = new Thread(CoreSocket.getInstance());
+			thread.start();
+			sleep(1000);// 等待1秒后检查连接
+			if (!CoreSocket.getInstance().isConnected()) {
+				CoreSocket.getInstance().disconnect();
+				sleep(1000);
+				continue;
+			}
+			break;
+		}
+	}
+
+	private void sleep(int seconds) {
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 }
