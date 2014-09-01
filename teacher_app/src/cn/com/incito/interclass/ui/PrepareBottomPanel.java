@@ -192,9 +192,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 
 	public void setOnClass(boolean isOnClass) {
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_LOCK_SCREEN);
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("lockkey", "true");
-		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(JSON.toJSONString(map)));
+		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString("true"));
 		CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
 		logger.info("锁屏信息发出");
 		
