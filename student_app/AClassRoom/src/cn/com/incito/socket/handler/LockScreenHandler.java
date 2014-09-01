@@ -5,6 +5,7 @@ import java.nio.ByteBuffer;
 import android.provider.Settings;
 import android.app.ExecRootCmd;
 import android.content.ContentResolver;
+import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.common.utils.UIHelper;
@@ -27,25 +28,31 @@ public class LockScreenHandler extends MessageHandler {
 				intSize.length);
 		byte[] idByte = new byte[(int) idLength];
 		buffer.get(idByte);
-		 isLock=BufferUtils.readUTFString(idByte);
+		isLock=BufferUtils.readUTFString(idByte);
 		handleMessage();
 	}
 
 	@Override
 	protected void handleMessage() {
 		if(Constants.OPEN_LOCK_SCREEN){
-			MyApplication.getInstance().setLockScreen(true);
+			
 			WLog.i(LockScreenHandler.class, "是否收到解锁屏信息：" + isLock);
 			ContentResolver mContentResolver = UIHelper.getInstance().getWaitingActivity().getApplicationContext().getContentResolver();
 			ExecRootCmd execRootCmd = new ExecRootCmd();
 			if (isLock.equals("true")) {
+				MyApplication.getInstance().setLockScreen(true);
 				execRootCmd.powerkey();
 				boolean ret = Settings.Global.putInt(mContentResolver, "disable_powerkey", 1);// 屏蔽电源按钮唤醒功能
 				execRootCmd.powerkey();
-			} else {
+			} else if(isLock.equals("false")){
+				MyApplication.getInstance().setLockScreen(false);
 				boolean ret1 = Settings.Global.putInt(mContentResolver, "disable_powerkey", 0); // 打开电源按钮唤醒功能
 				execRootCmd.powerkey();
-
+				AppManager.getAppManager().finishAllActivity();
+			}else{
+				MyApplication.getInstance().setLockScreen(false);
+				boolean ret1 = Settings.Global.putInt(mContentResolver, "disable_powerkey", 0); // 打开电源按钮唤醒功能
+				execRootCmd.powerkey();
 			}
 		}
 	}

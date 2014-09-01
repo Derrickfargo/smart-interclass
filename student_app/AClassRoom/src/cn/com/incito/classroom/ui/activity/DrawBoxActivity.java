@@ -12,18 +12,22 @@ import cn.com.incito.classroom.widget.canvas.SketchPadView;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
+import cn.com.incito.socket.handler.DistributePaperHandler;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
 import cn.com.incito.wisdom.sdk.log.WLog;
 import cn.com.incito.wisdom.sdk.utils.BitmapUtils;
 import android.app.AlertDialog;
+import android.app.ExecRootCmd;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -511,6 +515,16 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		CoreSocket.getInstance().sendMessage(messagePacking);
 		WLog.i(DrawBoxActivity.class, "启动作业提交...");
 		MyApplication.getInstance().setSubmitPaper(true);
+		if (Constants.OPEN_LOCK_SCREEN) {
+			if (!MyApplication.getInstance().isLockScreen()) {
+				WLog.i(DistributePaperHandler.class, "提交作业后锁定屏幕" );
+				ContentResolver mContentResolver = UIHelper.getInstance().getWaitingActivity().getApplicationContext().getContentResolver();
+				ExecRootCmd execRootCmd = new ExecRootCmd();
+				boolean ret1 = Settings.Global.putInt(mContentResolver, "disable_powerkey", 1); // 锁定屏幕
+				execRootCmd.powerkey();
+				MyApplication.getInstance().setLockScreen(true);
+			}
+		}
 		this.finish();
 	}
 	public void initPopwindow(){

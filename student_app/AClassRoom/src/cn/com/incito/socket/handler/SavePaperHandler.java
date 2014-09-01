@@ -22,7 +22,7 @@ public class SavePaperHandler extends MessageHandler {
 			if(UIHelper.getInstance().getDrawBoxActivity()!=null){
 				UIHelper.getInstance().getDrawBoxActivity().submitPaper();
 				if (Constants.OPEN_LOCK_SCREEN) {
-					if (MyApplication.getInstance().isLockScreen()) {
+					if (!MyApplication.getInstance().isLockScreen()) {
 						WLog.i(DistributePaperHandler.class, "提交作业后锁定屏幕" );
 						ContentResolver mContentResolver = UIHelper.getInstance().getWaitingActivity().getApplicationContext().getContentResolver();
 						ExecRootCmd execRootCmd = new ExecRootCmd();
