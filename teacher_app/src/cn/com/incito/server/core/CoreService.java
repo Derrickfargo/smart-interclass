@@ -328,8 +328,7 @@ public class CoreService {
 		quiz.setThumbnail(thumbnail.getAbsolutePath());
 		app.getTempQuiz().put(imei, quiz);
 		app.getQuizList().add(quiz);
-		app.getQuizList();
-		app.refreshQuiz();
+		app.refresh();
 		if (app.getQuizList().size() == app.getClientChannel().size()) {
 			FloatIcon.getInstance().showNoQuiz();
 			MainFrame.getInstance().showNoQuiz();
