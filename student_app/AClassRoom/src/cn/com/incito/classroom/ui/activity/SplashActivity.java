@@ -95,6 +95,9 @@ public class SplashActivity extends BaseActivity {
      */
     private void startMain() {
         tv_loading_msg.setText(R.string.loading_msg);
+        if(CoreSocket.getInstance().isConnected()){
+        	
+        }
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("imei", MyApplication.deviceId);
         MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_HAS_BIND);
