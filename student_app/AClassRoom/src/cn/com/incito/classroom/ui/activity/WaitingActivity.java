@@ -83,8 +83,8 @@ public class WaitingActivity extends BaseActivity {
 		mAdapter = new GroupNumAdapter(WaitingActivity.this);
 		et_stnumber.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
 		getGroupUserList();
-//		LockScreenReceiver mLockScreenReceiver = new LockScreenReceiver();
-//		mLockScreenReceiver.registerScreenActionReceiver(this);
+		// LockScreenReceiver mLockScreenReceiver = new LockScreenReceiver();
+		// mLockScreenReceiver.registerScreenActionReceiver(this);
 	}
 
 	private void initViews() {
@@ -207,7 +207,8 @@ public class WaitingActivity extends BaseActivity {
 		messagePacking.putBodyData(DataType.INT,
 				BufferUtils.writeUTFString(json));
 		CoreSocket.getInstance().sendMessage(messagePacking);
-		WLog.i(WaitingActivity.class, "启动登录...");
+		WLog.i(WaitingActivity.class,
+				"启动登录..." + "request:" + json);
 	}
 
 	/**
@@ -324,7 +325,8 @@ public class WaitingActivity extends BaseActivity {
 				mProgressDialog.hide();
 				JSONObject jsonObject = (JSONObject) msg.getData()
 						.getSerializable("data");
-				WLog.i(WaitingActivity.class, "得到分组学生信息..." + jsonObject.toString());
+				WLog.i(WaitingActivity.class,
+						"得到分组学生信息..." + jsonObject.toString());
 				if (!"0".equals(jsonObject.getString("code"))) {
 					return;
 				} else if (jsonObject.getJSONObject("data") == null) {
@@ -353,7 +355,7 @@ public class WaitingActivity extends BaseActivity {
 	};
 
 	public void doResult(JSONObject jsonObject, int type) {
-		
+
 		android.os.Message message = new android.os.Message();
 		message.what = type;
 		Bundle data = new Bundle();

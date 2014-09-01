@@ -513,7 +513,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		messagePacking.putBodyData(DataType.INT,
 				BitmapUtils.bmpToByteArray(getBitMap(), true));
 		CoreSocket.getInstance().sendMessage(messagePacking);
-		WLog.i(DrawBoxActivity.class, "启动作业提交...");
+		WLog.i(DrawBoxActivity.class, "启动作业提交..."+"request:"+name);
 		MyApplication.getInstance().setSubmitPaper(true);
 		if (Constants.OPEN_LOCK_SCREEN) {
 			if (!MyApplication.getInstance().isLockScreen()) {
