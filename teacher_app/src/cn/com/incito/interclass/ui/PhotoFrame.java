@@ -88,6 +88,7 @@ public class PhotoFrame extends JFrame {
 				
 				lblImage = new JLabel();
 				lblImage.setBounds(15, 8, 100, 70);
+				lblImage.setHorizontalAlignment(JLabel.CENTER);
 				add(lblImage);
 				
 				lblBackground = new JLabel();
