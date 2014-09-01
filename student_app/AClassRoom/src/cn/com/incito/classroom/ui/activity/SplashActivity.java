@@ -91,15 +91,12 @@ public class SplashActivity extends BaseActivity {
 				String exception = intent.getStringExtra("exception");
 				tv_loading_msg.setText(R.string.loading_network_disconnect);
 			}
-
 		}
-
 	}
 
 	/**
 	 * 启动主界面
 	 */
-	int i = 0;
 
 	private void startMain() {
 		tv_loading_msg.setText(R.string.loading_msg);

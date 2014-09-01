@@ -159,7 +159,7 @@ public class ConnectionManager {
 			sleep(1000);// 等待1秒后检查连接
 			if (!CoreSocket.getInstance().isConnected()) {
 				CoreSocket.getInstance().disconnect();
-				sleep(1000);
+				sleep(3000);
 				continue;
 			}
 			break;

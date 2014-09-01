@@ -46,12 +46,18 @@ import java.awt.image.*;
 public class CaptureScreen {
 	Logger logger = Logger.getLogger(CaptureScreen.class.getName());
 	public final static String SCREENSHOT_ICON = "images/screenshot/icon.png";
+	public final static int BAR_WIDTH = 267;
+	public final static int BAR_HEIGHT = 50;
 	private JPanel jPanel;
 	private BufferedImage bImage;
 	private Component jFrame;
 	private boolean isBarShow = false;
 	private int startX, startY, endX, endY, tempX, tempY;
 	private int startXBar, startYBar;
+	public final static String SCREEN_SHOT_CONFIRM = "images/screenshot/bg_btn.png";
+	public final static String SCREEN_SHOT_CONFIRM_HOVER = "images/screenshot/bg_btn_HOVER.png";
+	public final static String SCREEN_SHOT_QUIT = "images/screenshot/bg_btn2.png";
+	public final static String SCREEN_SHOT_QUIT_HOVER = "images/screenshot/bg_btn2_HOVER.png";
 
 	/**
 	 * Creates a new instance of CaptureScreen
@@ -380,6 +386,7 @@ public class CaptureScreen {
 					endY += (y - tempY);
 					tempY = y;
 				}
+				// barPanel.setStartPos(startX, startY+Math.abs(endY - startY));
 			} else if (current == States.SOUTH_EAST) {
 				if (startY > endY) {
 					startY += (y - tempY);
@@ -395,6 +402,7 @@ public class CaptureScreen {
 					endX += (x - tempX);
 					tempX = x;
 				}
+
 			} else if (current == States.SOUTH_WEST) {
 				if (startY > endY) {
 					startY += (y - tempY);
@@ -410,13 +418,18 @@ public class CaptureScreen {
 					endX += (x - tempX);
 					tempX = x;
 				}
+
 			} else {
 				startX = tempX;
 				startY = tempY;
 				endX = me.getX();
 				endY = me.getY();
 			}
-			barPanel.setStartPos(startX, startY);
+			if (barPanel != null) {
+				barPanel.setStartPos(startX + Math.abs(endX - startX)
+						- BAR_WIDTH, startY + Math.abs(endY - startY));
+			}
+
 			this.repaint();
 		}
 
@@ -441,7 +454,12 @@ public class CaptureScreen {
 
 			} else if (!isBarShow) {
 				isBarShow = true;
-				barPanel = new BarPanel(jf, tempX, tempY);
+				if (barPanel == null) {
+					barPanel = new BarPanel(jf, startX
+							+ Math.abs(endX - startX) - BAR_WIDTH, tempY
+							+ Math.abs(endY - startY));
+				}
+
 				// barPanel.setStartPos(tempX, tempY);
 				this.add(barPanel);
 				updateUI();
@@ -451,17 +469,17 @@ public class CaptureScreen {
 		}
 
 		public void mouseClicked(MouseEvent me) {
-//			JOptionPane.showMessageDialog(this, "用户名或密码错误!");
-//			if (me.getClickCount() == 2) {
-//				// Rectangle rec=new
-//				// Rectangle(startX,startY,Math.abs(endX-startX),Math.abs(endY-startY));
-//				
-//				Point p = me.getPoint();
-//				if (select.contains(p)) {
-//					sendPaper();
-//
-//				}
-//			}
+			// if (me.getClickCount() == 2) {
+			// Rectangle rec = new Rectangle(startX, startY, Math.abs(endX
+			// - startX), Math.abs(endY - startY));
+			//
+			// Point p = me.getPoint();
+			// if (select.contains(p)) {
+			// sendPaper();
+			//
+			// }
+			// }
+
 		}
 
 		private void sendPaper() {
@@ -487,62 +505,62 @@ public class CaptureScreen {
 			distributePaper(bImage);
 		}
 
-		public class BarPanel extends JPanel implements MouseListener {
+		public class BarPanel extends JPanel {
 			JButton buttonOK;
 			FlowLayout flowLayout;
 			JButton buttonQuit;
 
 			public BarPanel(JFrame context, int startX, int startY) {
-				// setBounds(startX, startY, 136, 30);
-				setBounds(startX, startY, 133, 30);
+				setBounds(startX, startY, BAR_WIDTH, BAR_HEIGHT);
 				flowLayout = new FlowLayout();
 				flowLayout.setAlignment(FlowLayout.RIGHT);
-				setBackground(Color.LIGHT_GRAY);
+				setBackground(null);
 				setLayout(flowLayout);
-				buttonOK = new JButton("完成");
+				buttonOK = new JButton();
 				buttonOK.setForeground(Color.BLUE);
 				buttonOK.setFont(new Font("宋体", Font.BOLD, 12));
+				Icon iconComfirm = new ImageIcon(SCREEN_SHOT_CONFIRM);
+				buttonOK.setIcon(iconComfirm);
+				buttonOK.setBorderPainted(false);// 设置边框不可见
+				buttonOK.setContentAreaFilled(false);// 设置透明
+				buttonOK.setPressedIcon(new ImageIcon(SCREEN_SHOT_CONFIRM_HOVER));
+				buttonOK.setSize(iconComfirm.getIconWidth(),
+						iconComfirm.getIconHeight());
 				add(buttonOK);
-				buttonQuit = new JButton("取消");
+				buttonOK.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						sendPaper();
+					}
+				});
+				buttonQuit = new JButton();
 				buttonQuit.setForeground(Color.BLUE);
 				buttonQuit.setFont(new Font("宋体", Font.BOLD, 12));
 				add(buttonQuit);
-				this.addMouseListener(this);
+				Icon iconQuit = new ImageIcon(SCREEN_SHOT_QUIT);
+				buttonQuit.setIcon(iconQuit);
+				buttonQuit.setSize(iconQuit.getIconWidth(),
+						iconQuit.getIconHeight());
+				buttonQuit.setBorderPainted(false);// 设置边框不可见
+				buttonQuit.setContentAreaFilled(false);// 设置透明
+				buttonQuit
+						.setPressedIcon(new ImageIcon(SCREEN_SHOT_QUIT_HOVER));
+				buttonQuit.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						updates();
+						jf.dispose();
+						isBarShow = false;
+					}
+				});
+
 			}
 
 			public void setStartPos(int posX, int posY) {
-				setBounds(posX, posY, 256, 30);
-			}
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (e.getSource() == buttonOK) {
-					JOptionPane.showMessageDialog(this, "用户名或密码错误!");
-					sendPaper();
-				} else if (e.getSource() == buttonQuit) {
-
-				}
-
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-
+				setBounds(posX, posY, BAR_WIDTH, BAR_HEIGHT);
 			}
 
 		}
