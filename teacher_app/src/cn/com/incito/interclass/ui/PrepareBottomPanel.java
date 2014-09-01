@@ -246,6 +246,10 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 						.getFrame(), "确定要下课吗？", "提示",
 						JOptionPane.YES_NO_OPTION);
 				if (result == JOptionPane.YES_OPTION) {
+					MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_LOCK_SCREEN);
+					messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString("false"));
+					CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
+					logger.info("解屏信息发出");
 					System.exit(0);
 				}
 			} else {
