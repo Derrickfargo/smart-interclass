@@ -1,10 +1,14 @@
 package cn.com.incito.classroom.ui.activity;
 
+
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -30,83 +34,117 @@ import com.alibaba.fastjson.JSONObject;
  */
 
 public class SplashActivity extends BaseActivity {
-    private TextView tv_loading_msg;
-    private ServiceConnectReceiver serviceConnectReceiver;
 
+	private TextView tv_loading_msg;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        serviceConnectReceiver = new ServiceConnectReceiver();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(SocketService.NETWORK_RECEIVER);
-        registerReceiver(serviceConnectReceiver, intentFilter);
-        final View view = View.inflate(this, R.layout.splash, null);
-        setContentView(view);
-        tv_loading_msg = (TextView) view.findViewById(R.id.tv_loading_msg);
+	private ServiceConnectReceiver serviceConnectReceiver;
 
-//		渐变展示启动屏
-        AlphaAnimation aa = new AlphaAnimation(0.5f, 1.0f);
-        aa.setDuration(2000);
-        view.startAnimation(aa);
-        aa.setAnimationListener(new AnimationListener() {
-            @Override
-            public void onAnimationEnd(Animation arg0) {
-            	startMain();
-            }
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		serviceConnectReceiver = new ServiceConnectReceiver();
+		IntentFilter intentFilter = new IntentFilter();
+		intentFilter.addAction(SocketService.NETWORK_RECEIVER);
+		registerReceiver(serviceConnectReceiver, intentFilter);
+		final View view = View.inflate(this, R.layout.splash, null);
+		setContentView(view);
+		tv_loading_msg = (TextView) view.findViewById(R.id.tv_loading_msg);
 
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
+		// 渐变展示启动屏
+		AlphaAnimation aa = new AlphaAnimation(0.5f, 1.0f);
+		aa.setDuration(2000);
+		view.startAnimation(aa);
+		aa.setAnimationListener(new AnimationListener() {
 
-            @Override
-            public void onAnimationStart(Animation animation) {
-            	
-            }
-        });
-    }
+			@Override
+			public void onAnimationEnd(Animation arg0) {
+				startMain();
+			}
 
-    @Override
-    protected void onDestroy() {
-        //注销广播
-        unregisterReceiver(serviceConnectReceiver);
-        super.onDestroy();
-    }
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
 
-    /**
-     * service连接广播接收器
-     */
-    public class ServiceConnectReceiver extends BroadcastReceiver {
+			@Override
+			public void onAnimationStart(Animation animation) {
 
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction() == SocketService.NETWORK_RECEIVER) {
-                //拿到进度，更新UI
-                String exception = intent.getStringExtra("exception");
-                tv_loading_msg.setText(R.string.loading_network_disconnect);
-            }
+			}
+		});
+	}
 
-        }
+	@Override
+	protected void onDestroy() {
+		// 注销广播
+		unregisterReceiver(serviceConnectReceiver);
+		super.onDestroy();
+	}
 
-    }
+	/**
+	 * service连接广播接收器
+	 */
+	public class ServiceConnectReceiver extends BroadcastReceiver {
 
-    /**
-     * 启动主界面
-     */
-    private void startMain() {
-        tv_loading_msg.setText(R.string.loading_msg);
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("imei", MyApplication.deviceId);
-        MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_HAS_BIND);
-        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
-        CoreSocket.getInstance().sendMessage(messagePacking);
-        WLog.i(SplashActivity.class, "开始判定设备是否绑定...");
-    }
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (intent.getAction() == SocketService.NETWORK_RECEIVER) {
+				// 拿到进度，更新UI
+				String exception = intent.getStringExtra("exception");
+				tv_loading_msg.setText(R.string.loading_network_disconnect);
+			}
 
-    @Override
-    public void onBackPressed() {
-        AppManager.getAppManager().AppExit(this);
-    }
+		}
 
+	}
 
+	/**
+	 * 启动主界面
+	 */
+	int i = 0;
+
+	private void startMain() {
+		tv_loading_msg.setText(R.string.loading_msg);
+		if (!CoreSocket.getInstance().isConnected()) {
+			new AlertDialog.Builder(this).setTitle("网络设置").setPositiveButton("设置", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					Intent intent = new Intent(Settings.ACTION_SETTINGS);
+					startActivity(intent);
+					dialog.dismiss();
+				}
+			}).setNegativeButton("重试", new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					CoreSocket.getInstance().restartConnection();
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}
+					startMainAct();
+					dialog.dismiss();
+				}
+			}).show();
+		} else {
+			startMainAct();
+		}
+	}
+
+	@Override
+	public void onBackPressed() {
+		AppManager.getAppManager().AppExit(this);
+	}
+
+	/**
+	 * 发送连接请求
+	 */
+	public void startMainAct() {
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("imei", MyApplication.deviceId);
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_HAS_BIND);
+		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
+		CoreSocket.getInstance().sendMessage(messagePacking);
+		WLog.i(SplashActivity.class, "开始判定设备是否绑定...");
+	}
+	
 }

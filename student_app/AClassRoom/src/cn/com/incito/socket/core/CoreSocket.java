@@ -126,6 +126,11 @@ public final class CoreSocket implements Runnable {
 			}
 		}.start();
 	}
+	
+	public void restartConnection() {
+		disconnect();
+		new Thread(this).start();
+	}
 
 	public void disconnect(){
 		isRunning = false;
