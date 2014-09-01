@@ -233,11 +233,18 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 	}
 	
 	public void addImage(int i, Quiz quiz) {
-		String url = quiz.getThumbnail();
-		Icon icon1 = new ImageIcon(url);
-		quizList.get(i).setIcon(icon1);
-		quizList.get(i).getParent().setName(quiz.getQuizUrl());
-		quizMap.put(quiz.getImei(), quiz);
+		if (quiz != null) {
+			String url = quiz.getThumbnail();
+			Icon icon1 = new ImageIcon(url);
+			quizList.get(i).setIcon(icon1);
+			quizList.get(i).getParent().setName(quiz.getQuizUrl());
+			quizMap.put(quiz.getImei(), quiz);
+		} else {
+			Icon icon = new ImageIcon("");
+			quizList.get(i).setIcon(icon);
+			quizList.get(i).getParent().setName("");
+			quizMap.clear();
+		}
 	}
 	
 	public Group getGroup() {

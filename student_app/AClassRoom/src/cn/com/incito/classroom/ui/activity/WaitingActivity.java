@@ -159,14 +159,6 @@ public class WaitingActivity extends BaseActivity {
 	@Override
 	public void onBackPressed() {
 		showDialog();
-		// if ((System.currentTimeMillis() - mExitTime) > 2000) {//
-		// 如果两次按键时间间隔大于2000毫秒，则不退出
-		// Toast.makeText(this, R.string.toast_quit_app, Toast.LENGTH_SHORT)
-		// .show();
-		// mExitTime = System.currentTimeMillis();// 更新mExitTime
-		// } else {
-		//
-		// }
 	}
 
 	public void showDialog() {
@@ -207,8 +199,7 @@ public class WaitingActivity extends BaseActivity {
 		messagePacking.putBodyData(DataType.INT,
 				BufferUtils.writeUTFString(json));
 		CoreSocket.getInstance().sendMessage(messagePacking);
-		WLog.i(WaitingActivity.class,
-				"启动登录..." + "request:" + json);
+		WLog.i(WaitingActivity.class, "启动登录..." + "request:" + json);
 	}
 
 	/**
