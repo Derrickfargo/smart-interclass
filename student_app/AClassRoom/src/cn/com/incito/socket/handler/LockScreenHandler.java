@@ -5,6 +5,7 @@ import java.nio.ByteBuffer;
 import android.provider.Settings;
 import android.app.ExecRootCmd;
 import android.content.ContentResolver;
+import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.common.utils.UIHelper;
@@ -43,11 +44,15 @@ public class LockScreenHandler extends MessageHandler {
 				execRootCmd.powerkey();
 				boolean ret = Settings.Global.putInt(mContentResolver, "disable_powerkey", 1);// 屏蔽电源按钮唤醒功能
 				execRootCmd.powerkey();
-			} else {
+			} else if(isLock.equals("false")){
 				MyApplication.getInstance().setLockScreen(false);
 				boolean ret1 = Settings.Global.putInt(mContentResolver, "disable_powerkey", 0); // 打开电源按钮唤醒功能
 				execRootCmd.powerkey();
-
+				AppManager.getAppManager().finishAllActivity();
+			}else{
+				MyApplication.getInstance().setLockScreen(false);
+				boolean ret1 = Settings.Global.putInt(mContentResolver, "disable_powerkey", 0); // 打开电源按钮唤醒功能
+				execRootCmd.powerkey();
 			}
 		}
 	}
