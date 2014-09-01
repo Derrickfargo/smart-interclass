@@ -171,7 +171,7 @@ public class ConnectionManager {
 
 	private void sleep(int seconds) {
 		try {
-			Thread.sleep(10000);
+			Thread.sleep(seconds);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
