@@ -109,7 +109,13 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 	public void mouseReleased(MouseEvent e) {
 		
 	}
-
+	public void synQuzingState(){
+		if (Application.hasQuiz) {
+			btnQuiz.setIcon(new ImageIcon(BTN_ACCEPT_HOVER));
+		} else {
+			btnQuiz.setIcon(new ImageIcon(BTN_SEND_HOVER));
+		}
+	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		

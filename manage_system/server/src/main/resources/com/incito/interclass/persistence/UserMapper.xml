@@ -151,7 +151,7 @@
 	    WHERE 
 	    	id = #{studentId}
 	    AND
-	    	score>=0
+	    	score>=1
 	</update>
 	
 	<select id="getScore" parameterType="java.lang.String" resultType="com.incito.interclass.entity.Student">
