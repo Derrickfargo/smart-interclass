@@ -118,7 +118,7 @@ public class QuizPanel extends JPanel {
 						name.append(",");
 					}
 				}
-				if(name.length() != 0){
+				if (name.length() != 0) {
 					lblName.setText(name.deleteCharAt(name.length() - 1).toString());
 				}
 				//设置作业为排名
@@ -139,7 +139,12 @@ public class QuizPanel extends JPanel {
 				default:
 					lblOrder.setBackground(new Color(Integer.parseInt("ADADAD", 16)));
 				}
-				
+			} else {
+				panel.addImage(i, null);
+				quizList.get(i).setText("");
+				//设置作业为排名
+				JLabel lblOrder = orderList.get(i);
+				lblOrder.setVisible(false);
 			}
 		}
 	}
