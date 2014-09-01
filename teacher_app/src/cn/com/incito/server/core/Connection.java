@@ -27,7 +27,7 @@ import cn.com.incito.server.utils.JSONUtils;
  */
 public class Connection {
 	private final static long TIMEOUT = 10000;//超时时间
-	private final static long SCAN_CYCLE = 10000;//心跳扫描周期10s
+	private final static long SCAN_CYCLE = 12000;//心跳扫描周期12s
 	private final static Logger log = Logger.getLogger(Connection.class);
 	private String imei;
 	private SocketChannel channel;
