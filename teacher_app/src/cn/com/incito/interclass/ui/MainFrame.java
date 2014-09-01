@@ -90,13 +90,14 @@ public class MainFrame extends MouseAdapter {
 	public void refreshPrepare() {
 		preparePanel.refresh();
 		quizPanel.refresh();
+		quizBottomPanel.refresh();
+		prepareBottomPanel.refresh();
 		int total = 0;
 		for (Group group : app.getGroupList()) {
 			total += group.getStudents().size();
 		}
 		String msg = "应到 %d 人  | 实到 %d 人";
-		String text = String.format(msg, total, app
-				.getOnlineStudent().size());
+		String text = String.format(msg, total, app.getOnlineStudent().size());
 		prepareBottomPanel.getLblExpected().setText(text);
 	}
 	
