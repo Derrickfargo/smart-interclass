@@ -5,6 +5,7 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,7 @@ import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
 import cn.com.incito.server.utils.UIHelper;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 public class PrepareBottomPanel extends JPanel implements MouseListener{
@@ -190,7 +192,9 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 
 	public void setOnClass(boolean isOnClass) {
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_LOCK_SCREEN);
-		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString("true"));
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("lockkey", "true");
+		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(JSON.toJSONString(map)));
 		CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
 		logger.info("锁屏信息发出");
 		
