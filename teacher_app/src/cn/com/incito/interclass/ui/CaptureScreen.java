@@ -44,13 +44,20 @@ import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import java.awt.image.*;
 
 public class CaptureScreen {
-	Logger logger =  Logger.getLogger(CaptureScreen.class.getName());
+	Logger logger = Logger.getLogger(CaptureScreen.class.getName());
 	public final static String SCREENSHOT_ICON = "images/screenshot/icon.png";
-	private JPanel c;
-	private BufferedImage get;
+	public final static int BAR_WIDTH = 267;
+	public final static int BAR_HEIGHT = 50;
+	private JPanel jPanel;
+	private BufferedImage bImage;
 	private Component jFrame;
 	private boolean isBarShow = false;
 	private int startX, startY, endX, endY, tempX, tempY;
+	private int startXBar, startYBar;
+	public final static String SCREEN_SHOT_CONFIRM = "images/screenshot/bg_btn.png";
+	public final static String SCREEN_SHOT_CONFIRM_HOVER = "images/screenshot/bg_btn_HOVER.png";
+	public final static String SCREEN_SHOT_QUIT = "images/screenshot/bg_btn2.png";
+	public final static String SCREEN_SHOT_QUIT_HOVER = "images/screenshot/bg_btn2_HOVER.png";
 
 	/**
 	 * Creates a new instance of CaptureScreen
@@ -61,11 +68,11 @@ public class CaptureScreen {
 	}
 
 	private void updates() {
-		if (get != null) {
-			ImageIcon ii = new ImageIcon(get);
+		if (bImage != null) {
+			ImageIcon ii = new ImageIcon(bImage);
 			JLabel jl = new JLabel(ii);
-			c.removeAll();
-			c.add(new JScrollPane(jl), BorderLayout.CENTER);
+			jPanel.removeAll();
+			jPanel.add(new JScrollPane(jl), BorderLayout.CENTER);
 			SwingUtilities.updateComponentTreeUI(jFrame);
 		}
 	}
@@ -114,12 +121,10 @@ public class CaptureScreen {
 			Rectangle rec = new Rectangle(0, 0, di.width, di.height);
 			BufferedImage bi = ro.createScreenCapture(rec);
 			JFrame jf = new JFrame();
-			jf.getContentPane().setLayout(new BorderLayout());
+			// jf.getContentPane().setLayout(null);
 			jf.getContentPane().add(
-					new ContentPanel(jf, bi, di.width, di.height),
-					BorderLayout.CENTER);
-//			jf.getContentPane().add(new BarPanel(jf, startX - di.width, endY),
-//					BorderLayout.SOUTH);
+					new ContentPanel(jf, bi, di.width, di.height));
+
 			jf.setUndecorated(true);
 			jf.setSize(di);
 			jf.setVisible(true);
@@ -154,7 +159,7 @@ public class CaptureScreen {
 					}
 				}
 
-				if (ImageIO.write(get, about, file)) {
+				if (ImageIO.write(bImage, about, file)) {
 					JOptionPane.showMessageDialog(jFrame, "保存成功！");
 				} else
 					JOptionPane.showMessageDialog(jFrame, "保存失败！");
@@ -198,68 +203,27 @@ public class CaptureScreen {
 		}
 	}
 
-	private class BarPanel extends JPanel implements MouseListener {
-
-		public BarPanel(JFrame context, int startX, int startY) {
-			setLayout(null);
-			setVisible(true);
-			setBackground(Color.white);
-			JLabel label = new JLabel();
-			label.setBounds(startX, startY, 15, 15);
-			add(label);
-			JButton buttonOK = new JButton("完成");
-			buttonOK.setBounds(15, 0, 15, 15);
-			add(buttonOK);
-			JButton buttonQuit = new JButton("取消");
-			buttonQuit.setBounds(30, 0, 15, 15);
-			add(buttonQuit);
-			this.addMouseListener(this);
-		}
-
-		@Override
-		public void mouseClicked(MouseEvent e) {
-
-		}
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent e) {
-
-		}
-
-		@Override
-		public void mouseEntered(MouseEvent e) {
-
-		}
-
-		@Override
-		public void mouseExited(MouseEvent e) {
-
-		}
-
-	}
-
 	// 一个暂时类，用于显示当前的屏幕图像
 	private class ContentPanel extends JPanel implements MouseListener,
 			MouseMotionListener {
 		private BufferedImage bi;
 		private int width, height;
-
+		// BarPanel bPanel;
 		private JFrame jf;
 		private Rectangle select = new Rectangle(0, 0, 0, 0);// 表示选中的区域
 		private Cursor cs;// 表示一般情况下的鼠标状态
 		private States current = States.DEFAULT;// 表示当前的编辑状态
 		private Rectangle[] rec;// 表示八个编辑点的区域
+		BarPanel barPanel;
 
 		public ContentPanel(JFrame jf, BufferedImage bi, int width, int height) {
 			this.jf = jf;
 			this.bi = bi;
 			this.width = width;
 			this.height = height;
+
+			this.setLayout(null);
+			// barPanel = new BarPanel(jf, tempX, tempY);
 			this.addMouseListener(this);
 			this.addMouseMotionListener(this);
 			ContentPanel.this.jf.addKeyListener(new KeyAdapter() {
@@ -278,6 +242,7 @@ public class CaptureScreen {
 					new Point(0, 0), "icon");
 			this.setCursor(cs);
 			initRecs();
+
 		}
 
 		private void initRecs() {
@@ -421,6 +386,7 @@ public class CaptureScreen {
 					endY += (y - tempY);
 					tempY = y;
 				}
+				// barPanel.setStartPos(startX, startY+Math.abs(endY - startY));
 			} else if (current == States.SOUTH_EAST) {
 				if (startY > endY) {
 					startY += (y - tempY);
@@ -436,6 +402,7 @@ public class CaptureScreen {
 					endX += (x - tempX);
 					tempX = x;
 				}
+
 			} else if (current == States.SOUTH_WEST) {
 				if (startY > endY) {
 					startY += (y - tempY);
@@ -451,12 +418,18 @@ public class CaptureScreen {
 					endX += (x - tempX);
 					tempX = x;
 				}
+
 			} else {
 				startX = tempX;
 				startY = tempY;
 				endX = me.getX();
 				endY = me.getY();
 			}
+			if (barPanel != null) {
+				barPanel.setStartPos(startX + Math.abs(endX - startX)
+						- BAR_WIDTH, startY + Math.abs(endY - startY));
+			}
+
 			this.repaint();
 		}
 
@@ -481,49 +454,118 @@ public class CaptureScreen {
 
 			} else if (!isBarShow) {
 				isBarShow = true;
-				// showBar();
+				if (barPanel == null) {
+					barPanel = new BarPanel(jf, startX
+							+ Math.abs(endX - startX) - BAR_WIDTH, tempY
+							+ Math.abs(endY - startY));
+				}
+
+				// barPanel.setStartPos(tempX, tempY);
+				this.add(barPanel);
+				updateUI();
 
 			}
 
 		}
 
 		public void mouseClicked(MouseEvent me) {
-			if (me.getClickCount() == 2) {
-				// Rectangle rec=new
-				// Rectangle(startX,startY,Math.abs(endX-startX),Math.abs(endY-startY));
-				Point p = me.getPoint();
-				if (select.contains(p)) {
-					if (select.x + select.width < this.getWidth()
-							&& select.y + select.height < this.getHeight()) {
-						get = bi.getSubimage(select.x, select.y, select.width,
-								select.height);
-						jf.dispose();
-						// updates();
+			// if (me.getClickCount() == 2) {
+			// Rectangle rec = new Rectangle(startX, startY, Math.abs(endX
+			// - startX), Math.abs(endY - startY));
+			//
+			// Point p = me.getPoint();
+			// if (select.contains(p)) {
+			// sendPaper();
+			//
+			// }
+			// }
 
-					} else {
-						int wid = select.width, het = select.height;
-						if (select.x + select.width >= this.getWidth()) {
-							wid = this.getWidth() - select.x;
-						}
-						if (select.y + select.height >= this.getHeight()) {
-							het = this.getHeight() - select.y;
-						}
-						get = bi.getSubimage(select.x, select.y, wid, het);
-						jf.dispose();
-						// updates();
-					}
-					distributePaper(get);
-
-				}
-			}
 		}
 
+		private void sendPaper() {
+			if (select.x + select.width < this.getWidth()
+					&& select.y + select.height < this.getHeight()) {
+				bImage = bi.getSubimage(select.x, select.y, select.width,
+						select.height);
+				jf.dispose();
+				// updates();
+
+			} else {
+				int wid = select.width, het = select.height;
+				if (select.x + select.width >= this.getWidth()) {
+					wid = this.getWidth() - select.x;
+				}
+				if (select.y + select.height >= this.getHeight()) {
+					het = this.getHeight() - select.y;
+				}
+				bImage = bi.getSubimage(select.x, select.y, wid, het);
+				jf.dispose();
+				// updates();
+			}
+			distributePaper(bImage);
+		}
+
+		public class BarPanel extends JPanel {
+			JButton buttonOK;
+			FlowLayout flowLayout;
+			JButton buttonQuit;
+
+			public BarPanel(JFrame context, int startX, int startY) {
+				setBounds(startX, startY, BAR_WIDTH, BAR_HEIGHT);
+				flowLayout = new FlowLayout();
+				flowLayout.setAlignment(FlowLayout.RIGHT);
+				setBackground(null);
+				setLayout(flowLayout);
+				buttonOK = new JButton();
+				buttonOK.setForeground(Color.BLUE);
+				buttonOK.setFont(new Font("宋体", Font.BOLD, 12));
+				Icon iconComfirm = new ImageIcon(SCREEN_SHOT_CONFIRM);
+				buttonOK.setIcon(iconComfirm);
+				buttonOK.setBorderPainted(false);// 设置边框不可见
+				buttonOK.setContentAreaFilled(false);// 设置透明
+				buttonOK.setPressedIcon(new ImageIcon(SCREEN_SHOT_CONFIRM_HOVER));
+				buttonOK.setSize(iconComfirm.getIconWidth(),
+						iconComfirm.getIconHeight());
+				add(buttonOK);
+				buttonOK.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						sendPaper();
+					}
+				});
+				buttonQuit = new JButton();
+				buttonQuit.setForeground(Color.BLUE);
+				buttonQuit.setFont(new Font("宋体", Font.BOLD, 12));
+				add(buttonQuit);
+				Icon iconQuit = new ImageIcon(SCREEN_SHOT_QUIT);
+				buttonQuit.setIcon(iconQuit);
+				buttonQuit.setSize(iconQuit.getIconWidth(),
+						iconQuit.getIconHeight());
+				buttonQuit.setBorderPainted(false);// 设置边框不可见
+				buttonQuit.setContentAreaFilled(false);// 设置透明
+				buttonQuit
+						.setPressedIcon(new ImageIcon(SCREEN_SHOT_QUIT_HOVER));
+				buttonQuit.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						updates();
+						jf.dispose();
+						isBarShow = false;
+					}
+				});
+
+			}
+
+			public void setStartPos(int posX, int posY) {
+				setBounds(posX, posY, BAR_WIDTH, BAR_HEIGHT);
+			}
+
+		}
 	}
 
-	private void showBar(boolean isShow) {
-		// showBar();
-		// JOptionPane.showMessageDialog(this, "ceshi！");
-	}
 }
 
 enum States {

@@ -27,7 +27,6 @@ import cn.com.incito.classroom.adapter.GroupNumAdapter;
 import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.classroom.broadcast.LockScreenReceiver;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.vo.LoginReqVo;
 import cn.com.incito.classroom.vo.LoginRes2Vo;
@@ -84,8 +83,8 @@ public class WaitingActivity extends BaseActivity {
 		mAdapter = new GroupNumAdapter(WaitingActivity.this);
 		et_stnumber.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
 		getGroupUserList();
-		LockScreenReceiver mLockScreenReceiver = new LockScreenReceiver();
-		mLockScreenReceiver.registerScreenActionReceiver(this);
+//		LockScreenReceiver mLockScreenReceiver = new LockScreenReceiver();
+//		mLockScreenReceiver.registerScreenActionReceiver(this);
 	}
 
 	private void initViews() {

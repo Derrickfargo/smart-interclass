@@ -53,7 +53,7 @@ public class FloatIcon extends MouseAdapter {
 	private JDialog dialog = new JDialog();
 	private boolean isDragged, isShowing;
 	private Point loc, tmp;
-	private JLabel lblIcon, iblTips,lblBackground;
+	private JLabel lblIcon, iblTips, lblBackground;
 	private JButton btnQuiz, btnPraise, btnLock, btnExit;
 	private TrayIcon trayIcon; // 托盘图标
 	private SystemTray tray; // 托盘的实例
@@ -168,10 +168,10 @@ public class FloatIcon extends MouseAdapter {
 	}
 
 	private void setIcon() {
-		iblTips = new JLabel("",JLabel.CENTER);
+		iblTips = new JLabel("", JLabel.CENTER);
 		iblTips.setBounds(180, 10, 80, 80);
 		dialog.add(iblTips);
-		
+
 		lblIcon = new JLabel();
 		lblIcon.addMouseListener(this);
 		lblIcon.setIcon(new ImageIcon(ICON));
@@ -179,11 +179,11 @@ public class FloatIcon extends MouseAdapter {
 		dialog.add(lblIcon);
 	}
 
-	public void showQuizMessage(String message){
+	public void showQuizMessage(String message) {
 		lblIcon.setIcon(new ImageIcon(ICON_QUIZ));
 		iblTips.setText(message);
 	}
-	
+
 	// 设置背景
 	private void setBackground() {
 		lblBackground = new JLabel();
@@ -227,7 +227,7 @@ public class FloatIcon extends MouseAdapter {
 	@Override
 	public void mouseClicked(final MouseEvent e) {
 		if (e.getClickCount() == 1) {
-			ActionListener taskPerformer = new ActionListener(){ // 创建一个ActionListener侦听器对象
+			ActionListener taskPerformer = new ActionListener() { // 创建一个ActionListener侦听器对象
 				public void actionPerformed(ActionEvent evt) {
 					mouseTimer.stop(); // 停止 Timer，使它停止向其侦听器发送动作事件
 					if (e.getSource() == lblIcon) {
@@ -250,19 +250,24 @@ public class FloatIcon extends MouseAdapter {
 						} else {// 没作业，发作业
 							showMenu(false);
 							if (Application.isOnClass) {
-								if (Application.getInstance().getOnlineStudent().size() == 0) {
-									JOptionPane.showMessageDialog(dialog, "没有学生登录，无法进行随堂练习");
-									return ;
-						    	}
+								if (Application.getInstance()
+										.getOnlineStudent().size() == 0) {
+									JOptionPane.showMessageDialog(dialog,
+											"没有学生登录，无法进行随堂练习");
+									return;
+								}
+
 								MainFrame.getInstance().doSendQuiz();
-								btnQuiz.setIcon(new ImageIcon(ICON_HANDIN_NORMAL));
+								btnQuiz.setIcon(new ImageIcon(
+										ICON_HANDIN_NORMAL));
 							} else {
-								JOptionPane.showMessageDialog(dialog, "请先点击准备界面的开始上课！");
+								JOptionPane.showMessageDialog(dialog,
+										"请先点击准备界面的开始上课！");
 								MainFrame.getInstance().showPrepare();
 							}
 						}
 					}
-					if(e.getSource() == btnPraise){
+					if (e.getSource() == btnPraise) {
 						showMenu(false);
 						MainFrame.getInstance().showPraise();
 					}
@@ -289,7 +294,7 @@ public class FloatIcon extends MouseAdapter {
 		iblTips.setText("");
 		btnQuiz.setIcon(new ImageIcon(ICON_QUIZ_NORMAL));
 	}
-	
+
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// 按钮按下效果
