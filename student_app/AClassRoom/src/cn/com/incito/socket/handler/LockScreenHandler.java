@@ -27,7 +27,7 @@ public class LockScreenHandler extends MessageHandler {
 				intSize.length);
 		byte[] idByte = new byte[(int) idLength];
 		buffer.get(idByte);
-		 isLock=BufferUtils.readUTFString(idByte);
+		isLock=BufferUtils.readUTFString(idByte);
 		handleMessage();
 	}
 
