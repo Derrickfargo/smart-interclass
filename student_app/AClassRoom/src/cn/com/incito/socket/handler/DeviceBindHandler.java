@@ -1,6 +1,9 @@
 package cn.com.incito.socket.handler;
 
+import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.ui.activity.SplashActivity;
+import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;
 import cn.com.incito.wisdom.sdk.log.WLog;
@@ -17,7 +20,11 @@ public class DeviceBindHandler extends MessageHandler {
 			UIHelper uiHelper = UIHelper.getInstance();
 			uiHelper.showLoginActivity();
 		} else {
-			WLog.i(DeviceBindHandler.class, "设备绑定失败..." + "code" + 1);
+			WLog.i(DeviceBindHandler.class, "设备绑定失败，一个桌子最多绑定..."
+					+ Constants.PAD_PER_DESK + "个pad");
+			ToastHelper.showCustomToast(MyApplication.getInstance()
+					.getApplicationContext(), "设备绑定失败，一个桌子最多绑定"
+					+ Constants.PAD_PER_DESK + "个pad");
 		}
 
 	}
