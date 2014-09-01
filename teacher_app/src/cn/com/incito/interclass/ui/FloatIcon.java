@@ -178,7 +178,13 @@ public class FloatIcon extends MouseAdapter {
 		lblIcon.setBounds(180, 10, 80, 80);
 		dialog.add(lblIcon);
 	}
-
+	public void synQuzingState(){
+		if (Application.hasQuiz) {
+			btnQuiz.setIcon(new ImageIcon(ICON_HANDIN_NORMAL));
+		} else {
+			btnQuiz.setIcon(new ImageIcon(ICON_QUIZ_NORMAL));
+		}
+	}
 	public void showQuizMessage(String message) {
 		lblIcon.setIcon(new ImageIcon(ICON_QUIZ));
 		iblTips.setText(message);

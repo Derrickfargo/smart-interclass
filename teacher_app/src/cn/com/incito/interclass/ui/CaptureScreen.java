@@ -440,6 +440,9 @@ public class CaptureScreen {
 
 		public void mouseReleased(MouseEvent me) {
 			if (me.isPopupTrigger()) {
+				Application.hasQuiz = false;
+				FloatIcon.getInstance().synQuzingState();
+				MainFrame.getInstance().synQuzingState();
 				if (current == States.MOVE) {
 					startX = 0;
 					startY = 0;
@@ -551,9 +554,13 @@ public class CaptureScreen {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
+						Application.hasQuiz = false;
+						FloatIcon.getInstance().synQuzingState();
+						MainFrame.getInstance().synQuzingState();
 						updates();
 						jf.dispose();
 						isBarShow = false;
+						
 					}
 				});
 
