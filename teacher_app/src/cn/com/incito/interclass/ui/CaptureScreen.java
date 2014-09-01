@@ -44,13 +44,14 @@ import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import java.awt.image.*;
 
 public class CaptureScreen {
-	Logger logger =  Logger.getLogger(CaptureScreen.class.getName());
+	Logger logger = Logger.getLogger(CaptureScreen.class.getName());
 	public final static String SCREENSHOT_ICON = "images/screenshot/icon.png";
-	private JPanel c;
-	private BufferedImage get;
+	private JPanel jPanel;
+	private BufferedImage bImage;
 	private Component jFrame;
 	private boolean isBarShow = false;
 	private int startX, startY, endX, endY, tempX, tempY;
+	private int startXBar, startYBar;
 
 	/**
 	 * Creates a new instance of CaptureScreen
@@ -61,11 +62,11 @@ public class CaptureScreen {
 	}
 
 	private void updates() {
-		if (get != null) {
-			ImageIcon ii = new ImageIcon(get);
+		if (bImage != null) {
+			ImageIcon ii = new ImageIcon(bImage);
 			JLabel jl = new JLabel(ii);
-			c.removeAll();
-			c.add(new JScrollPane(jl), BorderLayout.CENTER);
+			jPanel.removeAll();
+			jPanel.add(new JScrollPane(jl), BorderLayout.CENTER);
 			SwingUtilities.updateComponentTreeUI(jFrame);
 		}
 	}
@@ -114,12 +115,10 @@ public class CaptureScreen {
 			Rectangle rec = new Rectangle(0, 0, di.width, di.height);
 			BufferedImage bi = ro.createScreenCapture(rec);
 			JFrame jf = new JFrame();
-			jf.getContentPane().setLayout(new BorderLayout());
+			// jf.getContentPane().setLayout(null);
 			jf.getContentPane().add(
-					new ContentPanel(jf, bi, di.width, di.height),
-					BorderLayout.CENTER);
-//			jf.getContentPane().add(new BarPanel(jf, startX - di.width, endY),
-//					BorderLayout.SOUTH);
+					new ContentPanel(jf, bi, di.width, di.height));
+
 			jf.setUndecorated(true);
 			jf.setSize(di);
 			jf.setVisible(true);
@@ -154,7 +153,7 @@ public class CaptureScreen {
 					}
 				}
 
-				if (ImageIO.write(get, about, file)) {
+				if (ImageIO.write(bImage, about, file)) {
 					JOptionPane.showMessageDialog(jFrame, "保存成功！");
 				} else
 					JOptionPane.showMessageDialog(jFrame, "保存失败！");
@@ -198,68 +197,27 @@ public class CaptureScreen {
 		}
 	}
 
-	private class BarPanel extends JPanel implements MouseListener {
-
-		public BarPanel(JFrame context, int startX, int startY) {
-			setLayout(null);
-			setVisible(true);
-			setBackground(Color.white);
-			JLabel label = new JLabel();
-			label.setBounds(startX, startY, 15, 15);
-			add(label);
-			JButton buttonOK = new JButton("完成");
-			buttonOK.setBounds(15, 0, 15, 15);
-			add(buttonOK);
-			JButton buttonQuit = new JButton("取消");
-			buttonQuit.setBounds(30, 0, 15, 15);
-			add(buttonQuit);
-			this.addMouseListener(this);
-		}
-
-		@Override
-		public void mouseClicked(MouseEvent e) {
-
-		}
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent e) {
-
-		}
-
-		@Override
-		public void mouseEntered(MouseEvent e) {
-
-		}
-
-		@Override
-		public void mouseExited(MouseEvent e) {
-
-		}
-
-	}
-
 	// 一个暂时类，用于显示当前的屏幕图像
 	private class ContentPanel extends JPanel implements MouseListener,
 			MouseMotionListener {
 		private BufferedImage bi;
 		private int width, height;
-
+		// BarPanel bPanel;
 		private JFrame jf;
 		private Rectangle select = new Rectangle(0, 0, 0, 0);// 表示选中的区域
 		private Cursor cs;// 表示一般情况下的鼠标状态
 		private States current = States.DEFAULT;// 表示当前的编辑状态
 		private Rectangle[] rec;// 表示八个编辑点的区域
+		BarPanel barPanel;
 
 		public ContentPanel(JFrame jf, BufferedImage bi, int width, int height) {
 			this.jf = jf;
 			this.bi = bi;
 			this.width = width;
 			this.height = height;
+
+			this.setLayout(null);
+			// barPanel = new BarPanel(jf, tempX, tempY);
 			this.addMouseListener(this);
 			this.addMouseMotionListener(this);
 			ContentPanel.this.jf.addKeyListener(new KeyAdapter() {
@@ -278,6 +236,7 @@ public class CaptureScreen {
 					new Point(0, 0), "icon");
 			this.setCursor(cs);
 			initRecs();
+
 		}
 
 		private void initRecs() {
@@ -457,6 +416,7 @@ public class CaptureScreen {
 				endX = me.getX();
 				endY = me.getY();
 			}
+			barPanel.setStartPos(startX, startY);
 			this.repaint();
 		}
 
@@ -481,49 +441,113 @@ public class CaptureScreen {
 
 			} else if (!isBarShow) {
 				isBarShow = true;
-				// showBar();
+				barPanel = new BarPanel(jf, tempX, tempY);
+				// barPanel.setStartPos(tempX, tempY);
+				this.add(barPanel);
+				updateUI();
 
 			}
 
 		}
 
 		public void mouseClicked(MouseEvent me) {
-			if (me.getClickCount() == 2) {
-				// Rectangle rec=new
-				// Rectangle(startX,startY,Math.abs(endX-startX),Math.abs(endY-startY));
-				Point p = me.getPoint();
-				if (select.contains(p)) {
-					if (select.x + select.width < this.getWidth()
-							&& select.y + select.height < this.getHeight()) {
-						get = bi.getSubimage(select.x, select.y, select.width,
-								select.height);
-						jf.dispose();
-						// updates();
-
-					} else {
-						int wid = select.width, het = select.height;
-						if (select.x + select.width >= this.getWidth()) {
-							wid = this.getWidth() - select.x;
-						}
-						if (select.y + select.height >= this.getHeight()) {
-							het = this.getHeight() - select.y;
-						}
-						get = bi.getSubimage(select.x, select.y, wid, het);
-						jf.dispose();
-						// updates();
-					}
-					distributePaper(get);
-
-				}
-			}
+//			JOptionPane.showMessageDialog(this, "用户名或密码错误!");
+//			if (me.getClickCount() == 2) {
+//				// Rectangle rec=new
+//				// Rectangle(startX,startY,Math.abs(endX-startX),Math.abs(endY-startY));
+//				
+//				Point p = me.getPoint();
+//				if (select.contains(p)) {
+//					sendPaper();
+//
+//				}
+//			}
 		}
 
+		private void sendPaper() {
+			if (select.x + select.width < this.getWidth()
+					&& select.y + select.height < this.getHeight()) {
+				bImage = bi.getSubimage(select.x, select.y, select.width,
+						select.height);
+				jf.dispose();
+				// updates();
+
+			} else {
+				int wid = select.width, het = select.height;
+				if (select.x + select.width >= this.getWidth()) {
+					wid = this.getWidth() - select.x;
+				}
+				if (select.y + select.height >= this.getHeight()) {
+					het = this.getHeight() - select.y;
+				}
+				bImage = bi.getSubimage(select.x, select.y, wid, het);
+				jf.dispose();
+				// updates();
+			}
+			distributePaper(bImage);
+		}
+
+		public class BarPanel extends JPanel implements MouseListener {
+			JButton buttonOK;
+			FlowLayout flowLayout;
+			JButton buttonQuit;
+
+			public BarPanel(JFrame context, int startX, int startY) {
+				// setBounds(startX, startY, 136, 30);
+				setBounds(startX, startY, 133, 30);
+				flowLayout = new FlowLayout();
+				flowLayout.setAlignment(FlowLayout.RIGHT);
+				setBackground(Color.LIGHT_GRAY);
+				setLayout(flowLayout);
+				buttonOK = new JButton("完成");
+				buttonOK.setForeground(Color.BLUE);
+				buttonOK.setFont(new Font("宋体", Font.BOLD, 12));
+				add(buttonOK);
+				buttonQuit = new JButton("取消");
+				buttonQuit.setForeground(Color.BLUE);
+				buttonQuit.setFont(new Font("宋体", Font.BOLD, 12));
+				add(buttonQuit);
+				this.addMouseListener(this);
+			}
+
+			public void setStartPos(int posX, int posY) {
+				setBounds(posX, posY, 256, 30);
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getSource() == buttonOK) {
+					JOptionPane.showMessageDialog(this, "用户名或密码错误!");
+					sendPaper();
+				} else if (e.getSource() == buttonQuit) {
+
+				}
+
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+
+			}
+
+		}
 	}
 
-	private void showBar(boolean isShow) {
-		// showBar();
-		// JOptionPane.showMessageDialog(this, "ceshi！");
-	}
 }
 
 enum States {
