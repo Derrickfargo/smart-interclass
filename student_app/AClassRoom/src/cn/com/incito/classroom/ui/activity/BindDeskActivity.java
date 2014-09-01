@@ -94,7 +94,7 @@ public class BindDeskActivity extends BaseActivity {
 				messagePacking.putBodyData(DataType.INT,
 						BufferUtils.writeUTFString(jsonObject.toJSONString()));
 				CoreSocket.getInstance().sendMessage(messagePacking);
-				WLog.i(BindDeskActivity.class, "启动课桌绑定...");
+				WLog.i(BindDeskActivity.class, "启动课桌绑定..."+"request:"+jsonObject.toJSONString());
 			}
 
 		});

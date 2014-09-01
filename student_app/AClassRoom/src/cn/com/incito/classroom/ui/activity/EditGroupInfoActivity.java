@@ -134,7 +134,7 @@ public class EditGroupInfoActivity extends BaseActivity implements
 					messagePacking.putBodyData(DataType.INT,
 							BufferUtils.writeUTFString(json.toJSONString()));
 					CoreSocket.getInstance().sendMessage(messagePacking);
-					WLog.i(EditGroupInfoActivity.class, "启动修改分组...");
+					WLog.i(EditGroupInfoActivity.class, "启动修改分组..."+"request:"+json.toJSONString());
 				}
 			}
 			break;
