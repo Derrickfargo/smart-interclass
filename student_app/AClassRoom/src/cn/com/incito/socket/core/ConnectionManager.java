@@ -28,6 +28,9 @@ public class ConnectionManager {
 	private HeartbeatGenerator generator;//用于产生心跳
 	
 	static ConnectionManager getInstance(){
+		if (instance == null) {
+			instance = new ConnectionManager(null);
+		}
 		return instance;
 	}
 	
