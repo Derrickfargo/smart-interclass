@@ -18,7 +18,7 @@ import com.alibaba.fastjson.JSONObject;
  * 
  */
 public class ConnectionManager {
-	private final static long TIMEOUT = 12000;//超时时间
+	private final static long TIMEOUT = 15000;//超时时间
 	private final static long SCAN_CYCLE = 10000;//心跳扫描周期10s
 	private static ConnectionManager instance;
 	private SocketChannel channel;
