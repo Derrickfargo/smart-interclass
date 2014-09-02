@@ -48,7 +48,7 @@ public class FloatIcon extends MouseAdapter {
 	private static final String ICON_LOCK_HOVER = "images/float/ico_floatmenu3_hover.png";
 	private static final String ICON_EXIT_NORMAL = "images/float/ico_floatmenu4.png";
 	private static final String ICON_EXIT_HOVER = "images/float/ico_floatmenu4_hover.png";
-	private static FloatIcon instance;
+	private static Logger logger = Logger.getLogger(FloatIcon.class.getName());
 	private Timer mouseTimer = null;
 	private JDialog dialog = new JDialog();
 	private boolean isDragged, isShowing;
@@ -57,16 +57,9 @@ public class FloatIcon extends MouseAdapter {
 	private JButton btnQuiz, btnPraise, btnLock, btnExit;
 	private TrayIcon trayIcon; // 托盘图标
 	private SystemTray tray; // 托盘的实例
-	private Logger logger = Logger.getLogger(Login.class.getName());
 
-	public static FloatIcon getInstance() {
-		if (instance == null) {
-			instance = new FloatIcon();
-		}
-		return instance;
-	}
-
-	private FloatIcon() {
+	public FloatIcon() {
+		Application.getInstance().setFloatIcon(this);
 		tray = SystemTray.getSystemTray();
 		ImageIcon icon = new ImageIcon(ICON);
 		trayIcon = new TrayIcon(icon.getImage(), "互动课堂");
@@ -276,6 +269,9 @@ public class FloatIcon extends MouseAdapter {
 					if (e.getSource() == btnPraise) {
 						showMenu(false);
 						MainFrame.getInstance().showPraise();
+					}
+					if (e.getSource() == btnLock) {
+						showMenu(false);
 					}
 					if (e.getSource() == btnExit) {
 						System.exit(0);

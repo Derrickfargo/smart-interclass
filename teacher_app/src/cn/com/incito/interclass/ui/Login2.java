@@ -25,7 +25,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
 
@@ -35,13 +34,8 @@ import cn.com.incito.http.support.ParamsWrapper;
 import cn.com.incito.interclass.po.Classes;
 import cn.com.incito.interclass.po.Course;
 import cn.com.incito.interclass.ui.widget.Item;
-import cn.com.incito.server.api.ApiClient;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.api.result.TeacherGroupResultData;
-import cn.com.incito.server.api.result.TeacherLoginResultData;
-import cn.com.incito.server.core.CoreSocket;
-import cn.com.incito.server.exception.AppException;
-import cn.com.incito.server.utils.Md5Utils;
 import cn.com.incito.server.utils.UIHelper;
 import cn.com.incito.server.utils.URLs;
 
@@ -321,8 +315,7 @@ public class Login2 extends MouseAdapter {
 
 						@Override
 						public void run() {
-
-							FloatIcon.getInstance().setVisible(true);
+							new FloatIcon().setVisible(true);
 						}
 					});
 

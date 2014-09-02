@@ -14,21 +14,47 @@ package cn.com.incito.interclass.ui;
  * @author popoy
  */
 
-import java.awt.*;
-import java.awt.event.*;
-
-import javax.swing.*;
-
-import java.io.*;
-import java.util.Date;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.UUID;
 
-import javax.imageio.*;
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 
 import cn.com.incito.interclass.constant.Constants;
-import sun.security.provider.Sun;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.CoreSocket;
 import cn.com.incito.server.core.Message;
@@ -36,12 +62,7 @@ import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
 
-import com.alibaba.fastjson.JSONObject;
 import com.sun.image.codec.jpeg.ImageFormatException;
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
-
-import java.awt.image.*;
 
 public class CaptureScreen {
 	Logger logger = Logger.getLogger(CaptureScreen.class.getName());
@@ -441,7 +462,8 @@ public class CaptureScreen {
 		public void mouseReleased(MouseEvent me) {
 			if (me.isPopupTrigger()) {
 				Application.hasQuiz = false;
-				FloatIcon.getInstance().synQuzingState();
+				Application.getInstance().getFloatIcon().synQuzingState();
+//				FloatIcon.getInstance().synQuzingState();
 				MainFrame.getInstance().synQuzingState();
 				if (current == States.MOVE) {
 					startX = 0;
@@ -555,7 +577,7 @@ public class CaptureScreen {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						Application.hasQuiz = false;
-						FloatIcon.getInstance().synQuzingState();
+						Application.getInstance().getFloatIcon().synQuzingState();
 						MainFrame.getInstance().synQuzingState();
 						updates();
 						jf.dispose();
