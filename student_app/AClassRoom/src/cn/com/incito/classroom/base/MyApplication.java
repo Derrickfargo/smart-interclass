@@ -90,7 +90,7 @@ public class MyApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		closeSysScreenLock();
+//		closeSysScreenLock();
 		initApplication();
 		MobclickAgent.openActivityDurationTrack(false);// 禁止友盟的自动统计功能
 		mInstance = this;
