@@ -28,12 +28,15 @@ import cn.com.incito.wisdom.sdk.log.WLog;
 import com.alibaba.fastjson.JSONObject;
 
 /**
- * 用户其启动界面时候的一个启动页面完成一些初始化工作 Created by popoy on 2014/7/28.
+ * 用户其启动界面时候的一个启动页面完成一些初始化工作
+ * Created by popoy on 2014/7/28.
  */
 
 public class SplashActivity extends BaseActivity {
 
 	private TextView tv_loading_msg;
+
+	private boolean Flag;
 
 	private ServiceConnectReceiver serviceConnectReceiver;
 
@@ -92,6 +95,21 @@ public class SplashActivity extends BaseActivity {
 		}
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (Flag) {
+			CoreSocket.getInstance().restartConnection();
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+			startMainAct();
+		}
+
+	}
+
 	/**
 	 * 启动主界面
 	 */
@@ -99,36 +117,29 @@ public class SplashActivity extends BaseActivity {
 	private void startMain() {
 		tv_loading_msg.setText(R.string.loading_msg);
 		if (!CoreSocket.getInstance().isConnected()) {
-			new AlertDialog.Builder(this)
-					.setTitle("网络设置")
-					.setPositiveButton("设置",
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									Intent intent = new Intent(
-											Settings.ACTION_SETTINGS);
-									startActivity(intent);
-									dialog.dismiss();
-								}
-							})
-					.setNegativeButton("重试",
-							new DialogInterface.OnClickListener() {
+			new AlertDialog.Builder(this).setTitle("网络设置").setPositiveButton("设置", new DialogInterface.OnClickListener() {
 
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									CoreSocket.getInstance()
-											.restartConnection();
-									try {
-										Thread.sleep(1000);
-									} catch (InterruptedException e1) {
-										e1.printStackTrace();
-									}
-									startMainAct();
-									dialog.dismiss();
-								}
-							}).show();
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					Intent intent = new Intent(Settings.ACTION_SETTINGS);
+					startActivity(intent);
+					Flag = true;
+					dialog.dismiss();
+				}
+			}).setNegativeButton("重试", new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					CoreSocket.getInstance().restartConnection();
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}
+					startMainAct();
+					dialog.dismiss();
+				}
+			}).show();
 		} else {
 			startMainAct();
 		}
@@ -145,13 +156,10 @@ public class SplashActivity extends BaseActivity {
 	public void startMainAct() {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("imei", MyApplication.deviceId);
-		MessagePacking messagePacking = new MessagePacking(
-				Message.MESSAGE_DEVICE_HAS_BIND);
-		messagePacking.putBodyData(DataType.INT,
-				BufferUtils.writeUTFString(jsonObject.toJSONString()));
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_HAS_BIND);
+		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
 		CoreSocket.getInstance().sendMessage(messagePacking);
-		WLog.i(SplashActivity.class,
-				"开始判定设备是否绑定..." + "request:" + jsonObject.toJSONString());
+		WLog.i(SplashActivity.class, "开始判定设备是否绑定..." + "request:" + jsonObject.toJSONString());
 	}
 
 }
