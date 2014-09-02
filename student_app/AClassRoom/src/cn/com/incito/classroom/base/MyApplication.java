@@ -10,6 +10,8 @@ import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.graphics.Bitmap;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.SystemProperties;
 import android.preference.PreferenceManager;
@@ -96,9 +98,14 @@ public class MyApplication extends Application {
 		mInstance = this;
 		mPrefs = PreferenceManager
 				.getDefaultSharedPreferences(getApplicationContext());
-		TelephonyManager tm = (TelephonyManager) this
-				.getSystemService(Context.TELEPHONY_SERVICE);
-		IMEI = tm.getDeviceId();
+		
+		WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+		WifiInfo info = wifi.getConnectionInfo();
+//		TelephonyManager tm = (TelephonyManager) this
+//				.getSystemService(Context.TELEPHONY_SERVICE);
+//		IMEI = tm.getDeviceId();
+		IMEI=info.getMacAddress();
+		
 		OpenUDIDManager.sync(this);
 		File cacheDir = StorageUtils.getOwnCacheDirectory(
 				getApplicationContext(),
