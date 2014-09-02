@@ -81,6 +81,10 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 		String message = String.format(Constants.MESSAGE_QUIZ, 0, app
 				.getClientChannel().size());
 		FloatIcon.getInstance().showQuizMessage(message);
+		//清理上一次收到的作业
+		app.getTempQuiz().clear();
+		app.getQuizList().clear();
+		app.refreshQuiz();
 	}
 	
 	public void doAcceptQuiz(){
@@ -109,7 +113,13 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 	public void mouseReleased(MouseEvent e) {
 		
 	}
-
+	public void synQuzingState(){
+		if (Application.hasQuiz) {
+			btnQuiz.setIcon(new ImageIcon(BTN_ACCEPT_HOVER));
+		} else {
+			btnQuiz.setIcon(new ImageIcon(BTN_SEND_HOVER));
+		}
+	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		

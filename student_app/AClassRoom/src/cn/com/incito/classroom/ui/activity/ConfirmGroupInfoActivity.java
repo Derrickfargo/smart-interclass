@@ -29,78 +29,82 @@ import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
 import cn.com.incito.wisdom.sdk.log.WLog;
 
-
 /**
- * 绑定课桌activity
- * Created by bianshijian on 2014/7/28.
+ * 绑定课桌activity Created by bianshijian on 2014/7/28.
  */
-public class ConfirmGroupInfoActivity extends BaseActivity implements View.OnClickListener {
+public class ConfirmGroupInfoActivity extends BaseActivity implements
+		View.OnClickListener {
 
-    private ImageButton mBtnDisagree;
-    private ImageButton mBtnAgree;
-    private ImageView mGroupIcon;
-    private TextView mGroupName;
-    private TypedArray mGroupIcons;
-    private TextView mWaitingStudentTip;
-    private String mGroupID;
+	private ImageButton mBtnDisagree;
+	private ImageButton mBtnAgree;
+	private ImageView mGroupIcon;
+	private TextView mGroupName;
+	private TypedArray mGroupIcons;
+	private TextView mWaitingStudentTip;
+	private String mGroupID;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.confirm_group_info);
-        initView();
-        initData();
-    }
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.confirm_group_info);
+		initView();
+		initData();
+	}
 
-    private void initView() {
-        mBtnAgree = (ImageButton) findViewById(R.id.btn_agree);
-        mBtnDisagree = (ImageButton) findViewById(R.id.btn_disagree);
-        mGroupIcon = (ImageView) findViewById(R.id.group_icon);
-        mGroupName = (TextView) findViewById(R.id.group_name);
-        mWaitingStudentTip = (TextView) findViewById(R.id.waiting_other_student);
-        mBtnAgree.setOnClickListener(this);
-        mBtnDisagree.setOnClickListener(this);
-    }
+	private void initView() {
+		mBtnAgree = (ImageButton) findViewById(R.id.btn_agree);
+		mBtnDisagree = (ImageButton) findViewById(R.id.btn_disagree);
+		mGroupIcon = (ImageView) findViewById(R.id.group_icon);
+		mGroupName = (TextView) findViewById(R.id.group_name);
+		mWaitingStudentTip = (TextView) findViewById(R.id.waiting_other_student);
+		mBtnAgree.setOnClickListener(this);
+		mBtnDisagree.setOnClickListener(this);
+	}
 
-    private void initData() {
-        Bundle bundle = getIntent().getExtras();
-        Map<String, Object> json = (Map<String, Object>) bundle.get("data");
-        mGroupID = json.get("id").toString();
-        mGroupName.setText(json.get("name").toString());
-        String iconName = json.get("logo").toString();
-        mGroupIcons = getResources().obtainTypedArray(R.array.groupIcons);
-        String[] iconsName = getResources().getStringArray(R.array.groupicons_name);
-        Drawable drawable = Utils.getGroupIconByName(mGroupIcons, iconsName, iconName);
-        mGroupIcon.setImageDrawable(drawable);
-    }
+	private void initData() {
+		Bundle bundle = getIntent().getExtras();
+		Map<String, Object> json = (Map<String, Object>) bundle.get("data");
+		mGroupID = json.get("id").toString();
+		mGroupName.setText(json.get("name").toString());
+		String iconName = json.get("logo").toString();
+		mGroupIcons = getResources().obtainTypedArray(R.array.groupIcons);
+		String[] iconsName = getResources().getStringArray(
+				R.array.groupicons_name);
+		Drawable drawable = Utils.getGroupIconByName(mGroupIcons, iconsName,
+				iconName);
+		mGroupIcon.setImageDrawable(drawable);
+	}
 
-    @Override
-    public void onClick(View view) {
-        int id = view.getId();
-        TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        JSONObject json = new JSONObject();
-        json.put("id", mGroupID);
-        json.put("imei", tm.getDeviceId());
-        if (id == R.id.btn_agree) {
-            json.put("vote", "0");
-        } else if (id == R.id.btn_disagree) {
-            json.put("vote", "1");
-        }
-        MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_VOTE);
-        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json.toJSONString()));
-        CoreSocket.getInstance().sendMessage(messagePacking);
-        WLog.i(ConfirmGroupInfoActivity.class, "启动分组确认...");
-        if (id == R.id.btn_agree) {
-            mWaitingStudentTip.setText(R.string.waiting_other_confirm_tip);
-        }
-        mBtnAgree.setVisibility(View.GONE);
-        mBtnDisagree.setVisibility(View.GONE);
-    }
+	@Override
+	public void onClick(View view) {
+		int id = view.getId();
+		TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+		JSONObject json = new JSONObject();
+		json.put("id", mGroupID);
+		json.put("imei", tm.getDeviceId());
+		if (id == R.id.btn_agree) {
+			json.put("vote", "0");
+		} else if (id == R.id.btn_disagree) {
+			json.put("vote", "1");
+		}
+		MessagePacking messagePacking = new MessagePacking(
+				Message.MESSAGE_GROUP_VOTE);
+		messagePacking.putBodyData(DataType.INT,
+				BufferUtils.writeUTFString(json.toJSONString()));
+		CoreSocket.getInstance().sendMessage(messagePacking);
+		WLog.i(ConfirmGroupInfoActivity.class,
+				"启动分组确认..." + "request:" + json.toJSONString());
+		if (id == R.id.btn_agree) {
+			mWaitingStudentTip.setText(R.string.waiting_other_confirm_tip);
+		}
+		mBtnAgree.setVisibility(View.GONE);
+		mBtnDisagree.setVisibility(View.GONE);
+	}
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mGroupIcons.recycle();
-    }
+	@Override
+	protected void onStop() {
+		super.onStop();
+		mGroupIcons.recycle();
+	}
 
 }

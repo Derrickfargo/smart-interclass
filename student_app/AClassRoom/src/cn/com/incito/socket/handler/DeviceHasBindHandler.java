@@ -21,10 +21,10 @@ public class DeviceHasBindHandler extends MessageHandler {
 		UIHelper uiHelper = UIHelper.getInstance();
 		if (jsonObject.getBoolean("isbind")) {
 			uiHelper.showWaitingActivity();
-			WLog.i(DeviceBindHandler.class, "已绑定设备，进入等待界面...");
+			WLog.i(DeviceBindHandler.class, "已绑定设备，进入等待界面..."+"response:"+jsonObject.toJSONString());
 		} else {
 			uiHelper.showBindDeskActivity();
-			WLog.i(DeviceBindHandler.class, "未绑定设备，进入绑定界面...");
+			WLog.i(DeviceBindHandler.class, "未绑定设备，进入绑定界面..."+"response:"+jsonObject.toJSONString());
 		}
 	}
 
