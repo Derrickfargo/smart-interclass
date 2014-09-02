@@ -5,6 +5,7 @@ import java.util.Stack;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import cn.com.incito.socket.core.ConnectionManager;
 import cn.com.incito.socket.core.CoreSocket;
 
 /**
@@ -100,6 +101,7 @@ public class AppManager {
             finishAllActivity();
             CoreSocket.getInstance().stopConnection();
             Thread.sleep(100);//先让socket发送退出消息再完全退出
+            ConnectionManager.getInstance(null).close(true);
             MyApplication.getInstance().stopSocketService();
             android.os.Process.killProcess(android.os.Process.myPid());
             ActivityManager activityMgr = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
