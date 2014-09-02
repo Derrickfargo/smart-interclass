@@ -28,6 +28,7 @@ import cn.com.incito.interclass.po.Room;
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.po.Table;
 import cn.com.incito.interclass.po.Teacher;
+import cn.com.incito.interclass.ui.FloatIcon;
 import cn.com.incito.interclass.ui.Login;
 import cn.com.incito.interclass.ui.MainFrame;
 import cn.com.incito.server.utils.FileUtils;
@@ -36,7 +37,7 @@ import com.alibaba.fastjson.JSONObject;
 
 public class Application {
     private static Application instance;
-    private FileLock lock;
+    private FloatIcon floatIcon;
     private String quizId;   //考试流水号
     private Room room;// 当前上课的教室，教师登陆完后初始化
     private Teacher teacher;// 当前登录的老师，教师登陆完后初始化
@@ -60,7 +61,7 @@ public class Application {
     private Map<Integer, List<Integer>> tempVote = new HashMap<Integer, List<Integer>>();// 小组的投票信息
     private Map<String, Quiz> tempQuiz = new HashMap<String, Quiz>();//随堂联系
     private List<Quiz> quizList = new ArrayList<Quiz>();//作业
-    private FileLock fl;
+    private FileLock lock;
     /**
      * IMEI和设备的对应关系(key:imei,value:Device)，教师登陆完后初始化
      */
@@ -98,8 +99,8 @@ public class Application {
             }
             RandomAccessFile raf = new RandomAccessFile(locFile, "rw");
 //            fos = new FileOutputStream(locFile);
-            fl = raf.getChannel().tryLock();//得到锁
-            if (fl != null) {//调用自己的操作
+            lock = raf.getChannel().tryLock();//得到锁
+            if (lock != null) {//调用自己的操作
 //                doSomething();//这是一个会一直运行下去的操作
                 new Thread() {
                     public void run() {
@@ -137,7 +138,19 @@ public class Application {
         new Login();
     }
 
-    public void lock(){
+	public FloatIcon getFloatIcon() {
+		return floatIcon;
+	}
+
+	public void setFloatIcon(FloatIcon floatIcon) {
+		this.floatIcon = floatIcon;
+	}
+
+	public FileLock getLock() {
+		return lock;
+	}
+
+	public void lock(){
     	try {
             File file = new File("fileToLock.dat");
             randomAccessFile = new RandomAccessFile(file, "rw");
@@ -462,7 +475,19 @@ public class Application {
     }
 
     public List<SocketChannel> getClientChannelByGroup(Integer groupId) {
-        return groupChannel.get(groupId);
+    	List<SocketChannel> channels = groupChannel.get(groupId);
+    	List<SocketChannel> retval = new ArrayList<SocketChannel>();
+    	if(channels != null){
+    		Iterator<SocketChannel> it = channels.iterator();
+        	while(it.hasNext()){
+        		SocketChannel channel = it.next();
+    			if (channel.isOpen()) {
+    				retval.add(channel);
+    			}
+        	}
+        	groupChannel.put(groupId, retval);
+    	}
+        return retval;
     }
 
     public Map<String, Device> getImeiDevice() {
