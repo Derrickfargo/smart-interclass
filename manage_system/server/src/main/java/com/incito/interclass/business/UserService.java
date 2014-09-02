@@ -31,8 +31,11 @@ public class UserService {
 		String[] x = studentId.split(",");
 		
 		for (int k = 0; k < x.length; k++) {
-			userMapper.changePoint(x[k], score);
-			System.out.println(x[k]);
+			if(userMapper.getScore(x[k]).getScore()==0&&score<0){
+				userMapper.changePoint(x[k], 0);
+			}else{
+				userMapper.changePoint(x[k], score);
+			}
 		}
 		
 		for (int j = 0; j < x.length; j++) {
