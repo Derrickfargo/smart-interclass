@@ -476,15 +476,18 @@ public class Application {
 
     public List<SocketChannel> getClientChannelByGroup(Integer groupId) {
     	List<SocketChannel> channels = groupChannel.get(groupId);
-    	Iterator<SocketChannel> it = channels.iterator();
-    	while(it.hasNext()){
-    		SocketChannel channel = it.next();
-			if (!channel.isOpen()) {
-				it.remove();
-			}
+    	List<SocketChannel> retval = new ArrayList<SocketChannel>();
+    	if(channels != null){
+    		Iterator<SocketChannel> it = channels.iterator();
+        	while(it.hasNext()){
+        		SocketChannel channel = it.next();
+    			if (channel.isOpen()) {
+    				retval.add(channel);
+    			}
+        	}
+        	groupChannel.put(groupId, retval);
     	}
-    	groupChannel.put(groupId, channels);
-        return channels;
+        return retval;
     }
 
     public Map<String, Device> getImeiDevice() {
