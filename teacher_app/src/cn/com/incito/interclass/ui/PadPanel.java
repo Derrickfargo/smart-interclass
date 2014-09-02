@@ -93,9 +93,11 @@ public class PadPanel extends JPanel {
 			if (students != null && i < students.size()) {
 				Student student = students.get(i);
 				lblName.setText(student.getName());
+				lblName.setToolTipText(student.getName());
 				lblName.setBackground(new Color(Integer.parseInt("5ec996", 16)));
 			} else {
 				lblName.setText("");
+				lblName.setToolTipText("");
 				lblName.setBackground(new Color(Integer.parseInt("E1E1E1", 16)));
 			}
 		}

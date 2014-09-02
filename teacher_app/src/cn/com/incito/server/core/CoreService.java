@@ -15,7 +15,6 @@ import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Quiz;
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.po.Table;
-import cn.com.incito.interclass.ui.FloatIcon;
 import cn.com.incito.interclass.ui.MainFrame;
 import cn.com.incito.server.api.ApiClient;
 import cn.com.incito.server.api.Application;
@@ -330,12 +329,14 @@ public class CoreService {
 		app.getQuizList().add(quiz);
 		app.refresh();
 		if (app.getQuizList().size() == app.getClientChannel().size()) {
-			FloatIcon.getInstance().showNoQuiz();
+//			FloatIcon.getInstance().showNoQuiz();
+			Application.getInstance().getFloatIcon().showNoQuiz();
 			MainFrame.getInstance().showNoQuiz();
 		} else {
 			String message = String.format(Constants.MESSAGE_QUIZ, app
 					.getQuizList().size(), app.getClientChannel().size());
-			FloatIcon.getInstance().showQuizMessage(message);
+//			FloatIcon.getInstance().showQuizMessage(message);
+			Application.getInstance().getFloatIcon().showQuizMessage(message);
 		}
 		return JSONUtils.renderJSONString(0);
 	}

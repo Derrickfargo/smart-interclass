@@ -80,7 +80,7 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 		Application app = Application.getInstance();
 		String message = String.format(Constants.MESSAGE_QUIZ, 0, app
 				.getClientChannel().size());
-		FloatIcon.getInstance().showQuizMessage(message);
+		app.getFloatIcon().showQuizMessage(message);
 		//清理上一次收到的作业
 		app.getTempQuiz().clear();
 		app.getQuizList().clear();
