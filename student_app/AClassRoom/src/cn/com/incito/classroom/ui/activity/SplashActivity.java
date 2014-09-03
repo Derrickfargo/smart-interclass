@@ -90,7 +90,8 @@ public class SplashActivity extends BaseActivity {
 			if (intent.getAction() == SocketService.NETWORK_RECEIVER) {
 				// 拿到进度，更新UI
 				String exception = intent.getStringExtra("exception");
-				tv_loading_msg.setText(R.string.loading_network_disconnect);
+//				tv_loading_msg.setText(R.string.loading_network_disconnect);
+				showErrorNetDialog();
 			}
 		}
 	}
@@ -117,29 +118,7 @@ public class SplashActivity extends BaseActivity {
 	private void startMain() {
 		tv_loading_msg.setText(R.string.loading_msg);
 		if (!CoreSocket.getInstance().isConnected()) {
-			new AlertDialog.Builder(this).setTitle("网络设置").setPositiveButton("设置", new DialogInterface.OnClickListener() {
-
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					Intent intent = new Intent(Settings.ACTION_SETTINGS);
-					startActivity(intent);
-					Flag = true;
-					dialog.dismiss();
-				}
-			}).setNegativeButton("重试", new DialogInterface.OnClickListener() {
-
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					CoreSocket.getInstance().restartConnection();
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e1) {
-						e1.printStackTrace();
-					}
-					startMainAct();
-					dialog.dismiss();
-				}
-			}).show();
+			showErrorNetDialog();
 		} else {
 			startMainAct();
 		}
@@ -160,6 +139,31 @@ public class SplashActivity extends BaseActivity {
 		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
 		CoreSocket.getInstance().sendMessage(messagePacking);
 		WLog.i(SplashActivity.class, "开始判定设备是否绑定..." + "request:" + jsonObject.toJSONString());
+	}
+	public void showErrorNetDialog(){
+		new AlertDialog.Builder(this).setTitle("网络设置").setPositiveButton("设置", new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				Intent intent = new Intent(Settings.ACTION_SETTINGS);
+				startActivity(intent);
+				Flag = true;
+				dialog.dismiss();
+			}
+		}).setNegativeButton("重试", new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				CoreSocket.getInstance().restartConnection();
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+				startMainAct();
+				dialog.dismiss();
+			}
+		}).show();
 	}
 
 }
