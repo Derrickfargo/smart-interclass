@@ -14,7 +14,15 @@ public class Constants {
 	public static final boolean OPEN_LOCK_SCREEN = false;// 是否打开锁屏功能
 	public static final boolean UNCATCHED_EXCEPION_HANLED = false;
 	public static final int PORT = 9001;
-	public static final String IP = "192.168.30.7";
+	public static  String IP = "192.168.30.7";
+	
+	public static String getIP() {
+		return IP;
+	}
+	
+	public static void setIP(String iP) {
+		IP = iP;
+	}
 	public static final int PAD_PER_DESK = 4;
 
 	/** WisdomCityRestClient 访问API是否输出日志 */

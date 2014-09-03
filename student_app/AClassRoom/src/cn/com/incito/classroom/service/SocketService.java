@@ -34,7 +34,6 @@ public class SocketService extends Service {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		System.out.println("SocketService.onDestroy");
 		WLog.i(SocketService.class, "socket disconnected");
 	}
 }
