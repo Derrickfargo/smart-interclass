@@ -58,7 +58,7 @@ public class PraisePanel extends JPanel {
 
 	public void refresh() {
 		initData();
-		if (groupList.size() == 0) {//未绑定 
+		if (groupList.size() == 0) {// 未绑定
 			lblNoDesk.setVisible(true);
 			return;
 		}
@@ -94,7 +94,8 @@ public class PraisePanel extends JPanel {
 				memberStr += student.getName() + ",";
 				score += student.getScore();
 			}
-			score = score / group.getStudents().size();
+			score = group.getStudents().size() > 0 ? score
+					/ group.getStudents().size() : 0;
 			group.setScore(score);
 		}
 		if (memberStr != null && !memberStr.equals("")) {
