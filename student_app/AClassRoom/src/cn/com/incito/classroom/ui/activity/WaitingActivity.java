@@ -138,7 +138,10 @@ public class WaitingActivity extends BaseActivity {
 						addState = 0;
 						mProgressDialog
 								.setMessage(R.string.load_dialog_default_text);
-						mProgressDialog.show();
+						if(!mProgressDialog.isShowing()){
+							mProgressDialog.show();
+						}
+						
 						if (loginResList.get(position).isLogin() == false) {
 							login(loginResList.get(position).getName(),
 									loginResList.get(position).getNumber(),

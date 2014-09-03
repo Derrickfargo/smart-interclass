@@ -90,6 +90,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	private ImageButton earise_big;
 	private ImageButton earise_middle;
 	private ImageButton earise_small;
+	private Bitmap bitmap;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -172,7 +173,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		mSubmitButton.setOnClickListener(this);
 		m_sketchPad = (SketchPadView) findViewById(R.id.sketchpad);
 		m_sketchPad.setCallback(DrawBoxActivity.this);
-		Bitmap bitmap = null;
+		
 		if (getIntent().getExtras() != null) {
 			byte[] paper = getIntent().getExtras().getByteArray("paper");
 			if (paper != null) {
@@ -402,7 +403,9 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	 * @author hh
 	 */
 	public void initPaint(Bitmap bitmap) {
-		m_sketchPad = new SketchPadView(DrawBoxActivity.this, null);
+		if(m_sketchPad==null){
+			m_sketchPad = new SketchPadView(DrawBoxActivity.this, null);
+		}
 		m_sketchPad.setCallback(DrawBoxActivity.this);
 		line.removeAllViews();
 		line.addView(m_sketchPad);
@@ -413,6 +416,12 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	protected void onDestroy() {
 		super.onDestroy();
 		m_sketchPad.clearAllStrokes();
+		if (bitmap != null) {
+			if (!bitmap.isRecycled()) {
+				bitmap.recycle();
+				System.gc();
+			}
+		}
 		BitmapUtil.setFree();
 	}
 
@@ -515,6 +524,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		CoreSocket.getInstance().sendMessage(messagePacking);
 		WLog.i(DrawBoxActivity.class, "启动作业提交..."+"request:"+name);
 		MyApplication.getInstance().setSubmitPaper(true);
+		UIHelper.getInstance().setDrawBoxActivity(null);
 		if (Constants.OPEN_LOCK_SCREEN) {
 			if (!MyApplication.getInstance().isLockScreen()) {
 				WLog.i(DistributePaperHandler.class, "提交作业后锁定屏幕" );
@@ -525,6 +535,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 				MyApplication.getInstance().setLockScreen(true);
 			}
 		}
+		
 		this.finish();
 	}
 	public void initPopwindow(){

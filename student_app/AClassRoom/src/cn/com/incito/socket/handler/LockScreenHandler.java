@@ -45,14 +45,19 @@ public class LockScreenHandler extends MessageHandler {
 				boolean ret = Settings.Global.putInt(mContentResolver, "disable_powerkey", 1);// 屏蔽电源按钮唤醒功能
 				execRootCmd.powerkey();
 			} else if(isLock.equals("false")){
-				MyApplication.getInstance().setLockScreen(false);
-				boolean ret1 = Settings.Global.putInt(mContentResolver, "disable_powerkey", 0); // 打开电源按钮唤醒功能
-				execRootCmd.powerkey();
+				if(MyApplication.getInstance().isLockScreen()){
+					MyApplication.getInstance().setLockScreen(false);
+					boolean ret1 = Settings.Global.putInt(mContentResolver, "disable_powerkey", 0); // 打开电源按钮唤醒功能
+					execRootCmd.powerkey();
+					MyApplication.getInstance().setLockScreen(false);
+				}
 				AppManager.getAppManager().finishAllActivity();
 			}else{
-				MyApplication.getInstance().setLockScreen(false);
-				boolean ret1 = Settings.Global.putInt(mContentResolver, "disable_powerkey", 0); // 打开电源按钮唤醒功能
-				execRootCmd.powerkey();
+				if(MyApplication.getInstance().isLockScreen()){
+					MyApplication.getInstance().setLockScreen(false);
+					boolean ret1 = Settings.Global.putInt(mContentResolver, "disable_powerkey", 0); // 打开电源按钮唤醒功能
+					execRootCmd.powerkey();
+				}
 			}
 		}
 	}

@@ -150,8 +150,6 @@
 		    score = score+#{score}
 	    WHERE 
 	    	id = #{studentId}
-	    AND
-	    	score>=1
 	</update>
 	
 	<select id="getScore" parameterType="java.lang.String" resultType="com.incito.interclass.entity.Student">
@@ -169,7 +167,5 @@
 	    	medals=#{medals}
 	    WHERE
 	    	id=#{groupId}
-	    
-	    
 	</update>
 </mapper>
