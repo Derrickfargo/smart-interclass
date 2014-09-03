@@ -524,6 +524,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		CoreSocket.getInstance().sendMessage(messagePacking);
 		WLog.i(DrawBoxActivity.class, "启动作业提交..."+"request:"+name);
 		MyApplication.getInstance().setSubmitPaper(true);
+		UIHelper.getInstance().setDrawBoxActivity(null);
 		if (Constants.OPEN_LOCK_SCREEN) {
 			if (!MyApplication.getInstance().isLockScreen()) {
 				WLog.i(DistributePaperHandler.class, "提交作业后锁定屏幕" );

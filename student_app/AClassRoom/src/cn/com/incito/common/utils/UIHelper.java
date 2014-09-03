@@ -55,6 +55,10 @@ public class UIHelper {
 	}
 
 	public void setDrawBoxActivity(DrawBoxActivity drawBoxActivity) {
+		if (this.drawBoxActivity != null) {
+			this.drawBoxActivity.finish();
+			this.drawBoxActivity = null;
+		}
 		this.drawBoxActivity = drawBoxActivity;
 	}
 
