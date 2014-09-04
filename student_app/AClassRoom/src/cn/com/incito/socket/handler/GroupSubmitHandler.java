@@ -2,6 +2,7 @@ package cn.com.incito.socket.handler;
 
 import com.alibaba.fastjson.JSONObject;
 
+import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;
 import cn.com.incito.wisdom.sdk.log.WLog;
@@ -18,8 +19,10 @@ public class GroupSubmitHandler extends MessageHandler {
 			JSONObject json = data.getJSONObject("data");
 			WLog.i(DeviceBindHandler.class, "分组提交成功" + "response:"+json);
 			UIHelper.getInstance().showConfirmGroupActivity(json);
+			if(MyApplication.getInstance().isOnClass){
+				MyApplication.getInstance().lockScreen(true);
+			}
 		} else {
-			// TODO showMessage
 		}
 
 	}

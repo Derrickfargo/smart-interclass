@@ -48,6 +48,17 @@ import java.util.List;
  * 应用 appication（缓存各类数据） Created by popoy on 2014/7/28.
  */
 public class MyApplication extends Application {
+	public boolean isOnClass;//是否在上课
+	
+	public boolean isOnClass() {
+		return isOnClass;
+	}
+
+	
+	public void setOnClass(boolean isOnClass) {
+		this.isOnClass = isOnClass;
+	}
+
 	private LoginResVo loginResVo;
 	public static String deviceId;
 	private static final String TAG = MyApplication.class.getSimpleName();
