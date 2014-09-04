@@ -464,7 +464,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	 */
 	private Bitmap getBitMap() {// 老师收作业的时候调用此方法保存图片 然后将图片传到服务器
 		Bitmap bmBitmap = m_sketchPad.getCanvasSnapshot();
-		BitmapUtil.saveBitmapToSdCard(bmBitmap, "/mnt/sdcard/aa.jpg");
+//		BitmapUtil.saveBitmapToSdCard(bmBitmap, "/mnt/sdcard/aa.jpg");
 		m_sketchPad.cleanDrawingCache();
 		return bmBitmap;
 	}

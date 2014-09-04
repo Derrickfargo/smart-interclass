@@ -28,6 +28,7 @@ import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
+import cn.com.incito.classroom.ui.widget.MyAlertDialog;
 import cn.com.incito.classroom.vo.LoginReqVo;
 import cn.com.incito.classroom.vo.LoginRes2Vo;
 import cn.com.incito.classroom.vo.LoginResVo;
@@ -163,26 +164,10 @@ public class WaitingActivity extends BaseActivity {
 
 	@Override
 	public void onBackPressed() {
-		showDialog();
+		MyAlertDialog dialog=new MyAlertDialog(this);
+		dialog.show();
 	}
 
-	public void showDialog() {
-		new AlertDialog.Builder(this)
-				.setMessage("确定退出？")
-				.setPositiveButton("是", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						AppManager.getAppManager()
-								.AppExit(WaitingActivity.this);
-					}
-				})
-				.setNegativeButton("否", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-					}
-				}).show();
-	}
 
 	/**
 	 * 与后台服务建立连接，并实现登陆
