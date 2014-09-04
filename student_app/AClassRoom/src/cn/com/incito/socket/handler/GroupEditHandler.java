@@ -1,5 +1,6 @@
 package cn.com.incito.socket.handler;
 
+import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.ui.activity.EditGroupInfoActivity;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;
@@ -15,6 +16,7 @@ public class GroupEditHandler extends MessageHandler {
 		int groupID = data.getIntValue("id");
 		WLog.i(GroupEditHandler.class, "收到修改分组...组ID：" + groupID);
 		UIHelper.getInstance().showEditGroupActivity(groupID);
+		MyApplication.getInstance().lockScreen(false);
 	}
 
 }
