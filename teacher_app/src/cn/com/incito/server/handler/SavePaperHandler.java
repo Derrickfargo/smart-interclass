@@ -24,25 +24,25 @@ public class SavePaperHandler extends MessageHandler {
 	@Override
 	public void handleMessage(Message msg) {
 		this.message = msg;
+		logger.info("开始处理获取作业消息");
 		ByteBuffer buffer = msg.getBodyBuffer();
 		buffer.flip();
 		// 获取id号
 		 id = getInfo(buffer);
 		//获取imei
 		 imei = getInfo(buffer);
-//		//获取小组姓名
-//		 name = getInfo(buffer);
 		// 获取图片信息
 		byte[] imageSize = new byte[4];// int
 		buffer.get(imageSize);
 		int pictureLength = (int)BufferUtils.decodeIntLittleEndian(imageSize, 0,
 				imageSize.length);
+		logger.info("作业图片总大小：" + pictureLength + "字节.");
 		byte[] imageByte = new byte[pictureLength];
 		buffer.get(imageByte);
 		handleMessage(imageByte);
 	}
+	
 	public void handleMessage(byte[] imageByte) {
-		logger.info("消息类型为获取作业:" );
 		//需要给组中所以的设备发送
 		String result = service.SavePaper(imei,id,imageByte);
 		sendResponse(result);

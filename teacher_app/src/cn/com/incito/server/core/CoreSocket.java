@@ -9,6 +9,7 @@ import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -39,31 +40,29 @@ public final class CoreSocket extends Thread {
 	}
 
 	/**
-	 * TODO 关闭所有通道
+	 * 关闭所有通道
 	 */
 	public void closeChannel() {
-//		Application app = Application.getInstance();
-//		Map<Student, SocketChannel> clientChannel = app.getClientChannel();
-//		Collection<SocketChannel> channels =  clientChannel.values();
-//		for(SocketChannel channel : channels){
-//			if (channel != null) {
-//				try {
-//					channel.close();
-//				} catch (IOException ex) {
-//					System.out.println("关闭通道异常：" + ex.getMessage());
-//				}
-//				
-//				try {
-//					if (selector != null) {
-//						selector.close();
-//					}
-//				} catch (IOException e) {
-//					System.out.println("关闭通道异常：" + e.getMessage());
-//				}
-//				channel = null;
-//				selector = null;
-//			}
-//		}
+		Application app = Application.getInstance();
+		Map<String, SocketChannel> clientChannel = app.getClientChannel();
+		Collection<SocketChannel> channels =  clientChannel.values();
+		for(SocketChannel channel : channels){
+			if (channel != null) {
+				try {
+					if (channel != null && channel.isOpen()) {
+						channel.close();
+					}
+					if (selector != null && selector.isOpen()) {
+						selector.close();
+					}
+				} catch (IOException ex) {
+					logger.fatal("关闭通道异常：" + ex.getMessage());
+				}
+				channel = null;
+				selector = null;
+			}
+		}
+		
 	}
 
 	/**
@@ -74,7 +73,7 @@ public final class CoreSocket extends Thread {
 		ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
 		serverSocketChannel.configureBlocking(false);
 		ServerSocket serverSocket = serverSocketChannel.socket();
-		serverSocket.setSoTimeout(30000);//超时时长为30秒
+		serverSocket.setSoTimeout(15000);//超时时长为15秒
 		serverSocket.bind(new InetSocketAddress(BAND_PORT));
 		selector = Selector.open();
 		serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
@@ -93,8 +92,7 @@ public final class CoreSocket extends Thread {
 				}
 				selectionKeys.clear();// 清除处理过的事件
 			} catch (IOException e) {
-				e.printStackTrace();
-				break;
+				logger.fatal("CoreSocket监听异常，异常信息:\n" + e.getMessage());
 			}
 		}
 	}
@@ -140,7 +138,7 @@ public final class CoreSocket extends Thread {
 				ssc.close();
 			}
 		} catch (IOException e) {
-			logger.fatal("CoreSocket异常IOException:\n" + e.getMessage());
+			logger.fatal("关闭服务端socket异常:\n" + e.getMessage());
 		}
 	}
 
@@ -157,14 +155,16 @@ public final class CoreSocket extends Thread {
 				try {
 					ByteBuffer buffer = ByteBuffer.allocate(data.length);
 					for(SocketChannel channel: channels){
-						// 输出到通道
-						buffer.clear();
-						buffer.put(data);
-						buffer.flip();
-						channel.write(buffer);
+						if(channel != null && channel.isConnected()){
+							// 输出到通道
+							buffer.clear();
+							buffer.put(data);
+							buffer.flip();
+							channel.write(buffer);
+						}
 					}
 				} catch (IOException e) {
-					e.printStackTrace();
+					logger.fatal("发送消息异常:\n" + e.getMessage());
 				}
 			};
 		}.start();

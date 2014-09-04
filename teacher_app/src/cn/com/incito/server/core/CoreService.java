@@ -312,7 +312,7 @@ public class CoreService {
 			ImageUtil.resize(file, file, 865, 1f);
 			ImageUtil.resize(file, thumbnail, 186, 1f);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("保存作业图片出现错误:", e);
 		}
 
 		Quiz quiz = new Quiz();

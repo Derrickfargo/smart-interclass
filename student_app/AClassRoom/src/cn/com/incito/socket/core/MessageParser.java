@@ -86,6 +86,7 @@ public class MessageParser {
         } catch (NumberFormatException ex) {
             ex.printStackTrace();
             WLog.e(MessageParser.class, "ilegal Number parser");
+            return false;
         } catch (Exception e) {
             WLog.e(MessageParser.class, "unknow fake Id parser failed");
             return false;
