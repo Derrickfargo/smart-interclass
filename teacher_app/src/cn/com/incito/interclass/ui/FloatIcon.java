@@ -250,19 +250,14 @@ public class FloatIcon extends MouseAdapter {
 						} else {// 没作业，发作业
 							showMenu(false);
 							if (Application.isOnClass) {
-								if (Application.getInstance()
-										.getOnlineStudent().size() == 0) {
-									JOptionPane.showMessageDialog(dialog,
-											"没有学生登录，无法进行随堂练习");
+								if (Application.getInstance().getOnlineStudent().size() == 0) {
+									JOptionPane.showMessageDialog(dialog, "没有学生登录，无法进行随堂练习");
 									return;
 								}
-
 								MainFrame.getInstance().doSendQuiz();
-								btnQuiz.setIcon(new ImageIcon(
-										ICON_HANDIN_NORMAL));
+								btnQuiz.setIcon(new ImageIcon(ICON_HANDIN_NORMAL));
 							} else {
-								JOptionPane.showMessageDialog(dialog,
-										"请先点击准备界面的开始上课！");
+								JOptionPane.showMessageDialog(dialog, "请先点击准备界面的开始上课！");
 								MainFrame.getInstance().showPrepare();
 							}
 						}
