@@ -3,9 +3,7 @@ package cn.com.incito.classroom.ui.activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -21,10 +19,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.adapter.GroupNumAdapter;
-import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
@@ -124,7 +120,10 @@ public class WaitingActivity extends BaseActivity {
 						mProgressDialog
 								.setMessage(R.string.load_dialog_default_text);
 						mProgressDialog.show();
-						
+						et_stnumber.setText("");
+						et_stname.setText("");
+						male.setChecked(true);
+						llayout1.setVisibility(View.GONE);
 					}
 
 				}
@@ -294,10 +293,6 @@ public class WaitingActivity extends BaseActivity {
 						gv_group_member.setAdapter(mAdapter);
 					}
 //					addState = 0;
-					et_stnumber.setText("");
-					et_stname.setText("");
-					male.setChecked(true);
-//					llayout1.setVisibility(View.GONE);
 				}
 
 				break;
