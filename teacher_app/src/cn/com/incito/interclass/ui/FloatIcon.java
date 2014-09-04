@@ -28,6 +28,7 @@ import org.apache.log4j.Logger;
 import cn.com.incito.interclass.task.JobPaperUpload;
 import cn.com.incito.interclass.task.QuartzManager;
 import cn.com.incito.server.api.Application;
+import cn.com.incito.server.utils.UIHelper;
 
 /**
  * 浮动菜单图标
@@ -272,8 +273,16 @@ public class FloatIcon extends MouseAdapter {
 					}
 					if (e.getSource() == btnLock) {
 						showMenu(false);
+						if(Application.getInstance().isLockScreen){
+							btnLock.setIcon(new ImageIcon(ICON_LOCK_NORMAL));
+							UIHelper.sendLockScreenMessage(true);
+						}else{
+							btnLock.setIcon(new ImageIcon(ICON_LOCK_HOVER));
+							UIHelper.sendLockScreenMessage(false);
+						}
 					}
 					if (e.getSource() == btnExit) {
+						UIHelper.sendClassOverMessage();//
 						System.exit(0);
 					}
 				}

@@ -28,7 +28,6 @@ import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
 import cn.com.incito.server.utils.UIHelper;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 public class PrepareBottomPanel extends JPanel implements MouseListener{
@@ -192,11 +191,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 	}
 
 	public void setOnClass(boolean isOnClass) {
-		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_LOCK_SCREEN);
-		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString("true"));
-		CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
-		logger.info("锁屏信息发出");
-		
+		UIHelper.sendLockScreenMessage(true);
 		if (isOnClass) { 
 			btnBegin.setIcon(new ImageIcon("images/main/btn_end.png"));// 设置图片
 			Application.isOnClass = true;
@@ -246,10 +241,8 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 						.getFrame(), "确定要下课吗？", "提示",
 						JOptionPane.YES_NO_OPTION);
 				if (result == JOptionPane.YES_OPTION) {
-					MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_LOCK_SCREEN);
-					messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString("false"));
-					CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
-					logger.info("解屏信息发出");
+					UIHelper.sendLockScreenMessage(false);
+					logger.info("下课信息发出");
 					System.exit(0);
 				}
 			} else {
@@ -298,4 +291,5 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 			btnGroup.setIcon(new ImageIcon("images/main/btn_group.png"));
 		}
 	}
+	
 }

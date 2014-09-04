@@ -36,7 +36,18 @@ import cn.com.incito.server.utils.FileUtils;
 import com.alibaba.fastjson.JSONObject;
 
 public class Application {
-    private static Application instance;
+	public boolean isLockScreen;
+    
+	public boolean isLockScreen() {
+		return isLockScreen;
+	}
+
+	
+	public void setLockScreen(boolean isLockScreen) {
+		this.isLockScreen = isLockScreen;
+	}
+
+	private static Application instance;
     private FloatIcon floatIcon;
     private String quizId;   //考试流水号
     private Room room;// 当前上课的教室，教师登陆完后初始化

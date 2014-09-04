@@ -36,12 +36,10 @@ public class LockScreenHandler extends MessageHandler {
 	@Override
 	protected void handleMessage() {
 		if (isLock.equals("true")) {
-			if (MyApplication.getInstance().isLockScreen()) {
-				MyApplication.getInstance().lockScreen(false);
-			} else {
 				MyApplication.getInstance().lockScreen(true);
-			};
-		} else {
+		} else if(isLock.equals("false")){
+			MyApplication.getInstance().lockScreen(false);
+		}else{
 			MyApplication.getInstance().lockScreen(false);
 			AppManager.getAppManager().finishAllActivity();
 		}
