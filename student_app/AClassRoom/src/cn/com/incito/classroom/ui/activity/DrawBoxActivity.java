@@ -509,17 +509,8 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		WLog.i(DrawBoxActivity.class, "启动作业提交..."+"request:");
 		MyApplication.getInstance().setSubmitPaper(true);
 		UIHelper.getInstance().setDrawBoxActivity(null);
-		if (Constants.OPEN_LOCK_SCREEN) {
-			if (!MyApplication.getInstance().isLockScreen()) {
-				WLog.i(DistributePaperHandler.class, "提交作业后锁定屏幕" );
-				ContentResolver mContentResolver = UIHelper.getInstance().getWaitingActivity().getApplicationContext().getContentResolver();
-				ExecRootCmd execRootCmd = new ExecRootCmd();
-				boolean ret1 = Settings.Global.putInt(mContentResolver, "disable_powerkey", 1); // 锁定屏幕
-				execRootCmd.powerkey();
-				MyApplication.getInstance().setLockScreen(true);
-			}
-		}
-		
+		MyApplication.getInstance().lockScreen(true);
+		WLog.i(DistributePaperHandler.class, "提交作业后锁定屏幕" );
 		this.finish();
 	}
 	public void initPopwindow(){
