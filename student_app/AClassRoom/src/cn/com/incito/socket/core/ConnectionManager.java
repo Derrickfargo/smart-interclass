@@ -38,7 +38,7 @@ public class ConnectionManager {
 		if (instance == null) {
 			instance = new ConnectionManager(channel);
 		} else if (instance.getChannel() == null
-				|| !instance.getChannel().isConnected()) {
+				|| !instance.getChannel().isOpen()) {
 			instance = new ConnectionManager(channel);
 		}
 		return instance;

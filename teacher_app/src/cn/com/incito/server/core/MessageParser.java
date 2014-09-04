@@ -75,6 +75,7 @@ public class MessageParser {
 			return;
 		}
 		// 把消息压入消息队列
+		logger.info("消息解析成功，开始压入消息队列，MSG_ID=" + message.getMsgID());
 		MessageManager.getInstance().addQueue(message);
 	}
 

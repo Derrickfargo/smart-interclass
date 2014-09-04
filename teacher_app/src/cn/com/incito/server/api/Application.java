@@ -136,7 +136,12 @@ public class Application {
             e.printStackTrace();
             System.exit(1);
         }
-        imeiDevice = new HashMap<String, Device>();
+        clear();
+        new Login();
+    }
+
+    public void clear(){
+    	imeiDevice = new HashMap<String, Device>();
         tableMap = new HashMap<Integer, Table>();
         tableNumberMap = new HashMap<Integer, Table>();
         deviceTable = new HashMap<Integer, Table>();
@@ -145,10 +150,8 @@ public class Application {
 
         clientChannel = new HashMap<String, SocketChannel>();
         groupChannel = new HashMap<Integer, List<SocketChannel>>();
-
-        new Login();
     }
-
+    
 	public FloatIcon getFloatIcon() {
 		return floatIcon;
 	}

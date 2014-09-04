@@ -9,8 +9,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.log4j.Logger;
 
-import cn.com.incito.server.exception.NoHandlerException;
-
 /**
  * 消息管理器，采用队列方式管理解析后的消息
  * @author 刘世平
@@ -48,13 +46,10 @@ public class MessageManager {
 			return isSuccess;
 		}
 		lock.lock();
-		try {
-			isSuccess = messageQueue.offer(message);
-			logger.info("消息压入是否成功：" + isSuccess);
-			isEmpty.signal();
-		} finally {
-			lock.unlock();
-		}
+		isSuccess = messageQueue.offer(message);
+		logger.info("消息压入是否成功：" + isSuccess);
+		isEmpty.signal();
+		lock.unlock();
 		return isSuccess;
 	}
 
@@ -71,18 +66,27 @@ public class MessageManager {
 								logger.info("****正在等待新消息到达****");
 							}
 						} else {
-							message.handleMessage();
+							handleMessage(message);
 						}
-					} catch (InterruptedException e) {
+					} catch (Exception e) {
 						logger.fatal("消息队列中断：" + e.getMessage());
 						continue;
-					}catch (NoHandlerException e) {
-						logger.error("没有找到处理该消息的处理器!" + e.getMessage());
 					}finally {
 						lock.unlock();
 					}
 				}
 			}
+		}).start();
+	}
+	
+	private void handleMessage(final Message message){
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				message.handleMessage();
+			}
+			
 		}).start();
 	}
 }

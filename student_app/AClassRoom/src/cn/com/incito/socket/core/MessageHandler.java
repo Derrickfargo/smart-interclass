@@ -3,6 +3,7 @@ package cn.com.incito.socket.core;
 import java.nio.ByteBuffer;
 
 import cn.com.incito.socket.utils.BufferUtils;
+import cn.com.incito.wisdom.sdk.log.WLog;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -35,6 +36,7 @@ public abstract class MessageHandler {
 		buffer.get(intSize);
 		int jsonLength = Integer.parseInt(BufferUtils.decodeIntLittleEndian(
 				intSize, 0, intSize.length) + "");
+		WLog.d(MessageHandler.class, "消息体大小：" + jsonLength);
 		byte[] jsonByte = new byte[jsonLength];
 		buffer.get(jsonByte);
 		
