@@ -41,7 +41,7 @@ public class LockScreenHandler extends MessageHandler {
 			MyApplication.getInstance().lockScreen(false);
 		}else{
 			MyApplication.getInstance().lockScreen(false);
-			AppManager.getAppManager().finishAllActivity();
+			AppManager.getAppManager().AppExit(MyApplication.getInstance());
 		}
 	}
 
