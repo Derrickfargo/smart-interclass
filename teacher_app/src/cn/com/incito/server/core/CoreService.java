@@ -297,7 +297,7 @@ public class CoreService {
 	 * @param imei
 	 * @return
 	 */
-	public String SavePaper(String imei, String id, String name,
+	public String SavePaper(String imei, String id,
 			byte[] imageByte) {
 		File path = new File(FileUtils.getProjectPath() + File.separator
 				+ "paper" + File.separator + id);
@@ -318,7 +318,7 @@ public class CoreService {
 		Quiz quiz = new Quiz();
 		quiz.setId(id);
 		quiz.setImei(imei);
-		quiz.setName(name);
+//		quiz.setName(name);
 		quiz.setTime(System.currentTimeMillis());
 		Group group = getGroupObjectByIMEI(imei);
 		quiz.setGroupId(group.getId());

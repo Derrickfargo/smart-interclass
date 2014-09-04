@@ -494,19 +494,6 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	 * 提交作业
 	 */
 	public void submitPaper() {
-		String name = "";
-		for (int i = 0; i < MyApplication.getInstance().getLoginResVo()
-				.getStudents().size(); i++) {
-			if (MyApplication.getInstance().getLoginResVo().getStudents()
-					.get(i).isLogin()) {
-				name = name
-						+ MyApplication.getInstance().getLoginResVo()
-								.getStudents().get(i).getName() + ",";
-			}
-		}
-		if (name.endsWith(",")) {
-			name = name.substring(0, name.length() - 1);
-		}
 		MessagePacking messagePacking = new MessagePacking(
 				Message.MESSAGE_SAVE_PAPER);
 		// 测试ID
@@ -515,14 +502,11 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		// 设备ID
 		messagePacking.putBodyData(DataType.INT, BufferUtils
 				.writeUTFString(MyApplication.getInstance().getDeviceId()));
-		// 小组姓名
-		messagePacking.putBodyData(DataType.INT,
-				BufferUtils.writeUTFString(name.toString()));
 		// 图片
 		messagePacking.putBodyData(DataType.INT,
 				BitmapUtils.bmpToByteArray(getBitMap(), true));
 		CoreSocket.getInstance().sendMessage(messagePacking);
-		WLog.i(DrawBoxActivity.class, "启动作业提交..."+"request:"+name);
+		WLog.i(DrawBoxActivity.class, "启动作业提交..."+"request:");
 		MyApplication.getInstance().setSubmitPaper(true);
 		UIHelper.getInstance().setDrawBoxActivity(null);
 		if (Constants.OPEN_LOCK_SCREEN) {
