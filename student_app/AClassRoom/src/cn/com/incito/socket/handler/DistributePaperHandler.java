@@ -46,17 +46,7 @@ public class DistributePaperHandler extends MessageHandler {
 
 	@Override
 	protected void handleMessage() {
-		if (Constants.OPEN_LOCK_SCREEN) {
-			if (MyApplication.getInstance().isLockScreen()) {
-				WLog.i(DistributePaperHandler.class, "收到作业是否有图片：" + isContainsPic);
-				ContentResolver mContentResolver = UIHelper.getInstance().getWaitingActivity().getApplicationContext().getContentResolver();
-				ExecRootCmd execRootCmd = new ExecRootCmd();
-				boolean ret1 = Settings.Global.putInt(mContentResolver, "disable_powerkey", 0); // 打开电源按钮唤醒功能
-				execRootCmd.powerkey();
-				MyApplication.getInstance().setLockScreen(false);
-			}
-		}
-
+		MyApplication.getInstance().lockScreen(false);
 		UIHelper.getInstance().showDrawBoxActivity(imageByte);
 	}
 
