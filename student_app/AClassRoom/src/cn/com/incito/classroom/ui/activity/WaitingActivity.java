@@ -135,7 +135,7 @@ public class WaitingActivity extends BaseActivity {
 					@Override
 					public void onItemClick(AdapterView<?> adapterView,
 							View view, int position, long l) {
-						addState = 0;
+//						addState = 0;
 						mProgressDialog
 								.setMessage(R.string.load_dialog_default_text);
 						if(!mProgressDialog.isShowing()){
