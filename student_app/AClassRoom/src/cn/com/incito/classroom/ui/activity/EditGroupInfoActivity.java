@@ -95,8 +95,13 @@ public class EditGroupInfoActivity extends BaseActivity implements
 	@Override
 	protected void onStop() {
 		super.onStop();
+		
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
 		mGroupIcons.recycle();
-		mListViewAdapter = null;
 	}
 
 	@Override
