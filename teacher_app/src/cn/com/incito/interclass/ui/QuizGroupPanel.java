@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Quiz;
+import cn.com.incito.interclass.ui.widget.MedalDialog;
 import cn.com.incito.interclass.ui.widget.PraiseDialog;
 import cn.com.incito.interclass.ui.widget.PunishDialog;
 import cn.com.incito.server.utils.UIHelper;
@@ -307,7 +308,7 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 			new PunishDialog(null, group);
 		}
 		if (e.getSource() == btnMedal) {
-			
+			new MedalDialog(MainFrame.getInstance().getFrame(), group);
 		}
 		if (quizPanel.contains(e.getSource())) {
 			if (e.getClickCount() == 2) {

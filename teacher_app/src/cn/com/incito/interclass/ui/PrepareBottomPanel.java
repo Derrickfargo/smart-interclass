@@ -21,7 +21,6 @@ import org.apache.log4j.Logger;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
-import cn.com.incito.server.core.CoreSocket;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
@@ -241,7 +240,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 						.getFrame(), "确定要下课吗？", "提示",
 						JOptionPane.YES_NO_OPTION);
 				if (result == JOptionPane.YES_OPTION) {
-					UIHelper.sendLockScreenMessage(false);
+					UIHelper.sendClassOverMessage();
 					logger.info("下课信息发出");
 					System.exit(0);
 				}
