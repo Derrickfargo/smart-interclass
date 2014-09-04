@@ -318,7 +318,17 @@ public class CoreService {
 		Quiz quiz = new Quiz();
 		quiz.setId(id);
 		quiz.setImei(imei);
-//		quiz.setName(name);
+		StringBuffer name = new StringBuffer();
+		List<Student> students = app.getStudentByImei(imei);
+		if (students != null) {
+			for (Student student : students) {
+				name.append(student.getName());
+				name.append(",");
+			}
+		}
+		if (name.length() != 0) {
+			quiz.setName(name.deleteCharAt(name.length() - 1).toString());
+		}
 		quiz.setTime(System.currentTimeMillis());
 		Group group = getGroupObjectByIMEI(imei);
 		quiz.setGroupId(group.getId());

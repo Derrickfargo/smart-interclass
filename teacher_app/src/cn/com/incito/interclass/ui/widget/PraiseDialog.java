@@ -15,13 +15,9 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 
 import cn.com.incito.http.AsyncHttpConnection;
 import cn.com.incito.http.StringResponseHandler;
@@ -31,6 +27,9 @@ import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.ui.MainFrame;
 import cn.com.incito.interclass.ui.PraiseGroupPanel;
 import cn.com.incito.server.utils.URLs;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 public class PraiseDialog extends JDialog implements MouseListener {
 
@@ -74,8 +73,12 @@ public class PraiseDialog extends JDialog implements MouseListener {
 		btnClose.addMouseListener(this);
 
 		JLabel lblMessage = new JLabel("", JLabel.CENTER);
-		String title = "\"%s\"小组加分";
-		lblMessage.setText(String.format(title, group.getName()));
+		if(group.getName() == null){
+			lblMessage.setText("小组加分");
+		} else {
+			String title = "\"%s\"小组加分";
+			lblMessage.setText(String.format(title, group.getName()));
+		}
 		lblMessage.setFont(new Font("Microsoft YaHei", Font.BOLD, 16));
 		lblMessage.setForeground(Color.WHITE);
 		lblMessage.setBounds(20, 10, 352, 30);
