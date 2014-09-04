@@ -110,7 +110,7 @@ public class WaitingActivity extends BaseActivity {
 					addState = 1;
 				} else {
 					if (validate()) {
-						addState = 0;
+						
 						LoginRes2Vo groupNumberListRes = new LoginRes2Vo();
 						groupNumberListRes.setSex(male.isChecked() ? "1" : "2");
 						groupNumberListRes.setName(et_stname.getText()
@@ -118,10 +118,12 @@ public class WaitingActivity extends BaseActivity {
 						groupNumberListRes.setNumber(et_stnumber.getText()
 								.toString());
 						imm.hideSoftInputFromWindow(view.getWindowToken(), 0); // 强制隐藏键盘
+
+						registerStudent();
 						mProgressDialog
 								.setMessage(R.string.load_dialog_default_text);
 						mProgressDialog.show();
-						registerStudent();
+						
 					}
 
 				}
@@ -133,7 +135,7 @@ public class WaitingActivity extends BaseActivity {
 					@Override
 					public void onItemClick(AdapterView<?> adapterView,
 							View view, int position, long l) {
-						addState = 0;
+//						addState = 0;
 						mProgressDialog
 								.setMessage(R.string.load_dialog_default_text);
 						if(!mProgressDialog.isShowing()){
@@ -306,10 +308,11 @@ public class WaitingActivity extends BaseActivity {
 						mAdapter.setDatas(loginResList);
 						gv_group_member.setAdapter(mAdapter);
 					}
+//					addState = 0;
 					et_stnumber.setText("");
 					et_stname.setText("");
 					male.setChecked(true);
-					llayout1.setVisibility(View.GONE);
+//					llayout1.setVisibility(View.GONE);
 				}
 
 				break;
@@ -362,9 +365,6 @@ public class WaitingActivity extends BaseActivity {
 	 * 注册成员
 	 */
 	private void registerStudent() {
-		// if (loginResList.size() > Constants.STUDENT_MAX_NUM) {
-		// ToastHelper.showCustomToast(this, "注册人数已满");
-		// } else {
 		LoginReqVo loginReqVo = new LoginReqVo();
 		loginReqVo.setImei(MyApplication.deviceId);
 		loginReqVo.setName(et_stname.getText().toString());
@@ -379,7 +379,6 @@ public class WaitingActivity extends BaseActivity {
 				BufferUtils.writeUTFString(json));
 		CoreSocket.getInstance().sendMessage(messagePacking);
 		WLog.i(SplashActivity.class, "启动注册学生...");
-		// }
 	}
 
 	/**
