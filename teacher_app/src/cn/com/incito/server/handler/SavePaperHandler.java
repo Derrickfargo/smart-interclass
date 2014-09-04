@@ -21,7 +21,6 @@ public class SavePaperHandler extends MessageHandler {
 	private Logger logger = Logger.getLogger(SavePaperHandler.class.getName());
 	private String imei;
 	private String id;
-	private String name;
 	@Override
 	public void handleMessage(Message msg) {
 		this.message = msg;
@@ -31,8 +30,8 @@ public class SavePaperHandler extends MessageHandler {
 		 id = getInfo(buffer);
 		//获取imei
 		 imei = getInfo(buffer);
-		//获取小组姓名
-		 name = getInfo(buffer);
+//		//获取小组姓名
+//		 name = getInfo(buffer);
 		// 获取图片信息
 		byte[] imageSize = new byte[4];// int
 		buffer.get(imageSize);
@@ -45,7 +44,7 @@ public class SavePaperHandler extends MessageHandler {
 	public void handleMessage(byte[] imageByte) {
 		logger.info("消息类型为获取作业:" );
 		//需要给组中所以的设备发送
-		String result = service.SavePaper(imei,id,name,imageByte);
+		String result = service.SavePaper(imei,id,imageByte);
 		sendResponse(result);
 	}
 
