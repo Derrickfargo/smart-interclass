@@ -218,6 +218,7 @@ public class MyApplication extends Application {
 			} else {
 				if (MyApplication.getInstance().isLockScreen()) {
 					MyApplication.getInstance().setLockScreen(isLock);
+					execRootCmd.powerkey();
 					boolean ret1 = Settings.Global.putInt(mContentResolver, "disable_powerkey", 0); // 打开电源按钮唤醒功能
 					execRootCmd.powerkey();
 				}
