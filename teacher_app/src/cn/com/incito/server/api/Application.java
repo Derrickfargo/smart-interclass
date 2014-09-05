@@ -48,6 +48,7 @@ public class Application {
 	}
 
 	private static Application instance;
+	private boolean isGrouping = false;
     private FloatIcon floatIcon;
     private String quizId;   //考试流水号
     private Room room;// 当前上课的教室，教师登陆完后初始化
@@ -71,6 +72,7 @@ public class Application {
     private Map<Integer, JSONObject> tempGroup = new HashMap<Integer, JSONObject>();// 修改的分组信息
     private Map<Integer, List<Integer>> tempVote = new HashMap<Integer, List<Integer>>();// 小组的投票信息
     private Map<String, Quiz> tempQuiz = new HashMap<String, Quiz>();//随堂联系
+    private List<Integer> tempGrouped = new ArrayList<Integer>();//已编辑完成的小组
     private List<Quiz> quizList = new ArrayList<Quiz>();//作业
     private FileLock lock;
     /**
@@ -158,6 +160,18 @@ public class Application {
 
 	public void setFloatIcon(FloatIcon floatIcon) {
 		this.floatIcon = floatIcon;
+	}
+
+	public boolean isGrouping() {
+		return isGrouping;
+	}
+
+	public void setGrouping(boolean isGrouping) {
+		this.isGrouping = isGrouping;
+	}
+
+	public List<Integer> getTempGrouped() {
+		return tempGrouped;
 	}
 
 	public FileLock getLock() {
@@ -504,7 +518,11 @@ public class Application {
         return retval;
     }
 
-    public Map<String, Device> getImeiDevice() {
+    public Map<Integer, List<SocketChannel>> getGroupChannel() {
+		return groupChannel;
+	}
+
+	public Map<String, Device> getImeiDevice() {
         return imeiDevice;
     }
 

@@ -40,6 +40,13 @@ public class PrepareGroupPanel extends JPanel {
 		add(lblNumber);
 		lblNumber.setBounds(15, 10, 25, 25);
 
+		//分组loading图标
+		lblLogo = new JLabel("", JLabel.CENTER);
+		lblLogo.setIcon(new ImageIcon("images/main/load_groupinfo.gif"));
+		add(lblLogo);
+		lblLogo.setBounds(45, 9, 32,32);
+		lblLogo.setVisible(false);
+		
 		//小组名称
 		lblGroupName = new JLabel();
 		lblGroupName.setForeground(UIHelper.getDefaultFontColor());
@@ -98,8 +105,14 @@ public class PrepareGroupPanel extends JPanel {
 		this.group = group;
 	}
 
-	public JLabel getLblLogo() {
-		return lblLogo;
+	public void showGrouping(boolean grouping) {
+		if (grouping) {
+			lblGroupName.setVisible(false);
+			lblLogo.setVisible(true);
+		} else {
+			lblGroupName.setVisible(true);
+			lblLogo.setVisible(false);
+		}
 	}
 
 	public JLabel getLblGroupName() {
