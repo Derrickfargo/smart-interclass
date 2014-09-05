@@ -37,9 +37,6 @@ public abstract class MessageHandler {
 		int jsonLength = Integer.parseInt(BufferUtils.decodeIntLittleEndian(
 				intSize, 0, intSize.length) + "");
 		WLog.d(MessageHandler.class, "消息体大小：" + jsonLength);
-		if (jsonLength > 65535) {
-			return;
-		}
 		byte[] jsonByte = new byte[jsonLength];
 		buffer.get(jsonByte);
 		
