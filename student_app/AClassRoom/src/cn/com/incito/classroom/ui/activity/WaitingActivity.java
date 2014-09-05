@@ -73,6 +73,7 @@ public class WaitingActivity extends BaseActivity {
 		setContentView(R.layout.waiting);
 		UIHelper.getInstance().setWaitingActivity(this);
 		mProgressDialog = new ProgressiveDialog(this);
+		mProgressDialog.setMessage(R.string.load_dialog_default_text);
 		initViews();
 		initListener();
 		loginResList = new ArrayList<LoginRes2Vo>();
@@ -136,8 +137,7 @@ public class WaitingActivity extends BaseActivity {
 					public void onItemClick(AdapterView<?> adapterView,
 							View view, int position, long l) {
 //						addState = 0;
-						mProgressDialog
-								.setMessage(R.string.load_dialog_default_text);
+						
 						if(!mProgressDialog.isShowing()){
 							mProgressDialog.show();
 						}
