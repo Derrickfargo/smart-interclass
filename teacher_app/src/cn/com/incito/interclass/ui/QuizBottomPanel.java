@@ -62,12 +62,6 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 
 	public void doSendQuiz(){
 		Application app = Application.getInstance();
-		if (app.isGrouping()) {
-			JOptionPane.showMessageDialog(getParent().getParent(),
-					"学生正在分组，请等待学生分组完成后开始随堂练习!");
-			return;
-		}
-		
 		int result = JOptionPane.showConfirmDialog(getParent().getParent(),
 				"是否截图发送作业？", "提示", JOptionPane.YES_NO_OPTION);
 		if(result==-1){

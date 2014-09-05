@@ -419,6 +419,7 @@ public class Application {
     }
 
     public void addGroup(Group group) {
+    	tableGroup.remove(group.getTableId());
         tableGroup.put(group.getTableId(), group);
         groupMap.put(group.getId(), group);
 

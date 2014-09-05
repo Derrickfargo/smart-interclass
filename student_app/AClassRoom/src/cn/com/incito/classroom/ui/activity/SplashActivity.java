@@ -100,6 +100,7 @@ public class SplashActivity extends BaseActivity {
 	public void onResume() {
 		super.onResume();
 		if (Flag) {
+			Flag = false;
 			CoreSocket.getInstance().restartConnection();
 			try {
 				Thread.sleep(1000);
