@@ -272,8 +272,12 @@ public class PhotoFrame extends JFrame {
 					panel.setSelected(true);
 					quiz = panel.getQuiz();
 					if (quiz != null && quiz.getGroup() != null) {
-						String title = quiz.getGroup().getName() + "[%s]";
-						lblTitle.setText(String.format(title, quiz.getName()));
+						if (quiz.getGroup().getName() == null) {
+							lblTitle.setText(String.format("未分组[%s]", quiz.getName()));
+						} else {
+							String title = quiz.getGroup().getName() + "[%s]";
+							lblTitle.setText(String.format(title, quiz.getName()));
+						}
 					}
 				} else {
 					panel.setSelected(false);

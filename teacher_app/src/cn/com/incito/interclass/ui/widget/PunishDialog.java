@@ -71,8 +71,12 @@ public class PunishDialog extends JDialog implements MouseListener {
 		btnClose.addMouseListener(this);
 
 		JLabel lblMessage = new JLabel("", JLabel.CENTER);
-		String title = "\"%s\"小组减分";
-		lblMessage.setText(String.format(title, group.getName()));
+		if(group.getName() == null){
+			lblMessage.setText("小组减分");
+		} else {
+			String title = "\"%s\"小组减分";
+			lblMessage.setText(String.format(title, group.getName()));
+		}
 		lblMessage.setFont(new Font("Microsoft YaHei", Font.BOLD, 16));
 		lblMessage.setForeground(Color.WHITE);
 		lblMessage.setBounds(20, 10, 352, 30);

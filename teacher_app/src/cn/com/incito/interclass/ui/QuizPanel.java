@@ -12,7 +12,6 @@ import javax.swing.JPanel;
 import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Quiz;
-import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
 
@@ -110,17 +109,7 @@ public class QuizPanel extends JPanel {
 			if (quiz != null) {
 				panel.addImage(i, quiz);
 				JLabel lblName = quizList.get(i);
-				StringBuffer name = new StringBuffer();
-				List<Student> students = app.getStudentByImei(imei);
-				if (students != null) {
-					for (Student student : students) {
-						name.append(student.getName());
-						name.append(",");
-					}
-				}
-				if (name.length() != 0) {
-					lblName.setText(name.deleteCharAt(name.length() - 1).toString());
-				}
+				lblName.setText(quiz.getName());
 				//设置作业为排名
 				JLabel lblOrder = orderList.get(i);
 				lblOrder.setVisible(true);

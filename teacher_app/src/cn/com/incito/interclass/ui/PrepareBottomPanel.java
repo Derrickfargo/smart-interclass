@@ -5,7 +5,6 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -118,6 +117,11 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		}
 	}
 	private void doBegin() {
+		if (app.isGrouping()) {
+			JOptionPane.showMessageDialog(getParent().getParent(),
+					"学生正在分组，请等待学生分组完成后开始上课!");
+			return;
+		}
 		if(app.getOnlineStudent().size() == 0){
 			JOptionPane.showMessageDialog(getParent().getParent(),
 					"当前还没有学生登陆，请先登录后再上课!");
@@ -142,6 +146,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		for (Group group : tableGroup.values()) {
 			if (group.getName() == null || group.getName().equals("")) {
 				hasTeamInfo = false;
+				break;
 			}
 		}
 		if (!hasTeamInfo) {
@@ -164,27 +169,28 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 
 	private void doEditGroup() {
 		if(app.getOnlineStudent().size() == 0){
-			JOptionPane.showMessageDialog(getParent().getParent(),
-					"当前还没有学生登陆，请先登陆后再分组!");
+			JOptionPane.showMessageDialog(getParent().getParent(), "当前还没有学生登陆，请先登陆后再分组!");
 			return;
 		}
 		List<Table> tableList = app.getTableList();
 		if (tableList == null || tableList.size() == 0) {
-			JOptionPane.showMessageDialog(getParent().getParent(),
-					"设备还未绑定课桌，请先绑定课桌!");
+			JOptionPane.showMessageDialog(getParent().getParent(), "设备还未绑定课桌，请先绑定课桌!");
+			return;
+		}
+		if (app.isGrouping()) {
+			JOptionPane.showMessageDialog(getParent().getParent(), "学生正在分组，请等待分组完成!");
 			return;
 		}
 		// 编辑小组信息
+		app.setGrouping(true);
+		MainFrame.getInstance().showGrouping();
 		List<Group> groupList = app.getGroupList();
 		for (Group group : groupList) {
 			JSONObject json = new JSONObject();
 			json.put("id", group.getId());
-			MessagePacking messagePacking = new MessagePacking(
-					Message.MESSAGE_GROUP_EDIT);
-			messagePacking.putBodyData(DataType.INT,
-					BufferUtils.writeUTFString(json.toString()));
-			final List<SocketChannel> channels = app
-					.getClientChannelByGroup(group.getId());
+			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_EDIT);
+			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json.toString()));
+			final List<SocketChannel> channels = app.getClientChannelByGroup(group.getId());
 			sendMessageToGroup(messagePacking, channels);
 		}
 	}

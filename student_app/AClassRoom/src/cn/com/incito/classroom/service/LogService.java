@@ -725,6 +725,12 @@ public class LogService extends Service {
 				}
 			} catch (IOException ioe) {
 				ioe.printStackTrace();
+			} finally {
+				try {
+					is.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

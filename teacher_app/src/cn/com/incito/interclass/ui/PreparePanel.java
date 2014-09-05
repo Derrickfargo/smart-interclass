@@ -85,6 +85,14 @@ public class PreparePanel extends JPanel{
 				tablePanel.getLblGroupName().setVisible(true);
 				tablePanel.getLblGroupName().setText(group.getName());
 			}
+			tablePanel.showGrouping(false);
+			if (app.isGrouping() && !app.getTempGrouped().contains(group.getId())) {
+				tablePanel.showGrouping(true);
+			}
+			if (app.getTempGrouped().size() == app.getGroupChannel().size()) {
+				app.setGrouping(false);
+				app.getTempGrouped().clear();
+			}
 			// 遍历当前组/桌的设备，内存模型
 			List<PadPanel> devicePanelList = tablePanel.getDeviceList();
 			List<Device> deviceList = group.getDevices();
@@ -119,5 +127,20 @@ public class PreparePanel extends JPanel{
 			groupList.add(group);
 		}
 		Collections.sort(groupList);
+	}
+	
+	public void showGrouping(){
+		initData();
+		// 遍历内存模型，绑定到物理模型
+		for (int i = 0; i < groupList.size(); i++) {// 遍历分组内存模型
+			Group group = groupList.get(i);
+			PrepareGroupPanel tablePanel = tableList.get(i);
+			tablePanel.setGroup(group);
+			tablePanel.setVisible(true);
+			tablePanel.setTableNumber(group.getTableNumber());
+			tablePanel.showGrouping(true);
+		}
+		repaint();
+		revalidate();
 	}
 }

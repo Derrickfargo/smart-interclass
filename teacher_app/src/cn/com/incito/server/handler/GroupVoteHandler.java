@@ -36,13 +36,15 @@ public class GroupVoteHandler extends MessageHandler {
 		logger.info("消息类型为小组投票:" + data);
 		Integer id = data.getInteger("id");
 		Integer vote = data.getInteger("vote");
+		Application app = Application.getInstance();
 		List<SocketChannel> channels = service.getGroupSocketChannelByGroupId(id);
-		List<Integer> voteList = Application.getInstance().getTempVote().get(id);
+		List<Integer> voteList = app.getTempVote().get(id);
 		if(voteList == null){
 			voteList = new ArrayList<Integer>();
 		}
+		
 		if (vote == 1) {//有人投反对票
-			Application.getInstance().getTempVote().remove(id);
+			app.getTempVote().remove(id);
 			JSONObject json = new JSONObject();
 			json.put("code", JSONUtils.SUCCESS);
 			JSONObject jsonData = new JSONObject();
@@ -53,10 +55,10 @@ public class GroupVoteHandler extends MessageHandler {
 			return;
 		}
 		voteList.add(vote);
-		Application.getInstance().getTempVote().put(id, voteList);
+		app.getTempVote().put(id, voteList);
 		if (channels.size() == voteList.size()) {
 			//更新数据库....
-			JSONObject data = Application.getInstance().getTempGroup().get(id);
+			JSONObject data = app.getTempGroup().get(id);
 			String name = data.getString("name");
 			String logo = data.getString("logo");
 			JSONObject result = null;
@@ -68,8 +70,8 @@ public class GroupVoteHandler extends MessageHandler {
 			}
 			if(result.getIntValue("code") == 0){
 				//清空缓存
-				Application.getInstance().getTempVote().remove(id);
-				Application.getInstance().getTempGroup().remove(id);
+				app.getTempVote().remove(id);
+				app.getTempGroup().remove(id);
 				//发送消息
 				JSONObject json = new JSONObject();
 				json.put("code", JSONUtils.SUCCESS);
@@ -79,12 +81,13 @@ public class GroupVoteHandler extends MessageHandler {
 				json.put("data", jsonData);
 				sendResponse(json.toJSONString(), channels);
 				//刷新主界面
-				Group group = Application.getInstance().getGroupById(id);
+				Group group = app.getGroupById(id);
 				Group temp = JSON.parseObject(result.getString("data"), Group.class);
 				group.setName(temp.getName());
 				group.setLogo(temp.getLogo());
-				Application.getInstance().addGroup(group);
-				Application.getInstance().refresh();
+				app.addGroup(group);
+				app.getTempGrouped().add(id);//把当前小组标记为已分组
+				app.refresh();
 			} else {
 				JSONObject json = new JSONObject();
 				json.put("code", 1);

@@ -77,8 +77,12 @@ public class MedalDialog extends JDialog implements MouseListener {
 		btnClose.addMouseListener(this);
 
 		JLabel lblMessage = new JLabel("", JLabel.CENTER);
-		String title = "\"%s\"勋章列表";
-		lblMessage.setText(String.format(title, group.getName()));
+		if (group.getName() == null) {
+			lblMessage.setText("勋章列表");
+		} else {
+			String title = "\"%s\"勋章列表";
+			lblMessage.setText(String.format(title, group.getName()));
+		}
 		lblMessage.setFont(new Font("Microsoft YaHei", Font.BOLD, 16));
 		lblMessage.setForeground(Color.WHITE);
 		lblMessage.setBounds(20, 10, 352, 30);
