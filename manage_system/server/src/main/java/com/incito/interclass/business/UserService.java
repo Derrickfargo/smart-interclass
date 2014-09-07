@@ -27,32 +27,35 @@ public class UserService {
 	 * @param changeScore
 	 */
 	public Integer changePoint(String studentId, int score) {
-		int Score=0;
+		int Score = 0;
 		String[] x = studentId.split(",");
-		
+
 		for (int k = 0; k < x.length; k++) {
-			if(userMapper.getScore(x[k]).getScore()==0&&score<0){
+			if (userMapper.getScore(x[k]).getScore() == 0 && score < 0) {
 				userMapper.changePoint(x[k], 0);
-			}else{
+			} else {
 				userMapper.changePoint(x[k], score);
 			}
 		}
-		
+
 		for (int j = 0; j < x.length; j++) {
-			Student mStudent=userMapper.getScore(x[j]);
-			int i=mStudent.getScore();
-			Score=Score+i;
+			Student mStudent = userMapper.getScore(x[j]);
+			int i = mStudent.getScore();
+			Score = Score + i;
 		}
 		return Score;
 	};
+
 	/**
 	 * 获得勋章
+	 * 
 	 * @param groupId
 	 * @param medals
 	 */
-	public Integer updateMedals(int groupId,String medals)  {
-		return userMapper.updateMedals(groupId,medals);
+	public Integer updateMedals(int groupId, String medals) {
+		return userMapper.updateMedals(groupId, medals);
 	};
+
 	/**
 	 * 管理员登陆
 	 * 
@@ -78,11 +81,13 @@ public class UserService {
 		return userMapper.getStudentByGroupId(groupId);
 	}
 
-	public List<Teacher> getTeacherList(Object parameterObject, int skipResults, int maxResults) {
+	public List<Teacher> getTeacherList(Object parameterObject,
+			int skipResults, int maxResults) {
 		return userMapper.getTeacherList();
 	}
 
-	public List<Student> getStudentList(Object parameterObject, int skipResults, int maxResults) {
+	public List<Student> getStudentList(Object parameterObject,
+			int skipResults, int maxResults) {
 		return userMapper.getStudentList();
 	}
 

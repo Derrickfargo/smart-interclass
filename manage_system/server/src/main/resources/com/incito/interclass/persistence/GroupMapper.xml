@@ -152,7 +152,22 @@
 		WHERE 
 			tb_group.id = #{groupId} AND tb_student.id = #{studentId}
 	</select>
-	
+	<delete id="delStudentInOtherGroup" parameterType="java.util.Map">
+	    DELETE FROM tb_student_group WHERE tb_student_group.id IN (SELECT a.id FROM (
+		SELECT	
+			tb_student_group.id
+		FROM 
+			tb_student_group
+		INNER JOIN
+			tb_user ON tb_student_group.student_id = tb_user.id
+		INNER JOIN 
+			tb_student ON tb_user.id = tb_student.id
+		INNER JOIN 
+			tb_group ON tb_student_group.group_id = tb_group.id
+		WHERE 
+			tb_group.id != #{groupId} AND tb_student.id = #{studentId} AND tb_group.course_id=#{courseId} AND tb_group.teacher_id= #{teacherId} AND tb_group.class_id=#{classId}
+			) a)
+	</delete>
 	<update id="updateGroup" parameterType="com.incito.interclass.entity.Group">
 		UPDATE 
 			tb_group
