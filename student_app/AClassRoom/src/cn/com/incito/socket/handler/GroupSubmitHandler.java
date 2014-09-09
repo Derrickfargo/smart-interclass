@@ -19,9 +19,6 @@ public class GroupSubmitHandler extends MessageHandler {
 			JSONObject json = data.getJSONObject("data");
 			WLog.i(DeviceBindHandler.class, "分组提交成功" + "response:"+json);
 			UIHelper.getInstance().showConfirmGroupActivity(json);
-			if(MyApplication.getInstance().isOnClass){
-				MyApplication.getInstance().lockScreen(true);
-			}
 		} else {
 		}
 
