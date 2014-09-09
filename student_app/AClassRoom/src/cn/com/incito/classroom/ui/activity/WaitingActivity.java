@@ -247,7 +247,7 @@ public class WaitingActivity extends BaseActivity {
 		for (int i = 0; i < loginResList.size(); i++) {
 			if (stNumber.equals(loginResList.get(i).getNumber())) {
 				ToastHelper.showCustomToast(getApplicationContext(),
-						R.string.toast_stname_repeat);
+						loginResList.get(i).getName().toString()+getResources().getString(R.string.toast_stname_repeat));
 				return false;
 			}
 		}
