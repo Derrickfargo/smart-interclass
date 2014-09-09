@@ -16,6 +16,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import cn.com.incito.http.AsyncHttpConnection;
@@ -164,6 +165,9 @@ public class PunishDialog extends JDialog implements MouseListener {
 			dispose();
 		}
 		if (e.getSource() == btnOK) {
+			if(score==0){
+				JOptionPane.showMessageDialog(this, "请选择分数");
+			}
 			changePoint(score);
 			dispose();
 		}
