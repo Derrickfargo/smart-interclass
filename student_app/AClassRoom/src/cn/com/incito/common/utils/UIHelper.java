@@ -4,11 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
-import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.ui.activity.BindDeskActivity;
-import cn.com.incito.classroom.ui.activity.ConfirmGroupInfoActivity;
 import cn.com.incito.classroom.ui.activity.DrawBoxActivity;
 import cn.com.incito.classroom.ui.activity.WaitingActivity;
 
