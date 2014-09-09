@@ -84,6 +84,7 @@ public class PreparePanel extends JPanel{
 			if (group.getName() != null) {// 显示小组名称
 				tablePanel.getLblGroupName().setVisible(true);
 				tablePanel.getLblGroupName().setText(group.getName());
+				tablePanel.getLblGroupName().setToolTipText(group.getName());
 			}
 			tablePanel.showGrouping(false);
 			if (app.isGrouping() && !app.getTempGrouped().contains(group.getId())) {

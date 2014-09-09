@@ -87,6 +87,7 @@ public class PraisePanel extends JPanel {
 		ImageIcon icon = new ImageIcon(logo);
 		panel.getLblLogo().setIcon(icon);
 		panel.getLblGroupName().setText(group.getName());
+		panel.getLblGroupName().setToolTipText(group.getName());
 		String memberStr = "";
 		int score = 0;
 		if (group.getStudents() != null) {
@@ -102,6 +103,7 @@ public class PraisePanel extends JPanel {
 			memberStr = memberStr.substring(0, memberStr.length() - 1);
 		}
 		panel.getLblMember().setText(memberStr);
+		panel.getLblMember().setToolTipText(memberStr);
 		panel.getLblScore().setText(String.valueOf(score));
 	}
 
