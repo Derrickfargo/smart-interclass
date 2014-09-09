@@ -142,29 +142,8 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 			return;
 		}
 
-		boolean hasTeamInfo = true;
-		for (Group group : tableGroup.values()) {
-			if (group.getName() == null || group.getName().equals("")) {
-				hasTeamInfo = false;
-				break;
-			}
-		}
-		if (!hasTeamInfo) {
-			int result = JOptionPane.showConfirmDialog(MainFrame.getInstance()
-					.getFrame(), "还有小组未编辑小组信息，是否编辑小组信息？", "提示",
-					JOptionPane.YES_NO_OPTION);
-			if (JOptionPane.YES_OPTION == result) {
-				doEditGroup();
-			} else if (JOptionPane.NO_OPTION == result) {
-				MainFrame.getInstance().setVisible(false);
-				// 开始上课
-				setOnClass(true);
-			}
-		}else{
-			MainFrame.getInstance().setVisible(false);
-			setOnClass(true); 
-			
-		}
+		MainFrame.getInstance().setVisible(false);
+		setOnClass(true); 
 	}
 
 	private void doEditGroup() {
