@@ -96,6 +96,7 @@ public class QuizPanel extends JPanel {
 		panel.getLblDesk().setText(String.format("%d号桌", group.getTableNumber()));
 //		panel.getLblLogo().setIcon(new ImageIcon(LogoUtils.getInstance().getLogo24(group.getLogo())));
 		panel.getLblGroupName().setText(group.getName());
+		panel.getLblGroupName().setToolTipText(group.getName());
 		
 		List<Device> deviceList = group.getDevices();
 		List<JPanel> quizPanel = panel.getQuizPanel();
@@ -110,6 +111,7 @@ public class QuizPanel extends JPanel {
 				panel.addImage(i, quiz);
 				JLabel lblName = quizList.get(i);
 				lblName.setText(quiz.getName());
+				lblName.setToolTipText(quiz.getName());
 				//设置作业为排名
 				JLabel lblOrder = orderList.get(i);
 				lblOrder.setVisible(true);
