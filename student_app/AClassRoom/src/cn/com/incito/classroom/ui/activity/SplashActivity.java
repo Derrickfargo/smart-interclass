@@ -6,17 +6,23 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.app.DialogFragment;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.service.SocketService;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
@@ -28,14 +34,13 @@ import cn.com.incito.wisdom.sdk.log.WLog;
 import com.alibaba.fastjson.JSONObject;
 
 /**
- * 用户其启动界面时候的一个启动页面完成一些初始化工作
- * Created by popoy on 2014/7/28.
+ * 用户其启动界面时候的一个启动页面完成一些初始化工作 Created by popoy on 2014/7/28.
  */
 
 public class SplashActivity extends BaseActivity {
 
 	private TextView tv_loading_msg;
-
+	private ImageButton ib_setting_ip;
 	private boolean Flag;
 
 	private ServiceConnectReceiver serviceConnectReceiver;
@@ -43,12 +48,21 @@ public class SplashActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		serviceConnectReceiver = new ServiceConnectReceiver();
 		IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction(SocketService.NETWORK_RECEIVER);
 		registerReceiver(serviceConnectReceiver, intentFilter);
 		final View view = View.inflate(this, R.layout.splash, null);
 		setContentView(view);
+		ib_setting_ip = (ImageButton) view.findViewById(R.id.ib_setting_ip);
+		ib_setting_ip.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				showSettingDialog();
+			}
+		});
 		tv_loading_msg = (TextView) view.findViewById(R.id.tv_loading_msg);
 
 		// 渐变展示启动屏
@@ -90,7 +104,7 @@ public class SplashActivity extends BaseActivity {
 			if (intent.getAction() == SocketService.NETWORK_RECEIVER) {
 				// 拿到进度，更新UI
 				String exception = intent.getStringExtra("exception");
-//				tv_loading_msg.setText(R.string.loading_network_disconnect);
+				// tv_loading_msg.setText(R.string.loading_network_disconnect);
 				showErrorNetDialog();
 			}
 		}
@@ -118,8 +132,14 @@ public class SplashActivity extends BaseActivity {
 
 	private void startMain() {
 		tv_loading_msg.setText(R.string.loading_msg);
+
+		if ("".equals(MyApplication.getInstance().getSharedPreferences()
+				.getString(Constants.PREFERENCE_IP, ""))) {
+			showSettingDialog();
+		}
 		if (!CoreSocket.getInstance().isConnected()) {
-			showErrorNetDialog();
+			ib_setting_ip.setVisibility(View.VISIBLE);
+			// showErrorNetDialog();
 		} else {
 			startMainAct();
 		}
@@ -130,16 +150,25 @@ public class SplashActivity extends BaseActivity {
 		AppManager.getAppManager().AppExit(this);
 	}
 
+	private void showSettingDialog() {
+		IpSettingDialogFragment dialog = new IpSettingDialogFragment();
+		dialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+		dialog.show(getSupportFragmentManager(), "");
+	}
+
 	/**
 	 * 发送连接请求
 	 */
 	public void startMainAct() {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("imei", MyApplication.deviceId);
-		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_HAS_BIND);
-		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
+		MessagePacking messagePacking = new MessagePacking(
+				Message.MESSAGE_DEVICE_HAS_BIND);
+		messagePacking.putBodyData(DataType.INT,
+				BufferUtils.writeUTFString(jsonObject.toJSONString()));
 		CoreSocket.getInstance().sendMessage(messagePacking);
-		WLog.i(SplashActivity.class, "开始判定设备是否绑定..." + "request:" + jsonObject.toJSONString());
+		WLog.i(SplashActivity.class,
+				"开始判定设备是否绑定..." + "request:" + jsonObject.toJSONString());
 	}
 
 	public void showErrorNetDialog() {
