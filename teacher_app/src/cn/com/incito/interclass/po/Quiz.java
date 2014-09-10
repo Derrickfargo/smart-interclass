@@ -12,6 +12,7 @@ public class Quiz implements Serializable,Comparable<Quiz> {
 	private String imei;
 	private String name;
 	private String quizUrl;
+	private String lessionid;
 	private String thumbnail;
 	private Group group;
 	private float time;
@@ -81,6 +82,16 @@ public class Quiz implements Serializable,Comparable<Quiz> {
 	public void setGroup(Group group) {
 		this.group = group;
 	}
+
+	public String getLessionid() {
+		return lessionid;
+	}
+
+
+	public void setLessionid(String lessionid) {
+		this.lessionid = lessionid;
+	}
+
 
 	@Override
 	public int compareTo(Quiz o) {

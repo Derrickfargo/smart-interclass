@@ -24,6 +24,7 @@ public class PaperWork implements Serializable {
 	private String classes;
 	private String course_id;
 	private String course_name;
+	private String lessionid;
 	private String term;
 
 	private Date ctime;
@@ -146,6 +147,14 @@ public class PaperWork implements Serializable {
 
 	public void setCtime(Date ctime) {
 		this.ctime = ctime;
+	}
+
+	public String getLessionid() {
+		return lessionid;
+	}
+
+	public void setLessionid(String lessionid) {
+		this.lessionid = lessionid;
 	}
 
 

@@ -48,7 +48,7 @@ public class PaperWorkCtrl extends BaseCtrl {
 	@ResponseBody
 	public Map<String, Object> upload(String type, String teacher_id,
 			String author_name, String path, String filename, String filesize,
-			String class_start, String class_end, String classes,
+			String class_start, String class_end, String classes,String lessionid,
 			String course_id, String course_name, String term, String imei,
 			String quizid, String lastupdatetime, MultipartFile file) {
 		PaperWork paperWork = new PaperWork();
@@ -62,6 +62,7 @@ public class PaperWorkCtrl extends BaseCtrl {
 		paperWork.setCourse_name(course_id);
 		paperWork.setTerm(term);
 		paperWork.setClasses(classes);
+		paperWork.setLessionid(lessionid);
 		paperWork.setFilesize(filesize);
 		paperWork.setCourse_id(course_id);
 		Date class_st = DateTimeUtil.getDateByFormat(class_start,

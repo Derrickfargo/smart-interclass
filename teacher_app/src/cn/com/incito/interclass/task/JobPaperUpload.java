@@ -44,8 +44,6 @@ import com.alibaba.fastjson.JSONObject;
  */
 public class JobPaperUpload implements Job {
 	private Logger logger = Logger.getLogger(getClass());
-	public final static String PAPER_PATH = FileUtils.getProjectPath()
-			+ File.separator + "paper";
 	AsyncHttpConnection http = AsyncHttpConnection.getInstance();
 	protected final ResponseCallbackTrace callbackTrace = new ResponseCallbackTrace();
 	int count = 0;
@@ -142,7 +140,7 @@ public class JobPaperUpload implements Job {
 	 */
 	private List<ParamsWrapper> wrapParam() {
 		List<ParamsWrapper> list = new ArrayList<ParamsWrapper>();
-		File path = new File(PAPER_PATH);
+		File path = new File(Constants.PAPER_PATH);
 		File[] files = path.listFiles(new FileFilter() {
 
 			@Override
@@ -172,32 +170,38 @@ public class JobPaperUpload implements Job {
 
 			}
 		});
-		for (File file : filelist) {
-			String[] strs = file.list();
-			if (strs == null || strs.length < 1)
+		for (File f : filelist) {
+			File[] fs = f.listFiles();
+			if (fs == null || fs.length < 1)
 				continue;
-			for (String str : strs) {
-				ParamsWrapper params = new ParamsWrapper();
-				params.put("type", "1");
-				params.put("teacher_id", Application.getInstance().getTeacher()
-						.getIdcard());
-				params.put("imei", str.substring(0, str.lastIndexOf(".")));
-				params.put("quizid", file.getName());
-				params.put("author_name", "");
-				params.put("classes", Application.getInstance().getClasses()
-						.getName());
-				params.put("course_id", Application.getInstance().getCourse()
-						.getId());
-				params.put("course_name", Application.getInstance().getCourse()
-						.getName());
-				params.put("term", Application.getInstance().getClasses()
-						.getYear());
-				params.put("lastupdatetime", file.lastModified());
-				params.put("file", str, file.getAbsolutePath() + File.separator
-						+ str);
-				list.add(params);
+			for (File file : fs) {
+				String[] strs = file.list();
+				if (strs == null || strs.length < 1)
+					continue;
+				for (String str : strs) {
+					ParamsWrapper params = new ParamsWrapper();
+					params.put("type", "1");
+					params.put("teacher_id", Application.getInstance()
+							.getTeacher().getIdcard());
+					params.put("imei", file.getName());
+					params.put("quizid", str.substring(0, str.lastIndexOf(".")));
+					params.put("author_name", "");
+					params.put("classes", Application.getInstance()
+							.getClasses().getName());
+					params.put("course_id", Application.getInstance()
+							.getCourse().getId());
+					params.put("course_name", Application.getInstance()
+							.getCourse().getName());
+					params.put("lessionid", Application.getInstance()
+							.getLessionid());
+					params.put("term", Application.getInstance().getClasses()
+							.getYear());
+					params.put("lastupdatetime", file.lastModified());
+					params.put("file", str, file.getAbsolutePath()
+							+ File.separator + str);
+					list.add(params);
+				}
 			}
-
 		}
 
 		return list;

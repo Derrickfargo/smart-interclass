@@ -6,20 +6,25 @@
 	<insert id="save" parameterType="com.incito.interclass.entity.cloud.PaperWork"
 		useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO
-		tb_cld_quizpaper(type,filesize,path,imei,filename,teacher_id,author_name,quizid,class_start,class_end,classes,course_id,course_name,term,ctime)
+		tb_cld_quizpaper(type,filesize,path,imei,filename,teacher_id,author_name,quizid,class_start,class_end,classes,lessionid,course_id,course_name,term,ctime)
 		VALUES
-		(#{type},#{filesize},#{path},#{imei},#{filename},#{teacher_id},#{author_name},#{quizid},#{class_start},#{class_end},#{classes},#{course_id},#{course_name},#{term},now())
+		(#{type},#{filesize},#{path},#{imei},#{filename},#{teacher_id},#{author_name},#{quizid},#{class_start},#{class_end},#{classes},#{lessionid},#{course_id},#{course_name},#{term},now())
 	</insert>
-	<select id="loadIndex" resultType="com.incito.interclass.entity.cloud.PaperWork">
-		SELECT
-		type,filesize,path, filename,teacher_id,author_name,
-		imei,quizid,ctime
-		FROM
-		tb_cld_quizpaper
+	<insert id="loadIndex"  parameterType="java.util.Map">
+	    INSERT INTO tb_cld_classrecord(number,name,score,imei,gender,quizid,lessionid)
+	    SELECT
+		tb_student.number,tb_user.name,tb_student.score, imei,tb_user.sex,#{quizid},#{lessionid}
+		FROM tb_student
+		INNER JOIN tb_user ON tb_student.id = tb_user.id
+		INNER JOIN tb_student_group ON tb_student_group.student_id = tb_student.id
+		INNER JOIN tb_group ON tb_group.id = tb_student_group.group_id
+		INNER JOIN tb_table ON tb_table.id = tb_group.table_id
+		INNER JOIN tb_device ON tb_table.id = tb_device.table_id
+		INNER JOIN tb_cld_classrecord ON tb_cld_classrecord.quizid = tb_device.table_id
 		WHERE
-		teacher_id = #{teacher_id}
-		AND quizid = #{quizid}
-		ORDER BY
-		ctime
-	</select>
+		tb_group.teacher_id = #{teacher_id}
+		tb_group.class_id = #{class_id}
+		tb_group.course_id = #{course_id}
+		tb_device.imei = #{imei}
+	</insert>
 </mapper>

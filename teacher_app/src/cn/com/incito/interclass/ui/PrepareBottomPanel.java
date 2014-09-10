@@ -8,6 +8,7 @@ import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -179,6 +180,8 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		if (isOnClass) { 
 			btnBegin.setIcon(new ImageIcon("images/main/btn_end.png"));// 设置图片
 			Application.isOnClass = true;
+			Application.getInstance().setLessionid(
+					UUID.randomUUID().toString());
 		} else {
 			btnBegin.setIcon(new ImageIcon("images/main/btn_begin.png"));// 设置图片
 			Application.isOnClass = false;

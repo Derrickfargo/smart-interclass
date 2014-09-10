@@ -51,6 +51,10 @@ public class Application {
 	private boolean isGrouping = false;
     private FloatIcon floatIcon;
     private String quizId;   //考试流水号
+    /**
+	 * 课堂id
+	 */
+	private String lessionid;
     private Room room;// 当前上课的教室，教师登陆完后初始化
     private Teacher teacher;// 当前登录的老师，教师登陆完后初始化
     private Course course;// 当前上课的课程，教师登陆完后初始化
@@ -596,7 +600,17 @@ public class Application {
         return quizId;
     }
 
-    public void setQuizId(String quizId) {
+    public String getLessionid() {
+		return lessionid;
+	}
+
+
+	public void setLessionid(String lessionid) {
+		this.lessionid = lessionid;
+	}
+
+
+	public void setQuizId(String quizId) {
         this.quizId = quizId;
     }
 

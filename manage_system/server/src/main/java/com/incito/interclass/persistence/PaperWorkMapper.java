@@ -23,6 +23,6 @@ public interface PaperWorkMapper {
 	 * @param paperWork
 	 * @return
 	 */
-	List<PaperWork> loadIndex(@Param("teacher_id") String teacher_id, @Param("quizid") String quizid);
+	List<PaperWork> query(@Param("teacher_id") String teacher_id, @Param("quizid") String quizid);
 
 }
