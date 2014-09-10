@@ -3,12 +3,14 @@ package cn.com.incito.socket.core;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.util.logging.Logger;
 
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
+import cn.com.incito.wisdom.sdk.log.WLog;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -19,22 +21,22 @@ import com.alibaba.fastjson.JSONObject;
  * 
  */
 public class ConnectionManager {
-	private final static long TIMEOUT = 15000;//超时时间
-	private final static long SCAN_CYCLE = 10000;//心跳扫描周期10s
+	private final static long TIMEOUT = 15000;// 超时时间
+	private final static long SCAN_CYCLE = 10000;// 心跳扫描周期10s
 	private static ConnectionManager instance;
 	private SocketChannel channel;
 	private long lastActTime = 0;
 	private Thread thread;
-	private ConnectActiveMonitor monitor;//用于定时扫描服务端心跳
-	private HeartbeatGenerator generator;//用于产生心跳
-	
-	static ConnectionManager getInstance(){
+	private ConnectActiveMonitor monitor;// 用于定时扫描服务端心跳
+	private HeartbeatGenerator generator;// 用于产生心跳
+
+	static ConnectionManager getInstance() {
 		if (instance == null) {
 			instance = new ConnectionManager(null);
 		}
 		return instance;
 	}
-	
+
 	public static ConnectionManager getInstance(SocketChannel channel) {
 		if (instance == null) {
 			instance = new ConnectionManager(channel);
@@ -44,7 +46,7 @@ public class ConnectionManager {
 		}
 		return instance;
 	}
-	
+
 	private ConnectionManager(SocketChannel channel) {
 		this.channel = channel;
 		lastActTime = System.currentTimeMillis();
@@ -57,16 +59,18 @@ public class ConnectionManager {
 	/**
 	 * 最后一次心跳时间
 	 */
-	public void heartbeat(){
+	public void heartbeat() {
 		lastActTime = System.currentTimeMillis();
 	}
-	
+
 	/**
 	 * 网络退出
-	 * @param isNormal 是否正常退出
+	 * 
+	 * @param isNormal
+	 *            是否正常退出
 	 */
 	public synchronized void close(boolean isNormal) {
-		//停止检测心跳
+		// 停止检测心跳
 		monitor.setRunning(false);
 		generator.setRunning(false);
 		CoreSocket.getInstance().disconnect();
@@ -77,21 +81,24 @@ public class ConnectionManager {
 				e.printStackTrace();
 			}
 		}
-		//非正常退出,重连
+		// 非正常退出,重连
 		if (!isNormal) {
 			UIHelper.getInstance().getWaitingActivity().clearStudent();
+			MyApplication.getInstance().lockScreen(false);
+			WLog.i(ConnectionManager.class, "非正常退出，重连");
 			restartConnector();
 		}
 	}
-	
+
 	public SocketChannel getChannel() {
 		return channel;
 	}
 
 	/**
 	 * 心跳监控器
+	 * 
 	 * @author 刘世平
-	 *
+	 * 
 	 */
 	class ConnectActiveMonitor extends Thread {
 		private volatile boolean isRunning = true;
@@ -105,7 +112,7 @@ public class ConnectionManager {
 				}
 				long time = System.currentTimeMillis();
 				if (time - lastActTime > TIMEOUT) {
-					close(Boolean.FALSE);//非正常退出
+					close(Boolean.FALSE);// 非正常退出
 					break;
 				}
 			}
@@ -115,35 +122,39 @@ public class ConnectionManager {
 			this.isRunning = isRunning;
 		}
 	}
-	
+
 	/**
 	 * 心跳发生器
+	 * 
 	 * @author 刘世平
-	 *
+	 * 
 	 */
-	class HeartbeatGenerator extends Thread{
+	class HeartbeatGenerator extends Thread {
 		private volatile boolean isRunning = true;
+
 		public void run() {
 			while (isRunning) {
 				try {
 					Thread.sleep(SCAN_CYCLE);
-					//发送心跳包
+					// 发送心跳包
 					sendHeartbeat();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		}
-		
+
 		private void sendHeartbeat() throws IOException {
 			JSONObject json = new JSONObject();
 			json.put("imei", MyApplication.deviceId);
-			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_HEART_BEAT);
-	        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json.toJSONString()));
-	        byte[] messageData = messagePacking.pack().array();
-	        ByteBuffer buffer = ByteBuffer.allocate(messageData.length);
-	        buffer.put(messageData);
-	        buffer.flip();
+			MessagePacking messagePacking = new MessagePacking(
+					Message.MESSAGE_HEART_BEAT);
+			messagePacking.putBodyData(DataType.INT,
+					BufferUtils.writeUTFString(json.toJSONString()));
+			byte[] messageData = messagePacking.pack().array();
+			ByteBuffer buffer = ByteBuffer.allocate(messageData.length);
+			buffer.put(messageData);
+			buffer.flip();
 			if (channel != null && channel.isConnected()) {
 				channel.write(buffer);
 			}
@@ -153,7 +164,7 @@ public class ConnectionManager {
 			this.isRunning = isRunning;
 		}
 	}
-	
+
 	/**
 	 * 重新建立连接
 	 */
