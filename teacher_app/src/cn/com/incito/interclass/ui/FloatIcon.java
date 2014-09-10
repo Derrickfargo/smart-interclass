@@ -271,9 +271,11 @@ public class FloatIcon extends MouseAdapter {
 						if(Application.getInstance().isLockScreen){
 							btnLock.setIcon(new ImageIcon(ICON_LOCK_NORMAL));
 							UIHelper.sendLockScreenMessage(true);
+							Application.getInstance().setLockScreen(true);
 						}else{
 							btnLock.setIcon(new ImageIcon(ICON_LOCK_HOVER));
 							UIHelper.sendLockScreenMessage(false);
+							Application.getInstance().setLockScreen(false);
 						}
 					}
 					if (e.getSource() == btnExit) {
