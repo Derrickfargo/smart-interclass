@@ -374,11 +374,11 @@ public class SketchPadView extends View implements IUndoCommand {
 		} else {
 				int zoomWith = 1280;
 				int zoomHeigh=800;
-			if(m_bkBitmap.getWidth()>1280&&m_bkBitmap.getWidth()>800){
+			if(m_bkBitmap.getWidth()>1280&&m_bkBitmap.getHeight()>800){
 				m_bkBitmap=BitmapUtil.zoomImage(m_bkBitmap, zoomWith, zoomHeigh);
-			}else if(m_bkBitmap.getWidth()>1280&&m_bkBitmap.getWidth()<800){
-				m_bkBitmap=BitmapUtil.zoomImage(m_bkBitmap, zoomWith, m_bkBitmap.getWidth());
-			}else if(m_bkBitmap.getWidth()<1280&&m_bkBitmap.getWidth()>800){
+			}else if(m_bkBitmap.getWidth()>1280&&m_bkBitmap.getHeight()<800){
+				m_bkBitmap=BitmapUtil.zoomImage(m_bkBitmap, zoomWith, m_bkBitmap.getHeight());
+			}else if(m_bkBitmap.getWidth()<1280&&m_bkBitmap.getHeight()>800){
 				m_bkBitmap=BitmapUtil.zoomImage(m_bkBitmap, m_bkBitmap.getWidth(), zoomHeigh);
 			}
 			WLog.i(SketchPadView.class, "图片高度："+m_bkBitmap.getHeight()+"图片宽度:"+m_bkBitmap.getWidth());
