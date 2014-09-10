@@ -2,6 +2,8 @@ package cn.com.incito.classroom.base;
 
 import android.app.Application;
 import android.app.ExecRootCmd;
+import android.app.KeyguardManager;
+import android.app.KeyguardManager.KeyguardLock;
 import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -220,6 +222,10 @@ public class MyApplication extends Application {
 					MyApplication.getInstance().setLockScreen(isLock);
 					boolean ret1 = Settings.Global.putInt(mContentResolver, "disable_powerkey", 0); // 打开电源按钮唤醒功能
 					execRootCmd.powerkey();
+					KeyguardManager mManager = (KeyguardManager)getSystemService(KEYGUARD_SERVICE); 
+					KeyguardLock mKeyguardLock = mManager.newKeyguardLock("Lock"); 
+					//让键盘锁失效 
+					mKeyguardLock.disableKeyguard(); 
 					wl.release();
 				}
 			}
