@@ -237,6 +237,26 @@ public class CoreService {
 							student.setLogin(true);
 						}
 					}
+					/***
+					 * 当学生出现跨分组注册时，同步分组状态 2014.9-10 popoy
+					 */
+					if (Application.getInstance().getGroupList() != null
+							&& Application.getInstance().getGroupList().size() > 1) {
+						for (Group gp : Application.getInstance()
+								.getGroupList()) {
+							if (gp.getStudents() == null
+									|| gp.getStudents().size() < 1)
+								continue;
+							for (int j = 0; j < gp.getStudents().size(); j++) {
+								if ((gp.getStudents().get(j).getName() + gp
+										.getStudents().get(j).getNumber())
+										.equals(uname + number)) {
+									gp.getStudents().remove(j);
+								}
+							}
+						}
+					}
+
 					app.addGroup(group);
 					app.getTableGroup().put(group.getTableId(), group);
 					app.refresh();// 更新UI
@@ -297,14 +317,14 @@ public class CoreService {
 	 * @param imei
 	 * @return
 	 */
-	public String SavePaper(String imei, String id,
+	public String SavePaper(String imei, String quizid, String lessionid,
 			byte[] imageByte) {
-		File path = new File(FileUtils.getProjectPath() + File.separator
-				+ "paper" + File.separator + id);
+		File path = new File(Constants.PAPER_PATH + File.separator + lessionid
+				+ File.separator + imei);
 		path.mkdirs();
 
-		File file = new File(path, imei + ".jpg");
-		File thumbnail = new File(path, imei + "_thumbnail.jpg");
+		File file = new File(path, quizid + ".jpg");
+		File thumbnail = new File(path, quizid + "_thumbnail.jpg");
 		try {
 			FileImageOutputStream imageOutput = new FileImageOutputStream(file);
 			imageOutput.write(imageByte, 0, imageByte.length);
@@ -316,8 +336,9 @@ public class CoreService {
 		}
 
 		Quiz quiz = new Quiz();
-		quiz.setId(id);
+		quiz.setId(quizid);
 		quiz.setImei(imei);
+		quiz.setLessionid(lessionid);
 		StringBuffer name = new StringBuffer();
 		List<Student> students = app.getStudentByImei(imei);
 		if (students != null) {
@@ -339,13 +360,13 @@ public class CoreService {
 		app.getQuizList().add(quiz);
 		app.refresh();
 		if (app.getQuizList().size() == app.getClientChannel().size()) {
-//			FloatIcon.getInstance().showNoQuiz();
+			// FloatIcon.getInstance().showNoQuiz();
 			Application.getInstance().getFloatIcon().showNoQuiz();
 			MainFrame.getInstance().showNoQuiz();
 		} else {
 			String message = String.format(Constants.MESSAGE_QUIZ, app
 					.getQuizList().size(), app.getClientChannel().size());
-//			FloatIcon.getInstance().showQuizMessage(message);
+			// FloatIcon.getInstance().showQuizMessage(message);
 			Application.getInstance().getFloatIcon().showQuizMessage(message);
 		}
 		return JSONUtils.renderJSONString(0);
