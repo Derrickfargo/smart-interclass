@@ -325,6 +325,14 @@ public class PhotoFrame extends JFrame {
 							continue;
 						}
 						ImageIcon icon = new ImageIcon(quiz.getQuizUrl());
+						if (quiz != null && quiz.getGroup() != null) {
+							if (quiz.getGroup().getName() == null) {
+								lblTitle.setText(String.format("未分组[%s]", quiz.getName()));
+							} else {
+								String title = quiz.getGroup().getName() + "[%s]";
+								lblTitle.setText(String.format(title, quiz.getName()));
+							}
+						}
 						lblImage.setIcon(icon);
 					}
 				}

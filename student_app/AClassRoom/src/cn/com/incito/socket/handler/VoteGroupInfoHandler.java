@@ -3,6 +3,7 @@ package cn.com.incito.socket.handler;
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.JsonObject;
 
+import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;
 import cn.com.incito.wisdom.sdk.log.WLog;
@@ -38,6 +39,9 @@ public class VoteGroupInfoHandler extends MessageHandler {
             	WLog.i(VoteGroupInfoHandler.class, "同意分组");
                 //show bind activity
                 UIHelper.getInstance().showWaitingActivity();
+                if(MyApplication.getInstance().isOnClass){
+    				MyApplication.getInstance().lockScreen(true);
+    			}
             } else {
                 //show edit group activity
                 UIHelper.getInstance().showEditGroupActivity(groupID);

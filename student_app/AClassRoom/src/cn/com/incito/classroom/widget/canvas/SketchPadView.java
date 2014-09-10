@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.utils.BitmapUtil;
+import cn.com.incito.wisdom.sdk.log.WLog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -371,6 +372,16 @@ public class SketchPadView extends View implements IUndoCommand {
 		if (m_bkBitmap.getWidth() < 1280 && m_bkBitmap.getHeight() < 800) {
 			canvas.drawBitmap(m_bkBitmap, 640-m_bkBitmap.getWidth()/2, 400-m_bkBitmap.getHeight()/2, null);
 		} else {
+				int zoomWith = 1280;
+				int zoomHeigh=800;
+			if(m_bkBitmap.getWidth()>1280&&m_bkBitmap.getHeight()>800){
+				m_bkBitmap=BitmapUtil.zoomImage(m_bkBitmap, zoomWith, zoomHeigh);
+			}else if(m_bkBitmap.getWidth()>1280&&m_bkBitmap.getHeight()<800){
+				m_bkBitmap=BitmapUtil.zoomImage(m_bkBitmap, zoomWith, m_bkBitmap.getHeight());
+			}else if(m_bkBitmap.getWidth()<1280&&m_bkBitmap.getHeight()>800){
+				m_bkBitmap=BitmapUtil.zoomImage(m_bkBitmap, m_bkBitmap.getWidth(), zoomHeigh);
+			}
+			WLog.i(SketchPadView.class, "图片高度："+m_bkBitmap.getHeight()+"图片宽度:"+m_bkBitmap.getWidth());
 			canvas.drawBitmap(m_bkBitmap, 0, 0, null);
 		}
 		// Draw background bitmap.

@@ -48,6 +48,7 @@ import com.alibaba.fastjson.JSONObject;
 public class WaitingActivity extends BaseActivity {
 	public static final int STUDENT_LIST = 1;
 	public static final int STUDENT_LOGIN = 2;
+	public static final int STUDENT_CLEAR = 3;
 	EditText et_stname;
 	EditText et_stnumber;
 	ImageButton btn_join;
@@ -246,7 +247,7 @@ public class WaitingActivity extends BaseActivity {
 		for (int i = 0; i < loginResList.size(); i++) {
 			if (stNumber.equals(loginResList.get(i).getNumber())) {
 				ToastHelper.showCustomToast(getApplicationContext(),
-						R.string.toast_stname_repeat);
+						loginResList.get(i).getName().toString()+getResources().getString(R.string.toast_stname_repeat));
 				return false;
 			}
 		}
@@ -322,17 +323,21 @@ public class WaitingActivity extends BaseActivity {
 					}
 					llayout1.setVisibility(View.GONE);
 				}
-
 				break;
 			}
-			default:
+			case STUDENT_CLEAR:
+				if (loginResList != null) {
+					for (LoginRes2Vo vo : loginResList) {
+						vo.setLogin(false);
+					}
+					mAdapter.setDatas(loginResList);
+				}
 				break;
 			}
 		}
 	};
 
 	public void doResult(JSONObject jsonObject, int type) {
-
 		android.os.Message message = new android.os.Message();
 		message.what = type;
 		Bundle data = new Bundle();
@@ -341,6 +346,12 @@ public class WaitingActivity extends BaseActivity {
 		mHandler.sendMessage(message);
 	}
 
+	public void clearStudent(){
+		android.os.Message message = new android.os.Message();
+		message.what = STUDENT_CLEAR;
+		mHandler.sendMessage(message);
+	}
+	
 	/**
 	 * 注册成员
 	 */

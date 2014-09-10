@@ -464,7 +464,6 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	 */
 	private Bitmap getBitMap() {// 老师收作业的时候调用此方法保存图片 然后将图片传到服务器
 		Bitmap bmBitmap = m_sketchPad.getCanvasSnapshot();
-//		BitmapUtil.saveBitmapToSdCard(bmBitmap, "/mnt/sdcard/aa.jpg");
 		m_sketchPad.cleanDrawingCache();
 		return bmBitmap;
 	}
@@ -508,7 +507,6 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		CoreSocket.getInstance().sendMessage(messagePacking);
 		WLog.i(DrawBoxActivity.class, "启动作业提交..."+"request:");
 		MyApplication.getInstance().setSubmitPaper(true);
-		UIHelper.getInstance().setDrawBoxActivity(null);
 		MyApplication.getInstance().lockScreen(true);
 		WLog.i(DistributePaperHandler.class, "提交作业后锁定屏幕" );
 		this.finish();
