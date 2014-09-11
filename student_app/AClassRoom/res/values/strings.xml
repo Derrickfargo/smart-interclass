@@ -12,7 +12,7 @@
     <string name="toast_stname_tooshort">名字太短了吧~</string>
     <string name="toast_stname_blank">名字中不能包含空格哦~</string>
     <string name="toast_stnumber_notnull">填上你的学号吧</string>
-    <string name="toast_stname_repeat">已经登陆</string>
+    <string name="toast_stname_repeat">已经注册</string>
     <string name="toast_choose_atleast_one_desk">请选择绑定的课桌</string>
     <string name="toast_group_isfull">小组已满员，换个桌子吧</string>
     <string name="toast_quit_app">再按一次退出程序</string>
