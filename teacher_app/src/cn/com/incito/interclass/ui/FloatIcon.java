@@ -173,7 +173,9 @@ public class FloatIcon extends MouseAdapter {
 		lblIcon.setBounds(180, 10, 80, 80);
 		dialog.add(lblIcon);
 	}
-
+	/**
+	 * 同步菜单中随访联系按钮的状态
+	 */
 	public void synQuzingState() {
 		if (Application.hasQuiz) {
 			btnQuiz.setIcon(new ImageIcon(ICON_HANDIN_NORMAL));
@@ -181,7 +183,10 @@ public class FloatIcon extends MouseAdapter {
 			btnQuiz.setIcon(new ImageIcon(ICON_QUIZ_NORMAL));
 		}
 	}
-
+	/**
+	 * 显示已收取作业数量
+	 * @param message
+	 */
 	public void showQuizMessage(String message) {
 		lblIcon.setIcon(new ImageIcon(ICON_QUIZ));
 		iblTips.setText(message);
@@ -195,7 +200,9 @@ public class FloatIcon extends MouseAdapter {
 		lblBackground.setVisible(false);// 默认不显示
 		dialog.add(lblBackground);
 	}
-
+	/**
+	 * 显示弹出菜单
+	 */
 	private void showMenu(boolean isShowing) {
 		lblBackground.setVisible(isShowing);
 		btnQuiz.setVisible(isShowing);
@@ -311,7 +318,9 @@ public class FloatIcon extends MouseAdapter {
 			}
 		}
 	}
-
+	/**
+	 * 浮动窗显示未收取作业
+	 */
 	public void showNoQuiz() {
 		lblIcon.setIcon(new ImageIcon(ICON));
 		iblTips.setText("");
@@ -375,6 +384,7 @@ public class FloatIcon extends MouseAdapter {
 		if (e.getSource() == btnExit) {
 			btnExit.setIcon(new ImageIcon(ICON_EXIT_NORMAL));
 		}
+		
 	}
 
 	private void startUploadJob() {

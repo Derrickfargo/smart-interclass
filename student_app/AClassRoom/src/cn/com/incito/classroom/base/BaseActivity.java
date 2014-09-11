@@ -36,11 +36,12 @@ public class BaseActivity extends FragmentActivity {
 	protected float mDensity;
 
 	NetWorkReceiver receiver;
+	private boolean netDectOpen = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		AppManager.getAppManager().addActivity(this);
 		onAfterOnCreate(savedInstanceState);
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -54,6 +55,14 @@ public class BaseActivity extends FragmentActivity {
 		mDensity = metric.density;
 	}
 
+	public boolean isNetDectOpen() {
+		return netDectOpen;
+	}
+
+	public void setNetDectOpen(boolean netDectOpen) {
+		this.netDectOpen = netDectOpen;
+	}
+
 	protected void onAfterOnCreate(Bundle savedInstanceState) {
 	}
 
@@ -64,7 +73,7 @@ public class BaseActivity extends FragmentActivity {
 		IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
 		registerReceiver(receiver, intentFilter);
-		
+
 	}
 
 	@Override
@@ -78,13 +87,17 @@ public class BaseActivity extends FragmentActivity {
 		super.onDestroy();
 		AppManager.getAppManager().finishActivity(this);
 	}
-	 class NetWorkReceiver extends BroadcastReceiver {
+
+	class NetWorkReceiver extends BroadcastReceiver {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			if (intent.getAction().equals("android.net.conn.CONNECTIVITY_CHANGE")) {
-				ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-				NetworkInfo wifiInfo = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+			if (intent.getAction().equals(
+					"android.net.conn.CONNECTIVITY_CHANGE")) {
+				ConnectivityManager manager = (ConnectivityManager) context
+						.getSystemService(Context.CONNECTIVITY_SERVICE);
+				NetworkInfo wifiInfo = manager
+						.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 				NetworkInfo activeInfo = manager.getActiveNetworkInfo();
 				if (activeInfo == null || wifiInfo == null){
 					NetWorkDialog dialog=new NetWorkDialog(context);

@@ -11,7 +11,7 @@ import cn.com.incito.classroom.widget.canvas.ISketchPadTool;
  */
 public class Constant {
     public static final int PORT = 9001;
-    public static final String IP = "192.168.30.45";
+    public static final String IP = "192.168.30.135";
     /**
      * 小组相关的intent传值名
      */

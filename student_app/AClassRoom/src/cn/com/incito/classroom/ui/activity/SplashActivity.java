@@ -43,7 +43,7 @@ public class SplashActivity extends BaseActivity {
 
 	private TextView tv_loading_msg;
 	private ImageButton ib_setting_ip;
-	private boolean Flag;
+	// private boolean Flag;
 
 	private Thread thread;
 
@@ -75,6 +75,7 @@ public class SplashActivity extends BaseActivity {
 
 			@Override
 			public void onAnimationRepeat(Animation animation) {
+
 			}
 
 			@Override
@@ -92,16 +93,6 @@ public class SplashActivity extends BaseActivity {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (Flag) {
-			Flag = false;
-			CoreSocket.getInstance().restartConnection();
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e1) {
-				e1.printStackTrace();
-			}
-			startMainAct();
-		}
 
 	}
 
@@ -111,18 +102,11 @@ public class SplashActivity extends BaseActivity {
 
 	private void startMain() {
 		tv_loading_msg.setText(R.string.loading_msg);
-		if ("".equals(MyApplication.getInstance().getSharedPreferences()
-				.getString(Constants.PREFERENCE_IP, ""))) {
-			showSettingDialog();
-		}
-		if(!checkWifi()){
-			Flag=true;
-		}else{
-			if (!CoreSocket.getInstance().isConnected()) {
-				restartConnector();
-			} else {
-				startMainAct();
-			}
+		if (!CoreSocket.getInstance().isConnected()) {
+			ib_setting_ip.setVisibility(View.VISIBLE);
+			// showErrorNetDialog();
+		} else {
+			startMainAct();
 		}
 	}
 
@@ -152,34 +136,35 @@ public class SplashActivity extends BaseActivity {
 				"开始判定设备是否绑定..." + "request:" + jsonObject.toJSONString());
 	}
 
-	public void showErrorNetDialog() {
-		new AlertDialog.Builder(this).setCancelable(false).setTitle("网络设置")
-				.setPositiveButton("设置", new DialogInterface.OnClickListener() {
+//	public void showErrorNetDialog() {
+//		new AlertDialog.Builder(this).setCancelable(false).setTitle("网络设置")
+//				.setPositiveButton("设置", new DialogInterface.OnClickListener() {
+//
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						Intent intent = new Intent(Settings.ACTION_SETTINGS);
+//						startActivity(intent);
+//						Flag = true;
+//						dialog.dismiss();
+//					}
+//				})
+//				.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						// CoreSocket.getInstance().restartConnection();
+//						// try {
+//						// Thread.sleep(1000);
+//						// } catch (InterruptedException e1) {
+//						// e1.printStackTrace();
+//						// }
+//						// startMainAct();
+//						AppManager.getAppManager().AppExit(SplashActivity.this);
+//						dialog.dismiss();
+//					}
+//				}).show();
+//	}
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						Intent intent = new Intent(Settings.ACTION_SETTINGS);
-						startActivity(intent);
-						Flag = true;
-						dialog.dismiss();
-					}
-				})
-				.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-//						CoreSocket.getInstance().restartConnection();
-//						try {
-//							Thread.sleep(1000);
-//						} catch (InterruptedException e1) {
-//							e1.printStackTrace();
-//						}
-//						startMainAct();
-						AppManager.getAppManager().AppExit(SplashActivity.this);
-						dialog.dismiss();
-					}
-				}).show();
-	}
 	/**
 	 * 重新建立连接
 	 */
@@ -192,12 +177,13 @@ public class SplashActivity extends BaseActivity {
 				CoreSocket.getInstance().disconnect();
 				sleep(3000);
 				continue;
-			}else{
+			} else {
 				startMainAct();
 			}
 			break;
 		}
 	}
+
 	private void sleep(int seconds) {
 		try {
 			Thread.sleep(seconds);
@@ -205,19 +191,20 @@ public class SplashActivity extends BaseActivity {
 			e.printStackTrace();
 		}
 	}
-	public boolean checkWifi(){
-		  ConnectivityManager connectivity = (ConnectivityManager)this 
-	                .getSystemService(Context.CONNECTIVITY_SERVICE); 
-		   if (connectivity != null) { 
-	            // 获取网络连接管理的对象 
-	            NetworkInfo info = connectivity.getActiveNetworkInfo(); 
-	            if (info != null&& info.isConnected()) { 
-	                // 判断当前网络是否已经连接 
-	                if (info.getState() == NetworkInfo.State.CONNECTED) { 
-	                    return true; 
-	                } 
-	            } 
-	        }
+
+	public boolean checkWifi() {
+		ConnectivityManager connectivity = (ConnectivityManager) this
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		if (connectivity != null) {
+			// 获取网络连接管理的对象
+			NetworkInfo info = connectivity.getActiveNetworkInfo();
+			if (info != null && info.isConnected()) {
+				// 判断当前网络是否已经连接
+				if (info.getState() == NetworkInfo.State.CONNECTED) {
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 

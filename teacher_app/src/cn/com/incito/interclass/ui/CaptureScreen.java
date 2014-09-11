@@ -446,10 +446,21 @@ public class CaptureScreen {
 				endX = me.getX();
 				endY = me.getY();
 			}
-			if (barPanel != null) {
-				barPanel.setStartPos(startX + Math.abs(endX - startX)
-						- BAR_WIDTH, startY + Math.abs(endY - startY));
-			}
+				if (barPanel != null) {
+					if (startX > endX && startY > endY) {
+						barPanel.setStartPos(startX - BAR_WIDTH, startY);
+					} else if (startX > endX && startY < endY) {
+						barPanel.setStartPos(startX - BAR_WIDTH,
+								startY + Math.abs(endY - startY));
+					} else if (startX < endX && startY > endY) {
+						barPanel.setStartPos(startX + Math.abs(endX - startX)
+								- BAR_WIDTH, startY);
+					} else if (startX < endX && startY < endY) {
+						barPanel.setStartPos(startX + Math.abs(endX - startX)
+								- BAR_WIDTH, startY + Math.abs(endY - startY));
+					}
+
+				}
 
 			this.repaint();
 		}
@@ -463,7 +474,6 @@ public class CaptureScreen {
 			if (me.isPopupTrigger()) {
 				Application.hasQuiz = false;
 				Application.getInstance().getFloatIcon().synQuzingState();
-//				FloatIcon.getInstance().synQuzingState();
 				MainFrame.getInstance().synQuzingState();
 				if (current == States.MOVE) {
 					startX = 0;
@@ -473,6 +483,8 @@ public class CaptureScreen {
 					repaint();
 				} else {
 					updates();
+					MainFrame.getInstance().showNoQuiz();
+					Application.getInstance().getFloatIcon().showNoQuiz();
 					jf.dispose();
 					isBarShow = false;
 				}
@@ -480,9 +492,22 @@ public class CaptureScreen {
 			} else if (!isBarShow) {
 				isBarShow = true;
 				if (barPanel == null) {
-					barPanel = new BarPanel(jf, startX
-							+ Math.abs(endX - startX) - BAR_WIDTH, tempY
-							+ Math.abs(endY - startY));
+					if (startX > endX && startY > endY) {
+						barPanel = new BarPanel(jf, startX
+								- BAR_WIDTH, startY
+								);
+					} else if (startX > endX && startY < endY) {
+						barPanel = new BarPanel(jf, startX
+								- BAR_WIDTH, startY
+								+ Math.abs(endY - startY));
+					} else if (startX < endX && startY > endY) {
+						barPanel = new BarPanel(jf, startX
+								+ Math.abs(endX - startX) - BAR_WIDTH, startY);
+					} else if (startX < endX && startY < endY) {
+						barPanel = new BarPanel(jf, startX
+								+ Math.abs(endX - startX) - BAR_WIDTH, startY
+								+ Math.abs(endY - startY));
+					}
 				}
 
 				// barPanel.setStartPos(tempX, tempY);
@@ -494,16 +519,6 @@ public class CaptureScreen {
 		}
 
 		public void mouseClicked(MouseEvent me) {
-			// if (me.getClickCount() == 2) {
-			// Rectangle rec = new Rectangle(startX, startY, Math.abs(endX
-			// - startX), Math.abs(endY - startY));
-			//
-			// Point p = me.getPoint();
-			// if (select.contains(p)) {
-			// sendPaper();
-			//
-			// }
-			// }
 
 		}
 
@@ -513,7 +528,6 @@ public class CaptureScreen {
 				bImage = bi.getSubimage(select.x, select.y, select.width,
 						select.height);
 				jf.dispose();
-				// updates();
 
 			} else {
 				int wid = select.width, het = select.height;
@@ -525,7 +539,6 @@ public class CaptureScreen {
 				}
 				bImage = bi.getSubimage(select.x, select.y, wid, het);
 				jf.dispose();
-				// updates();
 			}
 			distributePaper(bImage);
 		}
@@ -577,12 +590,15 @@ public class CaptureScreen {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						Application.hasQuiz = false;
-						Application.getInstance().getFloatIcon().synQuzingState();
+						Application.getInstance().getFloatIcon()
+								.synQuzingState();
 						MainFrame.getInstance().synQuzingState();
+						MainFrame.getInstance().showNoQuiz();
+						Application.getInstance().getFloatIcon().showNoQuiz();
 						updates();
 						jf.dispose();
 						isBarShow = false;
-						
+
 					}
 				});
 
