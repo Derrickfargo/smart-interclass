@@ -127,6 +127,10 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 			if (Application.hasQuiz) {// 有作业，收作业
 				doAcceptQuiz();
 			} else {// 没作业，发作业
+				if (Application.getInstance().getOnlineStudent().size() == 0) {
+					JOptionPane.showMessageDialog(MainFrame.getInstance().getFrame(), "没有学生登录，无法进行随堂练习");
+					return;
+				}
 				doSendQuiz();
 			}
         } else {
