@@ -591,6 +591,8 @@ public class CaptureScreen {
 						Application.getInstance().getFloatIcon()
 								.synQuzingState();
 						MainFrame.getInstance().synQuzingState();
+						MainFrame.getInstance().showNoQuiz();
+						Application.getInstance().getFloatIcon().showNoQuiz();
 						updates();
 						jf.dispose();
 						isBarShow = false;
