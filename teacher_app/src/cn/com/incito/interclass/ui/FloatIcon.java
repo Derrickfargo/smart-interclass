@@ -375,6 +375,7 @@ public class FloatIcon extends MouseAdapter {
 		if (e.getSource() == btnExit) {
 			btnExit.setIcon(new ImageIcon(ICON_EXIT_NORMAL));
 		}
+		
 	}
 
 	private void startUploadJob() {

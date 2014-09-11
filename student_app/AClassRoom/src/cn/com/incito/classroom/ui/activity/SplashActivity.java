@@ -78,11 +78,12 @@ public class SplashActivity extends BaseActivity {
 
 			@Override
 			public void onAnimationRepeat(Animation animation) {
+				
 			}
 
 			@Override
 			public void onAnimationStart(Animation animation) {
-
+				
 			}
 		});
 	}
