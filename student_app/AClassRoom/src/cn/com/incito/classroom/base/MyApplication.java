@@ -114,10 +114,10 @@ public class MyApplication extends Application {
 	public SharedPreferences getSharedPreferences() {
 		return mPrefs;
 	}
-
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		sendBroadcast(new Intent("android.intent.action.HIDE_NAVIGATION_BAR"));
 		// closeSysScreenLock();
 		initApplication();
 		MobclickAgent.openActivityDurationTrack(false);// 禁止友盟的自动统计功能
@@ -231,4 +231,5 @@ public class MyApplication extends Application {
 			}
 		}
 	}
+
 }
