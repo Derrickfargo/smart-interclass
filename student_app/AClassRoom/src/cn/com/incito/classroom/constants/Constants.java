@@ -14,7 +14,7 @@ public class Constants {
 	public static final boolean OPEN_LOCK_SCREEN = false;// 是否打开锁屏功能
 	public static final boolean UNCATCHED_EXCEPION_HANLED = false;
 	public static final int PORT = 9001;
-	public static String IP = "192.168.30.7";
+	public static String IP = "192.168.30.135";
 
 	public static String getIP() {
 		return IP;

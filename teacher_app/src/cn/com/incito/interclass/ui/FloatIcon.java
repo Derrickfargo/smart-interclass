@@ -187,10 +187,10 @@ public class FloatIcon extends MouseAdapter {
 	 * 显示已收取作业数量
 	 * @param message
 	 */
-//	public void showQuizMessage(String message) {
-//		lblIcon.setIcon(new ImageIcon(ICON_QUIZ));
-//		iblTips.setText(message);
-//	}
+	public void showQuizMessage(String message) {
+		lblIcon.setIcon(new ImageIcon(ICON_QUIZ));
+		iblTips.setText(message);
+	}
 
 	// 设置背景
 	private void setBackground() {

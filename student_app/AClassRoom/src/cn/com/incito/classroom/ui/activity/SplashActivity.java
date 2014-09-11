@@ -50,6 +50,7 @@ public class SplashActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setNetDectOpen(false);
 		final View view = View.inflate(this, R.layout.splash, null);
 		setContentView(view);
 		ib_setting_ip = (ImageButton) view.findViewById(R.id.ib_setting_ip);
