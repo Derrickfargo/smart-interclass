@@ -19,7 +19,6 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
@@ -37,7 +36,7 @@ public class BaseActivity extends FragmentActivity {
 
 	NetWorkReceiver receiver;
 	private boolean netDectOpen = true;
-
+	NetWorkDialog dialog;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -104,10 +103,18 @@ public class BaseActivity extends FragmentActivity {
 				NetworkInfo wifiInfo = manager
 						.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 				NetworkInfo activeInfo = manager.getActiveNetworkInfo();
-				if (activeInfo == null || wifiInfo == null) {
-					NetWorkDialog dialog = new NetWorkDialog(context);
-					dialog.show();
-				}
+				if (activeInfo == null || wifiInfo == null){
+					if(dialog==null){
+						dialog=new NetWorkDialog(context);
+						dialog.show();
+					}else{
+						if(!dialog.isShowing()){
+							dialog.show();
+						}
+					}
+					
+					
+				}	
 			}
 		}
 
