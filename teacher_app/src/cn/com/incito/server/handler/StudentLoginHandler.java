@@ -27,8 +27,6 @@ public class StudentLoginHandler extends MessageHandler {
 	private Logger logger = Logger.getLogger(StudentLoginHandler.class.getName());
 	@Override
 	public void handleMessage() {
-		logger.info("消息类型为学生登陆:" + data);
-		
         String uname = data.getString("name");
         int sex = data.getIntValue("sex");
         String number = data.getString("number");
@@ -36,51 +34,35 @@ public class StudentLoginHandler extends MessageHandler {
         int type = data.getIntValue("type");//0登陆,1取消登陆,2注册
         switch (type){
         case 0:
+        	logger.info("消息类型为学生登陆:" + data);
         	String result = service.login(uname, sex, number, imei);
         	Integer groupId = getGroupId(result);
 			if (groupId != -1) {
 				Application.getInstance().addSocketChannel(groupId, message.getChannel());
         		sendResponse(result,Application.getInstance().getClientChannelByGroup(groupId));
-//				sendResponse(result);
         		logger.info(result);
         	}
         	break;
         case 1:
+        	logger.info("消息类型为学生退出:" + data);
         	result = service.logout(uname, sex, number, imei);
         	groupId = getGroupId(result);
 			if (groupId != -1) {
 				Application.getInstance().addSocketChannel(groupId, message.getChannel());
         		sendResponse(result,Application.getInstance().getClientChannelByGroup(groupId));
-//				sendResponse(result);
         		logger.info(result);
         	}
     		break;
         case 2:
+        	logger.info("消息类型为注册学生:" + data);
         	result = service.register(uname, sex, number, imei);
         	groupId = getGroupId(result);
 			if (groupId != -1) {
 				Application.getInstance().addSocketChannel(groupId, message.getChannel());
         		sendResponse(result,Application.getInstance().getClientChannelByGroup(groupId));
-//				sendResponse(result);
         		logger.info(result);
         	}
         	break;
-        }
-	}
-	
-	private void sendResponse(String json) {
-		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
-        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
-        byte[] messageData = messagePacking.pack().array();
-        ByteBuffer buffer = ByteBuffer.allocate(messageData.length);
-        buffer.put(messageData);
-        buffer.flip();
-        try {
-        	if(message.getChannel().isConnected()){
-        		message.getChannel().write(buffer);
-        	}
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 	}
 	

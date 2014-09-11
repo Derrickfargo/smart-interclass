@@ -20,7 +20,6 @@ import cn.com.incito.server.api.ApiClient;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.api.result.TeacherGroupResultData;
 import cn.com.incito.server.exception.AppException;
-import cn.com.incito.server.utils.FileUtils;
 import cn.com.incito.server.utils.ImageUtil;
 import cn.com.incito.server.utils.JSONUtils;
 
@@ -130,7 +129,7 @@ public class CoreService {
 
 				// 第二步获得班级、课程、设备、课桌、分组数据
 				Application.getInstance().initMapping(resultData.getDevices(),
-						resultData.getTables(), resultData.getGroups());
+						resultData.getTables(), app.getGroupList());
 				Application.getInstance().refresh();
 			}
 			logger.info(result);
