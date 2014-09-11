@@ -483,6 +483,8 @@ public class CaptureScreen {
 					repaint();
 				} else {
 					updates();
+					MainFrame.getInstance().showNoQuiz();
+					Application.getInstance().getFloatIcon().showNoQuiz();
 					jf.dispose();
 					isBarShow = false;
 				}
@@ -591,6 +593,8 @@ public class CaptureScreen {
 						Application.getInstance().getFloatIcon()
 								.synQuzingState();
 						MainFrame.getInstance().synQuzingState();
+						MainFrame.getInstance().showNoQuiz();
+						Application.getInstance().getFloatIcon().showNoQuiz();
 						updates();
 						jf.dispose();
 						isBarShow = false;

@@ -359,13 +359,11 @@ public class CoreService {
 		app.getQuizList().add(quiz);
 		app.refresh();
 		if (app.getQuizList().size() == app.getClientChannel().size()) {
-			// FloatIcon.getInstance().showNoQuiz();
 			Application.getInstance().getFloatIcon().showNoQuiz();
 			MainFrame.getInstance().showNoQuiz();
 		} else {
 			String message = String.format(Constants.MESSAGE_QUIZ, app
 					.getQuizList().size(), app.getClientChannel().size());
-			// FloatIcon.getInstance().showQuizMessage(message);
 			Application.getInstance().getFloatIcon().showQuizMessage(message);
 		}
 		return JSONUtils.renderJSONString(0);
