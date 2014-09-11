@@ -58,6 +58,7 @@ public class FloatIcon extends MouseAdapter {
 	private JButton btnQuiz, btnPraise, btnLock, btnExit;
 	private TrayIcon trayIcon; // 托盘图标
 	private SystemTray tray; // 托盘的实例
+	MainFrame frame;
 
 	public FloatIcon() {
 		Application.getInstance().setFloatIcon(this);
@@ -172,13 +173,15 @@ public class FloatIcon extends MouseAdapter {
 		lblIcon.setBounds(180, 10, 80, 80);
 		dialog.add(lblIcon);
 	}
-	public void synQuzingState(){
+
+	public void synQuzingState() {
 		if (Application.hasQuiz) {
 			btnQuiz.setIcon(new ImageIcon(ICON_HANDIN_NORMAL));
 		} else {
 			btnQuiz.setIcon(new ImageIcon(ICON_QUIZ_NORMAL));
 		}
 	}
+
 	public void showQuizMessage(String message) {
 		lblIcon.setIcon(new ImageIcon(ICON_QUIZ));
 		iblTips.setText(message);
@@ -226,6 +229,7 @@ public class FloatIcon extends MouseAdapter {
 
 	@Override
 	public void mouseClicked(final MouseEvent e) {
+
 		if (e.getClickCount() == 1) {
 			ActionListener taskPerformer = new ActionListener() { // 创建一个ActionListener侦听器对象
 				public void actionPerformed(ActionEvent evt) {
@@ -235,7 +239,7 @@ public class FloatIcon extends MouseAdapter {
 							isShowing = false;
 							lblBackground.setVisible(false);
 							showMenu(false);
-						} else {
+						} else if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
 							isShowing = true;
 							lblBackground.setVisible(true);
 							showMenu(true);
@@ -250,14 +254,18 @@ public class FloatIcon extends MouseAdapter {
 						} else {// 没作业，发作业
 							showMenu(false);
 							if (Application.isOnClass) {
-								if (Application.getInstance().getOnlineStudent().size() == 0) {
-									JOptionPane.showMessageDialog(dialog, "没有学生登录，无法进行随堂练习");
+								if (Application.getInstance()
+										.getOnlineStudent().size() == 0) {
+									JOptionPane.showMessageDialog(dialog,
+											"没有学生登录，无法进行随堂练习");
 									return;
 								}
 								MainFrame.getInstance().doSendQuiz();
-								btnQuiz.setIcon(new ImageIcon(ICON_HANDIN_NORMAL));
+								btnQuiz.setIcon(new ImageIcon(
+										ICON_HANDIN_NORMAL));
 							} else {
-								JOptionPane.showMessageDialog(dialog, "请先点击准备界面的开始上课！");
+								JOptionPane.showMessageDialog(dialog,
+										"请先点击准备界面的开始上课！");
 								MainFrame.getInstance().showPrepare();
 							}
 						}
@@ -268,11 +276,11 @@ public class FloatIcon extends MouseAdapter {
 					}
 					if (e.getSource() == btnLock) {
 						showMenu(false);
-						if(Application.getInstance().isLockScreen){
+						if (Application.getInstance().isLockScreen) {
 							btnLock.setIcon(new ImageIcon(ICON_LOCK_NORMAL));
 							UIHelper.sendLockScreenMessage(false);
 							Application.getInstance().setLockScreen(false);
-						}else{
+						} else {
 							btnLock.setIcon(new ImageIcon(ICON_LOCK_HOVER));
 							UIHelper.sendLockScreenMessage(true);
 							Application.getInstance().setLockScreen(true);
@@ -288,11 +296,18 @@ public class FloatIcon extends MouseAdapter {
 			mouseTimer.restart(); // 重新启动 Timer，取消所有挂起的触发并使它按初始延迟触发。
 		} else if (e.getClickCount() == 2 && mouseTimer.isRunning()) {
 			mouseTimer.stop();
+
 			if (e.getSource() == lblIcon) {
-				MainFrame frame = MainFrame.getInstance();
-				frame.getFrame().setExtendedState(JFrame.NORMAL);
-				frame.setVisible(true);
-				return;
+				if (frame == null) {
+					frame = MainFrame.getInstance();
+					frame.getFrame().setExtendedState(JFrame.NORMAL);
+					frame.setVisible(true);
+					return;
+				} else if(frame.isVisible()){
+					frame.setVisible(false);
+				}else{
+					frame.setVisible(true);
+				}
 			}
 		}
 	}
