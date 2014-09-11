@@ -294,7 +294,9 @@ public class PraiseDialog extends JDialog implements MouseListener {
 			return;
 		}
 		for (int i = 0; i < studentList.size(); i++) {
-			studentId = studentId + studentList.get(i).getId() + ",";
+			if(studentList.get(i).isLogin()){
+				studentId = studentId + studentList.get(i).getId() + ",";
+			}
 		}
 		if (studentId == null || "".equals(studentId)) {
 			return;
