@@ -68,17 +68,22 @@ public class BaseActivity extends FragmentActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		receiver = new NetWorkReceiver();
-		IntentFilter intentFilter = new IntentFilter();
-		intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-		registerReceiver(receiver, intentFilter);
+		if (netDectOpen) {
+			receiver = new NetWorkReceiver();
+			IntentFilter intentFilter = new IntentFilter();
+			intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+			registerReceiver(receiver, intentFilter);
+		}
 
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		unregisterReceiver(receiver);
+		if (netDectOpen) {
+			unregisterReceiver(receiver);
+		}
+
 	}
 
 	@Override
@@ -113,5 +118,5 @@ public class BaseActivity extends FragmentActivity {
 			}
 		}
 
-	 }
+	}
 }
