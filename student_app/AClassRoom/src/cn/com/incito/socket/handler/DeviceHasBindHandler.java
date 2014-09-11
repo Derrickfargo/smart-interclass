@@ -1,5 +1,6 @@
 package cn.com.incito.socket.handler;
 
+import android.content.Intent;
 import cn.com.incito.classroom.ui.activity.DrawBoxActivity;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;
@@ -19,6 +20,7 @@ public class DeviceHasBindHandler extends MessageHandler {
 		}
 		JSONObject jsonObject = data.getJSONObject("data");
 		UIHelper uiHelper = UIHelper.getInstance();
+
 		if (jsonObject.getBoolean("isbind")) {
 			uiHelper.showWaitingActivity();
 			WLog.i(DeviceBindHandler.class, "已绑定设备，进入等待界面..."+"response:"+jsonObject.toJSONString());
