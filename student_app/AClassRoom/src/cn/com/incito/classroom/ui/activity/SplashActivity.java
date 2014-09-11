@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.DialogFragment;
@@ -43,16 +45,11 @@ public class SplashActivity extends BaseActivity {
 	private ImageButton ib_setting_ip;
 	private boolean Flag;
 
-	private ServiceConnectReceiver serviceConnectReceiver;
+	private Thread thread;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		serviceConnectReceiver = new ServiceConnectReceiver();
-		IntentFilter intentFilter = new IntentFilter();
-		intentFilter.addAction(SocketService.NETWORK_RECEIVER);
-		registerReceiver(serviceConnectReceiver, intentFilter);
 		final View view = View.inflate(this, R.layout.splash, null);
 		setContentView(view);
 		ib_setting_ip = (ImageButton) view.findViewById(R.id.ib_setting_ip);
@@ -89,25 +86,7 @@ public class SplashActivity extends BaseActivity {
 
 	@Override
 	protected void onDestroy() {
-		// 注销广播
-		unregisterReceiver(serviceConnectReceiver);
 		super.onDestroy();
-	}
-
-	/**
-	 * service连接广播接收器
-	 */
-	public class ServiceConnectReceiver extends BroadcastReceiver {
-
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			if (intent.getAction() == SocketService.NETWORK_RECEIVER) {
-				// 拿到进度，更新UI
-				String exception = intent.getStringExtra("exception");
-				// tv_loading_msg.setText(R.string.loading_network_disconnect);
-				showErrorNetDialog();
-			}
-		}
 	}
 
 	@Override
@@ -132,16 +111,18 @@ public class SplashActivity extends BaseActivity {
 
 	private void startMain() {
 		tv_loading_msg.setText(R.string.loading_msg);
-
 		if ("".equals(MyApplication.getInstance().getSharedPreferences()
 				.getString(Constants.PREFERENCE_IP, ""))) {
 			showSettingDialog();
 		}
-		if (!CoreSocket.getInstance().isConnected()) {
-			ib_setting_ip.setVisibility(View.VISIBLE);
-			// showErrorNetDialog();
-		} else {
-			startMainAct();
+		if(!checkWifi()){
+			Flag=true;
+		}else{
+			if (!CoreSocket.getInstance().isConnected()) {
+				restartConnector();
+			} else {
+				startMainAct();
+			}
 		}
 	}
 
@@ -183,20 +164,61 @@ public class SplashActivity extends BaseActivity {
 						dialog.dismiss();
 					}
 				})
-				.setNegativeButton("重试", new DialogInterface.OnClickListener() {
+				.setNegativeButton("取消", new DialogInterface.OnClickListener() {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						CoreSocket.getInstance().restartConnection();
-						try {
-							Thread.sleep(1000);
-						} catch (InterruptedException e1) {
-							e1.printStackTrace();
-						}
-						startMainAct();
+//						CoreSocket.getInstance().restartConnection();
+//						try {
+//							Thread.sleep(1000);
+//						} catch (InterruptedException e1) {
+//							e1.printStackTrace();
+//						}
+//						startMainAct();
+						AppManager.getAppManager().AppExit(SplashActivity.this);
 						dialog.dismiss();
 					}
 				}).show();
+	}
+	/**
+	 * 重新建立连接
+	 */
+	public void restartConnector() {
+		while (Boolean.TRUE) {
+			thread = new Thread(CoreSocket.getInstance());
+			thread.start();
+			sleep(1000);// 等待1秒后检查连接
+			if (!CoreSocket.getInstance().isConnected()) {
+				CoreSocket.getInstance().disconnect();
+				sleep(3000);
+				continue;
+			}else{
+				startMainAct();
+			}
+			break;
+		}
+	}
+	private void sleep(int seconds) {
+		try {
+			Thread.sleep(seconds);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	public boolean checkWifi(){
+		  ConnectivityManager connectivity = (ConnectivityManager)this 
+	                .getSystemService(Context.CONNECTIVITY_SERVICE); 
+		   if (connectivity != null) { 
+	            // 获取网络连接管理的对象 
+	            NetworkInfo info = connectivity.getActiveNetworkInfo(); 
+	            if (info != null&& info.isConnected()) { 
+	                // 判断当前网络是否已经连接 
+	                if (info.getState() == NetworkInfo.State.CONNECTED) { 
+	                    return true; 
+	                } 
+	            } 
+	        }
+		return false;
 	}
 
 }

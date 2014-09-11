@@ -49,6 +49,7 @@ public class WaitingActivity extends BaseActivity {
 	public static final int STUDENT_LIST = 1;
 	public static final int STUDENT_LOGIN = 2;
 	public static final int STUDENT_CLEAR = 3;
+	public int itemPosition;
 	EditText et_stname;
 	EditText et_stnumber;
 	ImageButton btn_join;
@@ -138,7 +139,7 @@ public class WaitingActivity extends BaseActivity {
 					public void onItemClick(AdapterView<?> adapterView,
 							View view, int position, long l) {
 //						addState = 0;
-						
+						itemPosition=position;
 						if(!mProgressDialog.isShowing()){
 							mProgressDialog.show();
 						}
@@ -294,6 +295,7 @@ public class WaitingActivity extends BaseActivity {
 						gv_group_member.setAdapter(mAdapter);
 					}
 //					addState = 0;
+					gv_group_member.setSelection(itemPosition);
 				}
 
 				break;
