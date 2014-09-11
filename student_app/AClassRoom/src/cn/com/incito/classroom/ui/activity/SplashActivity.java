@@ -133,11 +133,11 @@ public class SplashActivity extends BaseActivity {
 
 	private void startMain() {
 		tv_loading_msg.setText(R.string.loading_msg);
-
+/*
 		if ("".equals(MyApplication.getInstance().getSharedPreferences()
 				.getString(Constants.PREFERENCE_IP, ""))) {
 			showSettingDialog();
-		}
+		}*/
 		if (!CoreSocket.getInstance().isConnected()) {
 			ib_setting_ip.setVisibility(View.VISIBLE);
 			// showErrorNetDialog();
