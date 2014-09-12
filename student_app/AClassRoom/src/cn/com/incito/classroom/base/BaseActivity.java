@@ -96,16 +96,14 @@ public class BaseActivity extends FragmentActivity {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			if (intent.getAction().equals(
-					"android.net.conn.CONNECTIVITY_CHANGE")) {
-				ConnectivityManager manager = (ConnectivityManager) context
-						.getSystemService(Context.CONNECTIVITY_SERVICE);
-				NetworkInfo wifiInfo = manager
-						.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+			if (intent.getAction().equals("android.net.conn.CONNECTIVITY_CHANGE")) {
+				ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+				NetworkInfo wifiInfo = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 				NetworkInfo activeInfo = manager.getActiveNetworkInfo();
 				if (activeInfo == null || wifiInfo == null){
 					if(dialog==null){
 						dialog=new NetWorkDialog(context);
+						dialog.setCancelable(false);
 						dialog.show();
 					}else{
 						if(!dialog.isShowing()){

@@ -48,7 +48,7 @@ public class MessageParser {
 				return;
 			}
 		} catch (IOException e) {
-			logger.fatal("解析消息失败:" + e.getMessage());
+			logger.fatal("解析消息失败:", e);
 			try {
 				channel.close();
 			} catch (IOException e1) {
@@ -97,7 +97,7 @@ public class MessageParser {
 			// 获取fake id的值
 			fakeId = Integer.parseInt(BufferUtils.decodeIntLittleEndian(fakeIdByte, 0, fakeIdByte.length) + "");
 		} catch (Exception e) {
-			logger.error("解析fake Id出错:" + e.getMessage());
+			logger.error("解析fake Id出错:", e);
 			return false;
 		}
 
@@ -131,6 +131,7 @@ public class MessageParser {
 	 * @return true，解析成功，false表示为其他类型包无需压入消息队列
 	 */
 	private boolean parseMessageBody() {
+		logger.error("开始解析消息体... ...");
 		int bodySize = message.getMsgSize();
 		ByteBuffer bodyBuffer = BufferUtils.prepareToReadOrPut(bodySize);
 		try {
@@ -138,8 +139,8 @@ public class MessageParser {
 			channel.read(bodyBuffer);
 			message.setBodyBuffer(bodyBuffer);
 			return true;
-		} catch (IOException e) {
-			logger.error("获取消息体失败:" + e.getMessage());
+		} catch (Exception e) {
+			logger.error("获取消息体失败:", e);
 			return false;
 		}
 	}

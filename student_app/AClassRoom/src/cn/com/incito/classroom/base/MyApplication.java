@@ -121,12 +121,13 @@ public class MyApplication extends Application {
 		super.onCreate();
 		sendBroadcast(new Intent("android.intent.action.HIDE_NAVIGATION_BAR"));
 		// closeSysScreenLock();
-		initApplication();
-		MobclickAgent.openActivityDurationTrack(false);// 禁止友盟的自动统计功能
+
 		mInstance = this;
 		mPrefs = PreferenceManager
 				.getDefaultSharedPreferences(getApplicationContext());
-		Constants.setIP(mPrefs.getString(Constants.PREFERENCE_IP, ""));
+		initApplication();
+		MobclickAgent.openActivityDurationTrack(false);// 禁止友盟的自动统计功能
+
 		WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 		WifiInfo info = wifi.getConnectionInfo();
 		// TelephonyManager tm = (TelephonyManager) this
@@ -173,6 +174,7 @@ public class MyApplication extends Application {
 	}
 
 	private void initApplication() {
+		Constants.setIP(mPrefs.getString(Constants.PREFERENCE_IP, ""));
 		TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 		deviceId = tm.getDeviceId();
 		Intent service = new Intent(
@@ -255,4 +257,17 @@ public class MyApplication extends Application {
 		}
 	}
 
+	@Override
+	public void onLowMemory() {
+		super.onLowMemory();
+		sendBroadcast(new Intent("android.intent.action.SHOW_NAVIGATION_BAR"));
+	}
+
+	@Override
+	public void onTerminate() {
+		super.onTerminate();
+		sendBroadcast(new Intent("android.intent.action.SHOW_NAVIGATION_BAR"));
+		WLog.i(MyApplication.class, "广播发出");
+
+	}
 }

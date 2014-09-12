@@ -86,7 +86,7 @@ public class AppManager {
      * 结束所有Activity
      */
     public void finishAllActivity() {
-        for (int i = 0, size = activityStack.size(); i < size; i++) {
+        for (int i =0 ; i < activityStack.size(); i++) {
             if (null != activityStack.get(i)) {
                 activityStack.get(i).finish();
             }
@@ -99,15 +99,16 @@ public class AppManager {
      */
     public void AppExit(Context context) {
         try {
-        	this.getAppManager().currentActivity().sendBroadcast(new Intent("android.intent.action.SHOW_NAVIGATION_BAR"));
+        	context.sendBroadcast(new Intent("android.intent.action.SHOW_NAVIGATION_BAR"));
             finishAllActivity();
             CoreSocket.getInstance().stopConnection();
             Thread.sleep(100);//先让socket发送退出消息再完全退出
             ConnectionManager.getInstance(null).close(true);
             MyApplication.getInstance().stopSocketService();
             android.os.Process.killProcess(android.os.Process.myPid());
-            ActivityManager activityMgr = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-            activityMgr.restartPackage(context.getPackageName());
+//            ActivityManager activityMgr = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+//            activityMgr.restartPackage(context.getPackageName());
+//            System.exit(0);
         } catch (Exception e) {
         	e.printStackTrace();
         }

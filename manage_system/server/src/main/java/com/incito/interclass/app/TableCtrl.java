@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.incito.base.exception.AppException;
 import com.incito.interclass.business.DeviceService;
+import com.incito.interclass.business.GroupService;
 import com.incito.interclass.business.TableService;
 import com.incito.interclass.common.BaseCtrl;
+import com.incito.interclass.entity.Group;
 import com.incito.interclass.entity.Table;
 
 @RestController
@@ -24,6 +26,8 @@ public class TableCtrl extends BaseCtrl {
 	private TableService tableService;
 	@Autowired
 	private DeviceService deviceService;
+	@Autowired
+	private GroupService groupService;
 
 	/**
 	 * 判断设备是否已绑定
@@ -66,10 +70,23 @@ public class TableCtrl extends BaseCtrl {
 	 * @return
 	 */
 	@RequestMapping(value = "/bind", produces = { "application/json;charset=UTF-8" })
-	public String addDevice(int roomId, int number, String imei) {
+	public String addDevice(int roomId, int number, String imei, int teacherId, int courseId, int classId) {
 		try {
-			int result = tableService.addDevice(roomId, number, imei);
-			return renderJSONString(result);
+			int tableId = tableService.addDevice(roomId, number, imei);
+			if (tableId > 0) {
+				// 检查组是否存在
+				Group group = groupService.getGroupByTableId(tableId, teacherId, courseId, classId);
+				if (group == null || group.getId() == 0) {
+					group = new Group();
+					group.setClassId(classId);
+					group.setCourseId(courseId);
+					group.setTeacherId(teacherId);
+					group.setTableId(tableId);
+					groupService.save(group);// 创建分组
+				}
+				return renderJSONString(SUCCESS, group);
+			}
+			return renderJSONString(ADD_DEVICE_ERROR);
 		} catch (AppException e) {
 			return renderJSONString(ADD_DEVICE_ERROR);
 		}
