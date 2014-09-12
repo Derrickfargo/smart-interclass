@@ -3,7 +3,11 @@ package cn.com.incito.interclass.ui;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.swing.ImageIcon;
@@ -11,6 +15,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import org.apache.log4j.Logger;
 
 import cn.com.incito.interclass.constant.Constants;
 import cn.com.incito.interclass.po.Table;
@@ -26,7 +32,7 @@ import com.sun.image.codec.jpeg.ImageFormatException;
 
 public class QuizBottomPanel extends JPanel implements MouseListener{
 	private static final long serialVersionUID = -9135075807085951600L;
-	
+	private Logger logger = Logger.getLogger(QuizBottomPanel.class.getName());
 	private static final String BTN_SEND_NORMAL = "images/quiz/btn_send_works.png";
 	private static final String BTN_SEND_HOVER = "images/quiz/btn_send_works_hover.png";
 	
@@ -163,15 +169,84 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
      * 老师主动收作业
      */
     public void collectPaper() {
-
-        MessagePacking messagePacking = new MessagePacking(
-                Message.MESSAGE_SAVE_PAPER);
-        JSONObject json = new JSONObject();
-        json.put("id", Application.getInstance().getQuizId());
-        messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(json.toString()));
-        CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
-//        Application.operationState = Constants.STATE_NORMAL;
+    	logger.info("开始收取作业...");
+    	Application app = Application.getInstance();
+//    	List<Group> groups = app.getGroupList();
+//		for (Group group : groups) {
+//			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SAVE_PAPER);
+//	        JSONObject json = new JSONObject();
+//	        json.put("id", Application.getInstance().getQuizId());
+//	        messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(json.toString()));
+//			
+//			final List<SocketChannel> channels = app.getClientChannelByGroup(group.getId());
+//			sendMessageToGroup(messagePacking, channels);
+//			try {
+//				Thread.sleep(500);
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//		}
+		
+		Map<String,SocketChannel> channels = app.getClientChannel();
+		Iterator<SocketChannel> it = channels.values().iterator();
+		int delay = 0;
+		while(it.hasNext()){
+			SocketChannel channel = it.next();
+			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SAVE_PAPER);
+	        JSONObject json = new JSONObject();
+	        json.put("id", Application.getInstance().getQuizId());
+	        json.put("delay", (delay ++) * 200);
+	        messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(json.toString()));
+	        if (!channel.isConnected()) {
+				it.remove();
+				continue;
+			}
+	        byte[] data = messagePacking.pack().array();
+			ByteBuffer buffer = ByteBuffer.allocate(data.length);
+			buffer.clear();
+			buffer.put(data);
+			buffer.flip();
+			try {
+				channel.write(buffer);
+			} catch (Exception e) {
+				logger.error("收取作业命令发送失败...", e);
+			}
+		}
+        
+//        CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
     }
+    
+    private void sendMessageToGroup(final MessagePacking messagePacking,
+			final List<SocketChannel> channels) {
+		if (channels == null) {
+			return;
+		}
+		new Thread() {
+			@Override
+			public void run() {
+				byte[] data = messagePacking.pack().array();
+				ByteBuffer buffer = ByteBuffer.allocate(data.length);
+				Iterator<SocketChannel> it = channels.iterator();
+				while (it.hasNext()) {
+					SocketChannel channel = it.next();
+					if (!channel.isConnected()) {
+						it.remove();
+						continue;
+					}
+					buffer.clear();
+					buffer.put(data);
+					buffer.flip();
+					try {
+						channel.write(buffer);
+						Thread.sleep(500);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			};
+		}.start();
+	}
+    
     /**
      * 分发空白试卷
      *
@@ -179,8 +254,7 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
      * @throws ImageFormatException
      */
     public void distributePaper() {
-        MessagePacking messagePacking = new MessagePacking(
-                Message.MESSAGE_DISTRIBUTE_PAPER);
+        MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DISTRIBUTE_PAPER);
         String uuid = UUID.randomUUID().toString();
         Application.getInstance().setQuizId(uuid);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(uuid));
