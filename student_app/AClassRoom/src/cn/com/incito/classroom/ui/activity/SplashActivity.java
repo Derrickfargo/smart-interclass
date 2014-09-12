@@ -50,7 +50,7 @@ public class SplashActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-//		setNetDectOpen(false);
+		// setNetDectOpen(false);
 		final View view = View.inflate(this, R.layout.splash, null);
 		setContentView(view);
 		ib_setting_ip = (ImageButton) view.findViewById(R.id.ib_setting_ip);
@@ -126,6 +126,7 @@ public class SplashActivity extends BaseActivity {
 	 * 发送连接请求
 	 */
 	public void startMainAct() {
+		
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("imei", MyApplication.deviceId);
 		MessagePacking messagePacking = new MessagePacking(
@@ -136,35 +137,6 @@ public class SplashActivity extends BaseActivity {
 		WLog.i(SplashActivity.class,
 				"开始判定设备是否绑定..." + "request:" + jsonObject.toJSONString());
 	}
-
-//	public void showErrorNetDialog() {
-//		new AlertDialog.Builder(this).setCancelable(false).setTitle("网络设置")
-//				.setPositiveButton("设置", new DialogInterface.OnClickListener() {
-//
-//					@Override
-//					public void onClick(DialogInterface dialog, int which) {
-//						Intent intent = new Intent(Settings.ACTION_SETTINGS);
-//						startActivity(intent);
-//						Flag = true;
-//						dialog.dismiss();
-//					}
-//				})
-//				.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//
-//					@Override
-//					public void onClick(DialogInterface dialog, int which) {
-//						// CoreSocket.getInstance().restartConnection();
-//						// try {
-//						// Thread.sleep(1000);
-//						// } catch (InterruptedException e1) {
-//						// e1.printStackTrace();
-//						// }
-//						// startMainAct();
-//						AppManager.getAppManager().AppExit(SplashActivity.this);
-//						dialog.dismiss();
-//					}
-//				}).show();
-//	}
 
 	/**
 	 * 重新建立连接

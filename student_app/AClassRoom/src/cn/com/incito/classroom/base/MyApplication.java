@@ -91,7 +91,8 @@ public class MyApplication extends Application {
 
 	public void closeSysScreenLock() {
 		mContentResolver = getContentResolver();
-		android.provider.Settings.System.putInt(mContentResolver, android.provider.Settings.System.LOCK_PATTERN_ENABLED, 0);
+		android.provider.Settings.System.putInt(mContentResolver,
+				android.provider.Settings.System.LOCK_PATTERN_ENABLED, 0);
 	}
 
 	public boolean isSubmitPaper() {
@@ -114,6 +115,7 @@ public class MyApplication extends Application {
 	public SharedPreferences getSharedPreferences() {
 		return mPrefs;
 	}
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -122,8 +124,9 @@ public class MyApplication extends Application {
 		initApplication();
 		MobclickAgent.openActivityDurationTrack(false);// 禁止友盟的自动统计功能
 		mInstance = this;
-		mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
+		mPrefs = PreferenceManager
+				.getDefaultSharedPreferences(getApplicationContext());
+		Constants.setIP(mPrefs.getString(Constants.PREFERENCE_IP, ""));
 		WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 		WifiInfo info = wifi.getConnectionInfo();
 		// TelephonyManager tm = (TelephonyManager) this
@@ -132,7 +135,9 @@ public class MyApplication extends Application {
 		IMEI = info.getMacAddress();
 
 		OpenUDIDManager.sync(this);
-		File cacheDir = StorageUtils.getOwnCacheDirectory(getApplicationContext(), Constants.WISDOMCITY_IAMGE_CACHE_SDCARD_PATH);
+		File cacheDir = StorageUtils.getOwnCacheDirectory(
+				getApplicationContext(),
+				Constants.WISDOMCITY_IAMGE_CACHE_SDCARD_PATH);
 		int memoryCacheSize = (int) (Runtime.getRuntime().maxMemory() / 8);
 		AbstractMemoryCache<String, Bitmap> memoryCache;
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
@@ -140,7 +145,17 @@ public class MyApplication extends Application {
 		} else {
 			memoryCache = new LRULimitedMemoryCacheBitmapCache(memoryCacheSize);
 		}
-		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).threadPriority(Thread.NORM_PRIORITY - 2).memoryCache(memoryCache).denyCacheImageMultipleSizesInMemory().discCache(new TotalSizeLimitedDiscCache(cacheDir, new Md5FileNameGenerator(), 10 * 1024 * 1024)).imageDownloader(new SlowNetworkImageDownloader(new BaseImageDownloader(this)))
+		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+				this)
+				.threadPriority(Thread.NORM_PRIORITY - 2)
+				.memoryCache(memoryCache)
+				.denyCacheImageMultipleSizesInMemory()
+				.discCache(
+						new TotalSizeLimitedDiscCache(cacheDir,
+								new Md5FileNameGenerator(), 10 * 1024 * 1024))
+				.imageDownloader(
+						new SlowNetworkImageDownloader(new BaseImageDownloader(
+								this)))
 				.tasksProcessingOrder(QueueProcessingType.LIFO).build();
 		ImageLoader.getInstance().init(config);
 
@@ -160,11 +175,13 @@ public class MyApplication extends Application {
 	private void initApplication() {
 		TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 		deviceId = tm.getDeviceId();
-		Intent service = new Intent("cn.com.incito.classroom.service.SOCKET_SERVICE");
+		Intent service = new Intent(
+				"cn.com.incito.classroom.service.SOCKET_SERVICE");
 		startService(service);
 		WLog.i(MyApplication.class, "socket service started");
 		if (Constants.LOG_OPEN) {
-			Intent logservice = new Intent("cn.com.incito.classroom.service.LOG_SERVICE");
+			Intent logservice = new Intent(
+					"cn.com.incito.classroom.service.LOG_SERVICE");
 			startService(logservice);
 			WLog.i(MyApplication.class, "log service started");
 		}
@@ -172,7 +189,8 @@ public class MyApplication extends Application {
 	}
 
 	public void stopSocketService() {
-		Intent service = new Intent("cn.com.incito.classroom.service.SOCKET_SERVICE");
+		Intent service = new Intent(
+				"cn.com.incito.classroom.service.SOCKET_SERVICE");
 		stopService(service);
 	}
 
@@ -208,24 +226,29 @@ public class MyApplication extends Application {
 		if (Constants.OPEN_LOCK_SCREEN) {
 			WLog.i(LockScreenHandler.class, "是否收到解锁屏信息：" + isLock);
 
-			ContentResolver mContentResolver = this.getApplicationContext().getContentResolver();
+			ContentResolver mContentResolver = this.getApplicationContext()
+					.getContentResolver();
 			ExecRootCmd execRootCmd = new ExecRootCmd();
 			if (isLock) {
 				MyApplication.getInstance().setLockScreen(isLock);
 				PowerManager pmManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-				wl = pmManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "My Tag");
+				wl = pmManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+						"My Tag");
 				wl.acquire();
-				boolean ret = Settings.Global.putInt(mContentResolver, "disable_powerkey", 1);// 屏蔽电源按钮唤醒功能
+				boolean ret = Settings.Global.putInt(mContentResolver,
+						"disable_powerkey", 1);// 屏蔽电源按钮唤醒功能
 				execRootCmd.powerkey();
 			} else {
 				if (MyApplication.getInstance().isLockScreen()) {
 					MyApplication.getInstance().setLockScreen(isLock);
-					boolean ret1 = Settings.Global.putInt(mContentResolver, "disable_powerkey", 0); // 打开电源按钮唤醒功能
+					boolean ret1 = Settings.Global.putInt(mContentResolver,
+							"disable_powerkey", 0); // 打开电源按钮唤醒功能
 					execRootCmd.powerkey();
-					KeyguardManager mManager = (KeyguardManager)getSystemService(KEYGUARD_SERVICE); 
-					KeyguardLock mKeyguardLock = mManager.newKeyguardLock("Lock"); 
-					//让键盘锁失效 
-					mKeyguardLock.disableKeyguard(); 
+					KeyguardManager mManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
+					KeyguardLock mKeyguardLock = mManager
+							.newKeyguardLock("Lock");
+					// 让键盘锁失效
+					mKeyguardLock.disableKeyguard();
 					wl.release();
 				}
 			}
