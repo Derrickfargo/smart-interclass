@@ -286,11 +286,15 @@ public class ApiClient {
 	 * @return
 	 * @throws AppException
 	 */
-	public static String deviceBind(String imei, int number, int roomId) throws AppException{
+	public static String deviceBind(String imei, int number) throws AppException{
+		Application app = Application.getInstance();
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("imei", imei);
 		params.put("number", number);
-		params.put("roomId", roomId);
+		params.put("roomId", app.getRoom().getId());
+		params.put("teacherId", app.getTeacher().getId());
+		params.put("courseId", app.getCourse().getId());
+		params.put("classId", app.getClasses().getId());
 		try {
 			return _post(URLs.URL_DEVICE_BIND, params, null);
 		} catch (Exception e) {

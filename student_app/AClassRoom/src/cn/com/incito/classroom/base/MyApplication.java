@@ -245,8 +245,7 @@ public class MyApplication extends Application {
 							"disable_powerkey", 0); // 打开电源按钮唤醒功能
 					execRootCmd.powerkey();
 					KeyguardManager mManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
-					KeyguardLock mKeyguardLock = mManager
-							.newKeyguardLock("Lock");
+					KeyguardLock mKeyguardLock = mManager.newKeyguardLock("Lock");
 					// 让键盘锁失效
 					mKeyguardLock.disableKeyguard();
 					wl.release();
@@ -255,4 +254,17 @@ public class MyApplication extends Application {
 		}
 	}
 
+	@Override
+	public void onLowMemory() {
+		super.onLowMemory();
+		sendBroadcast(new Intent("android.intent.action.SHOW_NAVIGATION_BAR"));
+	}
+
+	@Override
+	public void onTerminate() {
+		super.onTerminate();
+		sendBroadcast(new Intent("android.intent.action.SHOW_NAVIGATION_BAR"));
+		WLog.i(MyApplication.class, "广播发出");
+
+	}
 }

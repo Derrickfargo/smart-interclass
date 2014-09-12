@@ -72,6 +72,14 @@ public class GroupService {
 		return group;
 	}
 
+	public Integer save(Group group) {
+		return groupMapper.save(group);
+	}
+	
+	public Group getGroupByTableId(int tableId, int teacherId, int courseId, int classId){
+		return groupMapper.getGroupByTableId(tableId, teacherId, courseId, classId);
+	}
+	
 	public Group getGroupById(int id) {
 		return groupMapper.getGroupById(id);
 	}

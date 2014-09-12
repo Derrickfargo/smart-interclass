@@ -53,7 +53,10 @@ public class NetWorkDialog extends AlertDialog{
 			public void onClick(View v) {
 				Intent intent = new Intent(Settings.ACTION_SETTINGS);
 				context.startActivity(intent);
-				dismiss();
+				if(CoreSocket.getInstance().isConnected()){
+					dismiss();
+				}
+				
 			}
 			
 		});
@@ -69,7 +72,9 @@ public class NetWorkDialog extends AlertDialog{
 					e1.printStackTrace();
 				}
 				startMainAct();
-				dismiss();
+				if(CoreSocket.getInstance().isConnected()){
+					dismiss();
+				}
 			}
 		});
 	}

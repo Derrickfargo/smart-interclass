@@ -3,11 +3,16 @@ package cn.com.incito.server.handler;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
+import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
+import cn.com.incito.server.utils.JSONUtils;
 
 /**
  * 设备绑定处理器
@@ -21,10 +26,24 @@ public class DeviceBindHandler extends MessageHandler {
 		String imei = data.getString("imei");
 		int number = data.getIntValue("number");
 		String result = service.deviceBind(imei, number);
+		int groupId = getGroupId(result);
+		if (groupId > 0) {
+			Application.getInstance().addSocketChannel(groupId, message.getChannel());
+		}
 		service.refreshGroupList();
-		sendResponse(result);
+		sendResponse(JSONUtils.renderJSONString(JSONUtils.SUCCESS));
 	}
 
+	private Integer getGroupId(String json){
+		JSONObject jsonObject = JSON.parseObject(json);
+		if(jsonObject.getIntValue("code") != 0){
+			return -1;
+		}
+		String data = jsonObject.getString("data");
+		JSONObject dataObject = JSON.parseObject(data);
+		return dataObject.getInteger("id");
+	}
+	
 	private void sendResponse(String json) {
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_BIND);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
