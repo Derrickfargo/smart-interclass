@@ -80,6 +80,8 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 			MainFrame.getInstance().setState(JFrame.ICONIFIED);
 			 CaptureScreen captureScreen = new CaptureScreen(this);
              captureScreen.doStart();
+             //TODO bug,需要加return
+//             return;
 		}else{
 			//TODO 发送白板
 			distributePaper();
@@ -171,22 +173,6 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
     public void collectPaper() {
     	logger.info("开始收取作业...");
     	Application app = Application.getInstance();
-//    	List<Group> groups = app.getGroupList();
-//		for (Group group : groups) {
-//			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SAVE_PAPER);
-//	        JSONObject json = new JSONObject();
-//	        json.put("id", Application.getInstance().getQuizId());
-//	        messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(json.toString()));
-//			
-//			final List<SocketChannel> channels = app.getClientChannelByGroup(group.getId());
-//			sendMessageToGroup(messagePacking, channels);
-//			try {
-//				Thread.sleep(500);
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
-//		}
-		
 		Map<String,SocketChannel> channels = app.getClientChannel();
 		Iterator<SocketChannel> it = channels.values().iterator();
 		int delay = 0;
@@ -212,40 +198,7 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 				logger.error("收取作业命令发送失败...", e);
 			}
 		}
-        
-//        CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
     }
-    
-    private void sendMessageToGroup(final MessagePacking messagePacking,
-			final List<SocketChannel> channels) {
-		if (channels == null) {
-			return;
-		}
-		new Thread() {
-			@Override
-			public void run() {
-				byte[] data = messagePacking.pack().array();
-				ByteBuffer buffer = ByteBuffer.allocate(data.length);
-				Iterator<SocketChannel> it = channels.iterator();
-				while (it.hasNext()) {
-					SocketChannel channel = it.next();
-					if (!channel.isConnected()) {
-						it.remove();
-						continue;
-					}
-					buffer.clear();
-					buffer.put(data);
-					buffer.flip();
-					try {
-						channel.write(buffer);
-						Thread.sleep(500);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			};
-		}.start();
-	}
     
     /**
      * 分发空白试卷

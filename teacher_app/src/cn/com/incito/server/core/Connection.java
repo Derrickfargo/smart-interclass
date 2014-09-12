@@ -138,7 +138,7 @@ public class Connection {
 				}
 				long time = System.currentTimeMillis();
 				if (time - lastActTime > TIMEOUT) {
-					log.info("15秒内没有检测到心跳，设备退出!");
+					log.info("30秒内没有检测到心跳，设备退出!");
 					close();
 					break;
 				}
