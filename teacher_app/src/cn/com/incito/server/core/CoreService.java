@@ -93,8 +93,7 @@ public class CoreService {
 	 */
 	public String deviceBind(String imei, int number) {
 		try {
-			int roomId = app.getRoom().getId();
-			final String result = ApiClient.deviceBind(imei, number, roomId);
+			final String result = ApiClient.deviceBind(imei, number);
 			if (result != null && !result.equals("")) {
 				return result;
 			}

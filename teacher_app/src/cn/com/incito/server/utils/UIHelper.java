@@ -40,6 +40,6 @@ public class UIHelper {
 		Application.getInstance().setLockScreen(false);
 		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString("over"));
 		CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
-		logger.info("锁屏信息发出");
+		logger.info("下课信息发出");
 	}
 }
