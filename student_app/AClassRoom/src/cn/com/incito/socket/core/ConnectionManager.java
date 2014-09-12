@@ -3,7 +3,6 @@ package cn.com.incito.socket.core;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
-import java.util.logging.Logger;
 
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.common.utils.UIHelper;
@@ -21,8 +20,8 @@ import com.alibaba.fastjson.JSONObject;
  * 
  */
 public class ConnectionManager {
-	private final static long TIMEOUT = 15000;// 超时时间
-	private final static long SCAN_CYCLE = 10000;// 心跳扫描周期10s
+	private final static long TIMEOUT = 30000;// 超时时间
+	private final static long SCAN_CYCLE = 20000;// 心跳扫描周期20s
 	private static ConnectionManager instance;
 	private SocketChannel channel;
 	private long lastActTime = 0;
@@ -172,10 +171,10 @@ public class ConnectionManager {
 		while (Boolean.TRUE) {
 			thread = new Thread(CoreSocket.getInstance());
 			thread.start();
-			sleep(1000);// 等待1秒后检查连接
+			sleep(2000);// 等待1秒后检查连接
 			if (!CoreSocket.getInstance().isConnected()) {
 				CoreSocket.getInstance().disconnect();
-				sleep(3000);
+				sleep(5000);
 				continue;
 			}
 			break;
