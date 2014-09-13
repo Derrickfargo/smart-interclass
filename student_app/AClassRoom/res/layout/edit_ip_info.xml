@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/bg_groupname"
         android:clickable="true"
-        android:hint="@string/input_group_name_hint"
+        android:hint="@string/input_ip_hint"
         android:paddingLeft="40dp"
         android:paddingRight="40dp"
         android:singleLine="true" />
