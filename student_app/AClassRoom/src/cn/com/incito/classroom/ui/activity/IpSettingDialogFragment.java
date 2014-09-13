@@ -38,7 +38,7 @@ public class IpSettingDialogFragment extends DialogFragment {
 		editIP = (EditText) view.findViewById(R.id.edit_ip_name);
 		editIP.setText(MyApplication.getInstance().getSharedPreferences()
 				.getString(Constants.PREFERENCE_IP, Constants.IP));
-		setCancelable(false);
+//		setCancelable(false);
 		buttonAgree = (ImageButton) view.findViewById(R.id.btn_agree);
 		buttonAgree.setOnClickListener(new View.OnClickListener() {
 

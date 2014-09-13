@@ -16,7 +16,6 @@
         android:hint="@string/input_ip_hint"
         android:paddingLeft="40dp"
         android:paddingRight="40dp"
-        android:inputType="numberDecimal"
         android:singleLine="true" />
 
     <ImageButton
