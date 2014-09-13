@@ -103,7 +103,7 @@ public class BaseActivity extends FragmentActivity {
 				if (activeInfo == null || wifiInfo == null){
 					if(dialog==null){
 						dialog=new NetWorkDialog(context);
-						dialog.setCancelable(false);
+//						dialog.setCancelable(false);
 						dialog.show();
 					}else{
 						if(!dialog.isShowing()){
