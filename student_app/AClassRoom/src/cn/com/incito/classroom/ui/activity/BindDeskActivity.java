@@ -20,6 +20,7 @@ import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
+import cn.com.incito.classroom.ui.widget.MyAlertDialog;
 import cn.com.incito.classroom.vo.LoginResVo;
 import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.common.utils.UIHelper;
@@ -76,12 +77,14 @@ public class BindDeskActivity extends BaseActivity {
 
 	@Override
 	public void onBackPressed() {
-		if ((System.currentTimeMillis() - mExitTime) > 2000) {// 如果两次按键时间间隔大于2000毫秒，则不退出
-			Toast.makeText(this, R.string.toast_quit_app, Toast.LENGTH_SHORT).show();
-			mExitTime = System.currentTimeMillis();// 更新mExitTime
-		} else {
-			AppManager.getAppManager().AppExit(this);
-		}
+		MyAlertDialog dialog=new MyAlertDialog(this);
+		dialog.show();
+//		if ((System.currentTimeMillis() - mExitTime) > 2000) {// 如果两次按键时间间隔大于2000毫秒，则不退出
+//			Toast.makeText(this, R.string.toast_quit_app, Toast.LENGTH_SHORT).show();
+//			mExitTime = System.currentTimeMillis();// 更新mExitTime
+//		} else {
+//			AppManager.getAppManager().AppExit(this);
+//		}
 	}
 
 	private void initViews() {
