@@ -319,7 +319,7 @@ public class CoreService {
 			byte[] imageByte) {
 		
 		File path = new File(Constants.PAPER_PATH + File.separator + lessionid
-				+ File.separator + imei);
+				+ File.separator + imei.replace(":", "-"));
 		path.mkdirs();
 
 		File file = new File(path, quizid + ".jpg");
