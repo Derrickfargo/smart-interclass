@@ -2,10 +2,12 @@ package cn.com.incito.server.handler;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.List;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
+import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.Message;
@@ -28,9 +30,12 @@ public class DeviceBindHandler extends MessageHandler {
 		int number = data.getIntValue("number");
 		Application app = Application.getInstance();
 		Table table = app.getTableNumberMap().get(number);
-		if (table!= null && app.getTableDevice().get(table.getId()).size() == 4) {
-			sendResponse(JSONUtils.renderJSONString(-1));
-			return;
+		List<Device> deviceList = app.getTableDevice().get(table.getId());
+		if (table!= null && deviceList != null) {
+			if (deviceList.size() == 4) {
+				sendResponse(JSONUtils.renderJSONString(-1));
+				return;
+			}
 		}
 		
 		String result = service.deviceBind(imei, number);

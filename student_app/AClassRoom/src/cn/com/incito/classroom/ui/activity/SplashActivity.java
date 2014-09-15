@@ -96,7 +96,6 @@ public class SplashActivity extends BaseActivity {
 		tv_loading_msg.setText(R.string.loading_msg);
 		if (!CoreSocket.getInstance().isConnected()) {
 			ib_setting_ip.setVisibility(View.VISIBLE);
-			
 			if(checkWifi()) {
 				restartConnector();
 			}
