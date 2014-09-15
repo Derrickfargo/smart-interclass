@@ -18,6 +18,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
+import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.ui.widget.HorizontalListView;
 import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.classroom.adapter.HorizontalListViewAdapter;
@@ -78,10 +79,9 @@ public class ConfirmGroupInfoActivity extends BaseActivity implements
 	@Override
 	public void onClick(View view) {
 		int id = view.getId();
-		TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 		JSONObject json = new JSONObject();
 		json.put("id", mGroupID);
-		json.put("imei", tm.getDeviceId());
+		json.put("imei",MyApplication.getInstance().getDeviceId());
 		if (id == R.id.btn_agree) {
 			json.put("vote", "0");
 		} else if (id == R.id.btn_disagree) {

@@ -128,10 +128,9 @@ public class EditGroupInfoActivity extends BaseActivity implements
 									R.string.group_name_short_notice)
 									.toString());
 				} else {
-					TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 					JSONObject json = new JSONObject();
 					json.put("id", mGroupID);
-					json.put("imei", tm.getDeviceId());
+					json.put("imei", MyApplication.getInstance().getDeviceId());
 					json.put("name", groupName);
 					json.put("logo", mGroupIconName);
 					MessagePacking messagePacking = new MessagePacking(
