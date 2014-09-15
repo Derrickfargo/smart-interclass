@@ -317,8 +317,9 @@ public class CoreService {
 	 */
 	public String SavePaper(String imei, String quizid, String lessionid,
 			byte[] imageByte) {
+		
 		File path = new File(Constants.PAPER_PATH + File.separator + lessionid
-				+ File.separator + imei);
+				+ File.separator + imei.replace(":", "-"));
 		path.mkdirs();
 
 		File file = new File(path, quizid + ".jpg");
