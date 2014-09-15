@@ -1,29 +1,25 @@
 package cn.com.incito.classroom.base;
 
+import java.io.File;
+
 import android.app.Application;
 import android.app.ExecRootCmd;
 import android.app.KeyguardManager;
 import android.app.KeyguardManager.KeyguardLock;
-import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteStatement;
 import android.graphics.Bitmap;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
-import android.os.SystemProperties;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import cn.com.incito.classroom.constants.Constants;
-import cn.com.incito.classroom.service.LogService;
 import cn.com.incito.classroom.vo.LoginResVo;
 import cn.com.incito.socket.handler.LockScreenHandler;
 import cn.com.incito.wisdom.sdk.cache.disk.impl.TotalSizeLimitedDiscCache;
@@ -37,16 +33,10 @@ import cn.com.incito.wisdom.sdk.image.loader.assist.QueueProcessingType;
 import cn.com.incito.wisdom.sdk.log.WLog;
 import cn.com.incito.wisdom.sdk.net.download.BaseImageDownloader;
 import cn.com.incito.wisdom.sdk.net.download.SlowNetworkImageDownloader;
-import cn.com.incito.wisdom.sdk.net.http.WisdomCityRestClient;
 import cn.com.incito.wisdom.sdk.openudid.OpenUDIDManager;
 import cn.com.incito.wisdom.sdk.utils.StorageUtils;
 
-import com.baidu.mapapi.SDKInitializer;
 import com.umeng.analytics.MobclickAgent;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 应用 appication（缓存各类数据） Created by popoy on 2014/7/28.
@@ -130,9 +120,6 @@ public class MyApplication extends Application {
 
 		WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 		WifiInfo info = wifi.getConnectionInfo();
-		// TelephonyManager tm = (TelephonyManager) this
-		// .getSystemService(Context.TELEPHONY_SERVICE);
-		// IMEI = tm.getDeviceId();
 		IMEI = info.getMacAddress();
 
 		OpenUDIDManager.sync(this);
@@ -178,8 +165,9 @@ public class MyApplication extends Application {
 		if (ip != null && !ip.trim().equals("")) {
 			Constants.setIP(ip);
 		}
-		TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-		deviceId = tm.getDeviceId();
+		WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+		WifiInfo info = wifi.getConnectionInfo();
+		deviceId=info.getMacAddress();
 		Intent service = new Intent(
 				"cn.com.incito.classroom.service.SOCKET_SERVICE");
 		startService(service);
