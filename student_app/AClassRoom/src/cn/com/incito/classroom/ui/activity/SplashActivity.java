@@ -1,17 +1,9 @@
 package cn.com.incito.classroom.ui.activity;
 
-import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,8 +16,6 @@ import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.classroom.constants.Constants;
-import cn.com.incito.classroom.service.SocketService;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
@@ -43,14 +33,12 @@ public class SplashActivity extends BaseActivity {
 
 	private TextView tv_loading_msg;
 	private ImageButton ib_setting_ip;
-	// private boolean Flag;
-
-	private Thread thread;
+	 private boolean Flag;
+	 private IpSettingDialogFragment dialog;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// setNetDectOpen(false);
 		final View view = View.inflate(this, R.layout.splash, null);
 		setContentView(view);
 		ib_setting_ip = (ImageButton) view.findViewById(R.id.ib_setting_ip);
@@ -94,7 +82,10 @@ public class SplashActivity extends BaseActivity {
 	@Override
 	public void onResume() {
 		super.onResume();
-
+		if(Flag){
+			Flag=false;
+			startMain();
+		}
 	}
 
 	/**
@@ -105,7 +96,10 @@ public class SplashActivity extends BaseActivity {
 		tv_loading_msg.setText(R.string.loading_msg);
 		if (!CoreSocket.getInstance().isConnected()) {
 			ib_setting_ip.setVisibility(View.VISIBLE);
-			// showErrorNetDialog();
+			
+			if(checkWifi()) {
+				restartConnector();
+			}
 		} else {
 			startMainAct();
 		}
@@ -117,7 +111,7 @@ public class SplashActivity extends BaseActivity {
 	}
 
 	private void showSettingDialog() {
-		IpSettingDialogFragment dialog = new IpSettingDialogFragment();
+		dialog = new IpSettingDialogFragment();
 		dialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
 		dialog.show(getSupportFragmentManager(), "");
 	}
@@ -126,7 +120,6 @@ public class SplashActivity extends BaseActivity {
 	 * 发送连接请求
 	 */
 	public void startMainAct() {
-		
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("imei", MyApplication.deviceId);
 		MessagePacking messagePacking = new MessagePacking(
@@ -138,31 +131,38 @@ public class SplashActivity extends BaseActivity {
 				"开始判定设备是否绑定..." + "request:" + jsonObject.toJSONString());
 	}
 
+
 	/**
 	 * 重新建立连接
 	 */
 	public void restartConnector() {
-		while (Boolean.TRUE) {
-			thread = new Thread(CoreSocket.getInstance());
-			thread.start();
-			sleep(1000);// 等待1秒后检查连接
-			if (!CoreSocket.getInstance().isConnected()) {
-				CoreSocket.getInstance().disconnect();
-				sleep(3000);
-				continue;
-			} else {
-				startMainAct();
+		new Thread() {
+			public void run() {
+				while (Boolean.TRUE) {
+					CoreSocket.getInstance().restartConnection();
+					sleep(1000);// 等待1秒后检查连接
+					if (!CoreSocket.getInstance().isConnected()) {
+						CoreSocket.getInstance().disconnect();
+						sleep(3000);
+						continue;
+					} else {
+						if (dialog != null) {
+							dialog.dismiss();
+						}
+						startMainAct();
+					}
+					break;
+				}
 			}
-			break;
-		}
-	}
-
-	private void sleep(int seconds) {
-		try {
-			Thread.sleep(seconds);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+			
+			private void sleep(int seconds) {
+				try {
+					Thread.sleep(seconds);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}.start();
 	}
 
 	public boolean checkWifi() {
@@ -178,6 +178,7 @@ public class SplashActivity extends BaseActivity {
 				}
 			}
 		}
+		Flag=true;
 		return false;
 	}
 

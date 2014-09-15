@@ -3,7 +3,6 @@ package cn.com.incito.classroom.base;
 import java.util.Stack;
 
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import cn.com.incito.socket.core.ConnectionManager;
@@ -99,7 +98,7 @@ public class AppManager {
      */
     public void AppExit(Context context) {
         try {
-        	context.sendBroadcast(new Intent("android.intent.action.SHOW_NAVIGATION_BAR"));
+        	MyApplication.getInstance().sendBroadcast(new Intent("android.intent.action.SHOW_NAVIGATION_BAR"));
             finishAllActivity();
             CoreSocket.getInstance().stopConnection();
             Thread.sleep(100);//先让socket发送退出消息再完全退出

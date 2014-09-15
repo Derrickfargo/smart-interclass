@@ -394,14 +394,9 @@ public class Application {
     private void initTableDevice() {
         tableDevice.clear();
         for (Table table : tableList) {
-            List<Device> deviceList = tableDevice.get(table.getId());
+            List<Device> deviceList = table.getDevices();
             if (deviceList == null) {
                 deviceList = new ArrayList<Device>();
-            }
-            for (Device device : deviceList) {
-                if (device.getTableId() == table.getId()) {
-                    deviceList.add(device);
-                }
             }
             tableDevice.put(table.getId(), deviceList);
         }

@@ -82,7 +82,9 @@ public class ConnectionManager {
 		}
 		// 非正常退出,重连
 		if (!isNormal) {
-			UIHelper.getInstance().getWaitingActivity().clearStudent();
+			if (UIHelper.getInstance().getWaitingActivity() != null) {
+				UIHelper.getInstance().getWaitingActivity().clearStudent();
+			}
 			MyApplication.getInstance().lockScreen(false);
 			WLog.i(ConnectionManager.class, "非正常退出，重连");
 			restartConnector();

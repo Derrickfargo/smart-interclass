@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
+import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
@@ -25,6 +26,13 @@ public class DeviceBindHandler extends MessageHandler {
 	public void handleMessage() {
 		String imei = data.getString("imei");
 		int number = data.getIntValue("number");
+		Application app = Application.getInstance();
+		Table table = app.getTableNumberMap().get(number);
+		if (table!= null && app.getTableDevice().get(table.getId()).size() == 4) {
+			sendResponse(JSONUtils.renderJSONString(-1));
+			return;
+		}
+		
 		String result = service.deviceBind(imei, number);
 		int groupId = getGroupId(result);
 		if (groupId > 0) {
