@@ -25,7 +25,6 @@ public class ConnectionManager {
 	private static ConnectionManager instance;
 	private SocketChannel channel;
 	private long lastActTime = 0;
-	private Thread thread;
 	private ConnectActiveMonitor monitor;// 用于定时扫描服务端心跳
 	private HeartbeatGenerator generator;// 用于产生心跳
 
@@ -170,24 +169,26 @@ public class ConnectionManager {
 	 * 重新建立连接
 	 */
 	public void restartConnector() {
-		while (Boolean.TRUE) {
-			thread = new Thread(CoreSocket.getInstance());
-			thread.start();
-			sleep(2000);// 等待1秒后检查连接
-			if (!CoreSocket.getInstance().isConnected()) {
-				CoreSocket.getInstance().disconnect();
-				sleep(5000);
-				continue;
+		new Thread() {
+			public void run() {
+				while (Boolean.TRUE) {
+					CoreSocket.getInstance().restartConnection();
+					sleep(2000);// 等待1秒后检查连接
+					if (!CoreSocket.getInstance().isConnected()) {
+						CoreSocket.getInstance().disconnect();
+						sleep(5000);
+						continue;
+					}
+					break;
+				}
 			}
-			break;
-		}
-	}
-
-	private void sleep(int seconds) {
-		try {
-			Thread.sleep(seconds);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+			private void sleep(int seconds) {
+				try {
+					Thread.sleep(seconds);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}.start();
 	}
 }
