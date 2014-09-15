@@ -174,7 +174,10 @@ public class MyApplication extends Application {
 	}
 
 	private void initApplication() {
-		Constants.setIP(mPrefs.getString(Constants.PREFERENCE_IP, ""));
+		String ip = mPrefs.getString(Constants.PREFERENCE_IP, "");
+		if (ip != null && !ip.trim().equals("")) {
+			Constants.setIP(ip);
+		}
 		TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 		deviceId = tm.getDeviceId();
 		Intent service = new Intent(

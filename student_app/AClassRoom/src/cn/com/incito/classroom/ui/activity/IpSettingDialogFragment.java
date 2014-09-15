@@ -3,11 +3,6 @@ package cn.com.incito.classroom.ui.activity;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.alibaba.fastjson.JSONObject;
-
-import android.app.Dialog;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -27,6 +22,8 @@ import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
 import cn.com.incito.wisdom.sdk.log.WLog;
 
+import com.alibaba.fastjson.JSONObject;
+
 public class IpSettingDialogFragment extends DialogFragment {
 	private EditText editIP;
 	ImageButton buttonAgree;
@@ -38,7 +35,6 @@ public class IpSettingDialogFragment extends DialogFragment {
 		editIP = (EditText) view.findViewById(R.id.edit_ip_name);
 		editIP.setText(MyApplication.getInstance().getSharedPreferences()
 				.getString(Constants.PREFERENCE_IP, Constants.IP));
-//		setCancelable(false);
 		buttonAgree = (ImageButton) view.findViewById(R.id.btn_agree);
 		buttonAgree.setOnClickListener(new View.OnClickListener() {
 
@@ -51,13 +47,13 @@ public class IpSettingDialogFragment extends DialogFragment {
 					editor.putString(Constants.PREFERENCE_IP, editIP.getText()
 							.toString());
 					editor.apply();
-					CoreSocket.getInstance().restartConnection();
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e1) {
-						e1.printStackTrace();
-					}
-					startMainAct();
+//					CoreSocket.getInstance().restartConnection();
+//					try {
+//						Thread.sleep(1000);
+//					} catch (InterruptedException e1) {
+//						e1.printStackTrace();
+//					}
+//					startMainAct();
 					dismiss();
 				} else {
 					ToastHelper.showCustomToast(

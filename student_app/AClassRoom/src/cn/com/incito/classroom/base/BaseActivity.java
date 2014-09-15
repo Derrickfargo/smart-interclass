@@ -1,19 +1,7 @@
 package cn.com.incito.classroom.base;
 
-import com.alibaba.fastjson.JSONObject;
-
-import cn.com.incito.classroom.ui.activity.SplashActivity;
-import cn.com.incito.classroom.ui.widget.NetWorkDialog;
-import cn.com.incito.socket.core.CoreSocket;
-import cn.com.incito.socket.core.Message;
-import cn.com.incito.socket.message.DataType;
-import cn.com.incito.socket.message.MessagePacking;
-import cn.com.incito.socket.utils.BufferUtils;
-import cn.com.incito.wisdom.sdk.log.WLog;
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
@@ -22,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
+import cn.com.incito.classroom.ui.widget.NetWorkDialog;
 
 /**
  * activity基类 Created by popoy on 2014/8/5.

@@ -24,73 +24,68 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class NetWorkDialog extends AlertDialog {
+
+public class NetWorkDialog extends AlertDialog{
 	private Button button_entrue;
 	private Button button_cancle;
 	private Context context;
 	private TextView title;
 
 	public NetWorkDialog(Context context, int theme) {
-		super(context, theme);
-		this.context = context;
+	    super(context, theme);
+	    this.context=context;
 	}
 
 	public NetWorkDialog(Context context) {
-		super(context);
-		this.context = context;
+	    super(context);
+	    this.context=context;
 	}
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.network_dialog);
-		title = (TextView) findViewById(R.id.title);
-		title.setText(R.string.msg_dialog_network_nowork);
-		button_entrue = (Button) findViewById(R.id.entrue);
-		button_entrue.setText(R.string.btn_setting);
-		button_entrue.setOnClickListener(new View.OnClickListener() {
+	    super.onCreate(savedInstanceState);
+	    setContentView(R.layout.network_dialog);
+	    title=(TextView)findViewById(R.id.title);
+	    title.setText("网络异常哦，请检查网络哦");
+	    button_entrue=(Button)findViewById(R.id.entrue);
+	    button_entrue.setText("设置");
+	    button_entrue.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(Settings.ACTION_SETTINGS);
 				context.startActivity(intent);
-				if (CoreSocket.getInstance().isConnected()) {
 					dismiss();
-				}
-
+				
 			}
-
+			
 		});
-		button_cancle = (Button) findViewById(R.id.dismiss);
-		button_cancle.setText(R.string.btn_retry);
-		button_cancle.setOnClickListener(new View.OnClickListener() {
+	    button_cancle=(Button)findViewById(R.id.dismiss);
+	    button_cancle.setText("退出");
+	    button_cancle.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				CoreSocket.getInstance().restartConnection();
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e1) {
-					e1.printStackTrace();
-				}
-				startMainAct();
-				if (CoreSocket.getInstance().isConnected()) {
-					dismiss();
-				}
+				AppManager.getAppManager().AppExit(null);
+//				CoreSocket.getInstance().restartConnection();
+//				try {
+//					Thread.sleep(1000);
+//				} catch (InterruptedException e1) {
+//					e1.printStackTrace();
+//				}
+//				startMainAct();
+//				if(CoreSocket.getInstance().isConnected()){
+//					dismiss();
+//				}
 			}
 		});
 	}
-
 	/**
 	 * 发送连接请求
 	 */
 	public void startMainAct() {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("imei", MyApplication.deviceId);
-		MessagePacking messagePacking = new MessagePacking(
-				Message.MESSAGE_DEVICE_HAS_BIND);
-		messagePacking.putBodyData(DataType.INT,
-				BufferUtils.writeUTFString(jsonObject.toJSONString()));
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_HAS_BIND);
+		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
 		CoreSocket.getInstance().sendMessage(messagePacking);
-		WLog.i(SplashActivity.class,
-				"开始判定设备是否绑定..." + "request:" + jsonObject.toJSONString());
+		WLog.i(SplashActivity.class, "开始判定设备是否绑定..." + "request:" + jsonObject.toJSONString());
 	}
 }

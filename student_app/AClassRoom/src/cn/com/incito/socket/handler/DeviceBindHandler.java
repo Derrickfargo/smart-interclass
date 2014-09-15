@@ -1,5 +1,6 @@
 package cn.com.incito.socket.handler;
 
+import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.ui.activity.SplashActivity;
@@ -22,9 +23,8 @@ public class DeviceBindHandler extends MessageHandler {
 		} else {
 			WLog.i(DeviceBindHandler.class, "设备绑定失败，一个桌子最多绑定..."
 					+ Constants.PAD_PER_DESK + "个pad");
-			ToastHelper.showCustomToast(MyApplication.getInstance()
-					.getApplicationContext(), "设备绑定失败，一个桌子最多绑定"
-					+ Constants.PAD_PER_DESK + "个pad");
+			UIHelper.getInstance().getBindDeskActivity().showErrorDialog();
+		
 		}
 
 	}
