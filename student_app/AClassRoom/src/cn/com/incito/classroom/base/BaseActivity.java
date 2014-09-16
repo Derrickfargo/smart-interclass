@@ -24,18 +24,17 @@ public class BaseActivity extends FragmentActivity {
 	protected float mDensity;
 
 	NetWorkReceiver receiver;
-	private boolean netDectOpen = true;
+
 	NetWorkDialog dialog;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		AppManager.getAppManager().addActivity(this);
 		onAfterOnCreate(savedInstanceState);
-		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
-				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		DisplayMetrics metric = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metric);
 		mScreenWidth = metric.widthPixels;
@@ -43,13 +42,6 @@ public class BaseActivity extends FragmentActivity {
 		mDensity = metric.density;
 	}
 
-	public boolean isNetDectOpen() {
-		return netDectOpen;
-	}
-
-	public void setNetDectOpen(boolean netDectOpen) {
-		this.netDectOpen = netDectOpen;
-	}
 
 	protected void onAfterOnCreate(Bundle savedInstanceState) {
 	}
@@ -57,21 +49,17 @@ public class BaseActivity extends FragmentActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (netDectOpen) {
-			receiver = new NetWorkReceiver();
-			IntentFilter intentFilter = new IntentFilter();
-			intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-			registerReceiver(receiver, intentFilter);
-		}
+		receiver = new NetWorkReceiver();
+		IntentFilter intentFilter = new IntentFilter();
+		intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+		registerReceiver(receiver, intentFilter);
 
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		if (netDectOpen) {
-			unregisterReceiver(receiver);
-		}
+		unregisterReceiver(receiver);
 
 	}
 
@@ -89,19 +77,18 @@ public class BaseActivity extends FragmentActivity {
 				ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 				NetworkInfo wifiInfo = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 				NetworkInfo activeInfo = manager.getActiveNetworkInfo();
-				if (activeInfo == null || wifiInfo == null){
-					if(dialog==null){
-						dialog=new NetWorkDialog(context);
+				if (activeInfo == null || wifiInfo == null) {
+					if (dialog == null) {
+						dialog = new NetWorkDialog(context);
 						dialog.setCancelable(true);
 						dialog.show();
-					}else{
-						if(!dialog.isShowing()){
+					} else {
+						if (!dialog.isShowing()) {
 							dialog.show();
 						}
 					}
-					
-					
-				}	
+
+				}
 			}
 		}
 
