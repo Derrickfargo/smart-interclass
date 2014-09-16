@@ -167,7 +167,7 @@ public class MyApplication extends Application {
 		}
 		WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 		WifiInfo info = wifi.getConnectionInfo();
-		deviceId=info.getMacAddress();
+		deviceId=info.getMacAddress().replace(":", "-");
 		Intent service = new Intent(
 				"cn.com.incito.classroom.service.SOCKET_SERVICE");
 		startService(service);
