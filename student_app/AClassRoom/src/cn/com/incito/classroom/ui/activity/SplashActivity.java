@@ -3,7 +3,10 @@ package cn.com.incito.classroom.ui.activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -94,16 +97,40 @@ public class SplashActivity extends BaseActivity {
 
 	private void startMain() {
 		tv_loading_msg.setText(R.string.loading_msg);
-		if (!CoreSocket.getInstance().isConnected()) {
-			ib_setting_ip.setVisibility(View.VISIBLE);
-			if(checkWifi()) {
-				restartConnector();
+		new Thread() {
+			public void run() {
+				while (true) {
+					if (checkWifi()) {
+						MyApplication app = MyApplication.getInstance();
+						WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+						WifiInfo info = wifi.getConnectionInfo();
+						app.setDeviceId(info.getMacAddress().replace(":", "-"));
+						if (!CoreSocket.getInstance().isConnected()) {
+							showSetting();
+							restartConnector();
+						} else {
+							startMainAct();
+						}
+						break;
+					}
+					SplashActivity.this.sleep(3000);
+				}
 			}
-		} else {
-			startMainAct();
-		}
+		}.start();
+		
 	}
 
+	private Handler mHandler = new Handler() {
+		@Override
+		public void handleMessage(android.os.Message msg) {
+			ib_setting_ip.setVisibility(View.VISIBLE);
+		}
+	};
+	
+	private void showSetting() {
+		mHandler.sendEmptyMessage(0);
+	}
+	
 	@Override
 	public void onBackPressed() {
 		AppManager.getAppManager().AppExit(this);
@@ -139,10 +166,10 @@ public class SplashActivity extends BaseActivity {
 			public void run() {
 				while (Boolean.TRUE) {
 					CoreSocket.getInstance().restartConnection();
-					sleep(1000);// 等待1秒后检查连接
+					SplashActivity.this.sleep(1000);// 等待1秒后检查连接
 					if (!CoreSocket.getInstance().isConnected()) {
 						CoreSocket.getInstance().disconnect();
-						sleep(3000);
+						SplashActivity.this.sleep(3000);
 						continue;
 					} else {
 						if (dialog != null) {
@@ -153,17 +180,17 @@ public class SplashActivity extends BaseActivity {
 					break;
 				}
 			}
-			
-			private void sleep(int seconds) {
-				try {
-					Thread.sleep(seconds);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
 		}.start();
 	}
 
+	public void sleep(int seconds) {
+		try {
+			Thread.sleep(seconds);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public boolean checkWifi() {
 		ConnectivityManager connectivity = (ConnectivityManager) this
 				.getSystemService(Context.CONNECTIVITY_SERVICE);

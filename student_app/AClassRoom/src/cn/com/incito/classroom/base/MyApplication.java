@@ -11,14 +11,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.telephony.TelephonyManager;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.vo.LoginResVo;
 import cn.com.incito.socket.handler.LockScreenHandler;
@@ -62,8 +59,6 @@ public class MyApplication extends Application {
 	private static MyApplication mInstance = null;
 
 	public static final String strKey = "840FFE132BB1749F265E77000ED4A8E17ECEC190";
-
-	private static String IMEI;
 
 	private boolean isSubmitPaper;// 学生是否已提交作业
 
@@ -118,10 +113,6 @@ public class MyApplication extends Application {
 		initApplication();
 		MobclickAgent.openActivityDurationTrack(false);// 禁止友盟的自动统计功能
 
-		WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-		WifiInfo info = wifi.getConnectionInfo();
-		IMEI = info.getMacAddress();
-
 		OpenUDIDManager.sync(this);
 		File cacheDir = StorageUtils.getOwnCacheDirectory(
 				getApplicationContext(),
@@ -153,21 +144,11 @@ public class MyApplication extends Application {
 		return mInstance;
 	}
 
-	public final String getUDID() {
-		if (OpenUDIDManager.isInitialized()) {
-			return IMEI + "_" + OpenUDIDManager.getOpenUDID();
-		}
-		return IMEI;
-	}
-
 	private void initApplication() {
 		String ip = mPrefs.getString(Constants.PREFERENCE_IP, "");
 		if (ip != null && !ip.trim().equals("")) {
 			Constants.setIP(ip);
 		}
-		WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-		WifiInfo info = wifi.getConnectionInfo();
-		deviceId=info.getMacAddress().replace(":", "-");
 		Intent service = new Intent(
 				"cn.com.incito.classroom.service.SOCKET_SERVICE");
 		startService(service);
