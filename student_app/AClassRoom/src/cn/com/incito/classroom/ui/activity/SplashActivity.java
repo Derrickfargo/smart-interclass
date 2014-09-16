@@ -1,6 +1,7 @@
 package cn.com.incito.classroom.ui.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
@@ -19,6 +20,7 @@ import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.classroom.ui.widget.NetWorkDialog;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
@@ -35,9 +37,12 @@ import com.alibaba.fastjson.JSONObject;
 public class SplashActivity extends BaseActivity {
 
 	private TextView tv_loading_msg;
+
 	private ImageButton ib_setting_ip;
-	 private boolean Flag;
-	 private IpSettingDialogFragment dialog;
+
+	private boolean Flag;
+
+	private IpSettingDialogFragment dialog;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -85,8 +90,8 @@ public class SplashActivity extends BaseActivity {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if(Flag){
-			Flag=false;
+		if (Flag) {
+			Flag = false;
 			startMain();
 		}
 	}
@@ -98,6 +103,7 @@ public class SplashActivity extends BaseActivity {
 	private void startMain() {
 		tv_loading_msg.setText(R.string.loading_msg);
 		new Thread() {
+
 			public void run() {
 				while (true) {
 					if (checkWifi()) {
@@ -112,25 +118,49 @@ public class SplashActivity extends BaseActivity {
 							startMainAct();
 						}
 						break;
+					} else {
+						android.os.Message message = new android.os.Message();
+						message.what = 1;
+						mHandler.sendMessage(message);
 					}
 					SplashActivity.this.sleep(3000);
 				}
 			}
 		}.start();
-		
+
 	}
 
 	private Handler mHandler = new Handler() {
+
+		private NetWorkDialog mNetWorkdialog;
+
 		@Override
 		public void handleMessage(android.os.Message msg) {
-			ib_setting_ip.setVisibility(View.VISIBLE);
+			switch (msg.what) {
+			case 1:
+				if (mNetWorkdialog == null) {
+					mNetWorkdialog = new NetWorkDialog(SplashActivity.this);
+					mNetWorkdialog.show();
+				}else if(mNetWorkdialog.isShowing()){
+					
+				}
+				break;
+			case 0:
+				ib_setting_ip.setVisibility(View.VISIBLE);
+			default:
+				break;
+			}
+
 		}
 	};
-	
+
 	private void showSetting() {
-		mHandler.sendEmptyMessage(0);
+		android.os.Message message = new android.os.Message();
+		message.what = 0;
+		mHandler.sendMessage(message);
+//		mHandler.sendEmptyMessage(0);
 	}
-	
+
 	@Override
 	public void onBackPressed() {
 		AppManager.getAppManager().AppExit(this);
@@ -148,21 +178,18 @@ public class SplashActivity extends BaseActivity {
 	public void startMainAct() {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("imei", MyApplication.deviceId);
-		MessagePacking messagePacking = new MessagePacking(
-				Message.MESSAGE_DEVICE_HAS_BIND);
-		messagePacking.putBodyData(DataType.INT,
-				BufferUtils.writeUTFString(jsonObject.toJSONString()));
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_HAS_BIND);
+		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
 		CoreSocket.getInstance().sendMessage(messagePacking);
-		WLog.i(SplashActivity.class,
-				"开始判定设备是否绑定..." + "request:" + jsonObject.toJSONString());
+		WLog.i(SplashActivity.class, "开始判定设备是否绑定..." + "request:" + jsonObject.toJSONString());
 	}
-
 
 	/**
 	 * 重新建立连接
 	 */
 	public void restartConnector() {
 		new Thread() {
+
 			public void run() {
 				while (Boolean.TRUE) {
 					CoreSocket.getInstance().restartConnection();
@@ -190,10 +217,9 @@ public class SplashActivity extends BaseActivity {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public boolean checkWifi() {
-		ConnectivityManager connectivity = (ConnectivityManager) this
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		ConnectivityManager connectivity = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
 		if (connectivity != null) {
 			// 获取网络连接管理的对象
 			NetworkInfo info = connectivity.getActiveNetworkInfo();
@@ -204,7 +230,7 @@ public class SplashActivity extends BaseActivity {
 				}
 			}
 		}
-		Flag=true;
+		Flag = true;
 		return false;
 	}
 
