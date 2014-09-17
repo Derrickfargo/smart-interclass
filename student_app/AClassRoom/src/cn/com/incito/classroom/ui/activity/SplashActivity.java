@@ -106,6 +106,9 @@ public class SplashActivity extends BaseActivity {
 			public void run() {
 				while (true) {
 					if (checkWifi()) {
+						android.os.Message message = new android.os.Message();
+						message.what = 2;
+						mHandler.sendMessage(message);
 						MyApplication app = MyApplication.getInstance();
 						WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 						WifiInfo info = wifi.getConnectionInfo();
@@ -117,11 +120,10 @@ public class SplashActivity extends BaseActivity {
 							startMainAct();
 						}
 						break;
-					} else {
-						android.os.Message message = new android.os.Message();
-						message.what = 1;
-						mHandler.sendMessage(message);
 					}
+					android.os.Message message = new android.os.Message();
+					message.what = 1;
+					mHandler.sendMessage(message);
 					SplashActivity.this.sleep(3000);
 				}
 			}
@@ -142,6 +144,10 @@ public class SplashActivity extends BaseActivity {
 					netWorkDialog.show();
 				}
 				break;
+			case 2:
+				if(netWorkDialog != null && netWorkDialog.isShowing()){
+					netWorkDialog.dismiss();
+				}
 			case 0:
 				ib_setting_ip.setVisibility(View.VISIBLE);
 			default:

@@ -1,28 +1,15 @@
 package cn.com.incito.classroom.ui.widget;
 
-import java.net.Socket;
-
-import com.alibaba.fastjson.JSONObject;
-
-import cn.com.incito.classroom.R;
-import cn.com.incito.classroom.base.AppManager;
-import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.classroom.ui.activity.SplashActivity;
-import cn.com.incito.socket.core.CoreSocket;
-import cn.com.incito.socket.core.Message;
-import cn.com.incito.socket.message.DataType;
-import cn.com.incito.socket.message.MessagePacking;
-import cn.com.incito.socket.utils.BufferUtils;
-import cn.com.incito.wisdom.sdk.log.WLog;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import cn.com.incito.classroom.R;
+import cn.com.incito.classroom.base.AppManager;
 
 
 public class NetWorkDialog extends AlertDialog{
@@ -51,10 +38,9 @@ public class NetWorkDialog extends AlertDialog{
 	    button_entrue.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				dismiss();
 				Intent intent = new Intent(Settings.ACTION_SETTINGS);
 				context.startActivity(intent);
-					dismiss();
-				
 			}
 			
 		});
@@ -64,28 +50,7 @@ public class NetWorkDialog extends AlertDialog{
 			@Override
 			public void onClick(View v) {
 				AppManager.getAppManager().AppExit(null);
-//				CoreSocket.getInstance().restartConnection();
-//				try {
-//					Thread.sleep(1000);
-//				} catch (InterruptedException e1) {
-//					e1.printStackTrace();
-//				}
-//				startMainAct();
-//				if(CoreSocket.getInstance().isConnected()){
-//					dismiss();
-//				}
 			}
 		});
-	}
-	/**
-	 * 发送连接请求
-	 */
-	public void startMainAct() {
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("imei", MyApplication.deviceId);
-		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_HAS_BIND);
-		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
-		CoreSocket.getInstance().sendMessage(messagePacking);
-		WLog.i(SplashActivity.class, "开始判定设备是否绑定..." + "request:" + jsonObject.toJSONString());
 	}
 }
