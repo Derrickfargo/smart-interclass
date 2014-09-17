@@ -144,6 +144,11 @@ public final class CoreSocket implements Runnable {
 	@Override
 	public void run() {
 		try {
+			if (MyApplication.deviceId == null
+					|| MyApplication.deviceId.equals("")) {
+				//没有mac地址,不允许建立连接
+				return;
+			}
 			isRunning = true;
 			// 客户端向服务器端发起建立连接请求
 			SocketChannel socketChannel = SocketChannel.open();

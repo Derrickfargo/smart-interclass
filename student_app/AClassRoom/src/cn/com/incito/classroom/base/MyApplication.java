@@ -11,6 +11,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
@@ -145,17 +147,25 @@ public class MyApplication extends Application {
 	}
 
 	private void initApplication() {
+		//初始化服务端ip
 		String ip = mPrefs.getString(Constants.PREFERENCE_IP, "");
 		if (ip != null && !ip.trim().equals("")) {
 			Constants.setIP(ip);
 		}
-		Intent service = new Intent(
-				"cn.com.incito.classroom.service.SOCKET_SERVICE");
+		
+		//初始化本机mac地址
+		WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+		WifiInfo info = wifi.getConnectionInfo();
+		if (info != null) {
+			setDeviceId(info.getMacAddress().replace(":", "-"));
+		}
+		
+		//启动socket和日志服务
+		Intent service = new Intent("cn.com.incito.classroom.service.SOCKET_SERVICE");
 		startService(service);
 		WLog.i(MyApplication.class, "socket service started");
 		if (Constants.LOG_OPEN) {
-			Intent logservice = new Intent(
-					"cn.com.incito.classroom.service.LOG_SERVICE");
+			Intent logservice = new Intent("cn.com.incito.classroom.service.LOG_SERVICE");
 			startService(logservice);
 			WLog.i(MyApplication.class, "log service started");
 		}
@@ -163,8 +173,7 @@ public class MyApplication extends Application {
 	}
 
 	public void stopSocketService() {
-		Intent service = new Intent(
-				"cn.com.incito.classroom.service.SOCKET_SERVICE");
+		Intent service = new Intent("cn.com.incito.classroom.service.SOCKET_SERVICE");
 		stopService(service);
 	}
 
@@ -181,7 +190,7 @@ public class MyApplication extends Application {
 	}
 
 	public void setDeviceId(String deviceId) {
-		this.deviceId = deviceId;
+		MyApplication.deviceId = deviceId;
 	}
 
 	public String getQuizID() {
