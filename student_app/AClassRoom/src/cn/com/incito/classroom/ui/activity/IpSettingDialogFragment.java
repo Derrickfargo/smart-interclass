@@ -35,6 +35,7 @@ public class IpSettingDialogFragment extends DialogFragment {
 		editIP = (EditText) view.findViewById(R.id.edit_ip_name);
 		editIP.setText(MyApplication.getInstance().getSharedPreferences()
 				.getString(Constants.PREFERENCE_IP, Constants.IP));
+		setCancelable(false);
 		buttonAgree = (ImageButton) view.findViewById(R.id.btn_agree);
 		buttonAgree.setOnClickListener(new View.OnClickListener() {
 
@@ -47,13 +48,6 @@ public class IpSettingDialogFragment extends DialogFragment {
 					editor.putString(Constants.PREFERENCE_IP, editIP.getText()
 							.toString());
 					editor.apply();
-//					CoreSocket.getInstance().restartConnection();
-//					try {
-//						Thread.sleep(1000);
-//					} catch (InterruptedException e1) {
-//						e1.printStackTrace();
-//					}
-//					startMainAct();
 					dismiss();
 				} else {
 					ToastHelper.showCustomToast(

@@ -1,7 +1,6 @@
 package cn.com.incito.classroom.ui.activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
@@ -132,17 +131,15 @@ public class SplashActivity extends BaseActivity {
 
 	private Handler mHandler = new Handler() {
 
-		private NetWorkDialog mNetWorkdialog;
-
 		@Override
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case 1:
-				if (mNetWorkdialog == null) {
-					mNetWorkdialog = new NetWorkDialog(SplashActivity.this);
-					mNetWorkdialog.show();
-				}else if(mNetWorkdialog.isShowing()){
-					
+				if (netWorkDialog == null) {
+					netWorkDialog = new NetWorkDialog(SplashActivity.this);
+					netWorkDialog.show();
+				}else if(netWorkDialog != null && !netWorkDialog.isShowing()){
+					netWorkDialog.show();
 				}
 				break;
 			case 0:

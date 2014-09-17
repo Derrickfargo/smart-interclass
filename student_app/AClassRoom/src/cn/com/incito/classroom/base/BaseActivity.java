@@ -25,7 +25,7 @@ public class BaseActivity extends FragmentActivity {
 
 	NetWorkReceiver receiver;
 
-	NetWorkDialog dialog;
+	public NetWorkDialog netWorkDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,13 +78,13 @@ public class BaseActivity extends FragmentActivity {
 				NetworkInfo wifiInfo = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 				NetworkInfo activeInfo = manager.getActiveNetworkInfo();
 				if (activeInfo == null || wifiInfo == null) {
-					if (dialog == null) {
-						dialog = new NetWorkDialog(context);
-						dialog.setCancelable(true);
-						dialog.show();
+					if (netWorkDialog == null) {
+						netWorkDialog = new NetWorkDialog(context);
+						netWorkDialog.setCancelable(false);
+						netWorkDialog.show();
 					} else {
-						if (!dialog.isShowing()) {
-							dialog.show();
+						if (!netWorkDialog.isShowing()) {
+							netWorkDialog.show();
 						}
 					}
 
