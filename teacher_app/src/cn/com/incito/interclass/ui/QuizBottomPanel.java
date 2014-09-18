@@ -18,7 +18,6 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
-import cn.com.incito.interclass.constant.Constants;
 import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.CoreSocket;
@@ -76,22 +75,14 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 		Application.hasQuiz = true;
 		btnQuiz.setIcon(new ImageIcon(BTN_ACCEPT_HOVER));
 		if (JOptionPane.YES_OPTION == result) {
-			//TODO 截图发送
+			// 截图发送
 			MainFrame.getInstance().setState(JFrame.ICONIFIED);
 			 CaptureScreen captureScreen = new CaptureScreen(this);
              captureScreen.doStart();
-             //TODO bug,需要加return
-//             return;
 		}else{
-			//TODO 发送白板
+			// 发送白板
 			distributePaper();
 		}
-		String message = String.format(Constants.MESSAGE_QUIZ, 0, app
-				.getClientChannel().size());
-		app.getFloatIcon().showQuizMessage(message);
-		//清理上一次收到的作业
-		app.getTempQuiz().clear();
-		app.getQuizList().clear();
 		app.refreshQuiz();
 	}
 	
@@ -103,7 +94,6 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 	public void showNoQuiz() {
 		Application.hasQuiz = false;
 		btnQuiz.setIcon(new ImageIcon(BTN_SEND_HOVER));
-		Application.operationState = Constants.STATE_GROUPING;
 	}
 	
 	@Override
@@ -212,8 +202,9 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
         Application.getInstance().setQuizId(uuid);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(uuid));
         messagePacking.putBodyData(DataType.INT,  BufferUtils.writeUTFString("false"));
-        CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
-        Application.operationState= Constants.STATE_QUIZING;
+        CoreSocket.getInstance().sendMessageToStudents(messagePacking.pack().array());
         Application.getInstance().getTempQuiz().clear();
+		Application.getInstance().getQuizList().clear();
+		Application.getInstance().getTempQuizIMEI().clear();
     }
 }

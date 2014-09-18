@@ -358,12 +358,12 @@ public class CoreService {
 		app.getTempQuiz().put(imei, quiz);
 		app.getQuizList().add(quiz);
 		app.refresh();
-		if (app.getQuizList().size() == app.getClientChannel().size()) {
+		if (app.getQuizList().size() == app.getTempQuizIMEI().size()) {
 			Application.getInstance().getFloatIcon().showNoQuiz();
 			MainFrame.getInstance().showNoQuiz();
 		} else {
 			String message = String.format(Constants.MESSAGE_QUIZ, app
-					.getQuizList().size(), app.getClientChannel().size());
+					.getQuizList().size(), app.getTempQuizIMEI().size());
 			Application.getInstance().getFloatIcon().showQuizMessage(message);
 		}
 		return JSONUtils.renderJSONString(0);

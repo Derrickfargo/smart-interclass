@@ -60,7 +60,6 @@ public class Application {
     private Course course;// 当前上课的课程，教师登陆完后初始化
     private Classes classes;// 当前上课的班级，教师登陆完后初始化
 
-    public static int operationState;//0正常1课堂练习中
     public static boolean isOnClass;//正在上课
     public static boolean hasQuiz;//是否在作业
     private List<Group> groupList = new ArrayList<Group>();// 本堂课的所有分组
@@ -75,6 +74,7 @@ public class Application {
     private Map<Integer, Group> groupMap = new HashMap<Integer, Group>();
     private Map<Integer, JSONObject> tempGroup = new HashMap<Integer, JSONObject>();// 修改的分组信息
     private Map<Integer, List<Integer>> tempVote = new HashMap<Integer, List<Integer>>();// 小组的投票信息
+    private List<String> tempQuizIMEI = new ArrayList<>();
     private Map<String, Quiz> tempQuiz = new HashMap<String, Quiz>();//随堂联系
     private List<Integer> tempGrouped = new ArrayList<Integer>();//已编辑完成的小组
     private List<Quiz> quizList = new ArrayList<Quiz>();//作业
@@ -176,6 +176,16 @@ public class Application {
 
 	public List<Integer> getTempGrouped() {
 		return tempGrouped;
+	}
+
+	public List<String> getTempQuizIMEI() {
+		return tempQuizIMEI;
+	}
+	
+	public void addQuizIMEI(String imei) {
+		tempQuizIMEI.add(imei);
+		String message = String.format(Constants.MESSAGE_QUIZ, 0, tempQuizIMEI.size());
+		getFloatIcon().showQuizMessage(message);
 	}
 
 	public FileLock getLock() {

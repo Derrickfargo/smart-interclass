@@ -131,7 +131,7 @@ public class MessageParser {
 	 * @return true，解析成功，false表示为其他类型包无需压入消息队列
 	 */
 	private boolean parseMessageBody() {
-		logger.error("开始解析消息体... ...");
+		logger.info("开始解析消息体... ...");
 		int bodySize = message.getMsgSize();
 		ByteBuffer bodyBuffer = BufferUtils.prepareToReadOrPut(bodySize);
 		try {

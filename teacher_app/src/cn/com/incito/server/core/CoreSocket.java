@@ -9,11 +9,15 @@ import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
+import cn.com.incito.interclass.po.Student;
 import cn.com.incito.server.api.Application;
 
 /**
@@ -170,4 +174,40 @@ public final class CoreSocket extends Thread {
 		}.start();
 	}
 	
+	/**
+	 * 启动线程将消息发往所有客户端
+	 * @param data
+	 */
+	public void sendMessageToStudents(final byte[] data){
+		final Application app = Application.getInstance();
+		Set<Entry<String, SocketChannel>> clients = app.getClientChannel().entrySet();
+		final Iterator<Entry<String, SocketChannel>> it = clients.iterator();
+		new Thread() {
+			@Override
+			public void run() {
+				try {
+					ByteBuffer buffer = ByteBuffer.allocate(data.length);
+					while (it.hasNext()) {
+						Entry<String, SocketChannel> entry = it.next();
+						String imei = entry.getKey();
+						List<Student> students = app.getStudentByImei(imei);
+						//记录有学生登陆的Pad
+						if (students != null && students.size() > 0) {
+							SocketChannel channel = entry.getValue();
+							if (channel != null && channel.isConnected()) {
+								// 输出到通道
+								buffer.clear();
+								buffer.put(data);
+								buffer.flip();
+								channel.write(buffer);
+								app.addQuizIMEI(imei);//已发送的IMEI
+							}
+						}
+					}
+				} catch (IOException e) {
+					logger.error("发送消息异常:\n", e);
+				}
+			};
+		}.start();
+	}
 }

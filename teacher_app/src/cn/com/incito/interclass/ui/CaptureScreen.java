@@ -54,7 +54,6 @@ import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 
-import cn.com.incito.interclass.constant.Constants;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.CoreSocket;
 import cn.com.incito.server.core.Message;
@@ -105,9 +104,7 @@ public class CaptureScreen {
 	 * @throws ImageFormatException
 	 */
 	public void distributePaper(BufferedImage image) {
-
-		MessagePacking messagePacking = new MessagePacking(
-				Message.MESSAGE_DISTRIBUTE_PAPER);
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DISTRIBUTE_PAPER);
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		try {
 			ImageIO.write(image, "png", os);
@@ -117,22 +114,22 @@ public class CaptureScreen {
 		if (Application.getInstance().getOnlineStudent().size() > 0) {
 			String uuid = UUID.randomUUID().toString();
 			Application.getInstance().setQuizId(uuid);
-			messagePacking.putBodyData(DataType.INT,
-					BufferUtils.writeUTFString(uuid));
-			messagePacking.putBodyData(DataType.INT,
-					BufferUtils.writeUTFString("true"));
+			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(uuid));
+			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString("true"));
 			messagePacking.putBodyData(DataType.INT, os.toByteArray());
 
-			CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
-			Application.operationState = Constants.STATE_QUIZING;
 			Application.getInstance().getTempQuiz().clear();
 			Application.getInstance().getQuizList().clear();
+			Application.getInstance().getTempQuizIMEI().clear();
+			
+			CoreSocket.getInstance().sendMessageToStudents(messagePacking.pack().array());
 			logger.info("截图作业已经发出");
 		} else {
 			JOptionPane.showMessageDialog(jFrame, "没有学生登录，无法进行随堂练习");
 		}
 	}
 
+	
 	public void doStart() {
 		try {
 			Thread.sleep(300);
