@@ -128,7 +128,7 @@ public class MessageParser {
             message.setBodyBuffer(bodyBuffer);
             return true;
         } catch (IOException e) {
-            WLog.e(MessageParser.class, "failed to fetch message body :" + e.getMessage());
+            WLog.e(MessageParser.class, "failed to fetch message body :", e);
             return false;
         }
     }

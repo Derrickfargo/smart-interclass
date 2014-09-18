@@ -11,6 +11,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
@@ -154,11 +156,7 @@ public class MyApplication extends Application {
 		}
 		
 		//初始化本机mac地址
-		WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-		WifiInfo info = wifi.getConnectionInfo();
-		if (info != null) {
-			setDeviceId(info.getMacAddress().replace(":", "-"));
-		}
+		initMacAddress();
 		
 		//启动socket和日志服务
 		Intent service = new Intent("cn.com.incito.classroom.service.SOCKET_SERVICE");
@@ -172,6 +170,24 @@ public class MyApplication extends Application {
 
 	}
 
+	private void initMacAddress() {
+		ConnectivityManager connectivity = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		if (connectivity != null) {
+			// 获取网络连接管理的对象
+			NetworkInfo info = connectivity.getActiveNetworkInfo();
+			if (info != null && info.isConnected()) {
+				// 判断当前网络是否已经连接
+				if (info.getState() == NetworkInfo.State.CONNECTED) {
+					WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+					WifiInfo wifiInfo = wifi.getConnectionInfo();
+					if (wifiInfo != null) {
+						setDeviceId(wifiInfo.getMacAddress().replace(":", "-"));
+					}
+				}
+			}
+		}
+	}
+	
 	public void stopSocketService() {
 		Intent service = new Intent("cn.com.incito.classroom.service.SOCKET_SERVICE");
 		stopService(service);

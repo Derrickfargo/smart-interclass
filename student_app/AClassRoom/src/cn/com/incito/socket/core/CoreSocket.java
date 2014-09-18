@@ -8,6 +8,7 @@ import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.Set;
 
+import android.util.Log;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.socket.message.DataType;
@@ -67,12 +68,10 @@ public final class CoreSocket implements Runnable {
 
 	// 发送设备登陆消息至服务器
 	private void sendDeviceLoginMessage() throws IOException {
-		MessagePacking messagePacking = new MessagePacking(
-				Message.MESSAGE_HAND_SHAKE);
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_HAND_SHAKE);
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("imei", MyApplication.deviceId);
-		messagePacking.putBodyData(DataType.INT,
-				BufferUtils.writeUTFString(jsonObject.toJSONString()));
+		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
 		byte[] handSharkData = messagePacking.pack().array();
 		ByteBuffer buffer = ByteBuffer.allocate(handSharkData.length);
 		buffer.put(handSharkData);
@@ -108,12 +107,10 @@ public final class CoreSocket implements Runnable {
 		new Thread() {
 			public void run() {
 				if (channel != null) {
-					MessagePacking messagePacking = new MessagePacking(
-							Message.MESSAGE_DEVICE_LOGOUT);
+					MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_LOGOUT);
 					JSONObject jsonObject = new JSONObject();
 					jsonObject.put("imei", MyApplication.deviceId);
-					messagePacking.putBodyData(DataType.INT, BufferUtils
-							.writeUTFString(jsonObject.toJSONString()));
+					messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
 					byte[] logoutData = messagePacking.pack().array();
 					ByteBuffer buffer = ByteBuffer.allocate(logoutData.length);
 					buffer.put(logoutData);
@@ -122,7 +119,6 @@ public final class CoreSocket implements Runnable {
 						if (channel.isConnected()) {
 							channel.write(buffer);
 							ConnectionManager.getInstance().close(true);
-							// channel.close();
 						}
 					} catch (IOException e) {
 						WLog.e(CoreSocket.class, "" + e.getMessage());
@@ -144,11 +140,14 @@ public final class CoreSocket implements Runnable {
 	@Override
 	public void run() {
 		try {
+			Log.i("CoreSocket", "CoreSocket开始检查mac地址 ");
 			if (MyApplication.deviceId == null
 					|| MyApplication.deviceId.equals("")) {
 				//没有mac地址,不允许建立连接
+				Log.i("CoreSocket", "连接建立失败，没有mac地址");
 				return;
 			}
+			Log.i("CoreSocket", "有mac地址，CoreSocket开始建立连接 ");
 			isRunning = true;
 			// 客户端向服务器端发起建立连接请求
 			SocketChannel socketChannel = SocketChannel.open();
@@ -156,8 +155,7 @@ public final class CoreSocket implements Runnable {
 			socketChannel.socket().setSoTimeout(3000);
 			selector = Selector.open().wakeup();
 			socketChannel.register(selector, SelectionKey.OP_CONNECT);
-			socketChannel.connect(new InetSocketAddress(Constants.IP,
-					Constants.PORT));
+			socketChannel.connect(new InetSocketAddress(Constants.IP, Constants.PORT));
 			while (isRunning) {// 轮询监听客户端上注册事件的发生
 				selector.select(300);
 				Set<SelectionKey> keySet = selector.selectedKeys();
@@ -166,6 +164,7 @@ public final class CoreSocket implements Runnable {
 				}
 				keySet.clear();
 			}
+			WLog.i(CoreSocket.class, "CoreSocket退出!");
 		} catch (IOException e) {
 			WLog.e(CoreSocket.class, "" + e.getMessage());
 		}

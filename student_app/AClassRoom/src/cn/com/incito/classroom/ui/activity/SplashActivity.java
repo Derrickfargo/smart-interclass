@@ -8,6 +8,7 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
@@ -36,11 +37,7 @@ import com.alibaba.fastjson.JSONObject;
 public class SplashActivity extends BaseActivity {
 
 	private TextView tv_loading_msg;
-
 	private ImageButton ib_setting_ip;
-
-	private boolean Flag;
-
 	private IpSettingDialogFragment dialog;
 
 	@Override
@@ -81,30 +78,18 @@ public class SplashActivity extends BaseActivity {
 		});
 	}
 
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		if (Flag) {
-			Flag = false;
-			startMain();
-		}
-	}
-
 	/**
 	 * 启动主界面
 	 */
 
 	private void startMain() {
 		tv_loading_msg.setText(R.string.loading_msg);
+		Log.i("SplashActivity", "startMain");
 		new Thread() {
 
 			public void run() {
 				while (true) {
+					Log.i("SplashActivity", "检查WiFi是否连接 ");
 					if (checkWifi()) {
 						android.os.Message message = new android.os.Message();
 						message.what = 2;
@@ -113,14 +98,20 @@ public class SplashActivity extends BaseActivity {
 						WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 						WifiInfo info = wifi.getConnectionInfo();
 						app.setDeviceId(info.getMacAddress().replace(":", "-"));
+						Log.i("SplashActivity", "WiFi已连接，检查Socket是否连接 ");
 						if (!CoreSocket.getInstance().isConnected()) {
+							Log.i("SplashActivity", "Socket无连接，开始Socket重连，startMain退出 ");
+							CoreSocket.getInstance().disconnect();
 							showSetting();
 							restartConnector();
+							break;
 						} else {
+							Log.i("SplashActivity", "Socket已连接，开始登陆，startMain退出 ");
 							startMainAct();
 						}
 						break;
 					}
+					Log.i("SplashActivity", "WiFi未连接 ");
 					android.os.Message message = new android.os.Message();
 					message.what = 1;
 					mHandler.sendMessage(message);
@@ -192,21 +183,22 @@ public class SplashActivity extends BaseActivity {
 	 */
 	public void restartConnector() {
 		new Thread() {
-
 			public void run() {
 				while (Boolean.TRUE) {
+					SplashActivity.this.sleep(3000);
+					Log.i("SplashActivity", "Socket开始重连 ");
 					CoreSocket.getInstance().restartConnection();
 					SplashActivity.this.sleep(1000);// 等待1秒后检查连接
 					if (!CoreSocket.getInstance().isConnected()) {
+						Log.i("SplashActivity", "Socket未连接 ");
 						CoreSocket.getInstance().disconnect();
-						SplashActivity.this.sleep(3000);
 						continue;
-					} else {
-						if (dialog != null) {
-							dialog.dismiss();
-						}
-						startMainAct();
 					}
+					Log.i("SplashActivity", "Socket已连接 ");
+					if (dialog != null) {
+						dialog.dismiss();
+					}
+					startMainAct();
 					break;
 				}
 			}
@@ -233,7 +225,6 @@ public class SplashActivity extends BaseActivity {
 				}
 			}
 		}
-		Flag = true;
 		return false;
 	}
 
