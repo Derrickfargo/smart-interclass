@@ -123,20 +123,6 @@ public final class BufferUtils
         return "";
     }
     
-    /**
-     * 将byte数组转为相应的数据类型的数据
-     * @param type 数据类型对应3种数据类型：
-     *              String 对应OrderContent.STRING，
-     *              int    对应OrderContent.INT，
-     *              long   对应OrderContent.LONG,
-     *              byte   对应OrderContent.BYTE 
-     * @param bytes byte数组
-     * @return 返回相应数据类型
-     */
-//    public static Object getBytesToObject(int type, byte[] bytes)
-//    {
-//        
-//    }
     
     /**
      * 根据长度分配相应大小的ByteBuffer
