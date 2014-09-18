@@ -165,6 +165,10 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 			JOptionPane.showMessageDialog(getParent().getParent(), "学生正在分组，请等待分组完成!");
 			return;
 		}
+		if (Application.hasQuiz) {//TODO 格式不一致，统一修改重构
+			JOptionPane.showMessageDialog(getParent().getParent(), "学生正在做作业，不能分组!");
+			return;
+		}
 		// 编辑小组信息
 		app.setGrouping(true);
 		MainFrame.getInstance().showGrouping();
@@ -227,7 +231,6 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() == btnBegin) {
 			if (Application.isOnClass) {
-//				setOnClass(false);
 				int result = JOptionPane.showConfirmDialog(MainFrame.getInstance()
 						.getFrame(), "确定要下课吗？", "提示",
 						JOptionPane.YES_NO_OPTION);
