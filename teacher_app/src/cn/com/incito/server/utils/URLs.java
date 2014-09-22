@@ -2,8 +2,8 @@ package cn.com.incito.server.utils;
 
 public class URLs {
 
-//	public final static String HOST = "192.168.1.187:9090/app";
-	public final static String HOST = "localhost:8080/app";
+	public final static String HOST = "61.155.215.91:9090/app";
+//	public final static String HOST = "localhost:8080/app";
 	public final static String HTTP = "http://";
 	private final static String URL_SPLITTER = "/";
 	private final static String URL_API_HOST = HTTP + HOST + URL_SPLITTER;

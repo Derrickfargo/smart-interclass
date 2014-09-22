@@ -73,7 +73,7 @@ public class Application {
     private Map<Integer, Group> groupMap = new HashMap<Integer, Group>();
     private Map<Integer, JSONObject> tempGroup = new HashMap<Integer, JSONObject>();// 修改的分组信息
     private Map<Integer, List<Integer>> tempVote = new HashMap<Integer, List<Integer>>();// 小组的投票信息
-    private List<String> tempQuizIMEI = new ArrayList<>();
+    private List<String> tempQuizIMEI = new ArrayList<String>();
     private Map<String, Quiz> tempQuiz = new HashMap<String, Quiz>();//随堂联系
     private List<Integer> tempGrouped = new ArrayList<Integer>();//已编辑完成的小组
     private List<Quiz> quizList = new ArrayList<Quiz>();//作业
