@@ -2,7 +2,9 @@ package cn.com.incito.server.core;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.imageio.stream.FileImageOutputStream;
@@ -20,6 +22,9 @@ import cn.com.incito.server.api.ApiClient;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.api.result.TeacherGroupResultData;
 import cn.com.incito.server.exception.AppException;
+import cn.com.incito.server.message.DataType;
+import cn.com.incito.server.message.MessagePacking;
+import cn.com.incito.server.utils.BufferUtils;
 import cn.com.incito.server.utils.ImageUtil;
 import cn.com.incito.server.utils.JSONUtils;
 
@@ -226,6 +231,8 @@ public class CoreService {
 					for (Student student : group.getStudents()) {
 						if ((student.getName() + student.getNumber()).equals(uname + number)) {
 							student.setLogin(true);
+							//检查当前注册的学生是否之前在别的小组，存在则从之前的组中剔除
+							sendOtherPadLogout(uname, number);
 							//注册学生必须在这里先移除，有可能是切换分组
 							app.removeLoginStudent(student);
 							app.getOnlineStudent().add(student);
@@ -250,6 +257,69 @@ public class CoreService {
 		return JSONUtils.renderJSONString(2);// 失败
 	}
 
+	/**
+	 * 将其他组的相同人员剔除
+	 * @param uname
+	 * @param number
+	 * @param groupId 新组id
+	 */
+	private void sendOtherPadLogout(String uname, String number) {
+		Application app = Application.getInstance();
+		List<Group> groupList = app.getGroupList();
+		if (groupList == null || groupList.size() == 0) {
+			return;
+		}
+		Group group = findGroup(groupList, uname, number);
+		if(group != null){
+			Iterator<Student> it = group.getStudents().iterator();
+			while (it.hasNext()) {
+				Student temp = it.next();
+				if ((temp.getName() + temp.getNumber()).equals(uname + number)) {
+					it.remove();
+					break;
+				}
+			}
+			app.addGroup(group);
+			app.getTableGroup().put(group.getTableId(), group);
+			app.refresh();// 更新UI
+			String result = JSONUtils.renderJSONString(0, group);//更新消息发往pad端
+			sendResponse(result,Application.getInstance().getClientChannelByGroup(group.getId()));
+		}
+	}
+	
+	private Group findGroup(List<Group> groupList, String uname, String number){
+		for (Group group : groupList) {
+			List<Student> students = group.getStudents();
+			if (students == null || students.size() == 0) {
+				continue;
+			}
+			for (Student temp : students) {
+				if ((temp.getName() + temp.getNumber()).equals(uname + number)) {
+					return group;
+				}
+			}
+		}
+		return null;
+	}
+	
+	private void sendResponse(String json,List<SocketChannel> channels) {
+		for (SocketChannel channel : channels) {
+			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
+	        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
+	        byte[] messageData = messagePacking.pack().array();
+	        ByteBuffer buffer = ByteBuffer.allocate(messageData.length);
+	        buffer.put(messageData);
+	        buffer.flip();
+			try {
+				if (channel.isConnected()) { 
+					channel.write(buffer);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	/**
 	 * 根据IMEI获取所在组
 	 *
