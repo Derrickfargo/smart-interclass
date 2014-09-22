@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import cn.com.incito.interclass.constant.Constants;
@@ -108,36 +107,18 @@ public class Application {
 	private RandomAccessFile randomAccessFile;
 
     private Application() {
-//        FileOutputStream fos;
         try {
             File locFile = new File(FileUtils.getProjectPath(), Constants.LOC_FILE);
             if (!locFile.exists()) {
                 locFile.createNewFile();
             }
             RandomAccessFile raf = new RandomAccessFile(locFile, "rw");
-//            fos = new FileOutputStream(locFile);
             lock = raf.getChannel().tryLock();//得到锁
-            if (lock != null) {//调用自己的操作
-//                doSomething();//这是一个会一直运行下去的操作
-                new Thread() {
-                    public void run() {
-                        for (int i = 0; ; i++) {
-                            try {
-                                sleep(100);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }.start();
-
-            } else {
-                //得不到锁,退出程序，这能保证该进程同时只能执行一个
-                JFrame jFrame = new JFrame();
+            if (lock == null) {
+            	raf.close();
                 JOptionPane.showMessageDialog(null, "程序已经在运行!");
                 System.exit(1);
             }
-//            fos.close();
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);
@@ -146,6 +127,7 @@ public class Application {
         new Login();
     }
 
+    
     public void clear(){
     	imeiDevice = new HashMap<String, Device>();
         tableMap = new HashMap<Integer, Table>();
@@ -302,6 +284,38 @@ public class Application {
 			}
 		}
     }
+    
+    /**
+     * TODO 界面有更改，现需要遍历所有的在线学生
+     * @param imei
+     * @param student
+     */
+	public void removeLoginStudent(Student student) {
+		Set<Entry<String, List<Student>>> set = imeiStudent.entrySet();
+		Iterator<Entry<String, List<Student>>> its = set.iterator();
+		while (its.hasNext()) {
+			Entry<String, List<Student>> entry = its.next();
+			List<Student> students = entry.getValue();
+			Iterator<Student> iterator = students.iterator();
+			while (iterator.hasNext()) {
+				Student s = iterator.next();
+				if (s.getName().equals(student.getName())
+						&& s.getNumber().equals(student.getNumber())) {
+					iterator.remove();
+					break;
+				}
+			}
+		}
+		Iterator<Student> it = onlineStudent.iterator();
+		while (it.hasNext()) {
+			Student aStudent = it.next();
+			if (aStudent.getName().equals(student.getName())
+					&& aStudent.getNumber().equals(student.getNumber())) {
+				it.remove();
+				break;
+			}
+		}
+	}
     
     public Map<String, SocketChannel> getClientChannel() {
         return clientChannel;

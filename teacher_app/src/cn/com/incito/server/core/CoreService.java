@@ -217,17 +217,17 @@ public class CoreService {
 	 */
 	public String register(String uname, int sex, String number, String imei) {
 		try {
-			final String result = ApiClient.loginForStudent(uname, sex, number,
-					imei);
+			final String result = ApiClient.loginForStudent(uname, sex, number, imei);
 			if (result != null && !result.equals("")) {
 				JSONObject jsonObject = JSON.parseObject(result);
 				if (jsonObject.getIntValue("code") == 0) {
 					String data = jsonObject.getString("data");
 					Group group = JSON.parseObject(data, Group.class);
 					for (Student student : group.getStudents()) {
-						if ((student.getName() + student.getNumber())
-								.equals(uname + number)) {
+						if ((student.getName() + student.getNumber()).equals(uname + number)) {
 							student.setLogin(true);
+							//注册学生必须在这里先移除，有可能是切换分组
+							app.removeLoginStudent(student);
 							app.getOnlineStudent().add(student);
 							app.addLoginStudent(imei, student);
 						}
@@ -235,26 +235,6 @@ public class CoreService {
 							student.setLogin(true);
 						}
 					}
-					/***
-					 * 当学生出现跨分组注册时，同步分组状态 2014.9-10 popoy
-					 */
-					if (Application.getInstance().getGroupList() != null
-							&& Application.getInstance().getGroupList().size() > 1) {
-						for (Group gp : Application.getInstance()
-								.getGroupList()) {
-							if (gp.getStudents() == null
-									|| gp.getStudents().size() < 1)
-								continue;
-							for (int j = 0; j < gp.getStudents().size(); j++) {
-								if ((gp.getStudents().get(j).getName() + gp
-										.getStudents().get(j).getNumber())
-										.equals(uname + number)) {
-									gp.getStudents().remove(j);
-								}
-							}
-						}
-					}
-
 					app.addGroup(group);
 					app.getTableGroup().put(group.getTableId(), group);
 					app.refresh();// 更新UI
@@ -358,12 +338,12 @@ public class CoreService {
 		app.getTempQuiz().put(imei, quiz);
 		app.getQuizList().add(quiz);
 		app.refresh();
-		if (app.getQuizList().size() == app.getTempQuizIMEI().size()) {
+		if (app.getQuizList().size() == app.getClientChannel().size()) {
 			Application.getInstance().getFloatIcon().showNoQuiz();
 			MainFrame.getInstance().showNoQuiz();
 		} else {
 			String message = String.format(Constants.MESSAGE_QUIZ, app
-					.getQuizList().size(), app.getTempQuizIMEI().size());
+					.getQuizList().size(), app.getClientChannel().size());
 			Application.getInstance().getFloatIcon().showQuizMessage(message);
 		}
 		return JSONUtils.renderJSONString(0);
