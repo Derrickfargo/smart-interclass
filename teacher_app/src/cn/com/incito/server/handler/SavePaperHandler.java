@@ -51,10 +51,8 @@ public class SavePaperHandler extends MessageHandler {
 	}
 
 	private void sendResponse(String json) {
-		MessagePacking messagePacking = new MessagePacking(
-				Message.MESSAGE_SAVE_PAPER_RESULT);
-		messagePacking.putBodyData(DataType.INT,
-				BufferUtils.writeUTFString(json));
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SAVE_PAPER_RESULT);
+		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
 		byte[] messageData = messagePacking.pack().array();
 		ByteBuffer buffer = ByteBuffer.allocate(messageData.length);
 		buffer.put(messageData);

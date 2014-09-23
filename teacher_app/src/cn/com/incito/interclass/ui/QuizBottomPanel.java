@@ -210,5 +210,6 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
         Application.getInstance().getTempQuiz().clear();
 		Application.getInstance().getQuizList().clear();
 		Application.getInstance().getTempQuizIMEI().clear();
+		Application.getInstance().setLockScreen(false);
     }
 }

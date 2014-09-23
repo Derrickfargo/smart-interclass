@@ -413,6 +413,7 @@ public class CoreService {
 		if (app.getQuizList().size() == app.getClientChannel().size()) {
 			Application.getInstance().getFloatIcon().showNoQuiz();
 			MainFrame.getInstance().showNoQuiz();
+			Application.getInstance().setLockScreen(true);
 		} else {
 			String message = String.format(Constants.MESSAGE_QUIZ, app
 					.getQuizList().size(), app.getClientChannel().size());

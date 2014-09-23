@@ -124,6 +124,7 @@ public class CaptureScreen {
 			
 			CoreSocket.getInstance().sendMessageToStudents(messagePacking.pack().array());
 			logger.info("截图作业已经发出");
+			Application.getInstance().setLockScreen(false);
 		} else {
 			JOptionPane.showMessageDialog(jFrame, "没有学生登录，无法进行随堂练习");
 		}
