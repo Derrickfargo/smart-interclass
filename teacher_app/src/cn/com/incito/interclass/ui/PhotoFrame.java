@@ -260,7 +260,8 @@ public class PhotoFrame extends JFrame {
 			}
 			Quiz quiz = page.get(0);
 			ImageIcon image = new ImageIcon(quiz.getQuizUrl());
-	        lblImage.setIcon(image);
+			lblImage.setIcon(new ImageIcon(image.getImage().getScaledInstance(
+					865, 540, Image.SCALE_DEFAULT)));
 			for (int i = 0; i < 6; i++) {//6个缩略图
 				ImagePanel panel = imageList.get(i);
 				if (i < page.size()) {
