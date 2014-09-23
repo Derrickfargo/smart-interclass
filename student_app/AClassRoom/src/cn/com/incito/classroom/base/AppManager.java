@@ -99,6 +99,7 @@ public class AppManager {
     public void AppExit(Context context) {
         try {
         	MyApplication.getInstance().sendBroadcast(new Intent("android.intent.action.SHOW_NAVIGATION_BAR"));
+        	MyApplication.getInstance().release();
             finishAllActivity();
             CoreSocket.getInstance().stopConnection();
             Thread.sleep(100);//先让socket发送退出消息再完全退出
