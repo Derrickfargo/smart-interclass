@@ -72,7 +72,7 @@ public class PunishDialog extends JDialog implements MouseListener {
 		btnClose.addMouseListener(this);
 
 		JLabel lblMessage = new JLabel("", JLabel.CENTER);
-		if(group.getName() == null){
+		if (group.getName() == null) {
 			lblMessage.setText("小组减分");
 		} else {
 			String title = "\"%s\"小组减分";
@@ -165,7 +165,7 @@ public class PunishDialog extends JDialog implements MouseListener {
 			dispose();
 		}
 		if (e.getSource() == btnOK) {
-			if(score==0){
+			if (score == 0) {
 				JOptionPane.showMessageDialog(this, "请选择分数");
 			}
 			changePoint(score);
@@ -232,11 +232,11 @@ public class PunishDialog extends JDialog implements MouseListener {
 	public void changePoint(final int updateScore) {
 		String studentId = "";
 		List<Student> studentList = group.getStudents();
-		if(studentList==null||studentList.size()<0){
+		if (studentList == null || studentList.size() < 0) {
 			return;
 		}
 		for (int i = 0; i < studentList.size(); i++) {
-			if(studentList.get(i).isLogin()){
+			if (studentList.get(i).isLogin()) {
 				studentId = studentId + studentList.get(i).getId() + ",";
 			}
 		}
@@ -248,6 +248,7 @@ public class PunishDialog extends JDialog implements MouseListener {
 		ParamsWrapper params = new ParamsWrapper();
 		params.put("studentId", studentId);
 		params.put("score", updateScore);
+		params.put("groupId", group.getId());
 		http.post(URLs.URL_UPDATE_SCORE, params, new StringResponseHandler() {
 
 			@Override
@@ -261,13 +262,15 @@ public class PunishDialog extends JDialog implements MouseListener {
 						double scoreResult = jsonObject.getIntValue("score") / group.getStudents().size();
 						// 设置小组总分
 						for (Student student : group.getStudents()) {
-							if((student.getScore() + updateScore)<0){
-								student.setScore(0);
-							}else{
-								student.setScore(student.getScore() + updateScore);
+							if (student.isLogin()) {
+								if ((student.getScore() + updateScore) < 0) {
+									student.setScore(0);
+								} else {
+									student.setScore(student.getScore() + updateScore);
+								}
 							}
-							
 						}
+						group.setScore((int) Math.round(scoreResult));
 						if (frame != null) {
 							frame.setScore(String.valueOf(Math.round(scoreResult)));
 						}
