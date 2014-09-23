@@ -26,7 +26,7 @@ public class UserService {
 	 * @param studentIdList
 	 * @param changeScore
 	 */
-	public Integer changePoint(String studentId, int score) {
+	public Integer changePoint(String studentId, int score,int groupId) {
 		int Score = 0;
 		String[] x = studentId.split(",");
 
@@ -38,11 +38,16 @@ public class UserService {
 			}
 		}
 
-		for (int j = 0; j < x.length; j++) {
-			Student mStudent = userMapper.getScore(x[j]);
-			int i = mStudent.getScore();
-			Score = Score + i;
+		for (int i = 0; i <userMapper.getStudentByGroupId(groupId).size(); i++) {
+			int studentScore = userMapper.getStudentByGroupId(groupId).get(i).getScore();
+			Score = Score + studentScore;
 		}
+//		for (int j = 0; j < x.length; j++) {
+//			
+//			Student mStudent = userMapper.getScore(x[j]);
+//			int i = mStudent.getScore();
+//			Score = Score + i;
+//		}
 		return Score;
 	};
 

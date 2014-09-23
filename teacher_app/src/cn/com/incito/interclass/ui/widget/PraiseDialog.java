@@ -48,10 +48,11 @@ public class PraiseDialog extends JDialog implements MouseListener {
 	private JButton btnPoint1, btnPoint2, btnPoint3;
 
 	PraiseGroupPanel frame;
+
 	int score = 0;
 
 	public PraiseDialog(PraiseGroupPanel panel, Group group) {
-		super(MainFrame.getInstance().getFrame(),true);
+		super(MainFrame.getInstance().getFrame(), true);
 		this.frame = panel;
 		this.group = group;
 		setSize(392, 228);
@@ -73,7 +74,7 @@ public class PraiseDialog extends JDialog implements MouseListener {
 		btnClose.addMouseListener(this);
 
 		JLabel lblMessage = new JLabel("", JLabel.CENTER);
-		if(group.getName() == null){
+		if (group.getName() == null) {
 			lblMessage.setText("小组加分");
 		} else {
 			String title = "\"%s\"小组加分";
@@ -177,7 +178,7 @@ public class PraiseDialog extends JDialog implements MouseListener {
 		if (e.getSource() == btnClose || e.getSource() == btnCancel) {
 			dispose();
 		}
-		
+
 		if (e.getSource() == btnPoint1) {
 			score = 1;
 			btnPoint1.setName("true");
@@ -260,23 +261,23 @@ public class PraiseDialog extends JDialog implements MouseListener {
 			btnCancel.setIcon(new ImageIcon("images/dialog/bg_btn2.png"));
 		}
 		if (e.getSource() == btnPoint1) {
-			if(Boolean.parseBoolean(btnPoint1.getName())){
+			if (Boolean.parseBoolean(btnPoint1.getName())) {
 				btnPoint1.setIcon(new ImageIcon("images/dialog/ico_add1_hover.png"));
-			}else{
+			} else {
 				btnPoint1.setIcon(new ImageIcon("images/dialog/ico_add1.png"));
 			}
 		}
 		if (e.getSource() == btnPoint2) {
-			if(Boolean.parseBoolean(btnPoint2.getName())){
+			if (Boolean.parseBoolean(btnPoint2.getName())) {
 				btnPoint2.setIcon(new ImageIcon("images/dialog/ico_add2_hover.png"));
-			}else{
+			} else {
 				btnPoint2.setIcon(new ImageIcon("images/dialog/ico_add2.png"));
 			}
 		}
 		if (e.getSource() == btnPoint3) {
-			if(Boolean.parseBoolean(btnPoint3.getName())){
+			if (Boolean.parseBoolean(btnPoint3.getName())) {
 				btnPoint3.setIcon(new ImageIcon("images/dialog/ico_add3_hover.png"));
-			}else{
+			} else {
 				btnPoint3.setIcon(new ImageIcon("images/dialog/ico_add3.png"));
 			}
 		}
@@ -290,11 +291,11 @@ public class PraiseDialog extends JDialog implements MouseListener {
 	public void changePoint(final int updateScore) {
 		String studentId = "";
 		List<Student> studentList = group.getStudents();
-		if(studentList==null||studentList.size()<0){
+		if (studentList == null || studentList.size() < 0) {
 			return;
 		}
 		for (int i = 0; i < studentList.size(); i++) {
-			if(studentList.get(i).isLogin()){
+			if (studentList.get(i).isLogin()) {
 				studentId = studentId + studentList.get(i).getId() + ",";
 			}
 		}
@@ -306,6 +307,7 @@ public class PraiseDialog extends JDialog implements MouseListener {
 		ParamsWrapper params = new ParamsWrapper();
 		params.put("studentId", studentId);
 		params.put("score", updateScore);
+		params.put("groupId",group.getId());
 		http.post(URLs.URL_UPDATE_SCORE, params, new StringResponseHandler() {
 
 			@Override
@@ -316,14 +318,16 @@ public class PraiseDialog extends JDialog implements MouseListener {
 					if (jsonObject.getIntValue("code") == 1) {
 						return;
 					} else {
-						String score = String.valueOf((int) (jsonObject.getIntValue("score") / group.getStudents().size()));
+						double scoreResult = (jsonObject.getIntValue("score") / group.getStudents().size());
 						for (int i = 0; i < group.getStudents().size(); i++) {
-							group.getStudents().get(i).setScore(group.getStudents().get(i).getScore()+updateScore);
+							if (group.getStudents().get(i).isLogin()) {
+								group.getStudents().get(i).setScore(group.getStudents().get(i).getScore() + updateScore);
+							}
 						}
-						group.setScore((int)(jsonObject.getIntValue("score") / group.getStudents().size()));
+						group.setScore((int) Math.round(scoreResult));
 						// 设置小组总分
-						if(frame!=null){
-							frame.setScore(score);
+						if (frame != null) {
+							frame.setScore(String.valueOf(Math.round(scoreResult)));
 						}
 					}
 				}

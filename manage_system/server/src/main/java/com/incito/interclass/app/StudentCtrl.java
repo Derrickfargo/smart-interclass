@@ -86,8 +86,8 @@ public class StudentCtrl extends BaseCtrl {
 	 */
 	@RequestMapping(value = "/changepoint", produces = {"application/json;charset=UTF-8" })
 	@ResponseBody
-	public Map<String, Object> changePoint(String studentId, int score) {
-		int count = userService.changePoint(studentId, score);
+	public Map<String, Object> changePoint(String studentId, int score,int groupId) {
+		int count = userService.changePoint(studentId, score,groupId);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("code", "0");
 		map.put("score", count);

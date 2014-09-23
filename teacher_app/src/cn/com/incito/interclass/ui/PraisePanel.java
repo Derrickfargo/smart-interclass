@@ -97,7 +97,7 @@ public class PraisePanel extends JPanel {
 			}
 			score = group.getStudents().size() > 0 ? score
 					/ group.getStudents().size() : 0;
-			group.setScore(score);
+			group.setScore(Math.round(score));
 		}
 		if (memberStr != null && !memberStr.equals("")) {
 			memberStr = memberStr.substring(0, memberStr.length() - 1);

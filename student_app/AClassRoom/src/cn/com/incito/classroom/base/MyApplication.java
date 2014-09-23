@@ -15,6 +15,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.net.wifi.WifiManager.WifiLock;
 import android.os.Build;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
@@ -101,6 +102,8 @@ public class MyApplication extends Application {
 
 	private WakeLock wl;
 
+	private WifiLock mWifiLock;
+
 	public SharedPreferences getSharedPreferences() {
 		return mPrefs;
 	}
@@ -111,6 +114,13 @@ public class MyApplication extends Application {
 		sendBroadcast(new Intent("android.intent.action.HIDE_NAVIGATION_BAR"));
 		// closeSysScreenLock();
 
+		PowerManager pmManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+		WifiManager manager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+		mWifiLock = manager.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, "cn.com.incito.classroom");
+		wl = pmManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"My Tag");
+		wl.acquire();
+		mWifiLock.acquire();
+		
 		mInstance = this;
 		mPrefs = PreferenceManager
 				.getDefaultSharedPreferences(getApplicationContext());
@@ -144,6 +154,10 @@ public class MyApplication extends Application {
 
 	}
 
+	public void release(){
+		mWifiLock.release();
+		wl.release();
+	}
 	public static MyApplication getInstance() {
 		return mInstance;
 	}
@@ -222,6 +236,9 @@ public class MyApplication extends Application {
 	 *            true是锁频屏，false解屏
 	 */
 	public void lockScreen(boolean isLock) {
+		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);  
+		boolean screenOn = pm.isScreenOn();
+		
 		if (Constants.OPEN_LOCK_SCREEN) {
 			WLog.i(LockScreenHandler.class, "是否收到解锁屏信息：" + isLock);
 
@@ -230,25 +247,25 @@ public class MyApplication extends Application {
 			ExecRootCmd execRootCmd = new ExecRootCmd();
 			if (isLock) {
 				MyApplication.getInstance().setLockScreen(isLock);
-				PowerManager pmManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-				wl = pmManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
-						"My Tag");
-				wl.acquire();
 				boolean ret = Settings.Global.putInt(mContentResolver,
 						"disable_powerkey", 1);// 屏蔽电源按钮唤醒功能
 				execRootCmd.powerkey();
 			} else {
 				if (MyApplication.getInstance().isLockScreen()) {
+					if(screenOn){
+						MyApplication.getInstance().setLockScreen(isLock);
+						boolean ret1 = Settings.Global.putInt(mContentResolver,
+								"disable_powerkey", 0); // 打开电源按钮唤醒功能
+						execRootCmd.powerkey();
+					}
 					MyApplication.getInstance().setLockScreen(isLock);
 					boolean ret1 = Settings.Global.putInt(mContentResolver,
 							"disable_powerkey", 0); // 打开电源按钮唤醒功能
 					execRootCmd.powerkey();
 					KeyguardManager mManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
-					KeyguardLock mKeyguardLock = mManager
-							.newKeyguardLock("Lock");
+					KeyguardLock mKeyguardLock = mManager.newKeyguardLock("Lock");
 					// 让键盘锁失效
 					mKeyguardLock.disableKeyguard();
-					wl.release();
 				}
 			}
 		}
