@@ -15,6 +15,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.net.wifi.WifiManager.WifiLock;
 import android.os.Build;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
@@ -100,6 +101,8 @@ public class MyApplication extends Application {
 	private SharedPreferences mPrefs;
 
 	private WakeLock wl;
+
+	private WifiLock mWifiLock;
 
 	public SharedPreferences getSharedPreferences() {
 		return mPrefs;
@@ -222,6 +225,8 @@ public class MyApplication extends Application {
 	 *            true是锁频屏，false解屏
 	 */
 	public void lockScreen(boolean isLock) {
+		WifiManager manager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+		
 		if (Constants.OPEN_LOCK_SCREEN) {
 			WLog.i(LockScreenHandler.class, "是否收到解锁屏信息：" + isLock);
 
@@ -231,9 +236,10 @@ public class MyApplication extends Application {
 			if (isLock) {
 				MyApplication.getInstance().setLockScreen(isLock);
 				PowerManager pmManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-				wl = pmManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
-						"My Tag");
+				mWifiLock = manager.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, "cn.com.incito.classroom");
+				wl = pmManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"My Tag");
 				wl.acquire();
+				mWifiLock.acquire();
 				boolean ret = Settings.Global.putInt(mContentResolver,
 						"disable_powerkey", 1);// 屏蔽电源按钮唤醒功能
 				execRootCmd.powerkey();
@@ -248,7 +254,9 @@ public class MyApplication extends Application {
 							.newKeyguardLock("Lock");
 					// 让键盘锁失效
 					mKeyguardLock.disableKeyguard();
-					wl.release();
+//					mWifiLock.release();
+//					wl.release();
+					
 				}
 			}
 		}
