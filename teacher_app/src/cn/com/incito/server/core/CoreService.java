@@ -379,7 +379,9 @@ public class CoreService {
 			imageOutput.write(imageByte, 0, imageByte.length);
 			imageOutput.close();
 			ImageUtil.resize(file, file, 865, 1f);
+			logger.error("大图生成：" + file.getAbsoluteFile());
 			ImageUtil.resize(file, thumbnail, 186, 1f);
+			logger.error("缩略图生成：" + thumbnail.getAbsoluteFile());
 		} catch (IOException e) {
 			logger.error("保存作业图片出现错误:", e);
 		}

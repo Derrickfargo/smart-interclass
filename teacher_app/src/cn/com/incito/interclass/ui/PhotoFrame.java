@@ -1,6 +1,7 @@
 package cn.com.incito.interclass.ui;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -19,6 +20,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
@@ -195,20 +197,22 @@ public class PhotoFrame extends JFrame {
 			}
 	        
 			btnPrevious = new JButton();
+			btnPrevious.setFocusPainted(false);
 			btnPrevious.setBorderPainted(false);//设置边框不可见
 			btnPrevious.setContentAreaFilled(false);//设置透明
 	        ImageIcon prev = new ImageIcon(BTN_PREV_NORMAL);
 	        btnPrevious.setIcon(prev);//设置图片
-	        btnPrevious.setBounds(3, 611, prev.getIconWidth(), prev.getIconHeight());
+	        btnPrevious.setBounds(-12, 611, prev.getIconWidth(), prev.getIconHeight());
 	        add(btnPrevious);
 	        btnPrevious.addMouseListener(this);
 	        
 	        btnNext = new JButton();
+	        btnNext.setFocusPainted(false);
 	        btnNext.setBorderPainted(false);//设置边框不可见
 	        btnNext.setContentAreaFilled(false);//设置透明
 	        ImageIcon next = new ImageIcon(BTN_NEXT_NORMAL);
 	        btnNext.setIcon(next);//设置图片
-	        btnNext.setBounds(950, 611, next.getIconWidth(), next.getIconHeight());
+	        btnNext.setBounds(933, 611, next.getIconWidth(), next.getIconHeight());
 	        add(btnNext);
 	        btnNext.addMouseListener(this);
 	        //设置背景
@@ -343,6 +347,7 @@ public class PhotoFrame extends JFrame {
 					position = 0;
 				}
 				refresh();
+				JOptionPane.showMessageDialog(this, "Previous");
 			}
 			if (e.getSource() == btnNext) {
 //				position += 6;
@@ -350,6 +355,7 @@ public class PhotoFrame extends JFrame {
 //					position = quizList.size();
 //				}
 				refresh();
+				JOptionPane.showMessageDialog(this, "Next");
 			}
 		}
 
@@ -379,9 +385,11 @@ public class PhotoFrame extends JFrame {
 			}
 			if(e.getSource() == btnPrevious){
 				btnPrevious.setIcon(new ImageIcon(BTN_PREV_HOVER));
+				btnPrevious.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 			if(e.getSource() == btnNext){
 				btnNext.setIcon(new ImageIcon(BTN_NEXT_HOVER));
+				btnNext.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 		}
 
@@ -398,9 +406,11 @@ public class PhotoFrame extends JFrame {
 			}
 			if(e.getSource() == btnPrevious){
 				btnPrevious.setIcon(new ImageIcon(BTN_PREV_NORMAL));
+				btnPrevious.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 			if(e.getSource() == btnNext){
 				btnNext.setIcon(new ImageIcon(BTN_NEXT_NORMAL));
+				btnNext.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 		}
 		
