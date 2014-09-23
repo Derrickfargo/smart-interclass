@@ -316,14 +316,14 @@ public class PraiseDialog extends JDialog implements MouseListener {
 					if (jsonObject.getIntValue("code") == 1) {
 						return;
 					} else {
-						String score = String.valueOf((int) (jsonObject.getIntValue("score") / group.getStudents().size()));
+						double scoreResult =(jsonObject.getIntValue("score") / group.getStudents().size());
 						for (int i = 0; i < group.getStudents().size(); i++) {
 							group.getStudents().get(i).setScore(group.getStudents().get(i).getScore()+updateScore);
 						}
 						group.setScore((int)(jsonObject.getIntValue("score") / group.getStudents().size()));
 						// 设置小组总分
 						if(frame!=null){
-							frame.setScore(score);
+							frame.setScore(String.valueOf(Math.round(scoreResult)));
 						}
 					}
 				}
