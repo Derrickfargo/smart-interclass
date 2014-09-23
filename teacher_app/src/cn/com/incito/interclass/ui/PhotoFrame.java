@@ -20,7 +20,6 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
@@ -347,7 +346,6 @@ public class PhotoFrame extends JFrame {
 					position = 0;
 				}
 				refresh();
-				JOptionPane.showMessageDialog(this, "Previous");
 			}
 			if (e.getSource() == btnNext) {
 //				position += 6;
@@ -355,7 +353,6 @@ public class PhotoFrame extends JFrame {
 //					position = quizList.size();
 //				}
 				refresh();
-				JOptionPane.showMessageDialog(this, "Next");
 			}
 		}
 
