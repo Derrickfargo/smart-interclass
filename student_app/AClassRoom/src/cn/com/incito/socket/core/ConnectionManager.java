@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
+import android.util.Log;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
-import cn.com.incito.wisdom.sdk.log.WLog;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -67,7 +67,7 @@ public class ConnectionManager {
 	 * @param isNormal
 	 *            是否正常退出
 	 */
-	public synchronized void close(boolean isNormal) {
+	public void close(boolean isNormal) {
 		// 停止检测心跳
 		monitor.setRunning(false);
 		generator.setRunning(false);
@@ -81,11 +81,11 @@ public class ConnectionManager {
 		}
 		// 非正常退出,重连
 		if (!isNormal) {
+			Log.i("ConnectionManager", "Socket非正常退出!");
 			if (UIHelper.getInstance().getWaitingActivity() != null) {
 				UIHelper.getInstance().getWaitingActivity().clearStudent();
 			}
 			MyApplication.getInstance().lockScreen(false);
-			WLog.i(ConnectionManager.class, "非正常退出，重连");
 			restartConnector();
 		}
 	}
@@ -137,6 +137,7 @@ public class ConnectionManager {
 				try {
 					Thread.sleep(SCAN_CYCLE);
 					// 发送心跳包
+					Log.i("ConnectionManager", "发送心跳包!");
 					sendHeartbeat();
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -147,10 +148,8 @@ public class ConnectionManager {
 		private void sendHeartbeat() throws IOException {
 			JSONObject json = new JSONObject();
 			json.put("imei", MyApplication.deviceId);
-			MessagePacking messagePacking = new MessagePacking(
-					Message.MESSAGE_HEART_BEAT);
-			messagePacking.putBodyData(DataType.INT,
-					BufferUtils.writeUTFString(json.toJSONString()));
+			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_HEART_BEAT);
+			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json.toJSONString()));
 			byte[] messageData = messagePacking.pack().array();
 			ByteBuffer buffer = ByteBuffer.allocate(messageData.length);
 			buffer.put(messageData);
@@ -172,13 +171,16 @@ public class ConnectionManager {
 		new Thread() {
 			public void run() {
 				while (Boolean.TRUE) {
+					Log.i("ConnectionManager", "Socket开始重连!");
 					CoreSocket.getInstance().restartConnection();
 					sleep(2000);// 等待1秒后检查连接
 					if (!CoreSocket.getInstance().isConnected()) {
+						Log.i("ConnectionManager", "Socket重连失败!");
 						CoreSocket.getInstance().disconnect();
 						sleep(5000);
 						continue;
 					}
+					Log.i("ConnectionManager", "Socket已连接!");
 					break;
 				}
 			}

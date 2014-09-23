@@ -51,14 +51,14 @@ public final class CoreSocket implements Runnable {
 			try {
 				if (channel.isConnectionPending()) {
 					channel.finishConnect();
+					isConnected = true;
 					// 发送设备登陆消息
 					sendDeviceLoginMessage();
 				}
-				isConnected = true;
 				channel.register(selector, SelectionKey.OP_READ);// 注册读事件
 			} catch (IOException e) {
 				isConnected = false;
-				WLog.e(CoreSocket.class, "" + e.getMessage());
+				Log.e("CoreSocket", "", e);
 			}
 		} else if (selectionKey.isReadable()) {// 若为可读的事件，则进行消息解析
 			MessageParser messageParser = new MessageParser();
@@ -67,7 +67,8 @@ public final class CoreSocket implements Runnable {
 	}
 
 	// 发送设备登陆消息至服务器
-	private void sendDeviceLoginMessage() throws IOException {
+	private void sendDeviceLoginMessage() {
+		Log.i("CoreSocket", "发送设备登陆");
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_HAND_SHAKE);
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("imei", MyApplication.deviceId);
@@ -76,7 +77,14 @@ public final class CoreSocket implements Runnable {
 		ByteBuffer buffer = ByteBuffer.allocate(handSharkData.length);
 		buffer.put(handSharkData);
 		buffer.flip();
-		channel.write(buffer);
+		try {
+			channel.write(buffer);
+		} catch (IOException e) {
+			isConnected = false;
+			disconnect();
+			Log.e("CoreSocket", "设备登陆消息发送失败", e);
+			ConnectionManager.getInstance().close(Boolean.FALSE);
+		}
 	}
 
 	/**
