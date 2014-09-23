@@ -7,15 +7,15 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * 登陆消息处理器
@@ -27,10 +27,10 @@ public class StudentLoginHandler extends MessageHandler {
 	private Logger logger = Logger.getLogger(StudentLoginHandler.class.getName());
 	@Override
 	public void handleMessage() {
-        String uname = data.getString("name");
+        final String uname = data.getString("name");
         int sex = data.getIntValue("sex");
-        String number = data.getString("number");
-        String imei = data.getString("imei");
+        final String number = data.getString("number");
+        final String imei = data.getString("imei");
         int type = data.getIntValue("type");//0登陆,1取消登陆,2注册
         switch (type){
         case 0:

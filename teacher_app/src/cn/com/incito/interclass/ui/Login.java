@@ -50,6 +50,7 @@ public class Login extends MouseAdapter {
 	private JPasswordField txtPassword;
 	private JButton btnMin, btnClose, btnLogin;
 	private JLabel lblBackground;
+	private boolean doLogin = true;
 	private Logger logger = Logger.getLogger(Login.class.getName());
 
 	// 构造函数、调用方法
@@ -146,7 +147,10 @@ public class Login extends MouseAdapter {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				doLogin();
+				if (doLogin) {
+					doLogin = false;
+					doLogin();
+				}
 			}
 		});
 
@@ -312,11 +316,13 @@ public class Login extends MouseAdapter {
 
 			@Override
 			public void onConnectError(IOException exp) {
+				doLogin = true;
 				JOptionPane.showMessageDialog(frame, "连接错误，请检查网络！");
 			}
 
 			@Override
 			public void onStreamError(IOException exp) {
+				doLogin = true;
 				JOptionPane.showMessageDialog(frame, "数据解析错误！");
 			}
 		});

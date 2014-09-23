@@ -7,8 +7,6 @@ import java.awt.Point;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -21,7 +19,6 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.Timer;
 
 import org.apache.log4j.Logger;
 
@@ -50,7 +47,6 @@ public class FloatIcon extends MouseAdapter {
 	private static final String ICON_EXIT_NORMAL = "images/float/ico_floatmenu4.png";
 	private static final String ICON_EXIT_HOVER = "images/float/ico_floatmenu4_hover.png";
 	private static Logger logger = Logger.getLogger(FloatIcon.class.getName());
-	private Timer mouseTimer = null;
 	private JDialog dialog = new JDialog();
 	private boolean isDragged, isShowing;
 	private Point loc, tmp;
@@ -236,74 +232,64 @@ public class FloatIcon extends MouseAdapter {
 
 	@Override
 	public void mouseClicked(final MouseEvent e) {
-
 		if (e.getClickCount() == 1) {
-			ActionListener taskPerformer = new ActionListener() { // 创建一个ActionListener侦听器对象
-				public void actionPerformed(ActionEvent evt) {
-					mouseTimer.stop(); // 停止 Timer，使它停止向其侦听器发送动作事件
-					if (e.getSource() == lblIcon) {
-						if (isShowing) {
-							isShowing = false;
-							lblBackground.setVisible(false);
-							showMenu(false);
-						} else if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
-							isShowing = true;
-							lblBackground.setVisible(true);
-							showMenu(true);
+			if (e.getSource() == lblIcon) {
+				if (isShowing) {
+					isShowing = false;
+					lblBackground.setVisible(false);
+					showMenu(false);
+				} else if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
+					isShowing = true;
+					lblBackground.setVisible(true);
+					showMenu(true);
+				}
+			}
+			if (e.getSource() == btnQuiz) {
+				if (Application.hasQuiz) {// 有作业，收作业
+					showMenu(false);
+					MainFrame.getInstance().showQuiz();
+					MainFrame.getInstance().doAcceptQuiz();
+					btnQuiz.setIcon(new ImageIcon(ICON_QUIZ_NORMAL));
+				} else {// 没作业，发作业
+					showMenu(false);
+					if (Application.isOnClass) {
+						if (Application.getInstance().getOnlineStudent().size() == 0) {
+							JOptionPane.showMessageDialog(dialog, "没有学生登录，无法进行随堂练习");
+							return;
 						}
-					}
-					if (e.getSource() == btnQuiz) {
-						if (Application.hasQuiz) {// 有作业，收作业
-							showMenu(false);
-							MainFrame.getInstance().showQuiz();
-							MainFrame.getInstance().doAcceptQuiz();
-							btnQuiz.setIcon(new ImageIcon(ICON_QUIZ_NORMAL));
-						} else {// 没作业，发作业
-							showMenu(false);
-							if (Application.isOnClass) {
-								if (Application.getInstance().getOnlineStudent().size() == 0) {
-									JOptionPane.showMessageDialog(dialog, "没有学生登录，无法进行随堂练习");
-									return;
-								}
-								if (Application.getInstance().isGrouping()) {
-									JOptionPane.showMessageDialog(dialog, "学生正在分组，请等待分组完成!");
-									return;
-								}
-								MainFrame.getInstance().doSendQuiz();
-								btnQuiz.setIcon(new ImageIcon(ICON_HANDIN_NORMAL));
-							} else {
-								JOptionPane.showMessageDialog(dialog, "请先点击准备界面的开始上课！");
-								MainFrame.getInstance().showPrepare();
-							}
+						if (Application.getInstance().isGrouping()) {
+							JOptionPane.showMessageDialog(dialog, "学生正在分组，请等待分组完成!");
+							return;
 						}
-					}
-					if (e.getSource() == btnPraise) {
-						showMenu(false);
-						MainFrame.getInstance().showPraise();
-					}
-					if (e.getSource() == btnLock) {
-						showMenu(false);
-						if (Application.getInstance().isLockScreen) {
-							btnLock.setIcon(new ImageIcon(ICON_LOCK_NORMAL));
-							UIHelper.sendLockScreenMessage(false);
-							Application.getInstance().setLockScreen(false);
-						} else {
-							btnLock.setIcon(new ImageIcon(ICON_LOCK_HOVER));
-							UIHelper.sendLockScreenMessage(true);
-							Application.getInstance().setLockScreen(true);
-						}
-					}
-					if (e.getSource() == btnExit) {
-						UIHelper.sendClassOverMessage();//
-						System.exit(0);
+						MainFrame.getInstance().doSendQuiz();
+						btnQuiz.setIcon(new ImageIcon(ICON_HANDIN_NORMAL));
+					} else {
+						JOptionPane.showMessageDialog(dialog, "请先点击准备界面的开始上课！");
+						MainFrame.getInstance().showPrepare();
 					}
 				}
-			};
-			mouseTimer = new javax.swing.Timer(200, taskPerformer);// 每隔0.2s触发一次ActionListener事件，执行相应的动作代码
-			mouseTimer.restart(); // 重新启动 Timer，取消所有挂起的触发并使它按初始延迟触发。
-		} else if (e.getClickCount() == 2 && mouseTimer.isRunning()) {
-			mouseTimer.stop();
-
+			}
+			if (e.getSource() == btnPraise) {
+				showMenu(false);
+				MainFrame.getInstance().showPraise();
+			}
+			if (e.getSource() == btnLock) {
+				showMenu(false);
+				if (Application.getInstance().isLockScreen) {
+					btnLock.setIcon(new ImageIcon(ICON_LOCK_NORMAL));
+					UIHelper.sendLockScreenMessage(false);
+					Application.getInstance().setLockScreen(false);
+				} else {
+					btnLock.setIcon(new ImageIcon(ICON_LOCK_HOVER));
+					UIHelper.sendLockScreenMessage(true);
+					Application.getInstance().setLockScreen(true);
+				}
+			}
+			if (e.getSource() == btnExit) {
+				UIHelper.sendClassOverMessage();//
+				System.exit(0);
+			}
+		} else if (e.getClickCount() == 2 ) {
 			if (e.getSource() == lblIcon) {
 				if (frame == null) {
 					frame = MainFrame.getInstance();

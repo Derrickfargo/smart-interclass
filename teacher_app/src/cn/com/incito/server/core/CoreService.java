@@ -2,7 +2,9 @@ package cn.com.incito.server.core;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.imageio.stream.FileImageOutputStream;
@@ -20,6 +22,9 @@ import cn.com.incito.server.api.ApiClient;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.api.result.TeacherGroupResultData;
 import cn.com.incito.server.exception.AppException;
+import cn.com.incito.server.message.DataType;
+import cn.com.incito.server.message.MessagePacking;
+import cn.com.incito.server.utils.BufferUtils;
 import cn.com.incito.server.utils.ImageUtil;
 import cn.com.incito.server.utils.JSONUtils;
 
@@ -217,17 +222,19 @@ public class CoreService {
 	 */
 	public String register(String uname, int sex, String number, String imei) {
 		try {
-			final String result = ApiClient.loginForStudent(uname, sex, number,
-					imei);
+			final String result = ApiClient.loginForStudent(uname, sex, number, imei);
 			if (result != null && !result.equals("")) {
 				JSONObject jsonObject = JSON.parseObject(result);
 				if (jsonObject.getIntValue("code") == 0) {
 					String data = jsonObject.getString("data");
 					Group group = JSON.parseObject(data, Group.class);
 					for (Student student : group.getStudents()) {
-						if ((student.getName() + student.getNumber())
-								.equals(uname + number)) {
+						if ((student.getName() + student.getNumber()).equals(uname + number)) {
 							student.setLogin(true);
+							//检查当前注册的学生是否之前在别的小组，存在则从之前的组中剔除
+							sendOtherPadLogout(uname, number);
+							//注册学生必须在这里先移除，有可能是切换分组
+							app.removeLoginStudent(student);
 							app.getOnlineStudent().add(student);
 							app.addLoginStudent(imei, student);
 						}
@@ -235,26 +242,6 @@ public class CoreService {
 							student.setLogin(true);
 						}
 					}
-					/***
-					 * 当学生出现跨分组注册时，同步分组状态 2014.9-10 popoy
-					 */
-					if (Application.getInstance().getGroupList() != null
-							&& Application.getInstance().getGroupList().size() > 1) {
-						for (Group gp : Application.getInstance()
-								.getGroupList()) {
-							if (gp.getStudents() == null
-									|| gp.getStudents().size() < 1)
-								continue;
-							for (int j = 0; j < gp.getStudents().size(); j++) {
-								if ((gp.getStudents().get(j).getName() + gp
-										.getStudents().get(j).getNumber())
-										.equals(uname + number)) {
-									gp.getStudents().remove(j);
-								}
-							}
-						}
-					}
-
 					app.addGroup(group);
 					app.getTableGroup().put(group.getTableId(), group);
 					app.refresh();// 更新UI
@@ -270,6 +257,69 @@ public class CoreService {
 		return JSONUtils.renderJSONString(2);// 失败
 	}
 
+	/**
+	 * 将其他组的相同人员剔除
+	 * @param uname
+	 * @param number
+	 * @param groupId 新组id
+	 */
+	private void sendOtherPadLogout(String uname, String number) {
+		Application app = Application.getInstance();
+		List<Group> groupList = app.getGroupList();
+		if (groupList == null || groupList.size() == 0) {
+			return;
+		}
+		Group group = findGroup(groupList, uname, number);
+		if(group != null){
+			Iterator<Student> it = group.getStudents().iterator();
+			while (it.hasNext()) {
+				Student temp = it.next();
+				if ((temp.getName() + temp.getNumber()).equals(uname + number)) {
+					it.remove();
+					break;
+				}
+			}
+			app.addGroup(group);
+			app.getTableGroup().put(group.getTableId(), group);
+			app.refresh();// 更新UI
+			String result = JSONUtils.renderJSONString(0, group);//更新消息发往pad端
+			sendResponse(result,Application.getInstance().getClientChannelByGroup(group.getId()));
+		}
+	}
+	
+	private Group findGroup(List<Group> groupList, String uname, String number){
+		for (Group group : groupList) {
+			List<Student> students = group.getStudents();
+			if (students == null || students.size() == 0) {
+				continue;
+			}
+			for (Student temp : students) {
+				if ((temp.getName() + temp.getNumber()).equals(uname + number)) {
+					return group;
+				}
+			}
+		}
+		return null;
+	}
+	
+	private void sendResponse(String json,List<SocketChannel> channels) {
+		for (SocketChannel channel : channels) {
+			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
+	        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
+	        byte[] messageData = messagePacking.pack().array();
+	        ByteBuffer buffer = ByteBuffer.allocate(messageData.length);
+	        buffer.put(messageData);
+	        buffer.flip();
+			try {
+				if (channel.isConnected()) { 
+					channel.write(buffer);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	/**
 	 * 根据IMEI获取所在组
 	 *
@@ -358,12 +408,12 @@ public class CoreService {
 		app.getTempQuiz().put(imei, quiz);
 		app.getQuizList().add(quiz);
 		app.refresh();
-		if (app.getQuizList().size() == app.getTempQuizIMEI().size()) {
+		if (app.getQuizList().size() == app.getClientChannel().size()) {
 			Application.getInstance().getFloatIcon().showNoQuiz();
 			MainFrame.getInstance().showNoQuiz();
 		} else {
 			String message = String.format(Constants.MESSAGE_QUIZ, app
-					.getQuizList().size(), app.getTempQuizIMEI().size());
+					.getQuizList().size(), app.getClientChannel().size());
 			Application.getInstance().getFloatIcon().showQuizMessage(message);
 		}
 		return JSONUtils.renderJSONString(0);

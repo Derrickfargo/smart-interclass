@@ -275,8 +275,7 @@ public class WaitingActivity extends BaseActivity {
 			// 登陆
 			case STUDENT_LOGIN: {
 				mProgressDialog.hide();
-				JSONObject jsonObject = (JSONObject) msg.getData()
-						.getSerializable("data");
+				JSONObject jsonObject = (JSONObject) msg.getData().getSerializable("data");
 				WLog.i(WaitingActivity.class, "获取登录信息..." + jsonObject);
 				if (!"0".equals(jsonObject.getString("code"))) {
 					return;
@@ -290,7 +289,7 @@ public class WaitingActivity extends BaseActivity {
 					}
 					((MyApplication) getApplication())
 							.setLoginResVo(loginResVo);
-					if (loginResList != null && loginResList.size() > 0) {
+					if (loginResList != null && loginResList.size() >= 0) {
 						mAdapter.setDatas(loginResList);
 						gv_group_member.setAdapter(mAdapter);
 					}
