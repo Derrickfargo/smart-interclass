@@ -133,8 +133,10 @@ public class PhotoFrame extends JFrame {
 					ImageIcon image = new ImageIcon();
 					lblImage.setIcon(image);
 				} else {
-					ImageIcon image = new ImageIcon(quiz.getThumbnail());
-					lblImage.setIcon(image);
+					Image image = new ImageIcon(quiz.getThumbnail()).getImage();
+					if (image != null) {
+						lblImage.setIcon(new ImageIcon(image.getScaledInstance(100, 70, Image.SCALE_DEFAULT)));
+					}
 				}
 			}
 			
@@ -259,9 +261,10 @@ public class PhotoFrame extends JFrame {
 				return ;
 			}
 			Quiz quiz = page.get(0);
-			ImageIcon image = new ImageIcon(quiz.getQuizUrl());
-			lblImage.setIcon(new ImageIcon(image.getImage().getScaledInstance(
-					865, 540, Image.SCALE_DEFAULT)));
+			Image image = new ImageIcon(quiz.getQuizUrl()).getImage();
+			if (image != null) {
+				lblImage.setIcon(new ImageIcon(image.getScaledInstance(865, 540, Image.SCALE_DEFAULT)));
+			}
 			for (int i = 0; i < 6; i++) {//6个缩略图
 				ImagePanel panel = imageList.get(i);
 				if (i < page.size()) {
@@ -328,7 +331,6 @@ public class PhotoFrame extends JFrame {
 						if (quiz == null) {
 							continue;
 						}
-						ImageIcon icon = new ImageIcon(quiz.getQuizUrl());
 						if (quiz != null && quiz.getGroup() != null) {
 							if (quiz.getGroup().getName() == null) {
 								lblTitle.setText(String.format("未分组[%s]", quiz.getName()));
@@ -337,7 +339,11 @@ public class PhotoFrame extends JFrame {
 								lblTitle.setText(String.format(title, quiz.getName()));
 							}
 						}
-						lblImage.setIcon(icon);
+						Image image = new ImageIcon(quiz.getQuizUrl()).getImage();
+						if (image != null) {
+							lblImage.setIcon(new ImageIcon(image.getScaledInstance(865, 540, Image.SCALE_DEFAULT)));
+						}
+//						lblImage.setIcon(icon);
 					}
 				}
 			}
