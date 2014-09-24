@@ -42,12 +42,6 @@ public class UserService {
 			int studentScore = userMapper.getStudentByGroupId(groupId).get(i).getScore();
 			Score = Score + studentScore;
 		}
-//		for (int j = 0; j < x.length; j++) {
-//			
-//			Student mStudent = userMapper.getScore(x[j]);
-//			int i = mStudent.getScore();
-//			Score = Score + i;
-//		}
 		return Score;
 	};
 
