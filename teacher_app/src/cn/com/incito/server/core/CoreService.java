@@ -302,6 +302,18 @@ public class CoreService {
 		return null;
 	}
 	
+	public Student getStudentByNumber(String number){
+		for (Group group : app.getGroupList()) {
+			List<Student> students = group.getStudents();
+			for (Student student : students) {
+				if(student.getNumber().equals(number)){
+					return student;
+				}
+			}
+		}
+		return null;
+	}
+	
 	private void sendResponse(String json,List<SocketChannel> channels) {
 		for (SocketChannel channel : channels) {
 			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);

@@ -278,6 +278,10 @@ public class WaitingActivity extends BaseActivity {
 				JSONObject jsonObject = (JSONObject) msg.getData().getSerializable("data");
 				WLog.i(WaitingActivity.class, "获取登录信息..." + jsonObject);
 				if (!"0".equals(jsonObject.getString("code"))) {
+					if("-2".equals(jsonObject.getString("code"))){
+						String number = jsonObject.getString("data");
+						ToastHelper.showCustomToast(WaitingActivity.this, "学号" + number + "已注册");
+					}
 					return;
 				} else if (jsonObject.getJSONObject("data") == null) {
 				} else {

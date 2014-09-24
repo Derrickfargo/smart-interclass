@@ -7,12 +7,14 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import cn.com.incito.interclass.po.Student;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
+import cn.com.incito.server.utils.JSONUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -32,14 +34,15 @@ public class StudentLoginHandler extends MessageHandler {
         final String number = data.getString("number");
         final String imei = data.getString("imei");
         int type = data.getIntValue("type");//0登陆,1取消登陆,2注册
+        Application app = Application.getInstance();
         switch (type){
         case 0:
         	logger.info("消息类型为学生登陆:" + data);
         	String result = service.login(uname, sex, number, imei);
         	Integer groupId = getGroupId(result);
 			if (groupId != -1) {
-				Application.getInstance().addSocketChannel(groupId, message.getChannel());
-        		sendResponse(result,Application.getInstance().getClientChannelByGroup(groupId));
+				app.addSocketChannel(groupId, message.getChannel());
+        		sendResponse(result,app.getClientChannelByGroup(groupId));
         		logger.info(result);
         	}
         	break;
@@ -48,23 +51,40 @@ public class StudentLoginHandler extends MessageHandler {
         	result = service.logout(uname, sex, number, imei);
         	groupId = getGroupId(result);
 			if (groupId != -1) {
-				Application.getInstance().addSocketChannel(groupId, message.getChannel());
-        		sendResponse(result,Application.getInstance().getClientChannelByGroup(groupId));
+				app.addSocketChannel(groupId, message.getChannel());
+        		sendResponse(result,app.getClientChannelByGroup(groupId));
         		logger.info(result);
         	}
     		break;
         case 2:
         	logger.info("消息类型为注册学生:" + data);
+			Student student = service.getStudentByNumber(number);
+			if(student != null){//该学号已注册
+				result = JSONUtils.renderJSONString(-2, number);// 学号已注册
+				MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
+				messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(result));
+				byte[] handShakResponse = messagePacking.pack().array();
+		        ByteBuffer buffer = ByteBuffer.allocate(handShakResponse.length);
+		        buffer.put(handShakResponse);
+		        buffer.flip();
+		        try {
+					message.getChannel().write(buffer);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+		        return;
+			}
         	result = service.register(uname, sex, number, imei);
         	groupId = getGroupId(result);
 			if (groupId != -1) {
-				Application.getInstance().addSocketChannel(groupId, message.getChannel());
-        		sendResponse(result,Application.getInstance().getClientChannelByGroup(groupId));
+				app.addSocketChannel(groupId, message.getChannel());
+        		sendResponse(result,app.getClientChannelByGroup(groupId));
         		logger.info(result);
         	}
         	break;
         }
 	}
+	
 	
 	private void sendResponse(String json,List<SocketChannel> channels) {
 		for (SocketChannel channel : channels) {
