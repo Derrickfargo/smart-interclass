@@ -259,7 +259,7 @@ public class PunishDialog extends JDialog implements MouseListener {
 					if (jsonObject.getIntValue("code") == 1) {
 						return;
 					} else {
-						double scoreResult = jsonObject.getIntValue("score") / group.getStudents().size();
+						double scoreResult = jsonObject.getIntValue("score") / (float)group.getStudents().size();
 						// 设置小组总分
 						for (Student student : group.getStudents()) {
 							if (student.isLogin()) {
