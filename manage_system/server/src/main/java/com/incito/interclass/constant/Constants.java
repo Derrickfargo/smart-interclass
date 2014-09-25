@@ -8,11 +8,28 @@ import java.io.File;
  */
 public class Constants {
 
-	// 云端随堂练习存储参数
+	/**
+	 * 作业存放目录
+	 */
 	public static final String PAPER_DIR = File.separator + "mnt"
-			+ File.separator + "adream" + File.separator + "paper";
+			+ File.separator + "dreamclass" + File.separator + "paper";
+	
+	/**
+	 * 课件存放目录
+	 */
 	public static final String COURSEWARE_DIR = File.separator + "mnt"
 			+ File.separator + "adream" + File.separator + "courseware";
 	public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
+	/**
+	 * 服务端日志存放目录
+	 */
+	public static final String LOG_DIR = File.separator + "mnt"
+			+ File.separator + "dreamclass" + File.separator + "log";
+	
+	/**
+	 * 服务端版本存放目录
+	 */
+	public static final String VERSION_DIR = File.separator + "mnt"
+			+ File.separator + "dreamclass" + File.separator + "version";
 }
