@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import com.incito.interclass.entity.Version;
 
 public interface VersionMapper {
-	List<Version> getVersionList();
+	List<Version> getVersionListByCondition(@Param("type")int type);
 
 	Version getVersionById(int id);
 

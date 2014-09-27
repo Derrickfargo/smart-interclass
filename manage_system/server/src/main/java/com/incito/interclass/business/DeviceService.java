@@ -14,8 +14,8 @@ public class DeviceService {
 	@Autowired
 	private DeviceMapper deviceMapper;
 
-	public List<Device> getDeviceList(){
-		return deviceMapper.getDeviceList();
+	public List<Device> getDeviceListByCondition(String imei, String schoolName){
+		return deviceMapper.getDeviceListByCondition(imei, schoolName);
 	}
 	
 	public List<Device> getDeviceListByRoomId(int roomId){

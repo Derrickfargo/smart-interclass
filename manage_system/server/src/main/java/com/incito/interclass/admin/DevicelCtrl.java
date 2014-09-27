@@ -12,7 +12,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.incito.interclass.business.DeviceService;
 import com.incito.interclass.common.BaseCtrl;
-import com.incito.interclass.entity.Course;
 import com.incito.interclass.entity.Device;
 
 @RestController
@@ -26,13 +25,15 @@ public class DevicelCtrl extends BaseCtrl {
 	 * 列表
 	 */
 	@RequestMapping("/list")
-	public ModelAndView index(Device device,
+	public ModelAndView index(String imei, String schoolName,
 			@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
 		ModelAndView res = new ModelAndView("device/deviceList");
 		PageHelper.startPage(pageNum, PAGE_SIZE);
-		List<Device> devices = deviceService.getDeviceList();
+		List<Device> devices = deviceService.getDeviceListByCondition(imei,schoolName);
 		PageInfo<Device> page = new PageInfo<Device>(devices);
 		res.addObject("page", page);
+		res.addObject("imei", imei);
+		res.addObject("schoolName", schoolName);
 		return res;
 	}
 	

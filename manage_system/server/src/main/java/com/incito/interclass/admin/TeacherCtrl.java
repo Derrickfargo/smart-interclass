@@ -34,13 +34,15 @@ public class TeacherCtrl extends BaseCtrl {
 	 * 教师列表
 	 */
 	@RequestMapping("/list")
-	public ModelAndView index(Teacher teacher,
+	public ModelAndView index(String name, String schoolName,
 			@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
 		ModelAndView res = new ModelAndView("teacher/teacherList");
 		PageHelper.startPage(pageNum, PAGE_SIZE);
-		List<Teacher> teachers = userService.getTeacherList(teacher);
+		List<Teacher> teachers = userService.getTeacherListByCondition(name,schoolName);
 		PageInfo<Teacher> page = new PageInfo<Teacher>(teachers);
 		res.addObject("page", page);
+		res.addObject("name", name);
+		res.addObject("schoolName", schoolName);
 		return res;
 	}
 	

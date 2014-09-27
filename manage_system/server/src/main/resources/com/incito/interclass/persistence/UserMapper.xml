@@ -90,7 +90,7 @@
 			AND tb_user.name = #{name}
 	</select>
 	
-	<select id="getTeacherList" resultType="com.incito.interclass.entity.Teacher">
+	<select id="getTeacherListByCondition" resultType="com.incito.interclass.entity.Teacher" parameterType="java.util.Map">
 		SELECT	
 			tb_user.id,tb_user.uname,tb_user.name,tb_user.email,tb_user.sex,is_active,role,tb_user.ctime,
 			tb_school.id AS schoolId,tb_school.name AS schoolName,idcard,tb_teacher.phone AS phone
@@ -107,6 +107,12 @@
 		WHERE
 			tb_user.is_Active = 1
 			AND tb_user.role = 2
+			<if test="name != null and name != ''">
+				AND tb_user.name LIKE '%' #{name} '%' 
+			</if>
+			<if test="schoolName != null and schoolName != ''">
+				AND tb_school.name LIKE '%' #{schoolName} '%' 
+			</if>
 		ORDER BY
 			tb_user.id
 	</select>

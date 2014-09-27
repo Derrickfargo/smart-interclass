@@ -14,14 +14,10 @@ public class VersionService {
 	@Autowired
 	private VersionMapper versionMapper;
 	
-	public List<Version> getVersionList(Object parameterObject) {
-		return versionMapper.getVersionList();
+	public List<Version> getVersionListByCondition(int type) {
+		return versionMapper.getVersionListByCondition(type);
 	}
 
-	public List<Version> getVersionList(){
-		return versionMapper.getVersionList();
-	}
-	
 	public Version getVersionById(int id){
 		return versionMapper.getVersionById(id);
 	}

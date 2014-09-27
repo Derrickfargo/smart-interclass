@@ -35,21 +35,35 @@
 						<h3 class="panel-title">日志信息</h3>
 					</div>
 					<div class="panel-body">
-						<form action="${path}/room/list" id="searchForm" method="post" class="form-horizontal" >
+						<form action="${path}/log/list" id="searchForm" method="post" class="form-horizontal" >
 							<div class="col-xs-12" style="border: 1px solid #f5f5f5;padding: 5px;margin-bottom:5px">
 								<div class="form-group">
 									<label class="col-xs-1 control-label">日志类型:</label>
 									<div class="col-xs-2">
 										<select id="type" name="type" class="form-control" >
-											<option value="1">教师端</option>
-											<option value="2">Pad端</option>
+											<c:choose>
+												<c:when test="${type == 1}">
+													<option value="1" selected>教师端</option>
+												</c:when>
+												<c:otherwise>
+													<option value="1">教师端</option>
+												</c:otherwise>
+											</c:choose>
+											<c:choose>
+												<c:when test="${type == 2 }">
+													<option value="2" selected>Pad端</option>
+												</c:when>
+												<c:otherwise>
+													<option value="2">Pad端</option>
+												</c:otherwise>
+											</c:choose>
 										</select>
 									</div>
 									<label class="col-xs-1 control-label">关键字:</label>
 									<div class="col-xs-2">
-										<input type="text" name="name" value="${user.name}" class="form-control borderRadiusIE8">
+										<input type="text" name="key" value="${key}" class="form-control borderRadiusIE8">
 									</div>
-									<button type="button" class="btn btn-primary" onclick="search('1')">搜索</button>
+									<button type="button" class="btn btn-primary" onclick="searchLog('1')">搜索</button>
 									<button type="button" class="btn btn-primary" onclick="emptyForm('searchForm')">清空</button>
 								</div>
 							</div>
@@ -100,33 +114,33 @@
 									<c:otherwise>
 										<ul class="pagination" id="pagination">
 											<c:if test="${page.pages > 1 }">
-												<li><a href="javascript:void(0);searchDriver('1')">首页</a></li>
+												<li><a href="javascript:void(0);searchLog('1')">首页</a></li>
 											</c:if>
 											<c:if test="${page.hasPreviousPage}">
-												<li><a href="javascript:void(0);searchDriver('${search.lastPage}')">上一页</a></li>
+												<li><a href="javascript:void(0);searchLog('${page.prePage}')">上一页</a></li>
 											</c:if>
 											<c:forEach items="${page.navigatepageNums}" var="nav">
 						                        <c:if test="${nav == page.pageNum}">
-						                            <li><a href="javascript:void(0);searchDriver('${x}')">${nav}</a></li>
+						                            <li><a href="javascript:void(0);searchLog('${x}')">${nav}</a></li>
 						                        </c:if>
 						                        <c:if test="${nav != page.pageNum}">
-						                        	<li class="active"><a href="javascript:void(0);searchDriver('${nav}')">${nav}</a></li>
+						                        	<li class="active"><a href="javascript:void(0);searchLog('${nav}')">${nav}</a></li>
 						                        </c:if>
 						                    </c:forEach>
 											<c:if test="${page.hasNextPage}">
-												<li><a href="javascript:void(0);searchDriver('${search.nextPage}')">下一页</a></li>
+												<li><a href="javascript:void(0);searchLog('${page.pageSize}')">下一页</a></li>
 											</c:if>
 											<c:if test="${page.pages > 1 }">
-												<li><a href="javascript:void(0);searchDriver('${search.totalPage}')">尾页</a></li>
+												<li><a href="javascript:void(0);searchLog('${page.pages}')">尾页</a></li>
 											</c:if>
 										</ul>
 									</c:otherwise>
 								</c:choose>
 							</div>
-								<input type="hidden" id="currentPage" name="currentPage" value="${search.currentPage}"> 
-								<input type="hidden" id="pageSize" name="pageSize" value="">
-								<input type="hidden" id="opType" name="opType" value="">
-								<input type="hidden" id="pageType" name="pageType" value="">
+							<input type="hidden" id="pageNum" name="pageNum" value="${page.pageNum}">
+							<input type="hidden" id="pageSize" name="pageSize" value="">
+							<input type="hidden" id="opType" name="opType" value="">
+							<input type="hidden" id="pageType" name="pageType" value="">
 						</form>
 					</div>
 				</div>

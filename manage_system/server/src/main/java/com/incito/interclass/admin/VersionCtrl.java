@@ -12,8 +12,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.incito.interclass.business.VersionService;
 import com.incito.interclass.common.BaseCtrl;
-import com.incito.interclass.entity.Log;
-import com.incito.interclass.entity.Teacher;
 import com.incito.interclass.entity.Version;
 
 @RestController
@@ -27,13 +25,14 @@ public class VersionCtrl extends BaseCtrl {
 	 * 列表
 	 */
 	@RequestMapping("/list")
-	public ModelAndView index(Log log,
+	public ModelAndView index(@RequestParam(value = "type", defaultValue = "1")Integer type,
 			@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
 		ModelAndView res = new ModelAndView("system/versionList");
 		PageHelper.startPage(pageNum, PAGE_SIZE);
-		List<Version> versions = versionService.getVersionList(log);
+		List<Version> versions = versionService.getVersionListByCondition(type);
 		PageInfo<Version> page = new PageInfo<Version>(versions);
 		res.addObject("page", page);
+		res.addObject("type", type);
 		return res;
 	}
 	

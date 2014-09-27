@@ -11,6 +11,20 @@
 		ORDER BY
 			id
 	</select>
+	
+	<select id="getCourseListByCondition" resultType="com.incito.interclass.entity.Course" parameterType="java.util.Map">
+		SELECT	
+			id,sum,name,intro,ctime
+		FROM 
+			tb_course
+		<where>
+			<if test="name != null and name != ''">
+				name LIKE '%' #{name} '%'
+			</if>
+		</where>
+		ORDER BY
+			id
+	</select>
 
 	<select id="getCourseById" resultType="com.incito.interclass.entity.Course" parameterType="java.lang.Integer">
 		SELECT	

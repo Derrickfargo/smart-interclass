@@ -3,11 +3,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.incito.interclass.persistence.LogMapper">
 
-	<select id="getLogList" resultType="com.incito.interclass.entity.Log">
+	<select id="getLogListByCondition" resultType="com.incito.interclass.entity.Log" parameterType="java.util.Map">
 		SELECT	
 			id,type,mac,reason,url,ctime
 		FROM 
 			tb_log
+		<where>
+			<if test="type != 0">
+				type = #{type}
+			</if>
+			<if test="key != null and key != ''">
+				AND reason LIKE '%' #{key} '%'
+			</if>
+		</where>
 		ORDER BY
 			id
 	</select>

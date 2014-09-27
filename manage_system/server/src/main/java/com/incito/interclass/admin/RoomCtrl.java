@@ -16,7 +16,6 @@ import com.incito.interclass.business.SchoolService;
 import com.incito.interclass.common.BaseCtrl;
 import com.incito.interclass.entity.Room;
 import com.incito.interclass.entity.School;
-import com.incito.interclass.persistence.RoomMapper;
 
 @RestController
 @RequestMapping("/room")
@@ -28,20 +27,19 @@ public class RoomCtrl extends BaseCtrl {
 	@Autowired
 	private SchoolService schoolService;
 	
-	@Autowired
-	private RoomMapper roomMapper;
-	
 	/**
 	 * 列表
 	 */
 	@RequestMapping("/list")
-	public ModelAndView query(Room room,
+	public ModelAndView list(String schoolName,String mac,
 			@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
 		ModelAndView res = new ModelAndView("room/roomList");
 		PageHelper.startPage(pageNum, PAGE_SIZE);
-		List<Room> rooms = roomMapper.getRoomList();
+		List<Room> rooms = roomService.getRoomListByByCondition(schoolName,mac);
 		PageInfo<Room> page = new PageInfo<Room>(rooms);
 		res.addObject("page", page);
+		res.addObject("schoolName", schoolName);
+		res.addObject("mac", mac);
 		return res;
 	}
 	

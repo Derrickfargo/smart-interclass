@@ -14,8 +14,8 @@ public class RoomService {
 	@Autowired
 	private RoomMapper roomMapper;
 
-	public List<Room> getRoomList() {
-		return roomMapper.getRoomList();
+	public List<Room> getRoomListByByCondition(String schoolName,String mac) {
+		return roomMapper.getRoomListByByCondition(schoolName,mac);
 	}
 
 	public Room getRoomByMac(String mac) {

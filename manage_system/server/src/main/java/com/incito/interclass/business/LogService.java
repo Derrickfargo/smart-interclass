@@ -14,8 +14,8 @@ public class LogService {
 	@Autowired
 	private LogMapper logMapper;
 	
-	public List<Log> getLogList(){
-		return logMapper.getLogList();
+	public List<Log> getLogListByCondition(int type,String key){
+		return logMapper.getLogListByCondition(type,key);
 	}
 	
 	public Log getLogById(int id){

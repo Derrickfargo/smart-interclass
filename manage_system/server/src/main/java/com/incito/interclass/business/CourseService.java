@@ -18,6 +18,10 @@ public class CourseService {
 		return courseMapper.getCourseList();
 	}
 	
+	public List<Course> getCourseListByCondition(String name){
+		return courseMapper.getCourseListByCondition(name);
+	}
+	
 	public Course getCourseById(int id){
 		return courseMapper.getCourseById(id);
 	}

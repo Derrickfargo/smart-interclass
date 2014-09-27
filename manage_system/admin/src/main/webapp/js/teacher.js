@@ -42,8 +42,8 @@ $(document).ready(function() {
 
 
 // 搜索教师信息
-function searchTeacher(currentPage) {
-	$("#currentPage").val(currentPage);
+function searchTeacher(pageNum) {
+	$("#pageNum").val(pageNum);
 	$("#searchForm").submit();
 }
 

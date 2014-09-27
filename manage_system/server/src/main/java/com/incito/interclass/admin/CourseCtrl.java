@@ -25,13 +25,14 @@ public class CourseCtrl extends BaseCtrl {
 	 * 列表
 	 */
 	@RequestMapping("/list")
-	public ModelAndView index(Course course,
+	public ModelAndView index(String name,
 			@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
 		ModelAndView res = new ModelAndView("course/courseList");
 		PageHelper.startPage(pageNum, PAGE_SIZE);
-		List<Course> courses = courseService.getCourseList();
+		List<Course> courses = courseService.getCourseListByCondition(name);
 		PageInfo<Course> page = new PageInfo<Course>(courses);
 		res.addObject("page", page);
+		res.addObject("name", name);
 		return res;
 	}
 	

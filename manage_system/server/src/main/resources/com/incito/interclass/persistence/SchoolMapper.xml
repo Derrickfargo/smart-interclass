@@ -12,6 +12,24 @@
 		ORDER BY
 			id
 	</select>
+	
+	<select id="getSchoolListByCondition" resultType="com.incito.interclass.entity.School" parameterType="java.util.Map">
+		SELECT	
+			id,name,school_alias AS schoolAlias ,school_number AS schoolNumber,phone,email,address,
+			zip_code AS zipCode,school_type AS schoolType,educational_type AS educationalType,intro,ctime
+		FROM 
+			tb_school
+		<where>
+			<if test="name != null and name != ''">
+				name LIKE '%' #{name} '%'
+			</if>
+			<if test="schoolType != null and schoolType != -1">
+				AND school_type = #{schoolType}
+			</if>
+		</where>
+		ORDER BY
+			id
+	</select>
 
 	<insert id="save" parameterType="com.incito.interclass.entity.School" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO 

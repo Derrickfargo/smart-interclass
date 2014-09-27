@@ -19,7 +19,8 @@ public interface UserMapper {
 
 	List<Student> getStudentByGroupId(int groupId);
 
-	List<Teacher> getTeacherList();
+	List<Teacher> getTeacherListByCondition(@Param("name") String name,
+			@Param("schoolName") String schoolName);
 
 	List<Student> getStudentList();
 	

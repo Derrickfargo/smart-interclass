@@ -3,11 +3,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.incito.interclass.persistence.VersionMapper">
 
-	<select id="getVersionList" resultType="com.incito.interclass.entity.Version">
+	<select id="getVersionListByCondition" resultType="com.incito.interclass.entity.Version" parameterType="java.util.Map">
 		SELECT	
 			id,code,name,description,type,url,forcibly,ctime
 		FROM 
 			tb_version
+		<if test="type != -1">
+			WHERE type = #{type}
+		</if>
 		ORDER BY
 			id
 	</select>

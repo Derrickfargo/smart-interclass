@@ -3,7 +3,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.incito.interclass.persistence.DeviceMapper">
 
-	<select id="getDeviceList" resultType="com.incito.interclass.entity.Device">
+	<select id="getDeviceListByCondition" resultType="com.incito.interclass.entity.Device" parameterType="java.util.Map">
 		SELECT	
 			tb_device.id,imei,table_id,tb_device.ctime,tb_school.name AS schoolName,
 			tb_room.name AS roomName,tb_table.number AS tableNumber
@@ -15,6 +15,14 @@
 			tb_room ON tb_room.id = tb_table.room_id
 		INNER JOIN 
 			tb_school ON tb_school.id = tb_room.school_id
+		<where>
+			<if test="imei != null and imei != ''">
+				imei = #{imei}
+			</if>
+			<if test="schoolName != null and schoolName != ''">
+				AND tb_school.name LIKE '%' #{schoolName} '%'
+			</if>
+		</where>
 		ORDER BY
 			id
 	</select>

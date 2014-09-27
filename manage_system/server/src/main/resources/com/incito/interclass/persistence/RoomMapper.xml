@@ -2,7 +2,7 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.incito.interclass.persistence.RoomMapper">
-	<select id="getRoomList" resultType="com.incito.interclass.entity.Room">
+	<select id="getRoomListByByCondition" resultType="com.incito.interclass.entity.Room" parameterType="java.util.Map">
 		SELECT	
 			tb_room.id,tb_room.name,school_id AS schoolId, 
 			tb_school.name AS schoolName,mac,tb_room.ctime
@@ -10,6 +10,14 @@
 			tb_room
 		LEFT JOIN
 			tb_school ON tb_school.id = tb_room.school_id
+		<where>
+			<if test="schoolName != null and schoolName != ''">
+				tb_school.name LIKE '%' #{schoolName} '%'
+			</if>
+			<if test="mac != null and mac != ''">
+				AND tb_room.mac = #{mac}
+			</if>
+		</where>
 		ORDER BY
 			id
 	</select>

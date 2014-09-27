@@ -39,9 +39,9 @@
 								<div class="form-group">
 									<label class="col-xs-1 control-label">课程名称:</label>
 									<div class="col-xs-2">
-										<input type="text" name="name" value="${course.name}" class="form-control borderRadiusIE8">
+										<input type="text" name="name" value="${name}" class="form-control borderRadiusIE8">
 									</div>
-									<button type="button" class="btn btn-primary" onclick="search('1')">搜索</button>
+									<button type="button" class="btn btn-primary" onclick="searchCourse('1')">搜索</button>
 									<button type="button" class="btn btn-primary" onclick="emptyForm('searchForm')">清空</button>
 								</div>
 							</div>
@@ -84,34 +84,34 @@
 									<c:otherwise>
 										<ul class="pagination" id="pagination">
 											<c:if test="${page.pages > 1 }">
-												<li><a href="javascript:void(0);searchDriver('1')">首页</a></li>
+												<li><a href="javascript:void(0);searchCourse('1')">首页</a></li>
 											</c:if>
 											<c:if test="${page.hasPreviousPage}">
-												<li><a href="javascript:void(0);searchDriver('${search.lastPage}')">上一页</a></li>
+												<li><a href="javascript:void(0);searchCourse('${page.prePage}')">上一页</a></li>
 											</c:if>
 											<c:forEach items="${page.navigatepageNums}" var="nav">
 						                        <c:if test="${nav == page.pageNum}">
-						                            <li><a href="javascript:void(0);searchDriver('${x}')">${nav}</a></li>
+						                            <li><a href="javascript:void(0);searchCourse('${x}')">${nav}</a></li>
 						                        </c:if>
 						                        <c:if test="${nav != page.pageNum}">
-						                        	<li class="active"><a href="javascript:void(0);searchDriver('${nav}')">${nav}</a></li>
+						                        	<li class="active"><a href="javascript:void(0);searchCourse('${nav}')">${nav}</a></li>
 						                        </c:if>
 						                    </c:forEach>
 											<c:if test="${page.hasNextPage}">
-												<li><a href="javascript:void(0);searchDriver('${search.nextPage}')">下一页</a></li>
+												<li><a href="javascript:void(0);searchCourse('${page.pageSize}')">下一页</a></li>
 											</c:if>
 											<c:if test="${page.pages > 1 }">
-												<li><a href="javascript:void(0);searchDriver('${search.totalPage}')">尾页</a></li>
+												<li><a href="javascript:void(0);searchCourse('${page.pages}')">尾页</a></li>
 											</c:if>
 										</ul>
 									</c:otherwise>
 								</c:choose>
 							</div>
-								<input type="hidden" id="currentPage" name="currentPage" value="${search.currentPage}"> 
-								<input type="hidden" id="pageSize" name="pageSize" value="">
-								<input type="hidden" id="opType" name="opType" value="">
-								<input type="hidden" id="pageType" name="pageType" value="">
-								<input type="hidden" id="courseId" name="courseId" value="">
+							<input type="hidden" id="pageNum" name="pageNum" value="${page.pageNum}"> 
+							<input type="hidden" id="pageSize" name="pageSize" value="">
+							<input type="hidden" id="opType" name="opType" value="">
+							<input type="hidden" id="pageType" name="pageType" value="">
+							<input type="hidden" id="courseId" name="courseId" value="">
 						</form>
 					</div>
 				</div>

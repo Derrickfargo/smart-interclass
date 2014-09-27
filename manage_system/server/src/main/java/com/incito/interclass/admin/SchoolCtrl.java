@@ -12,7 +12,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.incito.interclass.business.SchoolService;
 import com.incito.interclass.common.BaseCtrl;
-import com.incito.interclass.entity.Log;
 import com.incito.interclass.entity.School;
 
 @RestController
@@ -26,13 +25,15 @@ public class SchoolCtrl extends BaseCtrl {
 	 * 学校列表
 	 */
 	@RequestMapping("/list")
-	public ModelAndView index(School school,
+	public ModelAndView index(String name, @RequestParam(value = "schoolType", defaultValue = "-1") Integer schoolType,
 			@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
 		ModelAndView res = new ModelAndView("school/schoolList");
 		PageHelper.startPage(pageNum, PAGE_SIZE);
-		List<School> schools = schoolService.getSchoolList();
+		List<School> schools = schoolService.getSchoolListByCondition(name,schoolType);
 		PageInfo<School> page = new PageInfo<School>(schools);
 		res.addObject("page", page);
+		res.addObject("name", name);
+		res.addObject("schoolType", schoolType);
 		return res;
 	}
 	

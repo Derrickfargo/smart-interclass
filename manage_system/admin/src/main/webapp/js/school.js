@@ -38,8 +38,8 @@ $(document).ready(function() {
 
 
 // 搜索教师信息
-function searchSchool(currentPage) {
-	$("#currentPage").val(currentPage);
+function searchSchool(pageNum) {
+	$("#pageNum").val(pageNum);
 	$("#searchForm").submit();
 }
 
