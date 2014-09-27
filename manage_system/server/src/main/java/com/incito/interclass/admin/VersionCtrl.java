@@ -4,12 +4,16 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.incito.interclass.business.VersionService;
 import com.incito.interclass.common.BaseCtrl;
 import com.incito.interclass.entity.Log;
+import com.incito.interclass.entity.Teacher;
 import com.incito.interclass.entity.Version;
 
 @RestController
@@ -23,13 +27,13 @@ public class VersionCtrl extends BaseCtrl {
 	 * 列表
 	 */
 	@RequestMapping("/list")
-	public ModelAndView index(Log log, Integer page) {
+	public ModelAndView index(Log log,
+			@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
 		ModelAndView res = new ModelAndView("system/versionList");
-		if (page == null) {
-			page = 0;
-		}
-		List<Version> versions = versionService.getVersionList(log, page * maxResults, maxResults);
-		res.addObject("versions", versions);
+		PageHelper.startPage(pageNum, PAGE_SIZE);
+		List<Version> versions = versionService.getVersionList(log);
+		PageInfo<Version> page = new PageInfo<Version>(versions);
+		res.addObject("page", page);
 		return res;
 	}
 	

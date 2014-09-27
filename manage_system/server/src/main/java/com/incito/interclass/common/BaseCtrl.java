@@ -28,6 +28,7 @@ public class BaseCtrl {
 	protected final String WEB_SESSION_USER = "user";
 
 	protected static final int SUCCESS = 0;
+	protected static final int PAGE_SIZE = 10;
 	/**
 	 * 获取当前用户信息
 	 * 

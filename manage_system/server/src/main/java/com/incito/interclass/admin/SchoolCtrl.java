@@ -4,11 +4,15 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.incito.interclass.business.SchoolService;
 import com.incito.interclass.common.BaseCtrl;
+import com.incito.interclass.entity.Log;
 import com.incito.interclass.entity.School;
 
 @RestController
@@ -22,13 +26,13 @@ public class SchoolCtrl extends BaseCtrl {
 	 * 学校列表
 	 */
 	@RequestMapping("/list")
-	public ModelAndView index(School school,Integer page) {
+	public ModelAndView index(School school,
+			@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
 		ModelAndView res = new ModelAndView("school/schoolList");
-		if (page == null) {
-			page = 0;
-		}
-		List<School> schools = schoolService.getSchoolList(school, page * maxResults, maxResults);
-		res.addObject("schools", schools);
+		PageHelper.startPage(pageNum, PAGE_SIZE);
+		List<School> schools = schoolService.getSchoolList();
+		PageInfo<School> page = new PageInfo<School>(schools);
+		res.addObject("page", page);
 		return res;
 	}
 	

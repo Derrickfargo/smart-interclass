@@ -4,9 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.incito.interclass.business.CourseService;
 import com.incito.interclass.common.BaseCtrl;
 import com.incito.interclass.entity.Course;
@@ -22,13 +25,13 @@ public class CourseCtrl extends BaseCtrl {
 	 * 列表
 	 */
 	@RequestMapping("/list")
-	public ModelAndView index(Course course,Integer page) {
+	public ModelAndView index(Course course,
+			@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
 		ModelAndView res = new ModelAndView("course/courseList");
-		if (page == null) {
-			page = 0;
-		}
-		List<Course> courses = courseService.getCourseList(course, page * maxResults, maxResults);
-		res.addObject("courses", courses);
+		PageHelper.startPage(pageNum, PAGE_SIZE);
+		List<Course> courses = courseService.getCourseList();
+		PageInfo<Course> page = new PageInfo<Course>(courses);
+		res.addObject("page", page);
 		return res;
 	}
 	

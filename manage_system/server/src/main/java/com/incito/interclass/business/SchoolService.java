@@ -14,11 +14,6 @@ public class SchoolService {
 	@Autowired
 	private SchoolMapper schoolMapper;
 	
-	public List<School> getSchoolList(Object parameterObject, int skipResults,
-			int maxResults) {
-		return schoolMapper.getSchoolList();
-	}
-
 	public List<School> getSchoolList(){
 		return schoolMapper.getSchoolList();
 	}

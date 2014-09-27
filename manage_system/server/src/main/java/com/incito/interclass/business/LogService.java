@@ -14,10 +14,6 @@ public class LogService {
 	@Autowired
 	private LogMapper logMapper;
 	
-	public List<Log> getLogList(Object parameterObject, int skipResults, int maxResults) {
-		return logMapper.getLogList();
-	}
-
 	public List<Log> getLogList(){
 		return logMapper.getLogList();
 	}

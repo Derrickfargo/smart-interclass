@@ -5,9 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.incito.base.exception.AppException;
 import com.incito.base.util.Md5Utils;
 import com.incito.interclass.business.SchoolService;
@@ -31,13 +34,13 @@ public class TeacherCtrl extends BaseCtrl {
 	 * 教师列表
 	 */
 	@RequestMapping("/list")
-	public ModelAndView index(Teacher teacher,Integer page) {
+	public ModelAndView index(Teacher teacher,
+			@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
 		ModelAndView res = new ModelAndView("teacher/teacherList");
-		if (page == null) {
-			page = 0;
-		}
-		List<Teacher> teachers = userService.getTeacherList(teacher, page * maxResults, maxResults);
-		res.addObject("teachers", teachers);
+		PageHelper.startPage(pageNum, PAGE_SIZE);
+		List<Teacher> teachers = userService.getTeacherList(teacher);
+		PageInfo<Teacher> page = new PageInfo<Teacher>(teachers);
+		res.addObject("page", page);
 		return res;
 	}
 	

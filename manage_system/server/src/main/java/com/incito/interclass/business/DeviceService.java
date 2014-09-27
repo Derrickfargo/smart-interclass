@@ -13,10 +13,6 @@ public class DeviceService {
 
 	@Autowired
 	private DeviceMapper deviceMapper;
-	public List<Device> getDeviceList(Object parameterObject, int skipResults,
-			int maxResults) {
-		return deviceMapper.getDeviceList();
-	}
 
 	public List<Device> getDeviceList(){
 		return deviceMapper.getDeviceList();

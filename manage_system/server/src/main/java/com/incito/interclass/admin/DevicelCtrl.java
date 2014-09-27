@@ -4,11 +4,15 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.incito.interclass.business.DeviceService;
 import com.incito.interclass.common.BaseCtrl;
+import com.incito.interclass.entity.Course;
 import com.incito.interclass.entity.Device;
 
 @RestController
@@ -22,14 +26,13 @@ public class DevicelCtrl extends BaseCtrl {
 	 * 列表
 	 */
 	@RequestMapping("/list")
-	public ModelAndView index(Device device,Integer page) {
+	public ModelAndView index(Device device,
+			@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
 		ModelAndView res = new ModelAndView("device/deviceList");
-		if (page == null) {
-			page = 0;
-		}
-		List<Device> devices = deviceService.getDeviceList(device, page * maxResults, maxResults);
-		res.addObject("devices", devices);
-		
+		PageHelper.startPage(pageNum, PAGE_SIZE);
+		List<Device> devices = deviceService.getDeviceList();
+		PageInfo<Device> page = new PageInfo<Device>(devices);
+		res.addObject("page", page);
 		return res;
 	}
 	

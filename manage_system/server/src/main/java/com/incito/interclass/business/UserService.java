@@ -80,8 +80,7 @@ public class UserService {
 		return userMapper.getStudentByGroupId(groupId);
 	}
 
-	public List<Teacher> getTeacherList(Object parameterObject,
-			int skipResults, int maxResults) {
+	public List<Teacher> getTeacherList(Object parameterObject) {
 		return userMapper.getTeacherList();
 	}
 

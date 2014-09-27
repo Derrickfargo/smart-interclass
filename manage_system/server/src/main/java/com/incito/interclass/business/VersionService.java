@@ -14,7 +14,7 @@ public class VersionService {
 	@Autowired
 	private VersionMapper versionMapper;
 	
-	public List<Version> getVersionList(Object parameterObject, int skipResults, int maxResults) {
+	public List<Version> getVersionList(Object parameterObject) {
 		return versionMapper.getVersionList();
 	}
 

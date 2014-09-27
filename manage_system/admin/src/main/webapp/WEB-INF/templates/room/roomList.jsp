@@ -61,7 +61,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										<c:forEach items="${rooms}" var="room">
+										<c:forEach items="${page.list}" var="room">
 											<tr>
 												<td>${room.schoolName}</td>
 												<td>${room.name}</td>
@@ -78,53 +78,33 @@
 
 							<div class='text-center'>
 								<c:choose>
-									<c:when test="${empty rooms}">
+									<c:when test="${empty page.list}">
 										<b>没有查询到相应的数据</b>
 									</c:when>
-									<c:when test="${search.totalPage == 1}">
+									<c:when test="${page.pages == 1}">
 									</c:when>
 									<c:otherwise>
 										<ul class="pagination" id="pagination">
-											<!--
-											<li><a href="javascript:void(0);searchDriver('1')">首页</a></li>
-											-->
-
-											<c:if test="${search.hasLastPage == true}">
+											<c:if test="${page.pages > 1 }">
+												<li><a href="javascript:void(0);searchDriver('1')">首页</a></li>
+											</c:if>
+											<c:if test="${page.hasPreviousPage}">
 												<li><a href="javascript:void(0);searchDriver('${search.lastPage}')">上一页</a></li>
 											</c:if>
-											<c:if test="${1<(search.currentPage-3)}">
-												<li><a href="javascript:void(0)">...</a></li>
-											</c:if>
-											<c:forEach var="x" begin="1" end="${search.totalPage}">
-												<c:if test="${x>=(search.currentPage-3) && x<=(search.currentPage+3)}">
-													<c:choose>
-														<c:when test="${x==search.currentPage}">
-															<li class="active"><a href="javascript:void(0);searchDriver('${x}')">${x}</a></li>
-														</c:when>
-														<c:otherwise>
-															<li><a href="javascript:void(0);searchDriver('${x}')">${x}</a></li>
-														</c:otherwise>
-													</c:choose>
-												</c:if>
-											</c:forEach>
-											<c:if test="${(search.totalPage)>(search.currentPage+3)}">
-												<li><a href="javascript:void(0)">....</a></li>
-											</c:if>
-											<c:if test="${search.hasNextPage == true}">
+											<c:forEach items="${page.navigatepageNums}" var="nav">
+						                        <c:if test="${nav == page.pageNum}">
+						                            <li><a href="javascript:void(0);searchDriver('${x}')">${nav}</a></li>
+						                        </c:if>
+						                        <c:if test="${nav != page.pageNum}">
+						                        	<li class="active"><a href="javascript:void(0);searchDriver('${nav}')">${nav}</a></li>
+						                        </c:if>
+						                    </c:forEach>
+											<c:if test="${page.hasNextPage}">
 												<li><a href="javascript:void(0);searchDriver('${search.nextPage}')">下一页</a></li>
 											</c:if>
-											<!--
-											<li><a href="javascript:void(0);searchDriver('${search.totalPage}')">尾页</a></li>
-
-											<li>&nbsp;每页 <select name="pageC" onchange="$('#pageSize').val(this.value);searchDriver('1')">
-													<option value="1" ${search.pageSize == '1' ? 'selected' : ''}>1</option>
-													<option value="5" ${search.pageSize == '5' ? 'selected' : ''}>5</option>
-													<option value="10" ${search.pageSize == '10' ? 'selected' : ''}>10</option>
-													<option value="15" ${search.pageSize == '15' ? 'selected' : ''}>15</option>
-													<option value="20" ${search.pageSize == '20' ? 'selected' : ''}>20</option>
-											</select>条
-											</li>
-											-->
+											<c:if test="${page.pages > 1 }">
+												<li><a href="javascript:void(0);searchDriver('${search.totalPage}')">尾页</a></li>
+											</c:if>
 										</ul>
 									</c:otherwise>
 								</c:choose>

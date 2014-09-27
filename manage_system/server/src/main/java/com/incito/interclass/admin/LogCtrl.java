@@ -4,11 +4,15 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.incito.interclass.business.LogService;
 import com.incito.interclass.common.BaseCtrl;
+import com.incito.interclass.entity.Device;
 import com.incito.interclass.entity.Log;
 
 @RestController
@@ -22,13 +26,13 @@ public class LogCtrl extends BaseCtrl {
 	 * 列表
 	 */
 	@RequestMapping("/list")
-	public ModelAndView index(Log log, Integer page) {
+	public ModelAndView index(Log log, 
+			@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
 		ModelAndView res = new ModelAndView("system/logList");
-		if (page == null) {
-			page = 0;
-		}
-		List<Log> logs = logService.getLogList(log, page * maxResults, maxResults);
-		res.addObject("logs", logs);
+		PageHelper.startPage(pageNum, PAGE_SIZE);
+		List<Log> logs = logService.getLogList();
+		PageInfo<Log> page = new PageInfo<Log>(logs);
+		res.addObject("page", page);
 		return res;
 	}
 

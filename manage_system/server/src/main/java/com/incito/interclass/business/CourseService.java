@@ -14,10 +14,6 @@ public class CourseService {
 	@Autowired
 	private CourseMapper courseMapper;
 	
-	public List<Course> getCourseList(Object parameterObject, int skipResults, int maxResults) {
-		return courseMapper.getCourseList();
-	}
-
 	public List<Course> getCourseList(){
 		return courseMapper.getCourseList();
 	}
