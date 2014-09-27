@@ -75,7 +75,7 @@
 												<td>${teacher.phone}</td>
 												<td>${teacher.sex == '1' ? '男' : '女'}</td>
 												<td>
-													<a href="#" onclick="modifyTeacher('${teacher.id}')"><span title="修改" class="glyphicon glyphicon-pencil"></span></a>&nbsp; 
+													<!-- <a href="#" onclick="modifyTeacher('${teacher.id}')"><span title="修改" class="glyphicon glyphicon-pencil"></span></a>&nbsp; --> 
 													<a href="#" onclick="deleteTeacher('${teacher.id}')"><span title="删除" class="glyphicon glyphicon-remove"></span></a>
 												</td>
 											</tr>

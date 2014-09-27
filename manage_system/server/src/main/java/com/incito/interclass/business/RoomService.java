@@ -18,6 +18,20 @@ public class RoomService {
 		return roomMapper.getRoomListByByCondition(schoolName,mac);
 	}
 
+	public Room getRoomById(int id) {
+		return roomMapper.getRoomById(id);
+	}
+	
+	public boolean update(Room room){
+		try {
+			int result = roomMapper.update(room);
+			return result == 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 	public Room getRoomByMac(String mac) {
 		return roomMapper.getRoomByMac(mac);
 	}

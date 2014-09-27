@@ -108,7 +108,7 @@
 												<td>${school.phone}</td>
 												<td>${school.address}</td>
 												<td>
-													<a href="#" onclick="modifySchool('${school.id}')"><span title="修改" class="glyphicon glyphicon-pencil"></span></a>&nbsp; 
+													<!-- <a href="#" onclick="modifySchool('${school.id}')"><span title="修改" class="glyphicon glyphicon-pencil"></span></a>&nbsp; --> 
 													<a href="#" onclick="deleteSchool('${school.id}')"><span title="删除" class="glyphicon glyphicon-remove"></span></a>&nbsp;
 												</td>
 											</tr>

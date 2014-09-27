@@ -12,6 +12,10 @@ public interface RoomMapper {
 
 	Room getRoomByMac(String mac);
 
+	public Room getRoomById(int id);
+	
+	public Integer update(Room room);
+	
 	Integer save(Room room);
 
 	void delete(int id);

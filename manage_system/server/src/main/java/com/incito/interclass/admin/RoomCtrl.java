@@ -70,4 +70,27 @@ public class RoomCtrl extends BaseCtrl {
 		roomService.deleteRoom(roomId);
 		return new ModelAndView("redirect:list");
 	}
+	
+	/**
+	 * 修改
+	 */
+	@RequestMapping("/edit")
+	public ModelAndView edit(Integer id) {
+		ModelAndView res = new ModelAndView("room/roomAdd");
+		Room room = roomService.getRoomById(id);
+		res.addObject("room", room);
+		return res;
+	}
+	
+	/**
+	 * 修改
+	 */
+	@RequestMapping("/update")
+	public ModelAndView update(Room room) {
+		boolean result = roomService.update(room);
+		if (result) {
+			return new ModelAndView("redirect:list");
+		}
+		return new ModelAndView("room/roomAdd");
+	}
 }
