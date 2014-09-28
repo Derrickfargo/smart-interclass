@@ -29,7 +29,7 @@ public class DeviceLoginHandler extends MessageHandler {
 	@Override
 	public void handleMessage() {
 		imei = data.getString("imei");
-		logger.info("收到设备登陆消息，通讯建立成功，IMEI:" + imei);
+		logger.info("收到设备登陆消息:" + data.toJSONString());
 		service.deviceLogin(imei);
 		ConnectionManager.notification(imei, message.getChannel());
 		Application app = Application.getInstance();
@@ -47,6 +47,7 @@ public class DeviceLoginHandler extends MessageHandler {
         }
 		
 		//回复设备登陆消息
+        logger.info("回复设备登陆消息:" + data.toJSONString());
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_HAND_SHAKE);
 		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(data.toJSONString()));
 		byte[] handShakResponse = messagePacking.pack().array();

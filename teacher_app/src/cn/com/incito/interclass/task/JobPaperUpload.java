@@ -28,8 +28,8 @@ import cn.com.incito.http.AsyncHttpConnection;
 import cn.com.incito.http.StringResponseHandler;
 import cn.com.incito.http.support.ParamsWrapper;
 import cn.com.incito.http.utility.ResponseCallbackTrace;
-import cn.com.incito.interclass.constant.Constants;
 import cn.com.incito.server.api.Application;
+import cn.com.incito.server.config.Constants;
 import cn.com.incito.server.utils.FileUtils;
 import cn.com.incito.server.utils.URLs;
 

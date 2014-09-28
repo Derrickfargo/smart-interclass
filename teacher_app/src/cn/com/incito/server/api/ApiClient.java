@@ -388,7 +388,8 @@ public class ApiClient {
 	public static void uploadErrorLog(String reason){
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("type", 1);
-		params.put("mac", Application.getInstance().getMac());
+		String mac = Application.getInstance().getMac();
+		params.put("mac", mac == null ? "" : mac);
 		params.put("reason", reason);
 		Map<String, File> files = new HashMap<String, File>();
 		files.put("file", new File("log/teacher.log"));

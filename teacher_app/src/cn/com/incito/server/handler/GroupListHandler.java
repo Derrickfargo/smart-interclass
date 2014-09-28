@@ -22,7 +22,7 @@ public class GroupListHandler extends MessageHandler {
 	
 	@Override
 	public void handleMessage() {
-		logger.info("消息类型为获取分组:" + data);
+		logger.info("收到获取分组消息:" + data);
 		
 		String imei = data.getString("imei");
 		logger.info("IMEI:" + imei);
@@ -33,6 +33,7 @@ public class GroupListHandler extends MessageHandler {
 	}
 
 	private void sendResponse(String json) {
+		logger.info("回复获取分组消息:" + json);
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_LIST);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
         byte[] messageData = messagePacking.pack().array();

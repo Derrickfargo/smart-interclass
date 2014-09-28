@@ -1,4 +1,4 @@
-package cn.com.incito.interclass.constant;
+package cn.com.incito.server.config;
 
 import java.io.File;
 

@@ -16,7 +16,6 @@ import java.util.Set;
 
 import javax.swing.JOptionPane;
 
-import cn.com.incito.interclass.constant.Constants;
 import cn.com.incito.interclass.po.Classes;
 import cn.com.incito.interclass.po.Course;
 import cn.com.incito.interclass.po.Device;
@@ -29,6 +28,7 @@ import cn.com.incito.interclass.po.Teacher;
 import cn.com.incito.interclass.ui.FloatIcon;
 import cn.com.incito.interclass.ui.Login;
 import cn.com.incito.interclass.ui.MainFrame;
+import cn.com.incito.server.config.Constants;
 import cn.com.incito.server.utils.FileUtils;
 
 import com.alibaba.fastjson.JSONObject;

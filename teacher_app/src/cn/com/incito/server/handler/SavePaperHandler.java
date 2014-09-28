@@ -26,13 +26,15 @@ public class SavePaperHandler extends MessageHandler {
 	@Override
 	public void handleMessage(Message msg) {
 		this.message = msg;
-		logger.info("开始处理获取作业消息");
+		logger.info("收到作业提交消息");
 		ByteBuffer buffer = msg.getBodyBuffer();
 		buffer.flip();
 		// 获取考试id号
 		quizid = getInfo(buffer);
+		logger.info("quizid：" + quizid);
 		// 获取imei
 		imei = getInfo(buffer);
+		logger.info("imei：" + imei);
 		// 获取图片信息
 		byte[] imageSize = new byte[4];// int
 		buffer.get(imageSize);
@@ -51,6 +53,7 @@ public class SavePaperHandler extends MessageHandler {
 	}
 
 	private void sendResponse(String json) {
+		logger.info("回复作业提交消息：" + json);
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SAVE_PAPER_RESULT);
 		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
 		byte[] messageData = messagePacking.pack().array();

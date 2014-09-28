@@ -145,6 +145,7 @@ public class MessageParser {
 			return true;
 		} catch (Exception e) {
 			logger.error("获取消息体失败:", e);
+			ApiClient.uploadErrorLog(e.toString());
 			return false;
 		}
 	}

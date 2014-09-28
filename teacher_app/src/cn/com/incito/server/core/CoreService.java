@@ -11,7 +11,6 @@ import javax.imageio.stream.FileImageOutputStream;
 
 import org.apache.log4j.Logger;
 
-import cn.com.incito.interclass.constant.Constants;
 import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Quiz;
@@ -21,6 +20,7 @@ import cn.com.incito.interclass.ui.MainFrame;
 import cn.com.incito.server.api.ApiClient;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.api.result.TeacherGroupResultData;
+import cn.com.incito.server.config.Constants;
 import cn.com.incito.server.exception.AppException;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;

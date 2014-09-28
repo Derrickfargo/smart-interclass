@@ -37,30 +37,35 @@ public class StudentLoginHandler extends MessageHandler {
         Application app = Application.getInstance();
         switch (type){
         case 0:
-        	logger.info("消息类型为学生登陆:" + data);
+        	logger.info("收到学生登陆消息:" + data);
         	String result = service.login(uname, sex, number, imei);
+        	logger.info("登陆:" + result);
         	Integer groupId = getGroupId(result);
 			if (groupId != -1) {
+				logger.info("回复学生登陆消息:" + result);
 				app.addSocketChannel(groupId, message.getChannel());
         		sendResponse(result,app.getClientChannelByGroup(groupId));
         		logger.info(result);
         	}
         	break;
         case 1:
-        	logger.info("消息类型为学生退出:" + data);
+        	logger.info("收到学生退出消息:" + data);
         	result = service.logout(uname, sex, number, imei);
+        	logger.info("退出:" + result);
         	groupId = getGroupId(result);
 			if (groupId != -1) {
+				logger.info("回复学生退出消息:" + result);
 				app.addSocketChannel(groupId, message.getChannel());
         		sendResponse(result,app.getClientChannelByGroup(groupId));
         		logger.info(result);
         	}
     		break;
         case 2:
-        	logger.info("消息类型为注册学生:" + data);
+        	logger.info("收到注册学生消息:" + data);
 			Student student = service.getStudentByNumber(number);
 			if(student != null){//该学号已注册
 				result = JSONUtils.renderJSONString(-2, number);// 学号已注册
+				logger.info("注册学生结果，学号已注册:" + result);
 				MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
 				messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(result));
 				byte[] handShakResponse = messagePacking.pack().array();
@@ -75,8 +80,10 @@ public class StudentLoginHandler extends MessageHandler {
 		        return;
 			}
         	result = service.register(uname, sex, number, imei);
+        	logger.info("注册学生结果:" + result);
         	groupId = getGroupId(result);
 			if (groupId != -1) {
+				logger.info("回复注册学生消息:" + result);
 				app.addSocketChannel(groupId, message.getChannel());
         		sendResponse(result,app.getClientChannelByGroup(groupId));
         		logger.info(result);

@@ -4,8 +4,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.List;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import org.apache.log4j.Logger;
 
 import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Table;
@@ -17,15 +16,19 @@ import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
 import cn.com.incito.server.utils.JSONUtils;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
 /**
  * 设备绑定处理器
  * @author 刘世平
  *
  */
 public class DeviceBindHandler extends MessageHandler {
-	 
+	private Logger logger = Logger.getLogger(getClass().getName());
 	@Override
 	public void handleMessage() {
+		logger.info("收到设备绑定消息:" + data.toJSONString());
 		String imei = data.getString("imei");
 		int number = data.getIntValue("number");
 		Application app = Application.getInstance();
@@ -58,6 +61,7 @@ public class DeviceBindHandler extends MessageHandler {
 	}
 	
 	private void sendResponse(String json) {
+		logger.info("回复设备绑定消息:" + json);
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_BIND);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
         byte[] messageData = messagePacking.pack().array();

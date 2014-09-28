@@ -33,7 +33,7 @@ public class GroupVoteHandler extends MessageHandler {
 	
 	@Override
 	public void handleMessage() {
-		logger.info("消息类型为小组投票:" + data);
+		logger.info("收到小组投票消息:" + data);
 		Integer id = data.getInteger("id");
 		Integer vote = data.getInteger("vote");
 		Application app = Application.getInstance();
@@ -51,12 +51,13 @@ public class GroupVoteHandler extends MessageHandler {
 			jsonData.put("id", id);
 			jsonData.put("agree", false);
 			json.put("data", jsonData);
+			logger.info("回复小组投票消息（反对）:" + json.toJSONString());
 			sendResponse(json.toJSONString(), channels);
 			return;
 		}
 		voteList.add(vote);
 		app.getTempVote().put(id, voteList);
-		if (channels.size() == voteList.size()) {
+		if (channels.size() == voteList.size() || voteList.size() == 4) {
 			//更新数据库....
 			JSONObject data = app.getTempGroup().get(id);
 			String name = data.getString("name");
@@ -79,6 +80,7 @@ public class GroupVoteHandler extends MessageHandler {
 				jsonData.put("id", id);
 				jsonData.put("agree", true);
 				json.put("data", jsonData);
+				logger.info("回复小组投票消息（成功）:" + json.toJSONString());
 				sendResponse(json.toJSONString(), channels);
 				//刷新主界面
 				Group group = app.getGroupById(id);
@@ -91,11 +93,13 @@ public class GroupVoteHandler extends MessageHandler {
 			} else {
 				JSONObject json = new JSONObject();
 				json.put("code", 1);
+				logger.info("回复小组投票消息（失败）:" + json.toJSONString());
 				sendResponse(json.toJSONString(), channels);
 			}
 		} else {
 			JSONObject json = new JSONObject();
 			json.put("code", 1);
+			logger.info("回复小组投票消息（失败）:" + json.toJSONString());
 			sendResponse(json.toJSONString(), channels);
 		}
 	}

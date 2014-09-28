@@ -18,7 +18,7 @@ public class DeviceLogoutHandler extends MessageHandler {
 	@Override
 	public void handleMessage() {
 		imei = data.getString("imei");
-		logger.info("收到设备退出消息，IMEI:" + imei);
+		logger.info("收到设备退出消息:" + data.toJSONString());
 //		Group group = service.deviceLogout(imei);
 //		List<SocketChannel> channels = Application.getInstance().getClientChannelByGroup(group.getId());
 //		JSONObject json = new JSONObject();

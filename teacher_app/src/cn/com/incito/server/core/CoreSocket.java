@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.server.api.ApiClient;
 import cn.com.incito.server.api.Application;
+import cn.com.incito.server.exception.AppExceptionHandler;
 
 /**
  * 服务端Socket
@@ -35,6 +36,7 @@ public final class CoreSocket extends Thread {
 	private Logger logger = Logger.getLogger(CoreSocket.class.getName());
 	
 	private CoreSocket(){
+		setDefaultUncaughtExceptionHandler(new AppExceptionHandler());
 	}
 	
 	public static CoreSocket getInstance() {

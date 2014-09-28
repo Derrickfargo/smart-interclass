@@ -21,13 +21,14 @@ public class DeviceHasBindHandler extends MessageHandler {
 	
 	@Override
 	public void handleMessage() {
-		logger.info("收到设备是否绑定消息...");
+		logger.info("收到设备是否绑定消息:" + data.toJSONString());
 		String imei = data.getString("imei");
 		String result = service.isDeviceBind(imei);
 		sendResponse(result);
 	}
 
 	private void sendResponse(String json) {
+		logger.info("回复设备是否绑定消息:" + json);
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_HAS_BIND);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
         byte[] messageData = messagePacking.pack().array();

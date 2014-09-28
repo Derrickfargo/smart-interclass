@@ -21,7 +21,7 @@ public class GroupSubmitHandler extends MessageHandler {
 	
 	@Override
 	public void handleMessage() {
-		logger.info("消息类型为分组信息提交确认:" + data);
+		logger.info("收到分组信息提交确认消息:" + data);
 		
 		int id = data.getIntValue("id");
 		Application.getInstance().getTempGroup().put(id, data);
@@ -33,6 +33,7 @@ public class GroupSubmitHandler extends MessageHandler {
 	}
 
 	private void sendResponse(String json, List<SocketChannel> channels) {
+		logger.info("回复分组信息提交确认消息:" + json);
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_CONFIRM);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
         byte[] messageData = messagePacking.pack().array();

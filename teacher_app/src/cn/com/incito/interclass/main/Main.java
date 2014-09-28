@@ -7,6 +7,7 @@ import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
 
 import cn.com.incito.server.api.Application;
+import cn.com.incito.server.exception.AppExceptionHandler;
 
 /**
  * 应用程序入口
@@ -17,6 +18,8 @@ import cn.com.incito.server.api.Application;
 public class Main {
 
 	public static void main(String args[]) {
+		// 注册异常处理器
+		registerExceptionHandler();
 		//设置观感
 		setLookAndFeel();
 		//设置字体
@@ -43,5 +46,9 @@ public class Main {
 			if (value instanceof FontUIResource)
 				UIManager.put(key, fontRes);
 		}
+	}
+	
+	private static void registerExceptionHandler(){
+		Thread.setDefaultUncaughtExceptionHandler(new AppExceptionHandler());
 	}
 }

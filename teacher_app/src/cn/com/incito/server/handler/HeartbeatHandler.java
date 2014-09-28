@@ -17,7 +17,7 @@ public class HeartbeatHandler extends MessageHandler {
 	 
 	@Override
 	public void handleMessage() {
-		logger.info("收到客户端心跳包");
+		logger.info("收到客户端心跳包：" + data);
 		String imei = data.getString("imei");
 		//通知心跳
 		ConnectionManager.notification(imei, message.getChannel());
@@ -25,6 +25,7 @@ public class HeartbeatHandler extends MessageHandler {
 	}
 
 	private void sendResponse(String json) {
+		logger.info("回复客户端心跳包：" + json);
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_HEART_BEAT);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
         byte[] messageData = messagePacking.pack().array();
