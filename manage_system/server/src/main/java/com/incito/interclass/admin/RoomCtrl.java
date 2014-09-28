@@ -78,7 +78,9 @@ public class RoomCtrl extends BaseCtrl {
 	public ModelAndView edit(Integer id) {
 		ModelAndView res = new ModelAndView("room/roomAdd");
 		Room room = roomService.getRoomById(id);
+		List<School> schools = schoolService.getSchoolList();
 		res.addObject("room", room);
+		res.addObject("schools", schools);
 		return res;
 	}
 	

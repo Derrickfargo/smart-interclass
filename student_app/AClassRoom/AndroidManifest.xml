@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.com.incito.classroom"
-    android:versionCode="10"
-    android:versionName="V100R001C003B012" >
+    android:versionCode="12"
+    android:versionName="V100R001C00" >
 
     <uses-sdk
         android:minSdkVersion="17"
@@ -40,23 +40,17 @@
             android:screenOrientation="landscape" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="cn.com.incito.classroom.Canvas1Activity"
-            android:screenOrientation="landscape" />
         <activity
             android:name="cn.com.incito.classroom.ui.activity.DrawBoxActivity"
             android:screenOrientation="landscape" >
             <intent-filter>
                 <action android:name="cn.com.classroom.SHOW_DRAWBOX" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name="cn.com.incito.classroom.Canvas2Activity" />
         <activity
             android:name="cn.com.incito.classroom.ui.activity.WaitingActivity"
             android:launchMode="singleTask"
@@ -68,20 +62,12 @@
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="cn.com.classroom.SHOW_EDIT_GROUP" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-            <!--
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            -->
         </activity>
         <activity android:name=".ui.activity.ConfirmGroupInfoActivity" >
             <intent-filter>
                 <action android:name="cn.com.classroom.SHOW_CONFIRM_GROUP" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

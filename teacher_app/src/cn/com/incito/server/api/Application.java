@@ -3,7 +3,6 @@ package cn.com.incito.server.api;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
@@ -104,10 +103,15 @@ public class Application {
      * Table和Group的对应关系 (key:tableId,value:Group)，教师登陆完后初始化
      */
     private Map<Integer, Group> tableGroup;
-	private RandomAccessFile randomAccessFile;
 
     private Application() {
-        try {
+    	lock();
+        clear();
+        new Login();
+    }
+    
+    private void lock(){
+    	try {
             File locFile = new File(FileUtils.getProjectPath(), Constants.LOC_FILE);
             if (!locFile.exists()) {
                 locFile.createNewFile();
@@ -123,10 +127,7 @@ public class Application {
             e.printStackTrace();
             System.exit(1);
         }
-        clear();
-        new Login();
     }
-
     
     public void clear(){
     	imeiDevice = new HashMap<String, Device>();
@@ -170,33 +171,6 @@ public class Application {
 		getFloatIcon().showQuizMessage(message);
 	}
 
-	public FileLock getLock() {
-		return lock;
-	}
-
-	public void lock(){
-    	try {
-            File file = new File("fileToLock.dat");
-            randomAccessFile = new RandomAccessFile(file, "rw");
-			FileChannel channel = randomAccessFile.getChannel();
-            lock = channel.tryLock();
-            channel.close();
-        } catch (IOException e) {
-        	JOptionPane.showMessageDialog(null, "程序已经在运行!");
-            System.exit(1);
-        }
-    }
-    
-    public void unlock(){
-    	if(lock != null){
-    		try {
-				lock.release();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-    	}
-    }
-    
     public void addLoginStudent(String imei,Student student){
     	List<Student> studentList = imeiStudent.get(imei);
         if (studentList == null) {
