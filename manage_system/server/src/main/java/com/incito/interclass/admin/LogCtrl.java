@@ -71,4 +71,12 @@ public class LogCtrl extends BaseCtrl {
 	    bis.close();
 	    bos.close();
 	}
+	
+	@RequestMapping(value = "/view")
+	public ModelAndView view(Integer logId) {
+		ModelAndView res = new ModelAndView("system/logView");
+		Log log = logService.getLogById(logId);
+		res.addObject("log", log);
+		return res;
+	}
 }

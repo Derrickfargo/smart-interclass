@@ -33,7 +33,7 @@
 						<div class="col-xs-12" style="height:10px;"></div>
 						<div class="tab-content">
 							<div class="tab-pane active" id="teacherinfo">
-								<form action="${path}/teacher/save" id="teacherForm" method="post" class="form-horizontal">
+								<form action="${path}/version/save" id="teacherForm" method="post" class="form-horizontal">
 									<div class="col-xs-12">
 										<div class="col-xs-12">
 											<div class="form-group">

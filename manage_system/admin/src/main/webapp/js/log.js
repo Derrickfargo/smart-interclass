@@ -63,6 +63,12 @@ function downloadLog(logId){
 	$("#searchForm").submit();
 }
 
+function viewLog(logId){
+	$("#logId").val(logId);
+	$("#searchForm").attr("action", _path + "/log/view");
+	$("#searchForm").submit();
+}
+
 function mouseOver(obj){
 	$(obj).css("background","#efefef");
 	$(obj).css("cursor","pointer");
