@@ -7,6 +7,7 @@ import java.nio.channels.SocketChannel;
 
 import org.apache.log4j.Logger;
 
+import cn.com.incito.server.api.ApiClient;
 import cn.com.incito.server.utils.BufferUtils;
 
 /**
@@ -49,6 +50,7 @@ public class MessageParser {
 			}
 		} catch (IOException e) {
 			logger.fatal("解析消息失败:", e);
+			ApiClient.uploadErrorLog(e.toString());
 			try {
 				channel.close();
 			} catch (IOException e1) {
@@ -103,7 +105,9 @@ public class MessageParser {
 
 		// 如果消息的fakeId与定义的fakeId值不符，则丢弃掉该条消息
 		if (Message.MESSAGE_FAKE_ID != fakeId) {
-			logger.error("该消息头不是需要的消息头,fakeId:" + fakeId);
+			String reason = "该消息头不是需要的消息头,fakeId:" + fakeId;
+			logger.error(reason);
+			ApiClient.uploadErrorLog(reason);
 			return false;
 		}
 		return true;

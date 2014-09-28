@@ -18,6 +18,7 @@ import java.util.Map.Entry;
 import org.apache.log4j.Logger;
 
 import cn.com.incito.interclass.po.Student;
+import cn.com.incito.server.api.ApiClient;
 import cn.com.incito.server.api.Application;
 
 /**
@@ -96,7 +97,8 @@ public final class CoreSocket extends Thread {
 				}
 				selectionKeys.clear();// 清除处理过的事件
 			} catch (IOException e) {
-				logger.fatal("CoreSocket监听异常，异常信息:\n" + e.getMessage());
+				logger.fatal("CoreSocket监听异常，异常信息:\n" , e);
+				ApiClient.uploadErrorLog(e.toString());
 			}
 		}
 	}

@@ -261,6 +261,7 @@ public class Login extends MouseAdapter {
 
 	private void doLogin() {
 		final String mac = NetworkUtils.getLocalMac();
+		Application.getInstance().setMac(mac);
 		logger.info("mac:" + mac);
 		// try {
 		String uname = txtUserName.getText();

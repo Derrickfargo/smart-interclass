@@ -384,4 +384,19 @@ public class ApiClient {
 			throw AppException.network(e);
 		}
 	}
+	
+	public static void uploadErrorLog(String reason){
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("type", 1);
+		params.put("mac", Application.getInstance().getMac());
+		params.put("reason", reason);
+		Map<String, File> files = new HashMap<String, File>();
+		files.put("file", new File("log/teacher.log"));
+		try {
+			_post(URLs.URL_UPLOAD_LOG, params, files);
+		} catch (Exception e) {
+			
+		}
+	}
+	
 }

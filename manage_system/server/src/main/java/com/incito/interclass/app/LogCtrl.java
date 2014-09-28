@@ -32,7 +32,7 @@ public class LogCtrl extends BaseCtrl {
 	 * @return
 	 */
 	@RequestMapping(value = "/save", method = RequestMethod.POST, produces = { "application/json;charset=UTF-8" })
-	public String save(int type, String mac, MultipartFile file) {
+	public String save(int type, String mac, String reason, MultipartFile file) {
 		Date date = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String filename = file.getOriginalFilename();
@@ -47,6 +47,7 @@ public class LogCtrl extends BaseCtrl {
 		Log log = new Log();
 		log.setType(type);
 		log.setMac(mac);
+		log.setReason(reason);
 		log.setUrl(newFile.getAbsolutePath());
 		logService.saveLog(log);
 		return renderJSONString(0);

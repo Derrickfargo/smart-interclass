@@ -53,6 +53,7 @@ public class Application {
 	 * 课堂id
 	 */
 	private String lessionid;
+	private String mac;//当前登录的mac地址
     private Room room;// 当前上课的教室，教师登陆完后初始化
     private Teacher teacher;// 当前登录的老师，教师登陆完后初始化
     private Course course;// 当前上课的课程，教师登陆完后初始化
@@ -147,6 +148,14 @@ public class Application {
 
 	public void setFloatIcon(FloatIcon floatIcon) {
 		this.floatIcon = floatIcon;
+	}
+
+	public String getMac() {
+		return mac;
+	}
+
+	public void setMac(String mac) {
+		this.mac = mac;
 	}
 
 	public boolean isGrouping() {
