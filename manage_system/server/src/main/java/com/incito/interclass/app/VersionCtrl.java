@@ -31,7 +31,7 @@ public class VersionCtrl extends BaseCtrl {
 	 * @param code 版本代码
 	 * @return
 	 */
-	@RequestMapping(value = "/check", produces = { "application/octet-stream;charset=UTF-8" })
+	@RequestMapping(value = "/check", produces = { "application/json;charset=UTF-8" })
 	public String checkVersion(int type, int code) {
 		Version version = versionService.getVersion(type, code);
 		if (version == null || version.getId() == 0) {
@@ -46,9 +46,9 @@ public class VersionCtrl extends BaseCtrl {
 	 * @param response
 	 * @throws IOException
 	 */
-	@RequestMapping(value = "/download", produces = { "application/json;charset=UTF-8" })
-	public void download(int id, final HttpServletResponse response) throws IOException{  
-		Version version = versionService.getVersionById(id);
+	@RequestMapping(value = "/download", produces = { "application/octet-stream;charset=UTF-8" })
+	public void download(Integer versionId, final HttpServletResponse response) throws IOException{  
+		Version version = versionService.getVersionById(versionId);
 	    File file = new File(version.getUrl());
 	    String fileName = URLEncoder.encode(file.getName(), "UTF-8");
 	    response.reset();  

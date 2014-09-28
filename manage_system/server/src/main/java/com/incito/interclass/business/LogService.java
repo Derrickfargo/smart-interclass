@@ -1,5 +1,6 @@
 package com.incito.interclass.business;
 
+import java.io.File;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class LogService {
 	}
 
 	public void deleteLog(int logId) {
+		Log log = logMapper.getLogById(logId);
+		File file = new File(log.getUrl());
+		file.delete();
 		logMapper.delete(logId);
 	}
 }

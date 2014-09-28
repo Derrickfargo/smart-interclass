@@ -57,6 +57,12 @@ function deleteLog(logId){
 	}
 }
 
+function downloadLog(logId){
+	$("#logId").val(logId);
+	$("#searchForm").attr("action", _path + "/log/download");
+	$("#searchForm").submit();
+}
+
 function mouseOver(obj){
 	$(obj).css("background","#efefef");
 	$(obj).css("cursor","pointer");

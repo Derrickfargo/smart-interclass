@@ -1,6 +1,14 @@
 package com.incito.interclass.admin;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,4 +45,30 @@ public class LogCtrl extends BaseCtrl {
 		return res;
 	}
 
+	@RequestMapping(value = "/delete")
+	public ModelAndView delete(Integer logId) {
+		logService.deleteLog(logId);
+		return new ModelAndView("redirect:list");
+	}
+	
+	@RequestMapping(value = "/download", produces = { "application/octet-stream;charset=UTF-8" })
+	public void download(Integer logId, final HttpServletResponse response) throws IOException{  
+		Log log = logService.getLogById(logId);
+	    File file = new File(log.getUrl());
+	    String fileName = URLEncoder.encode(file.getName(), "UTF-8");
+	    response.reset();  
+	    response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");  
+	    response.addHeader("Content-Length", "" + file.length());  
+	    response.setContentType("application/octet-stream;charset=UTF-8");
+	    
+	    BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file.getAbsolutePath()));
+	    BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream());
+	    byte[] buff = new byte[2048];
+	    int bytesRead;
+		while ((bytesRead = bis.read(buff, 0, buff.length)) != -1) {
+			bos.write(buff, 0, bytesRead);
+		}
+	    bis.close();
+	    bos.close();
+	}
 }

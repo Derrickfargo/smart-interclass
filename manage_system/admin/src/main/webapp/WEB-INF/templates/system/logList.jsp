@@ -141,6 +141,7 @@
 							<input type="hidden" id="pageSize" name="pageSize" value="">
 							<input type="hidden" id="opType" name="opType" value="">
 							<input type="hidden" id="pageType" name="pageType" value="">
+							<input type="hidden" id="logId" name="logId" value="">
 						</form>
 					</div>
 				</div>
