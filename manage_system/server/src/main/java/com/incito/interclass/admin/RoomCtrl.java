@@ -75,9 +75,9 @@ public class RoomCtrl extends BaseCtrl {
 	 * 修改
 	 */
 	@RequestMapping("/edit")
-	public ModelAndView edit(Integer id) {
-		ModelAndView res = new ModelAndView("room/roomAdd");
-		Room room = roomService.getRoomById(id);
+	public ModelAndView edit(Integer roomId) {
+		ModelAndView res = new ModelAndView("room/roomEdit");
+		Room room = roomService.getRoomById(roomId);
 		List<School> schools = schoolService.getSchoolList();
 		res.addObject("room", room);
 		res.addObject("schools", schools);
@@ -93,6 +93,6 @@ public class RoomCtrl extends BaseCtrl {
 		if (result) {
 			return new ModelAndView("redirect:list");
 		}
-		return new ModelAndView("room/roomAdd");
+		return new ModelAndView("room/roomEdit");
 	}
 }

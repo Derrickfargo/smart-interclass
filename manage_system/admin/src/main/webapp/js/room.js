@@ -43,8 +43,7 @@ function searchRoom(pageNum) {
 // 页面跳转，查看教师详情或者修改教师信息
 function modifyRoom(roomId) {
 	$("#roomId").val(roomId);
-	$("#pageType").val(pageType);
-	$("#searchForm").attr("action", _path + "/room/" + opType);
+	$("#searchForm").attr("action", _path + "/room/edit");
 	$("#searchForm").submit();
 }
 
