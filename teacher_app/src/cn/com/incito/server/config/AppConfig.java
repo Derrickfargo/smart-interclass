@@ -17,21 +17,11 @@ public class AppConfig {
 
 	private final static String APP_CONFIG = "config/application.properties";
 
-	public final static String CONF_IP = "ip";
-	public final static String CONF_PORT = "port";
-
-	private AppConfig() {
-
-	}
-
-	/**
-	 * 获取Properties设置,每次都读
-	 */
+	public final static String CONF_SERVER_IP = "server_ip";
+	public final static String CONF_SERVER_PORT = "server_port";
+	public final static String CONF_LOCAL_IP = "local_ip";
+	
 	public static Properties getProperties() {
-		return new AppConfig().get();
-	}
-
-	private Properties get() {
 		Properties props = new Properties();
 		try {
 			InputStream in = new FileInputStream(APP_CONFIG);
@@ -43,7 +33,7 @@ public class AppConfig {
 		return props;
 	}
 
-	private void setProps(Properties p) {
+	public static void setProperties(Properties p) {
 		try {
 			OutputStream in = new FileOutputStream(APP_CONFIG);
 			p.store(in, null);
@@ -53,29 +43,4 @@ public class AppConfig {
 			e.printStackTrace();
 		}
 	}
-
-	public String get(String key) {
-		Properties props = get();
-		return (props != null) ? props.getProperty(key) : null;
-	}
-
-	public void set(Properties ps) {
-		Properties props = get();
-		props.putAll(ps);
-		setProps(props);
-	}
-
-	public void set(String key, String value) {
-		Properties props = get();
-		props.setProperty(key, value);
-		setProps(props);
-	}
-
-	public void remove(String... key) {
-		Properties props = get();
-		for (String k : key)
-			props.remove(k);
-		setProps(props);
-	}
-
 }

@@ -1,9 +1,13 @@
 package cn.com.incito.interclass.ui.widget;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Stroke;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -45,20 +49,16 @@ public class MedalDialog extends JDialog implements MouseListener {
 
 	private JLabel lblBackground;
 
-	private JButton btnClose, btnOK, btnCancel;
+	private JButton btnClose;
 
 	private JButton btnMedal1, btnMedal2, btnMedal3, btnMedal4;
-
-	private StringBuffer medalsStr=new StringBuffer();
-
-	private String medalSelect;
 
 	private String medals;
 
 	public MedalDialog(JFrame frame, Group group) {
 		super(frame, true);
 		this.group = group;
-		setSize(392, 228);
+		setSize(392, 170);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);// 设置窗体中间位置
 		setLayout(null);// 绝对布局
@@ -76,18 +76,22 @@ public class MedalDialog extends JDialog implements MouseListener {
 		btnClose.setBounds(352, 0, imgMax.getIconWidth(), imgMax.getIconHeight());
 		btnClose.addMouseListener(this);
 
-		JLabel lblMessage = new JLabel("", JLabel.CENTER);
+		JLabel lblMessage = new JLabel("", JLabel.LEFT);
 		if (group.getName() == null) {
 			lblMessage.setText("勋章列表");
 		} else {
 			String title = "\"%s\"勋章列表";
 			lblMessage.setText(String.format(title, group.getName()));
 		}
-		lblMessage.setFont(new Font("Microsoft YaHei", Font.BOLD, 16));
+		lblMessage.setFont(new Font("Microsoft YaHei", Font.BOLD, 15));
 		lblMessage.setForeground(Color.WHITE);
-		lblMessage.setBounds(20, 10, 352, 30);
+		lblMessage.setBounds(5, 3, 352, 30);
 		add(lblMessage);
-
+		
+		JLabel lblLine = getLine();
+		add(lblLine);
+		lblLine.setBounds(0, 31, 392,3);
+		
 		JPanel pnlMedal = new JPanel();
 		pnlMedal.setOpaque(false);
 		pnlMedal.setLayout(null);
@@ -97,7 +101,7 @@ public class MedalDialog extends JDialog implements MouseListener {
 		if (group.getMedals() != null && !"".equals(group.getMedals())) {
 			medals = group.getMedals();
 		} else {
-			medals = " ";
+			medals = "";
 		}
 		if (medals.contains("1")) {
 			btnMedal1.setIcon(new ImageIcon("images/dialog/ico_medal_1.png"));
@@ -106,7 +110,7 @@ public class MedalDialog extends JDialog implements MouseListener {
 			btnMedal1.setName(UNSELECTED);
 		}
 		btnMedal1.setFocusable(false);
-		btnMedal1.setBounds(0, 20, 98, 98);
+		btnMedal1.setBounds(0, 16, 98, 98);
 		pnlMedal.add(btnMedal1);
 		btnMedal1.addMouseListener(this);
 
@@ -118,7 +122,7 @@ public class MedalDialog extends JDialog implements MouseListener {
 			btnMedal2.setName(UNSELECTED);
 		}
 		btnMedal2.setFocusable(false);
-		btnMedal2.setBounds(98, 20, 98, 98);
+		btnMedal2.setBounds(98, 16, 98, 98);
 		pnlMedal.add(btnMedal2);
 		btnMedal2.addMouseListener(this);
 
@@ -130,7 +134,7 @@ public class MedalDialog extends JDialog implements MouseListener {
 			btnMedal3.setName(UNSELECTED);
 		}
 		btnMedal3.setFocusable(false);
-		btnMedal3.setBounds(196, 20, 98, 98);
+		btnMedal3.setBounds(196, 16, 98, 98);
 		pnlMedal.add(btnMedal3);
 		btnMedal3.addMouseListener(this);
 
@@ -142,7 +146,7 @@ public class MedalDialog extends JDialog implements MouseListener {
 			btnMedal4.setName(UNSELECTED);
 		}
 		btnMedal4.setFocusable(false);
-		btnMedal4.setBounds(294, 20, 98, 98);
+		btnMedal4.setBounds(294, 16, 98, 98);
 		pnlMedal.add(btnMedal4);
 		btnMedal4.addMouseListener(this);
 
@@ -156,29 +160,29 @@ public class MedalDialog extends JDialog implements MouseListener {
 		// x += 98;
 		// }
 
-		btnOK = new JButton();
-		btnOK.setBorderPainted(false);
-		btnOK.setContentAreaFilled(false);
-		ImageIcon imgOK = new ImageIcon("images/dialog/bg_btn.png");
-		btnOK.setIcon(imgOK);
-		add(btnOK);// 添加按钮
-		btnOK.setBounds(96, 170, imgOK.getIconWidth(), imgOK.getIconHeight());
-		btnOK.addMouseListener(this);
-
-		btnCancel = new JButton();
-		btnCancel.setBorderPainted(false);
-		btnCancel.setContentAreaFilled(false);
-		ImageIcon imgCancel = new ImageIcon("images/dialog/bg_btn2.png");
-		btnCancel.setIcon(imgCancel);
-		add(btnCancel);// 添加按钮
-		btnCancel.setBounds(212, 170, imgCancel.getIconWidth(), imgCancel.getIconHeight());
-		btnCancel.addMouseListener(this);
-
 		setBackground();
 		setDragable();
 		setVisible(true);
 	}
 
+	private JLabel getLine() {
+		return new JLabel() {
+			private static final long serialVersionUID = 2679733728559406364L;
+			@Override
+			public void paint(Graphics g) {
+				Graphics2D g2d = (Graphics2D) g;
+				Stroke stroke = g2d.getStroke();
+				Color color = g2d.getColor();
+				g2d.setStroke(new BasicStroke(2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER));
+				g2d.setColor(new Color(Integer.parseInt("FFFFFF", 16)));
+				g2d.drawLine(0, 0, this.getWidth(), 0);
+				g2d.setStroke(stroke);
+				g2d.setColor(color);
+				this.paintComponents(g2d);
+			}
+		};
+	}
+	
 	private JButton createMedal(int number) {
 		JButton lblMedal = new JButton();
 		lblMedal.setBorderPainted(false);// 设置边框不可见
@@ -192,7 +196,7 @@ public class MedalDialog extends JDialog implements MouseListener {
 	public void setBackground() {
 		lblBackground = new JLabel();
 		lblBackground.setIcon(new ImageIcon("images/dialog/bg_style1.png"));
-		lblBackground.setBounds(0, 0, 392, 228);
+		lblBackground.setBounds(0, 0, 392, 170);
 		add(lblBackground);
 	}
 
@@ -223,19 +227,11 @@ public class MedalDialog extends JDialog implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (e.getSource() == btnClose || e.getSource() == btnCancel) {
+		if (e.getSource() == btnClose) {
 			dispose();
+			return;
 		}
-		if (e.getSource() == btnOK) {
-			medalsStr.append(medals);
-			if (medalSelect != null && !"".equals(medalSelect)) {
-				medalsStr.append(",");
-				medalsStr.append(medalSelect);
-			}
-			updateMedals(medalsStr.toString());
-			dispose();
-
-		}
+		String medalSelect = "";
 		if (e.getSource() == btnMedal1) {
 			if (!btnMedal1.getName().equals(SELECTED)) {// 该组未获得勋章
 				btnMedal1.setName(TEMP_SELECTED);
@@ -312,7 +308,13 @@ public class MedalDialog extends JDialog implements MouseListener {
 			}
 			medalSelect = "4";
 		}
-
+		if (e.getSource() instanceof JButton) {
+			if (medals.contains(medalSelect)) {
+				return;
+			}
+			updateMedals(medals + "," + medalSelect);
+			dispose();
+		}
 	}
 
 	@Override
@@ -329,12 +331,6 @@ public class MedalDialog extends JDialog implements MouseListener {
 	public void mouseEntered(MouseEvent e) {
 		if (e.getSource() == btnClose) {
 			btnClose.setIcon(new ImageIcon("images/login/8.png"));
-		}
-		if (e.getSource() == btnOK) {
-			btnOK.setIcon(new ImageIcon("images/dialog/bg_btn_hover.png"));
-		}
-		if (e.getSource() == btnCancel) {
-			btnCancel.setIcon(new ImageIcon("images/dialog/bg_btn2_hover.png"));
 		}
 		if (e.getSource() == btnMedal1) {
 			if (!btnMedal1.getName().equals(SELECTED)) {
@@ -363,12 +359,6 @@ public class MedalDialog extends JDialog implements MouseListener {
 		if (e.getSource() == btnClose) {
 			btnClose.setIcon(new ImageIcon("images/login/7.png"));
 		}
-		if (e.getSource() == btnOK) {
-			btnOK.setIcon(new ImageIcon("images/dialog/bg_btn.png"));
-		}
-		if (e.getSource() == btnCancel) {
-			btnCancel.setIcon(new ImageIcon("images/dialog/bg_btn2.png"));
-		}
 		if (e.getSource() == btnMedal1) {
 			if (!btnMedal1.getName().equals(SELECTED) && !btnMedal1.getName().equals(TEMP_SELECTED)) {
 				btnMedal1.setIcon(new ImageIcon("images/dialog/ico_medal_1_no.png"));
@@ -396,7 +386,7 @@ public class MedalDialog extends JDialog implements MouseListener {
 	 * 
 	 * @param medals
 	 */
-	public void updateMedals(String medals) {
+	public void updateMedals(final String medals) {
 		// 使用Get方法，取得服务端响应流：
 		AsyncHttpConnection http = AsyncHttpConnection.getInstance();
 		ParamsWrapper params = new ParamsWrapper();
@@ -414,7 +404,7 @@ public class MedalDialog extends JDialog implements MouseListener {
 					if (jsonObject.getIntValue("code") == 1) {
 						return;
 					} else {
-						group.setMedals(medalsStr.toString());
+						group.setMedals(medals);
 					}
 				}
 			}

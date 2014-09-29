@@ -1,9 +1,13 @@
 package cn.com.incito.interclass.ui.widget;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Stroke;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -43,7 +47,7 @@ public class PraiseDialog extends JDialog implements MouseListener {
 
 	private JLabel lblBackground;
 
-	private JButton btnClose, btnOK, btnCancel;
+	private JButton btnClose;
 
 	private JButton btnPoint1, btnPoint2, btnPoint3;
 
@@ -55,7 +59,7 @@ public class PraiseDialog extends JDialog implements MouseListener {
 		super(MainFrame.getInstance().getFrame(), true);
 		this.frame = panel;
 		this.group = group;
-		setSize(392, 228);
+		setSize(392, 170);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);// 设置窗体中间位置
 		setLayout(null);// 绝对布局
@@ -73,17 +77,21 @@ public class PraiseDialog extends JDialog implements MouseListener {
 		btnClose.setBounds(352, 0, imgMax.getIconWidth(), imgMax.getIconHeight());
 		btnClose.addMouseListener(this);
 
-		JLabel lblMessage = new JLabel("", JLabel.CENTER);
+		JLabel lblMessage = new JLabel("", JLabel.LEFT);
 		if (group.getName() == null) {
 			lblMessage.setText("小组加分");
 		} else {
 			String title = "\"%s\"小组加分";
 			lblMessage.setText(String.format(title, group.getName()));
 		}
-		lblMessage.setFont(new Font("Microsoft YaHei", Font.BOLD, 16));
+		lblMessage.setFont(new Font("Microsoft YaHei", Font.BOLD, 15));
 		lblMessage.setForeground(Color.WHITE);
-		lblMessage.setBounds(20, 10, 352, 30);
+		lblMessage.setBounds(5, 3, 352, 30);
 		add(lblMessage);
+		
+		JLabel lblLine = getLine();
+		add(lblLine);
+		lblLine.setBounds(0, 31, 392,3);
 
 		JPanel pnlMedal = new JPanel();
 		pnlMedal.setOpaque(false);
@@ -108,29 +116,29 @@ public class PraiseDialog extends JDialog implements MouseListener {
 		pnlMedal.add(btnPoint3);
 		btnPoint3.addMouseListener(this);
 
-		btnOK = new JButton();
-		btnOK.setBorderPainted(false);
-		btnOK.setContentAreaFilled(false);
-		ImageIcon imgOK = new ImageIcon("images/dialog/bg_btn.png");
-		btnOK.setIcon(imgOK);
-		add(btnOK);// 添加按钮
-		btnOK.setBounds(96, 170, imgOK.getIconWidth(), imgOK.getIconHeight());
-		btnOK.addMouseListener(this);
-
-		btnCancel = new JButton();
-		btnCancel.setBorderPainted(false);
-		btnCancel.setContentAreaFilled(false);
-		ImageIcon imgCancel = new ImageIcon("images/dialog/bg_btn2.png");
-		btnCancel.setIcon(imgCancel);
-		add(btnCancel);// 添加按钮
-		btnCancel.setBounds(212, 170, imgCancel.getIconWidth(), imgCancel.getIconHeight());
-		btnCancel.addMouseListener(this);
-
 		setBackground();
 		setDragable();
 		setVisible(true);
 	}
 
+	private JLabel getLine() {
+		return new JLabel() {
+			private static final long serialVersionUID = 2679733728559406364L;
+			@Override
+			public void paint(Graphics g) {
+				Graphics2D g2d = (Graphics2D) g;
+				Stroke stroke = g2d.getStroke();
+				Color color = g2d.getColor();
+				g2d.setStroke(new BasicStroke(2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER));
+				g2d.setColor(new Color(Integer.parseInt("FFFFFF", 16)));
+				g2d.drawLine(0, 0, this.getWidth(), 0);
+				g2d.setStroke(stroke);
+				g2d.setColor(color);
+				this.paintComponents(g2d);
+			}
+		};
+	}
+	
 	private JButton createPointLabel(int number) {
 		JButton lblPointLabel = new JButton();
 		lblPointLabel.setBorderPainted(false);// 设置边框不可见
@@ -144,7 +152,7 @@ public class PraiseDialog extends JDialog implements MouseListener {
 	public void setBackground() {
 		lblBackground = new JLabel();
 		lblBackground.setIcon(new ImageIcon("images/dialog/bg_style1.png"));
-		lblBackground.setBounds(0, 0, 392, 228);
+		lblBackground.setBounds(0, 0, 392, 170);
 		add(lblBackground);
 	}
 
@@ -175,8 +183,9 @@ public class PraiseDialog extends JDialog implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (e.getSource() == btnClose || e.getSource() == btnCancel) {
+		if (e.getSource() == btnClose) {
 			dispose();
+			return;
 		}
 
 		if (e.getSource() == btnPoint1) {
@@ -206,13 +215,9 @@ public class PraiseDialog extends JDialog implements MouseListener {
 			btnPoint2.setIcon(new ImageIcon("images/dialog/ico_add2.png"));
 			btnPoint3.setIcon(new ImageIcon("images/dialog/ico_add3_hover.png"));
 		}
-		if (e.getSource() == btnOK) {
-			if (score == 0) {
-				JOptionPane.showMessageDialog(this, "请选择分数");
-			} else {
-				changePoint(score);
-				dispose();
-			}
+		if (e.getSource() instanceof JButton) {
+			changePoint(score);
+			dispose();
 		}
 
 	}
@@ -232,12 +237,6 @@ public class PraiseDialog extends JDialog implements MouseListener {
 		if (e.getSource() == btnClose) {
 			btnClose.setIcon(new ImageIcon("images/login/8.png"));
 		}
-		if (e.getSource() == btnOK) {
-			btnOK.setIcon(new ImageIcon("images/dialog/bg_btn_hover.png"));
-		}
-		if (e.getSource() == btnCancel) {
-			btnCancel.setIcon(new ImageIcon("images/dialog/bg_btn2_hover.png"));
-		}
 		if (e.getSource() == btnPoint1) {
 			btnPoint1.setIcon(new ImageIcon("images/dialog/ico_add1_hover.png"));
 		}
@@ -253,12 +252,6 @@ public class PraiseDialog extends JDialog implements MouseListener {
 	public void mouseExited(MouseEvent e) {
 		if (e.getSource() == btnClose) {
 			btnClose.setIcon(new ImageIcon("images/login/7.png"));
-		}
-		if (e.getSource() == btnOK) {
-			btnOK.setIcon(new ImageIcon("images/dialog/bg_btn.png"));
-		}
-		if (e.getSource() == btnCancel) {
-			btnCancel.setIcon(new ImageIcon("images/dialog/bg_btn2.png"));
 		}
 		if (e.getSource() == btnPoint1) {
 			if (Boolean.parseBoolean(btnPoint1.getName())) {
@@ -291,7 +284,7 @@ public class PraiseDialog extends JDialog implements MouseListener {
 	public void changePoint(final int updateScore) {
 		String studentId = "";
 		List<Student> studentList = group.getStudents();
-		if (studentList == null || studentList.size() < 0) {
+		if (studentList == null || studentList.size() == 0) {
 			return;
 		}
 		for (int i = 0; i < studentList.size(); i++) {
@@ -299,7 +292,9 @@ public class PraiseDialog extends JDialog implements MouseListener {
 				studentId = studentId + studentList.get(i).getId() + ",";
 			}
 		}
+		//TODO 
 		if (studentId == null || "".equals(studentId)) {
+			JOptionPane.showMessageDialog(this, "当前小组没有学生登陆，不能为小组加分！");
 			return;
 		}
 		// 使用Get方法，取得服务端响应流：

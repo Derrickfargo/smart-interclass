@@ -9,11 +9,11 @@ public class URLs {
 	private static String PORT = "9090";
 	static {
 		Properties props = AppConfig.getProperties();
-		String ip = props.getProperty(AppConfig.CONF_IP);
+		String ip = props.getProperty(AppConfig.CONF_SERVER_IP);
 		if (ip != null && !ip.equals("")) {
 			IP = ip;
 		}
-		String port = props.getProperty(AppConfig.CONF_PORT);
+		String port = props.getProperty(AppConfig.CONF_SERVER_PORT);
 		if (port != null && !port.equals("")) {
 			PORT = port;
 		}

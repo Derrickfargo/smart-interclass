@@ -19,6 +19,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Properties;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -27,10 +28,14 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 
 import cn.com.incito.interclass.po.Group;
+import cn.com.incito.interclass.ui.widget.IpDialog;
 import cn.com.incito.server.api.Application;
+import cn.com.incito.server.config.AppConfig;
 import cn.com.incito.server.core.CoreSocket;
+import cn.com.incito.server.utils.NetworkUtils;
 
 public class MainFrame extends MouseAdapter {
 	private static MainFrame instance;
@@ -125,8 +130,34 @@ public class MainFrame extends MouseAdapter {
 		CoreSocket.getInstance().start();
 		showLoginUI();
 		setDragable();
+		SwingUtilities.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				checkIp();
+			}
+		});
 	}
 	
+	private void checkIp() {
+		Properties props = AppConfig.getProperties();
+		String oip = props.get(AppConfig.CONF_LOCAL_IP).toString();
+		String nip = NetworkUtils.getLocalIp();
+		if (oip == null || oip.equals("")) {
+			if (!nip.equals("")) {
+				props.put(AppConfig.CONF_LOCAL_IP, nip);
+				AppConfig.setProperties(props);
+				new IpDialog(nip);
+			}
+			return;
+		}
+		if (!nip.equals("") && !nip.equals(oip)) {
+			props.put(AppConfig.CONF_LOCAL_IP, nip);
+			AppConfig.setProperties(props);
+			new IpDialog(nip);
+		}
+	}
+
 	public void showPrepare() {
 		setVisible(true);
 		frame.setExtendedState(JFrame.NORMAL);

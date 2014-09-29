@@ -16,6 +16,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Properties;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -33,9 +34,12 @@ import cn.com.incito.http.StringResponseHandler;
 import cn.com.incito.http.support.ParamsWrapper;
 import cn.com.incito.interclass.po.Classes;
 import cn.com.incito.interclass.po.Course;
+import cn.com.incito.interclass.ui.widget.IpDialog;
 import cn.com.incito.interclass.ui.widget.Item;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.api.result.TeacherGroupResultData;
+import cn.com.incito.server.config.AppConfig;
+import cn.com.incito.server.utils.NetworkUtils;
 import cn.com.incito.server.utils.UIHelper;
 import cn.com.incito.server.utils.URLs;
 
@@ -316,6 +320,7 @@ public class Login2 extends MouseAdapter {
 						@Override
 						public void run() {
 							new FloatIcon().setVisible(true);
+							
 						}
 					});
 

@@ -1,16 +1,18 @@
 package cn.com.incito.server.utils;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.net.SocketException;
+import java.util.Map.Entry;
+import java.util.Properties;
+import java.util.Set;
+
+import cn.com.incito.server.config.AppConfig;
 
 public class NetworkUtils {
 
 	/**
 	 * 获取当前正在工作的mac地址
-	 * @throws SocketException
-	 * @throws IOException
+	 * 
 	 */
 	public static String getLocalMac() {
 		try {
@@ -35,4 +37,30 @@ public class NetworkUtils {
 			return "";
 		}
 	}
+
+	/**
+	 * 获得当前正在工作的ip地址
+	 * @return
+	 */
+	public static String getLocalIp() {
+		try {
+			InetAddress addr = InetAddress.getLocalHost();
+			String ip = addr.getHostAddress().toString();// 获得本机IP
+			System.out.println("IP  : " + ip);
+			return ip;
+		} catch (Exception e) {
+			return "";
+		}
+	}
+
+	public static void main(String[] args) {
+		Properties props = AppConfig.getProperties();
+		Set<Entry<Object, Object>> sets = props.entrySet();
+		for (Entry<Object, Object> entry : sets) {
+			System.out.println(entry.getKey() + "->" + entry.getValue());
+		}
+		props.put(AppConfig.CONF_LOCAL_IP, "127.0.0.1");
+		AppConfig.setProperties(props);
+	}
+
 }
