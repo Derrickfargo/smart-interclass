@@ -5,6 +5,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 
+import cn.com.incito.classroom.utils.ApiClient;
 import cn.com.incito.socket.utils.BufferUtils;
 import cn.com.incito.wisdom.sdk.log.WLog;
 
@@ -49,6 +50,7 @@ public class MessageParser {
                 return;
             }
         } catch (IOException e) {
+        	ApiClient.uploadErrorLog(e.getMessage());
             WLog.e(MessageParser.class, "获取MessageHandler出错:" + e.getMessage());
             return;
         }
@@ -84,10 +86,12 @@ public class MessageParser {
             // 获取fake id的值
             fakeId = Integer.parseInt(BufferUtils.decodeIntLittleEndian(fakeIdByte, 0, fakeIdByte.length) + "");
         } catch (NumberFormatException ex) {
+        	ApiClient.uploadErrorLog(ex.getMessage());
             ex.printStackTrace();
             WLog.e(MessageParser.class, "ilegal Number parser");
             return false;
         } catch (Exception e) {
+        	ApiClient.uploadErrorLog(e.getMessage());
             WLog.e(MessageParser.class, "unknow fake Id parser failed");
             return false;
         }
@@ -128,6 +132,7 @@ public class MessageParser {
             message.setBodyBuffer(bodyBuffer);
             return true;
         } catch (IOException e) {
+        	ApiClient.uploadErrorLog(e.getMessage());
             WLog.e(MessageParser.class, "failed to fetch message body :", e);
             return false;
         }
