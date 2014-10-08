@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+     xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+     id="WebApp_ID" version="3.1">
+
+	<!-- spring context加载，在此只需配置一个context即可，无需针对mvc和context分别配置，重复加载 -->
+  <servlet>
+		<servlet-name>spring</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param> 
+			<param-name>contextConfigLocation</param-name> 
+			<param-value>classpath:conf/spring/spring.xml</param-value> 
+		</init-param> 
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>spring</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	
+	<!-- Spring 刷新Introspector防止内存泄露   -->
+	<listener>
+		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+	</listener>
+	
+	<!-- 权限过滤filter 开始 -->
+	<filter>
+		<filter-name>SecurityFilter</filter-name>
+		<filter-class>com.incito.product.common.WebSecurityFilter</filter-class>
+		<init-param>
+			<param-name>urls</param-name>
+			<param-value>/xxx</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>SecurityFilter</filter-name>
+		<url-pattern>/xxx1/*</url-pattern>
+		<url-pattern>/xxx2/*</url-pattern>
+	</filter-mapping>
+		<!-- url-patter 需要过滤的请求规则 ，多个配置 url-patter 列表-->
+	<!-- 权限过滤filter 结束 -->
+	
+</web-app>

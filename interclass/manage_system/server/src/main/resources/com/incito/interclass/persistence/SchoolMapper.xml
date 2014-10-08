@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.incito.interclass.persistence.SchoolMapper">
+
+	<select id="getSchoolList" resultType="com.incito.interclass.entity.School">
+		SELECT	
+			id,name,school_alias AS schoolAlias ,school_number AS schoolNumber,phone,email,address,
+			zip_code AS zipCode,school_type AS schoolType,educational_type AS educationalType,intro,ctime
+		FROM 
+			tb_school
+		ORDER BY
+			id
+	</select>
+	
+	<select id="getSchoolListByCondition" resultType="com.incito.interclass.entity.School" parameterType="java.util.Map">
+		SELECT	
+			id,name,school_alias AS schoolAlias ,school_number AS schoolNumber,phone,email,address,
+			zip_code AS zipCode,school_type AS schoolType,educational_type AS educationalType,intro,ctime
+		FROM 
+			tb_school
+		<where>
+			<if test="name != null and name != ''">
+				name LIKE '%' #{name} '%'
+			</if>
+			<if test="schoolType != null and schoolType != -1">
+				AND school_type = #{schoolType}
+			</if>
+		</where>
+		ORDER BY
+			id
+	</select>
+
+	<insert id="save" parameterType="com.incito.interclass.entity.School" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO 
+			tb_school(name,school_alias,school_number,phone,email,address,zip_code,school_type,educational_type,intro,ctime)
+		VALUES
+			(#{name},#{schoolAlias},#{schoolNumber},#{phone},#{email},#{address},#{zipCode},#{schoolType},#{educationalType},#{intro},now())
+	</insert>
+	
+	<delete id="delete" parameterType="java.lang.Integer">
+		DELETE FROM tb_school WHERE id = #{id} 
+	</delete>
+</mapper>

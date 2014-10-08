@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.incito.interclass.persistence.VersionMapper">
+
+	<select id="getVersionListByCondition" resultType="com.incito.interclass.entity.Version" parameterType="java.util.Map">
+		SELECT	
+			id,code,name,description,type,url,forcibly,ctime
+		FROM 
+			tb_version
+		<if test="type != -1">
+			WHERE type = #{type}
+		</if>
+		ORDER BY
+			id
+	</select>
+
+	<select id="getVersionById" resultType="com.incito.interclass.entity.Version" parameterType="java.lang.Integer">
+		SELECT	
+			id,code,name,description,type,url,forcibly,ctime
+		FROM 
+			tb_version
+		WHERE
+			tb_version.id = #{id}
+		ORDER BY
+			id
+	</select>
+	
+	<select id="getVersion" resultType="com.incito.interclass.entity.Version" parameterType="java.util.Map">
+		SELECT	
+			id,code,name,description,type,url,forcibly,ctime
+		FROM 
+			tb_version
+		WHERE
+			type = #{type} AND code = #{code}
+		ORDER BY
+			id
+	</select>
+	
+	<insert id="save" parameterType="com.incito.interclass.entity.Version" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO 
+			tb_version(code,name,description,type,url,forcibly,ctime)
+		VALUES
+			(#{code},#{name},#{description},#{type},#{url},#{forcibly},now())
+	</insert>
+	
+	<delete id="delete" parameterType="java.lang.Integer">
+		DELETE FROM tb_version WHERE id = #{id} 
+	</delete>
+</mapper>

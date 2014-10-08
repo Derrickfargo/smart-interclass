@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">互动课堂</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="load_dialog_default_text">请稍等</string>
+    <string name="waiting_access_wifi">正在进入教室...</string>
+    <!--toast-->
+    <string name="loading_network_disconnect">没能连接成功，联系老师吧~</string>
+    <string name="toast_stname_notnull">要填上名字哦~</string>
+    <string name="toast_stname_tooshort">名字太短了吧~</string>
+    <string name="toast_stname_blank">名字中不能包含空格哦~</string>
+    <string name="toast_stnumber_notnull">填上你的学号吧</string>
+    <string name="toast_stname_repeat">学号 %s 已经注册</string>
+    <string name="toast_choose_atleast_one_desk">请选择绑定的课桌</string>
+    <string name="toast_group_isfull">小组已满员，换个桌子吧</string>
+    <string name="toast_quit_app">再按一次退出程序</string>
+    <string name="loading_msg">正在处理，请等一下哦！~</string>
+    <string name="loading_complete_msg">处理完毕，正在进入...</string>
+
+    <string name="input_group_name_hint">请输入小组名称</string>
+    <string name="input_ip_hint">请输入教师端IP地址</string>
+    <string name="group_name_null">小组名称还没有讨论好吗？</string>
+    <string name="group_name_short_notice">小组名称不能少于两个字哦！</string>
+    <string name="waiting_other_confirm_tip">稍等一下哦，其他同学还没有确认哦！</string>
+    <!-- msg -->
+    <string name="msg_dialog_network_nowork">网络异常哦，请检查网络哦</string>
+    <!-- button -->
+    <string name="btn_retry">重试</string>
+    <string name="btn_setting">设置</string>
+    
+</resources>

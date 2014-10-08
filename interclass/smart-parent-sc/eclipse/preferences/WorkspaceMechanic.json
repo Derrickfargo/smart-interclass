@@ -1,0 +1,18 @@
+{
+  type : 'com.google.eclipse.mechanic.UriTaskProviderModel',
+  metadata : {
+    name: 'Eclipse Preferences',
+    description: 'Workspace Mechanic tasks for setting up eclipse preferences',
+    contact: 'txfan@isoftstone.com'
+  },  
+  tasks: [
+    'JavaCodeExtras.epf',
+    'JavaCodeFormat.epf',
+    'JavaDebugSettings.epf',
+    'JavaSaveActions.epf',
+    'JavaScriptValidation.epf',    
+    'SourceCodeEncoding.epf',
+    'WSTValidationSettings.epf',
+    'WebResourceFormat.epf'
+  ]
+}

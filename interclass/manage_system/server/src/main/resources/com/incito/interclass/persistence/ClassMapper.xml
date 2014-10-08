@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.incito.interclass.persistence.ClassMapper">
+
+	<select id="getClassList" resultType="com.incito.interclass.entity.Classes" parameterType="java.util.Map">
+		SELECT	
+			id,name,year,school_id AS schoolId,teacher_id AS teacherId,ctime
+		FROM 
+			tb_class
+		WHERE
+			teacher_id = #{teacherId}
+			AND year = #{year}
+		ORDER BY
+			id
+	</select>
+	
+	<select id="getClassById" resultType="com.incito.interclass.entity.Classes" parameterType="java.lang.Integer">
+		SELECT	
+			id,name,year,school_id AS schoolId,teacher_id AS teacherId,ctime
+		FROM 
+			tb_class
+		WHERE
+			id = #{id}
+		ORDER BY
+			id
+	</select>
+	
+	<insert id="save" parameterType="com.incito.interclass.entity.Classes" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO 
+			tb_class(name,year,school_id,teacher_id,ctime)
+		VALUES
+			(#{name},#{year},#{schoolId},#{teacherId},now())
+	</insert>
+	
+	<delete id="delete" parameterType="java.lang.Integer">
+		DELETE FROM tb_class WHERE id = #{id} 
+	</delete>
+</mapper>

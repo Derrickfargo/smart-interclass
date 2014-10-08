@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="cn.com.incito.classroom"
+    android:versionCode="1"
+    android:versionName="1.0">
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="19" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <!--<uses-permission android:name="android.permission.MODIFY_PHONE_STATE" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_CHECKIN_PROPERTIES" />-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <application
+        android:name="cn.com.incito.classroom.base.MyApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/MyAppTheme"
+        android:screenOrientation="landscape">
+        <!-- 初始化页面 -->
+        <activity
+            android:name="cn.com.incito.classroom.ui.activity.LoadingActivity"
+            android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <!-- WIFI选择页面 -->
+        <activity android:name="cn.com.incito.classroom.ui.activity.WifiSelectorActivity"
+            android:screenOrientation="landscape"
+            />
+        
+        <!-- 模块选择页面 -->
+        <activity android:name="cn.com.incito.classroom.ui.activity.MoudleSelectorActivity"
+            android:screenOrientation="landscape"
+            />
+        
+        <!-- 屏幕锁定,等待老师上课 -->
+        <activity android:name="cn.com.incito.classroom.ui.activity.ClassReadyActivity"
+            android:screenOrientation="landscape"
+            />
+        <!-- 输入小组暗号页面 -->
+        <activity android:name="cn.com.incito.classroom.ui.activity.GroupActivity"
+            android:screenOrientation="landscape"
+            />
+        
+        <!--<activity-->
+        <!--android:name="cn.com.incito.classroom.ui.activity.Home"-->
+        <!--android:configChanges="keyboardHidden|orientation"-->
+        <!--android:launchMode="singleInstance">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.MAIN" />-->
+        <!--<category android:name="android.intent.category.HOME" />-->
+        <!--<category android:name="android.intent.category.DEFAULT" />-->
+        <!--</intent-filter>-->
+        <!--</activity>-->
+        <activity
+            android:name="cn.com.incito.classroom.ui.activity.WifiListActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name="cn.com.incito.classroom.Canvas1Activity"
+            android:screenOrientation="landscape" />
+        <activity android:name="cn.com.incito.classroom.Canvas2Activity" />
+        <activity
+            android:name="cn.com.incito.classroom.ui.activity.WaitingActivity"
+            android:screenOrientation="landscape" />
+
+        <service android:name="cn.com.incito.classroom.service.MessageService" />
+    </application>
+
+</manifest>

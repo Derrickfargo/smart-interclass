@@ -1,0 +1,284 @@
+.info-height {
+	height: 800px;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background-size: 100% 100%;
+	font-family: "微软雅黑";
+}
+
+.container {
+	width: 100%;
+}
+
+.navbg {
+	background: url("../images/headerBG.png");
+	background-size: 100% 100%;
+}
+
+.logo {
+	margin-left: 40px;
+}
+
+.leftmenuBG {
+	margin-left: 4%;
+	background: url("../images/leftmenuBG.png");
+	background-size: 100% 100%;
+	height: 645px
+}
+
+.modal-footer {
+	margin-top: 0px;
+	padding-top: 0px;
+}
+
+.panel-group {
+	margin-top: 15px;
+}
+
+.bgnone {
+	background: none !important;
+}
+
+.titleBG {
+	background: url("../images/title.png");
+	background-size: 100% 100%;
+}
+
+.titleBG>h3.panel-title {
+	font-size: 14px;
+}
+
+.panel-title {
+	font-weight: 800;
+}
+
+.panel-group li {
+	line-height: 15px;
+}
+
+img {
+	margin-left: -20px;
+}
+
+.panel-group a {
+	margin-left: -5px;
+	padding-top: 5px;
+	color: inherit;
+}
+
+.panel-group a:hover {
+	color: #d38a27;
+	background: url("../images/aHoverBG.png");
+	background-position: -30px;
+}
+
+.menulink {
+	background: url("../images/aHoverBG.png");
+	background-position: -30px;
+	color: #d38a27 !important;
+}
+
+.table-hover tbody tr td:hover {
+	background: url('../images/colBG.png');
+	background-size: 100% 100%;
+}
+
+.title {
+	margin-left: 20px;
+	font-family: "微软雅黑";
+}
+
+.panel-title,.modal-title {
+	font-family: "微软雅黑";
+}
+
+.thBG {
+	background: url("../images/thBG.png");
+	background-size: 100% 100%;
+}
+
+.navright {
+	margin-top: 10px;
+	margin-right: 20px !important;
+}
+
+.icon-sm {
+	font-size: 2px;
+}
+
+th,td {
+	border: none !important;
+	text-align: center;
+}
+
+table a {
+	cursor: pointer;
+	text-decoration: none !important;
+	color: #d38a27;
+}
+
+.pagination {
+	margin: 0 !important;
+}
+
+.btn_margin {
+	margin: 0 20px 20px 20px;
+}
+
+.icon-star {
+	color: red;
+	font-size: 10px;
+}
+
+.table-striped-info>tbody>tr:nth-child(odd)>td,.table-striped-info>tbody>tr:nth-child(odd)>th
+	{
+	background-color: #999999;
+}
+
+.col-xs-2 {
+	padding-bottom: 0px;
+}
+
+.pad-btm {
+	padding-bottom: 20px;
+}
+
+h4.pad-btm {
+	font-size: 14px;
+	font-weight: 600;
+	font-family: "微软雅黑";
+	margin-bottom: 2px;
+	padding-bottom: 0px;
+	color: #5a5a5a;
+	margin-left: 20px;
+}
+
+.table {
+	background: #FFF;
+}
+
+#markModal .word-img,#selectFirst .word-img {
+	top: 35%;
+	font-size: 18px;
+	width: 150px;
+}
+
+.img-margin {
+	margin: 10px;
+}
+
+.confirm-font {
+	color: #fea935;
+}
+
+.market-label {
+	padding-top: 7px;
+	padding-left: 0px;
+	width: 100px;
+}
+
+.date-width {
+	width: 120px;
+}
+
+h3.title {
+	font-size: 16px;
+	font-family: "微软雅黑";
+	color: #5a5a5a;
+}
+
+.form-group>hr {
+	margin-top: 0px;
+	width: 96%;
+}
+
+span.input-group-addon>i.icon-remove:hover {
+	cursor: pointer;
+}
+
+input[name=datetimepicker]:hover {
+	cursor: pointer;
+}
+
+.modal-body {
+	padding-top: 10px;
+}
+
+.col-xs-1,.col-xs-2,.col-xs-3,.col-xs-4,.col-xs-5,.col-xs-6,.col-xs-7,.col-xs-8,.col-xs-9,.col-xs-10,.col-xs-11,.col-xs-12
+	{
+	padding-bottom: 5px;
+}
+
+.graphScale {
+	min-width: 155px;
+	height: 250px;
+	width: 50%;
+	float: left;
+}
+
+textarea[disabled] {
+	resize: none;
+}
+
+.user-upload-div {
+	height: 250px;
+	padding-left: 40px;
+}
+
+#user_upload {
+	position: relative;
+	top: 40px;
+}
+
+#user_logout_modal .word-img {
+	position: absolute;
+	top: 30%;
+	word-wrap: break-word;
+	overflow: hidden;
+	float: right;
+	font-size: 20px;
+}
+
+.info-tr:hover {
+	cursor: pointer;
+}
+
+.panel-body-formdiv {
+	border: 1px solid #f5f5f5;
+	padding: 5px;
+	margin-bottom: 5px
+}
+
+.label-required {
+	color: red;
+}
+
+label.error {
+	color: red;
+}
+
+/*header 的【退出】样式*/
+#quit>li>a:hover,
+#quit>li>a:focus {
+	background:#000000; padding:15px 50px 15px 5px;
+}
+#quit>li>a {
+	 padding:15px 50px 15px 5px;
+}
+
+.span-red-bold {
+	color: red;
+	font-weight:bold;
+}
+
+.label-arrows {
+	width: 15px;
+}
+
+.no-lr-padding {
+	padding-left: 0px !important;
+	padding-right: 0px !important;
+}

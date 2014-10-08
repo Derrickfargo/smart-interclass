@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.incito.interclass.persistence.RoomMapper">
+	<select id="getRoomListByByCondition" resultType="com.incito.interclass.entity.Room" parameterType="java.util.Map">
+		SELECT	
+			tb_room.id,tb_room.name,school_id AS schoolId, 
+			tb_school.name AS schoolName,mac,tb_room.ctime
+		FROM 
+			tb_room
+		LEFT JOIN
+			tb_school ON tb_school.id = tb_room.school_id
+		<where>
+			<if test="schoolName != null and schoolName != ''">
+				tb_school.name LIKE '%' #{schoolName} '%'
+			</if>
+			<if test="mac != null and mac != ''">
+				AND tb_room.mac = #{mac}
+			</if>
+		</where>
+		ORDER BY
+			id
+	</select>
+
+	<select id="getRoomByMac" resultType="com.incito.interclass.entity.Room" parameterType="java.lang.String">
+		SELECT	
+			tb_room.id,tb_room.name,school_id AS schoolId, 
+			tb_school.name AS schoolName,mac,tb_room.ctime
+		FROM 
+			tb_room
+		LEFT JOIN
+			tb_school ON tb_school.id = tb_room.school_id
+		WHERE 
+			tb_room.mac = #{mac}
+		ORDER BY
+			id
+	</select>
+	
+	<select id="getRoomById" resultType="com.incito.interclass.entity.Room" parameterType="java.lang.Integer">
+		SELECT	
+			tb_room.id,tb_room.name,school_id AS schoolId, 
+			tb_school.name AS schoolName,mac,tb_room.ctime
+		FROM 
+			tb_room
+		LEFT JOIN
+			tb_school ON tb_school.id = tb_room.school_id
+		WHERE 
+			tb_room.id = #{id}
+	</select>
+	
+	<insert id="save" parameterType="com.incito.interclass.entity.Room" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO 
+			tb_room(name,school_id,mac,ctime)
+		VALUES
+			(#{name},#{schoolId},#{mac},now())
+	</insert>
+	
+	<delete id="delete" parameterType="java.lang.Integer">
+		DELETE FROM tb_room WHERE id = #{id}
+	</delete>
+	
+	<update id="update" parameterType="com.incito.interclass.entity.Room">
+		UPDATE 
+			tb_room
+		SET
+			name = #{name},school_id=#{schoolId},mac=#{mac}
+		WHERE
+			id = #{id}
+	</update>
+</mapper>

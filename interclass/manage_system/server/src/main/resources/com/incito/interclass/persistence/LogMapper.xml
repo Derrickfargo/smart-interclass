@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.incito.interclass.persistence.LogMapper">
+
+	<select id="getLogListByCondition" resultType="com.incito.interclass.entity.Log" parameterType="java.util.Map">
+		SELECT	
+			id,type,mac,reason,url,ctime
+		FROM 
+			tb_log
+		<where>
+			<if test="type != 0">
+				type = #{type}
+			</if>
+			<if test="key != null and key != ''">
+				AND reason LIKE '%' #{key} '%'
+			</if>
+		</where>
+		ORDER BY
+			id
+	</select>
+
+	<select id="getLogById" resultType="com.incito.interclass.entity.Log" parameterType="java.lang.Integer">
+		SELECT	
+			id,type,mac,reason,url,ctime
+		FROM 
+			tb_log
+		WHERE
+			tb_log.id = #{id}
+		ORDER BY
+			id
+	</select>
+	
+	<insert id="save" parameterType="com.incito.interclass.entity.Log" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO 
+			tb_log(id,type,mac,reason,url,ctime)
+		VALUES
+			(#{id},#{type},#{mac},#{reason},#{url},now())
+	</insert>
+	
+	<delete id="delete" parameterType="java.lang.Integer">
+		DELETE FROM tb_log WHERE id = #{id} 
+	</delete>
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="420dp"
+    android:layout_height="320dp"
+    android:gravity="center_horizontal"
+    android:background="@drawable/edit_ip_bg"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/edit_ip_name"
+        android:layout_marginTop="80dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_groupname"
+        android:clickable="true"
+        android:hint="@string/input_ip_hint"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:singleLine="true" />
+
+    <ImageButton
+        android:id="@id/btn_agree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/btn_confirm_group_ok" />
+
+</LinearLayout>

@@ -1,0 +1,109 @@
+<!Doctype html>
+<html>
+	<head>
+		<title>Phone Gap Introduce</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<link rel="stylesheet" type="text/css" href="../JS/jquery.mobile-1.0rc1.min.css"/>
+		<script type="text/javascript" src="../JS/jquery_1_6_4.js"></script>
+		<script type="text/javascript" src="../JS/phonegap-1.2.0.js"></script>
+		<script type="text/javascript" src="../JS/jquery.mobile-1.0rc1.js"></script>
+		<script type="text/javascript">
+			$('#PageOne').live('pageinit', function(event){
+
+				var showTip = function(){
+					navigator.notification.alert("this is a message from page one!", null, "Message", "Close");
+					$(this).die("click");
+				};
+				
+				var confirm = function(){
+					navigator.notification.confirm(
+					        'You are the winner!',  // message
+					        null,              		// callback to invoke with index of button pressed
+					        'Game Over',            // title
+					        'Restart,Exit'          // buttonLabels
+					    );
+					$(this).die("click");
+				};
+				
+				var redirectPage = function(){
+					$.mobile.changePage("#PageTwo");
+					$(this).die("click");
+				};
+				
+				$(event.target).find('#alert').bind('click', showTip);
+				$(event.target).find('#confirm').bind('click', confirm);
+				$(event.target).find('#changePage').bind('click', redirectPage);
+			});
+			
+			$('#PageTwo').live('pageshow', function(event){
+				var showTip = function(){
+					navigator.notification.alert("this is a message from page two!", null, "Message", "Close");
+					$(this).die("click");
+				};
+				
+				var confirm = function(){
+					navigator.notification.confirm(
+					        'You are the losser!',  // message
+					        null,              		// callback to invoke with index of button pressed
+					        'Game Over',            // title
+					        'Restart,Exit'          // buttonLabels
+					    );
+					$(this).die("click");
+				};
+				$(event.target).find('#alert').bind('click', showTip);
+				$(event.target).find('#confirm').bind('click', confirm);
+			});
+		</script>
+	</head>
+	<body>
+		<div id="PageOne" data-role="page">
+			<div data-role="header" data-backbtn="false">
+				<h1>Phone Gap One</h1>
+			</div>
+			<div data-role="content">
+				<div>
+					<a href="#" id="alert" data-role="button" data-theme="b">Alert</a>
+				</div>
+				<div>
+					<a href="#" id="confirm" data-role="button" data-theme="b">Confirm</a>
+				</div>
+				<div>
+					<a href="#" id="changePage" data-role="button" data-theme="b">Change Page</a>
+				</div>
+			</div>
+			<div data-role="footer">
+				<div data-role="navbar">
+					<ul>
+						<li><a href="#PageOne">Page One</a></li>
+						<li><a href="#PageTwo">Page Two</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div id="PageTwo" data-role="page">
+			<div data-role="header" data-backbtn="true">
+				<h1>Phone Gap Two</h1>
+				<a data-role="button" data-rel="back">Previous</a>
+			</div>
+			<div data-role="content">
+				<div>
+					<a href="#" id="alert" data-role="button" data-theme="b">Alert</a>
+				</div>
+				<div>
+					<a href="#" id="confirm" data-role="button" data-theme="b">Confirm</a>
+				</div>
+				<div>
+					<a href="file:///android_asset/www/Pages/pageThree.html" data-role="button" data-theme="b">Page Three</a>
+				</div>
+			</div>
+			<div data-role="footer">
+				<div data-role="navbar">
+					<ul>
+						<li><a href="#PageOne">Page One</a></li>
+						<li><a href="#PageTwo">Page Two</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,72 @@
+/*basic reset*/
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	text-align: center;
+	overflow: hidden;
+}
+
+.gridview .alpha {
+	clear-left: 0;
+}
+
+.gridview .prefix_4 {
+	padding-left: 232.5px;
+}
+
+.gridview {
+	width: 800px;
+	height: 240px;
+	margin: 50px auto 50px auto;
+	perspective: 800px; /*For 3d*/
+	background: #ff0000 no-repeat;
+}
+
+.gridview .grid_4 {
+	width: 220px;
+	height: 120px;
+	display: block;
+	float: left;
+	text-align: center
+}
+
+.gridview [data-role=button] {
+	background: url(../images/bg_input_hover.png) no-repeat;
+	background-size: 220px 120px;
+}
+
+.btnadd {
+	width: 110px;
+	height: 110px;
+	padding: 10px 10px;
+	cursor: pointer;
+	background-position: center;
+}
+
+}
+#username {
+	font: 12px Montserrat;
+	width: 318px;
+	height: 110px;
+	background: url(../images/bg_input_hover.png) no-repeat;
+	padding: 10px 10px;
+	background-position: center;
+	border: none;
+	vertical-align: bottom;
+}
+
+#gender {
+	width: 148px;
+	height: 110px;
+	cursor: pointer;
+	padding: 10px 10px;
+	background-position: center;
+}
+
+}
+.animate:hover {
+	background: rgb(0, 75, 0);
+}
