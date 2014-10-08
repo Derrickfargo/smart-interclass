@@ -53,8 +53,7 @@ public class JobPaperUpload implements Job {
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		try {
 
-			FileReader reader = new FileReader(new File(
-					QuartzManager.PROPERTY_PATH));
+			FileReader reader = new FileReader(new File(QuartzManager.PROPERTY_PATH));
 			properties.load(reader);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -64,8 +63,7 @@ public class JobPaperUpload implements Job {
 			Logger.getLogger(getClass()).info("no new paper to update!!");
 			return;
 		}
-		Long syn_interval_between_file = Long.valueOf(properties
-				.getProperty("syn_interval_between_file"));
+		Long syn_interval_between_file = Long.valueOf(properties.getProperty("syn_interval_between_file"));
 		Logger.getLogger(getClass()).info("job start excuting ...");
 		for (ParamsWrapper p : params) {
 			uploadFile(p);
@@ -97,13 +95,11 @@ public class JobPaperUpload implements Job {
 								// 增加当教师端未注册或网络连接错误的提示
 							}
 							int num = jsonObject.getIntValue("count");
-							String lastupdatetime = jsonObject
-									.getString("lastupdatetime");
+							String lastupdatetime = jsonObject.getString("lastupdatetime");
 							properties.put("last_syn_time", lastupdatetime);
 							FileOutputStream fos;
 							try {
-								fos = new FileOutputStream(
-										QuartzManager.PROPERTY_PATH);
+								fos = new FileOutputStream(QuartzManager.PROPERTY_PATH);
 								properties.store(fos, "");
 							} catch (FileNotFoundException e) {
 								e.printStackTrace();
@@ -145,10 +141,7 @@ public class JobPaperUpload implements Job {
 
 			@Override
 			public boolean accept(File pathname) {
-
-				String last_syn_time = properties.getProperty("last_syn_time",
-						"1");
-
+				String last_syn_time = properties.getProperty("last_syn_time", "1");
 				if (pathname.lastModified() > Long.parseLong(last_syn_time))
 					return true;
 
@@ -181,24 +174,17 @@ public class JobPaperUpload implements Job {
 				for (String str : strs) {
 					ParamsWrapper params = new ParamsWrapper();
 					params.put("type", "1");
-					params.put("teacher_id", Application.getInstance()
-							.getTeacher().getIdcard());
+					params.put("teacher_id", Application.getInstance().getTeacher().getIdcard());
 					params.put("imei", file.getName());
 					params.put("quizid", str.substring(0, str.lastIndexOf(".")));
 					params.put("author_name", "");
-					params.put("classes", Application.getInstance()
-							.getClasses().getName());
-					params.put("course_id", Application.getInstance()
-							.getCourse().getId());
-					params.put("course_name", Application.getInstance()
-							.getCourse().getName());
-					params.put("lessionid", Application.getInstance()
-							.getLessionid());
-					params.put("term", Application.getInstance().getClasses()
-							.getYear());
+					params.put("classes", Application.getInstance().getClasses().getName());
+					params.put("course_id", Application.getInstance().getCourse().getId());
+					params.put("course_name", Application.getInstance().getCourse().getName());
+					params.put("lessionid", Application.getInstance().getLessionid());
+					params.put("term", Application.getInstance().getClasses().getYear());
 					params.put("lastupdatetime", file.lastModified());
-					params.put("file", str, file.getAbsolutePath()
-							+ File.separator + str);
+					params.put("file", str, file.getAbsolutePath() + File.separator + str);
 					list.add(params);
 				}
 			}

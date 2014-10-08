@@ -19,6 +19,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 
@@ -381,9 +382,17 @@ public class FloatIcon extends MouseAdapter {
 		
 	}
 
+	/**
+	 * 开启作业定时上传任务
+	 */
 	private void startUploadJob() {
-		QuartzManager qManager = new QuartzManager();
-		qManager.addJob("paperUpload", JobPaperUpload.class, new Date());
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				QuartzManager qManager = new QuartzManager();
+				qManager.addJob("paperUpload", JobPaperUpload.class, new Date());
+			}
+		}).start();
 	}
 
 }

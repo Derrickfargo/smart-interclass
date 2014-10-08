@@ -15,8 +15,7 @@ public class Constants {
 	public static final String PROPERTIES_FILE = "parameter.properties";
 	public static final String MESSAGE_QUIZ = "<html><font size='6' face='arial' color='#FFFFFF'><strong>%d</strong></font><font size='4'> / </font><font size='4' face='arial' color='#09689d'><strong>%d</strong></font></html>";
 	// 随堂练习存储参数
-	public final static String PAPER_PATH = FileUtils.getProjectPath()
-			+ File.separator + "paper";
+	public final static String PAPER_PATH = FileUtils.getProjectPath() + File.separator + "paper";
 	// public static int STATE_NORMAL = 0; //0正常
 	public static int STATE_QUIZING = 1; // 1课堂练习中
 	public static int STATE_GROUPING = 2; // 2分组中
