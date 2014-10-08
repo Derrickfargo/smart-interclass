@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.incito.base.exception.AppException;
 import com.incito.base.util.Md5Utils;
 import com.incito.interclass.business.SchoolService;
@@ -19,6 +17,8 @@ import com.incito.interclass.common.BaseCtrl;
 import com.incito.interclass.entity.School;
 import com.incito.interclass.entity.Teacher;
 import com.incito.interclass.entity.User;
+import com.incito.parent.pagehelper.PageHelper;
+import com.incito.parent.pagehelper.PageInfo;
 
 @RestController
 @RequestMapping("/teacher")
