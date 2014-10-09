@@ -46,7 +46,7 @@
 	<!--事物处理方式 使用@Transactional 标注在 方法上-->
 	<tx:annotation-driven transaction-manager="transactionManager"/> 
 	
-	<bean id="paginationInterceptor" class="com.github.pagehelper.PageHelper">
+	<bean id="paginationInterceptor" class="com.incito.parent.pagehelper.PageHelper">
 		<property name="dialect" value="mysql" />
 	</bean>
 </beans>
