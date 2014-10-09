@@ -1,6 +1,5 @@
 package com.incito.interclass.entity;
 
-
 public class Student extends User {
 
 	/**
@@ -12,13 +11,12 @@ public class Student extends User {
 	private String number;
 	private String avatar;
 	private int score;
-	
-	
+	private int deviceId;
+
 	public int getScore() {
 		return score;
 	}
 
-	
 	public void setScore(int score) {
 		this.score = score;
 	}
@@ -45,6 +43,14 @@ public class Student extends User {
 
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
+	}
+
+	public int getDeviceId() {
+		return deviceId;
+	}
+
+	public void setDeviceId(int deviceId) {
+		this.deviceId = deviceId;
 	}
 
 }

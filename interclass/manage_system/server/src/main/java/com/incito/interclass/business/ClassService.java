@@ -14,8 +14,15 @@ public class ClassService {
 	@Autowired
 	private ClassMapper classMapper;
 	
+	public List<Classes> getClassListByCondition(){
+		return classMapper.getClassListByCondition();
+	}
 	public List<Classes> getClassList(int teacherId, int year) {
 		return classMapper.getClassList(teacherId, year);
+	}
+	
+	public List<Classes> getClassBySchoolId(int schoolId) {
+		return classMapper.getClassBySchoolId(schoolId);
 	}
 	
 	public Classes getClassById(int id) {

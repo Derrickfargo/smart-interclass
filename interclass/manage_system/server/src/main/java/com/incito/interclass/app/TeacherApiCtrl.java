@@ -12,18 +12,14 @@ import com.incito.interclass.app.result.ApiResult;
 import com.incito.interclass.app.result.TeacherGroupResultData;
 import com.incito.interclass.app.result.TeacherLoginResultData;
 import com.incito.interclass.business.ClassService;
-import com.incito.interclass.business.CourseService;
 import com.incito.interclass.business.DeviceService;
 import com.incito.interclass.business.GroupService;
-import com.incito.interclass.business.RoomService;
 import com.incito.interclass.business.TableService;
 import com.incito.interclass.business.UserService;
 import com.incito.interclass.common.BaseCtrl;
 import com.incito.interclass.entity.Classes;
-import com.incito.interclass.entity.Course;
 import com.incito.interclass.entity.Device;
 import com.incito.interclass.entity.Group;
-import com.incito.interclass.entity.Room;
 import com.incito.interclass.entity.Table;
 import com.incito.interclass.entity.Teacher;
 
@@ -44,13 +40,7 @@ public class TeacherApiCtrl extends BaseCtrl {
 	private UserService userService;
 	
 	@Autowired
-	private CourseService courseService;
-	
-	@Autowired
 	private ClassService classService;
-	
-	@Autowired
-	private RoomService roomService;
 	
 	@Autowired
 	private GroupService groupService;
@@ -69,7 +59,7 @@ public class TeacherApiCtrl extends BaseCtrl {
 	 * @return
 	 */
 	@RequestMapping(value = "/login", produces = { "application/json;charset=UTF-8" })
-	public String login(String uname, String password, String mac) {
+	public String login(String uname, String password) {
 		Teacher teacher = new Teacher();
 		teacher.setUname(uname);
 		teacher.setPassword(password); 
@@ -77,20 +67,13 @@ public class TeacherApiCtrl extends BaseCtrl {
 		if (teacher == null || teacher.getId() == 0) {
 			return renderJSONString(USERNAME_OR_PASSWORD_ERROR);
 		}
-		//获取上课教室
-		Room room = roomService.getRoomByMac(mac);
-		//获取当前老师的课程列表
-		List<Course> courses = courseService.getCourseList();
-		//获取当前老师的教室列表
 		Calendar calendar = Calendar.getInstance();
 		int year = calendar.get(Calendar.YEAR);
 		List<Classes> classes = classService.getClassList(teacher.getId(), year);
 		
 		TeacherLoginResultData data = new TeacherLoginResultData();
 		data.setTeacher(teacher);
-		data.setRoom(room);
 		data.setClasses(classes);
-		data.setCourses(courses);
 		ApiResult result = new ApiResult();
 		result.setCode(ApiResult.SUCCESS);
 		result.setData(data);
@@ -127,8 +110,6 @@ public class TeacherApiCtrl extends BaseCtrl {
 		List<Table> tables = tableService.getTableListByRoomId(roomId);
 		//获得当前教室的设备列表
 		List<Device> devices = deviceService.getDeviceListByRoomId(roomId);
-		//选择的课程
-		Course course = courseService.getCourseById(courseId);
 		//选择的班级
 		Classes classes = classService.getClassById(classId);
 		
@@ -136,7 +117,6 @@ public class TeacherApiCtrl extends BaseCtrl {
 		data.setGroups(groups);
 		data.setTables(tables);
 		data.setDevices(devices);
-		data.setCourse(course);
 		data.setClasses(classes);
 		ApiResult result = new ApiResult();
 		result.setCode(ApiResult.SUCCESS);

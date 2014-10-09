@@ -16,7 +16,7 @@
 <script type="text/javascript" src="${path}/lib/jquery-validation/jquery.metadata.js"></script>
 <script type="text/javascript" src="${path}/lib/jquery-validation/messages_zh.js"></script>
 <script type="text/javascript" src="${path}/lib/md5.js"></script>
-<script type="text/javascript" src="${path}/js/room.js"></script>
+<script type="text/javascript" src="${path}/js/class.js"></script>
 </head>
 
 <body>
@@ -27,56 +27,54 @@
 			<div class="col-xs-12 col-sm-10">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<h3 class="panel-title">修改教室</h3>
+						<h3 class="panel-title">新增班级</h3>
 					</div>
 					<div class="panel-body">
 						<div class="col-xs-12" style="height:10px;"></div>
 						<div class="tab-content">
-							<div class="tab-pane active" id="roominfo">
-								<form action="${path}/room/update" id="roomForm" method="post" class="form-horizontal">
+							<div class="tab-pane active" id="classinfo">
+								<form action="${path}/class/save" id="classForm" method="post" class="form-horizontal">
 									<div class="col-xs-12">
 										<div class="col-xs-12">
-											<div class="form-room">
+											<div class="form-group">
+												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>班级名称：</label>
+												<div class="col-xs-4">
+													<input type="text" name="name" id="className" value="${classes.name}" maxlength="8" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkClassNameTip').addClass('hidden')">
+													<p id="checkClassNameTip" class="help-block hidden"><font color="red"><b>请输入班级名称</b></font></p>
+												</div>
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>所属学校：</label>
 												<div class="col-xs-4">
 													<select id="schoolId" name="schoolId" class="form-control" >
 														<c:forEach items="${schools}" var="school">
-															<c:choose>
-																<c:when test="${school.id == room.schoolId}">
-																	<option value="${school.id }" selected>${school.name }</option>
-																</c:when>
-																<c:otherwise>
-																	<option value="${school.id }">${school.name }</option>
-																</c:otherwise>
-															</c:choose>
+														<option value="${school.id }">${school.name }</option>
 														</c:forEach>
 													</select>
 												</div>
-												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>教室名称：</label>
-												<div class="col-xs-4">
-													<input type="text" name="name" id="roomName" value="${room.name}" maxlength="128" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkRoomNameTip').addClass('hidden')">
-													<p id="checkRoomNameTip" class="help-block hidden"><font color="red"><b>请输入教室名称</b></font></p>
-												</div>
 											</div>
-											<div class="form-room">
-												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>Mac地址：</label>
+											<div class="form-group">
+												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>联系人：</label>
 												<div class="col-xs-4">
-													<input type="text" name="mac" id="mac" value="${room.mac}" maxlength="17" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkMacTip').addClass('hidden')">
-													<p id="checkMacTip" class="help-block hidden"><font color="red"><b>请输入正确的Mac地址</b></font></p>
+													<input type="text" name="contact" id="contact" maxlength="8" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkContactNameTip').addClass('hidden')">
+													<p id="checkContactNameTip" class="help-block hidden"><font color="red"><b>请输入2-8个汉字</b></font></p>
+												</div>
+												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>联系电话：</label>
+												<div class="col-xs-4">
+													<input type="text" name="phone" id="phone" value="${classes.phone}" maxlength="12" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkPhoneTip').addClass('hidden')">
+													<p id="checkPhoneTip" class="help-block hidden"><font color="red"><b>请输入正确的电话或手机号码</b></font></p>
 												</div>
 											</div>
 											<!-- 
-											<div class="form-room text-center help-block">
+											<div class="form-group text-center help-block">
 													提示：XXXX！
 											</div>
 											 -->
 										</div>
 									</div>
-									<input type="hidden" name="id" value="${room.id }"/>
+									
 									<div class='col-xs-offset-4'>
 										<button type="submit" class="btn btn-success col-xs-2">完成</button>
 										<div class="col-xs-1">&nbsp;</div>
-										<button type="button" class="btn btn-default col-xs-2" onclick="goback('修改教室')">取消</button>
+										<button type="button" class="btn btn-default col-xs-2" onclick="goback('新增班级')">取消</button>
 									</div>
 								</form>
 							</div>
