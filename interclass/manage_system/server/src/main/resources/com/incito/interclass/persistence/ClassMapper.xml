@@ -44,4 +44,13 @@
 	<delete id="delete" parameterType="java.lang.Integer">
 		DELETE FROM tb_class WHERE id = #{id} 
 	</delete>
+	
+	<update id="update" parameterType="com.incito.interclass.entity.Classes">
+		UPDATE 
+			tb_class
+		SET
+			name = #{name},school_id=#{schoolId},year=#{year}
+		WHERE
+			id = #{id}
+	</update>
 </mapper>

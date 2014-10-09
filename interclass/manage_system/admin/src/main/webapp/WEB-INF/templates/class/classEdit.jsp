@@ -27,13 +27,13 @@
 			<div class="col-xs-12 col-sm-10">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<h3 class="panel-title">新增班级</h3>
+						<h3 class="panel-title">修改班级</h3>
 					</div>
 					<div class="panel-body">
 						<div class="col-xs-12" style="height:10px;"></div>
 						<div class="tab-content">
 							<div class="tab-pane active" id="classinfo">
-								<form action="${path}/class/save" id="classForm" method="post" class="form-horizontal">
+								<form action="${path}/class/update" id="classForm" method="post" class="form-horizontal">
 									<div class="col-xs-12">
 										<div class="col-xs-12">
 											<div class="form-group">
@@ -46,7 +46,14 @@
 												<div class="col-xs-4">
 													<select id="schoolId" name="schoolId" class="form-control" >
 														<c:forEach items="${schools}" var="school">
-														<option value="${school.id }">${school.name }</option>
+														<c:choose>
+															<c:when test="${school.id == classes.schoolId}">
+																<option value="${school.id }" selected>${school.name }</option>
+															</c:when>
+															<c:otherwise>
+																<option value="${school.id }">${school.name }</option>
+															</c:otherwise>
+														</c:choose>
 														</c:forEach>
 													</select>
 												</div>
@@ -54,7 +61,7 @@
 											<div class="form-group">
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>入学年份：</label>
 												<div class="col-xs-4">
-													<input type="text" name="year" id="year" maxlength="8" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkYearTip').addClass('hidden')">
+													<input type="text" name="year" id="year" value="${classes.year}" maxlength="8" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkYearTip').addClass('hidden')">
 													<p id="checkYearTip" class="help-block hidden"><font color="red"><b>请输入入学年份</b></font></p>
 												</div>
 											</div>
@@ -67,9 +74,10 @@
 									</div>
 									
 									<div class='col-xs-offset-4'>
+										<input type="hidden" id="id" name="id" value="${classes.id }">
 										<button type="submit" class="btn btn-success col-xs-2">完成</button>
 										<div class="col-xs-1">&nbsp;</div>
-										<button type="button" class="btn btn-default col-xs-2" onclick="goback('新增班级')">取消</button>
+										<button type="button" class="btn btn-default col-xs-2" onclick="goback('修改班级')">取消</button>
 									</div>
 								</form>
 							</div>

@@ -8,12 +8,12 @@ $(document).ready(function() {
 //				$("#checkClassNameTip").removeClass("hidden");
 //				flag = false;
 //			}
-//			//检查身份证格式是否正确
-//			var idCarNo = new RegExp(/^\d{17}([0-9]|X)$|^(\d{15})$/);
-//			if (!idCarNo.test($("#idcard").val())) {
-//				$("#checkClassIdTip").removeClass("hidden");
-//				flag = false;
-//			}
+//			//检查年份是否正确
+			var year = new RegExp(/^\d{4,4}$/);
+			if (!year.test($("#year").val())) {
+				$("#checkYearTip").removeClass("hidden");
+				flag = false;
+			}
 //			//检查联系方式格式是否正确
 //			var isTelNum = new RegExp(/^\d{11}/);
 //			if (!isTelNum.test($("#classTel").val())) {
@@ -41,10 +41,9 @@ function searchClass(currentPage) {
 }
 
 // 页面跳转，查看教师详情或者修改教师信息
-function modifyClass(classId, opType, pageType) {
+function modifyClass(classId) {
 	$("#classId").val(classId);
-	$("#pageType").val(pageType);
-	$("#searchForm").attr("action", _path + "/class/" + opType);
+	$("#searchForm").attr("action", _path + "/class/edit");
 	$("#searchForm").submit();
 }
 

@@ -38,4 +38,14 @@ public class ClassService {
 	public void deleteClass(int classId) {
 		classMapper.delete(classId);
 	}
+
+	public boolean update(Classes classes) {
+		try {
+			int result = classMapper.update(classes);
+			return result == 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

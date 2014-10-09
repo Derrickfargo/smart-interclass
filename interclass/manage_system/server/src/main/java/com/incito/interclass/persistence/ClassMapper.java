@@ -39,4 +39,6 @@ public interface ClassMapper {
 	 * 删除班级
 	 */
 	void delete(int id);
+
+	int update(Classes classes);
 }

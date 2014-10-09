@@ -66,4 +66,29 @@ public class ClassCtrl extends BaseCtrl {
 		classService.deleteClass(classId);
 		return new ModelAndView("redirect:list");
 	}
+	
+	/**
+	 * 修改
+	 */
+	@RequestMapping("/edit")
+	public ModelAndView edit(Integer classId) {
+		ModelAndView res = new ModelAndView("class/classEdit");
+		Classes classes = classService.getClassById(classId);
+		List<School> schools = schoolService.getSchoolList();
+		res.addObject("classes", classes);
+		res.addObject("schools", schools);
+		return res;
+	}
+	
+	/**
+	 * 修改
+	 */
+	@RequestMapping("/update")
+	public ModelAndView update(Classes classes) {
+		boolean result = classService.update(classes);
+		if (result) {
+			return new ModelAndView("redirect:list");
+		}
+		return new ModelAndView("class/classEdit");
+	}
 }
