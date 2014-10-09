@@ -52,5 +52,33 @@
 			<artifactId>plexus-compiler-eclipse</artifactId>
 			<version>2.1</version>
 		</dependency>
+		<!-- MyBATIS -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>3.2.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>1.2.2</version>
+		</dependency>
+		<dependency>
+		<groupId>com.incito.class.parent</groupId>
+			<artifactId>class-parent</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.foundationdb</groupId>
+			<artifactId>fdb-sql-parser</artifactId>
+			<version>1.3.0</version>
+		</dependency>
+		
+		<!-- json包 -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.1.37</version>
+		</dependency>
 	</dependencies>
 </project>

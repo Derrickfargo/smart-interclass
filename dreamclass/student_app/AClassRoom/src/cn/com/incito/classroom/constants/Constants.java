@@ -10,7 +10,7 @@ import cn.com.incito.classroom.widget.canvas.ISketchPadTool;
  * 常量文件 Created by popoy on 2014/7/28.
  */
 public class Constants {
-	public static final boolean LOG_OPEN = false;
+	public static final boolean LOG_OPEN = true;
 	public static final boolean OPEN_LOCK_SCREEN = false;// 是否打开锁屏功能
 	public static final boolean UNCATCHED_EXCEPION_HANLED = false;
 	public static final int PORT = 9001;

@@ -20,8 +20,10 @@ import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.classroom.exception.AppException;
 import cn.com.incito.classroom.ui.widget.NetWorkDialog;
 import cn.com.incito.classroom.utils.ApiClient;
+import cn.com.incito.classroom.utils.UpdateManager;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
@@ -87,7 +89,6 @@ public class SplashActivity extends BaseActivity {
 		tv_loading_msg.setText(R.string.loading_msg);
 		Log.i("SplashActivity", "startMain");
 		new Thread() {
-
 			public void run() {
 				while (true) {
 					Log.i("SplashActivity", "检查WiFi是否连接 ");
@@ -101,18 +102,19 @@ public class SplashActivity extends BaseActivity {
 						app.setDeviceId(info.getMacAddress().replace(":", "-"));
 						Log.i("SplashActivity", "WiFi已连接，检查Socket是否连接 ");
 						//TODO 升级
-//						try {
-//							 JSONObject updateResult = JSONObject.parseObject(ApiClient.updateApk());
-//							 WLog.i(SplashActivity.class, "版本更新返回信息："+updateResult);
-//							if(updateResult.getInteger("code")==0){
-//								UpdateManager mUpdateManager = new UpdateManager(SplashActivity.this,updateResult.getString("url"));  
-//							    mUpdateManager.checkUpdateInfo();
-//							}else{
-//								
-//							}
-//						} catch (AppException e) {
-//							e.printStackTrace();
-//						}
+						try {
+							 JSONObject updateResult = JSONObject.parseObject(ApiClient.updateApk());
+							 WLog.i(SplashActivity.class, "版本更新返回信息："+updateResult);
+							if(updateResult.getInteger("code")==0){
+								UpdateManager mUpdateManager = new UpdateManager(SplashActivity.this,updateResult.getString("url"));  
+							    mUpdateManager.checkUpdateInfo();
+							}else{
+								
+							}
+						} catch (AppException e) {
+							ApiClient.uploadErrorLog(e.getMessage());
+							e.printStackTrace();
+						}
 						if (!CoreSocket.getInstance().isConnected()) {
 							Log.i("SplashActivity", "Socket无连接，开始Socket重连，startMain退出 ");
 							CoreSocket.getInstance().disconnect();
@@ -137,7 +139,6 @@ public class SplashActivity extends BaseActivity {
 		}.start();
 
 	}
-
 	private Handler mHandler = new Handler() {
 
 		@Override

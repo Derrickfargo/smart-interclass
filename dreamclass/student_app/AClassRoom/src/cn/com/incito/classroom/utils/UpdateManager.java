@@ -29,13 +29,9 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 public class UpdateManager {
-
 	private Context mContext;
-	
-	
 	//返回的安装包url
 	private String apkUrl = "http://softfile.3g.qq.com:8080/msoft/179/24659/43549/qq_hd_mini_1.4.apk";
-	
 	
 	private Dialog noticeDialog;
 	

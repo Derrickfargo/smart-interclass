@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.incito.interclass.business.CourseService;
 import com.incito.interclass.common.BaseCtrl;
 import com.incito.interclass.entity.Course;
+import com.incito.parent.pagehelper.PageHelper;
+import com.incito.parent.pagehelper.PageInfo;
 
 @RestController
 @RequestMapping("/course")

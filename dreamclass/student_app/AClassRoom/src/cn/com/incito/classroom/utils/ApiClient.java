@@ -18,10 +18,10 @@ import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 
+import android.os.Environment;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.exception.AppException;
-
 
 /**
  * API客户端接口：用于访问网络数据
@@ -31,11 +31,14 @@ import cn.com.incito.classroom.exception.AppException;
  * @created 2014-3-21
  */
 public class ApiClient {
-	public static final String UTF_8 = "UTF-8";
-	private final static int TIMEOUT_CONNECTION = 20000;
-	private final static int TIMEOUT_SOCKET = 20000;
-	private final static int RETRY_TIME = 3;
 
+	public static final String UTF_8 = "UTF-8";
+
+	private final static int TIMEOUT_CONNECTION = 20000;
+
+	private final static int TIMEOUT_SOCKET = 20000;
+
+	private final static int RETRY_TIME = 3;
 
 	private static HttpClient getHttpClient() {
 		HttpClient httpClient = new HttpClient();
@@ -68,7 +71,7 @@ public class ApiClient {
 	private static PostMethod getHttpPost(String url) {
 		PostMethod httpPost = new PostMethod(url);
 		// 设置 请求超时时间
-//		httpPost.getParams().setSoTimeout(TIMEOUT_SOCKET);
+		// httpPost.getParams().setSoTimeout(TIMEOUT_SOCKET);
 		httpPost.setRequestHeader("Host", Constants.UPDATE_HOST);
 		httpPost.setRequestHeader("Connection", "Keep-Alive");
 		return httpPost;
@@ -157,22 +160,18 @@ public class ApiClient {
 	 * @param files
 	 * @throws AppException
 	 */
-	private static String _post(String url,
-			Map<String, Object> params, Map<String, File> files)
-			throws AppException {
+	private static String _post(String url, Map<String, Object> params, Map<String, File> files) throws AppException {
 		// System.out.println("post_url==> "+url);
 		HttpClient httpClient = null;
 		PostMethod httpPost = null;
 
 		// post表单参数处理
-		int length = (params == null ? 0 : params.size())
-				+ (files == null ? 0 : files.size());
+		int length = (params == null ? 0 : params.size()) + (files == null ? 0 : files.size());
 		Part[] parts = new Part[length];
 		int i = 0;
 		if (params != null)
 			for (String name : params.keySet()) {
-				parts[i++] = new StringPart(name, String.valueOf(params
-						.get(name)), UTF_8);
+				parts[i++] = new StringPart(name, String.valueOf(params.get(name)), UTF_8);
 				// System.out.println("post_key==> "+name+"    value==>"+String.valueOf(params.get(name)));
 			}
 		if (files != null)
@@ -192,8 +191,7 @@ public class ApiClient {
 			try {
 				httpClient = getHttpClient();
 				httpPost = getHttpPost(url);
-				httpPost.setRequestEntity(new MultipartRequestEntity(parts,
-						httpPost.getParams()));
+				httpPost.setRequestEntity(new MultipartRequestEntity(parts, httpPost.getParams()));
 				int statusCode = httpClient.executeMethod(httpPost);
 				if (statusCode != HttpStatus.SC_OK) {
 					throw AppException.http(statusCode);
@@ -236,40 +234,45 @@ public class ApiClient {
 		return responseBody;
 	}
 
-	
-	
-	
 	/**
 	 * APK更新
-	 * @return 
-	 * @throws AppException 
+	 * 
+	 * @return
+	 * @throws AppException
 	 */
-	public static String updateApk() throws AppException{
+	public static String updateApk() throws AppException {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("oldVersion", 1);
+		params.put("oldVersion", 2);
 		try {
 			return _post("www.baidu.com", params, null);
 		} catch (Exception e) {
-			if (e instanceof AppException) throw (AppException) e;
+			ApiClient.uploadErrorLog(e.getMessage());
+			if (e instanceof AppException)
+				throw (AppException) e;
 			throw AppException.network(e);
 		}
 	}
+
 	/**
 	 * 日志上传
+	 * 
 	 * @param reason
 	 */
-	public static void uploadErrorLog(String reason){
+	public static void uploadErrorLog(String reason) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("type", 1);
-		String mac = "mac";
 		params.put("mac", MyApplication.deviceId == null ? "" : MyApplication.deviceId);
 		params.put("reason", reason);
 		Map<String, File> files = new HashMap<String, File>();
-		files.put("file", new File("log/teacher.log"));
+		files.put("file", new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "MyApp" + File.separator + "log"));
 		try {
 			_post(Constants.URL_UPLOAD_LOG, params, files);
 		} catch (Exception e) {
-			
+
 		}
 	}
+	
+	
+	
+	
 }

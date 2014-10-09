@@ -369,7 +369,6 @@ public class LogService extends Service {
 		commandList.add("-v");
 		commandList.add("time");
 		commandList.add("*:I");
-
 		// commandList.add("*:E");// 过滤所有的错误信息
 
 		// 过滤指定TAG的信息
