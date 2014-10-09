@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -18,6 +19,8 @@ import com.incito.interclass.entity.Device;
 import com.incito.interclass.entity.School;
 import com.incito.interclass.entity.Student;
 import com.incito.interclass.entity.User;
+import com.incito.parent.pagehelper.PageHelper;
+import com.incito.parent.pagehelper.PageInfo;
 
 @RestController
 @RequestMapping("/student")
@@ -36,13 +39,13 @@ public class StudentCtrl extends BaseCtrl {
 	 * 学生列表
 	 */
 	@RequestMapping("/list")
-	public ModelAndView index(Student student,Integer page) {
+	public ModelAndView index(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
 		ModelAndView res = new ModelAndView("student/studentList");
-		if (page == null) {
-			page = 0;
-		}
-		List<Student> students = userService.getStudentList(student, page * maxResults, maxResults);
-		res.addObject("students", students);
+		PageHelper.startPage(pageNum, PAGE_SIZE);
+		List<Student> students = userService.getStudentListByCondition();
+		PageInfo<Student> page = new PageInfo<Student>(students);
+		res.addObject("page", page);
+		res.addObject("pageNum", pageNum);
 		
 		return res;
 	}
@@ -56,7 +59,7 @@ public class StudentCtrl extends BaseCtrl {
 		List<School> schools = schoolService.getSchoolList();
 		if(schools != null && schools.get(0) != null){
 			School school = schools.get(0);
-			List<Classes> classes = classService.getClassBySchoolId(school.getId());
+			List<Classes> classes = classService.getClassList(school.getId());
 			mav.addObject("classes", classes);
 		}
 		mav.addObject("schools", schools);

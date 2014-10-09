@@ -22,7 +22,7 @@ public interface UserMapper {
 	List<Teacher> getTeacherListByCondition(@Param("name") String name,
 			@Param("schoolName") String schoolName);
 
-	List<Student> getStudentList();
+	List<Student> getTeacherListByCondition();
 	
 	Student getStudent(@Param("name")String name, @Param("number")String number);
 	

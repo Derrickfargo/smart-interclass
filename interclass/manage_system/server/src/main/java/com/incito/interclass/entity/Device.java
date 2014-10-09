@@ -14,8 +14,7 @@ public class Device implements Serializable {
 	private int tableId;
 	private Date ctime;
 
-	private String roomName;
-	private String tableNumber;
+	private String className;
 	private String schoolName;
 
 	public int getId() {
@@ -58,20 +57,12 @@ public class Device implements Serializable {
 		this.tableId = tableId;
 	}
 
-	public String getRoomName() {
-		return roomName;
+	public String getClassName() {
+		return className;
 	}
 
-	public void setRoomName(String roomName) {
-		this.roomName = roomName;
-	}
-
-	public String getTableNumber() {
-		return tableNumber;
-	}
-
-	public void setTableNumber(String tableNumber) {
-		this.tableNumber = tableNumber;
+	public void setClassName(String className) {
+		this.className = className;
 	}
 
 }

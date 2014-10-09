@@ -69,7 +69,7 @@ public class TeacherApiCtrl extends BaseCtrl {
 		}
 		Calendar calendar = Calendar.getInstance();
 		int year = calendar.get(Calendar.YEAR);
-		List<Classes> classes = classService.getClassList(teacher.getId(), year);
+		List<Classes> classes = classService.getClassList(year);
 		
 		TeacherLoginResultData data = new TeacherLoginResultData();
 		data.setTeacher(teacher);
@@ -94,7 +94,6 @@ public class TeacherApiCtrl extends BaseCtrl {
 		if (classId == 0) {//不存在当前班级，添加
 			Classes classes = new Classes();
 			classes.setName(className);
-			classes.setTeacherId(teacherId);
 			classes.setSchoolId(schoolId);
 			Calendar calendar = Calendar.getInstance();
 			classes.setYear(calendar.get(Calendar.YEAR));

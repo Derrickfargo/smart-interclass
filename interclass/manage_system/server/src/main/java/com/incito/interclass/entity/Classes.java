@@ -14,7 +14,6 @@ public class Classes implements Serializable {
 	private String name;
 	private int schoolId;
 	private int year;
-	private int teacherId;
 	private Date ctime;
 
 	public int getId() {
@@ -47,14 +46,6 @@ public class Classes implements Serializable {
 
 	public void setYear(int year) {
 		this.year = year;
-	}
-
-	public int getTeacherId() {
-		return teacherId;
-	}
-
-	public void setTeacherId(int teacherId) {
-		this.teacherId = teacherId;
 	}
 
 	public Date getCtime() {

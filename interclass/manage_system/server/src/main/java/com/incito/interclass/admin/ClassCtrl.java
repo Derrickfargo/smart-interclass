@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -12,6 +13,8 @@ import com.incito.interclass.business.SchoolService;
 import com.incito.interclass.common.BaseCtrl;
 import com.incito.interclass.entity.Classes;
 import com.incito.interclass.entity.School;
+import com.incito.parent.pagehelper.PageHelper;
+import com.incito.parent.pagehelper.PageInfo;
 
 @RestController
 @RequestMapping("/class")
@@ -27,10 +30,13 @@ public class ClassCtrl extends BaseCtrl {
 	 * 班级
 	 */
 	@RequestMapping("/list")
-	public ModelAndView index() {
+	public ModelAndView index(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
 		ModelAndView res = new ModelAndView("class/classList");
+		PageHelper.startPage(pageNum, PAGE_SIZE);
 		List<Classes> classList = classService.getClassListByCondition();
-		res.addObject("classList", classList);
+		PageInfo<Classes> page = new PageInfo<Classes>(classList);
+		res.addObject("page", page);
+		res.addObject("pageNum", pageNum);
 		return res;
 	}
 	

@@ -15,15 +15,15 @@ public interface ClassMapper {
 	 * 
 	 * @return
 	 */
-	List<Classes> getClassList(@Param("teacherId") int teacherId,
-			@Param("year") int year);
+	List<Classes> getClassList(@Param("year") int year);
 	
 	/**
 	 * 根据学校id查询所教班级列表
 	 * 
 	 * @return
 	 */
-	List<Classes> getClassBySchoolId(@Param("schoolId") int schoolId);
+	List<Classes> getClassBySchoolId(@Param("schoolId") int schoolId,
+			@Param("year") int year);
 
 	Classes getClassById(int id);
 	

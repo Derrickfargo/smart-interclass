@@ -84,9 +84,8 @@ public class UserService {
 		return userMapper.getTeacherListByCondition(name,schoolName);
 	}
 
-	public List<Student> getStudentList(Object parameterObject,
-			int skipResults, int maxResults) {
-		return userMapper.getStudentList();
+	public List<Student> getStudentListByCondition() {
+		return userMapper.getTeacherListByCondition();
 	}
 
 	public Student getStudent(String name, String number) {
