@@ -3,6 +3,7 @@ package cn.com.incito.socket.core;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.com.incito.classroom.utils.ApiClient;
 import cn.com.incito.socket.handler.DeviceLoginHandler;
 import cn.com.incito.socket.handler.LockScreenHandler;
 import cn.com.incito.socket.handler.SavePaperResultHandler;
@@ -73,6 +74,7 @@ public final class MessageHandlerResource {
                 // 通过反射取得对应的处理器
                 return handlerResources.get(key).newInstance();
             } catch (Exception e) {
+            	ApiClient.uploadErrorLog(e.getMessage());
                 WLog.e(MessageHandlerResource.class, "获取MessageHandler出错:" + e.getMessage());
                 return null;
             }

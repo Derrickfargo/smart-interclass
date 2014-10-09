@@ -4,6 +4,8 @@ import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
+import cn.com.incito.classroom.utils.ApiClient;
+
 /**
  * 
  *ByteBuffer工具类
@@ -117,6 +119,7 @@ public final class BufferUtils
             }
             catch (UnsupportedEncodingException e)
             {
+            	ApiClient.uploadErrorLog(e.getMessage());
                 System.out.println("数组转字符串失败!");
             }
         }
@@ -157,6 +160,7 @@ public final class BufferUtils
         }
         catch (UnsupportedEncodingException e)
         {
+        	ApiClient.uploadErrorLog(e.getMessage());
         	System.out.println("不支持字符编码:" + e.getMessage());
         }
         return byts;

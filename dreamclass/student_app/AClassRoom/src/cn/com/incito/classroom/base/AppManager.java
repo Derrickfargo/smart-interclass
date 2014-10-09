@@ -5,6 +5,7 @@ import java.util.Stack;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import cn.com.incito.classroom.utils.ApiClient;
 import cn.com.incito.socket.core.ConnectionManager;
 import cn.com.incito.socket.core.CoreSocket;
 
@@ -110,6 +111,7 @@ public class AppManager {
 //            activityMgr.restartPackage(context.getPackageName());
 //            System.exit(0);
         } catch (Exception e) {
+        	ApiClient.uploadErrorLog(e.getMessage());
         	e.printStackTrace();
         }
     }

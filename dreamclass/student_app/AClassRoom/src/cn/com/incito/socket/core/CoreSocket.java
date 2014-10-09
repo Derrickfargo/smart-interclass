@@ -11,6 +11,7 @@ import java.util.Set;
 import android.util.Log;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
+import cn.com.incito.classroom.utils.ApiClient;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
@@ -57,6 +58,7 @@ public final class CoreSocket implements Runnable {
 				}
 				channel.register(selector, SelectionKey.OP_READ);// 注册读事件
 			} catch (IOException e) {
+				ApiClient.uploadErrorLog(e.getMessage());
 				isConnected = false;
 				Log.e("CoreSocket", "", e);
 			}
@@ -80,6 +82,7 @@ public final class CoreSocket implements Runnable {
 		try {
 			channel.write(buffer);
 		} catch (IOException e) {
+			ApiClient.uploadErrorLog(e.getMessage());
 			isConnected = false;
 			disconnect();
 			Log.e("CoreSocket", "设备登陆消息发送失败", e);
@@ -104,6 +107,7 @@ public final class CoreSocket implements Runnable {
 						channel.write(buffer);
 					}
 				} catch (IOException e) {
+					ApiClient.uploadErrorLog(e.getMessage());
 					WLog.e(CoreSocket.class, "" + e.getMessage());
 				}
 			}
@@ -129,6 +133,7 @@ public final class CoreSocket implements Runnable {
 							ConnectionManager.getInstance().close(true);
 						}
 					} catch (IOException e) {
+						ApiClient.uploadErrorLog(e.getMessage());
 						WLog.e(CoreSocket.class, "" + e.getMessage());
 					}
 				}
@@ -174,6 +179,7 @@ public final class CoreSocket implements Runnable {
 			}
 			WLog.i(CoreSocket.class, "CoreSocket退出!");
 		} catch (IOException e) {
+			ApiClient.uploadErrorLog(e.getMessage());
 			WLog.e(CoreSocket.class, "" + e.getMessage());
 		}
 	}
