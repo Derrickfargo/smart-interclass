@@ -123,17 +123,11 @@
 			tb_student.guardian, tb_student.phone,tb_student.address,tb_school.id AS schoolId,tb_school.name AS schoolName
 		FROM 
 			tb_user
-		INNER JOIN 
-			tb_student 
-		ON 
-			tb_user.id = tb_student.id
-		INNER JOIN
-			tb_class
-		ON
-			tb_teacher.class_id = tb_class.id
+		INNER JOIN tb_student ON tb_user.id = tb_student.id
+		INNER JOIN tb_class ON tb_student.class_id = tb_class.id
+		INNER JOIN tb_school ON tb_class.school_id = tb_school.id
 		WHERE
-			tb_user.is_Active = 1
-			AND tb_user.role = 2
+			tb_user.is_Active = 1 AND tb_user.role = 3
 		ORDER BY
 			tb_user.id
 	</select>
@@ -154,9 +148,9 @@
 	
 	<insert id="saveStudent" parameterType="com.incito.interclass.entity.Student">
 		INSERT INTO 
-			tb_student(id,number,avatar,score)
+			tb_student(id,number,avatar,score,guardian,phone,address,device_id,class_id)
 		VALUES
-			(#{id},#{number},#{avatar},0)
+			(#{id},#{number},#{avatar},0,#{guardian},#{phone},#{address},#{deviceId},#{classId})
 	</insert>
 	
 	<delete id="deleteUser" parameterType="java.lang.Integer">

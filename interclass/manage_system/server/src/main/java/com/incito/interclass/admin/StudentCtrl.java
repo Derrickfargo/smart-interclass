@@ -71,8 +71,16 @@ public class StudentCtrl extends BaseCtrl {
 	 * @return
 	 */
 	@RequestMapping(value = "/save")
-	public ModelAndView save(String name, String imei) {
+	public ModelAndView save(Integer classId, String name, Integer sex,
+			String guardian, String phone, String address, String imei) {
 		Student student = new Student();
+		student.setClassId(classId);
+		student.setUname(name);
+		student.setName(name);
+		student.setSex(sex);
+		student.setGuardian(guardian);
+		student.setPhone(phone);
+		student.setAddress(address);
 		student.setActive(true);
 		//用户角色为学生
 		student.setRole(User.ROLE_STUDENT);

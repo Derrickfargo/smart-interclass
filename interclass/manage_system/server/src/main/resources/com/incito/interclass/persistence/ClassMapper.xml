@@ -18,7 +18,7 @@
 		FROM 
 			tb_class
 		WHERE
-			year = #{year}
+			school_id = #{schoolId}
 		ORDER BY
 			id
 	</select>

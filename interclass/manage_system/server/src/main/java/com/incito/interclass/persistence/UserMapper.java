@@ -22,7 +22,7 @@ public interface UserMapper {
 	List<Teacher> getTeacherListByCondition(@Param("name") String name,
 			@Param("schoolName") String schoolName);
 
-	List<Student> getTeacherListByCondition();
+	List<Student> getStudentListByCondition();
 	
 	Student getStudent(@Param("name")String name, @Param("number")String number);
 	
@@ -43,5 +43,5 @@ public interface UserMapper {
 	Student getScore(String studentId);
 	@Transactional
 	Integer updateMedals(@Param("groupId")int groupId,@Param("medals")String medals);
-	
+
 }
