@@ -34,18 +34,18 @@
 						<h3 class="panel-title">学生信息</h3>
 					</div>
 					<div class="panel-body">
-						<form action="${path}/school" id="searchForm" method="post" class="form-horizontal" >
+						<form action="${path}/student/list" id="searchForm" method="post" class="form-horizontal" >
 							<div class="col-xs-12" style="border: 1px solid #f5f5f5;padding: 5px;margin-bottom:5px">
 								<div class="form-group">
 									<label class="col-xs-1 control-label">学生姓名:</label>
 									<div class="col-xs-2">
-										<input type="text" name="name" value="${student.name}" class="form-control borderRadiusIE8">
+										<input type="text" name="name" value="${name}" class="form-control borderRadiusIE8">
 									</div>
 									<label class="col-xs-1 control-label">所属学校:</label>
 									<div class="col-xs-2">
 										<input type="text" name="schoolName" value="${schoolName}" class="form-control borderRadiusIE8">
 									</div>
-									<button type="button" class="btn btn-primary" onclick="searchDriver('1')">搜索</button>
+									<button type="button" class="btn btn-primary" onclick="searchStudent('1')">搜索</button>
 									<button type="button" class="btn btn-primary" onclick="emptyForm('searchForm')">清空</button>
 								</div>
 							</div>

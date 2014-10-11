@@ -39,14 +39,16 @@ public class StudentCtrl extends BaseCtrl {
 	 * 学生列表
 	 */
 	@RequestMapping("/list")
-	public ModelAndView index(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
+	public ModelAndView index(String name, String schoolName,
+			@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
 		ModelAndView res = new ModelAndView("student/studentList");
 		PageHelper.startPage(pageNum, PAGE_SIZE);
-		List<Student> students = userService.getStudentListByCondition();
+		List<Student> students = userService.getStudentListByCondition(name, schoolName);
 		PageInfo<Student> page = new PageInfo<Student>(students);
 		res.addObject("page", page);
 		res.addObject("pageNum", pageNum);
-		
+		res.addObject("name", name);
+		res.addObject("schoolName", schoolName);
 		return res;
 	}
 	

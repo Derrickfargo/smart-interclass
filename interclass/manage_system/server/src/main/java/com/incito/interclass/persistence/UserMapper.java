@@ -22,7 +22,8 @@ public interface UserMapper {
 	List<Teacher> getTeacherListByCondition(@Param("name") String name,
 			@Param("schoolName") String schoolName);
 
-	List<Student> getStudentListByCondition();
+	List<Student> getStudentListByCondition(@Param("name") String name,
+			@Param("schoolName") String schoolName);
 	
 	Student getStudent(@Param("name")String name, @Param("number")String number);
 	

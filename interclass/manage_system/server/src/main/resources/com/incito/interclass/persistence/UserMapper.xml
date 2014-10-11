@@ -128,6 +128,12 @@
 		INNER JOIN tb_school ON tb_class.school_id = tb_school.id
 		WHERE
 			tb_user.is_Active = 1 AND tb_user.role = 3
+			<if test="name != null and name != ''">
+				AND tb_user.name LIKE '%' #{name} '%' 
+			</if>
+			<if test="schoolName != null and schoolName != ''">
+				AND tb_school.name LIKE '%' #{schoolName} '%' 
+			</if>
 		ORDER BY
 			tb_user.id
 	</select>

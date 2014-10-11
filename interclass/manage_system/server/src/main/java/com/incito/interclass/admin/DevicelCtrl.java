@@ -34,6 +34,7 @@ public class DevicelCtrl extends BaseCtrl {
 		res.addObject("page", page);
 		res.addObject("imei", imei);
 		res.addObject("schoolName", schoolName);
+		res.addObject("pageNum", pageNum);
 		return res;
 	}
 	
