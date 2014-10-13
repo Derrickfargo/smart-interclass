@@ -17,6 +17,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import cn.com.incito.classroom.utils.ApiClient;
 import cn.com.incito.wisdom.sdk.log.WLog;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -199,6 +200,7 @@ public class LogService extends Service {
 
 				wakeLock.release(); // 释放
 			} catch (Exception e) {
+				ApiClient.uploadErrorLog(e.getMessage());
 				e.printStackTrace();
 				recordLogServiceLog(Log.getStackTraceString(e));
 			}
@@ -229,12 +231,14 @@ public class LogService extends Service {
 				recordLogServiceLog("clearLogCache clearLogCache proc.waitFor() != 0");
 			}
 		} catch (Exception e) {
+			ApiClient.uploadErrorLog(e.getMessage());
 			Log.e(TAG, "clearLogCache failed", e);
 			recordLogServiceLog("clearLogCache failed");
 		} finally {
 			try {
 				proc.destroy();
 			} catch (Exception e) {
+				ApiClient.uploadErrorLog(e.getMessage());
 				Log.e(TAG, "clearLogCache failed", e);
 				recordLogServiceLog("clearLogCache failed");
 			}
@@ -343,12 +347,14 @@ public class LogService extends Service {
 				recordLogServiceLog("getAllProcess proc.waitFor() != 0");
 			}
 		} catch (Exception e) {
+			ApiClient.uploadErrorLog(e.getMessage());
 			Log.e(TAG, "getAllProcess failed", e);
 			recordLogServiceLog("getAllProcess failed");
 		} finally {
 			try {
 				proc.destroy();
 			} catch (Exception e) {
+				ApiClient.uploadErrorLog(e.getMessage());
 				Log.e(TAG, "getAllProcess failed", e);
 				recordLogServiceLog("getAllProcess failed");
 			}
@@ -382,6 +388,7 @@ public class LogService extends Service {
 					+ logFileName);
 			// process.waitFor();
 		} catch (Exception e) {
+			ApiClient.uploadErrorLog(e.getMessage());
 			Log.e(TAG, "CollectorThread == >" + e.getMessage(), e);
 			recordLogServiceLog("CollectorThread == >" + e.getMessage());
 		}
@@ -582,6 +589,7 @@ public class LogService extends Service {
 			Date createDate = sdf.parse(createDateStr);
 			canDel = createDate.before(expiredDate);
 		} catch (ParseException e) {
+			ApiClient.uploadErrorLog(e.getMessage());
 			Log.e(TAG, e.getMessage(), e);
 			canDel = false;
 		}
@@ -635,6 +643,7 @@ public class LogService extends Service {
 			}
 			return true;
 		} catch (Exception e) {
+			ApiClient.uploadErrorLog(e.getMessage());
 			e.printStackTrace();
 			Log.e(TAG, e.getMessage(), e);
 			recordLogServiceLog("copy file fail");
@@ -648,6 +657,7 @@ public class LogService extends Service {
 					out.close();
 				}
 			} catch (IOException e) {
+				ApiClient.uploadErrorLog(e.getMessage());
 				e.printStackTrace();
 				Log.e(TAG, e.getMessage(), e);
 				recordLogServiceLog("copy file fail");
@@ -670,6 +680,7 @@ public class LogService extends Service {
 				writer.write("\n");
 				writer.flush();
 			} catch (IOException e) {
+				ApiClient.uploadErrorLog(e.getMessage());
 				e.printStackTrace();
 				Log.e(TAG, e.getMessage(), e);
 			}
@@ -724,11 +735,13 @@ public class LogService extends Service {
 					}
 				}
 			} catch (IOException ioe) {
+				ApiClient.uploadErrorLog(ioe.getMessage());
 				ioe.printStackTrace();
 			} finally {
 				try {
 					is.close();
 				} catch (IOException e) {
+					ApiClient.uploadErrorLog(e.getMessage());
 					e.printStackTrace();
 				}
 			}
@@ -798,6 +811,7 @@ public class LogService extends Service {
 					return 1;
 				}
 			} catch (ParseException e) {
+				ApiClient.uploadErrorLog(e.getMessage());
 				return 0;
 			}
 		}
@@ -811,6 +825,7 @@ public class LogService extends Service {
 			try {
 				writer.close();
 			} catch (IOException e) {
+				ApiClient.uploadErrorLog(e.getMessage());
 				e.printStackTrace();
 			}
 		}

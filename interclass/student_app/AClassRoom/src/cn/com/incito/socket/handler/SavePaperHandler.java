@@ -1,6 +1,7 @@
 package cn.com.incito.socket.handler;
 
 import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.classroom.utils.ApiClient;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;
 import cn.com.incito.wisdom.sdk.log.WLog;
@@ -20,6 +21,7 @@ public class SavePaperHandler extends MessageHandler {
 			try {
 				Thread.sleep(delay);
 			} catch (InterruptedException e) {
+				ApiClient.uploadErrorLog(e.getMessage());
 				e.printStackTrace();
 			}
 			if(UIHelper.getInstance().getDrawBoxActivity()!=null){

@@ -6,6 +6,7 @@ import java.nio.channels.SocketChannel;
 
 import android.util.Log;
 import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.classroom.utils.ApiClient;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
@@ -76,6 +77,7 @@ public class ConnectionManager {
 			try {
 				channel.close();
 			} catch (IOException e) {
+				ApiClient.uploadErrorLog(e.getMessage());
 				e.printStackTrace();
 			}
 		}
@@ -108,6 +110,7 @@ public class ConnectionManager {
 				try {
 					Thread.sleep(SCAN_CYCLE);
 				} catch (InterruptedException e) {
+					ApiClient.uploadErrorLog(e.getMessage());
 					e.printStackTrace();
 				}
 				long time = System.currentTimeMillis();
@@ -140,6 +143,7 @@ public class ConnectionManager {
 					Log.i("ConnectionManager", "发送心跳包!");
 					sendHeartbeat();
 				} catch (Exception e) {
+					ApiClient.uploadErrorLog(e.getMessage());
 					e.printStackTrace();
 				}
 			}
@@ -188,6 +192,7 @@ public class ConnectionManager {
 				try {
 					Thread.sleep(seconds);
 				} catch (InterruptedException e) {
+					ApiClient.uploadErrorLog(e.getMessage());
 					e.printStackTrace();
 				}
 			}
