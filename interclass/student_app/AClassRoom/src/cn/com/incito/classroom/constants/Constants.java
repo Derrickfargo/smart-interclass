@@ -10,12 +10,23 @@ import cn.com.incito.classroom.widget.canvas.ISketchPadTool;
  * 常量文件 Created by popoy on 2014/7/28.
  */
 public class Constants {
-	public static final boolean LOG_OPEN = false;
-	public static final boolean OPEN_LOCK_SCREEN = true;// 是否打开锁屏功能
+	public static final boolean LOG_OPEN = true;
+	public static final boolean OPEN_LOCK_SCREEN = false;// 是否打开锁屏功能
 	public static final boolean UNCATCHED_EXCEPION_HANLED = false;
 	public static final int PORT = 9001;
-	public static String IP = "192.168.100.10";
-
+	public static String IP = "192.168.30.46";
+	public final static String UPDATE_HOST = "192.168.30.46:8080/app";
+	public final static String HTTP = "http://";
+	private final static String URL_SPLITTER = "/";
+	public final static String HOST = IP + ":" + PORT + "/app";
+	private final static String URL_API_HOST = HTTP + HOST + URL_SPLITTER;
+	
+	/**
+	 * 上传日志文件
+	 */
+	public static String URL_UPLOAD_LOG = URL_API_HOST + "api/log/save";
+	
+	
 	public static String getIP() {
 		return IP;
 	}

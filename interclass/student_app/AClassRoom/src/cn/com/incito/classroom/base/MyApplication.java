@@ -22,6 +22,7 @@ import android.os.PowerManager.WakeLock;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import cn.com.incito.classroom.constants.Constants;
+import cn.com.incito.classroom.exception.AppUncaughtException;
 import cn.com.incito.classroom.vo.LoginResVo;
 import cn.com.incito.socket.handler.LockScreenHandler;
 import cn.com.incito.wisdom.sdk.cache.disk.impl.TotalSizeLimitedDiscCache;
@@ -113,7 +114,8 @@ public class MyApplication extends Application {
 		super.onCreate();
 		sendBroadcast(new Intent("android.intent.action.HIDE_NAVIGATION_BAR"));
 		// closeSysScreenLock();
-
+		AppUncaughtException appException = AppUncaughtException.getInstance();
+		appException.init(this);
 		PowerManager pmManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
 		WifiManager manager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 		mWifiLock = manager.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, "cn.com.incito.classroom");

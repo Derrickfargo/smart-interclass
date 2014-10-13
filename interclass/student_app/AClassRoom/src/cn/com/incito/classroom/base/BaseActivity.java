@@ -49,17 +49,17 @@ public class BaseActivity extends FragmentActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		receiver = new NetWorkReceiver();
-		IntentFilter intentFilter = new IntentFilter();
-		intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-		registerReceiver(receiver, intentFilter);
+//		receiver = new NetWorkReceiver();
+//		IntentFilter intentFilter = new IntentFilter();
+//		intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+//		registerReceiver(receiver, intentFilter);
 
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		unregisterReceiver(receiver);
+//		unregisterReceiver(receiver);
 
 	}
 
