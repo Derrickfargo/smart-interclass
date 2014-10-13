@@ -15,10 +15,8 @@ public class Group implements Serializable,Comparable<Group> {
 	private String name;
 	private String logo;
 	private String slogan;
-	private int courseId;
 	private int teacherId;
 	private int classId;
-	private int tableId;
 	private Date ctime;
 	
 	private int tableNumber;
@@ -66,13 +64,6 @@ public class Group implements Serializable,Comparable<Group> {
 		this.slogan = slogan;
 	}
 
-	public int getCourseId() {
-		return courseId;
-	}
-
-	public void setCourseId(int courseId) {
-		this.courseId = courseId;
-	}
 
 	public int getTeacherId() {
 		return teacherId;
@@ -90,13 +81,6 @@ public class Group implements Serializable,Comparable<Group> {
 		this.classId = classId;
 	}
 
-	public int getTableId() {
-		return tableId;
-	}
-
-	public void setTableId(int tableId) {
-		this.tableId = tableId;
-	}
 
 	public Date getCtime() {
 		return ctime;

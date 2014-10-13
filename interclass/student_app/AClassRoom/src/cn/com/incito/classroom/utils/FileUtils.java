@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -44,9 +46,9 @@ public class FileUtils {
 					out.close();
 				}
 			} catch (FileNotFoundException e) {
-			
+				ApiClient.uploadErrorLog(e.getMessage());
 			} catch (IOException e) {
-			
+				ApiClient.uploadErrorLog(e.getMessage());
 			}
 		}
 	}

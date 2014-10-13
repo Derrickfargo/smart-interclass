@@ -21,6 +21,7 @@ import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.ui.widget.NetWorkDialog;
+import cn.com.incito.classroom.utils.ApiClient;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
@@ -223,6 +224,7 @@ public class SplashActivity extends BaseActivity {
 		try {
 			Thread.sleep(seconds);
 		} catch (InterruptedException e) {
+			ApiClient.uploadErrorLog(e.getMessage());
 			e.printStackTrace();
 		}
 	}

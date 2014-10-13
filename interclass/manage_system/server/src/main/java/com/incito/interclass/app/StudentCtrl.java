@@ -46,7 +46,7 @@ public class StudentCtrl extends BaseCtrl {
 	 * @return
 	 */
 	@RequestMapping(value = "/login", produces = { "application/json;charset=UTF-8" })
-	public String addStudent(int courseId, int classId, int teacherId, int tableId, String name, String number, int sex, String imei) {
+	public String addStudent( int classId, int teacherId, String name, String number, int sex, String imei) {
 		// 查学生是否存在
 		Student student = userService.getStudent(name, number);
 		// 不存在保存学生
@@ -65,7 +65,7 @@ public class StudentCtrl extends BaseCtrl {
 
 		// 根据学生id保存组
 		try {
-			Group group = groupService.addStudent(courseId, classId, teacherId, tableId, student.getId());
+			Group group = groupService.addStudent( classId, teacherId, student.getId());
 			if (group == null || group.getId() == 0) {
 				return renderJSONString(REGISTER_ERROR);
 			} else {

@@ -18,8 +18,8 @@ public class GroupService {
 	@Autowired
 	private GroupMapper groupMapper;
 
-	public List<Group> getGroupList(int teacherId, int courseId, int classId) {
-		return groupMapper.getGroupList(teacherId, courseId, classId);
+	public List<Group> getGroupList(int teacherId, int classId) {
+		return groupMapper.getGroupList(teacherId, classId);
 	}
 
 	@Transactional(rollbackFor = AppException.class)
@@ -43,17 +43,14 @@ public class GroupService {
 	}
 
 	@Transactional(rollbackFor = AppException.class)
-	public Group addStudent(int courseId, int classId, int teacherId,
-			int tableId, int studentId) throws AppException {
+	public Group addStudent(int classId, int teacherId,int studentId) throws AppException {
 		// 检查组是否存在
-		Group group = groupMapper.getGroupByTableId(tableId, teacherId,
-				courseId, classId);
+		Group group = groupMapper.getGroupByTableId(teacherId,
+				 classId);
 		if (group == null || group.getId() == 0) {
 			group = new Group();
 			group.setClassId(classId);
-			group.setCourseId(courseId);
 			group.setTeacherId(teacherId);
-			group.setTableId(tableId);
 			groupMapper.save(group);// 创建分组
 			if (group.getId() <= 0) {
 				throw AppException.database(0);
@@ -67,7 +64,7 @@ public class GroupService {
 			sg.setStudentId(studentId);
 			sg.setGroupId(group.getId());
 			groupMapper.saveStudentGroup(sg);
-			groupMapper.delStudentInOtherGroup(group.getId(), studentId, courseId, teacherId, classId);
+			groupMapper.delStudentInOtherGroup(group.getId(), studentId, teacherId, classId);
 		}
 		return group;
 	}
@@ -76,24 +73,32 @@ public class GroupService {
 		return groupMapper.save(group);
 	}
 	
-	public Group getGroupByTableId(int tableId, int teacherId, int courseId, int classId){
-		return groupMapper.getGroupByTableId(tableId, teacherId, courseId, classId);
+	public Group getGroupByTableId( int teacherId, int classId){
+		return groupMapper.getGroupByTableId( teacherId,classId);
 	}
 	
 	public Group getGroupById(int id) {
 		return groupMapper.getGroupById(id);
 	}
 
-	public Group getGroupByIMEI(String imei, int teacherId, int courseId,
-			int classId) {
-		return groupMapper.getGroupByIMEI(imei, teacherId, courseId, classId);
+	public Group getGroupByIMEI(String imei, int teacherId,int classId) {
+		return groupMapper.getGroupByIMEI(imei, teacherId, classId);
 	}
 
 	public void updateGroup(Group group) {
 		groupMapper.updateGroup(group);
 	}
 
-	public void deleteGroup(int groupId) {
-		groupMapper.delete(groupId);
+	public Integer deleteGroupById(String groupId) {
+		return groupMapper.delete(groupId);
+	}
+
+	public Integer creatGroup(Group group) {
+		return groupMapper.creatGroup(group);
+	}
+
+	public Group joinGroup(String groupId, String studentId) {
+		 groupMapper.joinGroup(groupId, studentId);
+		 return null;
 	}
 }

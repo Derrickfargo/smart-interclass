@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.constants.Constants;
+import cn.com.incito.classroom.utils.ApiClient;
 import cn.com.incito.classroom.utils.BitmapUtil;
 import cn.com.incito.wisdom.sdk.log.WLog;
 import android.content.Context;
@@ -503,6 +504,7 @@ public class SketchPadView extends View implements IUndoCommand {
 		// bitmap =
 		// BitmapFactory.decodeStream(context.getAssets().open("a.png"));
 		// } catch (IOException e) {
+//		ApiClient.uploadErrorLog(e.getMessage());
 		// // TODO Auto-generated catch block
 		// e.printStackTrace();
 		// }

@@ -75,13 +75,11 @@ public class TableCtrl extends BaseCtrl {
 			int tableId = tableService.addDevice(roomId, number, imei);
 			if (tableId > 0) {
 				// 检查组是否存在
-				Group group = groupService.getGroupByTableId(tableId, teacherId, courseId, classId);
+				Group group = groupService.getGroupByTableId(teacherId, classId);
 				if (group == null || group.getId() == 0) {
 					group = new Group();
 					group.setClassId(classId);
-					group.setCourseId(courseId);
 					group.setTeacherId(teacherId);
-					group.setTableId(tableId);
 					groupService.save(group);// 创建分组
 				}
 				return renderJSONString(SUCCESS, group);

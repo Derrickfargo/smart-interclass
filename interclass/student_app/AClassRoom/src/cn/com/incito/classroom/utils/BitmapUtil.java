@@ -12,6 +12,17 @@ import java.util.Map;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -185,12 +196,14 @@ public class BitmapUtil {
 						bm = BitmapFactory
 								.decodeByteArray(data, 0, data.length);
 					} catch (RuntimeException e) {
+						ApiClient.uploadErrorLog(e.getMessage());
 						// TODO: handle exception
 						bm = BitmapFactory
 								.decodeByteArray(data, 0, data.length);
 					}
 					bms.put(str, bm);
 				} catch (Exception e) {
+					ApiClient.uploadErrorLog(e.getMessage());
 					// TODO Auto-generated catch block
 				}
 			}
@@ -218,6 +231,7 @@ public class BitmapUtil {
 				bm = BitmapFactory.decodeByteArray(data, 0, data.length,
 						options);
 			} catch (Exception e) {
+				ApiClient.uploadErrorLog(e.getMessage());
 				// TODO Auto-generated catch block
 			}
 		}
@@ -265,7 +279,9 @@ public class BitmapUtil {
 					out.close();
 				}
 			} catch (FileNotFoundException e) {
+				ApiClient.uploadErrorLog(e.getMessage());
 			} catch (IOException e) {
+				ApiClient.uploadErrorLog(e.getMessage());
 			}
 		}
 	}
@@ -284,6 +300,7 @@ public class BitmapUtil {
 	        } 
 	        catch (IOException e) 
 	        {
+	        	ApiClient.uploadErrorLog(e.getMessage());
 	            e.printStackTrace();
 	        }
 	        
@@ -303,10 +320,12 @@ public class BitmapUtil {
 	            }
 	            catch (FileNotFoundException e)
 	            {
+	            	ApiClient.uploadErrorLog(e.getMessage());
 	                e.printStackTrace();
 	            }
 	            catch (IOException e)
 	            {
+	            	ApiClient.uploadErrorLog(e.getMessage());
 	                e.printStackTrace();
 	            }
 	        }
@@ -324,7 +343,9 @@ public class BitmapUtil {
 				out.close();
 			}
 		} catch (FileNotFoundException e) {
+			ApiClient.uploadErrorLog(e.getMessage());
 		} catch (IOException e) {
+			ApiClient.uploadErrorLog(e.getMessage());
 		}
 	}
 
@@ -469,6 +490,7 @@ public class BitmapUtil {
 			bm = BitmapFactory.decodeStream(context.getAssets().open(
 					str + ".png"));
 		} catch (IOException e) {
+			ApiClient.uploadErrorLog(e.getMessage());
 			// TODO Auto-generated catch block
 		}
 		return bm;

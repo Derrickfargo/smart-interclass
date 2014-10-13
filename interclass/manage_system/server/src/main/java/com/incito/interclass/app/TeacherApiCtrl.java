@@ -18,9 +18,7 @@ import com.incito.interclass.business.TableService;
 import com.incito.interclass.business.UserService;
 import com.incito.interclass.common.BaseCtrl;
 import com.incito.interclass.entity.Classes;
-import com.incito.interclass.entity.Device;
 import com.incito.interclass.entity.Group;
-import com.incito.interclass.entity.Table;
 import com.incito.interclass.entity.Teacher;
 
 @RestController
@@ -104,18 +102,18 @@ public class TeacherApiCtrl extends BaseCtrl {
 			}
 		}
 		//获得当前课堂的分组列表
-		List<Group> groups = groupService.getGroupList(teacherId, courseId, classId);
-		//获取当前教室的课桌列表
-		List<Table> tables = tableService.getTableListByRoomId(roomId);
-		//获得当前教室的设备列表
-		List<Device> devices = deviceService.getDeviceListByRoomId(roomId);
+		List<Group> groups = groupService.getGroupList(teacherId,classId);
+//		//获取当前教室的课桌列表
+//		List<Table> tables = tableService.getTableListByRoomId(roomId);
+//		//获得当前教室的设备列表
+//		List<Device> devices = deviceService.getDeviceListByRoomId(roomId);
 		//选择的班级
 		Classes classes = classService.getClassById(classId);
 		
 		TeacherGroupResultData data = new TeacherGroupResultData();
 		data.setGroups(groups);
-		data.setTables(tables);
-		data.setDevices(devices);
+//		data.setTables(tables);
+//		data.setDevices(devices);
 		data.setClasses(classes);
 		ApiResult result = new ApiResult();
 		result.setCode(ApiResult.SUCCESS);
