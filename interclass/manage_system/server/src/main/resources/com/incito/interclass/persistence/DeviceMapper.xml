@@ -5,12 +5,14 @@
 
 	<select id="getDeviceListByCondition" resultType="com.incito.interclass.entity.Device" parameterType="java.util.Map">
 		SELECT	
-			tb_device.id,tb_device.imei,tb_device.ctime,
+			tb_device.id,tb_device.imei,tb_device.ctime,tb_user.name AS studentName,
 			tb_school.name AS schoolName, tb_class.name AS className
 		FROM 
 			tb_device
 		INNER JOIN 
 			tb_student ON tb_student.device_id = tb_device.id
+		INNER JOIN
+			tb_user ON tb_user.id = tb_student.id
 		INNER JOIN 
 			tb_class ON tb_class.id = tb_student.class_id
 		INNER JOIN 
@@ -55,24 +57,11 @@
 			tb_table.number
 	</select>
 
-	<select id="getDeviceByTableId" resultType="com.incito.interclass.entity.Device" parameterType="java.lang.Integer">
-		SELECT DISTINCT
-			tb_device.id,imei,tb_device.table_id AS tableId,tb_device.ctime
-		FROM 
-			tb_device
-		INNER JOIN 
-			tb_table ON tb_table.id = tb_device.table_id
-		WHERE
-			tb_table.id = #{tableId}
-		ORDER BY
-			tb_table.number
-	</select>
-	
 	<insert id="save" parameterType="com.incito.interclass.entity.Device" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO 
-			tb_device(imei,table_id,ctime)
+			tb_device(imei,ctime)
 		VALUES
-			(#{imei},#{tableId},now())
+			(#{imei},now())
 	</insert>
 	
 	<delete id="delete" parameterType="java.lang.Integer">

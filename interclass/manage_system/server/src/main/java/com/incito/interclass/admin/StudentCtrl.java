@@ -39,14 +39,16 @@ public class StudentCtrl extends BaseCtrl {
 	 * 学生列表
 	 */
 	@RequestMapping("/list")
-	public ModelAndView index(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
+	public ModelAndView index(String name, String schoolName,
+			@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
 		ModelAndView res = new ModelAndView("student/studentList");
 		PageHelper.startPage(pageNum, PAGE_SIZE);
-		List<Student> students = userService.getStudentListByCondition();
+		List<Student> students = userService.getStudentListByCondition(name, schoolName);
 		PageInfo<Student> page = new PageInfo<Student>(students);
 		res.addObject("page", page);
 		res.addObject("pageNum", pageNum);
-		
+		res.addObject("name", name);
+		res.addObject("schoolName", schoolName);
 		return res;
 	}
 	
@@ -71,8 +73,16 @@ public class StudentCtrl extends BaseCtrl {
 	 * @return
 	 */
 	@RequestMapping(value = "/save")
-	public ModelAndView save(String name, String imei) {
+	public ModelAndView save(Integer classId, String name, Integer sex,
+			String guardian, String phone, String address, String imei) {
 		Student student = new Student();
+		student.setClassId(classId);
+		student.setUname(name);
+		student.setName(name);
+		student.setSex(sex);
+		student.setGuardian(guardian);
+		student.setPhone(phone);
+		student.setAddress(address);
 		student.setActive(true);
 		//用户角色为学生
 		student.setRole(User.ROLE_STUDENT);

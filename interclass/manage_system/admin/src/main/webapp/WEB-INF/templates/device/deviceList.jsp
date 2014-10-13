@@ -60,8 +60,8 @@
 										<tr class="success">
 											<th>IMEI</th>
 											<th>所属学校</th>
-											<th>所在教室</th>
-											<th>所在课桌</th>
+											<th>所在班级</th>
+											<th>所属学生</th>
 											<th>操作</th>
 										</tr>
 									</thead>
@@ -70,8 +70,8 @@
 											<tr>
 												<td>${device.imei}</td>
 												<td>${device.schoolName}</td>
-												<td>${device.roomName}</td>
-												<td>${device.tableNumber}</td>
+												<td>${device.className}</td>
+												<td>${device.studentName}</td>
 												<td>
 													<a href="#" onclick="deleteDevice('${device.id}')"><span title="删除" class="glyphicon glyphicon-remove"></span></a>&nbsp;
 												</td>

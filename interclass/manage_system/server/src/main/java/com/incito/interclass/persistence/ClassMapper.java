@@ -15,7 +15,7 @@ public interface ClassMapper {
 	 * 
 	 * @return
 	 */
-	List<Classes> getClassList(@Param("year") int year);
+	List<Classes> getClassList(@Param("schoolId") int schoolId);
 	
 	/**
 	 * 根据学校id查询所教班级列表
@@ -39,4 +39,6 @@ public interface ClassMapper {
 	 * 删除班级
 	 */
 	void delete(int id);
+
+	int update(Classes classes);
 }

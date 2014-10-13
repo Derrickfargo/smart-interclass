@@ -58,16 +58,16 @@
 								<table class="table table-bordered table-condensed table-hover table-striped">
 									<thead>
 										<tr class="success">
+											<th>入学年份</th>
 											<th>班级名称</th>
-											<th>所属学校</th>
 											<th>操作</th>
 										</tr>
 									</thead>
 									<tbody>
 										<c:forEach items="${page.list}" var="classes">
 											<tr>
+												<td>${classes.year}</td>
 												<td>${classes.name}</td>
-												<td>${classes.schoolName}</td>
 												<td>
 													<a href="#" onclick="modifyClass('${classes.id}')"><span title="修改" class="glyphicon glyphicon-pencil"></span></a>&nbsp; 
 													<a href="#" onclick="deleteClass('${classes.id}')"><span title="删除" class="glyphicon glyphicon-remove"></span></a>&nbsp;
