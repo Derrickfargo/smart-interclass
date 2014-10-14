@@ -120,7 +120,8 @@
 	<select id="getStudentListByCondition" resultType="com.incito.interclass.entity.Student" parameterType="java.util.Map">
 		SELECT	
 			tb_user.id,tb_user.uname,tb_user.name,tb_user.email,tb_user.sex,is_active,role,tb_user.ctime,
-			tb_student.guardian, tb_student.phone,tb_student.address,tb_school.id AS schoolId,tb_school.name AS schoolName
+			tb_student.guardian, tb_student.phone,tb_student.address,tb_school.id AS schoolId,tb_school.name AS schoolName,
+			tb_class.year AS year,tb_class.number AS classNumber
 		FROM 
 			tb_user
 		INNER JOIN tb_student ON tb_user.id = tb_student.id
