@@ -14,11 +14,14 @@ public class Student extends User {
 	private String guardian;
 	private String phone;
 	private String address;
+	private int year;
 	private int classId;
 	private int deviceId;
-	
+
+	private int classNumber;
 	private String className;
 	private String schoolName;
+	private String imei;
 
 	public int getScore() {
 		return score;
@@ -106,6 +109,30 @@ public class Student extends User {
 
 	public void setSchoolName(String schoolName) {
 		this.schoolName = schoolName;
+	}
+
+	public int getYear() {
+		return year;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
+	}
+
+	public int getClassNumber() {
+		return classNumber;
+	}
+
+	public void setClassNumber(int classNumber) {
+		this.classNumber = classNumber;
+	}
+
+	public String getImei() {
+		return imei;
+	}
+
+	public void setImei(String imei) {
+		this.imei = imei;
 	}
 
 }

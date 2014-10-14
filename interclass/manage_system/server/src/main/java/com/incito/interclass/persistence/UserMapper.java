@@ -27,6 +27,11 @@ public interface UserMapper {
 	
 	Student getStudent(@Param("name")String name, @Param("number")String number);
 	
+	Student getStudentByImei(String imei);
+	
+	Student getStudentBySchoolId(@Param("name") String name,
+			@Param("number") String number, @Param("schoolId") int schoolId);
+	
 	Integer saveUser(User user);
 	
 	Integer saveTeacher(Teacher teacher);

@@ -25,6 +25,11 @@
 		</dependency>
 
 		<!-- 在这里添加项目个性化依赖 -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>4.0.0.RELEASE</version>
+		</dependency>
 		<!-- 加入spring测试依赖包 -->
 		<dependency>
 			<groupId>org.springframework</groupId>

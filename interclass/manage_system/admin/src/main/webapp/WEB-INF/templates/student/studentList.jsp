@@ -51,7 +51,10 @@
 							</div>
 
 							<div class="col-xs-12" style="padding: 0px;margin-bottom:5px">
-								<button type="button" class="btn btn-success btn-sm pull-right" onclick="window.location.href='${path}/student/add'">新增</button>
+							<div class="btn-group pull-right">
+								<button type="button" class="btn btn-success" onclick="window.location.href='${path}/student/import'">批量导入</button>
+								<button type="button" class="btn btn-success" onclick="window.location.href='${path}/student/add'">新增</button>
+								</div>
 							</div>
 
                             <div class="col-xs-12" style="padding: 0px;margin-bottom:5px">

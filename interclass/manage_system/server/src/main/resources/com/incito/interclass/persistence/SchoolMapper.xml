@@ -30,6 +30,16 @@
 		ORDER BY
 			id
 	</select>
+	
+	<select id="getSchoolByName" resultType="com.incito.interclass.entity.School" parameterType="java.lang.String">
+		SELECT	
+			id,name,school_alias AS schoolAlias ,school_number AS schoolNumber,phone,email,address,
+			zip_code AS zipCode,school_type AS schoolType,educational_type AS educationalType,intro,ctime
+		FROM 
+			tb_school
+		WHERE
+			name = #{name}
+	</select>
 
 	<insert id="save" parameterType="com.incito.interclass.entity.School" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO 

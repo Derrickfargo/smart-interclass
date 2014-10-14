@@ -9,7 +9,7 @@ import com.incito.interclass.entity.Device;
 public interface DeviceMapper {
 	List<Device> getDeviceListByCondition(@Param("imei")String imei, @Param("schoolName")String schoolName);
 	
-	List<Device> getDeviceListByRoomId(int roomId);
+	Device getDeviceByIMEI(String imei);
 	
 	Integer save(Device device);
 	

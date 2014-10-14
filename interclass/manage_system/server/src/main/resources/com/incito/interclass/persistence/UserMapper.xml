@@ -138,6 +138,18 @@
 			tb_user.id
 	</select>
 	
+	<select id="getStudentByImei" resultType="com.incito.interclass.entity.Student" parameterType="java.lang.String">
+		SELECT	
+			tb_user.id,tb_user.uname,tb_user.name,tb_user.email,tb_user.sex,is_active,role,tb_user.ctime,
+			tb_student.guardian, tb_student.phone,tb_student.address
+		FROM 
+			tb_user
+		INNER JOIN tb_student ON tb_user.id = tb_student.id
+		INNER JOIN tb_device ON tb_user.device_id = tb_device.id
+		WHERE
+			tb_user.is_Active = 1 AND tb_user.role = 3 AND tb_device.imei=#{imei}
+	</select>
+	
 	<insert id="saveUser" parameterType="com.incito.interclass.entity.User" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO 
 			tb_user(uname,password,name,email,sex,is_active,role,ctime)

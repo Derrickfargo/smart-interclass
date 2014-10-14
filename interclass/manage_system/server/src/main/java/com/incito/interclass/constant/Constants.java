@@ -27,6 +27,9 @@ public class Constants {
 	public static final String LOG_DIR = File.separator + "mnt"
 			+ File.separator + "dreamclass" + File.separator + "log";
 	
+	public static final String STUDENT_DIR = File.separator + "mnt"
+			+ File.separator + "dreamclass" + File.separator + "student";
+	
 	/**
 	 * 服务端版本存放目录
 	 */
