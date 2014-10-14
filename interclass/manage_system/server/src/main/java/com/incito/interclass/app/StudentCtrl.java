@@ -56,9 +56,7 @@ public class StudentCtrl extends BaseCtrl {
 			student.setUname(name);
 			student.setName(name);
 			student.setNumber(number);
-			try {
-				userService.saveStudent(student);
-			} catch (AppException e) {
+			if(!userService.saveStudent(student)){
 				return renderJSONString(REGISTER_ERROR);
 			}
 		}

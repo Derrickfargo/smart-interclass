@@ -29,15 +29,13 @@
 			id
 	</select>
 	
-	<select id="getDeviceListByRoomId" resultType="com.incito.interclass.entity.Device" parameterType="java.lang.Integer">
+	<select id="getDeviceByIMEI" resultType="com.incito.interclass.entity.Device" parameterType="java.lang.String">
 		SELECT	
-			tb_device.id,imei,tb_device.table_id AS tableId,tb_device.ctime
+			tb_device.id,imei,tb_device.ctime
 		FROM 
 			tb_device
-		INNER JOIN 
-			tb_table ON tb_table.id = tb_device.table_id
 		WHERE
-			tb_table.room_id = #{roomId}
+			imei = #{imei}
 		ORDER BY
 			id
 	</select>

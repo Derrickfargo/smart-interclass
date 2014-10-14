@@ -67,7 +67,7 @@
 										<c:forEach items="${page.list}" var="classes">
 											<tr>
 												<td>${classes.year}</td>
-												<td>${classes.name}</td>
+												<td>${classes.year}级${classes.number}班</td>
 												<td>
 													<a href="#" onclick="modifyClass('${classes.id}')"><span title="修改" class="glyphicon glyphicon-pencil"></span></a>&nbsp; 
 													<a href="#" onclick="deleteClass('${classes.id}')"><span title="删除" class="glyphicon glyphicon-remove"></span></a>&nbsp;

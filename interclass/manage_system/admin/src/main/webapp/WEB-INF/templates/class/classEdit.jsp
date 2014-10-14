@@ -39,7 +39,7 @@
 											<div class="form-group">
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>班级名称：</label>
 												<div class="col-xs-4">
-													<input type="text" name="name" id="className" value="${classes.name}" maxlength="8" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkClassNameTip').addClass('hidden')">
+													<input type="text" name="number" id="className" value="${classes.name}" maxlength="8" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkClassNameTip').addClass('hidden')">
 													<p id="checkClassNameTip" class="help-block hidden"><font color="red"><b>请输入班级名称</b></font></p>
 												</div>
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>所属学校：</label>

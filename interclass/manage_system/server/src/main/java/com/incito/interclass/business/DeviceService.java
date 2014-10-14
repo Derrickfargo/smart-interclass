@@ -18,12 +18,12 @@ public class DeviceService {
 		return deviceMapper.getDeviceListByCondition(imei, schoolName);
 	}
 	
-	public List<Device> getDeviceListByRoomId(int roomId){
-		return deviceMapper.getDeviceListByRoomId(roomId);
+	public Device getDeviceByIMEI(String imei){
+		return deviceMapper.getDeviceByIMEI(imei);
 	}
 	
-	public int saveDevice(Device device) {
-		return (Integer) deviceMapper.save(device);
+	public boolean saveDevice(Device device) {
+		return (Integer) deviceMapper.save(device) == 1;
 	}
 
 	public void deleteDevice(int deviceId) {

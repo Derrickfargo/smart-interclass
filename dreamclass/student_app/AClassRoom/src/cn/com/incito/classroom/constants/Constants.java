@@ -14,8 +14,8 @@ public class Constants {
 	public static final boolean OPEN_LOCK_SCREEN = false;// 是否打开锁屏功能
 	public static final boolean UNCATCHED_EXCEPION_HANLED = false;
 	public static final int PORT = 9001;
-	public static String IP = "192.168.30.135";
-	public final static String UPDATE_HOST = "61.155.215.91:9090/app";
+	public static String IP = "192.168.30.46";
+	public final static String UPDATE_HOST = "192.168.30.46:8080/app";
 	public final static String HTTP = "http://";
 	private final static String URL_SPLITTER = "/";
 	public final static String HOST = IP + ":" + PORT + "/app";

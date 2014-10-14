@@ -14,5 +14,6 @@ public interface SchoolMapper {
 	
 	Integer save(School school);
 
+	School getSchoolByName(String name);
 	void delete(int id);
 }

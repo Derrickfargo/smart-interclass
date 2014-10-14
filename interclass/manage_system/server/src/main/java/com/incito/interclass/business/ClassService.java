@@ -26,6 +26,10 @@ public class ClassService {
 		return classMapper.getClassList(schoolId);
 	}
 	
+	public Classes getClassByNumber(int schoolId, int year, int number){
+		return classMapper.getClassByNumber(schoolId, year, number);
+	}
+	
 	public Classes getClassById(int id) {
 		return classMapper.getClassById(id);
 	}

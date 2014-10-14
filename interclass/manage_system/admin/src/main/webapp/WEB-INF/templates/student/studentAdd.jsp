@@ -45,20 +45,38 @@
 														</c:forEach>
 													</select>
 												</div>
-												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>班级：</label>
+												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>年级：</label>
 												<div class="col-xs-4">
-													<select id="classId" name="classId" class="form-control" >
-														<c:forEach items="${classes}" var="classes">
-														<option value="${classes.id }">${classes.name }</option>
-														</c:forEach>
+													<select id="year" name="year" class="form-control" >
+														<option value="1">1年级</option>
+														<option value="2">2年级</option>
+														<option value="3">3年级</option>
+														<option value="4">4年级</option>
+														<option value="5">5年级</option>
+														<option value="6">6年级</option>
+														<option value="7">7年级</option>
+														<option value="8">8年级</option>
+														<option value="9">9年级</option>
 													</select>
 												</div>
 											</div>
 											<div class="form-group">
+												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>班级：</label>
+												<div class="col-xs-4">
+													<input type="text" id="classNumber" name="classNumber" maxlength="2" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkClassNumberTip').addClass('hidden')">
+													<p id="checkClassNumberTip" class="help-block hidden"><font color="red"><b>请输入班级</b></font></p>
+												</div>
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>姓名：</label>
 												<div class="col-xs-4">
 													<input type="text" id="name" name="name" maxlength="18" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkNameTip').addClass('hidden')">
 													<p id="checkNameTip" class="help-block hidden"><font color="red"><b>请输入姓名</b></font></p>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>学号：</label>
+												<div class="col-xs-4">
+													<input type="text" id="number" name="number" maxlength="18" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkNumberTip').addClass('hidden')">
+													<p id="checkNumberTip" class="help-block hidden"><font color="red"><b>请输入学号</b></font></p>
 												</div>
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>性别：</label>
 												<div class="col-xs-4">
