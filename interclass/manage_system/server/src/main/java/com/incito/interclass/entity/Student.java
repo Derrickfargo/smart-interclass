@@ -21,7 +21,6 @@ public class Student extends User {
 
 	private int year;
 	private int classNumber;
-	private String className;
 	private String schoolName;
 	private String imei;
 
@@ -107,10 +106,6 @@ public class Student extends User {
 		}
 		String className = "%d年级%d班";
 		return String.format(className, year, classNumber);
-	}
-
-	public void setClassName(String className) {
-		this.className = className;
 	}
 
 	public String getSchoolName() {

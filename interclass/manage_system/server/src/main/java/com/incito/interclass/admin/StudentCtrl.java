@@ -86,8 +86,10 @@ public class StudentCtrl extends BaseCtrl {
 		//班年级转换为入学学年
 		Calendar calendar = Calendar.getInstance();
 		int month = calendar.get(Calendar.MONTH) + 1;
-		if (month < 9) {
+		if(month < 9){
 			calendar.add(Calendar.YEAR, year * -1);
+		} else {
+			calendar.add(Calendar.YEAR, (year-1) * -1);
 		}
 		int newYear = calendar.get(Calendar.YEAR);
 		Classes classes = classService.getClassByNumber(schoolId, newYear, classNumber);
