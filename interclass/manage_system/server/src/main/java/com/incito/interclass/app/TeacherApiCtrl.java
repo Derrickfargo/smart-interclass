@@ -14,7 +14,6 @@ import com.incito.interclass.app.result.TeacherLoginResultData;
 import com.incito.interclass.business.ClassService;
 import com.incito.interclass.business.DeviceService;
 import com.incito.interclass.business.GroupService;
-import com.incito.interclass.business.TableService;
 import com.incito.interclass.business.UserService;
 import com.incito.interclass.common.BaseCtrl;
 import com.incito.interclass.entity.Classes;
@@ -42,9 +41,6 @@ public class TeacherApiCtrl extends BaseCtrl {
 	
 	@Autowired
 	private GroupService groupService;
-	
-	@Autowired
-	private TableService tableService;
 	
 	@Autowired
 	private DeviceService deviceService;

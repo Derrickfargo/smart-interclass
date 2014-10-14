@@ -146,9 +146,23 @@
 		FROM 
 			tb_user
 		INNER JOIN tb_student ON tb_user.id = tb_student.id
-		INNER JOIN tb_device ON tb_user.device_id = tb_device.id
+		INNER JOIN tb_device ON tb_student.device_id = tb_device.id
 		WHERE
 			tb_user.is_Active = 1 AND tb_user.role = 3 AND tb_device.imei=#{imei}
+	</select>
+	
+	<select id="getStudentBySchoolId" resultType="com.incito.interclass.entity.Student" parameterType="java.util.Map">
+		SELECT	
+			tb_user.id,tb_user.uname,tb_user.name,tb_user.email,tb_user.sex,is_active,role,tb_user.ctime,
+			tb_student.guardian, tb_student.phone,tb_student.address
+		FROM 
+			tb_user
+		INNER JOIN tb_student ON tb_user.id = tb_student.id
+		INNER JOIN tb_class ON tb_class.id = tb_student.class_id
+		INNER JOIN tb_device ON tb_student.device_id = tb_device.id
+		WHERE
+			tb_user.is_Active = 1 AND tb_user.role = 3 
+			AND tb_user.name=#{name} AND tb_student.number=#{number} AND tb_class.school_id=#{schoolId}
 	</select>
 	
 	<insert id="saveUser" parameterType="com.incito.interclass.entity.User" useGeneratedKeys="true" keyProperty="id">

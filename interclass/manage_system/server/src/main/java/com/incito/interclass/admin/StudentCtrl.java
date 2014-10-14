@@ -115,11 +115,7 @@ public class StudentCtrl extends BaseCtrl {
 		device.setImei(imei);
 		deviceService.saveDevice(device);
 		student.setDeviceId(device.getId());
-		try {
-			userService.saveStudent(student);
-		} catch (AppException e) {
-			e.printStackTrace();
-		}
+		userService.saveStudent(student);
 		return new ModelAndView("redirect:list");
 	}
 	

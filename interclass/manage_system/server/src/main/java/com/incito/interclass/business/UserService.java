@@ -2,6 +2,7 @@ package com.incito.interclass.business;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -128,10 +129,12 @@ public class UserService {
 	}
 
 	@Transactional(rollbackFor = AppException.class)
-	public boolean saveStudent(Student student) throws AppException {
+	public boolean saveStudent(Student student) {
+		student.setActive(true);
+		student.setRole(User.ROLE_STUDENT);
 		userMapper.saveUser(student);
 		if (student.getId() <= 0) {
-			throw AppException.database(0);
+			return false;
 		}
 		int result = userMapper.saveStudent(student);
 		return result == 1;
@@ -206,21 +209,23 @@ public class UserService {
 					student.getName(), student.getNumber(), tempSchool.getId());//检查学生是否存在
 			student.setClassId(classes.getId());
 			if (tempStudent == null || tempStudent.getId() == 0) {//不存在
-				Device device = deviceMapper.getDeviceByIMEI(tempStudent.getImei());
+				Device device = deviceMapper.getDeviceByIMEI(student.getImei());
 				if (device != null && device.getId() != 0) {
 					Student temp = userMapper.getStudentByImei(device.getImei());
 					if (temp != null && temp.getId() != 0) {
 						//TODO 设备已绑定学生，不能再绑定
-						userMapper.saveStudent(student);
+						saveStudent(student);
 						unbind.add(student.getName() + "(" + student.getNumber()+")");
 					} else {
 						student.setDeviceId(device.getId());
-						userMapper.saveStudent(student);
+						saveStudent(student);
 					}
 				} else {
+					device = new Device();
+					device.setImei(student.getImei());
 					deviceMapper.save(device);
 					student.setDeviceId(device.getId());
-					userMapper.saveStudent(student);
+					saveStudent(student);
 				}
 			} else {
 				//TODO 学生已存在，不导入
@@ -256,11 +261,18 @@ public class UserService {
 		Sheet sheet = rwb.getSheet(1);// 获取第二个工作表，即学生信息表
 		for (int i = 1; i < sheet.getRows(); i++) { // 行数(表头的目录不需要，从1开始)
 			Student student = new Student();
-			String year = sheet.getCell(0, i).getContents();// 获取入学年份
+			String year = sheet.getCell(0, i).getContents();// 获取年级
 			if (year == null || year.equals("")) {
 				break;
 			}
-			student.setYear(Integer.parseInt(year));
+			Calendar calendar = Calendar.getInstance();
+			int month = calendar.get(Calendar.MONTH) + 1;
+			if(month < 9){
+				calendar.add(Calendar.YEAR, Integer.parseInt(year) * -1);
+			} else {
+				calendar.add(Calendar.YEAR, (Integer.parseInt(year)-1) * -1);
+			}
+			student.setYear(calendar.get(Calendar.YEAR));
 
 			String classNumber = sheet.getCell(1, i).getContents();// 获取班级
 			if (classNumber == null || classNumber.equals("")) {
@@ -273,32 +285,39 @@ public class UserService {
 				break;
 			}
 			student.setName(name);
+			student.setUname(name);
+			
+			String number = sheet.getCell(3, i).getContents();// 获取学号
+			if (number == null || number.equals("")) {
+				break;
+			}
+			student.setNumber(number);
 
-			String sex = sheet.getCell(3, i).getContents();// 获取性别
+			String sex = sheet.getCell(4, i).getContents();// 获取性别
 			if (sex == null || sex.equals("")) {
 				break;
 			}
 			student.setSex(getSex(sex));
 
-			String guardian = sheet.getCell(4, i).getContents();// 获取监护人
+			String guardian = sheet.getCell(5, i).getContents();// 获取监护人
 			if (guardian == null || guardian.equals("")) {
 				break;
 			}
 			student.setGuardian(guardian);
 
-			String phone = sheet.getCell(5, i).getContents();// 获取监护人
+			String phone = sheet.getCell(6, i).getContents();// 获取联系电话
 			if (phone == null || phone.equals("")) {
 				break;
 			}
 			student.setPhone(phone);
 
-			String address = sheet.getCell(6, i).getContents();// 获取监护人
+			String address = sheet.getCell(7, i).getContents();// 获取通讯地址
 			if (address == null || address.equals("")) {
 				break;
 			}
 			student.setAddress(address);
 
-			String imei = sheet.getCell(7, i).getContents();// 获取监护人
+			String imei = sheet.getCell(8, i).getContents();// 获取Pad设备号
 			if (imei == null || imei.equals("")) {
 				break;
 			}
