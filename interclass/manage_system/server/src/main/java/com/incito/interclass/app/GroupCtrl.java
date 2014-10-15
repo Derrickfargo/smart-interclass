@@ -30,7 +30,7 @@ public class GroupCtrl extends BaseCtrl {
 	public String creatGroup(Group group){
 		 Integer result = groupService.creatGroup(group);
 		 if(result==1){
-			 return renderJSONString(SUCCESS, group);
+			 return renderJSONString(SUCCESS, group.getId());
 		 }else{
 			 return renderJSONString(1);
 		 }

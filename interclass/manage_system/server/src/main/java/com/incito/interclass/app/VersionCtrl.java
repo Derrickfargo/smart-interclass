@@ -51,7 +51,7 @@ public class VersionCtrl extends BaseCtrl {
 		Version version = versionService.getVersionById(versionId);
 	    File file = new File(version.getUrl());
 	    String fileName = URLEncoder.encode(file.getName(), "UTF-8");
-	    response.reset();  
+	    response.reset();
 	    response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");  
 	    response.addHeader("Content-Length", "" + file.length());  
 	    response.setContentType("application/octet-stream;charset=UTF-8");
