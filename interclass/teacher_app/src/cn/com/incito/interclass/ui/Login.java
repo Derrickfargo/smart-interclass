@@ -10,6 +10,8 @@ import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -115,6 +117,22 @@ public class Login extends MouseAdapter {
 		headb.setBounds(20, 60, icmr.getIconWidth(), icmr.getIconHeight());
 		// 用户信息栏
 		txtUserName = new JTextField();// 创建对象
+		txtUserName.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (txtUserName.getText().equals("")) {
+					txtUserName.setText("用户名");
+				}
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				if (txtUserName.getText().equals("用户名")) {
+					txtUserName.setText("");
+				}
+			}
+		});
 		txtUserName.setForeground(UIHelper.getDefaultFontColor());
 		txtUserName.setText("用户名");
 		txtUserName.setBounds(160, 65, 265, 35);// 设定位置
@@ -125,13 +143,13 @@ public class Login extends MouseAdapter {
 		frame.add(txtPassword);
 
 		// 记住用户名和密码
-		JCheckBox remind = new JCheckBox();
-		remind.setContentAreaFilled(false);// 设置透明
-		frame.add(remind);// 添加按钮
-		remind.setBounds(30, 235, 150, 20);
-		remind.addMouseListener(this);
-		remind.setText("记住用户名");
-		remind.setForeground(UIHelper.getDefaultFontColor());
+//		JCheckBox remind = new JCheckBox();
+//		remind.setContentAreaFilled(false);// 设置透明
+//		frame.add(remind);// 添加按钮
+//		remind.setBounds(30, 235, 150, 20);
+//		remind.addMouseListener(this);
+//		remind.setText("记住用户名");
+//		remind.setForeground(UIHelper.getDefaultFontColor());
 
 		// 登录按钮
 		btnLogin = new JButton();// 创建按钮对象
@@ -140,7 +158,7 @@ public class Login extends MouseAdapter {
 		ImageIcon btnImage = new ImageIcon("images/login/btn_login_normal.png");
 		btnLogin.setIcon(btnImage);// 设置图片
 		frame.add(btnLogin);// 添加按钮
-		btnLogin.setBounds(197, 220, btnImage.getIconWidth(),
+		btnLogin.setBounds(112, 220, btnImage.getIconWidth(),
 				btnImage.getIconHeight());
 		btnLogin.addMouseListener(this);
 		btnLogin.addActionListener(new ActionListener() {
@@ -193,7 +211,7 @@ public class Login extends MouseAdapter {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-
+		
 	}
 
 	@Override

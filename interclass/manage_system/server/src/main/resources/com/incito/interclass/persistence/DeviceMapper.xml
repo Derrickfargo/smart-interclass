@@ -6,7 +6,7 @@
 	<select id="getDeviceListByCondition" resultType="com.incito.interclass.entity.Device" parameterType="java.util.Map">
 		SELECT	
 			tb_device.id,tb_device.imei,tb_device.ctime,tb_user.name AS studentName,
-			tb_school.name AS schoolName, tb_class.name AS className
+			tb_school.name AS schoolName, tb_class.year AS year,tb_class.number AS classNumber
 		FROM 
 			tb_device
 		INNER JOIN 

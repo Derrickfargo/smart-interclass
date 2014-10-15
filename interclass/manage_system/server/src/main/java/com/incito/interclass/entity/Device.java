@@ -1,6 +1,7 @@
 package com.incito.interclass.entity;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Device implements Serializable {
@@ -13,7 +14,9 @@ public class Device implements Serializable {
 	private String imei;
 	private Date ctime;
 
-	private String className;
+	private int year;
+	private int classNumber;
+
 	private String schoolName;
 	private String studentName;
 
@@ -50,11 +53,15 @@ public class Device implements Serializable {
 	}
 
 	public String getClassName() {
-		return className;
-	}
-
-	public void setClassName(String className) {
-		this.className = className;
+		Calendar calendar = Calendar.getInstance();
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH) + 1;
+		year = year - this.year;
+		if (month >= 9) {
+			year += 1;
+		}
+		String className = "%d年级%d班";
+		return String.format(className, year, classNumber);
 	}
 
 	public String getStudentName() {
@@ -63,6 +70,22 @@ public class Device implements Serializable {
 
 	public void setStudentName(String studentName) {
 		this.studentName = studentName;
+	}
+
+	public int getYear() {
+		return year;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
+	}
+
+	public int getClassNumber() {
+		return classNumber;
+	}
+
+	public void setClassNumber(int classNumber) {
+		this.classNumber = classNumber;
 	}
 
 }
