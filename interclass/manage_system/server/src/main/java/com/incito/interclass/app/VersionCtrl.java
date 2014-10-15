@@ -47,8 +47,8 @@ public class VersionCtrl extends BaseCtrl {
 	 * @throws IOException
 	 */
 	@RequestMapping(value = "/download", produces = { "application/octet-stream;charset=UTF-8" })
-	public void download(Integer versionId, final HttpServletResponse response) throws IOException{  
-		Version version = versionService.getVersionById(versionId);
+	public void download(Integer id, final HttpServletResponse response) throws IOException{  
+		Version version = versionService.getVersionById(id);
 	    File file = new File(version.getUrl());
 	    String fileName = URLEncoder.encode(file.getName(), "UTF-8");
 	    response.reset();  
