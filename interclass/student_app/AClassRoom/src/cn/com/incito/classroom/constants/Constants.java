@@ -25,7 +25,10 @@ public class Constants {
 	 * 上传日志文件
 	 */
 	public static String URL_UPLOAD_LOG = URL_API_HOST + "api/log/save";
-	
+	/**
+	 * 更新apk
+	 */
+	public static String URL_UPDATE_APK = URL_API_HOST + "api/version/check";
 	
 	public static String getIP() {
 		return IP;

@@ -56,11 +56,10 @@ public class SplashActivity extends BaseActivity {
 		final View view = View.inflate(this, R.layout.splash, null);
 		setContentView(view);
 		try {
-		    PackageManager pm = getPackageManager();
-		    PackageInfo info = pm.getPackageInfo("cn.com.incito.classroom", 0);
-		    code = info.versionCode;
-		}
-		catch (NameNotFoundException e) {
+			PackageManager pm = getPackageManager();
+			PackageInfo info = pm.getPackageInfo("cn.com.incito.classroom", 0);
+			code = info.versionCode;
+		} catch (NameNotFoundException e) {
 			ApiClient.uploadErrorLog(e.getMessage());
 		}
 		ib_setting_ip = (ImageButton) view.findViewById(R.id.ib_setting_ip);
@@ -117,31 +116,38 @@ public class SplashActivity extends BaseActivity {
 						WifiInfo info = wifi.getConnectionInfo();
 						app.setDeviceId(info.getMacAddress().replace(":", "-"));
 						Log.i("SplashActivity", "WiFi已连接，检查Socket是否连接 ");
-//						//TODO 升级
+						// //TODO 升级
 						try {
-							 JSONObject updateResult = JSONObject.parseObject(ApiClient.updateApk(code));
-							 WLog.i(SplashActivity.class, "版本更新返回信息："+updateResult);
-							if(updateResult.getInteger("code")==0){
-								Version version = JSON.parseObject(updateResult.getJSONObject("data").toJSONString(),
+							JSONObject updateResult = JSONObject
+									.parseObject(ApiClient.updateApk(code));
+							WLog.i(SplashActivity.class, "版本更新返回信息："
+									+ updateResult);
+							if (updateResult.getInteger("code") == 0) {
+								Version version = JSON.parseObject(updateResult
+										.getJSONObject("data").toJSONString(),
 										Version.class);
-								String url ="http://localhost:8080/api/version/download?id=" + version.getId() ;
-								UpdateManager mUpdateManager = new UpdateManager(SplashActivity.this,url);  
-							    mUpdateManager.checkUpdateInfo();
-							}else{
-								
+								String url = "http://localhost:8080/api/version/download?id="
+										+ version.getId();
+								UpdateManager mUpdateManager = new UpdateManager(
+										SplashActivity.this, url);
+								mUpdateManager.checkUpdateInfo();
+							} else {
+
 							}
 						} catch (AppException e) {
 							ApiClient.uploadErrorLog(e.getMessage());
 							e.printStackTrace();
 						}
 						if (!CoreSocket.getInstance().isConnected()) {
-							Log.i("SplashActivity", "Socket无连接，开始Socket重连，startMain退出 ");
+							Log.i("SplashActivity",
+									"Socket无连接，开始Socket重连，startMain退出 ");
 							CoreSocket.getInstance().disconnect();
 							showSetting();
 							restartConnector();
 							break;
 						} else {
-							Log.i("SplashActivity", "Socket已连接，开始登陆，startMain退出 ");
+							Log.i("SplashActivity",
+									"Socket已连接，开始登陆，startMain退出 ");
 							startMainAct();
 						}
 						break;
@@ -166,12 +172,12 @@ public class SplashActivity extends BaseActivity {
 				if (netWorkDialog == null) {
 					netWorkDialog = new NetWorkDialog(SplashActivity.this);
 					netWorkDialog.show();
-				}else if(netWorkDialog != null && !netWorkDialog.isShowing()){
+				} else if (netWorkDialog != null && !netWorkDialog.isShowing()) {
 					netWorkDialog.show();
 				}
 				break;
 			case 2:
-				if(netWorkDialog != null && netWorkDialog.isShowing()){
+				if (netWorkDialog != null && netWorkDialog.isShowing()) {
 					netWorkDialog.dismiss();
 				}
 			case 0:
@@ -187,7 +193,7 @@ public class SplashActivity extends BaseActivity {
 		android.os.Message message = new android.os.Message();
 		message.what = 0;
 		mHandler.sendMessage(message);
-//		mHandler.sendEmptyMessage(0);
+		// mHandler.sendEmptyMessage(0);
 	}
 
 	@Override
@@ -207,10 +213,13 @@ public class SplashActivity extends BaseActivity {
 	public void startMainAct() {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("imei", MyApplication.deviceId);
-		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_HAS_BIND);
-		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
+		MessagePacking messagePacking = new MessagePacking(
+				Message.MESSAGE_DEVICE_HAS_BIND);
+		messagePacking.putBodyData(DataType.INT,
+				BufferUtils.writeUTFString(jsonObject.toJSONString()));
 		CoreSocket.getInstance().sendMessage(messagePacking);
-		WLog.i(SplashActivity.class, "开始判定设备是否绑定..." + "request:" + jsonObject.toJSONString());
+		WLog.i(SplashActivity.class,
+				"开始判定设备是否绑定..." + "request:" + jsonObject.toJSONString());
 	}
 
 	/**
@@ -250,7 +259,8 @@ public class SplashActivity extends BaseActivity {
 	}
 
 	public boolean checkWifi() {
-		ConnectivityManager connectivity = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+		ConnectivityManager connectivity = (ConnectivityManager) this
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		if (connectivity != null) {
 			// 获取网络连接管理的对象
 			NetworkInfo info = connectivity.getActiveNetworkInfo();

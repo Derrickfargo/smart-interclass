@@ -251,7 +251,7 @@ public class ApiClient {
 		params.put("type", 2);
 		params.put("code", code);
 		try {
-			return _post("www.baidu.com", params, null);
+			return _post(Constants.URL_UPDATE_APK, params, null);
 		} catch (Exception e) {
 			ApiClient.uploadErrorLog(e.getMessage());
 			if (e instanceof AppException)
