@@ -33,7 +33,7 @@ public class VersionCtrl extends BaseCtrl {
 	@RequestMapping("/list")
 	public ModelAndView index(@RequestParam(value = "type", defaultValue = "1")Integer type,
 			@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
-		ModelAndView res = new ModelAndView("system/versionList");
+		ModelAndView res = new ModelAndView("version/versionList");
 		PageHelper.startPage(pageNum, PAGE_SIZE);
 		List<Version> versions = versionService.getVersionListByCondition(type);
 		PageInfo<Version> page = new PageInfo<Version>(versions);
@@ -56,10 +56,11 @@ public class VersionCtrl extends BaseCtrl {
 	 * @return
 	 */
 	@RequestMapping(value = "/save")
-	public ModelAndView save(int type, int code, MultipartFile file) {
+	public ModelAndView save(int type, String name, int code, String description, MultipartFile file) {
 		Version version = new Version();
 		version.setType(type);
 		version.setCode(code);
+		version.setName(name);
 		Date date = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat time = new SimpleDateFormat("HH-mm-ss");
@@ -74,13 +75,13 @@ public class VersionCtrl extends BaseCtrl {
 			return new ModelAndView("version/versionAdd");
 		}
 		version.setUrl(newFile.getAbsolutePath());
-		version.setName(filename);
+		version.setDescription(description);
 		versionService.saveVersion(version);
 		return new ModelAndView("redirect:/version/list");
 	}
 	
 	@RequestMapping(value = "/delete")
-	public ModelAndView delete(int id) {
+	public ModelAndView delete(Integer id) {
 		versionService.deleteVersion(id);
 		return new ModelAndView("redirect:list");
 	}
