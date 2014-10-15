@@ -51,10 +51,10 @@
 											</c:choose>
 											<c:choose>
 												<c:when test="${type == 2 }">
-													<option value="2" selected>Pad端</option>
+													<option value="2" selected>学生端</option>
 												</c:when>
 												<c:otherwise>
-													<option value="2">Pad端</option>
+													<option value="2">学生端</option>
 												</c:otherwise>
 											</c:choose>
 										</select>
@@ -65,7 +65,7 @@
 							</div>
 
 							<div class="col-xs-12" style="padding: 0px;margin-bottom:5px">
-								<button type="button" class="btn btn-success btn-sm pull-right" onclick="window.location.href='${path}/versiob/add'">新增</button>
+								<button type="button" class="btn btn-success btn-sm pull-right" onclick="window.location.href='${path}/version/add'">新增</button>
 							</div>
 							
                             <div class="col-xs-12" style="padding: 0px;margin-bottom:5px">
@@ -94,7 +94,6 @@
 												<td>${version.name}</td>
 												<td><fmt:formatDate value="${version.ctime}" type="both"/></td>
 												<td>
-													<a href="#" onclick="modifyVersion('${version.id}')"><span title="修改" class="glyphicon glyphicon-pencil"></span></a>&nbsp; 
 													<a href="#" onclick="deleteVersion('${version.id}')"><span title="删除" class="glyphicon glyphicon-remove"></span></a>&nbsp;
 												</td>
 											</tr>
@@ -140,7 +139,7 @@
 							<input type="hidden" id="pageSize" name="pageSize" value="">
 							<input type="hidden" id="opType" name="opType" value="">
 							<input type="hidden" id="pageType" name="pageType" value="">
-							<input type="hidden" id="versionId" name="versionId" value="">
+							<input type="hidden" id="id" name="id" value="">
 						</form>
 					</div>
 				</div>

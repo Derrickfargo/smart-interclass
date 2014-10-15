@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.incito.interclass.business.VersionService;
@@ -46,7 +47,7 @@ public class VersionCtrl extends BaseCtrl {
 	 * @param response
 	 * @throws IOException
 	 */
-	@RequestMapping(value = "/download", produces = { "application/octet-stream;charset=UTF-8" })
+	@RequestMapping(value = "/download",method={RequestMethod.GET},produces = { "application/octet-stream;charset=UTF-8" })
 	public void download(Integer id, final HttpServletResponse response) throws IOException{  
 		Version version = versionService.getVersionById(id);
 	    File file = new File(version.getUrl());
