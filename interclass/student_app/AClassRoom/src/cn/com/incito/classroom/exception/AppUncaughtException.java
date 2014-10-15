@@ -12,14 +12,11 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.Thread.UncaughtExceptionHandler;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import android.content.Context;
 import android.util.Log;
 import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.utils.ApiClient;
-import cn.com.incito.classroom.utils.FileUtils;
 import cn.com.incito.common.utils.AndroidUtil;
 
 /**

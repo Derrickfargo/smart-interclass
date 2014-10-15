@@ -7,8 +7,6 @@ import java.net.UnknownHostException;
 
 import org.apache.commons.httpclient.HttpException;
 
-import cn.com.incito.classroom.utils.ApiClient;
-
 /**
  * 应用程序异常类：用于捕获异常和提示错误信息
  * @author 刘世平
