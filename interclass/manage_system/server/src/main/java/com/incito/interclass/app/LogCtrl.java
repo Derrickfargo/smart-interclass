@@ -35,7 +35,7 @@ public class LogCtrl extends BaseCtrl {
 	public String save(int type, String mac, String reason, MultipartFile file) {
 		Date date = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		SimpleDateFormat time = new SimpleDateFormat("HH-mm-ss-SS");
+		SimpleDateFormat time = new SimpleDateFormat("HH-mm-ss");
 		String filename = file.getOriginalFilename();
 		File dir = new File(Constants.LOG_DIR + File.separator
 				+ sdf.format(date) + File.separator + time.format(date));

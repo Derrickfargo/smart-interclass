@@ -1,15 +1,21 @@
 package com.incito.interclass.admin;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.incito.interclass.business.VersionService;
 import com.incito.interclass.common.BaseCtrl;
+import com.incito.interclass.constant.Constants;
 import com.incito.interclass.entity.Version;
 import com.incito.parent.pagehelper.PageHelper;
 import com.incito.parent.pagehelper.PageInfo;
@@ -50,7 +56,25 @@ public class VersionCtrl extends BaseCtrl {
 	 * @return
 	 */
 	@RequestMapping(value = "/save")
-	public ModelAndView save(Version version) {
+	public ModelAndView save(int type, int code, MultipartFile file) {
+		Version version = new Version();
+		version.setType(type);
+		version.setCode(code);
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat time = new SimpleDateFormat("HH-mm-ss");
+		String filename = file.getOriginalFilename();
+		File dir = new File(Constants.VERSION_DIR + File.separator
+				+ sdf.format(date) + File.separator + time.format(date));
+		dir.mkdirs();
+		File newFile = new File(dir, filename);
+		try {
+			file.transferTo(newFile);
+		} catch (IOException e) {
+			return new ModelAndView("version/versionAdd");
+		}
+		version.setUrl(newFile.getAbsolutePath());
+		version.setName(filename);
 		versionService.saveVersion(version);
 		return new ModelAndView("redirect:/version/list");
 	}
