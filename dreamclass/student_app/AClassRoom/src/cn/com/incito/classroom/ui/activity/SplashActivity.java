@@ -1,6 +1,9 @@
 package cn.com.incito.classroom.ui.activity;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
@@ -24,6 +27,8 @@ import cn.com.incito.classroom.exception.AppException;
 import cn.com.incito.classroom.ui.widget.NetWorkDialog;
 import cn.com.incito.classroom.utils.ApiClient;
 import cn.com.incito.classroom.utils.UpdateManager;
+import cn.com.incito.classroom.vo.LoginResVo;
+import cn.com.incito.classroom.vo.Version;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
@@ -31,6 +36,7 @@ import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
 import cn.com.incito.wisdom.sdk.log.WLog;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 /**
@@ -42,12 +48,21 @@ public class SplashActivity extends BaseActivity {
 	private TextView tv_loading_msg;
 	private ImageButton ib_setting_ip;
 	private IpSettingDialogFragment dialog;
+	private int code;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		final View view = View.inflate(this, R.layout.splash, null);
 		setContentView(view);
+		try {
+		    PackageManager pm = getPackageManager();
+		    PackageInfo info = pm.getPackageInfo("cn.com.incito.classroom", 0);
+		    code = info.versionCode;
+		}
+		catch (NameNotFoundException e) {
+			ApiClient.uploadErrorLog(e.getMessage());
+		}
 		ib_setting_ip = (ImageButton) view.findViewById(R.id.ib_setting_ip);
 		ib_setting_ip.setOnClickListener(new OnClickListener() {
 
@@ -89,6 +104,7 @@ public class SplashActivity extends BaseActivity {
 		tv_loading_msg.setText(R.string.loading_msg);
 		Log.i("SplashActivity", "startMain");
 		new Thread() {
+
 			public void run() {
 				while (true) {
 					Log.i("SplashActivity", "检查WiFi是否连接 ");
@@ -101,12 +117,15 @@ public class SplashActivity extends BaseActivity {
 						WifiInfo info = wifi.getConnectionInfo();
 						app.setDeviceId(info.getMacAddress().replace(":", "-"));
 						Log.i("SplashActivity", "WiFi已连接，检查Socket是否连接 ");
-						//TODO 升级
+//						//TODO 升级
 						try {
-							 JSONObject updateResult = JSONObject.parseObject(ApiClient.updateApk());
+							 JSONObject updateResult = JSONObject.parseObject(ApiClient.updateApk(code));
 							 WLog.i(SplashActivity.class, "版本更新返回信息："+updateResult);
 							if(updateResult.getInteger("code")==0){
-								UpdateManager mUpdateManager = new UpdateManager(SplashActivity.this,updateResult.getString("url"));  
+								Version version = JSON.parseObject(updateResult.getJSONObject("data").toJSONString(),
+										Version.class);
+								String url ="http://localhost:8080/api/version/download?id=" + version.getId() ;
+								UpdateManager mUpdateManager = new UpdateManager(SplashActivity.this,url);  
 							    mUpdateManager.checkUpdateInfo();
 							}else{
 								
@@ -126,8 +145,6 @@ public class SplashActivity extends BaseActivity {
 							startMainAct();
 						}
 						break;
-						
-						
 					}
 					Log.i("SplashActivity", "WiFi未连接 ");
 					android.os.Message message = new android.os.Message();
@@ -139,6 +156,7 @@ public class SplashActivity extends BaseActivity {
 		}.start();
 
 	}
+
 	private Handler mHandler = new Handler() {
 
 		@Override
