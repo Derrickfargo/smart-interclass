@@ -75,6 +75,7 @@ public class VersionCtrl extends BaseCtrl {
 			return new ModelAndView("version/versionAdd");
 		}
 		version.setUrl(newFile.getAbsolutePath());
+		version.setFileSize(newFile.length());
 		version.setDescription(description);
 		versionService.saveVersion(version);
 		return new ModelAndView("redirect:/version/list");

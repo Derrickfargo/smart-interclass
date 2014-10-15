@@ -18,6 +18,7 @@ import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 
+import cn.com.incito.interclass.main.Main;
 import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.exception.AppException;
@@ -400,4 +401,16 @@ public class ApiClient {
 		}
 	}
 	
+	public static String checkUpdate() throws AppException {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("type", 1);
+		params.put("code", Main.VERSION_CODE);
+		try {
+			return _post(URLs.URL_UPDATE_GROUP, params, null);
+		} catch (Exception e) {
+			if (e instanceof AppException)
+				throw (AppException) e;
+			throw AppException.network(e);
+		}
+	}
 }
