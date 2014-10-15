@@ -34,8 +34,11 @@ public class VersionCtrl extends BaseCtrl {
 	 */
 	@RequestMapping(value = "/check", produces = { "application/json;charset=UTF-8" })
 	public String checkVersion(int type, int code) {
-		Version version = versionService.getVersion(type, code);
+		Version version = versionService.getLatestVersion(type);
 		if (version == null || version.getId() == 0) {
+			return renderJSONString(1);
+		}
+		if (code <= version.getCode()) {
 			return renderJSONString(1);
 		}
 		return renderJSONString(SUCCESS, version);
