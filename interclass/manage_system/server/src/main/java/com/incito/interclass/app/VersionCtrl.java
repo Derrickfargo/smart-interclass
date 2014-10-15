@@ -35,7 +35,7 @@ public class VersionCtrl extends BaseCtrl {
 	public String checkVersion(int type, int code) {
 		Version version = versionService.getVersion(type, code);
 		if (version == null || version.getId() == 0) {
-			return renderJSONString(SUCCESS);
+			return renderJSONString(1);
 		}
 		return renderJSONString(SUCCESS, version);
 	}

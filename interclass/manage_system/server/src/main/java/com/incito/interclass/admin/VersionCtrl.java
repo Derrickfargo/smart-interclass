@@ -36,4 +36,28 @@ public class VersionCtrl extends BaseCtrl {
 		return res;
 	}
 	
+	/**
+	 * 添加版本
+	 */
+	@RequestMapping("/add")
+	public ModelAndView add() {
+		ModelAndView mav = new ModelAndView("version/versionAdd");
+		return mav;
+	}
+	
+	/**
+	 * 保存
+	 * @return
+	 */
+	@RequestMapping(value = "/save")
+	public ModelAndView save(Version version) {
+		versionService.saveVersion(version);
+		return new ModelAndView("redirect:/version/list");
+	}
+	
+	@RequestMapping(value = "/delete")
+	public ModelAndView delete(int id) {
+		versionService.deleteVersion(id);
+		return new ModelAndView("redirect:list");
+	}
 }

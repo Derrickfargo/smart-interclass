@@ -246,9 +246,10 @@ public class ApiClient {
 	 * @return
 	 * @throws AppException
 	 */
-	public static String updateApk() throws AppException {
+	public static String updateApk(int code) throws AppException {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("oldVersion", 2);
+		params.put("type", 2);
+		params.put("code", code);
 		try {
 			return _post("www.baidu.com", params, null);
 		} catch (Exception e) {
