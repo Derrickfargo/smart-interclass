@@ -38,10 +38,10 @@ public class VersionCtrl extends BaseCtrl {
 		if (version == null || version.getId() == 0) {
 			return renderJSONString(1);
 		}
-		if (code <= version.getCode()) {
-			return renderJSONString(1);
+		if (code < version.getCode()) {
+			return renderJSONString(SUCCESS, version);
 		}
-		return renderJSONString(SUCCESS, version);
+		return renderJSONString(1);
 	}
 	
 	/**
