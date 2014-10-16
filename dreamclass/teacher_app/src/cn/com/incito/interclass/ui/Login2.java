@@ -294,7 +294,6 @@ public class Login2 extends MouseAdapter {
 			calendar.add(Calendar.YEAR, (grade-1) * -1);
 		}
 		int newYear = calendar.get(Calendar.YEAR);
-		JOptionPane.showMessageDialog(frame, newYear);
 		if (txtClassNumber.getText().equals("")) {
 			JOptionPane.showMessageDialog(frame, "请输入班级!");
 			return;
@@ -304,7 +303,6 @@ public class Login2 extends MouseAdapter {
 			JOptionPane.showMessageDialog(frame, "班号必须大于0!");
 			return;
 		}
-		JOptionPane.showMessageDialog(frame, classNumber);
 		AsyncHttpConnection http = AsyncHttpConnection.getInstance();
 		ParamsWrapper params = new ParamsWrapper();
 		params.put("schoolId", schoolId);
