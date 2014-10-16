@@ -2,6 +2,7 @@ package cn.com.incito.server.handler;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
@@ -9,6 +10,7 @@ import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
+import cn.com.incito.server.config.AppConfig;
 import cn.com.incito.server.core.ConnectionManager;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
@@ -47,6 +49,11 @@ public class DeviceLoginHandler extends MessageHandler {
         }
 		
 		//回复设备登陆消息
+		Properties props = AppConfig.getProperties();
+		String ip = props.get(AppConfig.CONF_SERVER_IP).toString();
+		String port = props.get(AppConfig.CONF_SERVER_PORT).toString();
+		data.put(AppConfig.CONF_SERVER_IP, ip);
+		data.put(AppConfig.CONF_SERVER_PORT, port);
         logger.info("回复设备登陆消息:" + data.toJSONString());
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_HAND_SHAKE);
 		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(data.toJSONString()));
