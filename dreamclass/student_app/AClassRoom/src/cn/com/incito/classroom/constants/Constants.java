@@ -14,24 +14,26 @@ public class Constants {
 	public static final boolean LOG_OPEN = true;
 	public static final boolean OPEN_LOCK_SCREEN = false;// 是否打开锁屏功能
 	public static final boolean UNCATCHED_EXCEPION_HANLED = false;
-	public static final int PORT = 8080;
-	public static String IP = "192.168.30.133";
-	public final static String UPDATE_HOST = "192.168.30.133:8080/app";
+	public static final int PORT =9001;// pc端口号（socket）
+	public static String IP = "192.168.30.133";//pc端地址
 	public final static String HTTP = "http://";
-	public final static String HOST = IP + ":" + PORT + "/app";
-	public static String update_url=MyApplication.getInstance().getSharedPreferences().getString("server_ip", "")+":" + MyApplication.getInstance().getSharedPreferences().getString("server_port", "");
+	/**
+	 * server端的地址和端口
+	 */
+	public static String server_url=MyApplication.getInstance().getSharedPreferences().getString("server_ip", "")+":" + MyApplication.getInstance().getSharedPreferences().getString("server_port", "");
+	public final static String HOST = HTTP+server_url +"/app";	//server端口和地址
 	/**
 	 * 上传日志文件
 	 */
-	public static String URL_UPLOAD_LOG = HTTP+update_url+ "/api/log/save";
+	public static String URL_UPLOAD_LOG = HOST+ "/api/log/save";
 	/**
 	 * 更新apk
 	 */
-	public static String URL_UPDATE_APK =HTTP+ update_url + "/api/version/check";
+	public static String URL_UPDATE_APK =HOST + "/api/version/check";
 	/**
 	 * apk下载地址
 	 */
-	public static String URL_DOWNLOAD_APK =HTTP+ update_url + "/api/version/download?id=";
+	public static String URL_DOWNLOAD_APK =HOST + "/api/version/download?id=";
 	
 	
 	public static String getIP() {

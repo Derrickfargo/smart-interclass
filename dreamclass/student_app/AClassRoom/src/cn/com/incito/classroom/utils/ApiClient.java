@@ -63,7 +63,7 @@ public class ApiClient {
 		}
 		// 设置 请求超时时间
 		httpGet.getParams().setSoTimeout(TIMEOUT_SOCKET);
-		httpGet.setRequestHeader("Host", Constants.UPDATE_HOST);
+		httpGet.setRequestHeader("Host", Constants.HTTP+Constants.HOST);
 		httpGet.setRequestHeader("Connection", "Keep-Alive");
 		return httpGet;
 	}
@@ -72,7 +72,7 @@ public class ApiClient {
 		PostMethod httpPost = new PostMethod(url);
 		// 设置 请求超时时间
 		// httpPost.getParams().setSoTimeout(TIMEOUT_SOCKET);
-		httpPost.setRequestHeader("Host", Constants.UPDATE_HOST);
+		httpPost.setRequestHeader("Host", Constants.HTTP+Constants.HOST);
 		httpPost.setRequestHeader("Connection", "Keep-Alive");
 		return httpPost;
 	}
