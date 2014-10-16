@@ -10,13 +10,15 @@ import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Calendar;
 import java.util.List;
-import java.util.Properties;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -25,6 +27,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
@@ -32,14 +35,10 @@ import org.apache.log4j.Logger;
 import cn.com.incito.http.AsyncHttpConnection;
 import cn.com.incito.http.StringResponseHandler;
 import cn.com.incito.http.support.ParamsWrapper;
-import cn.com.incito.interclass.po.Classes;
 import cn.com.incito.interclass.po.Course;
-import cn.com.incito.interclass.ui.widget.IpDialog;
 import cn.com.incito.interclass.ui.widget.Item;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.api.result.TeacherGroupResultData;
-import cn.com.incito.server.config.AppConfig;
-import cn.com.incito.server.utils.NetworkUtils;
 import cn.com.incito.server.utils.UIHelper;
 import cn.com.incito.server.utils.URLs;
 
@@ -52,11 +51,11 @@ public class Login2 extends MouseAdapter {
 	private Boolean isDragged;
 	private Point loc, tmp;
 	private JLabel lblClass, lblCourse;
-	private JComboBox jcbClass, jcbCourse;
+	private JComboBox<Item> jcbClass, jcbCourse;
 	private JButton btnMin, btnClose, btnLogin;
+	private JTextField txtClassNumber;
 	private JLabel lblBackground;
 	private Application app = Application.getInstance();
-	private List<Classes> classList;
 	private List<Course> courseList;
 	private Logger logger = Logger.getLogger(Login2.class.getName());
 
@@ -65,8 +64,7 @@ public class Login2 extends MouseAdapter {
 	}
 
 	// 构造函数、调用方法
-	public Login2(List<Classes> classList, List<Course> courseList) {
-		this.classList = classList;
+	public Login2(List<Course> courseList) {
 		this.courseList = courseList;
 		showLoginUI();
 		setDragable();
@@ -106,8 +104,7 @@ public class Login2 extends MouseAdapter {
 		ImageIcon imgMax = new ImageIcon("images/login/7.png");
 		btnClose.setIcon(imgMax);// 设置图片
 		top.add(btnClose);// 添加按钮
-		btnClose.setBounds(412, 9, imgMax.getIconWidth(),
-				imgMax.getIconHeight());
+		btnClose.setBounds(412, 9, imgMax.getIconWidth(), imgMax.getIconHeight());
 		btnClose.addMouseListener(this);
 		frame.add(top);
 		// 班级
@@ -116,18 +113,34 @@ public class Login2 extends MouseAdapter {
 		lblClass.setText("请选择班级:");
 		lblClass.setBounds(60, 65, 265, 35);
 		frame.add(lblClass);
-		jcbClass = new JComboBox();
+		jcbClass = new JComboBox<Item>();
 		jcbClass.setForeground(UIHelper.getDefaultFontColor());
-		jcbClass.setBounds(140, 65, 265, 35);// 设定位置
-		jcbClass.setEditable(true);
+		jcbClass.setBounds(140, 65, 130, 35);// 设定位置
 		frame.add(jcbClass);// 添加到界面
+		txtClassNumber = new JTextField();
+		txtClassNumber.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+                //只允许数字，且长度不大于2
+                if (Character.isDigit(c) && txtClassNumber.getText().trim().length() < 2)
+                    return;
+                e.consume();
+            }
+        });
+		txtClassNumber.setBounds(280, 65, 80, 35);
+		frame.add(txtClassNumber);
+		JLabel lblClassLabel = new JLabel("班");
+		lblClassLabel.setForeground(UIHelper.getDefaultFontColor());
+		lblClassLabel.setBounds(370, 65, 35, 35);
+		frame.add(lblClassLabel);
+		
 		// 课程
 		lblCourse = new JLabel();
 		lblCourse.setForeground(UIHelper.getDefaultFontColor());
 		lblCourse.setText("请选择课程:");
 		lblCourse.setBounds(60, 115, 265, 35);
 		frame.add(lblCourse);
-		jcbCourse = new JComboBox();
+		jcbCourse = new JComboBox<Item>();
 		jcbCourse.setForeground(UIHelper.getDefaultFontColor());
 		jcbCourse.setBounds(140, 115, 265, 35);
 		frame.add(jcbCourse);
@@ -158,8 +171,8 @@ public class Login2 extends MouseAdapter {
 			Item item = new Item(course.getId(), course.getName());
 			jcbCourse.addItem(item);
 		}
-		for (Classes classes : classList) {
-			Item item = new Item(classes.getId(), classes.getName());
+		for (int i = 1; i <= 9; i++) {
+			Item item = new Item(i, i + "年级");
 			jcbClass.addItem(item);
 		}
 	}
@@ -270,28 +283,36 @@ public class Login2 extends MouseAdapter {
 		int teacherId = app.getTeacher().getId();
 		Item course = (Item) jcbCourse.getSelectedItem();
 		int courseId = course.getKey();
-		Object aItem = jcbClass.getSelectedItem();
-		int classId = 0;
-		String className = new String();
-		if (aItem instanceof Item) {
-			Item item = (Item) aItem;
-			classId = item.getKey();
-			className = item.getValue();
+		
+		Item classItem = (Item)jcbClass.getSelectedItem();
+		int grade = classItem.getKey();
+		Calendar calendar = Calendar.getInstance();
+		int month = calendar.get(Calendar.MONTH) + 1;
+		if(month < 9){
+			calendar.add(Calendar.YEAR, grade * -1);
 		} else {
-			className = (String) aItem;
+			calendar.add(Calendar.YEAR, (grade-1) * -1);
 		}
-		if (classId == 0 && className.trim().equals("")) {
+		int newYear = calendar.get(Calendar.YEAR);
+		JOptionPane.showMessageDialog(frame, newYear);
+		if (txtClassNumber.getText().equals("")) {
 			JOptionPane.showMessageDialog(frame, "请输入班级!");
 			return;
 		}
+		int classNumber = Integer.parseInt(txtClassNumber.getText());
+		if (classNumber <= 0) {
+			JOptionPane.showMessageDialog(frame, "班号必须大于0!");
+			return;
+		}
+		JOptionPane.showMessageDialog(frame, classNumber);
 		AsyncHttpConnection http = AsyncHttpConnection.getInstance();
 		ParamsWrapper params = new ParamsWrapper();
 		params.put("schoolId", schoolId);
 		params.put("roomId", roomId);
 		params.put("teacherId", teacherId);
 		params.put("courseId", courseId);
-		params.put("classId", classId);
-		params.put("className", className);
+		params.put("year", newYear);//入学年份
+		params.put("classNumber", classNumber);//班号
 		http.post(URLs.URL_TEACHER_GROUP, params, new StringResponseHandler() {
 			@Override
 			protected void onResponse(String content, URL url) {
@@ -313,7 +334,6 @@ public class Login2 extends MouseAdapter {
 					Application.getInstance().initMapping(
 							resultData.getDevices(), resultData.getTables(),
 							resultData.getGroups());
-					// FloatWin.getInstance();
 					MainFrame.getInstance().setVisible(true);
 					SwingUtilities.invokeLater(new Runnable() {
 

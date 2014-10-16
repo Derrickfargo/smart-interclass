@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.incito.base.exception.AppException;
 import com.incito.interclass.business.ClassService;
 import com.incito.interclass.business.DeviceService;
 import com.incito.interclass.business.SchoolService;

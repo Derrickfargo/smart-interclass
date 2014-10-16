@@ -319,10 +319,8 @@ public class Login extends MouseAdapter {
 						frame.setVisible(false);
 					}
 					Application.getInstance().setRoom(resultData.getRoom());
-					Application.getInstance().setTeacher(
-							resultData.getTeacher());
-					Login2 login2 = new Login2(resultData.getClasses(),
-							resultData.getCourses());
+					Application.getInstance().setTeacher(resultData.getTeacher());
+					Login2 login2 = new Login2(resultData.getCourses());
 					login2.getFrame().setVisible(true);
 					logger.info("登陆返回结果：" + content);
 				}

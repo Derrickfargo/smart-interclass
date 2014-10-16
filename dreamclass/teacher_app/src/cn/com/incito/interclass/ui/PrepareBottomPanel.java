@@ -58,7 +58,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		
 		ImageIcon iconClass = new ImageIcon("images/main/btn_gray.png");
 		lblClass = new JLabel("", JLabel.CENTER);
-		lblClass.setText(app.getClasses().getName());
+		lblClass.setText(app.getClasses().getClassName());
 		lblClass.setForeground(UIHelper.getDefaultFontColor());
 		add(lblClass);
 		lblClass.setVisible(false);

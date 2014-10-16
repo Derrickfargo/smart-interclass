@@ -30,4 +30,8 @@ public class ClassService {
 	public void deleteClass(int classId) {
 		classMapper.delete(classId);
 	}
+
+	public Classes getClassByNumber(int teacherId, int year, int classNumber) {
+		return classMapper.getClassByNumber(teacherId, year, classNumber);
+	}
 }

@@ -29,4 +29,7 @@ public interface ClassMapper {
 	 * 删除班级
 	 */
 	void delete(int id);
+
+	Classes getClassByNumber(@Param("teacherId") int teacherId,
+			@Param("year") int year, @Param("number") int classNumber);
 }
