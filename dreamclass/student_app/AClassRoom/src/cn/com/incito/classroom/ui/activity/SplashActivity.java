@@ -124,7 +124,7 @@ public class SplashActivity extends BaseActivity {
 						Log.i("SplashActivity", "WiFi已连接，检查Socket是否连接 ");
 						// TODO 升级
 						String ip = MyApplication.getInstance().getSharedPreferences().getString("server_ip", "");
-						String port = MyApplication.getInstance().getSharedPreferences().getString("server_ip", "");
+						String port = MyApplication.getInstance().getSharedPreferences().getString("server_port", "");
 						if (!StringUtils.isEmpty(ip) && !StringUtils.isEmpty(port)) {
 							try {
 								JSONObject updateResult = JSONObject.parseObject(ApiClient.updateApk(code));
