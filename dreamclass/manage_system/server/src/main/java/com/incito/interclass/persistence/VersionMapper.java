@@ -11,7 +11,7 @@ public interface VersionMapper {
 
 	Version getVersionById(int id);
 
-	Version getVersion(@Param("type")int type, @Param("code")int code);
+	Version getLatestVersion(int type);
 	
 	Integer save(Version version);
 

@@ -1,4 +1,4 @@
-package com.incito.interclass.entity;
+package cn.com.incito.interclass.po;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -75,7 +75,7 @@ public class Version implements Serializable {
 		this.forcibly = forcibly;
 	}
 
-	public float getFileSize() {
+	public long getFileSize() {
 		return fileSize;
 	}
 

@@ -22,8 +22,8 @@ public class VersionService {
 		return versionMapper.getVersionById(id);
 	}
 	
-	public Version getVersion(int type, int code){
-		return versionMapper.getVersion(type, code);
+	public Version getLatestVersion(int type){
+		return versionMapper.getLatestVersion(type);
 	}
 	
 	public boolean saveVersion(Version version) {

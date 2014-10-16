@@ -35,7 +35,7 @@ public class LogCtrl extends BaseCtrl {
 	@RequestMapping("/list")
 	public ModelAndView index(@RequestParam(value = "type", defaultValue = "1")Integer type,String key, 
 			@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
-		ModelAndView res = new ModelAndView("system/logList");
+		ModelAndView res = new ModelAndView("log/logList");
 		PageHelper.startPage(pageNum, PAGE_SIZE);
 		List<Log> logs = logService.getLogListByCondition(type,key);
 		PageInfo<Log> page = new PageInfo<Log>(logs);
@@ -74,7 +74,7 @@ public class LogCtrl extends BaseCtrl {
 	
 	@RequestMapping(value = "/view")
 	public ModelAndView view(Integer logId) {
-		ModelAndView res = new ModelAndView("system/logView");
+		ModelAndView res = new ModelAndView("log/logView");
 		Log log = logService.getLogById(logId);
 		res.addObject("log", log);
 		return res;

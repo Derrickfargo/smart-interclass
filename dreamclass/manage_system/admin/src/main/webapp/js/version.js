@@ -42,7 +42,7 @@ function searchVersion(pageNum) {
 
 // 页面跳转，查看教师详情或者修改教师信息
 function modifyVersion(versionId) {
-	$("#versionId").val(versionId);
+	$("#id").val(versionId);
 	$("#pageType").val(pageType);
 	$("#searchForm").attr("action", _path + "/version/" + opType);
 	$("#searchForm").submit();
@@ -51,7 +51,7 @@ function modifyVersion(versionId) {
 
 function deleteVersion(versionId){
 	if(confirm("确认要删除本条记录吗?")){
-		$("#versionId").val(versionId);
+		$("#id").val(versionId);
 		$("#searchForm").attr("action", _path + "/version/delete");
 		$("#searchForm").submit();
 	}

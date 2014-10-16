@@ -73,4 +73,14 @@ public class URLs {
 	 * 上传日志文件
 	 */
 	public static String URL_UPLOAD_LOG = URL_API_HOST + "api/log/save";
+	
+	/**
+	 * 检查是否存在更新
+	 */
+	public static String URL_CHECK_UPDATE = URL_API_HOST + "api/version/check";
+	
+	/**
+	 * 下载更新
+	 */
+	public static String URL_DOWNLOAD_UPDATE = URL_API_HOST + "api/version/download?";
 }
