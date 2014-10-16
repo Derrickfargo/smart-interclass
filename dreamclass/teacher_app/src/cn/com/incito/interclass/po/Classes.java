@@ -1,6 +1,7 @@
 package cn.com.incito.interclass.po;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Classes implements Serializable {
@@ -11,7 +12,7 @@ public class Classes implements Serializable {
 	private static final long serialVersionUID = 4858685768837161501L;
 
 	private int id;
-	private String name;
+	private int number;
 	private int schoolId;
 	private int year;
 	private int teacherId;
@@ -25,12 +26,12 @@ public class Classes implements Serializable {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public int getNumber() {
+		return number;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setNumber(int number) {
+		this.number = number;
 	}
 
 	public int getSchoolId() {
@@ -65,4 +66,15 @@ public class Classes implements Serializable {
 		this.ctime = ctime;
 	}
 
+	public String getClassName() {
+		Calendar calendar = Calendar.getInstance();
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH) + 1;
+		year = year - this.year;
+		if (month >= 9) {
+			year += 1;
+		}
+		String className = "%d年级%d班";
+		return String.format(className, year, number);
+	}
 }
