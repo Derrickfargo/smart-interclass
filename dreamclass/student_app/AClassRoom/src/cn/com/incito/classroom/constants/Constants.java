@@ -13,9 +13,9 @@ public class Constants {
 	public static final boolean LOG_OPEN = true;
 	public static final boolean OPEN_LOCK_SCREEN = false;// 是否打开锁屏功能
 	public static final boolean UNCATCHED_EXCEPION_HANLED = false;
-	public static final int PORT = 9001;
-	public static String IP = "192.168.30.46";
-	public final static String UPDATE_HOST = "192.168.30.46:8080/app";
+	public static final int PORT = 8080;
+	public static String IP = "192.168.30.133";
+	public final static String UPDATE_HOST = "192.168.30.133:8080/app";
 	public final static String HTTP = "http://";
 	private final static String URL_SPLITTER = "/";
 	public final static String HOST = IP + ":" + PORT + "/app";
@@ -29,6 +29,10 @@ public class Constants {
 	 * 更新apk
 	 */
 	public static String URL_UPDATE_APK = URL_API_HOST + "api/version/check";
+	/**
+	 * apk下载地址
+	 */
+	public static String URL_DOWNLOAD_APK = URL_API_HOST + "api/version/download?id";
 	
 	
 	public static String getIP() {
