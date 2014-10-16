@@ -28,7 +28,6 @@ import cn.com.incito.classroom.exception.AppException;
 import cn.com.incito.classroom.ui.widget.NetWorkDialog;
 import cn.com.incito.classroom.utils.ApiClient;
 import cn.com.incito.classroom.utils.UpdateManager;
-import cn.com.incito.classroom.vo.LoginResVo;
 import cn.com.incito.classroom.vo.Version;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
@@ -56,6 +55,7 @@ public class SplashActivity extends BaseActivity {
 	private int code;
 
 	private String url;
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -110,6 +110,7 @@ public class SplashActivity extends BaseActivity {
 		tv_loading_msg.setText(R.string.loading_msg);
 		Log.i("SplashActivity", "startMain");
 		new Thread() {
+
 			public void run() {
 				while (true) {
 					Log.i("SplashActivity", "检查WiFi是否连接 ");
@@ -139,25 +140,25 @@ public class SplashActivity extends BaseActivity {
 								e.printStackTrace();
 							}
 						}
-						if (!CoreSocket.getInstance().isConnected()) {
-							Log.i("SplashActivity", "Socket无连接，开始Socket重连，startMain退出 ");
-							CoreSocket.getInstance().disconnect();
-							showSetting();
-							restartConnector();
+							if (!CoreSocket.getInstance().isConnected()) {
+								Log.i("SplashActivity", "Socket无连接，开始Socket重连，startMain退出 ");
+								CoreSocket.getInstance().disconnect();
+								showSetting();
+								restartConnector();
+								break;
+							} else {
+								Log.i("SplashActivity", "Socket已连接，开始登陆，startMain退出 ");
+								startMainAct();
+							}
 							break;
-						} else {
-							Log.i("SplashActivity", "Socket已连接，开始登陆，startMain退出 ");
-							startMainAct();
 						}
-						break;
+						Log.i("SplashActivity", "WiFi未连接 ");
+						android.os.Message message1 = new android.os.Message();
+						message1.what = 1;
+						mHandler.sendMessage(message1);
+						SplashActivity.this.sleep(3000);
 					}
-					Log.i("SplashActivity", "WiFi未连接 ");
-					android.os.Message message = new android.os.Message();
-					message.what = 1;
-					mHandler.sendMessage(message);
-					SplashActivity.this.sleep(3000);
 				}
-			}
 		}.start();
 
 	}
