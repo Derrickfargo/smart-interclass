@@ -18,6 +18,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ProgressBar;
 import cn.com.incito.classroom.R;
 
