@@ -23,6 +23,7 @@ import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.exception.AppException;
 import cn.com.incito.classroom.ui.widget.NetWorkDialog;
 import cn.com.incito.classroom.utils.ApiClient;
@@ -49,6 +50,7 @@ public class SplashActivity extends BaseActivity {
 	private ImageButton ib_setting_ip;
 	private IpSettingDialogFragment dialog;
 	private int code;
+	private String url;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -104,6 +106,7 @@ public class SplashActivity extends BaseActivity {
 		tv_loading_msg.setText(R.string.loading_msg);
 		Log.i("SplashActivity", "startMain");
 		new Thread() {
+			
 
 			public void run() {
 				while (true) {
@@ -117,18 +120,15 @@ public class SplashActivity extends BaseActivity {
 						WifiInfo info = wifi.getConnectionInfo();
 						app.setDeviceId(info.getMacAddress().replace(":", "-"));
 						Log.i("SplashActivity", "WiFi已连接，检查Socket是否连接 ");
-//						//TODO 升级
+						//TODO 升级
 						try {
 							 JSONObject updateResult = JSONObject.parseObject(ApiClient.updateApk(code));
 							 WLog.i(SplashActivity.class, "版本更新返回信息："+updateResult);
 							if(updateResult.getInteger("code")==0){
 								Version version = JSON.parseObject(updateResult.getJSONObject("data").toJSONString(),
 										Version.class);
-								String url ="http://localhost:8080/api/version/download?id=" + version.getId() ;
-								UpdateManager mUpdateManager = new UpdateManager(SplashActivity.this,url);  
-							    mUpdateManager.checkUpdateInfo();
-							}else{
-								
+								 url =Constants.URL_DOWNLOAD_APK+version.getId();
+								mHandler.sendEmptyMessage(1000);
 							}
 						} catch (AppException e) {
 							ApiClient.uploadErrorLog(e.getMessage());
@@ -174,8 +174,14 @@ public class SplashActivity extends BaseActivity {
 				if(netWorkDialog != null && netWorkDialog.isShowing()){
 					netWorkDialog.dismiss();
 				}
+				break;
 			case 0:
 				ib_setting_ip.setVisibility(View.VISIBLE);
+				break;
+			case 1000:
+				UpdateManager mUpdateManager = new UpdateManager(SplashActivity.this,url);  
+			    mUpdateManager.checkUpdateInfo();
+			    break;
 			default:
 				break;
 			}
@@ -187,7 +193,6 @@ public class SplashActivity extends BaseActivity {
 		android.os.Message message = new android.os.Message();
 		message.what = 0;
 		mHandler.sendMessage(message);
-//		mHandler.sendEmptyMessage(0);
 	}
 
 	@Override
