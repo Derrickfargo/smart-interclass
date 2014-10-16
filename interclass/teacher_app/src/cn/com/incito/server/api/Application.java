@@ -322,8 +322,6 @@ public class Application {
         this.initImeiDevice(devices);
         this.initTableMap(tables);
         this.initTableNumberMap(tables);
-        this.initTableGroup(groups);
-        this.initDeviceTable();
         this.initTableDevice();
     }
 
@@ -371,29 +369,6 @@ public class Application {
         }
     }
 
-    /**
-     * 初始化课桌分组映射
-     *
-     * @param groups
-     */
-    private void initTableGroup(List<Group> groups) {
-        groupList = groups;
-        tableGroup.clear();
-        for (Group group : groups) {
-            tableGroup.put(group.getTableId(), group);
-        }
-    }
-
-    /**
-     * 初始化设备课桌映射
-     */
-    private void initDeviceTable() {
-        deviceTable.clear();
-        for (Device device : deviceList) {
-            Table table = tableMap.get(device.getTableId());
-            deviceTable.put(device.getId(), table);
-        }
-    }
 
     /**
      * 初始化课桌设备映射
@@ -425,8 +400,6 @@ public class Application {
     }
 
     public void addGroup(Group group) {
-    	tableGroup.remove(group.getTableId());
-        tableGroup.put(group.getTableId(), group);
         groupMap.put(group.getId(), group);
 
         Iterator<Group> it = groupList.iterator();

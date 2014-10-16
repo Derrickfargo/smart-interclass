@@ -44,7 +44,7 @@ public class VoteGroupInfoHandler extends MessageHandler {
     			}
             } else {
                 //show edit group activity
-                UIHelper.getInstance().showEditGroupActivity(groupID);
+//                UIHelper.getInstance().showEditGroupActivity(groupID);
                 WLog.i(VoteGroupInfoHandler.class, "不同意分组");
             }
         }

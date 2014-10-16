@@ -13,10 +13,10 @@ public class GroupEditHandler extends MessageHandler {
 
 	@Override
 	protected void handleMessage() {
-		int groupID = data.getIntValue("id");
-		WLog.i(GroupEditHandler.class, "收到修改分组...组ID：" + groupID);
-		UIHelper.getInstance().showEditGroupActivity(groupID);
-		MyApplication.getInstance().lockScreen(false);
+//		int groupID = data.getIntValue("id");
+//		WLog.i(GroupEditHandler.class, "收到修改分组...组ID：" + groupID);
+//		UIHelper.getInstance().showEditGroupActivity(groupID);
+//		MyApplication.getInstance().lockScreen(false);
 	}
 
 }

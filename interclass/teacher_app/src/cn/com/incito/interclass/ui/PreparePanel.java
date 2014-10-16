@@ -122,7 +122,6 @@ public class PreparePanel extends JPanel{
 			if (group == null) {
 				group = new Group();
 			}
-			group.setTableId(table.getId());
 			group.setTableNumber(table.getNumber());
 			group.setDevices(table.getDevices());
 			groupList.add(group);

@@ -77,14 +77,12 @@ public class TeacherApiCtrl extends BaseCtrl {
 	/**
 	 * 获得课堂分组
 	 * @param teacherId
-	 * @param courseId
-	 * @param classId
+	 * @param classId 班级
 	 * @param className
 	 * @return
 	 */
 	@RequestMapping(value = "/group", produces = { "application/json;charset=UTF-8" })
-	public String group(int schoolId, int roomId,int teacherId, int courseId, int classId,
-			String className) {
+	public String group(int schoolId, int roomId,int teacherId, int classId,String className) {
 		if (classId == 0) {//不存在当前班级，添加
 			Classes classes = new Classes();
 			classes.setName(className);
@@ -99,17 +97,11 @@ public class TeacherApiCtrl extends BaseCtrl {
 		}
 		//获得当前课堂的分组列表
 		List<Group> groups = groupService.getGroupList(teacherId,classId);
-//		//获取当前教室的课桌列表
-//		List<Table> tables = tableService.getTableListByRoomId(roomId);
-//		//获得当前教室的设备列表
-//		List<Device> devices = deviceService.getDeviceListByRoomId(roomId);
 		//选择的班级
 		Classes classes = classService.getClassById(classId);
 		
 		TeacherGroupResultData data = new TeacherGroupResultData();
 		data.setGroups(groups);
-//		data.setTables(tables);
-//		data.setDevices(devices);
 		data.setClasses(classes);
 		ApiResult result = new ApiResult();
 		result.setCode(ApiResult.SUCCESS);

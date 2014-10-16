@@ -1,14 +1,21 @@
 package cn.com.incito.common.utils;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.widget.Toast;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.ui.activity.BindDeskActivity;
 import cn.com.incito.classroom.ui.activity.DrawBoxActivity;
 import cn.com.incito.classroom.ui.activity.WaitingActivity;
+import cn.com.incito.classroom.vo.GroupVo;
+import cn.com.incito.interclass.po.Group;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -122,14 +129,26 @@ public class UIHelper {
 			intent.setAction(Constants.ACTION_SHOW_DRAWBOX);
 		app.startActivity(intent);
 	}
-
-	public void showEditGroupActivity(int groupID) {
+	/**
+	 * 显示小组列表
+	 */
+	public void showGroupListActivity(List<GroupVo> groupList){
 		Intent intent = new Intent();
+		intent.putExtra("group", (Serializable)groupList);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		intent.putExtra("id", groupID);
-		intent.setAction(Constants.ACTION_SHOW_EDIT_GROUP);
+		intent.setAction(Constants.ACTION_SHOW_GROUP_LIST);
 		app.startActivity(intent);
 	}
+	
+	
+//	
+//	public void showEditGroupActivity(int groupID) {
+//		Intent intent = new Intent();
+//		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//		intent.putExtra("id", groupID);
+//		intent.setAction(Constants.ACTION_SHOW_EDIT_GROUP);
+//		app.startActivity(intent);
+//	}
 
 	public void showConfirmGroupActivity(JSONObject data) {
 		/*

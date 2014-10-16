@@ -5,9 +5,11 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.swing.ImageIcon;
@@ -19,6 +21,7 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 
 import cn.com.incito.interclass.po.Group;
+import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.Message;
@@ -29,21 +32,23 @@ import cn.com.incito.server.utils.UIHelper;
 
 import com.alibaba.fastjson.JSONObject;
 
-public class PrepareBottomPanel extends JPanel implements MouseListener{
+public class PrepareBottomPanel extends JPanel implements MouseListener {
 	private static final long serialVersionUID = -9135075807085951600L;
-	private JLabel lblExpected,lblClass,lblClassBackground,lblCourse,lblCourseBackground;
+	private JLabel lblExpected, lblClass, lblClassBackground, lblCourse,
+			lblCourseBackground;
 	private JButton btnBegin, btnGroup;
 	private Application app = Application.getInstance();
-	Logger logger =  Logger.getLogger(PrepareBottomPanel.class.getName());
+	Logger logger = Logger.getLogger(PrepareBottomPanel.class.getName());
+
 	public JLabel getLblExpected() {
 		return lblExpected;
 	}
 
-	public PrepareBottomPanel(){
+	public PrepareBottomPanel() {
 		setSize(878, 48);
 		setLayout(null);
 		setOpaque(false);
-		
+
 		int total = 0;
 		for (Group group : app.getGroupList()) {
 			total += group.getStudents().size();
@@ -55,32 +60,36 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		lblExpected.setBounds(10, 15, 150, 35);
 		add(lblExpected);
 		lblExpected.setVisible(false);
-		
+
 		ImageIcon iconClass = new ImageIcon("images/main/btn_gray.png");
 		lblClass = new JLabel("", JLabel.CENTER);
 		lblClass.setText(app.getClasses().getName());
 		lblClass.setForeground(UIHelper.getDefaultFontColor());
 		add(lblClass);
 		lblClass.setVisible(false);
-		lblClass.setBounds(180, 0, iconClass.getIconWidth(), iconClass.getIconHeight() - 4);
+		lblClass.setBounds(180, 0, iconClass.getIconWidth(),
+				iconClass.getIconHeight() - 4);
 		lblClassBackground = new JLabel();
 		lblClassBackground.setIcon(iconClass);
 		add(lblClassBackground);
 		lblClassBackground.setVisible(false);
-		lblClassBackground.setBounds(180, -4, iconClass.getIconWidth(), iconClass.getIconHeight());
-		
+		lblClassBackground.setBounds(180, -4, iconClass.getIconWidth(),
+				iconClass.getIconHeight());
+
 		ImageIcon iconCourse = new ImageIcon("images/main/btn_gray.png");
 		lblCourse = new JLabel("", JLabel.CENTER);
 		lblCourse.setText(app.getCourse().getName());
 		lblCourse.setForeground(UIHelper.getDefaultFontColor());
 		add(lblCourse);
 		lblCourse.setVisible(false);
-		lblCourse.setBounds(340, 0, iconCourse.getIconWidth(), iconCourse.getIconHeight() -4 );
+		lblCourse.setBounds(340, 0, iconCourse.getIconWidth(),
+				iconCourse.getIconHeight() - 4);
 		lblCourseBackground = new JLabel();
 		lblCourseBackground.setIcon(iconCourse);
 		add(lblCourseBackground);
 		lblCourseBackground.setVisible(false);
-		lblCourseBackground.setBounds(340, -4, iconCourse.getIconWidth(), iconCourse.getIconHeight());
+		lblCourseBackground.setBounds(340, -4, iconCourse.getIconWidth(),
+				iconCourse.getIconHeight());
 
 		btnGroup = new JButton();// 创建按钮对象
 		btnGroup.setFocusPainted(false);
@@ -89,10 +98,11 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		ImageIcon iconGroup = new ImageIcon("images/main/btn_group.png");
 		btnGroup.setIcon(iconGroup);// 设置图片
 		add(btnGroup);// 添加按钮
-		btnGroup.setBounds(500, -4, iconGroup.getIconWidth(), iconGroup.getIconHeight());
+		btnGroup.setBounds(500, -4, iconGroup.getIconWidth(),
+				iconGroup.getIconHeight());
 		btnGroup.addMouseListener(this);
 		btnGroup.setVisible(false);
-		
+
 		btnBegin = new JButton();// 创建按钮对象
 		btnBegin.setFocusPainted(false);
 		btnBegin.setBorderPainted(false);// 设置边框不可见
@@ -100,12 +110,13 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		ImageIcon btnImage = new ImageIcon("images/main/btn_begin.png");
 		btnBegin.setIcon(btnImage);// 设置图片
 		add(btnBegin);// 添加按钮
-		btnBegin.setBounds(660, -4, btnImage.getIconWidth(), btnImage.getIconHeight());
+		btnBegin.setBounds(660, -4, btnImage.getIconWidth(),
+				btnImage.getIconHeight());
 		btnBegin.addMouseListener(this);
 		btnBegin.setVisible(false);
 	}
-	
-	public void refresh(){
+
+	public void refresh() {
 		List<Table> tables = app.getTableList();
 		if (tables.size() != 0) {
 			lblExpected.setVisible(true);
@@ -117,22 +128,23 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 			btnBegin.setVisible(true);
 		}
 	}
+
 	private void doBegin() {
 		if (app.isGrouping()) {
 			int result = JOptionPane.showConfirmDialog(getParent().getParent(),
 					"学生正在分组，是否立即结束分组开始上课？", "提示", JOptionPane.YES_NO_OPTION);
-			if(result == JOptionPane.YES_OPTION){
+			if (result == JOptionPane.YES_OPTION) {
 				app.setGrouping(false);
-			}else{
+			} else {
 				return;
 			}
 		}
-		if(app.getOnlineStudent().size() == 0){
+		if (app.getOnlineStudent().size() == 0) {
 			JOptionPane.showMessageDialog(getParent().getParent(),
 					"当前还没有学生登陆，请先登录后再上课!");
 			return;
 		}
-		
+
 		List<Table> tableList = app.getTableList();
 		if (tableList == null || tableList.size() == 0) {
 			JOptionPane.showMessageDialog(getParent().getParent(),
@@ -148,25 +160,32 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		}
 
 		MainFrame.getInstance().setVisible(false);
-		setOnClass(true); 
+		setOnClass(true);
 	}
 
+	/**
+	 * 发送分组命令
+	 */
 	private void doEditGroup() {
-		if(app.getOnlineStudent().size() == 0){
-			JOptionPane.showMessageDialog(getParent().getParent(), "当前还没有学生登陆，请先登陆后再分组!");
+		if (app.getOnlineStudent().size() == 0) {
+			JOptionPane.showMessageDialog(getParent().getParent(),
+					"当前还没有学生登陆，请先登陆后再分组!");
 			return;
 		}
 		List<Table> tableList = app.getTableList();
 		if (tableList == null || tableList.size() == 0) {
-			JOptionPane.showMessageDialog(getParent().getParent(), "设备还未绑定课桌，请先绑定课桌!");
+			JOptionPane.showMessageDialog(getParent().getParent(),
+					"设备还未绑定课桌，请先绑定课桌!");
 			return;
 		}
 		if (app.isGrouping()) {
-			JOptionPane.showMessageDialog(getParent().getParent(), "学生正在分组，请等待分组完成!");
+			JOptionPane.showMessageDialog(getParent().getParent(),
+					"学生正在分组，请等待分组完成!");
 			return;
 		}
-		if (Application.hasQuiz) {//TODO 格式不一致，统一修改重构
-			JOptionPane.showMessageDialog(getParent().getParent(), "学生正在做作业，不能分组!");
+		if (Application.hasQuiz) {// TODO 格式不一致，统一修改重构
+			JOptionPane.showMessageDialog(getParent().getParent(),
+					"学生正在做作业，不能分组!");
 			return;
 		}
 		// 编辑小组信息
@@ -175,26 +194,35 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		List<Group> groupList = app.getGroupList();
 		for (Group group : groupList) {
 			JSONObject json = new JSONObject();
-			json.put("id", group.getId());
-			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_EDIT);
-			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json.toString()));
-			final List<SocketChannel> channels = app.getClientChannelByGroup(group.getId());
-			sendMessageToGroup(messagePacking, channels);
+			json.put("group", groupList);
+			MessagePacking messagePacking = new MessagePacking(
+					Message.MESSAGE_GROUP_LIST);
+			messagePacking.putBodyData(DataType.INT,
+					BufferUtils.writeUTFString(json.toString()));
+			Map<String, SocketChannel> channels = app.getClientChannel();
+			List<SocketChannel> channelList = new ArrayList<SocketChannel>();
+			Set set = channels.entrySet();
+			for (Iterator iter = set.iterator(); iter.hasNext();) {
+				Map.Entry entry = (Map.Entry) iter.next();
+				SocketChannel value = (SocketChannel) entry.getValue();
+				channelList.add(value);
+			}
+			sendMessageToGroup(messagePacking, channelList);
 		}
 	}
 
 	public void setOnClass(boolean isOnClass) {
 		UIHelper.sendLockScreenMessage(true);
-		if (isOnClass) { 
+		if (isOnClass) {
 			btnBegin.setIcon(new ImageIcon("images/main/btn_end.png"));// 设置图片
 			Application.isOnClass = true;
-			Application.getInstance().setLessionid(
-					UUID.randomUUID().toString());
+			Application.getInstance()
+					.setLessionid(UUID.randomUUID().toString());
 		} else {
 			btnBegin.setIcon(new ImageIcon("images/main/btn_begin.png"));// 设置图片
 			Application.isOnClass = false;
 		}
-		
+
 	}
 
 	private void sendMessageToGroup(final MessagePacking messagePacking,
@@ -231,8 +259,8 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() == btnBegin) {
 			if (Application.isOnClass) {
-				int result = JOptionPane.showConfirmDialog(MainFrame.getInstance()
-						.getFrame(), "确定要下课吗？", "提示",
+				int result = JOptionPane.showConfirmDialog(MainFrame
+						.getInstance().getFrame(), "确定要下课吗？", "提示",
 						JOptionPane.YES_NO_OPTION);
 				if (result == JOptionPane.YES_OPTION) {
 					UIHelper.sendClassOverMessage();
@@ -243,19 +271,19 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 				doBegin();
 			}
 		}
-		if(e.getSource() == btnGroup){
+		if (e.getSource() == btnGroup) {
 			doEditGroup();
 		}
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		
+
 	}
 
 	@Override
@@ -264,7 +292,8 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 			if (Application.isOnClass) {
 				btnBegin.setIcon(new ImageIcon("images/main/btn_end_hover.png"));
 			} else {
-				btnBegin.setIcon(new ImageIcon("images/main/btn_begin_hover.png"));
+				btnBegin.setIcon(new ImageIcon(
+						"images/main/btn_begin_hover.png"));
 			}
 		}
 		if (e.getSource() == btnGroup) {
@@ -285,5 +314,5 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 			btnGroup.setIcon(new ImageIcon("images/main/btn_group.png"));
 		}
 	}
-	
+
 }

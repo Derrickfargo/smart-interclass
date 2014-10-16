@@ -45,6 +45,7 @@ public class Constants {
 	public static final String WISDOMCITY_IAMGE_CACHE_SDCARD_PATH = "demo/image/cache";
 
 	public static final String ACTION_SHOW_EDIT_GROUP = "cn.com.classroom.SHOW_EDIT_GROUP";
+	public static final String ACTION_SHOW_GROUP_LIST = "cn.com.classroom.SHOW_GROUP_LIST";
 	public static final String ACTION_SHOW_DRAWBOX = "cn.com.classroom.SHOW_DRAWBOX";
 	public static final String ACTION_SHOW_CONFIRM_GROUP = "cn.com.classroom.SHOW_CONFIRM_GROUP";
 

@@ -115,13 +115,11 @@ public class CoreService {
 	 */
 	public void refreshGroupList() {
 		int schoolId = app.getTeacher().getSchoolId();
-		int roomId = app.getRoom().getId();
 		int teacherId = app.getTeacher().getId();
-		int courseId = app.getCourse().getId();
 		int classId = app.getClasses().getId();
 		try {
-			final String result = ApiClient.getGroupList(schoolId, roomId,
-					teacherId, courseId, classId, "");
+			final String result = ApiClient.getGroupList(schoolId, 
+					teacherId, classId, "");
 			if (result != null && !result.equals("")) {
 				JSONObject jsonObject = JSON.parseObject(result);
 				if (jsonObject.getIntValue("code") != 0) {

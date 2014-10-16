@@ -12,8 +12,23 @@ public class Group implements Serializable, Comparable<Group> {
 	private static final long serialVersionUID = -6517861100227656945L;
 	private String medals;
 	private int score;
-	
-	
+	private int id;
+	private String name;
+	private String logo = "rainbow";
+	private String slogan;
+	private int teacherId;
+	private int classId;
+	private Date ctime;
+
+	private int tableNumber;
+	private List<Device> devices;
+	private List<Student> students;
+	private List<Quiz> quizs;
+	private String teacherName;
+
+	public int getId() {
+		return id;
+	}
 	public int getScore() {
 		return score;
 	}
@@ -32,27 +47,6 @@ public class Group implements Serializable, Comparable<Group> {
 	
 	public void setMedals(String medals) {
 		this.medals = medals;
-	}
-
-	private int id;
-	private String name;
-	private String logo = "rainbow";
-	private String slogan;
-	private int courseId;
-	private int teacherId;
-	private int classId;
-	private int tableId;
-	private Date ctime;
-
-	private int tableNumber;
-    private Table table;
-	private List<Device> devices;
-	private List<Student> students;
-	private List<Quiz> quizs;
-	private String teacherName;
-
-	public int getId() {
-		return id;
 	}
 
 	public void setId(int id) {
@@ -83,13 +77,6 @@ public class Group implements Serializable, Comparable<Group> {
 		this.slogan = slogan;
 	}
 
-	public int getCourseId() {
-		return courseId;
-	}
-
-	public void setCourseId(int courseId) {
-		this.courseId = courseId;
-	}
 
 	public int getTeacherId() {
 		return teacherId;
@@ -107,13 +94,6 @@ public class Group implements Serializable, Comparable<Group> {
 		this.classId = classId;
 	}
 
-	public int getTableId() {
-		return tableId;
-	}
-
-	public void setTableId(int tableId) {
-		this.tableId = tableId;
-	}
 
 	public Date getCtime() {
 		return ctime;
