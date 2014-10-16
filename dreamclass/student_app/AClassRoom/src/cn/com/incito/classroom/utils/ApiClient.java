@@ -179,7 +179,7 @@ public class ApiClient {
 				try {
 					parts[i++] = new FilePart(file, files.get(file));
 				} catch (FileNotFoundException e) {
-					ApiClient.uploadErrorLog(e.getMessage());
+//					ApiClient.uploadErrorLog(e.getMessage());
 					e.printStackTrace();
 				}
 				// System.out.println("post_key_file==> "+file);
