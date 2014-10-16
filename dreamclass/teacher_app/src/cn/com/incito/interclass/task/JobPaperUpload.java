@@ -178,7 +178,7 @@ public class JobPaperUpload implements Job {
 					params.put("imei", file.getName());
 					params.put("quizid", str.substring(0, str.lastIndexOf(".")));
 					params.put("author_name", "");
-					params.put("classes", Application.getInstance().getClasses().getName());
+					params.put("classes", Application.getInstance().getClasses().getClassName());
 					params.put("course_id", Application.getInstance().getCourse().getId());
 					params.put("course_name", Application.getInstance().getCourse().getName());
 					params.put("lessionid", Application.getInstance().getLessionid());

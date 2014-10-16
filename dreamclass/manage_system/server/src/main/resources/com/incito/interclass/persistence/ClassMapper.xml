@@ -5,7 +5,7 @@
 
 	<select id="getClassList" resultType="com.incito.interclass.entity.Classes" parameterType="java.util.Map">
 		SELECT	
-			id,name,year,school_id AS schoolId,teacher_id AS teacherId,ctime
+			id,number,year,school_id AS schoolId,teacher_id AS teacherId,ctime
 		FROM 
 			tb_class
 		WHERE
@@ -17,7 +17,7 @@
 	
 	<select id="getClassById" resultType="com.incito.interclass.entity.Classes" parameterType="java.lang.Integer">
 		SELECT	
-			id,name,year,school_id AS schoolId,teacher_id AS teacherId,ctime
+			id,number,year,school_id AS schoolId,teacher_id AS teacherId,ctime
 		FROM 
 			tb_class
 		WHERE
@@ -26,11 +26,22 @@
 			id
 	</select>
 	
+	<select id="getClassByNumber" resultType="com.incito.interclass.entity.Classes" parameterType="java.util.Map">
+		SELECT	
+			id,number,year,school_id AS schoolId,teacher_id AS teacherId,ctime
+		FROM 
+			tb_class
+		WHERE
+			teacher_id = #{teacherId} AND year = #{year} AND number = #{number}
+		ORDER BY
+			id
+	</select>
+	
 	<insert id="save" parameterType="com.incito.interclass.entity.Classes" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO 
-			tb_class(name,year,school_id,teacher_id,ctime)
+			tb_class(number,year,school_id,teacher_id,ctime)
 		VALUES
-			(#{name},#{year},#{schoolId},#{teacherId},now())
+			(#{number},#{year},#{schoolId},#{teacherId},now())
 	</insert>
 	
 	<delete id="delete" parameterType="java.lang.Integer">

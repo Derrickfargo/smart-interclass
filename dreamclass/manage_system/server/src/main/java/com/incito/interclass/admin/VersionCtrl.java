@@ -56,7 +56,7 @@ public class VersionCtrl extends BaseCtrl {
 	 * @return
 	 */
 	@RequestMapping(value = "/save")
-	public ModelAndView save(int type, String name, int code, String description, MultipartFile file) {
+	public ModelAndView save(Integer type, String name, Integer code, String description, MultipartFile file) {
 		Version version = new Version();
 		version.setType(type);
 		version.setCode(code);

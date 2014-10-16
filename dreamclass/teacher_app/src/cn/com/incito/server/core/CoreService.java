@@ -118,10 +118,11 @@ public class CoreService {
 		int roomId = app.getRoom().getId();
 		int teacherId = app.getTeacher().getId();
 		int courseId = app.getCourse().getId();
-		int classId = app.getClasses().getId();
+		int year = app.getClasses().getYear();//学年
+		int number = app.getClasses().getNumber();//班级
 		try {
 			final String result = ApiClient.getGroupList(schoolId, roomId,
-					teacherId, courseId, classId, "");
+					teacherId, courseId, year, number);
 			if (result != null && !result.equals("")) {
 				JSONObject jsonObject = JSON.parseObject(result);
 				if (jsonObject.getIntValue("code") != 0) {

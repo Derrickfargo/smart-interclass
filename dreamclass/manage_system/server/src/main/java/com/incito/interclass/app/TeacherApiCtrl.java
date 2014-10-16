@@ -81,15 +81,10 @@ public class TeacherApiCtrl extends BaseCtrl {
 		Room room = roomService.getRoomByMac(mac);
 		//获取当前老师的课程列表
 		List<Course> courses = courseService.getCourseList();
-		//获取当前老师的教室列表
-		Calendar calendar = Calendar.getInstance();
-		int year = calendar.get(Calendar.YEAR);
-		List<Classes> classes = classService.getClassList(teacher.getId(), year);
 		
 		TeacherLoginResultData data = new TeacherLoginResultData();
 		data.setTeacher(teacher);
 		data.setRoom(room);
-		data.setClasses(classes);
 		data.setCourses(courses);
 		ApiResult result = new ApiResult();
 		result.setCode(ApiResult.SUCCESS);
@@ -106,31 +101,25 @@ public class TeacherApiCtrl extends BaseCtrl {
 	 * @return
 	 */
 	@RequestMapping(value = "/group", produces = { "application/json;charset=UTF-8" })
-	public String group(int schoolId, int roomId,int teacherId, int courseId, int classId,
-			String className) {
-		if (classId == 0) {//不存在当前班级，添加
-			Classes classes = new Classes();
-			classes.setName(className);
+	public String group(int schoolId, int roomId,int teacherId, int courseId, 
+			int year, int classNumber) {
+		Classes classes = classService.getClassByNumber(teacherId, year, classNumber);
+		if (classes == null || classes.getId() == 0) {//不存在当前班级，添加
+			classes = new Classes();
+			classes.setYear(year);
+			classes.setNumber(classNumber);
 			classes.setTeacherId(teacherId);
 			classes.setSchoolId(schoolId);
-			Calendar calendar = Calendar.getInstance();
-			classes.setYear(calendar.get(Calendar.YEAR));
 			classService.saveClass(classes);
-			classId = classes.getId();
-			if(classId == 0){
-				return renderJSONString(SAVE_CLASS_ERROR);
-			}
 		}
 		//获得当前课堂的分组列表
-		List<Group> groups = groupService.getGroupList(teacherId, courseId, classId);
+		List<Group> groups = groupService.getGroupList(teacherId, courseId, classes.getId());
 		//获取当前教室的课桌列表
 		List<Table> tables = tableService.getTableListByRoomId(roomId);
 		//获得当前教室的设备列表
 		List<Device> devices = deviceService.getDeviceListByRoomId(roomId);
 		//选择的课程
 		Course course = courseService.getCourseById(courseId);
-		//选择的班级
-		Classes classes = classService.getClassById(classId);
 		
 		TeacherGroupResultData data = new TeacherGroupResultData();
 		data.setGroups(groups);

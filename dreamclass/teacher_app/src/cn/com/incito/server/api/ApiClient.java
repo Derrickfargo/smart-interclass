@@ -315,15 +315,15 @@ public class ApiClient {
 	 * @return
 	 * @throws AppException
 	 */
-	public static String getGroupList(int schoolId, int roomId,int teacherId, int courseId, int classId,
-			String className) throws AppException{
+	public static String getGroupList(int schoolId, int roomId,int teacherId, int courseId, 
+			int year, int classNumber) throws AppException{
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("schoolId", schoolId);
 		params.put("roomId", roomId);
 		params.put("teacherId", teacherId);
 		params.put("courseId", courseId);
-		params.put("classId", classId);
-		params.put("className", className);
+		params.put("year", year);
+		params.put("classNumber", classNumber);
 		try {
 			return _post(URLs.URL_TEACHER_GROUP, params, null);
 		} catch (Exception e) {
