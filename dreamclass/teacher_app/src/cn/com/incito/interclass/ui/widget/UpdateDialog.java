@@ -216,7 +216,8 @@ public class UpdateDialog extends JDialog implements MouseListener {
 				}
 				Runtime runtime = Runtime.getRuntime();
 				try {
-					runtime.exec("update.exe " + file.getAbsolutePath());
+					//空格替换为:是为了防止参数被分割成多份
+					runtime.exec("update.exe " + file.getAbsolutePath().replace(' ', '*'));
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

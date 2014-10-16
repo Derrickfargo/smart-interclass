@@ -1,6 +1,7 @@
 package cn.com.incito.interclass.main;
 
 import java.awt.Font;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Enumeration;
@@ -28,7 +29,7 @@ import com.alibaba.fastjson.JSONObject;
  * 
  */
 public class Main {
-	public static final int VERSION_CODE = 2;
+	public static final int VERSION_CODE = 1;
 	
 	public static void main(String args[]) {
 		// 注册异常处理器
@@ -60,6 +61,13 @@ public class Main {
 				if (content != null && !content.equals("")) {
 					JSONObject jsonObject = JSON.parseObject(content);
 					if (jsonObject.getIntValue("code") == 1) {//没有升级
+						// 初始化应用程序
+						Application.getInstance();
+						return;
+					}
+					File file = new File("update.exe");
+					if(!file.exists()){
+						JOptionPane.showMessageDialog(null, "检测到程序需要更新，但缺少必要的升级程序!");
 						// 初始化应用程序
 						Application.getInstance();
 						return;
