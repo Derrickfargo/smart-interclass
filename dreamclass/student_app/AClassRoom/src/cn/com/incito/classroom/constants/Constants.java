@@ -3,6 +3,7 @@ package cn.com.incito.classroom.constants;
 import java.util.ArrayList;
 
 import android.graphics.Bitmap;
+import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.widget.canvas.Action;
 import cn.com.incito.classroom.widget.canvas.ISketchPadTool;
 
@@ -17,22 +18,20 @@ public class Constants {
 	public static String IP = "192.168.30.133";
 	public final static String UPDATE_HOST = "192.168.30.133:8080/app";
 	public final static String HTTP = "http://";
-	private final static String URL_SPLITTER = "/";
 	public final static String HOST = IP + ":" + PORT + "/app";
-	private final static String URL_API_HOST = HTTP + HOST + URL_SPLITTER;
-	
+	public static String update_url=MyApplication.getInstance().getSharedPreferences().getString("server_ip", "")+":" + MyApplication.getInstance().getSharedPreferences().getString("server_port", "");
 	/**
 	 * 上传日志文件
 	 */
-	public static String URL_UPLOAD_LOG = URL_API_HOST + "api/log/save";
+	public static String URL_UPLOAD_LOG = HTTP+update_url+ "/api/log/save";
 	/**
 	 * 更新apk
 	 */
-	public static String URL_UPDATE_APK = URL_API_HOST + "api/version/check";
+	public static String URL_UPDATE_APK =HTTP+ update_url + "/api/version/check";
 	/**
 	 * apk下载地址
 	 */
-	public static String URL_DOWNLOAD_APK = URL_API_HOST + "api/version/download?id";
+	public static String URL_DOWNLOAD_APK =HTTP+ update_url + "/api/version/download?id=";
 	
 	
 	public static String getIP() {
