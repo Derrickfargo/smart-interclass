@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.incito.interclass.business.VersionService;
@@ -33,11 +34,14 @@ public class VersionCtrl extends BaseCtrl {
 	 */
 	@RequestMapping(value = "/check", produces = { "application/json;charset=UTF-8" })
 	public String checkVersion(int type, int code) {
-		Version version = versionService.getVersion(type, code);
+		Version version = versionService.getLatestVersion(type);
 		if (version == null || version.getId() == 0) {
-			return renderJSONString(SUCCESS);
+			return renderJSONString(1);
 		}
-		return renderJSONString(SUCCESS, version);
+		if (code < version.getCode()) {
+			return renderJSONString(SUCCESS, version);
+		}
+		return renderJSONString(1);
 	}
 	
 	/**
@@ -46,12 +50,12 @@ public class VersionCtrl extends BaseCtrl {
 	 * @param response
 	 * @throws IOException
 	 */
-	@RequestMapping(value = "/download", produces = { "application/octet-stream;charset=UTF-8" })
-	public void download(Integer versionId, final HttpServletResponse response) throws IOException{  
-		Version version = versionService.getVersionById(versionId);
+	@RequestMapping(value = "/download",method={RequestMethod.GET},produces = { "application/octet-stream;charset=UTF-8" })
+	public void download(Integer id, final HttpServletResponse response) throws IOException{  
+		Version version = versionService.getVersionById(id);
 	    File file = new File(version.getUrl());
 	    String fileName = URLEncoder.encode(file.getName(), "UTF-8");
-	    response.reset();  
+	    response.reset();
 	    response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");  
 	    response.addHeader("Content-Length", "" + file.length());  
 	    response.setContentType("application/octet-stream;charset=UTF-8");

@@ -5,7 +5,7 @@
 
 	<select id="getVersionListByCondition" resultType="com.incito.interclass.entity.Version" parameterType="java.util.Map">
 		SELECT	
-			id,code,name,description,type,url,forcibly,ctime
+			id,code,name,description,type,url,forcibly,file_size AS fileSize,ctime
 		FROM 
 			tb_version
 		<if test="type != -1">
@@ -17,7 +17,7 @@
 
 	<select id="getVersionById" resultType="com.incito.interclass.entity.Version" parameterType="java.lang.Integer">
 		SELECT	
-			id,code,name,description,type,url,forcibly,ctime
+			id,code,name,description,type,url,forcibly,file_size AS fileSize,ctime
 		FROM 
 			tb_version
 		WHERE
@@ -26,22 +26,22 @@
 			id
 	</select>
 	
-	<select id="getVersion" resultType="com.incito.interclass.entity.Version" parameterType="java.util.Map">
+	<select id="getLatestVersion" resultType="com.incito.interclass.entity.Version" parameterType="java.lang.Integer">
 		SELECT	
-			id,code,name,description,type,url,forcibly,ctime
+			id,code,name,description,TYPE,url,forcibly,file_size AS fileSize,ctime
 		FROM 
 			tb_version
 		WHERE
-			type = #{type} AND code = #{code}
-		ORDER BY
-			id
+			TYPE = 1
+		ORDER BY code DESC
+		LIMIT 1
 	</select>
 	
 	<insert id="save" parameterType="com.incito.interclass.entity.Version" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO 
-			tb_version(code,name,description,type,url,forcibly,ctime)
+			tb_version(code,name,description,type,url,forcibly,file_size,ctime)
 		VALUES
-			(#{code},#{name},#{description},#{type},#{url},#{forcibly},now())
+			(#{code},#{name},#{description},#{type},#{url},#{forcibly},#{fileSize},now())
 	</insert>
 	
 	<delete id="delete" parameterType="java.lang.Integer">
