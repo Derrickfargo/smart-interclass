@@ -39,6 +39,7 @@ import cn.com.incito.wisdom.sdk.log.WLog;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.baidu.navisdk.util.common.StringUtils;
 
 /**
  * 用户其启动界面时候的一个启动页面完成一些初始化工作 Created by popoy on 2014/7/28.
@@ -47,9 +48,13 @@ import com.alibaba.fastjson.JSONObject;
 public class SplashActivity extends BaseActivity {
 
 	private TextView tv_loading_msg;
+
 	private ImageButton ib_setting_ip;
+
 	private IpSettingDialogFragment dialog;
+
 	private int code;
+
 	private String url;
 
 	@Override
@@ -58,11 +63,10 @@ public class SplashActivity extends BaseActivity {
 		final View view = View.inflate(this, R.layout.splash, null);
 		setContentView(view);
 		try {
-		    PackageManager pm = getPackageManager();
-		    PackageInfo info = pm.getPackageInfo("cn.com.incito.classroom", 0);
-		    code = info.versionCode;
-		}
-		catch (NameNotFoundException e) {
+			PackageManager pm = getPackageManager();
+			PackageInfo info = pm.getPackageInfo("cn.com.incito.classroom", 0);
+			code = info.versionCode;
+		} catch (NameNotFoundException e) {
 			ApiClient.uploadErrorLog(e.getMessage());
 		}
 		ib_setting_ip = (ImageButton) view.findViewById(R.id.ib_setting_ip);
@@ -106,8 +110,6 @@ public class SplashActivity extends BaseActivity {
 		tv_loading_msg.setText(R.string.loading_msg);
 		Log.i("SplashActivity", "startMain");
 		new Thread() {
-			
-
 			public void run() {
 				while (true) {
 					Log.i("SplashActivity", "检查WiFi是否连接 ");
@@ -120,19 +122,22 @@ public class SplashActivity extends BaseActivity {
 						WifiInfo info = wifi.getConnectionInfo();
 						app.setDeviceId(info.getMacAddress().replace(":", "-"));
 						Log.i("SplashActivity", "WiFi已连接，检查Socket是否连接 ");
-						//TODO 升级
-						try {
-							 JSONObject updateResult = JSONObject.parseObject(ApiClient.updateApk(code));
-							 WLog.i(SplashActivity.class, "版本更新返回信息："+updateResult);
-							if(updateResult.getInteger("code")==0){
-								Version version = JSON.parseObject(updateResult.getJSONObject("data").toJSONString(),
-										Version.class);
-								 url =Constants.URL_DOWNLOAD_APK+version.getId();
-								mHandler.sendEmptyMessage(1000);
+						// TODO 升级
+						String ip = MyApplication.getInstance().getSharedPreferences().getString("server_ip", "");
+						String port = MyApplication.getInstance().getSharedPreferences().getString("server_ip", "");
+						if (!StringUtils.isEmpty(ip) && !StringUtils.isEmpty(port)) {
+							try {
+								JSONObject updateResult = JSONObject.parseObject(ApiClient.updateApk(code));
+								WLog.i(SplashActivity.class, "版本更新返回信息：" + updateResult);
+								if (updateResult.getInteger("code") == 0) {
+									Version version = JSON.parseObject(updateResult.getJSONObject("data").toJSONString(), Version.class);
+									url = Constants.URL_DOWNLOAD_APK + version.getId();
+									mHandler.sendEmptyMessage(1000);
+								}
+							} catch (AppException e) {
+								ApiClient.uploadErrorLog(e.getMessage());
+								e.printStackTrace();
 							}
-						} catch (AppException e) {
-							ApiClient.uploadErrorLog(e.getMessage());
-							e.printStackTrace();
 						}
 						if (!CoreSocket.getInstance().isConnected()) {
 							Log.i("SplashActivity", "Socket无连接，开始Socket重连，startMain退出 ");
@@ -166,12 +171,12 @@ public class SplashActivity extends BaseActivity {
 				if (netWorkDialog == null) {
 					netWorkDialog = new NetWorkDialog(SplashActivity.this);
 					netWorkDialog.show();
-				}else if(netWorkDialog != null && !netWorkDialog.isShowing()){
+				} else if (netWorkDialog != null && !netWorkDialog.isShowing()) {
 					netWorkDialog.show();
 				}
 				break;
 			case 2:
-				if(netWorkDialog != null && netWorkDialog.isShowing()){
+				if (netWorkDialog != null && netWorkDialog.isShowing()) {
 					netWorkDialog.dismiss();
 				}
 				break;
@@ -179,9 +184,9 @@ public class SplashActivity extends BaseActivity {
 				ib_setting_ip.setVisibility(View.VISIBLE);
 				break;
 			case 1000:
-				UpdateManager mUpdateManager = new UpdateManager(SplashActivity.this,url);  
-			    mUpdateManager.checkUpdateInfo();
-			    break;
+				UpdateManager mUpdateManager = new UpdateManager(SplashActivity.this, url);
+				mUpdateManager.checkUpdateInfo();
+				break;
 			default:
 				break;
 			}
@@ -223,6 +228,7 @@ public class SplashActivity extends BaseActivity {
 	 */
 	public void restartConnector() {
 		new Thread() {
+
 			public void run() {
 				while (Boolean.TRUE) {
 					SplashActivity.this.sleep(3000);
