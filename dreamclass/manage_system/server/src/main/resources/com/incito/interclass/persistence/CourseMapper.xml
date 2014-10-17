@@ -5,21 +5,21 @@
 
 	<select id="getCourseList" resultType="com.incito.interclass.entity.Course">
 		SELECT	
-			id,sum,name,intro,ctime
+			id,sum,class_name AS name,class_intro AS intro,create_time AS ctime
 		FROM 
-			tb_course
+			ts_db_course
 		ORDER BY
 			id
 	</select>
 	
 	<select id="getCourseListByCondition" resultType="com.incito.interclass.entity.Course" parameterType="java.util.Map">
 		SELECT	
-			id,sum,name,intro,ctime
+			id,sum,class_name AS name,class_intro AS intro,create_time AS ctime
 		FROM 
-			tb_course
+			ts_db_course
 		<where>
 			<if test="name != null and name != ''">
-				name LIKE '%' #{name} '%'
+				class_name LIKE '%' #{name} '%'
 			</if>
 		</where>
 		ORDER BY
@@ -28,23 +28,13 @@
 
 	<select id="getCourseById" resultType="com.incito.interclass.entity.Course" parameterType="java.lang.Integer">
 		SELECT	
-			id,sum,name,intro,ctime
+			id,sum,class_name AS name,class_intro AS intro,create_time AS ctime
 		FROM 
-			tb_course
+			ts_db_course
 		WHERE
 			tb_course.id = #{id}
 		ORDER BY
 			id
 	</select>
 	
-	<insert id="save" parameterType="com.incito.interclass.entity.Course" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO 
-			tb_course(sum,name,intro,ctime)
-		VALUES
-			(#{sum},#{name},#{intro},now())
-	</insert>
-	
-	<delete id="delete" parameterType="java.lang.Integer">
-		DELETE FROM tb_course WHERE id = #{id} 
-	</delete>
 </mapper>

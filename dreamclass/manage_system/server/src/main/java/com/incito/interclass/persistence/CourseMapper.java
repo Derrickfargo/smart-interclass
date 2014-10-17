@@ -13,7 +13,4 @@ public interface CourseMapper {
 
 	Course getCourseById(int id);
 
-	Integer save(Course course);
-
-	void delete(int id);
 }

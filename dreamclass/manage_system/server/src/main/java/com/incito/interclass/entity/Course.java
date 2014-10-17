@@ -14,7 +14,7 @@ public class Course implements Serializable {
 	private int sum;
 	private String name;
 	private String intro;
-	private Date ctime;
+	private int ctime;
 
 	public int getId() {
 		return id;
@@ -48,11 +48,11 @@ public class Course implements Serializable {
 		this.intro = intro;
 	}
 
-	public Date getCtime() {
+	public int getCtime() {
 		return ctime;
 	}
 
-	public void setCtime(Date ctime) {
+	public void setCtime(int ctime) {
 		this.ctime = ctime;
 	}
 
