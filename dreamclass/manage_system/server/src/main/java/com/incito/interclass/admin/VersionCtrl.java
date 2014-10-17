@@ -31,7 +31,7 @@ public class VersionCtrl extends BaseCtrl {
 	 * 列表
 	 */
 	@RequestMapping("/list")
-	public ModelAndView index(@RequestParam(value = "type", defaultValue = "1")Integer type,
+	public ModelAndView index(@RequestParam(value = "type", defaultValue = "-1")Integer type,
 			@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
 		ModelAndView res = new ModelAndView("version/versionList");
 		PageHelper.startPage(pageNum, PAGE_SIZE);

@@ -9,7 +9,7 @@
 		FROM 
 			tb_log
 		<where>
-			<if test="type != 0">
+			<if test="type != -1">
 				type = #{type}
 			</if>
 			<if test="key != null and key != ''">

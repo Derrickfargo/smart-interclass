@@ -42,6 +42,14 @@
 									<div class="col-xs-2">
 										<select id="type" name="type" class="form-control" >
 											<c:choose>
+												<c:when test="${type == -1}">
+													<option value="-1" selected></option>
+												</c:when>
+												<c:otherwise>
+													<option value="-1"></option>
+												</c:otherwise>
+											</c:choose>
+											<c:choose>
 												<c:when test="${type == 1}">
 													<option value="1" selected>教师端</option>
 												</c:when>

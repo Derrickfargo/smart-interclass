@@ -33,7 +33,7 @@ public class LogCtrl extends BaseCtrl {
 	 * 列表
 	 */
 	@RequestMapping("/list")
-	public ModelAndView index(@RequestParam(value = "type", defaultValue = "1")Integer type,String key, 
+	public ModelAndView index(@RequestParam(value = "type", defaultValue = "-1")Integer type,String key, 
 			@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
 		ModelAndView res = new ModelAndView("log/logList");
 		PageHelper.startPage(pageNum, PAGE_SIZE);

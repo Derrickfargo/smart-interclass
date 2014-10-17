@@ -62,7 +62,6 @@
 											<th>所属学校</th>
 											<th>所在教室</th>
 											<th>所在课桌</th>
-											<th>操作</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -72,9 +71,6 @@
 												<td>${device.schoolName}</td>
 												<td>${device.roomName}</td>
 												<td>${device.tableNumber}</td>
-												<td>
-													<a href="#" onclick="deleteDevice('${device.id}')"><span title="删除" class="glyphicon glyphicon-remove"></span></a>&nbsp;
-												</td>
 											</tr>
 										</c:forEach>
 									</tbody>

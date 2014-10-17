@@ -29,7 +29,7 @@ import com.alibaba.fastjson.JSONObject;
  * 
  */
 public class Main {
-	public static final int VERSION_CODE = 1;
+	public static final int VERSION_CODE = 15;
 	
 	public static void main(String args[]) {
 		// 注册异常处理器

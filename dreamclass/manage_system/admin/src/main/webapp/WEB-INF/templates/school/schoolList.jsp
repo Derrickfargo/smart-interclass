@@ -45,7 +45,15 @@
 									<div class="col-xs-2">
 										<select id="schoolType" name="schoolType" class="form-control" >
 											<c:choose>
-												<c:when test="${schoolType == 1 || schoolType == -1}">
+												<c:when test="${schoolType == -1}">
+													<option value="-1" selected></option>
+												</c:when>
+												<c:otherwise>
+													<option value="-1"></option>
+												</c:otherwise>
+											</c:choose>
+											<c:choose>
+												<c:when test="${schoolType == 1}">
 													<option value="1" selected>小学</option>
 												</c:when>
 												<c:otherwise>
