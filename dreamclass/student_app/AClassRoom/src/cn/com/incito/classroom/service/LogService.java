@@ -166,7 +166,7 @@ public class LogService extends Service {
 		am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
 				AlarmManager.INTERVAL_DAY, sender);
 		recordLogServiceLog("deployNextTask succ,next task time is:"
-				+ myLogSdf.format(calendar.getTime()));
+				+ myLogSdf.format(new Date()));
 	}
 
 	/**

@@ -1,10 +1,12 @@
 package cn.com.incito.classroom.base;
 
+import java.io.File;
 import java.util.Stack;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Environment;
 import cn.com.incito.classroom.utils.ApiClient;
 import cn.com.incito.socket.core.ConnectionManager;
 import cn.com.incito.socket.core.CoreSocket;
@@ -110,6 +112,10 @@ public class AppManager {
 //            ActivityManager activityMgr = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
 //            activityMgr.restartPackage(context.getPackageName());
 //            System.exit(0);
+            File mlogFile=new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "MyApp" + File.separator + "log" + File.separator + "tempt" + ".log");
+            if(mlogFile.exists()){
+            	mlogFile.delete();
+            }
         } catch (Exception e) {
         	ApiClient.uploadErrorLog(e.getMessage());
         	e.printStackTrace();
