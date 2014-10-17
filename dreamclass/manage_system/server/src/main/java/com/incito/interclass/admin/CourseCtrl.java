@@ -44,19 +44,4 @@ public class CourseCtrl extends BaseCtrl {
 		return new ModelAndView("course/courseAdd");
 	}
 	
-	/**
-	 * 保存
-	 * @return
-	 */
-	@RequestMapping(value = "/save")
-	public ModelAndView save(Course course) {
-		courseService.saveCourse(course);
-		return new ModelAndView("redirect:list");
-	}
-	
-	@RequestMapping(value = "/delete")
-	public ModelAndView delete(int courseId) {
-		courseService.deleteCourse(courseId);
-		return new ModelAndView("redirect:list");
-	}
 }

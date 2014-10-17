@@ -32,7 +32,7 @@ public class LogCtrl extends BaseCtrl {
 	 * @return
 	 */
 	@RequestMapping(value = "/save", method = RequestMethod.POST, produces = { "application/json;charset=UTF-8" })
-	public String save(int type, String mac, String reason, MultipartFile file) {
+	public String save(Integer type, String mac, String reason, MultipartFile file) {
 		Date date = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat time = new SimpleDateFormat("HH-mm-ss-SS");

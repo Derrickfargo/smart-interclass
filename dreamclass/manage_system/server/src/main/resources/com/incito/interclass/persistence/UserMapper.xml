@@ -91,30 +91,23 @@
 	</select>
 	
 	<select id="getTeacherListByCondition" resultType="com.incito.interclass.entity.Teacher" parameterType="java.util.Map">
-		SELECT	
-			tb_user.id,tb_user.uname,tb_user.name,tb_user.email,tb_user.sex,is_active,role,tb_user.ctime,
-			tb_school.id AS schoolId,tb_school.name AS schoolName,idcard,tb_teacher.phone AS phone
+		SELECT 
+			u.uid AS id, v.realname AS name,s.name AS schoolName,v.phone AS phone,u.sex AS sex
 		FROM 
-			tb_user
-		INNER JOIN 
-			tb_teacher
-		ON 
-			tb_user.id = tb_teacher.id
-		INNER JOIN
-			tb_school
-		ON
-			tb_teacher.school_id = tb_school.id
-		WHERE
-			tb_user.is_Active = 1
-			AND tb_user.role = 2
+			ts_user u 
+		INNER JOIN ts_user_verified v ON u.uid=v.uid 
+		INNER JOIN ts_db_school s ON v.sid=s.id 
+		INNER JOIN ts_user_group_link l ON u.uid=l.uid 
+		WHERE 
+			l.user_group_id=4
 			<if test="name != null and name != ''">
-				AND tb_user.name LIKE '%' #{name} '%' 
+				AND v.realname LIKE '%' #{name} '%' 
 			</if>
 			<if test="schoolName != null and schoolName != ''">
-				AND tb_school.name LIKE '%' #{schoolName} '%' 
+				AND s.name LIKE '%' #{schoolName} '%' 
 			</if>
 		ORDER BY
-			tb_user.id
+			u.uid
 	</select>
 	
 	<insert id="saveUser" parameterType="com.incito.interclass.entity.User" useGeneratedKeys="true" keyProperty="id">

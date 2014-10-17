@@ -46,17 +46,12 @@
 								</div>
 							</div>
 
-							<div class="col-xs-12" style="padding: 0px;margin-bottom:5px">
-								<button type="button" class="btn btn-success btn-sm pull-right" onclick="window.location.href='${path}/course/add'">新增</button>
-							</div>
-
                             <div class="col-xs-12" style="padding: 0px;margin-bottom:5px">
 								<table class="table table-bordered table-condensed table-hover table-striped">
 									<thead>
 										<tr class="success">
 											<th>课程名称</th>
 											<th>课时数</th>
-											<th>操作</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -64,10 +59,6 @@
 											<tr>
 												<td>${course.name}</td>
 												<td>${course.sum}</td>
-												<td>
-													<!-- <a href="#" onclick="modifyCourse('${course.id}')"><span title="修改" class="glyphicon glyphicon-pencil"></span></a>&nbsp; --> 
-													<a href="#" onclick="deleteCourse('${course.id}')"><span title="删除" class="glyphicon glyphicon-remove"></span></a>&nbsp;
-												</td>
 											</tr>
 										</c:forEach>
 									</tbody>
@@ -79,30 +70,24 @@
 									<c:when test="${empty page.list}">
 										<b>没有查询到相应的数据</b>
 									</c:when>
-									<c:when test="${page.pages == 1}">
-									</c:when>
 									<c:otherwise>
 										<ul class="pagination" id="pagination">
-											<c:if test="${page.pages > 1 }">
-												<li><a href="javascript:void(0);searchCourse('1')">首页</a></li>
-											</c:if>
+											<li><a href="javascript:void(0);searchCourse('1')">首页</a></li>
 											<c:if test="${page.hasPreviousPage}">
 												<li><a href="javascript:void(0);searchCourse('${page.prePage}')">上一页</a></li>
 											</c:if>
 											<c:forEach items="${page.navigatepageNums}" var="nav">
 						                        <c:if test="${nav == page.pageNum}">
-						                            <li><a href="javascript:void(0);searchCourse('${x}')">${nav}</a></li>
+						                            <li class="active"><a href="javascript:void(0);">${nav}</a></li>
 						                        </c:if>
 						                        <c:if test="${nav != page.pageNum}">
-						                        	<li class="active"><a href="javascript:void(0);searchCourse('${nav}')">${nav}</a></li>
+						                        	<li><a href="javascript:void(0);searchCourse('${nav}')">${nav}</a></li>
 						                        </c:if>
 						                    </c:forEach>
 											<c:if test="${page.hasNextPage}">
 												<li><a href="javascript:void(0);searchCourse('${page.pageSize}')">下一页</a></li>
 											</c:if>
-											<c:if test="${page.pages > 1 }">
-												<li><a href="javascript:void(0);searchCourse('${page.pages}')">尾页</a></li>
-											</c:if>
+											<li><a href="javascript:void(0);searchCourse('${page.pages}')">尾页</a></li>
 										</ul>
 									</c:otherwise>
 								</c:choose>

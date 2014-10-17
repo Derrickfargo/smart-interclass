@@ -26,12 +26,4 @@ public class CourseService {
 		return courseMapper.getCourseById(id);
 	}
 	
-	public boolean saveCourse(Course course) {
-		int id = (Integer) courseMapper.save(course);
-		return id != 0;
-	}
-
-	public void deleteCourse(int courseId) {
-		courseMapper.delete(courseId);
-	}
 }
