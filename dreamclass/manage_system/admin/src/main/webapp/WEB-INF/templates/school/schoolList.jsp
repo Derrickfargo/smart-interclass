@@ -83,7 +83,6 @@
 											<th>学校类型</th>
 											<th>联系电话</th>
 											<th>Email</th>
-											<th>操作</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -103,10 +102,6 @@
 												</td>
 												<td>${school.phone}</td>
 												<td>${school.email}</td>
-												<td>
-													<!-- <a href="#" onclick="modifySchool('${school.id}')"><span title="修改" class="glyphicon glyphicon-pencil"></span></a>&nbsp; --> 
-													<a href="#" onclick="deleteSchool('${school.id}')"><span title="删除" class="glyphicon glyphicon-remove"></span></a>&nbsp;
-												</td>
 											</tr>
 										</c:forEach>
 									</tbody>
