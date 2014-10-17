@@ -1,5 +1,6 @@
 package cn.com.incito.classroom.utils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -16,6 +17,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -25,7 +27,9 @@ import cn.com.incito.classroom.R;
 public class UpdateManager {
 
 	private Context mContext;
+
 	private Dialog downloadDialog;
+
 	/* 下载包安装路径 */
 	private static final String savePath = "/sdcard/updatedemo/";
 
@@ -37,7 +41,6 @@ public class UpdateManager {
 	private static final int DOWN_UPDATE = 1;
 
 	private static final int DOWN_OVER = 2;
-
 
 	private int progress;
 
@@ -60,7 +63,9 @@ public class UpdateManager {
 				mProgress.setProgress(progress);
 				break;
 			case DOWN_OVER:
-				installApk();
+//				installApk();
+				File apkfile = new File(saveFileName);
+				install(apkfile.getAbsolutePath());
 				break;
 			default:
 				break;
@@ -166,6 +171,109 @@ public class UpdateManager {
 		mContext.startActivity(i);
 	}
 
+	/**
+	 * 打开APK文件
+	 * 
+	 * @param file
+	 */
+	private void openFile(File file) {
+		// TODO Auto-generated method stub
+		Log.i("OpenFile", file.getName());
+		Intent intent = new Intent();
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.setAction(android.content.Intent.ACTION_VIEW);
+		intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+		mContext.startActivity(intent);
+	}
 
+	// 方法体可以在任何地方可套用，不用修改任何东东哦！
+	/**
+	 * 强制安装APK
+	 * @param apkAbsolutePath
+	 * @return
+	 */
+	public String install(String apkAbsolutePath) {
+
+		String[] args = { "pm", "install", "-r", apkAbsolutePath };
+
+		String result = "";
+
+		ProcessBuilder processBuilder = new ProcessBuilder(args);
+
+		Process process = null;
+
+		InputStream errIs = null;
+
+		InputStream inIs = null;
+		try {
+
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+			int read = -1;
+
+			process = processBuilder.start();
+
+			errIs = process.getErrorStream();
+
+			while ((read = errIs.read()) != -1) {
+
+				baos.write(read);
+
+			}
+
+			baos.write("/n".getBytes());
+
+			inIs = process.getInputStream();
+
+			while ((read = inIs.read()) != -1) {
+
+				baos.write(read);
+
+			}
+
+			byte[] data = baos.toByteArray();
+
+			result = new String(data);
+
+		} catch (IOException e) {
+
+			e.printStackTrace();
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		} finally {
+
+			try {
+
+				if (errIs != null) {
+
+					errIs.close();
+
+				}
+
+				if (inIs != null) {
+
+					inIs.close();
+
+				}
+
+			} catch (IOException e) {
+
+				e.printStackTrace();
+
+			}
+
+			if (process != null) {
+				process.destroy();
+
+			}
+
+		}
+
+		return result;
+
+	}
 
 }
