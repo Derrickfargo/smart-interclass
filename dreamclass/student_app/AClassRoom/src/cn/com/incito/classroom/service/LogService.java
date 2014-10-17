@@ -59,10 +59,10 @@ public class LogService extends Service {
 
 	private String logServiceLogName = "Log.log";// 本服务输出的日志文件名称
 	private SimpleDateFormat myLogSdf = new SimpleDateFormat(
-			"yyyy-MM-dd HH:mm:ss");
+			"yyyy-MM-dd");
 	private OutputStreamWriter writer;
 
-	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HHmmss");// 日志名称格式
+	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");// 日志名称格式
 
 	private Process process;
 

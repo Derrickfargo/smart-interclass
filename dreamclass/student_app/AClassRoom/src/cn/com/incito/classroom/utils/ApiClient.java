@@ -1,8 +1,14 @@
 package cn.com.incito.classroom.utils;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,7 +69,7 @@ public class ApiClient {
 		}
 		// 设置 请求超时时间
 		httpGet.getParams().setSoTimeout(TIMEOUT_SOCKET);
-		httpGet.setRequestHeader("Host", Constants.HTTP+Constants.HOST);
+		httpGet.setRequestHeader("Host", Constants.HTTP + Constants.HOST);
 		httpGet.setRequestHeader("Connection", "Keep-Alive");
 		return httpGet;
 	}
@@ -72,7 +78,7 @@ public class ApiClient {
 		PostMethod httpPost = new PostMethod(url);
 		// 设置 请求超时时间
 		// httpPost.getParams().setSoTimeout(TIMEOUT_SOCKET);
-		httpPost.setRequestHeader("Host", Constants.HTTP+Constants.HOST);
+		httpPost.setRequestHeader("Host", Constants.HTTP + Constants.HOST);
 		httpPost.setRequestHeader("Connection", "Keep-Alive");
 		return httpPost;
 	}
@@ -179,7 +185,7 @@ public class ApiClient {
 				try {
 					parts[i++] = new FilePart(file, files.get(file));
 				} catch (FileNotFoundException e) {
-//					ApiClient.uploadErrorLog(e.getMessage());
+					// ApiClient.uploadErrorLog(e.getMessage());
 					e.printStackTrace();
 				}
 				// System.out.println("post_key_file==> "+file);
@@ -258,22 +264,60 @@ public class ApiClient {
 	 * 日志上传
 	 * 
 	 * @param reason
+	 * @throws IOException 
 	 */
-	public static void uploadErrorLog(String reason) {
+	public static void uploadErrorLog(String reason)  {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");// 日志名称格式
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("type", 1);
+		params.put("type", 2);
 		params.put("mac", MyApplication.deviceId == null ? "" : MyApplication.deviceId);
 		params.put("reason", reason);
 		Map<String, File> files = new HashMap<String, File>();
-		files.put("file", new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "MyApp" + File.separator + "log"));
+		File logFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "MyApp" + File.separator + "log" + File.separator + sdf.format(new Date()) + ".log");
+		 	try {
+				copyFile(logFile, new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "MyApp" + File.separator + "log" + File.separator + "tempt" + ".log"));
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		 	File mlogFile=new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "MyApp" + File.separator + "log" + File.separator + "tempt" + ".log");
+			files.put("file", mlogFile);
+
 		try {
+			System.out.println(Constants.URL_UPLOAD_LOG);
 			_post(Constants.URL_UPLOAD_LOG, params, files);
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
 	}
-	
-	
-	
-	
+
+	/**
+	 * copy 文件到另一个文件
+	 * @param sourceFile
+	 * @param targetFile
+	 * @throws IOException
+	 */
+	public static void copyFile(File sourceFile, File targetFile) throws IOException {
+		// 新建文件输入流并对它进行缓冲
+		FileInputStream input = new FileInputStream(sourceFile);
+		BufferedInputStream inBuff = new BufferedInputStream(input);
+
+		// 新建文件输出流并对它进行缓冲
+		FileOutputStream output = new FileOutputStream(targetFile);
+		BufferedOutputStream outBuff = new BufferedOutputStream(output);
+		// 缓冲数组
+		byte[] b = new byte[1024 * 5];
+		int len;
+		while ((len = inBuff.read(b)) != -1) {
+			outBuff.write(b, 0, len);
+		}
+		// 刷新此缓冲的输出流
+		outBuff.flush();
+
+		// 关闭流
+		inBuff.close();
+		outBuff.close();
+		output.close();
+		input.close();
+	}
+
 }
