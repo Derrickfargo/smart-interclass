@@ -46,19 +46,24 @@
 		FROM 
 			tb_group
 		INNER JOIN 
-			tb_teacher ON tb_teacher.id = tb_group.teacher_id
+			ts_user u ON u.uid = tb_group.teacher_id
 		INNER JOIN 
-			tb_user ON tb_user.id = tb_teacher.id
+			ts_user_verified v ON u.uid=v.uid 
+		INNER JOIN 
+			ts_db_school s ON v.sid=s.id 
+		INNER JOIN 
+			ts_user_group_link l ON u.uid=l.uid 
 		LEFT JOIN
-			tb_course ON tb_course.id = tb_group.course_id
+			ts_db_course ON ts_db_course.id = tb_group.course_id
 		LEFT JOIN
 			tb_class ON tb_class.id = tb_group.class_id
 		INNER JOIN
 			tb_table ON tb_table.id = tb_group.table_id
 		WHERE
-			tb_user.id = #{teacherId}
+			l.user_group_id=4
+			AND u.uid = #{teacherId}
 			AND tb_class.id = #{classId}
-			AND tb_course.id = #{courseId}
+			AND ts_db_course.id = #{courseId}
 		ORDER BY
 			id
 	</select>
@@ -71,11 +76,15 @@
 		FROM 
 			tb_group
 		INNER JOIN 
-			tb_teacher ON tb_teacher.id = tb_group.teacher_id
+			ts_user u ON u.uid = tb_group.teacher_id
 		INNER JOIN 
-			tb_user ON tb_user.id = tb_teacher.id
+			ts_user_verified v ON u.uid=v.uid 
+		INNER JOIN 
+			ts_db_school s ON v.sid=s.id 
+		INNER JOIN 
+			ts_user_group_link l ON u.uid=l.uid 
 		INNER JOIN
-			tb_course ON tb_course.id = tb_group.course_id
+			ts_db_course ON ts_db_course.id = tb_group.course_id
 		INNER JOIN
 			tb_class ON tb_class.id = tb_group.class_id
 		INNER JOIN
@@ -83,7 +92,8 @@
 		INNER JOIN
 			tb_device ON tb_device.table_id = tb_table.id
 		WHERE
-			tb_group.id = #{id}
+			l.user_group_id=4
+			AND tb_group.id = #{id}
 	</select>
 	
 	<select id="getGroupByTableId" resultMap="GroupUserMap" parameterType="java.util.Map">
@@ -94,11 +104,15 @@
 		FROM 
 			tb_group
 		INNER JOIN 
-			tb_teacher ON tb_teacher.id = tb_group.teacher_id
+			ts_user u ON u.uid = tb_group.teacher_id
 		INNER JOIN 
-			tb_user ON tb_user.id = tb_teacher.id
+			ts_user_verified v ON u.uid=v.uid 
+		INNER JOIN 
+			ts_db_school s ON v.sid=s.id 
+		INNER JOIN 
+			ts_user_group_link l ON u.uid=l.uid 
 		INNER JOIN
-			tb_course ON tb_course.id = tb_group.course_id
+			ts_db_course ON ts_db_course.id = tb_group.course_id
 		INNER JOIN
 			tb_class ON tb_class.id = tb_group.class_id
 		INNER JOIN
@@ -106,9 +120,10 @@
 		INNER JOIN
 			tb_device ON tb_device.table_id = tb_table.id
 		WHERE
-			tb_table.id = #{tableId}
-			AND tb_teacher.id = #{teacherId}
-			AND tb_course.id = #{courseId}
+			l.user_group_id=4
+			AND tb_table.id = #{tableId}
+			AND u.uid = #{teacherId}
+			AND ts_db_course.id = #{courseId}
 			AND tb_class.id = #{classId}
 	</select>
 	
@@ -120,11 +135,15 @@
 		FROM 
 			tb_group
 		INNER JOIN 
-			tb_teacher ON tb_teacher.id = tb_group.teacher_id
+			ts_user u ON u.uid = tb_group.teacher_id
 		INNER JOIN 
-			tb_user ON tb_user.id = tb_teacher.id
+			ts_user_verified v ON u.uid=v.uid 
+		INNER JOIN 
+			ts_db_school s ON v.sid=s.id 
+		INNER JOIN 
+			ts_user_group_link l ON u.uid=l.uid 
 		INNER JOIN
-			tb_course ON tb_course.id = tb_group.course_id
+			ts_db_course ON ts_db_course.id = tb_group.course_id
 		INNER JOIN
 			tb_class ON tb_class.id = tb_group.class_id
 		INNER JOIN
@@ -132,9 +151,10 @@
 		INNER JOIN
 			tb_device ON tb_device.table_id = tb_table.id
 		WHERE
-			tb_user.id = #{teacherId}
+			l.user_group_id=4
+			AND u.uid = #{teacherId}
 			AND tb_class.id = #{classId}
-			AND tb_course.id = #{courseId}
+			AND ts_db_course.id = #{courseId}
 			AND tb_device.imei = #{imei}
 	</select>
 	

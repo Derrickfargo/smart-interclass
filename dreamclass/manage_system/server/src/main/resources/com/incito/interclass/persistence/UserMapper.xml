@@ -20,19 +20,18 @@
 	</select>
 
 	<select id="loginForTeacher" resultType="com.incito.interclass.entity.Teacher" parameterType="com.incito.interclass.entity.Teacher">
-		SELECT	
-			tb_user.* ,tb_teacher.*,tb_teacher.school_id AS schoolId
+		SELECT 
+			u.uid AS id, v.realname AS name,s.name AS schoolName,v.phone AS phone,u.sex AS sex,
+			s.id AS schoolId
 		FROM 
-			tb_user
-		LEFT JOIN 
-			tb_teacher
-		ON 
-			tb_user.id = tb_teacher.id
+			ts_user u 
+		INNER JOIN ts_user_verified v ON u.uid=v.uid 
+		INNER JOIN ts_db_school s ON v.sid=s.id 
+		INNER JOIN ts_user_group_link l ON u.uid=l.uid 
 		WHERE 
-			tb_user.uname = #{uname} 
-			AND tb_user.password = #{password}
-			AND tb_user.is_Active = 1
-			AND tb_user.role = 2
+			l.user_group_id=4
+			AND u.uname = #{uname} 
+			AND u.password = #{password}
 	</select>
 	
 	<select id="getStudentByGroup" resultType="com.incito.interclass.entity.Student" parameterType="java.util.Map">

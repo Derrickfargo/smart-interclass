@@ -5,7 +5,7 @@
 
 	<select id="getDeviceListByCondition" resultType="com.incito.interclass.entity.Device" parameterType="java.util.Map">
 		SELECT	
-			tb_device.id,imei,table_id,tb_device.ctime,tb_school.name AS schoolName,
+			tb_device.id,imei,table_id,tb_device.ctime,ts_db_school.name AS schoolName,
 			tb_room.name AS roomName,tb_table.number AS tableNumber
 		FROM 
 			tb_device
@@ -14,13 +14,13 @@
 		INNER JOIN 
 			tb_room ON tb_room.id = tb_table.room_id
 		INNER JOIN 
-			tb_school ON tb_school.id = tb_room.school_id
+			ts_db_school ON ts_db_school.id = tb_room.school_id
 		<where>
 			<if test="imei != null and imei != ''">
 				imei = #{imei}
 			</if>
 			<if test="schoolName != null and schoolName != ''">
-				AND tb_school.name LIKE '%' #{schoolName} '%'
+				AND ts_db_school.name LIKE '%' #{schoolName} '%'
 			</if>
 		</where>
 		ORDER BY
