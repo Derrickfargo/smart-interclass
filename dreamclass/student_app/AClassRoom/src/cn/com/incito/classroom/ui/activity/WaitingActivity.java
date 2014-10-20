@@ -25,6 +25,7 @@ import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.ui.widget.MyAlertDialog;
+import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.classroom.vo.LoginReqVo;
 import cn.com.incito.classroom.vo.LoginRes2Vo;
 import cn.com.incito.classroom.vo.LoginResVo;
@@ -230,11 +231,12 @@ public class WaitingActivity extends BaseActivity {
 			ToastHelper.showCustomToast(getApplicationContext(),
 					R.string.toast_stname_tooshort);
 			return false;
-		} else if (stName.contains(" ")) {
-			ToastHelper.showCustomToast(getApplicationContext(),
-					R.string.toast_stname_blank);
-			return false;
-		}
+		} 
+//			else if (stName.contains(" ")) {
+//			ToastHelper.showCustomToast(getApplicationContext(),
+//					R.string.toast_stname_blank);
+//			return false;
+//		}
 		if (TextUtils.isEmpty(stNumber)) {
 			ToastHelper.showCustomToast(getApplicationContext(),
 					R.string.toast_stnumber_notnull);
@@ -251,6 +253,10 @@ public class WaitingActivity extends BaseActivity {
 				ToastHelper.showCustomToast(getApplicationContext(),String.format(msg, loginResList.get(i).getNumber()));
 				return false;
 			}
+		}
+		if(!Utils.isNumberOrChinese(stName)){
+			ToastHelper.showCustomToast(getApplicationContext(), R.string.tost_name_is_not_english_chinese);
+			return false;
 		}
 		return true;
 	}
@@ -274,6 +280,7 @@ public class WaitingActivity extends BaseActivity {
 			switch (msg.what) {
 			// 登陆
 			case STUDENT_LOGIN: {
+				
 				mProgressDialog.hide();
 				JSONObject jsonObject = (JSONObject) msg.getData().getSerializable("data");
 				WLog.i(WaitingActivity.class, "获取登录信息..." + jsonObject);
