@@ -18,10 +18,6 @@ public class SchoolService {
 		return schoolMapper.getSchoolListByCondition(name, schoolType);
 	}
 
-	public List<School> getSchoolList(){
-		return schoolMapper.getSchoolList();
-	}
-	
 	public boolean saveSchool(School school) {
 		int id = (Integer) schoolMapper.save(school);
 		return id != 0;

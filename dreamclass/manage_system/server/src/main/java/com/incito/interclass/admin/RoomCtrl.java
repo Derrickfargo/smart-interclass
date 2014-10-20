@@ -13,7 +13,6 @@ import com.incito.interclass.business.RoomService;
 import com.incito.interclass.business.SchoolService;
 import com.incito.interclass.common.BaseCtrl;
 import com.incito.interclass.entity.Room;
-import com.incito.interclass.entity.School;
 import com.incito.parent.pagehelper.PageHelper;
 import com.incito.parent.pagehelper.PageInfo;
 
@@ -49,8 +48,6 @@ public class RoomCtrl extends BaseCtrl {
 	@RequestMapping("/add")
 	public ModelAndView add() {
 		ModelAndView mav = new ModelAndView("room/roomAdd");
-		List<School> schools = schoolService.getSchoolList();
-		mav.addObject("schools", schools);
 		return mav;
 	}
 	
@@ -78,9 +75,7 @@ public class RoomCtrl extends BaseCtrl {
 	public ModelAndView edit(Integer roomId) {
 		ModelAndView res = new ModelAndView("room/roomEdit");
 		Room room = roomService.getRoomById(roomId);
-		List<School> schools = schoolService.getSchoolList();
 		res.addObject("room", room);
-		res.addObject("schools", schools);
 		return res;
 	}
 	

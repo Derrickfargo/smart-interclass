@@ -7,8 +7,6 @@ import org.apache.ibatis.annotations.Param;
 import com.incito.interclass.entity.School;
 
 public interface SchoolMapper {
-	List<School> getSchoolList();
-
 	List<School> getSchoolListByCondition(@Param("name") String name,
 			@Param("schoolType") int schoolType);
 	
