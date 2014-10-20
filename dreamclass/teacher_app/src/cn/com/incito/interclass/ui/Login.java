@@ -34,7 +34,6 @@ import cn.com.incito.http.StringResponseHandler;
 import cn.com.incito.http.support.ParamsWrapper;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.api.result.TeacherLoginResultData;
-import cn.com.incito.server.utils.Md5Utils;
 import cn.com.incito.server.utils.NetworkUtils;
 import cn.com.incito.server.utils.UIHelper;
 import cn.com.incito.server.utils.URLs;
@@ -289,7 +288,7 @@ public class Login extends MouseAdapter {
 		ParamsWrapper params = new ParamsWrapper();
 		params.put("mac", mac);
 		params.put("uname", uname);
-		params.put("password", Md5Utils.md5(password));
+		params.put("password", password);
 		http.post(URLs.URL_TEACHER_LOGIN, params, new StringResponseHandler() {
 			@Override
 			protected void onResponse(String content, URL url) {

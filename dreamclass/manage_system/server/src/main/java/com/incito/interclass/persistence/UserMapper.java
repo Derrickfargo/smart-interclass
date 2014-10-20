@@ -44,4 +44,5 @@ public interface UserMapper {
 	@Transactional
 	Integer updateMedals(@Param("groupId")int groupId,@Param("medals")String medals);
 	
+	Teacher getTeacherByLogin(String login);
 }

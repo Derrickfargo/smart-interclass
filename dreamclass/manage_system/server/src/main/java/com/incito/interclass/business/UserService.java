@@ -20,6 +20,10 @@ public class UserService {
 	@Autowired
 	private UserMapper userMapper;
 
+	
+	public Teacher getTeacherByLogin(String login) {
+		return userMapper.getTeacherByLogin(login);
+	}
 	/**
 	 * 改变学生的分数
 	 * 

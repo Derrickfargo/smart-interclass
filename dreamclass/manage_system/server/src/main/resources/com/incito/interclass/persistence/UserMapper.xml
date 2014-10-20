@@ -109,6 +109,35 @@
 			u.uid
 	</select>
 	
+	<select id="getTeacherByLogin" resultType="com.incito.interclass.entity.Teacher" parameterType="java.lang.String">
+		SELECT
+			u.uid AS id,
+			v.realname AS NAME,
+			s. NAME AS schoolName,
+			v.phone AS phone,
+			u.sex AS sex,
+			u.login,
+			u.login_salt AS loginSalt,
+			u. PASSWORD,
+			u.email
+		FROM
+			ts_user u
+		INNER JOIN ts_user_verified v ON u.uid = v.uid
+		INNER JOIN ts_db_school s ON v.sid = s.id
+		INNER JOIN ts_user_group_link l ON u.uid = l.uid
+		WHERE
+			v.verified = '1'
+		AND (
+			l.user_group_id = 4
+			OR l.user_group_id = 3
+		)
+		AND (
+			u.email = #{login}
+			OR u.uname = #{login}
+			OR u.login = #{login}
+		)
+	</select>
+	
 	<insert id="saveUser" parameterType="com.incito.interclass.entity.User" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO 
 			tb_user(uname,password,name,email,sex,is_active,role,ctime)
