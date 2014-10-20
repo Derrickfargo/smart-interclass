@@ -92,8 +92,7 @@
 		INNER JOIN
 			tb_device ON tb_device.table_id = tb_table.id
 		WHERE
-			l.user_group_id=4
-			AND tb_group.id = #{id}
+			tb_group.id = #{id}
 	</select>
 	
 	<select id="getGroupByTableId" resultMap="GroupUserMap" parameterType="java.util.Map">
