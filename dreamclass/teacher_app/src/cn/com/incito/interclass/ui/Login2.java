@@ -171,7 +171,7 @@ public class Login2 extends MouseAdapter {
 			Item item = new Item(course.getId(), course.getName());
 			jcbCourse.addItem(item);
 		}
-		jcbCourse.setLightWeightPopupEnabled(false);
+		jcbCourse.setMaximumRowCount(7);
 		for (int i = 1; i <= 9; i++) {
 			Item item = new Item(i, i + "年级");
 			jcbClass.addItem(item);
