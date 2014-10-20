@@ -3,6 +3,8 @@ package cn.com.incito.classroom.utils;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -127,5 +129,17 @@ public class Utils {
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * 匹配行嘛是否只是中文与英文
+	 * @param str  输入的字符串
+	 * @return     是返回true   否返回false
+	 */
+	public static boolean isNumberOrChinese(String str){
+		Pattern pattern = Pattern.compile("[\u4e00-\u9fa5_a-zA-Z]*?");
+		Matcher matcher = pattern.matcher(str);
+		
+		return !matcher.matches();
 	}
 }
