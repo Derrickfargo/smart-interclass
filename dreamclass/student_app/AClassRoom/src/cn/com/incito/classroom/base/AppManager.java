@@ -109,10 +109,7 @@ public class AppManager {
             ConnectionManager.getInstance(null).close(true);
             MyApplication.getInstance().stopSocketService();
             android.os.Process.killProcess(android.os.Process.myPid());
-//            ActivityManager activityMgr = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-//            activityMgr.restartPackage(context.getPackageName());
-//            System.exit(0);
-            File mlogFile=new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "MyApp" + File.separator + "log" + File.separator + "tempt" + ".log");
+            File mlogFile=new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "MyApp" + File.separator + "log" + File.separator + "2014-1-1" + ".log");
             if(mlogFile.exists()){
             	mlogFile.delete();
             }

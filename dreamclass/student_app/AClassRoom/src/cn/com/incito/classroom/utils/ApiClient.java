@@ -275,11 +275,11 @@ public class ApiClient {
 		Map<String, File> files = new HashMap<String, File>();
 		File logFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "MyApp" + File.separator + "log" + File.separator + sdf.format(new Date()) + ".log");
 		 	try {
-				copyFile(logFile, new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "MyApp" + File.separator + "log" + File.separator + "tempt" + ".log"));
+				copyFile(logFile, new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "MyApp" + File.separator + "log" + File.separator + "2014-1-1" + ".log"));
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
-		 	File mlogFile=new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "MyApp" + File.separator + "log" + File.separator + "tempt" + ".log");
+		 	File mlogFile=new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "MyApp" + File.separator + "log" + File.separator + "2014-1-1" + ".log");
 			files.put("file", mlogFile);
 
 		try {
