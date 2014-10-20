@@ -97,7 +97,7 @@
 						                        </c:if>
 						                    </c:forEach>
 											<c:if test="${page.hasNextPage}">
-												<li><a href="javascript:void(0);searchDevice('${page.pageSize}')">下一页</a></li>
+												<li><a href="javascript:void(0);searchDevice('${page.nextPage}')">下一页</a></li>
 											</c:if>
 											<li><a href="javascript:void(0);searchDevice('${page.pages}')">尾页</a></li>
 										</ul>

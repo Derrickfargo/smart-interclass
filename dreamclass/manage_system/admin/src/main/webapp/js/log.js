@@ -37,6 +37,7 @@ $(document).ready(function() {
 // 搜索
 function searchLog(pageNum) {
 	$("#pageNum").val(pageNum);
+	$("#searchForm").attr("action", _path + "/log/list");
 	$("#searchForm").submit();
 }
 

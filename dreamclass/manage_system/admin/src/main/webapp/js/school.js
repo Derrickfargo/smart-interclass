@@ -40,6 +40,7 @@ $(document).ready(function() {
 // 搜索教师信息
 function searchSchool(pageNum) {
 	$("#pageNum").val(pageNum);
+	$("#searchForm").attr("action", _path + "/school/list");
 	$("#searchForm").submit();
 }
 

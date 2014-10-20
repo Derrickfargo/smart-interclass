@@ -1,6 +1,7 @@
 // 搜索
 function searchDevice(pageNum) {
 	$("#pageNum").val(pageNum);
+	$("#searchForm").attr("action", _path + "/device/list");
 	$("#searchForm").submit();
 }
 

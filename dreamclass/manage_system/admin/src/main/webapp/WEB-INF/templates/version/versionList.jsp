@@ -130,7 +130,7 @@
 						                        </c:if>
 						                    </c:forEach>
 											<c:if test="${page.hasNextPage}">
-												<li><a href="javascript:void(0);searchVersion('${page.pageSize}')">下一页</a></li>
+												<li><a href="javascript:void(0);searchVersion('${page.nextPage}')">下一页</a></li>
 											</c:if>
 											<li><a href="javascript:void(0);searchVersion('${page.pages}')">尾页</a></li>
 										</ul>

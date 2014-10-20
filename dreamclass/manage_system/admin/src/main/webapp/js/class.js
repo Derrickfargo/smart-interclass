@@ -37,6 +37,7 @@ $(document).ready(function() {
 // 搜索教师信息
 function searchClass(currentPage) {
 	$("#currentPage").val(currentPage);
+	$("#searchForm").attr("action", _path + "/class/list");
 	$("#searchForm").submit();
 }
 
