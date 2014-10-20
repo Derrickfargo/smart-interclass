@@ -9,6 +9,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -106,5 +107,11 @@ public class ConfirmGroupInfoActivity extends BaseActivity implements
 		super.onStop();
 		mGroupIcons.recycle();
 	}
-
+	@Override  
+    public boolean onKeyDown(int keyCode, KeyEvent event) {  
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {  
+            return true;  
+        } else  
+            return super.onKeyDown(keyCode, event);  
+    }  
 }
