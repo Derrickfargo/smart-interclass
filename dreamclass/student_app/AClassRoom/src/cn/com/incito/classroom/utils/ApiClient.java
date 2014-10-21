@@ -24,6 +24,8 @@ import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 
+import com.baidu.navisdk.util.common.StringUtils;
+
 import android.os.Environment;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
@@ -283,8 +285,9 @@ public class ApiClient {
 			files.put("file", mlogFile);
 
 		try {
-			System.out.println(Constants.URL_UPLOAD_LOG);
+			if(!StringUtils.isEmpty(Constants.SERVER_IP)&&!StringUtils.isEmpty(Constants.SERVER_PORT))
 			_post(Constants.URL_UPLOAD_LOG, params, files);
+			System.out.println(Constants.URL_UPLOAD_LOG);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
