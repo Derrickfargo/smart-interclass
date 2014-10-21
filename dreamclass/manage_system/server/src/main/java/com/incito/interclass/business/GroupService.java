@@ -23,26 +23,6 @@ public class GroupService {
 	}
 
 	@Transactional(rollbackFor = AppException.class)
-	public boolean saveGroup(Group group, String studentIds)
-			throws AppException {
-		groupMapper.save(group);
-		if (group.getId() <= 0) {
-			throw AppException.database(0);
-		}
-		String[] ids = studentIds.split(",");
-		for (String id : ids) {
-			StudentGroup sg = new StudentGroup();
-			sg.setStudentId(Integer.parseInt(id));
-			sg.setGroupId(group.getId());
-			groupMapper.saveStudentGroup(sg);
-			if (sg.getId() <= 0) {
-				throw AppException.database(0);
-			}
-		}
-		return true;
-	}
-
-	@Transactional(rollbackFor = AppException.class)
 	public Group addStudent(int courseId, int classId, int teacherId,
 			int tableId, int studentId) throws AppException {
 		// 检查组是否存在

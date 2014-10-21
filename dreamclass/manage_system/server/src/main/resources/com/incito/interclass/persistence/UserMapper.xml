@@ -127,10 +127,7 @@
 		INNER JOIN ts_user_group_link l ON u.uid = l.uid
 		WHERE
 			v.verified = '1'
-		AND (
-			l.user_group_id = 4
-			OR l.user_group_id = 3
-		)
+		AND l.user_group_id = 4
 		AND (
 			u.email = #{login}
 			OR u.uname = #{login}

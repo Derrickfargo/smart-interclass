@@ -292,6 +292,7 @@ public class Login extends MouseAdapter {
 		http.post(URLs.URL_TEACHER_LOGIN, params, new StringResponseHandler() {
 			@Override
 			protected void onResponse(String content, URL url) {
+				doLogin = true;
 				if (content != null && !content.equals("")) {
 					JSONObject jsonObject = JSON.parseObject(content);
 					if (jsonObject.getIntValue("code") == 1) {

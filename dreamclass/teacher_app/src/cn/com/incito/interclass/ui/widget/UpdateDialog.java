@@ -10,7 +10,6 @@ import java.awt.Point;
 import java.awt.Stroke;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,6 +20,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 
@@ -30,7 +30,7 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import cn.com.incito.interclass.po.Version;
 import cn.com.incito.server.utils.URLs;
 
-public class UpdateDialog extends JDialog implements MouseListener {
+public class UpdateDialog extends JDialog {
 
 	private static final long serialVersionUID = 281738161264828396L;
 	private Boolean isDragged;
@@ -54,10 +54,10 @@ public class UpdateDialog extends JDialog implements MouseListener {
 		btnClose.setContentAreaFilled(false);// 设置透明
 		ImageIcon imgMax = new ImageIcon("images/login/7.png");
 		btnClose.setIcon(imgMax);// 设置图片
-		add(btnClose);// 添加按钮
+		//TODO 暂时不要关闭按钮
+//		add(btnClose);// 添加按钮
 		btnClose.setBounds(352, 0, imgMax.getIconWidth(),
 				imgMax.getIconHeight());
-		btnClose.addMouseListener(this);
 
 		JLabel lblMessage = new JLabel("正在升级到最新版本", JLabel.LEFT);
 		lblMessage.setFont(new Font("Microsoft YaHei", Font.BOLD, 15));
@@ -147,37 +147,6 @@ public class UpdateDialog extends JDialog implements MouseListener {
 		});
 	}
 
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		if (e.getSource() == btnClose) {
-			
-		}
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		if (e.getSource() == btnClose) {
-			btnClose.setIcon(new ImageIcon("images/login/8.png"));
-		}
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		if (e.getSource() == btnClose) {
-			btnClose.setIcon(new ImageIcon("images/login/7.png"));
-		}
-	}
-
 	private void loadFile(final Version version) {
 		new Thread() {
 			@Override
@@ -210,7 +179,8 @@ public class UpdateDialog extends JDialog implements MouseListener {
 					in.close();
 					fos.close();
 				} catch (Exception e) {
-
+					JOptionPane.showMessageDialog(UpdateDialog.this, "更新过程中检测到网络中断，更新程序将退出!");
+					System.exit(0);
 				} finally {
 					httpGet.releaseConnection();
 				}
