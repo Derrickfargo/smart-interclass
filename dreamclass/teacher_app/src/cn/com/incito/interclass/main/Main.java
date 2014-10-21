@@ -29,7 +29,8 @@ import com.alibaba.fastjson.JSONObject;
  * 
  */
 public class Main {
-	public static final int VERSION_CODE = 15;
+	public static final int VERSION_CODE = 1;
+	private static final long FREE_SIZE = 1024 * 1024 * 100;//100M
 	
 	public static void main(String args[]) {
 		// 注册异常处理器
@@ -70,6 +71,11 @@ public class Main {
 						JOptionPane.showMessageDialog(null, "检测到程序需要更新，但缺少必要的升级程序!");
 						// 初始化应用程序
 						Application.getInstance();
+						return;
+					}
+					long freeSize = file.getFreeSpace();
+					if (freeSize < FREE_SIZE) {
+						JOptionPane.showMessageDialog(null, "检测到程序需要更新，但磁盘空间不足，无法完成更新，请确保磁盘空余空间100M以上!");
 						return;
 					}
 					// 获得带升级的版本
