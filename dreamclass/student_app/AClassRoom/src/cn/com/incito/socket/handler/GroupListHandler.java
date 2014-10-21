@@ -12,7 +12,7 @@ public class GroupListHandler extends MessageHandler {
 
 	@Override
 	protected void handleMessage() {
-		WLog.i(GroupListHandler.class,"收到分组列表");
+		WLog.i(GroupListHandler.class,"收到分组列表"+data.toJSONString());
 		UIHelper.getInstance().getWaitingActivity()
 				.doResult(data, WaitingActivity.STUDENT_LIST);
 	}

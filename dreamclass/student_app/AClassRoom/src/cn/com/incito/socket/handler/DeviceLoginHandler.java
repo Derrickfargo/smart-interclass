@@ -22,7 +22,7 @@ public class DeviceLoginHandler extends MessageHandler {
 		editor.commit();
 		editor.apply();
 		
-		WLog.i(DeviceLoginHandler.class, "收到登陆回复,连接建立成功,开始启动心跳!");
+		WLog.i(DeviceLoginHandler.class, "收到登陆回复,连接建立成功,开始启动心跳!"+data.toJSONString());
 		//启动心跳检测
 		ConnectionManager.getInstance(message.getChannel());
 	}

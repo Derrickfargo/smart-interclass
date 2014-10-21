@@ -381,7 +381,7 @@ public class WaitingActivity extends BaseActivity {
 		messagePacking.putBodyData(DataType.INT,
 				BufferUtils.writeUTFString(json));
 		CoreSocket.getInstance().sendMessage(messagePacking);
-		WLog.i(SplashActivity.class, "启动注册学生...");
+		WLog.i(SplashActivity.class, "启动注册学生...:"+json);
 	}
 
 	/**
@@ -395,7 +395,7 @@ public class WaitingActivity extends BaseActivity {
 		messagePacking.putBodyData(DataType.INT,
 				BufferUtils.writeUTFString(jsonObject.toJSONString()));
 		CoreSocket.getInstance().sendMessage(messagePacking);
-		WLog.i(SplashActivity.class, "启动获取组成员列表...");
+		WLog.i(SplashActivity.class, "启动获取组成员列表..."+jsonObject.toJSONString());
 
 	}
 }
