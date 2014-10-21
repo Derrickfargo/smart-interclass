@@ -32,7 +32,7 @@
 		FROM 
 			ts_db_course
 		WHERE
-			tb_course.id = #{id}
+			id = #{id}
 		ORDER BY
 			id
 	</select>

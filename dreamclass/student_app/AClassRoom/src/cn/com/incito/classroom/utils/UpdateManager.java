@@ -77,6 +77,7 @@ public class UpdateManager {
 	private void showDownloadDialog() {
 		AlertDialog.Builder builder = new Builder(mContext);
 		builder.setTitle("软件版本更新");
+		
 		final LayoutInflater inflater = LayoutInflater.from(mContext);
 		View v = inflater.inflate(R.layout.progress, null);
 		mProgress = (ProgressBar) v.findViewById(R.id.progress);
@@ -89,6 +90,7 @@ public class UpdateManager {
 		// }
 		// });
 		downloadDialog = builder.create();
+		downloadDialog.setCanceledOnTouchOutside(false);
 		downloadDialog.show();
 		downloadApk();
 	}
@@ -127,7 +129,6 @@ public class UpdateManager {
 					}
 					fos.write(buf, 0, numread);
 				} while (!interceptFlag);// 点击取消就停止下载.
-
 				fos.close();
 				is.close();
 			} catch (MalformedURLException e) {
@@ -158,6 +159,7 @@ public class UpdateManager {
 	 * @param url
 	 */
 	private void installApk() {
+		downloadDialog.dismiss();
 		File apkfile = new File(saveFileName);
 		if (!apkfile.exists()) {
 			return;

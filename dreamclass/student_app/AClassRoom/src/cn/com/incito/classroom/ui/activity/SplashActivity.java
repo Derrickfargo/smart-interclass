@@ -56,7 +56,6 @@ public class SplashActivity extends BaseActivity {
 
 	private String url;
 
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -123,42 +122,26 @@ public class SplashActivity extends BaseActivity {
 						WifiInfo info = wifi.getConnectionInfo();
 						app.setDeviceId(info.getMacAddress().replace(":", "-"));
 						Log.i("SplashActivity", "WiFi已连接，检查Socket是否连接 ");
-						// TODO 升级
-						String ip = MyApplication.getInstance().getSharedPreferences().getString("server_ip", "");
-						String port = MyApplication.getInstance().getSharedPreferences().getString("server_port", "");
-						if (!StringUtils.isEmpty(ip) && !StringUtils.isEmpty(port)) {
-							try {
-								JSONObject updateResult = JSONObject.parseObject(ApiClient.updateApk(code));
-								WLog.i(SplashActivity.class, "版本更新返回信息：" + updateResult);
-								if (updateResult.getInteger("code") == 0) {
-									Version version = JSON.parseObject(updateResult.getJSONObject("data").toJSONString(), Version.class);
-									url = Constants.URL_DOWNLOAD_APK + version.getId();
-									mHandler.sendEmptyMessage(1000);
-								}
-							} catch (AppException e) {
-								ApiClient.uploadErrorLog(e.getMessage());
-								e.printStackTrace();
-							}
-						}
-							if (!CoreSocket.getInstance().isConnected()) {
-								Log.i("SplashActivity", "Socket无连接，开始Socket重连，startMain退出 ");
-								CoreSocket.getInstance().disconnect();
-								showSetting();
-								restartConnector();
-								break;
-							} else {
-								Log.i("SplashActivity", "Socket已连接，开始登陆，startMain退出 ");
-								startMainAct();
-							}
+						// updateApk();
+						if (!CoreSocket.getInstance().isConnected()) {
+							Log.i("SplashActivity", "Socket无连接，开始Socket重连，startMain退出 ");
+							CoreSocket.getInstance().disconnect();
+							showSetting();
+							restartConnector();
 							break;
+						} else {
+							Log.i("SplashActivity", "Socket已连接，开始登陆，startMain退出 ");
+							startMainAct();
 						}
-						Log.i("SplashActivity", "WiFi未连接 ");
-						android.os.Message message1 = new android.os.Message();
-						message1.what = 1;
-						mHandler.sendMessage(message1);
-						SplashActivity.this.sleep(3000);
+						break;
 					}
+					Log.i("SplashActivity", "WiFi未连接 ");
+					android.os.Message message1 = new android.os.Message();
+					message1.what = 1;
+					mHandler.sendMessage(message1);
+					SplashActivity.this.sleep(3000);
 				}
+			}
 		}.start();
 
 	}
@@ -216,12 +199,14 @@ public class SplashActivity extends BaseActivity {
 	 * 发送连接请求
 	 */
 	public void startMainAct() {
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("imei", MyApplication.deviceId);
-		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_HAS_BIND);
-		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
-		CoreSocket.getInstance().sendMessage(messagePacking);
-		WLog.i(SplashActivity.class, "开始判定设备是否绑定..." + "request:" + jsonObject.toJSONString());
+		if (!isUpdateApk()) {
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("imei", MyApplication.deviceId);
+			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_HAS_BIND);
+			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
+			CoreSocket.getInstance().sendMessage(messagePacking);
+			WLog.i(SplashActivity.class, "开始判定设备是否绑定..." + "request:" + jsonObject.toJSONString());
+		}
 	}
 
 	/**
@@ -271,6 +256,28 @@ public class SplashActivity extends BaseActivity {
 				if (info.getState() == NetworkInfo.State.CONNECTED) {
 					return true;
 				}
+			}
+		}
+		return false;
+	}
+
+	public boolean isUpdateApk() {
+		// TODO 升级
+		String ip = MyApplication.getInstance().getSharedPreferences().getString("server_ip", "");
+		String port = MyApplication.getInstance().getSharedPreferences().getString("server_port", "");
+		if (!StringUtils.isEmpty(ip) && !StringUtils.isEmpty(port)) {
+			try {
+				JSONObject updateResult = JSONObject.parseObject(ApiClient.updateApk(code));
+				WLog.i(SplashActivity.class, "版本更新返回信息：" + updateResult);
+				if (updateResult.getInteger("code") == 0) {
+					Version version = JSON.parseObject(updateResult.getJSONObject("data").toJSONString(), Version.class);
+					url = Constants.URL_DOWNLOAD_APK + version.getId();
+					mHandler.sendEmptyMessage(1000);
+					return true;
+				}
+			} catch (AppException e) {
+				ApiClient.uploadErrorLog(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 		return false;

@@ -10,6 +10,7 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -145,4 +146,12 @@ public class EditGroupInfoActivity extends BaseActivity implements
 			break;
 		}
 	}
+	@Override  
+    public boolean onKeyDown(int keyCode, KeyEvent event) {  
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {  
+            return true;  
+        } else  
+            return super.onKeyDown(keyCode, event);  
+    }  
+  
 }

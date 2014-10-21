@@ -3,7 +3,6 @@ package com.incito.interclass.persistence;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
-import org.junit.experimental.theories.ParametersSuppliedBy;
 
 import com.incito.interclass.entity.Group;
 import com.incito.interclass.entity.Student;
