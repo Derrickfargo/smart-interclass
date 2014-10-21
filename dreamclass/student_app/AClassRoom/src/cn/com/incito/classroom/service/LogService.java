@@ -552,7 +552,7 @@ public class LogService extends Service {
 			File[] allFiles = file.listFiles();
 			for (File logFile : allFiles) {
 				String fileName = logFile.getName();
-				if (logServiceLogName.equals(fileName)) {
+				if (logServiceLogName.equals(fileName)||"tempt.log".equals(fileName)) {
 					continue;
 				}
 				String createDateInfo = getFileNameWithoutExtension(fileName);

@@ -122,7 +122,6 @@ public class SplashActivity extends BaseActivity {
 						WifiInfo info = wifi.getConnectionInfo();
 						app.setDeviceId(info.getMacAddress().replace(":", "-"));
 						Log.i("SplashActivity", "WiFi已连接，检查Socket是否连接 ");
-						// updateApk();
 						if (!CoreSocket.getInstance().isConnected()) {
 							Log.i("SplashActivity", "Socket无连接，开始Socket重连，startMain退出 ");
 							CoreSocket.getInstance().disconnect();
@@ -214,7 +213,6 @@ public class SplashActivity extends BaseActivity {
 	 */
 	public void restartConnector() {
 		new Thread() {
-
 			public void run() {
 				while (Boolean.TRUE) {
 					SplashActivity.this.sleep(3000);

@@ -35,6 +35,7 @@ public class LockScreenHandler extends MessageHandler {
 
 	@Override
 	protected void handleMessage() {
+		WLog.i(LockScreenHandler.class,"收到锁屏信息");
 		if (isLock.equals("true")) {
 				MyApplication.getInstance().setOnClass(true);
 				MyApplication.getInstance().lockScreen(true);
