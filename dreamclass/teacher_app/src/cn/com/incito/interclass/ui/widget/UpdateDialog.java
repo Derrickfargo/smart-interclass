@@ -54,7 +54,8 @@ public class UpdateDialog extends JDialog {
 		btnClose.setContentAreaFilled(false);// 设置透明
 		ImageIcon imgMax = new ImageIcon("images/login/7.png");
 		btnClose.setIcon(imgMax);// 设置图片
-		add(btnClose);// 添加按钮
+		//TODO 暂时不要关闭按钮
+//		add(btnClose);// 添加按钮
 		btnClose.setBounds(352, 0, imgMax.getIconWidth(),
 				imgMax.getIconHeight());
 
