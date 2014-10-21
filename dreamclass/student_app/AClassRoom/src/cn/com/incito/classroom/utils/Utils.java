@@ -137,9 +137,6 @@ public class Utils {
 	 * @return     是返回true   否返回false
 	 */
 	public static boolean isNumberOrChinese(String str){
-		Pattern pattern = Pattern.compile("[\u4e00-\u9fa5_a-zA-Z]*?");
-		Matcher matcher = pattern.matcher(str);
-		
-		return !matcher.matches();
+		return Pattern.compile("[\u4e00-\u9fa5_a-zA-Z]*?").matcher(str).matches();
 	}
 }
