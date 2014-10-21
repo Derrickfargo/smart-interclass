@@ -717,7 +717,7 @@ public class LogService extends Service {
 				InputStreamReader isr = new InputStreamReader(is);
 				BufferedReader br = new BufferedReader(isr);
 				String line = null;
-				while ((line = br.readLine()) != null) {
+				while ((line = br.readLine()) != null&&!"".equals(line = br.readLine())) {
 					if (list != null) {
 						list.add(line);
 					}
