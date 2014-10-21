@@ -13,8 +13,8 @@ public class SavePaperResultHandler extends MessageHandler {
 	protected void handleMessage() {
 		if (data.getIntValue("code") == 0) {
 			WLog.i(SavePaperResultHandler.class, "paper保存成功");
-			MyApplication.getInstance().setSubmitPaper(true);
 			MyApplication.getInstance().lockScreen(true);
+			MyApplication.getInstance().setSubmitPaper(true);
 		}
 	}
 
