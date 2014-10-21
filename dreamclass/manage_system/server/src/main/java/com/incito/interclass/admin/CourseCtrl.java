@@ -1,4 +1,4 @@
-﻿package com.incito.interclass.admin;
+package com.incito.interclass.admin;
 
 import java.util.List;
 
