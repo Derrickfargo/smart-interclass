@@ -119,7 +119,7 @@ public class CoreService {
 		int classId = app.getClasses().getId();
 		try {
 			final String result = ApiClient.getGroupList(schoolId, 
-					teacherId, classId, "");
+					teacherId, classId,"" );
 			if (result != null && !result.equals("")) {
 				JSONObject jsonObject = JSON.parseObject(result);
 				if (jsonObject.getIntValue("code") != 0) {
@@ -241,7 +241,7 @@ public class CoreService {
 						}
 					}
 					app.addGroup(group);
-					app.getTableGroup().put(group.getTableId(), group);
+//					app.getTableGroup().put(group.getTableId(), group);
 					app.refresh();// 更新UI
 					return JSONUtils.renderJSONString(JSONUtils.SUCCESS, group);
 				}
@@ -278,7 +278,7 @@ public class CoreService {
 				}
 			}
 			app.addGroup(group);
-			app.getTableGroup().put(group.getTableId(), group);
+//			app.getTableGroup().put(group.getTableId(), group);
 			app.refresh();// 更新UI
 			String result = JSONUtils.renderJSONString(0, group);//更新消息发往pad端
 			sendResponse(result,Application.getInstance().getClientChannelByGroup(group.getId()));

@@ -17,7 +17,9 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import cn.com.incito.wisdom.sdk.log.WLog;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -30,6 +32,8 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.util.Log;
+import cn.com.incito.classroom.utils.ApiClient;
+import cn.com.incito.wisdom.sdk.log.WLog;
 
 /**
  * 日志服务，日志默认会存储在SDcar里如果没有SDcard会存储在内存中的安装目录下面。 1.本服务默认在SDcard中每天生成一个日志文件,
@@ -87,6 +91,7 @@ public class LogService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+
 		init();
 		register();
 		deploySwitchLogFileTask();
@@ -669,6 +674,7 @@ public class LogService extends Service {
 				writer.write("\n");
 				writer.flush();
 			} catch (IOException e) {
+				ApiClient.uploadErrorLog(e.getMessage());
 				e.printStackTrace();
 				Log.e(TAG, e.getMessage(), e);
 			}
@@ -717,17 +723,19 @@ public class LogService extends Service {
 				InputStreamReader isr = new InputStreamReader(is);
 				BufferedReader br = new BufferedReader(isr);
 				String line = null;
-				while ((line = br.readLine()) != null&&!"".equals(line = br.readLine())) {
+				while ((line = br.readLine()) != null) {
 					if (list != null) {
 						list.add(line);
 					}
 				}
 			} catch (IOException ioe) {
+				ApiClient.uploadErrorLog(ioe.getMessage());
 				ioe.printStackTrace();
 			} finally {
 				try {
 					is.close();
 				} catch (IOException e) {
+					ApiClient.uploadErrorLog(e.getMessage());
 					e.printStackTrace();
 				}
 			}
