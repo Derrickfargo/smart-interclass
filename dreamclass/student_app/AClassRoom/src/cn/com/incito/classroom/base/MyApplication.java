@@ -116,6 +116,7 @@ public class MyApplication extends Application {
 		// closeSysScreenLock();
 		AppUncaughtException appException = AppUncaughtException.getInstance();
 		appException.init(this);
+		Thread.setDefaultUncaughtExceptionHandler(appException);
 		PowerManager pmManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
 		WifiManager manager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 		mWifiLock = manager.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, "cn.com.incito.classroom");
