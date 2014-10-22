@@ -259,51 +259,6 @@ public class ApiClient {
 		}
 	}
 	
-	/**
-	 * 判断设备是否已绑定
-	 * @param imei
-	 * @param roomId
-	 * @return
-	 * @throws AppException
-	 */
-	public static String isDeviceBind(String imei, int roomId) throws AppException{
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("imei", imei);
-		params.put("roomId", roomId);
-		try {
-			return _post(URLs.URL_DEVICE_HAS_BIND, params, null);
-		} catch (Exception e) {
-			if (e instanceof AppException)
-				throw (AppException) e;
-			throw AppException.network(e);
-		}
-	}
-	
-	/**
-	 * 设备绑定
-	 * @param imei
-	 * @param number
-	 * @param roomId
-	 * @return
-	 * @throws AppException
-	 */
-	public static String deviceBind(String imei, int number) throws AppException{
-		Application app = Application.getInstance();
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("imei", imei);
-		params.put("number", number);
-		params.put("roomId", app.getRoom().getId());
-		params.put("teacherId", app.getTeacher().getId());
-		params.put("courseId", app.getCourse().getId());
-		params.put("classId", app.getClasses().getId());
-		try {
-			return _post(URLs.URL_DEVICE_BIND, params, null);
-		} catch (Exception e) {
-			if (e instanceof AppException)
-				throw (AppException) e;
-			throw AppException.network(e);
-		}
-	}
 	
 	/**
 	 * 获得分组列表

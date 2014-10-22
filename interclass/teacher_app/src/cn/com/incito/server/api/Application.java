@@ -21,7 +21,6 @@ import cn.com.incito.interclass.po.Course;
 import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Quiz;
-import cn.com.incito.interclass.po.Room;
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.po.Table;
 import cn.com.incito.interclass.po.Teacher;
@@ -54,7 +53,6 @@ public class Application {
 	 */
 	private String lessionid;
 	private String mac;//当前登录的mac地址
-    private Room room;// 当前上课的教室，教师登陆完后初始化
     private Teacher teacher;// 当前登录的老师，教师登陆完后初始化
     private Course course;// 当前上课的课程，教师登陆完后初始化
     private Classes classes;// 当前上课的班级，教师登陆完后初始化
@@ -424,14 +422,6 @@ public class Application {
 
     public void setGroupList(List<Group> groupList) {
         this.groupList = groupList;
-    }
-
-    public Room getRoom() {
-        return room;
-    }
-
-    public void setRoom(Room room) {
-        this.room = room;
     }
 
     public Classes getClasses() {

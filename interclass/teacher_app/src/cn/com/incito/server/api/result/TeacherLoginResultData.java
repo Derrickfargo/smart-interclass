@@ -4,12 +4,10 @@ import java.util.List;
 
 import cn.com.incito.interclass.po.Classes;
 import cn.com.incito.interclass.po.Course;
-import cn.com.incito.interclass.po.Room;
 import cn.com.incito.interclass.po.Teacher;
 
 public class TeacherLoginResultData implements IApiResultData {
 	private Teacher teacher;
-	private Room room;
 	private List<Course> courses;
 	private List<Classes> classes;
 
@@ -19,14 +17,6 @@ public class TeacherLoginResultData implements IApiResultData {
 
 	public void setTeacher(Teacher teacher) {
 		this.teacher = teacher;
-	}
-
-	public Room getRoom() {
-		return room;
-	}
-
-	public void setRoom(Room room) {
-		this.room = room;
 	}
 
 	public List<Course> getCourses() {
