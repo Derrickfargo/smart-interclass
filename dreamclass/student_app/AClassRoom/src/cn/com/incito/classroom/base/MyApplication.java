@@ -21,10 +21,11 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.util.Log;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.exception.AppUncaughtException;
+import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.classroom.vo.LoginResVo;
-import cn.com.incito.socket.handler.LockScreenHandler;
 import cn.com.incito.wisdom.sdk.cache.disk.impl.TotalSizeLimitedDiscCache;
 import cn.com.incito.wisdom.sdk.cache.disk.naming.Md5FileNameGenerator;
 import cn.com.incito.wisdom.sdk.cache.mem.AbstractMemoryCache;
@@ -33,19 +34,20 @@ import cn.com.incito.wisdom.sdk.image.loader.ImageLoaderConfiguration;
 import cn.com.incito.wisdom.sdk.image.loader.assist.LRULimitedMemoryCacheBitmapCache;
 import cn.com.incito.wisdom.sdk.image.loader.assist.LRUMemoryCacheBitmapCache;
 import cn.com.incito.wisdom.sdk.image.loader.assist.QueueProcessingType;
-import cn.com.incito.wisdom.sdk.log.WLog;
 import cn.com.incito.wisdom.sdk.net.download.BaseImageDownloader;
 import cn.com.incito.wisdom.sdk.net.download.SlowNetworkImageDownloader;
 import cn.com.incito.wisdom.sdk.openudid.OpenUDIDManager;
 import cn.com.incito.wisdom.sdk.utils.StorageUtils;
 
+import com.google.code.microlog4android.Logger;
+import com.google.code.microlog4android.LoggerFactory;
 import com.umeng.analytics.MobclickAgent;
 
 /**
  * 应用 appication（缓存各类数据） Created by popoy on 2014/7/28.
  */
 public class MyApplication extends Application {
-
+	public static final Logger Logger = LoggerFactory.getLogger();
 	public boolean isOnClass;// 是否在上课
 
 	public boolean isOnClass() {
@@ -178,12 +180,8 @@ public class MyApplication extends Application {
 		//启动socket和日志服务
 		Intent service = new Intent("cn.com.incito.classroom.service.SOCKET_SERVICE");
 		startService(service);
-		WLog.i(MyApplication.class, "socket service started");
-		if (Constants.LOG_OPEN) {
-			Intent logservice = new Intent("cn.com.incito.classroom.service.LOG_SERVICE");
-			startService(logservice);
-			WLog.i(MyApplication.class, "log service started");
-		}
+		Logger.debug(Utils.getTime()+"MyApplication:"+"socket service started");
+		Log.i("MyApplication", "socket service started");
 
 	}
 
@@ -243,7 +241,8 @@ public class MyApplication extends Application {
 		boolean screenOn = pm.isScreenOn();
 		
 		if (Constants.OPEN_LOCK_SCREEN) {
-			WLog.i(LockScreenHandler.class, "是否收到解锁屏信息：" + isLock);
+			Logger.debug(Utils.getTime()+"LockScreenHandler:"+"是否收到解锁屏信息：" + isLock);
+			Log.i("LockScreenHandler", "是否收到解锁屏信息：" + isLock);
 
 			ContentResolver mContentResolver = this.getApplicationContext()
 					.getContentResolver();
@@ -284,7 +283,7 @@ public class MyApplication extends Application {
 	public void onTerminate() {
 		super.onTerminate();
 		sendBroadcast(new Intent("android.intent.action.SHOW_NAVIGATION_BAR"));
-		WLog.i(MyApplication.class, "广播发出");
+		Log.i("MyApplication", "广播发出");
 
 	}
 }

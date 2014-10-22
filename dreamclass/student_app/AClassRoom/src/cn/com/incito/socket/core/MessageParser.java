@@ -5,9 +5,13 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 
+import android.util.Log;
 import cn.com.incito.classroom.utils.ApiClient;
+import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.socket.utils.BufferUtils;
-import cn.com.incito.wisdom.sdk.log.WLog;
+
+import com.google.code.microlog4android.Logger;
+import com.google.code.microlog4android.LoggerFactory;
 
 /**
  * 消息解析器
@@ -15,7 +19,7 @@ import cn.com.incito.wisdom.sdk.log.WLog;
  * @author 刘世平
  */
 public class MessageParser {
-
+	public static final Logger Logger = LoggerFactory.getLogger();
     /**
      * fake id长度为两个字节
      */
@@ -51,11 +55,13 @@ public class MessageParser {
             }
         } catch (IOException e) {
         	ApiClient.uploadErrorLog(e.getMessage());
-            WLog.e(MessageParser.class, "获取MessageHandler出错:" + e.getMessage());
+        	Logger.debug(Utils.getTime()+"获取MessageHandler出错:" + e.getMessage());
+            Log.e("MessageParser", "获取MessageHandler出错:" + e.getMessage());
             return;
         }
         headerBuffer.flip();
-        WLog.i(MessageParser.class, "开始解析消息...");
+        Logger.debug(Utils.getTime()+"开始解析消息...");
+        Log.i("MessageParser", "开始解析消息...");
         // 消息头fakeId是否正确
         if (parseFakeId(headerBuffer)) {
             // 获取消息头中有用的信息,msgId,msgSize
@@ -88,17 +94,20 @@ public class MessageParser {
         } catch (NumberFormatException ex) {
         	ApiClient.uploadErrorLog(ex.getMessage());
             ex.printStackTrace();
-            WLog.e(MessageParser.class, "ilegal Number parser");
+            Logger.debug(Utils.getTime()+"MessageParser:"+"ilegal Number parser");
+            Log.e("MessageParser", "ilegal Number parser");
             return false;
         } catch (Exception e) {
         	ApiClient.uploadErrorLog(e.getMessage());
-            WLog.e(MessageParser.class, "unknow fake Id parser failed");
+        	Logger.debug(Utils.getTime()+"MessageParser:"+"unknow fake Id parser failed");
+            Log.e("MessageParser", "unknow fake Id parser failed");
             return false;
         }
 
         // 如果消息的fakeId与定义的fakeId值不符，则丢弃掉该条消息
         if (Message.MESSAGE_FAKE_ID != fakeId) {
-            WLog.e(MessageParser.class, "unknow fake Id parser failed");
+        	Logger.debug(Utils.getTime()+"MessageParser:"+"unknow fake Id parser failed");
+            Log.e("MessageParser", "unknow fake Id parser failed");
             return false;
         }
         return true;
@@ -133,7 +142,8 @@ public class MessageParser {
             return true;
         } catch (IOException e) {
         	ApiClient.uploadErrorLog(e.getMessage());
-            WLog.e(MessageParser.class, "failed to fetch message body :", e);
+        	Logger.debug(Utils.getTime()+"MessageParser:"+"failed to fetch message body :"+e);
+            Log.e("MessageParser", "failed to fetch message body :", e);
             return false;
         }
     }

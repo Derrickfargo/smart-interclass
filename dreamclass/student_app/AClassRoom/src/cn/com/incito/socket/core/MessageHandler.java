@@ -3,14 +3,9 @@ package cn.com.incito.socket.core;
 import java.nio.ByteBuffer;
 
 import cn.com.incito.socket.utils.BufferUtils;
-import cn.com.incito.wisdom.sdk.log.WLog;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.google.code.microlog4android.Logger;
-import com.google.code.microlog4android.LoggerFactory;
-import com.google.code.microlog4android.appender.FileAppender;
-import com.google.code.microlog4android.config.PropertyConfigurator;
 
 
 /**
@@ -39,13 +34,11 @@ public abstract class MessageHandler {
 		buffer.get(intSize);
 		int jsonLength = Integer.parseInt(BufferUtils.decodeIntLittleEndian(
 				intSize, 0, intSize.length) + "");
-		WLog.d(MessageHandler.class, "消息体大小：" + jsonLength);
 		byte[] jsonByte = new byte[jsonLength];
 		buffer.get(jsonByte);
 		
 		String json = BufferUtils.readUTFString(jsonByte);
 		data = JSON.parseObject(json);
-		WLog.d(MessageHandler.class, "消息内容：" + data);
 		handleMessage();
 	}
 

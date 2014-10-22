@@ -37,7 +37,6 @@ import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
-import cn.com.incito.wisdom.sdk.log.WLog;
 import cn.com.incito.wisdom.uicomp.widget.dialog.ProgressiveDialog;
 
 import com.alibaba.fastjson.JSON;

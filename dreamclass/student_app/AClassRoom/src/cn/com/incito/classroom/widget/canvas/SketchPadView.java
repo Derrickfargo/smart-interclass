@@ -1,24 +1,21 @@
 package cn.com.incito.classroom.widget.canvas;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-import cn.com.incito.classroom.R;
-import cn.com.incito.classroom.constants.Constants;
-import cn.com.incito.classroom.utils.BitmapUtil;
-import cn.com.incito.wisdom.sdk.log.WLog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import cn.com.incito.classroom.R;
+import cn.com.incito.classroom.constants.Constants;
+import cn.com.incito.classroom.utils.BitmapUtil;
 
 /**
  * The SketchPadView class provides method to draw strokes on it like as a
@@ -381,16 +378,9 @@ public class SketchPadView extends View implements IUndoCommand {
 			}else if(m_bkBitmap.getWidth()<1280&&m_bkBitmap.getHeight()>800){
 				m_bkBitmap=BitmapUtil.zoomImage(m_bkBitmap, m_bkBitmap.getWidth(), zoomHeigh);
 			}
-			WLog.i(SketchPadView.class, "图片高度："+m_bkBitmap.getHeight()+"图片宽度:"+m_bkBitmap.getWidth());
 			canvas.drawBitmap(m_bkBitmap, 0, 0, null);
 		}
 		// Draw background bitmap.
-//		if (null != m_bkBitmap) {
-//			Rect dst = new Rect(getLeft(), getTop(), m_bkBitmap.getWidth(), m_bkBitmap.getHeight());
-//			Rect rst = new Rect(0, 0, m_bkBitmap.getWidth(), m_bkBitmap.getHeight());
-//			canvas.drawBitmap(m_bkBitmap, rst, dst, m_bitmapPaint);
-//		}
-		//
 		if (null != m_foreBitmap) {
 			canvas.drawBitmap(m_foreBitmap, 0, 0, m_bitmapPaint);
 		}

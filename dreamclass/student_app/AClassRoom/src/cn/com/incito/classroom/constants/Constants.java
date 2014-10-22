@@ -11,7 +11,6 @@ import cn.com.incito.classroom.widget.canvas.ISketchPadTool;
  * 常量文件 Created by popoy on 2014/7/28.
  */
 public class Constants {
-	public static final boolean LOG_OPEN = false;
 	public static final boolean OPEN_LOCK_SCREEN = false;// 是否打开锁屏功能
 	public static final int PORT = 9001;// pc端口号（socket）
 	public static String IP = "192.168.10.100";//pc端地址

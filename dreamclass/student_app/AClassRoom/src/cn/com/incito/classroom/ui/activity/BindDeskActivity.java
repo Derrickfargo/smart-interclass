@@ -3,25 +3,20 @@ package cn.com.incito.classroom.ui.activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.Gravity;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.adapter.DeskNumberAdapter;
-import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.ui.widget.MyAlertDialog;
-import cn.com.incito.classroom.vo.LoginResVo;
+import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.CoreSocket;
@@ -29,9 +24,7 @@ import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
-import cn.com.incito.wisdom.sdk.log.WLog;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 /**
@@ -107,7 +100,8 @@ public class BindDeskActivity extends BaseActivity {
 				MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_BIND);
 				messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
 				CoreSocket.getInstance().sendMessage(messagePacking);
-				WLog.i(BindDeskActivity.class, "启动课桌绑定..." + "request:" + jsonObject.toJSONString());
+				Logger.debug(Utils.getTime()+"BindDeskActivity:"+"启动课桌绑定..." + "request:" + jsonObject.toJSONString());
+				Log.i("BindDeskActivity:", "启动课桌绑定..." + "request:" + jsonObject.toJSONString());
 			}
 
 		});

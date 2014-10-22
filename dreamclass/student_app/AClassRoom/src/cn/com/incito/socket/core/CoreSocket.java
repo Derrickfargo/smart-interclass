@@ -12,12 +12,14 @@ import android.util.Log;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.utils.ApiClient;
+import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
-import cn.com.incito.wisdom.sdk.log.WLog;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.code.microlog4android.Logger;
+import com.google.code.microlog4android.LoggerFactory;
 
 /**
  * 客户端Socket
@@ -25,6 +27,7 @@ import com.alibaba.fastjson.JSONObject;
  * @author 刘世平
  */
 public final class CoreSocket implements Runnable {
+	public static final Logger Logger = LoggerFactory.getLogger();
 	private static CoreSocket instance = null;
 	private boolean isRunning = false;
 	private boolean isConnected = false;
@@ -108,7 +111,8 @@ public final class CoreSocket implements Runnable {
 					}
 				} catch (IOException e) {
 					ApiClient.uploadErrorLog(e.getMessage());
-					WLog.e(CoreSocket.class, "" + e.getMessage());
+					Logger.debug(Utils.getTime()+"异常信息：" + e.getMessage());
+					Log.e("CoreSocket", "" + e.getMessage());
 				}
 			}
 		}.start();
@@ -134,7 +138,8 @@ public final class CoreSocket implements Runnable {
 						}
 					} catch (IOException e) {
 						ApiClient.uploadErrorLog(e.getMessage());
-						WLog.e(CoreSocket.class, "" + e.getMessage());
+						Logger.debug(Utils.getTime()+"异常信息：" + e.getMessage());
+						Log.e("CoreSocket", "" + e.getMessage());
 					}
 				}
 			}
@@ -157,9 +162,11 @@ public final class CoreSocket implements Runnable {
 			if (MyApplication.deviceId == null
 					|| MyApplication.deviceId.equals("")) {
 				//没有mac地址,不允许建立连接
+				Logger.debug(Utils.getTime()+"CoreSocket：" +"连接建立失败，没有mac地址");
 				Log.i("CoreSocket", "连接建立失败，没有mac地址");
 				return;
 			}
+			Logger.debug(Utils.getTime()+"CoreSocket：" +"CoreSocket开始建立连接");
 			Log.i("CoreSocket", "有mac地址，CoreSocket开始建立连接 ");
 			isRunning = true;
 			// 客户端向服务器端发起建立连接请求
@@ -177,10 +184,12 @@ public final class CoreSocket implements Runnable {
 				}
 				keySet.clear();
 			}
-			WLog.i(CoreSocket.class, "CoreSocket退出!");
+			Logger.debug(Utils.getTime()+"CoreSocket退出!");
+			Log.i("CoreSocket", "CoreSocket退出!");
 		} catch (IOException e) {
 			ApiClient.uploadErrorLog(e.getMessage());
-			WLog.e(CoreSocket.class, "" + e.getMessage());
+			Logger.debug(Utils.getTime()+"异常信息：" + e.getMessage());
+			Log.e("CoreSocket", "" + e.getMessage());
 		}
 	}
 

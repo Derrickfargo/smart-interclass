@@ -1,11 +1,7 @@
 package cn.com.incito.classroom.ui.activity;
 
-import com.alibaba.fastjson.JSONObject;
-
-import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
@@ -13,25 +9,25 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.AdapterView.OnItemClickListener;
 import cn.com.incito.classroom.R;
+import cn.com.incito.classroom.adapter.HorizontalListViewAdapter;
+import cn.com.incito.classroom.adapter.HorizontalListViewAdapter.ViewHolder;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.ui.widget.HorizontalListView;
 import cn.com.incito.classroom.utils.Utils;
-import cn.com.incito.classroom.adapter.HorizontalListViewAdapter;
-import cn.com.incito.classroom.adapter.HorizontalListViewAdapter.ViewHolder;
 import cn.com.incito.common.utils.ToastHelper;
-import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
-import cn.com.incito.wisdom.sdk.log.WLog;
+
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * 修改分组信息activity Created by liguangming on 2014/7/28.

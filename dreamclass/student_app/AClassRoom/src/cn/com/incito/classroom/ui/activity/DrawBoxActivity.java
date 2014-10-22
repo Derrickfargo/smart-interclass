@@ -2,33 +2,13 @@ package cn.com.incito.classroom.ui.activity;
 
 import java.io.ByteArrayOutputStream;
 
-import cn.com.incito.classroom.R;
-import cn.com.incito.classroom.base.BaseActivity;
-import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.classroom.constants.Constants;
-import cn.com.incito.classroom.utils.BitmapUtil;
-import cn.com.incito.classroom.utils.Utils;
-import cn.com.incito.classroom.widget.canvas.ISketchPadCallback;
-import cn.com.incito.classroom.widget.canvas.SketchPadView;
-import cn.com.incito.common.utils.UIHelper;
-import cn.com.incito.socket.core.CoreSocket;
-import cn.com.incito.socket.core.Message;
-import cn.com.incito.socket.handler.DistributePaperHandler;
-import cn.com.incito.socket.message.DataType;
-import cn.com.incito.socket.message.MessagePacking;
-import cn.com.incito.socket.utils.BufferUtils;
-import cn.com.incito.wisdom.sdk.log.WLog;
-import cn.com.incito.wisdom.sdk.utils.BitmapUtils;
 import android.app.AlertDialog;
-import android.app.ExecRootCmd;
-import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -46,6 +26,21 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import cn.com.incito.classroom.R;
+import cn.com.incito.classroom.base.BaseActivity;
+import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.classroom.constants.Constants;
+import cn.com.incito.classroom.utils.BitmapUtil;
+import cn.com.incito.classroom.utils.Utils;
+import cn.com.incito.classroom.widget.canvas.ISketchPadCallback;
+import cn.com.incito.classroom.widget.canvas.SketchPadView;
+import cn.com.incito.common.utils.UIHelper;
+import cn.com.incito.socket.core.CoreSocket;
+import cn.com.incito.socket.core.Message;
+import cn.com.incito.socket.message.DataType;
+import cn.com.incito.socket.message.MessagePacking;
+import cn.com.incito.socket.utils.BufferUtils;
+import cn.com.incito.wisdom.sdk.utils.BitmapUtils;
 
 /**
  * 绘画板activity Created by liguangming on 2014/7/28.
