@@ -127,6 +127,20 @@ public class Login2 extends MouseAdapter {
                 e.consume();
             }
         });
+		txtClassNumber.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				String value = txtClassNumber.getText();
+				try {
+					int classNumber = Integer.parseInt(value);
+					if (classNumber > 99) {
+						txtClassNumber.setText("");
+					}
+				} catch (Exception ex) {
+					txtClassNumber.setText("");
+				}
+			}
+		});
 		txtClassNumber.setBounds(280, 65, 80, 35);
 		frame.add(txtClassNumber);
 		JLabel lblClassLabel = new JLabel("班");
@@ -171,6 +185,7 @@ public class Login2 extends MouseAdapter {
 			Item item = new Item(course.getId(), course.getName());
 			jcbCourse.addItem(item);
 		}
+		jcbCourse.setMaximumRowCount(7);
 		for (int i = 1; i <= 9; i++) {
 			Item item = new Item(i, i + "年级");
 			jcbClass.addItem(item);
