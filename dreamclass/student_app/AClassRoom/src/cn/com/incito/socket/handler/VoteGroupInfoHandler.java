@@ -1,19 +1,22 @@
 package cn.com.incito.socket.handler;
 
-import com.alibaba.fastjson.JSONObject;
-import com.google.gson.JsonObject;
-
+import android.util.Log;
 import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;
-import cn.com.incito.wisdom.sdk.log.WLog;
+
+import com.alibaba.fastjson.JSONObject;
+import com.google.code.microlog4android.Logger;
+import com.google.code.microlog4android.LoggerFactory;
 
 /**
  * 分组投票处理hanlder
  * Created by liushiping on 2014/7/28.
  */
 public class VoteGroupInfoHandler extends MessageHandler {
-
+	private static final String TAG=DeviceBindHandler.class.getSimpleName();
+	public static final Logger Logger = LoggerFactory.getLogger();
     @Override
     protected void handleMessage() {
         int groupID = -1;
@@ -36,7 +39,8 @@ public class VoteGroupInfoHandler extends MessageHandler {
             if (json.containsKey("masterimei"))
                 masterImei = json.getString("masterimei");
             if (agree) {
-            	WLog.i(VoteGroupInfoHandler.class, "同意分组");
+            	Logger.debug(Utils.getTime()+TAG+":同意分组");
+            	Log.i(TAG, "同意分组");
                 //show bind activity
                 UIHelper.getInstance().showWaitingActivity();
                 if(MyApplication.getInstance().isOnClass){
@@ -45,7 +49,8 @@ public class VoteGroupInfoHandler extends MessageHandler {
             } else {
                 //show edit group activity
                 UIHelper.getInstance().showEditGroupActivity(groupID);
-                WLog.i(VoteGroupInfoHandler.class, "不同意分组");
+                Logger.debug(Utils.getTime()+TAG+":不同意分组");
+                Log.i(TAG, "不同意分组");
             }
         }
     }

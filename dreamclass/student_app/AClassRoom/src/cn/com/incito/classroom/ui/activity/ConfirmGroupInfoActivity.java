@@ -9,6 +9,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -36,7 +37,7 @@ import cn.com.incito.wisdom.sdk.log.WLog;
  */
 public class ConfirmGroupInfoActivity extends BaseActivity implements
 		View.OnClickListener {
-
+	public static final String TAG=ConfirmGroupInfoActivity.class.getSimpleName();
 	private ImageButton mBtnDisagree;
 	private ImageButton mBtnAgree;
 	private ImageView mGroupIcon;
@@ -93,8 +94,8 @@ public class ConfirmGroupInfoActivity extends BaseActivity implements
 		messagePacking.putBodyData(DataType.INT,
 				BufferUtils.writeUTFString(json.toJSONString()));
 		CoreSocket.getInstance().sendMessage(messagePacking);
-		WLog.i(ConfirmGroupInfoActivity.class,
-				"启动分组确认..." + "request:" + json.toJSONString());
+		Logger.debug(Utils.getTime()+TAG+":启动分组确认..." + "request:" + json.toJSONString());
+		Log.i(TAG,"启动分组确认..." + "request:" + json.toJSONString());
 		if (id == R.id.btn_agree) {
 			mWaitingStudentTip.setText(R.string.waiting_other_confirm_tip);
 		}

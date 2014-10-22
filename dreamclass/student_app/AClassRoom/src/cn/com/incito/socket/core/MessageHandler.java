@@ -7,6 +7,10 @@ import cn.com.incito.wisdom.sdk.log.WLog;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.google.code.microlog4android.Logger;
+import com.google.code.microlog4android.LoggerFactory;
+import com.google.code.microlog4android.appender.FileAppender;
+import com.google.code.microlog4android.config.PropertyConfigurator;
 
 
 /**
@@ -16,7 +20,6 @@ import com.alibaba.fastjson.JSONObject;
  * @author 刘世平
  */
 public abstract class MessageHandler {
-	
 	protected Message message;
 	protected JSONObject data;
 	

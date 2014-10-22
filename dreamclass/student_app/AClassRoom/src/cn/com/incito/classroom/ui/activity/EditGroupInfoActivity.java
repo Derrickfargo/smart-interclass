@@ -21,6 +21,7 @@ import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.ui.widget.HorizontalListView;
+import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.classroom.adapter.HorizontalListViewAdapter;
 import cn.com.incito.classroom.adapter.HorizontalListViewAdapter.ViewHolder;
 import cn.com.incito.common.utils.ToastHelper;
@@ -37,7 +38,7 @@ import cn.com.incito.wisdom.sdk.log.WLog;
  */
 public class EditGroupInfoActivity extends BaseActivity implements
 		View.OnClickListener {
-
+	private static final String TAG=EditGroupInfoActivity.class.getSimpleName();
 	private HorizontalListView mListView;
 	private HorizontalListViewAdapter mListViewAdapter;
 
@@ -140,7 +141,8 @@ public class EditGroupInfoActivity extends BaseActivity implements
 							BufferUtils.writeUTFString(json.toJSONString()));
 					CoreSocket.getInstance().sendMessage(messagePacking);
 					this.finish();
-					WLog.i(EditGroupInfoActivity.class, "启动修改分组..."+"request:"+json.toJSONString());
+					Logger.debug(Utils.getTime()+TAG+":启动修改分组..."+"request:"+json.toJSONString());
+					Log.i(TAG, "启动修改分组..."+"request:"+json.toJSONString());
 				}
 			}
 			break;

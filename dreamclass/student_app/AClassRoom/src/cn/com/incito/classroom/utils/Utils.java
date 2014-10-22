@@ -1,6 +1,8 @@
 package cn.com.incito.classroom.utils;
 
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.Random;
 import java.util.regex.Matcher;
@@ -138,5 +140,14 @@ public class Utils {
 	 */
 	public static boolean isNumberOrChinese(String str){
 		return Pattern.compile("[\u4e00-\u9fa5_a-zA-Z]*?").matcher(str).matches();
+	}
+	
+	/**
+	 * @return 获得当前格式化后的日期
+	 */
+	public static String getTime(){
+		Date d = new Date();  
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+       return  sdf.format(d)+"---";  
 	}
 }

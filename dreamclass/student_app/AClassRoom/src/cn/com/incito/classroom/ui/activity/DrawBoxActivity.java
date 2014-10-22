@@ -7,6 +7,7 @@ import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.utils.BitmapUtil;
+import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.classroom.widget.canvas.ISketchPadCallback;
 import cn.com.incito.classroom.widget.canvas.SketchPadView;
 import cn.com.incito.common.utils.UIHelper;
@@ -28,6 +29,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -50,7 +52,7 @@ import android.widget.RelativeLayout;
  */
 public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		ISketchPadCallback {
-
+	public static final String TAG=DrawBoxActivity.class.getSimpleName();
 	private ImageView cleanBtn;
 	private ImageButton delAllBtn;
 	private FrameLayout line;
@@ -506,10 +508,12 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		messagePacking.putBodyData(DataType.INT,
 				BitmapUtils.bmpToByteArray(getBitMap(), true));
 		CoreSocket.getInstance().sendMessage(messagePacking);
-		WLog.i(DrawBoxActivity.class, "启动作业提交..."+"request:");
+		Logger.debug(Utils.getTime()+TAG+"启动作业提交...");
+		Log.i(TAG, "启动作业提交...");
 		MyApplication.getInstance().lockScreen(true);
 		MyApplication.getInstance().setSubmitPaper(true);
-		WLog.i(DistributePaperHandler.class, "提交作业后锁定屏幕" );
+		Logger.debug(Utils.getTime()+TAG+"提交作业后锁定屏幕");
+		Log.i(TAG, "提交作业后锁定屏幕" );
 		this.finish();
 	}
 	public void initPopwindow(){

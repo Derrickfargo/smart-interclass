@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,20 +15,22 @@ import android.widget.ImageButton;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
+import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
-import cn.com.incito.wisdom.sdk.log.WLog;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.code.microlog4android.Logger;
+import com.google.code.microlog4android.LoggerFactory;
 
 public class IpSettingDialogFragment extends DialogFragment {
 	private EditText editIP;
 	ImageButton buttonAgree;
-
+	public static final Logger Logger = LoggerFactory.getLogger();
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -84,8 +87,8 @@ public class IpSettingDialogFragment extends DialogFragment {
 		messagePacking.putBodyData(DataType.INT,
 				BufferUtils.writeUTFString(jsonObject.toJSONString()));
 		CoreSocket.getInstance().sendMessage(messagePacking);
-		WLog.i(SplashActivity.class,
-				"开始判定设备是否绑定..." + "request:" + jsonObject.toJSONString());
+		Logger.debug(Utils.getTime()+"SplashActivity"+":开始判定设备是否绑定..." + "request:" + jsonObject.toJSONString());
+		Log.i("SplashActivity","开始判定设备是否绑定..." + "request:" + jsonObject.toJSONString());
 	}
 
 }

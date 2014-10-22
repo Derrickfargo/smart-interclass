@@ -272,21 +272,13 @@ public class ApiClient {
 	 * @throws IOException 
 	 */
 	public static void uploadErrorLog(String reason)  {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");// 日志名称格式
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("type", 2);
 		params.put("mac", MyApplication.deviceId == null ? "" : MyApplication.deviceId);
 		params.put("reason", reason);
 		Map<String, File> files = new HashMap<String, File>();
-		File logFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "MyApp" + File.separator + "log" + File.separator + sdf.format(new Date()) + ".log");
-		 	try {
-				copyFile(logFile, new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "MyApp" + File.separator + "log" + File.separator + "2014-1-1" + ".log"));
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-		 	File mlogFile=new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "MyApp" + File.separator + "log" + File.separator + "2014-1-1" + ".log");
-			files.put("file", mlogFile);
-
+		File logFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "microlog"+ ".txt");
+		files.put("file", logFile);
 		try {
 			 String SERVER_IP=MyApplication.getInstance().getSharedPreferences().getString("server_ip", "");
 			 String SERVER_PORT=MyApplication.getInstance().getSharedPreferences().getString("server_port", "");

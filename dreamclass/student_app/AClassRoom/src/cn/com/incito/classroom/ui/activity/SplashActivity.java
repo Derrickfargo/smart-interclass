@@ -29,28 +29,24 @@ import cn.com.incito.classroom.exception.AppException;
 import cn.com.incito.classroom.ui.widget.NetWorkDialog;
 import cn.com.incito.classroom.utils.ApiClient;
 import cn.com.incito.classroom.utils.UpdateManager;
+import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.classroom.vo.Version;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
-import cn.com.incito.wisdom.sdk.log.WLog;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baidu.navisdk.util.common.StringUtils;
-import com.google.code.microlog4android.Logger;
-import com.google.code.microlog4android.LoggerFactory;
-import com.google.code.microlog4android.appender.FileAppender;
-import com.google.code.microlog4android.config.PropertyConfigurator;
 
 /**
  * 用户其启动界面时候的一个启动页面完成一些初始化工作 Created by popoy on 2014/7/28.
  */
 
 public class SplashActivity extends BaseActivity {
-
+	
 	private TextView tv_loading_msg;
 
 	private ImageButton ib_setting_ip;
@@ -63,10 +59,12 @@ public class SplashActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		final View view = View.inflate(this, R.layout.splash, null);
+		
 		setContentView(view);
+		
 		try {
 			PackageManager pm = getPackageManager();
-			PackageInfo info = pm.getPackageInfo("cn.com.incito.classroom", 0);
+			PackageInfo info = pm.getPackageInfo("xxxx", 0);
 			code = info.versionCode;
 		} catch (NameNotFoundException e) {
 			ApiClient.uploadErrorLog(e.getMessage());
@@ -124,19 +122,23 @@ public class SplashActivity extends BaseActivity {
 						WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 						WifiInfo info = wifi.getConnectionInfo();
 						app.setDeviceId(info.getMacAddress().replace(":", "-"));
+						Logger.debug(Utils.getTime()+"SplashActivity:"+"WiFi已连接，检查Socket是否连接 ");
 						Log.i("SplashActivity", "WiFi已连接，检查Socket是否连接 ");
 						if (!CoreSocket.getInstance().isConnected()) {
+							Logger.debug("SplashActivity:"+"Socket无连接，开始Socket重连，startMain退出");
 							Log.i("SplashActivity", "Socket无连接，开始Socket重连，startMain退出 ");
 							CoreSocket.getInstance().disconnect();
 							showSetting();
 							restartConnector();
 							break;
 						} else {
+							Logger.debug(Utils.getTime()+"SplashActivity:"+"Socket已连接，开始登陆，startMain退出");
 							Log.i("SplashActivity", "Socket已连接，开始登陆，startMain退出 ");
 							startMainAct();
 						}
 						break;
 					}
+					Logger.debug(Utils.getTime()+"SplashActivity:"+"WiFi未连接");
 					Log.i("SplashActivity", "WiFi未连接 ");
 					android.os.Message message1 = new android.os.Message();
 					message1.what = 1;
@@ -207,7 +209,8 @@ public class SplashActivity extends BaseActivity {
 			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_HAS_BIND);
 			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
 			CoreSocket.getInstance().sendMessage(messagePacking);
-			WLog.i(SplashActivity.class, "开始判定设备是否绑定..." + "request:" + jsonObject.toJSONString());
+			Logger.debug(Utils.getTime()+"SplashActivity:"+"开始判定设备是否绑定..." + "request:" + jsonObject.toJSONString());
+			Log.i("SplashActivity", "开始判定设备是否绑定..." + "request:" + jsonObject.toJSONString());
 		}
 	}
 
@@ -219,14 +222,17 @@ public class SplashActivity extends BaseActivity {
 			public void run() {
 				while (Boolean.TRUE) {
 					SplashActivity.this.sleep(3000);
+					Logger.debug(Utils.getTime()+"SplashActivity:"+"Socket开始重连 ");
 					Log.i("SplashActivity", "Socket开始重连 ");
 					CoreSocket.getInstance().restartConnection();
 					SplashActivity.this.sleep(1000);// 等待1秒后检查连接
 					if (!CoreSocket.getInstance().isConnected()) {
+						Logger.debug(Utils.getTime()+"SplashActivity:"+"Socket未连接 ");
 						Log.i("SplashActivity", "Socket未连接 ");
 						CoreSocket.getInstance().disconnect();
 						continue;
 					}
+					Logger.debug(Utils.getTime()+"SplashActivity:"+"Socket已连接 ");
 					Log.i("SplashActivity", "Socket已连接 ");
 					if (dialog != null) {
 						dialog.dismiss();
@@ -269,10 +275,12 @@ public class SplashActivity extends BaseActivity {
 		if (!StringUtils.isEmpty(ip) && !StringUtils.isEmpty(port)) {
 			try {
 				JSONObject updateResult = JSONObject.parseObject(ApiClient.updateApk(code));
-				WLog.i(SplashActivity.class, "版本更新返回信息：" + updateResult);
+				Logger.debug(Utils.getTime()+"SplashActivity:"+"版本更新返回信息：" + updateResult);
+				Log.i("SplashActivity", "版本更新返回信息：" + updateResult);
 				if (updateResult.getInteger("code") == 0) {
 					Version version = JSON.parseObject(updateResult.getJSONObject("data").toJSONString(), Version.class);
 					url=Constants.HTTP+ip+":"+port+Constants.URL_DOWNLOAD_APK+ version.getId();
+					Logger.debug(Utils.getTime()+"SplashActivity:"+"更新地址：" + url);
 					mHandler.sendEmptyMessage(1000);
 					return true;
 				}

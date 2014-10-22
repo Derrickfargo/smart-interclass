@@ -1,5 +1,10 @@
 package cn.com.incito.classroom.base;
 
+import com.google.code.microlog4android.Logger;
+import com.google.code.microlog4android.LoggerFactory;
+import com.google.code.microlog4android.appender.FileAppender;
+import com.google.code.microlog4android.config.PropertyConfigurator;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -16,7 +21,7 @@ import cn.com.incito.classroom.ui.widget.NetWorkDialog;
  * activity基类 Created by popoy on 2014/8/5.
  */
 public class BaseActivity extends FragmentActivity {
-
+	public static final Logger Logger = LoggerFactory.getLogger();
 	protected int mScreenWidth;
 
 	protected int mScreenHeight;
@@ -30,7 +35,10 @@ public class BaseActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		//初始化log日志
+		PropertyConfigurator.getConfigurator(this).configure();
+//		final FileAppender  fa =  (FileAppender) Logger.getAppender(1);   
+//		fa.setAppend(true);
 		AppManager.getAppManager().addActivity(this);
 		onAfterOnCreate(savedInstanceState);
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);

@@ -3,11 +3,15 @@ package cn.com.incito.classroom.base;
 import java.io.File;
 import java.util.Stack;
 
+import com.google.code.microlog4android.Logger;
+import com.google.code.microlog4android.LoggerFactory;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
 import cn.com.incito.classroom.utils.ApiClient;
+import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.socket.core.ConnectionManager;
 import cn.com.incito.socket.core.CoreSocket;
 
@@ -16,7 +20,7 @@ import cn.com.incito.socket.core.CoreSocket;
  * Created by popoy on 2014/7/28.
  */
 public class AppManager {
-
+	public static final Logger Logger = LoggerFactory.getLogger();
     private static Stack<Activity> activityStack;
     private static AppManager instance;
 
@@ -109,10 +113,7 @@ public class AppManager {
             ConnectionManager.getInstance(null).close(true);
             MyApplication.getInstance().stopSocketService();
             android.os.Process.killProcess(android.os.Process.myPid());
-            File mlogFile=new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "MyApp" + File.separator + "log" + File.separator + "2014-1-1" + ".log");
-            if(mlogFile.exists()){
-            	mlogFile.delete();
-            }
+            Logger.debug(Utils.getTime()+"AppManager"+"程序退出");
         } catch (Exception e) {
         	ApiClient.uploadErrorLog(e.getMessage());
         	e.printStackTrace();

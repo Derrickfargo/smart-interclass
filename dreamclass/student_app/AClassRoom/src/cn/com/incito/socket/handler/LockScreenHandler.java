@@ -2,24 +2,23 @@ package cn.com.incito.socket.handler;
 
 import java.nio.ByteBuffer;
 
-import android.provider.Settings;
-import android.app.ExecRootCmd;
-import android.content.ContentResolver;
+import android.util.Log;
 import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.classroom.constants.Constants;
-import cn.com.incito.common.utils.UIHelper;
+import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.core.MessageHandler;
 import cn.com.incito.socket.utils.BufferUtils;
-import cn.com.incito.wisdom.sdk.log.WLog;
+
+import com.google.code.microlog4android.Logger;
+import com.google.code.microlog4android.LoggerFactory;
 
 public class LockScreenHandler extends MessageHandler {
 
 	public final static String TAG = LockScreenHandler.class.getSimpleName();
 
 	private String isLock;
-
+	public static final Logger Logger = LoggerFactory.getLogger();
 	@Override
 	public void handleMessage(Message msg) {
 		ByteBuffer buffer = msg.getBodyBuffer();
@@ -35,7 +34,8 @@ public class LockScreenHandler extends MessageHandler {
 
 	@Override
 	protected void handleMessage() {
-		WLog.i(LockScreenHandler.class,"收到锁屏信息:"+isLock);
+		Logger.debug(Utils.getTime()+TAG+":收到锁屏信息:"+isLock);
+		Log.i(TAG,"收到锁屏信息:"+isLock);
 		if (isLock.equals("true")) {
 				MyApplication.getInstance().setOnClass(true);
 				MyApplication.getInstance().lockScreen(true);
