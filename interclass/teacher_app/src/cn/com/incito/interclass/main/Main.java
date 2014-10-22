@@ -77,7 +77,7 @@ public class Main {
 
 			@Override
 			public void onConnectError(IOException exp) {
-				JOptionPane.showMessageDialog(null, "不能连接到互联网，请检查网络！");
+				JOptionPane.showMessageDialog(null, "不能连接到服务端，请检查网络！");
 				System.exit(0);
 			}
 

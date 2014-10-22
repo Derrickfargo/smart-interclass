@@ -16,12 +16,12 @@ public class Main {
 	public static void main(String[] args) {
 		setLookAndFeel();
 		initGlobalFontSetting();
-//		args = new String[] { "C:\\Users\\JOHN\\Desktop\\互动课堂\\backup\\互动课堂_V100R001C00(3).exe" };
+//		args = new String[] { "\"C:\\Users\\JOHN\\Desktop\\dream class  安装包\\release\\互动课堂PC端V100R001C00\\backup\\互动课堂_V100R001C00(2).exe\"" };
 		if (args.length != 1) {
 			JOptionPane.showMessageDialog(null, "应用程序升级失败，磁盘上未找到最新更新包！");
 			System.exit(0);
 		}
-		String url = args[0];
+		String url = args[0].replace('*', ' ');
 		File source = new File(url);
 		if(!source.exists()){
 			JOptionPane.showMessageDialog(null, "应用程序升级失败，磁盘上未找到最新更新包！");
@@ -38,7 +38,7 @@ public class Main {
 		}
 		Runtime runtime = Runtime.getRuntime();
 		try {
-			runtime.exec(target.getAbsolutePath());
+			runtime.exec("cmd.exe /c"+" " +target.getAbsolutePath().replace(" ", "\" \""));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

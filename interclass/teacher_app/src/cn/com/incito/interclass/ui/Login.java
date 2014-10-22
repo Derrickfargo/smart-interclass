@@ -210,7 +210,7 @@ public class Login extends MouseAdapter {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		
+
 	}
 
 	@Override
@@ -287,6 +287,7 @@ public class Login extends MouseAdapter {
 		// 使用Get方法，取得服务端响应流：
 		AsyncHttpConnection http = AsyncHttpConnection.getInstance();
 		ParamsWrapper params = new ParamsWrapper();
+		params.put("mac", mac);
 		params.put("uname", uname);
 		params.put("password", Md5Utils.md5(password));
 		http.post(URLs.URL_TEACHER_LOGIN, params, new StringResponseHandler() {
@@ -300,9 +301,9 @@ public class Login extends MouseAdapter {
 						return;
 						// 增加当教师端未注册或网络连接错误的提示
 					} else if (jsonObject.getIntValue("code") == 2) {
-//						JOptionPane.showMessageDialog(frame,
-//								"本教室未有效注册或网络连接配置错误!");
-//						logger.info("本教室未有效注册或网络连接配置错误!");
+						JOptionPane.showMessageDialog(frame,
+								"本教室未有效注册或网络连接配置错误!");
+						logger.info("本教室未有效注册或网络连接配置错误!");
 						return;
 					}
 					String data = jsonObject.getString("data");
@@ -311,17 +312,15 @@ public class Login extends MouseAdapter {
 
 					// 第一步获取教室、教师数据
 					if (resultData.getRoom() == null) {
-//						JOptionPane.showMessageDialog(frame, "本教室未有效注册!");
-//						logger.info("本教室未有效注册!");
-//						return;
+						JOptionPane.showMessageDialog(frame, "本教室未有效注册!");
+						logger.info("本教室未有效注册!");
+						return;
 					} else {
-//						frame.setVisible(false);
+						frame.setVisible(false);
 					}
 					Application.getInstance().setRoom(resultData.getRoom());
-					Application.getInstance().setTeacher(
-							resultData.getTeacher());
-					Login2 login2 = new Login2(resultData.getClasses(),
-							resultData.getCourses());
+					Application.getInstance().setTeacher(resultData.getTeacher());
+					Login2 login2 = new Login2(resultData.getCourses());
 					login2.getFrame().setVisible(true);
 					logger.info("登陆返回结果：" + content);
 				}

@@ -316,13 +316,11 @@ public class ApiClient {
 	 * @return
 	 * @throws AppException
 	 */
-	public static String getGroupList(int schoolId, int roomId,int teacherId, int courseId, int classId,
+	public static String getGroupList(int schoolId, int teacherId,  int classId,
 			String className) throws AppException{
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("schoolId", schoolId);
-		params.put("roomId", roomId);
 		params.put("teacherId", teacherId);
-		params.put("courseId", courseId);
 		params.put("classId", classId);
 		params.put("className", className);
 		try {

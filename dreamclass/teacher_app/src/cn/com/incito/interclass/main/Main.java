@@ -29,7 +29,7 @@ import com.alibaba.fastjson.JSONObject;
  * 
  */
 public class Main {
-	public static final int VERSION_CODE = 16;
+	public static final int VERSION_CODE = 17;
 	private static final long FREE_SIZE = 1024 * 1024 * 100;//100M
 	
 	public static void main(String args[]) {
@@ -76,6 +76,7 @@ public class Main {
 					long freeSize = file.getFreeSpace();
 					if (freeSize < FREE_SIZE) {
 						JOptionPane.showMessageDialog(null, "检测到程序需要更新，但磁盘空间不足，无法完成更新，请确保磁盘空余空间100M以上!");
+						System.exit(0);
 						return;
 					}
 					// 获得带升级的版本
