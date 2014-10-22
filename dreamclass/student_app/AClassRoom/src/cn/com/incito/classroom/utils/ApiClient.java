@@ -71,7 +71,7 @@ public class ApiClient {
 		}
 		// 设置 请求超时时间
 		httpGet.getParams().setSoTimeout(TIMEOUT_SOCKET);
-		httpGet.setRequestHeader("Host", Constants.HTTP + Constants.HOST);
+		httpGet.setRequestHeader("Host", Constants.HTTP + "");
 		httpGet.setRequestHeader("Connection", "Keep-Alive");
 		return httpGet;
 	}
@@ -80,7 +80,7 @@ public class ApiClient {
 		PostMethod httpPost = new PostMethod(url);
 		// 设置 请求超时时间
 		// httpPost.getParams().setSoTimeout(TIMEOUT_SOCKET);
-		httpPost.setRequestHeader("Host", Constants.HTTP + Constants.HOST);
+		httpPost.setRequestHeader("Host", Constants.HTTP + "");
 		httpPost.setRequestHeader("Connection", "Keep-Alive");
 		return httpPost;
 	}
@@ -253,7 +253,10 @@ public class ApiClient {
 		params.put("type", 2);
 		params.put("code", code);
 		try {
-			return _post(Constants.URL_UPDATE_APK, params, null);
+			 String SERVER_IP=MyApplication.getInstance().getSharedPreferences().getString("server_ip", "");
+			 String SERVER_PORT=MyApplication.getInstance().getSharedPreferences().getString("server_port", "");
+			 String server_url=SERVER_IP+":" + SERVER_PORT;
+			return _post(Constants.HTTP+server_url+Constants.URL_UPDATE_APK, params, null);
 		} catch (Exception e) {
 			ApiClient.uploadErrorLog(e.getMessage());
 			if (e instanceof AppException)
@@ -285,9 +288,11 @@ public class ApiClient {
 			files.put("file", mlogFile);
 
 		try {
-			if(!StringUtils.isEmpty(Constants.SERVER_IP)&&!StringUtils.isEmpty(Constants.SERVER_PORT))
-			_post(Constants.URL_UPLOAD_LOG, params, files);
-			System.out.println(Constants.URL_UPLOAD_LOG);
+			 String SERVER_IP=MyApplication.getInstance().getSharedPreferences().getString("server_ip", "");
+			 String SERVER_PORT=MyApplication.getInstance().getSharedPreferences().getString("server_port", "");
+			 String server_url=SERVER_IP+":" + SERVER_PORT;
+			if(!StringUtils.isEmpty(SERVER_IP)&&!StringUtils.isEmpty(SERVER_PORT))
+			_post(Constants.HTTP+server_url+Constants.URL_UPLOAD_LOG, params, files);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

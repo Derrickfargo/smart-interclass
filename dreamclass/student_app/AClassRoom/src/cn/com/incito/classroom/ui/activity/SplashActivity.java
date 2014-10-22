@@ -1,5 +1,6 @@
 package cn.com.incito.classroom.ui.activity;
 
+
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -39,6 +40,10 @@ import cn.com.incito.wisdom.sdk.log.WLog;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baidu.navisdk.util.common.StringUtils;
+import com.google.code.microlog4android.Logger;
+import com.google.code.microlog4android.LoggerFactory;
+import com.google.code.microlog4android.appender.FileAppender;
+import com.google.code.microlog4android.config.PropertyConfigurator;
 
 /**
  * 用户其启动界面时候的一个启动页面完成一些初始化工作 Created by popoy on 2014/7/28.
@@ -53,9 +58,7 @@ public class SplashActivity extends BaseActivity {
 	private IpSettingDialogFragment dialog;
 
 	private int code;
-
 	private String url;
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -269,7 +272,7 @@ public class SplashActivity extends BaseActivity {
 				WLog.i(SplashActivity.class, "版本更新返回信息：" + updateResult);
 				if (updateResult.getInteger("code") == 0) {
 					Version version = JSON.parseObject(updateResult.getJSONObject("data").toJSONString(), Version.class);
-					url = Constants.URL_DOWNLOAD_APK + version.getId();
+					url=Constants.HTTP+ip+":"+port+Constants.URL_DOWNLOAD_APK+ version.getId();
 					mHandler.sendEmptyMessage(1000);
 					return true;
 				}
