@@ -56,8 +56,15 @@
 			tb_student
 		INNER JOIN
 			tb_user ON tb_student.id = tb_user.id
+		INNER JOIN
+			tb_student_group ON tb_student_group.student_id = tb_student.id
+		INNER JOIN
+			tb_group ON tb_group.id = tb_student_group.group_id
 		WHERE 
-			tb_user.name = #{name} AND tb_student.number = #{number}
+			tb_user.role = 0
+			AND tb_group.class_id = #{classId}
+			AND tb_student.number = #{number} 
+			AND tb_user.name = #{name}
 	</select>
 	
 	<select id="getStudentByGroupId" resultType="com.incito.interclass.entity.Student" parameterType="java.lang.Integer">
@@ -73,20 +80,6 @@
 			tb_group ON tb_student_group.group_id = tb_group.id
 		WHERE 
 			tb_group.id = #{id}
-	</select>
-	
-	<select id="loginForStudent" resultType="com.incito.interclass.entity.Student" parameterType="com.incito.interclass.entity.Student">
-		SELECT	
-			tb_user.* ,tb_student.*
-		FROM 
-			tb_user
-		INNER JOIN 
-			tb_student ON tb_user.id = tb_student.id
-		WHERE 
-			tb_user.is_Active = 1
-			AND tb_user.role = 3
-			AND tb_student.number=#{number} 
-			AND tb_user.name = #{name}
 	</select>
 	
 	<select id="getTeacherListByCondition" resultType="com.incito.interclass.entity.Teacher" parameterType="java.util.Map">
