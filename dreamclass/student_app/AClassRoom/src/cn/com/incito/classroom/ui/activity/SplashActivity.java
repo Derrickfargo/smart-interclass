@@ -59,12 +59,10 @@ public class SplashActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		final View view = View.inflate(this, R.layout.splash, null);
-		
 		setContentView(view);
-		
 		try {
 			PackageManager pm = getPackageManager();
-			PackageInfo info = pm.getPackageInfo("xxxx", 0);
+			PackageInfo info = pm.getPackageInfo("cn.com.incito.classroom", 0);
 			code = info.versionCode;
 		} catch (NameNotFoundException e) {
 			ApiClient.uploadErrorLog(e.getMessage());
