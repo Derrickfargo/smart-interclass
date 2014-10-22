@@ -5,8 +5,6 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import cn.com.incito.server.handler.DeviceBindHandler;
-import cn.com.incito.server.handler.DeviceHasBindHandler;
 import cn.com.incito.server.handler.DeviceLoginHandler;
 import cn.com.incito.server.handler.DeviceLogoutHandler;
 import cn.com.incito.server.handler.GroupListHandler;
@@ -44,10 +42,6 @@ public final class MessageHandlerResource {
 		handlerResources.put(Message.MESSAGE_GROUP_LIST, GroupListHandler.class);
 		//学生登陆消息
 		handlerResources.put(Message.MESSAGE_STUDENT_LOGIN, StudentLoginHandler.class);
-		//设备是否绑定消息
-		handlerResources.put(Message.MESSAGE_DEVICE_HAS_BIND, DeviceHasBindHandler.class);
-		//设备绑定消息
-		handlerResources.put(Message.MESSAGE_DEVICE_BIND, DeviceBindHandler.class);
 		//编辑组信息
 		handlerResources.put(Message.MESSAGE_GROUP_EDIT, GroupSubmitHandler.class);
 		//小组投票消息

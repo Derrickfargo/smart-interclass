@@ -294,7 +294,6 @@ public class Login2 extends MouseAdapter {
 
 	private void doGetGroup() {
 		int schoolId = app.getTeacher().getSchoolId();
-		int roomId = app.getRoom().getId();
 		int teacherId = app.getTeacher().getId();
 		Item course = (Item) jcbCourse.getSelectedItem();
 		int courseId = course.getKey();
@@ -321,7 +320,6 @@ public class Login2 extends MouseAdapter {
 		AsyncHttpConnection http = AsyncHttpConnection.getInstance();
 		ParamsWrapper params = new ParamsWrapper();
 		params.put("schoolId", schoolId);
-		params.put("roomId", roomId);
 		params.put("teacherId", teacherId);
 		params.put("courseId", courseId);
 		params.put("year", newYear);//入学年份
@@ -336,24 +334,19 @@ public class Login2 extends MouseAdapter {
 						return;
 					}
 					String data = jsonObject.getString("data");
-					TeacherGroupResultData resultData = JSON.parseObject(data,
-							TeacherGroupResultData.class);
+					TeacherGroupResultData resultData = JSON.parseObject(data, TeacherGroupResultData.class);
 
 					frame.setVisible(false);
 					// 第二步获得班级、课程、设备、课桌、分组数据
-					Application.getInstance().setClasses(
-							resultData.getClasses());
+					Application.getInstance().setClasses(resultData.getClasses());
 					Application.getInstance().setCourse(resultData.getCourse());
-					Application.getInstance().initMapping(
-							resultData.getDevices(), resultData.getTables(),
-							resultData.getGroups());
+					Application.getInstance().initMapping(resultData.getDevices(), resultData.getTables(), resultData.getGroups());
 					MainFrame.getInstance().setVisible(true);
 					SwingUtilities.invokeLater(new Runnable() {
 
 						@Override
 						public void run() {
 							new FloatIcon().setVisible(true);
-							
 						}
 					});
 

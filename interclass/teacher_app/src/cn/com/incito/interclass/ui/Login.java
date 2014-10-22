@@ -310,15 +310,7 @@ public class Login extends MouseAdapter {
 					TeacherLoginResultData resultData = JSON.parseObject(data,
 							TeacherLoginResultData.class);
 
-					// 第一步获取教室、教师数据
-					if (resultData.getRoom() == null) {
-						JOptionPane.showMessageDialog(frame, "本教室未有效注册!");
-						logger.info("本教室未有效注册!");
-						return;
-					} else {
-						frame.setVisible(false);
-					}
-					Application.getInstance().setRoom(resultData.getRoom());
+					frame.setVisible(false);
 					Application.getInstance().setTeacher(resultData.getTeacher());
 					Login2 login2 = new Login2(resultData.getCourses());
 					login2.getFrame().setVisible(true);
