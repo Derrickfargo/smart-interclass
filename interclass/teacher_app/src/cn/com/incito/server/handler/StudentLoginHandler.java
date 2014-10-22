@@ -7,14 +7,12 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import cn.com.incito.interclass.po.Student;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
-import cn.com.incito.server.utils.JSONUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -60,35 +58,6 @@ public class StudentLoginHandler extends MessageHandler {
         		logger.info(result);
         	}
     		break;
-        case 2:
-        	logger.info("收到注册学生消息:" + data);
-			Student student = service.getStudentByNumber(number);
-			if(student != null){//该学号已注册
-				result = JSONUtils.renderJSONString(-2, number);// 学号已注册
-				logger.info("注册学生结果，学号已注册:" + result);
-				MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
-				messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(result));
-				byte[] handShakResponse = messagePacking.pack().array();
-		        ByteBuffer buffer = ByteBuffer.allocate(handShakResponse.length);
-		        buffer.put(handShakResponse);
-		        buffer.flip();
-		        try {
-					message.getChannel().write(buffer);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-		        return;
-			}
-        	result = service.register(uname, sex, number, imei);
-        	logger.info("注册学生结果:" + result);
-        	groupId = getGroupId(result);
-			if (groupId != -1) {
-				logger.info("回复注册学生消息:" + result);
-				app.addSocketChannel(groupId, message.getChannel());
-        		sendResponse(result,app.getClientChannelByGroup(groupId));
-        		logger.info(result);
-        	}
-        	break;
         }
 	}
 	

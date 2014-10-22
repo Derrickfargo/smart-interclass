@@ -47,7 +47,7 @@ public class StudentCtrl extends BaseCtrl {
 	@RequestMapping(value = "/login", produces = { "application/json;charset=UTF-8" })
 	public String addStudent(int courseId, int classId, int teacherId, int tableId, String name, String number, int sex, String imei) {
 		// 查学生是否存在
-		Student student = userService.getStudent(name, number);
+		Student student = userService.getStudent(classId, name, number);
 		// 不存在保存学生
 		if (student == null || student.getId() == 0) {
 			student = new Student();

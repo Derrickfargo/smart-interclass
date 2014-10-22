@@ -76,10 +76,6 @@ public class UserService {
 		return userMapper.loginForTeacher(teacher);
 	}
 
-	public Student loginForStudent(Student student) {
-		return userMapper.loginForStudent(student);
-	}
-
 	public List<Student> getStudentByGroupId(int groupId) {
 		return userMapper.getStudentByGroupId(groupId);
 	}
@@ -93,8 +89,8 @@ public class UserService {
 		return userMapper.getStudentList();
 	}
 
-	public Student getStudent(String name, String number) {
-		return userMapper.getStudent(name, number);
+	public Student getStudent(int classId,String name, String number) {
+		return userMapper.getStudent(classId, name, number);
 	}
 
 	@Transactional(rollbackFor = AppException.class)

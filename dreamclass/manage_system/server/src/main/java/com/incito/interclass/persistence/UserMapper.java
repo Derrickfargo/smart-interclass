@@ -15,8 +15,6 @@ public interface UserMapper {
 
 	Teacher loginForTeacher(Teacher teacher);
 	
-	Student loginForStudent(Student student);
-
 	List<Student> getStudentByGroupId(int groupId);
 
 	List<Teacher> getTeacherListByCondition(@Param("name") String name,
@@ -24,7 +22,8 @@ public interface UserMapper {
 
 	List<Student> getStudentList();
 	
-	Student getStudent(@Param("name")String name, @Param("number")String number);
+	Student getStudent(@Param("classId") int classId,
+			@Param("name") String name, @Param("number") String number);
 	
 	Integer saveUser(User user);
 	
