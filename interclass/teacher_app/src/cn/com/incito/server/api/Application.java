@@ -22,7 +22,6 @@ import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Quiz;
 import cn.com.incito.interclass.po.Student;
-import cn.com.incito.interclass.po.Table;
 import cn.com.incito.interclass.po.Teacher;
 import cn.com.incito.interclass.ui.FloatIcon;
 import cn.com.incito.interclass.ui.Login;
@@ -60,7 +59,6 @@ public class Application {
     public static boolean isOnClass;//正在上课
     public static boolean hasQuiz;//是否在作业
     private List<Group> groupList = new ArrayList<Group>();// 本堂课的所有分组
-    private List<Table> tableList = new ArrayList<Table>();// 本教室所有的桌子
     private List<Device> deviceList = new ArrayList<Device>();// 本教室所有的Device
     private Set<String> onlineDevice = new HashSet<String>();
     private Set<Student> onlineStudent = new HashSet<Student>();
@@ -80,28 +78,6 @@ public class Application {
      * IMEI和设备的对应关系(key:imei,value:Device)，教师登陆完后初始化
      */
     private Map<String, Device> imeiDevice;
-
-    /**
-     * tableId和Table的对应关系(key:tableId,value:Table)，教师登陆完后初始化
-     */
-    private Map<Integer, Table> tableMap;
-
-    private Map<Integer, Table> tableNumberMap;
-
-    /**
-     * Device id和Table的对应关系(key:deviceId,value:Table)，教师登陆完后初始化
-     */
-    private Map<Integer, Table> deviceTable;
-
-    /**
-     * Table和Device的对应关系 (key:tableId,value:List<Device>)，教师登陆完后初始化
-     */
-    private Map<Integer, List<Device>> tableDevice;
-
-    /**
-     * Table和Group的对应关系 (key:tableId,value:Group)，教师登陆完后初始化
-     */
-    private Map<Integer, Group> tableGroup;
 
     private Application() {
     	lock();
@@ -130,12 +106,6 @@ public class Application {
     
     public void clear(){
     	imeiDevice = new HashMap<String, Device>();
-        tableMap = new HashMap<Integer, Table>();
-        tableNumberMap = new HashMap<Integer, Table>();
-        deviceTable = new HashMap<Integer, Table>();
-        tableDevice = new HashMap<Integer, List<Device>>();
-        tableGroup = new HashMap<Integer, Group>();
-
         clientChannel = new HashMap<String, SocketChannel>();
         groupChannel = new HashMap<Integer, List<SocketChannel>>();
     }
@@ -315,12 +285,8 @@ public class Application {
      * @param devices
      * @param tables
      */
-    public void initMapping(List<Device> devices, List<Table> tables,
-                            List<Group> groups) {
+    public void initMapping(List<Device> devices, List<Group> groups) {
         this.initImeiDevice(devices);
-        this.initTableMap(tables);
-        this.initTableNumberMap(tables);
-        this.initTableDevice();
     }
 
     /**
@@ -336,66 +302,6 @@ public class Application {
         }
     }
 
-    /**
-     * 初始化课桌映射
-     *
-     * @param tables
-     */
-    private void initTableMap(List<Table> tables) {
-        tableList = tables;
-        tableMap.clear();
-        for (Table table : tables) {
-            tableMap.put(table.getId(), table);
-        }
-    }
-
-    /**
-     * 初始化课桌映射
-     *
-     * @param tables
-     */
-    private void initTableNumberMap(List<Table> tables) {
-        tableList = tables;
-        tableNumberMap.clear();
-        for (int i = 0; i < 16; i++) {
-            Table table = new Table();
-            table.setNumber(i + 1);
-            tableNumberMap.put(table.getNumber(), table);
-        }
-        for (Table table : tables) {
-            tableNumberMap.put(table.getNumber(), table);
-        }
-    }
-
-
-    /**
-     * 初始化课桌设备映射
-     */
-    private void initTableDevice() {
-        tableDevice.clear();
-        for (Table table : tableList) {
-            List<Device> deviceList = table.getDevices();
-            if (deviceList == null) {
-                deviceList = new ArrayList<Device>();
-            }
-            tableDevice.put(table.getId(), deviceList);
-        }
-    }
-
-    public List<Table> getTableList() {
-        return tableList;
-    }
-
-    public void addDevice(Integer id, Device device) {
-        List<Device> deviceList = tableDevice.get(id);
-        if (deviceList == null) {
-            deviceList = new ArrayList<Device>();
-        }
-        if (!deviceList.contains(device)) {
-            deviceList.add(device);
-        }
-        tableDevice.put(id, deviceList);
-    }
 
     public void addGroup(Group group) {
         groupMap.put(group.getId(), group);
@@ -494,30 +400,6 @@ public class Application {
 
 	public Map<String, Device> getImeiDevice() {
         return imeiDevice;
-    }
-
-    public Map<Integer, Table> getTableMap() {
-        return tableMap;
-    }
-
-    public Map<Integer, Table> getTableNumberMap() {
-        return tableNumberMap;
-    }
-
-    public void setTableNumberMap(Map<Integer, Table> tableNumberMap) {
-        this.tableNumberMap = tableNumberMap;
-    }
-
-    public Map<Integer, Table> getDeviceTable() {
-        return deviceTable;
-    }
-
-    public Map<Integer, List<Device>> getTableDevice() {
-        return tableDevice;
-    }
-
-    public Map<Integer, Group> getTableGroup() {
-        return tableGroup;
     }
 
     public Set<String> getOnlineDevice() {

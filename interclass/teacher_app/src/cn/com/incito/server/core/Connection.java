@@ -7,17 +7,16 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.alibaba.fastjson.JSONObject;
-
 import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Student;
-import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
 import cn.com.incito.server.utils.JSONUtils;
+
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * 单个客户端连接，主要管理心跳
@@ -71,33 +70,30 @@ public class Connection {
 		if (device == null) {
 			return;
 		}
-		Table table = app.getDeviceTable().get(device.getId());
-		if (table == null) {
-			return;
-		}
-		Group group = app.getTableGroup().get(table.getId());
-		List<Student> students = app.getStudentByImei(imei);
-		if (students != null) {
-			for (Student student : students) {
-				for (Student aStudent : group.getStudents()) {
-					if (student.getName().equals(aStudent.getName())
-							&& student.getNumber().equals(aStudent.getNumber())) {
-						aStudent.setLogin(false);
-					}
-				}
-			}
-		}
-		app.removeLoginStudent(imei);
-		app.getOnlineDevice().remove(imei);
-		Application.getInstance().getClientChannel().remove(imei);
-		app.refresh();// 更新UI
-		
-		//向其他设备发送退出通知
-		List<SocketChannel> channels = Application.getInstance().getClientChannelByGroup(group.getId());
-		JSONObject json = new JSONObject();
-		json.put("code", JSONUtils.SUCCESS);
-		json.put("data", group);
-		sendResponse(json.toJSONString(), channels);
+		//TODO 
+//		Group group = app.getTableGroup().get(table.getId());
+//		List<Student> students = app.getStudentByImei(imei);
+//		if (students != null) {
+//			for (Student student : students) {
+//				for (Student aStudent : group.getStudents()) {
+//					if (student.getName().equals(aStudent.getName())
+//							&& student.getNumber().equals(aStudent.getNumber())) {
+//						aStudent.setLogin(false);
+//					}
+//				}
+//			}
+//		}
+//		app.removeLoginStudent(imei);
+//		app.getOnlineDevice().remove(imei);
+//		Application.getInstance().getClientChannel().remove(imei);
+//		app.refresh();// 更新UI
+//		
+//		//向其他设备发送退出通知
+//		List<SocketChannel> channels = Application.getInstance().getClientChannelByGroup(group.getId());
+//		JSONObject json = new JSONObject();
+//		json.put("code", JSONUtils.SUCCESS);
+//		json.put("data", group);
+//		sendResponse(json.toJSONString(), channels);
 	}
 	
 	private void sendResponse(String json,List<SocketChannel> channels) {

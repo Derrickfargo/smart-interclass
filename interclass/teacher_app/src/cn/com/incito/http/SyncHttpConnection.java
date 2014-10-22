@@ -3,7 +3,6 @@ package cn.com.incito.http;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
@@ -18,11 +17,7 @@ import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 
-import cn.com.incito.interclass.po.Device;
-import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.exception.AppException;
-import cn.com.incito.server.utils.JSONUtils;
-import cn.com.incito.server.utils.Md5Utils;
 import cn.com.incito.server.utils.URLs;
 
 /**

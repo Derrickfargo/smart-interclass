@@ -20,7 +20,6 @@ import org.apache.commons.httpclient.params.HttpMethodParams;
 
 import cn.com.incito.interclass.main.Main;
 import cn.com.incito.interclass.po.Device;
-import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.exception.AppException;
 import cn.com.incito.server.utils.JSONUtils;
 import cn.com.incito.server.utils.Md5Utils;
@@ -306,12 +305,6 @@ public class ApiClient {
 			// 系统中无此设备
 			return JSONUtils.renderJSONString(1);// 失败
 		}
-		Table table = Application.getInstance().getDeviceTable().get(device.getId());
-		if (table == null) {
-			// 此设备未绑定课桌
-			return JSONUtils.renderJSONString(2);// 失败
-		}
-		params.put("tableId", table.getId());
 		params.put("name", name);
 		params.put("sex", sex);
 		params.put("number", number);

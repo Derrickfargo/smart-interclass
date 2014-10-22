@@ -21,8 +21,6 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 
 import cn.com.incito.interclass.po.Group;
-import cn.com.incito.interclass.po.Student;
-import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.message.DataType;
@@ -117,8 +115,8 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 	}
 
 	public void refresh() {
-		List<Table> tables = app.getTableList();
-		if (tables.size() != 0) {
+//		List<Table> tables = app.getTableList();
+//		if (tables.size() != 0) {
 			lblExpected.setVisible(true);
 			lblClass.setVisible(true);
 			lblClassBackground.setVisible(true);
@@ -126,7 +124,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 			lblCourseBackground.setVisible(true);
 			btnGroup.setVisible(true);
 			btnBegin.setVisible(true);
-		}
+//		}
 	}
 
 	private void doBegin() {
@@ -145,20 +143,6 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 			return;
 		}
 
-		List<Table> tableList = app.getTableList();
-		if (tableList == null || tableList.size() == 0) {
-			JOptionPane.showMessageDialog(getParent().getParent(),
-					"设备还未绑定课桌，请先绑定课桌!");
-			return;
-		}
-
-		Map<Integer, Group> tableGroup = app.getTableGroup();
-		if (tableGroup == null || tableGroup.size() == 0) {
-			JOptionPane.showMessageDialog(getParent().getParent(),
-					"还未进行小组分组，请先进行分组!");
-			return;
-		}
-
 		MainFrame.getInstance().setVisible(false);
 		setOnClass(true);
 	}
@@ -170,12 +154,6 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 		if (app.getOnlineStudent().size() == 0) {
 			JOptionPane.showMessageDialog(getParent().getParent(),
 					"当前还没有学生登陆，请先登陆后再分组!");
-			return;
-		}
-		List<Table> tableList = app.getTableList();
-		if (tableList == null || tableList.size() == 0) {
-			JOptionPane.showMessageDialog(getParent().getParent(),
-					"设备还未绑定课桌，请先绑定课桌!");
 			return;
 		}
 		if (app.isGrouping()) {
