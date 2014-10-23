@@ -84,7 +84,7 @@ public class CoreService {
 						TeacherGroupResultData.class);
 
 				// 第二步获得班级、课程、设备、课桌、分组数据
-				Application.getInstance().initMapping(resultData.getDevices(), app.getGroupList());
+//				Application.getInstance().initMapping(resultData.getDevices(), app.getGroupList());
 				Application.getInstance().refresh();
 			}
 			logger.info(result);

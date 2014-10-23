@@ -21,10 +21,10 @@
 
 	<select id="loginForTeacher" resultType="com.incito.interclass.entity.Teacher" parameterType="com.incito.interclass.entity.Teacher">
 		SELECT	
-			tb_user.* ,tb_teacher.*,tb_teacher.school_id AS schoolId
+			tb_user.* ,tb_teacher.*,tb_teacher.school_id AS schoolId,tb_teacher.course_id AS courseId
 		FROM 
 			tb_user
-		LEFT JOIN 
+		INNER JOIN 
 			tb_teacher
 		ON 
 			tb_user.id = tb_teacher.id
@@ -48,6 +48,17 @@
 			tb_group ON tb_group.id = tb_student_group.group_id
 		WHERE 
 			tb_group.id = #{groupId}
+	</select>
+	
+	<select id="getStudentByClassId" resultType="com.incito.interclass.entity.Student" parameterType="java.lang.Integer">
+		SELECT	
+			tb_user.* ,tb_student.*
+		FROM 
+			tb_student
+		INNER JOIN
+			tb_user ON tb_student.id = tb_user.id
+		WHERE 
+			tb_student.class_id = #{classId}
 	</select>
 	
 	<select id="getStudent" resultType="com.incito.interclass.entity.Student" parameterType="java.util.Map">
