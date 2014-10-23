@@ -77,11 +77,11 @@
                 <action android:name="cn.com.incito.classroom.service.SOCKET_SERVICE" />
             </intent-filter>
         </service>
-        <service android:name="cn.com.incito.classroom.service.LogService" >
+       <!--  <service android:name="cn.com.incito.classroom.service.LogService" >
             <intent-filter>
                 <action android:name="cn.com.incito.classroom.service.LOG_SERVICE" />
             </intent-filter>
-        </service>
+        </service> -->
     </application>
 
 </manifest>

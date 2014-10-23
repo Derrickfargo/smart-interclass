@@ -41,6 +41,7 @@ import cn.com.incito.wisdom.sdk.utils.StorageUtils;
 
 import com.google.code.microlog4android.Logger;
 import com.google.code.microlog4android.LoggerFactory;
+import com.google.code.microlog4android.config.PropertyConfigurator;
 import com.umeng.analytics.MobclickAgent;
 
 /**
@@ -114,6 +115,7 @@ public class MyApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		PropertyConfigurator.getConfigurator(this).configure();
 		sendBroadcast(new Intent("android.intent.action.HIDE_NAVIGATION_BAR"));
 		// closeSysScreenLock();
 		AppUncaughtException appException = AppUncaughtException.getInstance();

@@ -113,8 +113,9 @@ public class AppManager {
 			Thread.sleep(100);// 先让socket发送退出消息再完全退出
 			ConnectionManager.getInstance(null).close(true);
 			MyApplication.getInstance().stopSocketService();
-			android.os.Process.killProcess(android.os.Process.myPid());
 			Logger.debug(Utils.getTime() + "AppManager" + "程序退出");
+			android.os.Process.killProcess(android.os.Process.myPid());
+			
 		} catch (Exception e) {
 			ApiClient.uploadErrorLog(e.getMessage());
 			e.printStackTrace();
