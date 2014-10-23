@@ -92,30 +92,24 @@
 									<c:when test="${empty page.list}">
 										<b>没有查询到相应的数据</b>
 									</c:when>
-									<c:when test="${page.pages == 1}">
-									</c:when>
 									<c:otherwise>
 										<ul class="pagination" id="pagination">
-											<c:if test="${page.pages > 1 }">
-												<li><a href="javascript:void(0);searchStudent('1')">首页</a></li>
-											</c:if>
+											<li><a href="javascript:void(0);searchStudent('1')">首页</a></li>
 											<c:if test="${page.hasPreviousPage}">
 												<li><a href="javascript:void(0);searchStudent('${page.prePage}')">上一页</a></li>
 											</c:if>
 											<c:forEach items="${page.navigatepageNums}" var="nav">
 						                        <c:if test="${nav == page.pageNum}">
-						                            <li><a href="javascript:void(0);searchStudent('${x}')">${nav}</a></li>
+						                            <li><a class="active" href="javascript:void(0);">${nav}</a></li>
 						                        </c:if>
 						                        <c:if test="${nav != page.pageNum}">
-						                        	<li class="active"><a href="javascript:void(0);searchStudent('${nav}')">${nav}</a></li>
+						                        	<li><a href="javascript:void(0);searchStudent('${nav}')">${nav}</a></li>
 						                        </c:if>
 						                    </c:forEach>
 											<c:if test="${page.hasNextPage}">
-												<li><a href="javascript:void(0);searchStudent('${page.pageSize}')">下一页</a></li>
+												<li><a href="javascript:void(0);searchStudent('${page.nextPage}')">下一页</a></li>
 											</c:if>
-											<c:if test="${page.pages > 1 }">
-												<li><a href="javascript:void(0);searchStudent('${page.pages}')">尾页</a></li>
-											</c:if>
+											<li><a href="javascript:void(0);searchStudent('${page.pages}')">尾页</a></li>
 										</ul>
 									</c:otherwise>
 								</c:choose>
