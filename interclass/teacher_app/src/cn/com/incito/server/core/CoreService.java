@@ -15,7 +15,6 @@ import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Quiz;
 import cn.com.incito.interclass.po.Student;
-import cn.com.incito.interclass.po.Table;
 import cn.com.incito.interclass.ui.MainFrame;
 import cn.com.incito.server.api.ApiClient;
 import cn.com.incito.server.api.Application;
@@ -45,27 +44,23 @@ public class CoreService {
 		if (device == null) {
 			return null;
 		}
-		Table table = app.getDeviceTable().get(device.getId());
-		if (table == null) {
-			return null;
-		}
-		Group group = app.getTableGroup().get(table.getId());
-		List<Student> students = app.getStudentByImei(imei);
-		if (students != null) {
-			for (Student student : students) {
-				for (Student aStudent : group.getStudents()) {
-					if (student.getName().equals(aStudent.getName())
-							&& student.getNumber().equals(aStudent.getNumber())) {
-						aStudent.setLogin(false);
-					}
-				}
-			}
-		}
+//		Group group = app.getTableGroup().get(device.getId());
+//		List<Student> students = app.getStudentByImei(imei);
+//		if (students != null) {
+//			for (Student student : students) {
+//				for (Student aStudent : group.getStudents()) {
+//					if (student.getName().equals(aStudent.getName())
+//							&& student.getNumber().equals(aStudent.getNumber())) {
+//						aStudent.setLogin(false);
+//					}
+//				}
+//			}
+//		}
 		app.removeLoginStudent(imei);
 		app.getOnlineDevice().remove(imei);
 		Application.getInstance().getClientChannel().remove(imei);
 		app.refresh();// 更新UI
-		return group;
+		return new Group();
 	}
 
 
@@ -89,8 +84,7 @@ public class CoreService {
 						TeacherGroupResultData.class);
 
 				// 第二步获得班级、课程、设备、课桌、分组数据
-				Application.getInstance().initMapping(resultData.getDevices(),
-						resultData.getTables(), app.getGroupList());
+				Application.getInstance().initMapping(resultData.getDevices(), app.getGroupList());
 				Application.getInstance().refresh();
 			}
 			logger.info(result);
@@ -114,23 +108,18 @@ public class CoreService {
 			// 系统中无此设备
 			return JSONUtils.renderJSONString(1);// 失败
 		}
-		Table table = app.getDeviceTable().get(device.getId());
-		if (table == null) {
-			// 此设备未绑定课桌
-			return JSONUtils.renderJSONString(2);// 失败
-		}
-		Group group = app.getTableGroup().get(table.getId());
-		app.addGroup(group);
-		for (Student student : group.getStudents()) {
-			if (student.getUname().equals(uname)
-					&& student.getNumber().equals(number)) {
-				student.setLogin(true);
-				app.getOnlineStudent().add(student);// 加入在线的学生
-				app.addLoginStudent(imei, student);
-				app.refresh();// 更新UI
-				return JSONUtils.renderJSONString(0, group);
-			}
-		}
+//		Group group = app.getTableGroup().get(table.getId());
+//		app.addGroup(group);
+//		for (Student student : group.getStudents()) {
+//			if (student.getUname().equals(uname)
+//					&& student.getNumber().equals(number)) {
+//				student.setLogin(true);
+//				app.getOnlineStudent().add(student);// 加入在线的学生
+//				app.addLoginStudent(imei, student);
+//				app.refresh();// 更新UI
+//				return JSONUtils.renderJSONString(0, group);
+//			}
+//		}
 		return register(uname, sex, number, imei);// 学生未注册
 	}
 
@@ -149,22 +138,17 @@ public class CoreService {
 			// 系统中无此设备
 			return JSONUtils.renderJSONString(1);// 失败
 		}
-		Table table = app.getDeviceTable().get(device.getId());
-		if (table == null) {
-			// 此设备未绑定课桌
-			return JSONUtils.renderJSONString(2);// 失败
-		}
-		Group group = app.getTableGroup().get(table.getId());
-		for (Student student : group.getStudents()) {
-			if (student.getUname().equals(uname)
-					&& student.getNumber().equals(number)) {
-				student.setLogin(false);
-				app.getOnlineStudent().remove(student);
-				app.removeLoginStudent(imei, student);
-				app.refresh();// 更新UI
-				return JSONUtils.renderJSONString(0, group);
-			}
-		}
+//		Group group = app.getTableGroup().get(device.getId());
+//		for (Student student : group.getStudents()) {
+//			if (student.getUname().equals(uname)
+//					&& student.getNumber().equals(number)) {
+//				student.setLogin(false);
+//				app.getOnlineStudent().remove(student);
+//				app.removeLoginStudent(imei, student);
+//				app.refresh();// 更新UI
+//				return JSONUtils.renderJSONString(0, group);
+//			}
+//		}
 		return JSONUtils.renderJSONString(3);// 失败
 	}
 
@@ -301,13 +285,11 @@ public class CoreService {
 			// 系统中无此设备
 			return JSONUtils.renderJSONString(1);// 失败
 		}
-		Table table = app.getDeviceTable().get(device.getId());
-		if (table == null) {
-			// 此设备未绑定课桌
-			return JSONUtils.renderJSONString(2);// 失败
+		List<Group> groupList = app.getGroupList();
+		for (Group group : groupList) {
+
 		}
-		Group group = app.getTableGroup().get(table.getId());
-		return JSONUtils.renderJSONString(0, group);
+		return JSONUtils.renderJSONString(0, new Group());
 	}
 
 	public Group getGroupObjectByIMEI(String imei) {
@@ -316,12 +298,7 @@ public class CoreService {
 			// 系统中无此设备
 			return null;
 		}
-		Table table = app.getDeviceTable().get(device.getId());
-		if (table == null) {
-			// 此设备未绑定课桌
-			return null;
-		}
-		return app.getTableGroup().get(table.getId());
+		return new Group();
 	}
 
 	public List<SocketChannel> getGroupSocketChannelByGroupId(int groupId) {

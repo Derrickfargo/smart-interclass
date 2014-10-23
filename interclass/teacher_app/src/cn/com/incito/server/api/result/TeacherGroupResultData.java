@@ -6,11 +6,9 @@ import cn.com.incito.interclass.po.Classes;
 import cn.com.incito.interclass.po.Course;
 import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
-import cn.com.incito.interclass.po.Table;
 
 public class TeacherGroupResultData implements IApiResultData {
 	private List<Group> groups;
-	private List<Table> tables;
 	private List<Device> devices;
 	private Classes classes;
 	private Course course;
@@ -21,14 +19,6 @@ public class TeacherGroupResultData implements IApiResultData {
 
 	public void setGroups(List<Group> groups) {
 		this.groups = groups;
-	}
-
-	public List<Table> getTables() {
-		return tables;
-	}
-
-	public void setTables(List<Table> tables) {
-		this.tables = tables;
 	}
 
 	public List<Device> getDevices() {

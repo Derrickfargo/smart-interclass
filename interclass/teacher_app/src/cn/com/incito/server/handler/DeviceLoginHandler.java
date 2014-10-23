@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 
 import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
-import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.config.AppConfig;
 import cn.com.incito.server.core.ConnectionManager;
@@ -38,14 +37,7 @@ public class DeviceLoginHandler extends MessageHandler {
 		app.addSocketChannel(imei, message.getChannel());
 		Device device = app.getImeiDevice().get(imei);
         if (device != null) {
-            // 系统中无此设备
-        	Table table = app.getDeviceTable().get(device.getId());
-        	if (table != null) {
-        		Group group = app.getTableGroup().get(table.getId());
-				if (group != null) {
-        			app.addSocketChannel(group.getId(), message.getChannel());
-        		}
-        	}
+            //TODO 
         }
 		
 		//回复设备登陆消息

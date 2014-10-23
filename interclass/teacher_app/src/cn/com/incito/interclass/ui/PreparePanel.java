@@ -1,7 +1,6 @@
 package cn.com.incito.interclass.ui;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -10,7 +9,6 @@ import javax.swing.JPanel;
 
 import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
-import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
 
 public class PreparePanel extends JPanel{
@@ -113,20 +111,20 @@ public class PreparePanel extends JPanel{
 	}
 
 	private void initData() {
-		groupList = new ArrayList<Group>();
-		// 课桌绑定分组，生成内存模型
-		List<Table> tables = app.getTableList();
-		for (Table table : tables) {
-			// 获得课桌对应的分组
-			Group group = app.getTableGroup().get(table.getId());
-			if (group == null) {
-				group = new Group();
-			}
-			group.setTableNumber(table.getNumber());
-			group.setDevices(table.getDevices());
-			groupList.add(group);
-		}
-		Collections.sort(groupList);
+//		groupList = new ArrayList<Group>();
+//		// 课桌绑定分组，生成内存模型
+//		List<Table> tables = app.getTableList();
+//		for (Table table : tables) {
+//			// 获得课桌对应的分组
+//			Group group = app.getTableGroup().get(table.getId());
+//			if (group == null) {
+//				group = new Group();
+//			}
+//			group.setTableNumber(table.getNumber());
+//			group.setDevices(table.getDevices());
+//			groupList.add(group);
+//		}
+//		Collections.sort(groupList);
 	}
 	
 	public void showGrouping(){

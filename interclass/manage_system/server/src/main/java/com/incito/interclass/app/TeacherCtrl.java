@@ -82,24 +82,21 @@ public class TeacherCtrl extends BaseCtrl {
 	 * @return
 	 */
 	@RequestMapping(value = "/group", produces = { "application/json;charset=UTF-8" })
-	public String group(int schoolId, int roomId,int teacherId, int classId,String className) {
-		if (classId == 0) {//不存在当前班级，添加
-			Classes classes = new Classes();
-			classes.setName(className);
+	public String group(int schoolId, int teacherId, int courseId, int year,
+			int classNumber) {
+		Classes classes = classService.getClassByNumber(schoolId, year, classNumber);
+		if (classes == null || classes.getId() == 0) {//不存在当前班级，添加
+			classes = new Classes();
+			classes.setYear(year);
+			classes.setNumber(classNumber);
 			classes.setSchoolId(schoolId);
-			Calendar calendar = Calendar.getInstance();
-			classes.setYear(calendar.get(Calendar.YEAR));
 			classService.saveClass(classes);
-			classId = classes.getId();
-			if(classId == 0){
-				return renderJSONString(SAVE_CLASS_ERROR);
-			}
 		}
 		//获得当前课堂的分组列表
-		List<Group> groups = groupService.getGroupList(teacherId,classId);
-		//选择的班级
-		Classes classes = classService.getClassById(classId);
-		
+		List<Group> groups = groupService.getGroupList(teacherId,classes.getId());
+		//选择的课程
+//		Course course = courseService.getCourseById(courseId);
+				
 		TeacherGroupResultData data = new TeacherGroupResultData();
 		data.setGroups(groups);
 		data.setClasses(classes);
