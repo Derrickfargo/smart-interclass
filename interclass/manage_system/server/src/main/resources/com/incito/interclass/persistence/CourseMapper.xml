@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.incito.interclass.persistence.CourseMapper">
+
+	<select id="getCourseList" resultType="com.incito.interclass.entity.Course">
+		SELECT	
+			id,name,intro,ctime
+		FROM 
+			tb_course
+		ORDER BY
+			id
+	</select>
+	
+	<select id="getCourseListByCondition" resultType="com.incito.interclass.entity.Course" parameterType="java.util.Map">
+		SELECT	
+			id,name,intro,ctime
+		FROM 
+			tb_course
+		<where>
+			<if test="name != null and name != ''">
+				name LIKE '%' #{name} '%'
+			</if>
+		</where>
+		ORDER BY
+			id
+	</select>
+
+	<select id="getCourseById" resultType="com.incito.interclass.entity.Course" parameterType="java.lang.Integer">
+		SELECT	
+			id,name,intro,ctime
+		FROM 
+			tb_course
+		WHERE
+			tb_course.id = #{id}
+		ORDER BY
+			id
+	</select>
+	
+	<insert id="save" parameterType="com.incito.interclass.entity.Course" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO 
+			tb_course(name,intro,ctime)
+		VALUES
+			(#{name},#{intro},now())
+	</insert>
+	
+	<delete id="delete" parameterType="java.lang.Integer">
+		DELETE FROM tb_course WHERE id = #{id} 
+	</delete>
+</mapper>
