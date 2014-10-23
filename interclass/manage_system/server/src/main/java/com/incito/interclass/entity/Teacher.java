@@ -9,6 +9,7 @@ public class Teacher extends User {
 
 	private int id;
 	private int schoolId;
+	private int courseId;
 	private String schoolName;
 	private String idcard;
 	private String phone;
@@ -27,6 +28,14 @@ public class Teacher extends User {
 
 	public void setSchoolId(int schoolId) {
 		this.schoolId = schoolId;
+	}
+
+	public int getCourseId() {
+		return courseId;
+	}
+
+	public void setCourseId(int courseId) {
+		this.courseId = courseId;
 	}
 
 	public String getSchoolName() {

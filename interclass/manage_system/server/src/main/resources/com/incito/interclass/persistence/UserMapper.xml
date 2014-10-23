@@ -174,9 +174,9 @@
 	
 	<insert id="saveTeacher" parameterType="com.incito.interclass.entity.Teacher">
 		INSERT INTO 
-			tb_teacher(id,school_id,idcard,phone)
+			tb_teacher(id,school_id,course_id, idcard,phone)
 		VALUES
-			(#{id},#{schoolId},#{idcard},#{phone})
+			(#{id},#{schoolId},#{courseId}, #{idcard},#{phone})
 	</insert>
 	
 	<insert id="saveStudent" parameterType="com.incito.interclass.entity.Student">

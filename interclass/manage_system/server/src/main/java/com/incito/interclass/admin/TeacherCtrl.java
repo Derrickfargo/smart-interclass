@@ -11,9 +11,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.incito.base.exception.AppException;
 import com.incito.base.util.Md5Utils;
+import com.incito.interclass.business.CourseService;
 import com.incito.interclass.business.SchoolService;
 import com.incito.interclass.business.UserService;
 import com.incito.interclass.common.BaseCtrl;
+import com.incito.interclass.entity.Course;
 import com.incito.interclass.entity.School;
 import com.incito.interclass.entity.Teacher;
 import com.incito.interclass.entity.User;
@@ -30,6 +32,8 @@ public class TeacherCtrl extends BaseCtrl {
 	@Autowired
 	private SchoolService schoolService;
 	
+	@Autowired
+	private CourseService courseService;
 	/**
 	 * 教师列表
 	 */
@@ -53,7 +57,9 @@ public class TeacherCtrl extends BaseCtrl {
 	public ModelAndView add() {
 		ModelAndView mav = new ModelAndView("teacher/teacherAdd");
 		List<School> schools = schoolService.getSchoolList();
+		List<Course> courses = courseService.getCourseList();
 		mav.addObject("schools", schools);
+		mav.addObject("courses", courses);
 		return mav;
 	}
 	

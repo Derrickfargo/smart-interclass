@@ -62,20 +62,32 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>所属学校：</label>
-												<div class="col-xs-4">
-													<select id="schoolId" name="schoolId" class="form-control" >
-														<c:forEach items="${schools}" var="school">
-														<option value="${school.id }">${school.name }</option>
-														</c:forEach>
-													</select>
-												</div>
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>性别：</label>
 												<div class="col-xs-4">
 													<select id="sex" name="sex" class="form-control" >
 														<option value="1" selected>男</option>
 														<option value="2">女</option>
 													</select>
+												</div>
+												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>所属学校：</label>
+												<div class="col-xs-4">
+													<select id="schoolId" name="schoolId" class="form-control borderRadiusIE8 required" >
+														<c:forEach items="${schools}" var="school">
+														<option value="${school.id }">${school.name }</option>
+														</c:forEach>
+													</select>
+													<p id="checkSchool" class="help-block hidden"><font color="red"><b>请选择所属学校</b></font></p>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>主教课程：</label>
+												<div class="col-xs-4">
+													<select id="courseId" name="courseId" class="form-control borderRadiusIE8 required" >
+														<c:forEach items="${courses}" var="course">
+														<option value="${course.id }">${course.name }</option>
+														</c:forEach>
+													</select>
+													<p id="checkCourse" class="help-block hidden"><font color="red"><b>请选择主教课程</b></font></p>
 												</div>
 											</div>
 											<!-- 
