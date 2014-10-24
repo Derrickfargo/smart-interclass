@@ -15,7 +15,6 @@ import cn.com.incito.classroom.ui.activity.BindDeskActivity;
 import cn.com.incito.classroom.ui.activity.DrawBoxActivity;
 import cn.com.incito.classroom.ui.activity.WaitingActivity;
 import cn.com.incito.classroom.vo.GroupVo;
-import cn.com.incito.interclass.po.Group;
 
 import com.alibaba.fastjson.JSONObject;
 

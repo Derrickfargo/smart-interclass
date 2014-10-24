@@ -1,8 +1,5 @@
 package cn.com.incito.classroom.adapter;
 
-import cn.com.incito.classroom.R;
-import cn.com.incito.classroom.utils.Utils;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -13,7 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
+import cn.com.incito.classroom.R;
+import cn.com.incito.classroom.utils.Utils;
 
 public class HorizontalListViewAdapter extends BaseAdapter{
     private static final String TAG = "HorizontalListViewAdapter";

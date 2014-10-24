@@ -67,4 +67,16 @@
 		WHERE
 			id = #{id}
 	</update>
+	<select id="getRoomListByVagueName" parameterType="java.util.Map" resultType="com.incito.interclass.entity.School">
+		SELECT	
+			id,name,phone,email,school_type AS schoolType,ctime
+		FROM 
+			ts_db_school
+		<where>
+				name LIKE '%' #{schoolName} '%'		
+		</where>
+		ORDER BY
+			id
+		LIMIT 0,#{pageNum}
+	</select>
 </mapper>

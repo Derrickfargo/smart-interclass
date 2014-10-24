@@ -18,6 +18,7 @@ public class Group implements Serializable,Comparable<Group> {
 	private int teacherId;
 	private int classId;
 	private Date ctime;
+	private String captainid;
 	
 	private int tableNumber;
 	private List<Device> devices;
@@ -28,6 +29,14 @@ public class Group implements Serializable,Comparable<Group> {
 		return medals;
 	}
 	
+	public String getCaptainid() {
+		return captainid;
+	}
+
+	public void setCaptainid(String captainid) {
+		this.captainid = captainid;
+	}
+
 	public void setMedals(String medals) {
 		this.medals = medals;
 	}

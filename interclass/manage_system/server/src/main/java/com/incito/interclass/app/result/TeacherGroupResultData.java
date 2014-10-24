@@ -5,12 +5,14 @@ import java.util.List;
 import com.incito.interclass.entity.Classes;
 import com.incito.interclass.entity.Device;
 import com.incito.interclass.entity.Group;
+import com.incito.interclass.entity.Student;
 import com.incito.interclass.entity.Table;
 
 public class TeacherGroupResultData implements IApiResultData {
 	private List<Group> groups;
 	private List<Table> tables;
 	private List<Device> devices;
+	private List<Student> students;
 	private Classes classes;
 
 	public List<Group> getGroups() {
@@ -43,6 +45,14 @@ public class TeacherGroupResultData implements IApiResultData {
 
 	public void setClasses(Classes classes) {
 		this.classes = classes;
+	}
+
+	public List<Student> getStudents() {
+		return students;
+	}
+
+	public void setStudents(List<Student> students) {
+		this.students = students;
 	}
 
 }

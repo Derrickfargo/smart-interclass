@@ -17,6 +17,14 @@ public class GroupCtrl extends BaseCtrl {
 	@Autowired
 	private GroupService groupService;
 	
+	
+	/**
+	 * 保存小组信息
+	 * @return
+	 */
+	public String saveGroup(){
+	return null;	
+	}
 	/**
 	 * 学生创建小组
 	 * @param name
@@ -48,11 +56,13 @@ public class GroupCtrl extends BaseCtrl {
 	public String deleteGroup(String groupId){
 		Integer result =groupService.deleteGroupById(groupId);
 		if(result==1){
-			 return renderJSONString(SUCCESS);
+			List<Group> groups = groupService.getGroupList(1, 1);
+			return renderJSONString(SUCCESS,groups);
 		 }else{
 			 return renderJSONString(1);
 		 }
 	}
+	
 	
 	/**
 	 * 学生加入小组
@@ -62,8 +72,14 @@ public class GroupCtrl extends BaseCtrl {
 	 */
 	@RequestMapping(value = "/join", produces = { "application/json;charset=UTF-8" })
 	public String joinGroup(String groupId,String studentId){
-		Group group = groupService.joinGroup(groupId,studentId);
-		return renderJSONString(SUCCESS, group);
+		//删除学生曾经是队长的组
+		Group oldGroupId=groupService.getGroupIdByCaptainId(studentId);
+		if(oldGroupId!=null){
+			groupService.deleteGroupById(String.valueOf(oldGroupId.getId()));
+		}
+		groupService.joinGroup(groupId,studentId);
+		List<Group> groups = groupService.getGroupList(1, 1);
+		return renderJSONString(SUCCESS, groups);
 	}
 	/**
 	 * 根据IMEI获得分组
@@ -71,7 +87,7 @@ public class GroupCtrl extends BaseCtrl {
 	 * @return
 	 */
 	@RequestMapping(value = "/get", produces = { "application/json;charset=UTF-8" })
-	public String getGroupByIMEI(String imei,int teacherId,int classId){
+	public String getGroupByIMEI(String imei,int teacherId,int classId,String courseName){
 		Group group = groupService.getGroupByIMEI(imei, teacherId, classId);
 		return renderJSONString(SUCCESS, group);
 	}
@@ -89,18 +105,18 @@ public class GroupCtrl extends BaseCtrl {
 		return renderJSONString(SUCCESS, groups);
 	}
 	
-	@RequestMapping(value = "/update", produces = { "application/json;charset=UTF-8" })
-	public String update(int id, String name, String logo) {
-		Group group = new Group();
-		group.setId(id);
-		group.setName(name);
-		group.setLogo(logo);
-		try {
-			groupService.updateGroup(group);
-			group = groupService.getGroupById(id);
-		} catch (Exception e) {
-			return renderJSONString(1);//更新失败
-		}
-		return renderJSONString(SUCCESS, group);
-	}
+//	@RequestMapping(value = "/update", produces = { "application/json;charset=UTF-8" })
+//	public String update(int id, String name, String logo) {
+//		Group group = new Group();
+//		group.setId(id);
+//		group.setName(name);
+//		group.setLogo(logo);
+//		try {
+//			groupService.updateGroup(group);
+//			group = groupService.getGroupById(id);
+//		} catch (Exception e) {
+//			return renderJSONString(1);//更新失败
+//		}
+//		return renderJSONString(SUCCESS, group);
+//	}
 }

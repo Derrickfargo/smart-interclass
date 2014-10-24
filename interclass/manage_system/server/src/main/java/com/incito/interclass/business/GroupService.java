@@ -101,4 +101,13 @@ public class GroupService {
 		 groupMapper.joinGroup(groupId, studentId);
 		 return null;
 	}
+
+	/**
+	 * 通过队长ID 找到组的ID 并删除
+	 * @param studentId
+	 * @return
+	 */
+	public Group getGroupIdByCaptainId(String studentId) {
+		return groupMapper.getGroupIdByCaptainId(studentId);
+	}
 }

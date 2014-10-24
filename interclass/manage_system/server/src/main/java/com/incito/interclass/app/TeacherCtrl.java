@@ -12,12 +12,15 @@ import com.incito.interclass.app.result.ApiResult;
 import com.incito.interclass.app.result.TeacherGroupResultData;
 import com.incito.interclass.app.result.TeacherLoginResultData;
 import com.incito.interclass.business.ClassService;
+import com.incito.interclass.business.CourseService;
 import com.incito.interclass.business.DeviceService;
 import com.incito.interclass.business.GroupService;
 import com.incito.interclass.business.UserService;
 import com.incito.interclass.common.BaseCtrl;
 import com.incito.interclass.entity.Classes;
+import com.incito.interclass.entity.Course;
 import com.incito.interclass.entity.Group;
+import com.incito.interclass.entity.Student;
 import com.incito.interclass.entity.Teacher;
 
 @RestController
@@ -45,6 +48,9 @@ public class TeacherCtrl extends BaseCtrl {
 	@Autowired
 	private DeviceService deviceService;
 	
+	@Autowired
+	private CourseService courseService;
+	
 	/**
 	 * 教师登陆
 	 * @param uname
@@ -64,10 +70,11 @@ public class TeacherCtrl extends BaseCtrl {
 		Calendar calendar = Calendar.getInstance();
 		int year = calendar.get(Calendar.YEAR);
 		List<Classes> classes = classService.getClassList(year);
-		
+		Course course = courseService.getCourseById(teacher.getCourseId());
 		TeacherLoginResultData data = new TeacherLoginResultData();
 		data.setTeacher(teacher);
 		data.setClasses(classes);
+		data.setCourse(course);
 		ApiResult result = new ApiResult();
 		result.setCode(ApiResult.SUCCESS);
 		result.setData(data);
@@ -82,8 +89,7 @@ public class TeacherCtrl extends BaseCtrl {
 	 * @return
 	 */
 	@RequestMapping(value = "/group", produces = { "application/json;charset=UTF-8" })
-	public String group(int schoolId, int teacherId, int courseId, int year,
-			int classNumber) {
+	public String group(int schoolId, int teacherId, int year, int classNumber) {
 		Classes classes = classService.getClassByNumber(schoolId, year, classNumber);
 		if (classes == null || classes.getId() == 0) {//不存在当前班级，添加
 			classes = new Classes();
@@ -94,9 +100,7 @@ public class TeacherCtrl extends BaseCtrl {
 		}
 		//获得当前课堂的分组列表
 		List<Group> groups = groupService.getGroupList(teacherId,classes.getId());
-		//选择的课程
-//		Course course = courseService.getCourseById(courseId);
-				
+		List<Student> student = userService.getStudentByClassId(classes.getId());
 		TeacherGroupResultData data = new TeacherGroupResultData();
 		data.setGroups(groups);
 		data.setClasses(classes);
