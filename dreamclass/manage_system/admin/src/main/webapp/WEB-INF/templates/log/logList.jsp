@@ -71,6 +71,10 @@
 									<div class="col-xs-2">
 										<input type="text" name="key" value="${key}" class="form-control borderRadiusIE8">
 									</div>
+									<label class="col-xs-1 control-label">Mac地址:</label>
+									<div class="col-xs-2">
+										<input type="text" name="address" class="form-control borderRadiusIE8" value="${address}">
+									</div>
 									<button type="button" class="btn btn-primary" onclick="searchLog('1')">搜索</button>
 									<button type="button" class="btn btn-primary" onclick="emptyForm('searchForm')">清空</button>
 								</div>

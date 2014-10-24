@@ -1,5 +1,26 @@
 //页面初始化设置
 $(document).ready(function() {
+	$("#autocompleteInput").autocomplete({
+        source:function(query,process){
+            var matchCount = 10;//返回结果集最大数量
+            $.post("/admin/room/search",{"name":query,"pageNum":matchCount},function(respData){
+             
+            	return process(respData);
+            });
+        },
+        formatItem:function(item){
+        	return item["name"];
+        },
+        setValue:function(item){
+            return {"data-value":item["name"],"real-value":item["name"]};
+        }
+    });
+ 
+	$("#goBtn").click(function(){ //获取文本框的实际值
+        var regionCode = $("#autocompleteInput").attr("real-value") || "";
+        alert(regionCode);
+    });
+	
 	$("#roomForm").validate({
 		submitHandler:function(form){
 			var flag = true;

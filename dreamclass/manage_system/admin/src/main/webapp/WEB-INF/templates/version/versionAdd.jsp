@@ -46,15 +46,15 @@
 												</div>
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>版本号：</label>
 												<div class="col-xs-4">
-													<input type="text" name="name" id="name" value="${version.name}" maxlength="32" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkNameTip').addClass('hidden')">
+													<input type="text" name="name" id="name" value="${version.name}" maxlength="32" class="form-control borderRadiusIE8 required "/>
 													<p id="checkNameTip" class="help-block hidden"><font color="red"><b>请输入版本号</b></font></p>
 												</div>
 											</div>
 											<div class="form-group">
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>版本代码：</label>
 												<div class="col-xs-4">
-													<input type="text" name="code" id="code" value="${version.code}" maxlength="8" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkCodeTip').addClass('hidden')">
-													<p id="checkCodeTip" class="help-block hidden"><font color="red"><b>请输入2-8个汉字</b></font></p>
+													<input type="text" name="code" id="code" value="${version.code}" maxlength="8" class="form-control borderRadiusIE8 required"   onkeyup="$('#checkCodeTip').addClass('hidden')">
+													<p id="checkCodeTip" class="help-block hidden"><font color="red"><b>请输入数字</b></font></p>
 												</div>
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>版本文件：</label>
 												<div class="col-xs-4">
@@ -63,9 +63,9 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>版本描述：</label>
+												<label class="col-xs-2 control-label"><span class="span-red-bold ">* </span>版本描述：</label>
 												<div class="col-xs-10">
-													<textarea name="description" id="description" class="col-xs-12" rows="5" cols="10"></textarea>
+													<textarea name="description" id="description" class="col-xs-12 required" rows="5" cols="10"></textarea>
 												</div>
 											</div>
 											<!-- 

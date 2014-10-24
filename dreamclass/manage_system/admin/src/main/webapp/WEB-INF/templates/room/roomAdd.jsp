@@ -17,6 +17,7 @@
 <script type="text/javascript" src="${path}/lib/jquery-validation/messages_zh.js"></script>
 <script type="text/javascript" src="${path}/lib/md5.js"></script>
 <script type="text/javascript" src="${path}/js/room.js"></script>
+<script type="text/javascript" src="${path}/lib/bootstrap.autocomplete/bootstrap.autocomplete.js"></script>
 </head>
 
 <body>
@@ -39,15 +40,18 @@
 											<div class="form-room">
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>所属学校：</label>
 												<div class="col-xs-4">
-													<select id="schoolId" name="schoolId" class="form-control" >
+													
+													<input id="autocompleteInput" name="schoolId" class="form-control" autocomplete="off">
+													<!-- <select id="schoolId" name="schoolId" class="form-control" >
 														<c:forEach items="${schools}" var="school">
 														<option value="${school.id }">${school.name }</option>
 														</c:forEach>
-													</select>
+													</select> --> 
+												
 												</div>
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>教室名称：</label>
 												<div class="col-xs-4">
-													<input type="text" name="name" id="roomName" value="${room.name}" maxlength="128" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkRoomNameTip').addClass('hidden')">
+													<input type="text" name="name" id="roomName" value="${room.name}" maxlength="128" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkRoomNameTip').addClass('hidden')" autocomplete="off">
 													<p id="checkRoomNameTip" class="help-block hidden"><font color="red"><b>请输入教室名称</b></font></p>
 												</div>
 											</div>
