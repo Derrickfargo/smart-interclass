@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -34,14 +35,15 @@ public class LogCtrl extends BaseCtrl {
 	 */
 	@RequestMapping("/list")
 	public ModelAndView index(@RequestParam(value = "type", defaultValue = "-1")Integer type,String key, 
-			@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
+			@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,String address) {
 		ModelAndView res = new ModelAndView("log/logList");
 		PageHelper.startPage(pageNum, PAGE_SIZE);
-		List<Log> logs = logService.getLogListByCondition(type,key);
+		List<Log> logs = logService.getLogListByCondition(type,key,address);
 		PageInfo<Log> page = new PageInfo<Log>(logs);
 		res.addObject("page", page);
 		res.addObject("type", type);
 		res.addObject("key", key);
+		res.addObject("address",address);
 		return res;
 	}
 

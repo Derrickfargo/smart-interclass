@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.incito.interclass.entity.Room;
+import com.incito.interclass.entity.School;
 
 public interface RoomMapper {
 	List<Room> getRoomListByByCondition(@Param("schoolName") String schoolName,
@@ -19,4 +20,6 @@ public interface RoomMapper {
 	Integer save(Room room);
 
 	void delete(int id);
+
+	List<School> getRoomListByVagueName(@Param("schoolName") String SchoolName,@Param("pageNum") int pageNum);
 }

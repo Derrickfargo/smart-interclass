@@ -60,7 +60,13 @@ public interface GroupMapper {
 	 * @param groupId
 	 * @param studentId
 	 */
-	void joinGroup(@Param("groupId") String groupId,@Param("studentId") String studentId);
+	Group joinGroup(@Param("groupId") String groupId,@Param("studentId") String studentId);
+
+	/**
+	 * 查找队长所在的组的groupId
+	 * @param studentId
+	 */
+	Group getGroupIdByCaptainId(String studentId);
 
 	
 }

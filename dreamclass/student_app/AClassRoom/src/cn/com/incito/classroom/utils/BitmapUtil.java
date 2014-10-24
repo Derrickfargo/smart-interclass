@@ -23,9 +23,11 @@ import java.util.Map;
 
 
 
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -590,4 +592,28 @@ public class BitmapUtil {
 				(int) height, matrix, true);
 				return bitmap;
 				}
+		
+		/**
+		 * 图片转JPPG
+		 * @param bmp
+		 * @param needRecycle
+		 * @return
+		 */
+		public static byte[] bmpToByteArray(final Bitmap bmp,
+				final boolean needRecycle) {
+			ByteArrayOutputStream output = new ByteArrayOutputStream();
+			bmp.compress(CompressFormat.JPEG, 70, output);
+			if (needRecycle) {
+				bmp.recycle();
+			}
+
+			byte[] result = output.toByteArray();
+			try {
+				output.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			return result;
+		}
 }

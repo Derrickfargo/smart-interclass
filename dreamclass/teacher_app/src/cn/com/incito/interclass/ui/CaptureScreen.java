@@ -44,7 +44,6 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -60,6 +59,7 @@ import cn.com.incito.server.core.Message;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
+import cn.com.incito.server.utils.ImageUtil;
 
 import com.sun.image.codec.jpeg.ImageFormatException;
 
@@ -83,7 +83,6 @@ public class CaptureScreen {
 	 * Creates a new instance of CaptureScreen
 	 */
 	public CaptureScreen(Component jFrame) {
-		// initWindow();
 		this.jFrame = jFrame;
 	}
 
@@ -104,10 +103,25 @@ public class CaptureScreen {
 	 * @throws ImageFormatException
 	 */
 	public void distributePaper(BufferedImage image) {
+		logger.info("作业图像宽度:" + image.getWidth());
+		if (image.getWidth() > 1280) {
+			try {
+				File dir = new File("temp");
+				dir.mkdirs();
+				File file = new File(dir, "temp.png");
+				ImageIO.write(image, "jpg", file);
+				ImageUtil.resize(file, file, 1280, 1f);
+				image = ImageIO.read(file);
+			} catch (Exception e) {
+				logger.error("图像压缩失败!", e);
+			}
+		}
+//		logger.info("压缩后宽度:" + image.getWidth());
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DISTRIBUTE_PAPER);
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		try {
-			ImageIO.write(image, "png", os);
+			ImageIO.write(image, "jpg", os);
+			logger.info("图片大小:" + os.toByteArray().length);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -140,10 +154,7 @@ public class CaptureScreen {
 			Rectangle rec = new Rectangle(0, 0, di.width, di.height);
 			BufferedImage bi = ro.createScreenCapture(rec);
 			JFrame jf = new JFrame();
-			// jf.getContentPane().setLayout(null);
-			jf.getContentPane().add(
-					new ContentPanel(jf, bi, di.width, di.height));
-
+			jf.getContentPane().add(new ContentPanel(jf, bi, di.width, di.height));
 			jf.setUndecorated(true);
 			jf.setSize(di);
 			jf.setVisible(true);
@@ -153,81 +164,11 @@ public class CaptureScreen {
 		}
 	}
 
-	public void doSave() {
-		try {
-			JFileChooser jfc = new JFileChooser(".");
-			jfc.addChoosableFileFilter(new JPGfilter());
-			jfc.addChoosableFileFilter(new PNGfilter());
-			int i = jfc.showSaveDialog(jFrame);
-			if (i == JFileChooser.APPROVE_OPTION) {
-				File file = jfc.getSelectedFile();
-				String about = "PNG";
-				String ext = file.toString().toLowerCase();
-				javax.swing.filechooser.FileFilter ff = jfc.getFileFilter();
-				if (ff instanceof JPGfilter) {
-					if (!ext.endsWith(".jpg")) {
-						String ns = ext + ".jpg";
-						file = new File(ns);
-						about = "JPG";
-					}
-				} else if (ff instanceof PNGfilter) {
-					if (!ext.endsWith(".png")) {
-						String ns = ext + ".png";
-						file = new File(ns);
-						about = "PNG";
-					}
-				}
-
-				if (ImageIO.write(bImage, about, file)) {
-					JOptionPane.showMessageDialog(jFrame, "保存成功！");
-				} else
-					JOptionPane.showMessageDialog(jFrame, "保存失败！");
-			}
-		} catch (Exception exe) {
-			exe.printStackTrace();
-		}
-	}
-
-	// 一个文件后缀名选择器
-	private class JPGfilter extends javax.swing.filechooser.FileFilter {
-		public JPGfilter() {
-
-		}
-
-		public boolean accept(File file) {
-			if (file.toString().toLowerCase().endsWith(".jpg")
-					|| file.toString().toLowerCase().endsWith(".jpeg")
-					|| file.isDirectory()) {
-				return true;
-			} else
-				return false;
-		}
-
-		public String getDescription() {
-			return "*.JPG,*.JPEG(JPG,JPEG图像)";
-		}
-	}
-
-	private class PNGfilter extends javax.swing.filechooser.FileFilter {
-		public boolean accept(File file) {
-			if (file.toString().toLowerCase().endsWith(".png")
-					|| file.isDirectory()) {
-				return true;
-			} else
-				return false;
-		}
-
-		public String getDescription() {
-			return "*.PNG(PNG图像)";
-		}
-	}
-
 	// 一个暂时类，用于显示当前的屏幕图像
 	private class ContentPanel extends JPanel implements MouseListener,
 			MouseMotionListener {
 		private BufferedImage bi;
 		private int width, height;
-		// BarPanel bPanel;
 		private JFrame jf;
 		private Rectangle select = new Rectangle(0, 0, 0, 0);// 表示选中的区域
 		private Cursor cs;// 表示一般情况下的鼠标状态
@@ -242,7 +183,6 @@ public class CaptureScreen {
 			this.height = height;
 
 			this.setLayout(null);
-			// barPanel = new BarPanel(jf, tempX, tempY);
 			this.addMouseListener(this);
 			this.addMouseMotionListener(this);
 			ContentPanel.this.jf.addKeyListener(new KeyAdapter() {
@@ -280,8 +220,7 @@ public class CaptureScreen {
 			g.drawLine(endX, startY, endX, endY);
 			int x = startX < endX ? startX : endX;
 			int y = startY < endY ? startY : endY;
-			select = new Rectangle(x, y, Math.abs(endX - startX), Math.abs(endY
-					- startY));
+			select = new Rectangle(x, y, Math.abs(endX - startX), Math.abs(endY - startY));
 			int x1 = (startX + endX) / 2;
 			int y1 = (startY + endY) / 2;
 			g.fillRect(x1 - 2, startY - 2, 5, 5);
@@ -294,16 +233,11 @@ public class CaptureScreen {
 			g.fillRect(endX - 2, endY - 2, 5, 5);
 			rec[0] = new Rectangle(x - 5, y - 5, 10, 10);
 			rec[1] = new Rectangle(x1 - 5, y - 5, 10, 10);
-			rec[2] = new Rectangle((startX > endX ? startX : endX) - 5, y - 5,
-					10, 10);
-			rec[3] = new Rectangle((startX > endX ? startX : endX) - 5, y1 - 5,
-					10, 10);
-			rec[4] = new Rectangle((startX > endX ? startX : endX) - 5,
-					(startY > endY ? startY : endY) - 5, 10, 10);
-			rec[5] = new Rectangle(x1 - 5, (startY > endY ? startY : endY) - 5,
-					10, 10);
-			rec[6] = new Rectangle(x - 5, (startY > endY ? startY : endY) - 5,
-					10, 10);
+			rec[2] = new Rectangle((startX > endX ? startX : endX) - 5, y - 5, 10, 10);
+			rec[3] = new Rectangle((startX > endX ? startX : endX) - 5, y1 - 5, 10, 10);
+			rec[4] = new Rectangle((startX > endX ? startX : endX) - 5, (startY > endY ? startY : endY) - 5, 10, 10);
+			rec[5] = new Rectangle(x1 - 5, (startY > endY ? startY : endY) - 5, 10, 10);
+			rec[6] = new Rectangle(x - 5, (startY > endY ? startY : endY) - 5, 10, 10);
 			rec[7] = new Rectangle(x - 5, y1 - 5, 10, 10);
 		}
 
@@ -405,7 +339,6 @@ public class CaptureScreen {
 					endY += (y - tempY);
 					tempY = y;
 				}
-				// barPanel.setStartPos(startX, startY+Math.abs(endY - startY));
 			} else if (current == States.SOUTH_EAST) {
 				if (startY > endY) {
 					startY += (y - tempY);
@@ -507,8 +440,6 @@ public class CaptureScreen {
 								+ Math.abs(endY - startY));
 					}
 				}
-
-				// barPanel.setStartPos(tempX, tempY);
 				this.add(barPanel);
 				updateUI();
 
@@ -567,7 +498,6 @@ public class CaptureScreen {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						// TODO Auto-generated method stub
 						sendPaper();
 					}
 				});
@@ -588,8 +518,7 @@ public class CaptureScreen {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						Application.hasQuiz = false;
-						Application.getInstance().getFloatIcon()
-								.synQuzingState();
+						Application.getInstance().getFloatIcon().synQuzingState();
 						MainFrame.getInstance().synQuzingState();
 						MainFrame.getInstance().showNoQuiz();
 						Application.getInstance().getFloatIcon().showNoQuiz();
