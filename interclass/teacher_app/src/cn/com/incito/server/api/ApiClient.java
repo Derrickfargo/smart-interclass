@@ -40,15 +40,17 @@ public class ApiClient {
 	private final static int TIMEOUT_SOCKET = 20000;
 	private final static int RETRY_TIME = 3;
 
-
 	private static HttpClient getHttpClient() {
 		HttpClient httpClient = new HttpClient();
 		// 设置 默认的超时重试处理策略
-		httpClient.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler());
+		httpClient.getParams().setParameter(HttpMethodParams.RETRY_HANDLER,
+				new DefaultHttpMethodRetryHandler());
 		// 设置 连接超时时间
-		httpClient.getHttpConnectionManager().getParams().setConnectionTimeout(TIMEOUT_CONNECTION);
+		httpClient.getHttpConnectionManager().getParams()
+				.setConnectionTimeout(TIMEOUT_CONNECTION);
 		// 设置 读数据超时时间
-		httpClient.getHttpConnectionManager().getParams().setSoTimeout(TIMEOUT_SOCKET);
+		httpClient.getHttpConnectionManager().getParams()
+				.setSoTimeout(TIMEOUT_SOCKET);
 		// 设置 字符集
 		httpClient.getParams().setContentCharset(UTF_8);
 		return httpClient;
@@ -71,7 +73,7 @@ public class ApiClient {
 	private static PostMethod getHttpPost(String url) {
 		PostMethod httpPost = new PostMethod(url);
 		// 设置 请求超时时间
-//		httpPost.getParams().setSoTimeout(TIMEOUT_SOCKET);
+		// httpPost.getParams().setSoTimeout(TIMEOUT_SOCKET);
 		httpPost.setRequestHeader("Host", URLs.HOST);
 		httpPost.setRequestHeader("Connection", "Keep-Alive");
 		return httpPost;
@@ -157,9 +159,8 @@ public class ApiClient {
 	 * @param files
 	 * @throws AppException
 	 */
-	private static String _post(String url,
-			Map<String, Object> params, Map<String, File> files)
-			throws AppException {
+	public static String _post(String url, Map<String, Object> params,
+			Map<String, File> files) throws AppException {
 		// System.out.println("post_url==> "+url);
 		HttpClient httpClient = null;
 		PostMethod httpPost = null;
@@ -237,6 +238,7 @@ public class ApiClient {
 
 	/**
 	 * 教师登陆
+	 * 
 	 * @param mac
 	 * @param uname
 	 * @param password
@@ -244,7 +246,7 @@ public class ApiClient {
 	 * @throws AppException
 	 */
 	public static String loginForTeacher(String mac, String uname,
-			String password) throws AppException{
+			String password) throws AppException {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("mac", mac);
 		params.put("uname", uname);
@@ -257,10 +259,10 @@ public class ApiClient {
 			throw AppException.network(e);
 		}
 	}
-	
-	
+
 	/**
 	 * 获得分组列表
+	 * 
 	 * @param schoolId
 	 * @param roomId
 	 * @param teacherId
@@ -270,8 +272,8 @@ public class ApiClient {
 	 * @return
 	 * @throws AppException
 	 */
-	public static String getGroupList(int schoolId, int teacherId,  int classId,
-			String className) throws AppException{
+	public static String getGroupList(int schoolId, int teacherId, int classId,
+			String className) throws AppException {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("schoolId", schoolId);
 		params.put("teacherId", teacherId);
@@ -285,9 +287,10 @@ public class ApiClient {
 			throw AppException.network(e);
 		}
 	}
-	
+
 	/**
 	 * 注册学生走这个api
+	 * 
 	 * @param name
 	 * @param sex
 	 * @param number
@@ -295,7 +298,8 @@ public class ApiClient {
 	 * @return
 	 * @throws AppException
 	 */
-	public static String loginForStudent(String name,int sex ,String number,String imei) throws AppException{
+	public static String loginForStudent(String name, int sex, String number,
+			String imei) throws AppException {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("courseId", Application.getInstance().getCourse().getId());
 		params.put("classId", Application.getInstance().getClasses().getId());
@@ -317,8 +321,9 @@ public class ApiClient {
 			throw AppException.network(e);
 		}
 	}
-	
-	public static String updateGroup(int id, String name, String logo) throws AppException {
+
+	public static String updateGroup(int id, String name, String logo)
+			throws AppException {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", id);
 		params.put("name", name);
@@ -331,8 +336,8 @@ public class ApiClient {
 			throw AppException.network(e);
 		}
 	}
-	
-	public static void uploadErrorLog(String reason){
+
+	public static void uploadErrorLog(String reason) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("type", 1);
 		String mac = Application.getInstance().getMac();
@@ -343,10 +348,10 @@ public class ApiClient {
 		try {
 			_post(URLs.URL_UPLOAD_LOG, params, files);
 		} catch (Exception e) {
-			
+
 		}
 	}
-	
+
 	public static String checkUpdate() throws AppException {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("type", 1);

@@ -23,6 +23,15 @@ public class URLs {
 	private final static String URL_SPLITTER = "/";
 	public final static String HOST = IP + ":" + PORT + "/app";
 	private final static String URL_API_HOST = HTTP + HOST + URL_SPLITTER;
+	/**
+	 * 加入小组
+	 */
+	public static String URL_JOIN_GROUP = URL_API_HOST + "api/group/join";
+	/**
+	 * 创建小组
+	 */
+	public static String URL_DELETE_GROUP = URL_API_HOST + "api/group/delete";
+	
 	
 	/**
 	 * 分数奖励

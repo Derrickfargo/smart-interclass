@@ -285,8 +285,8 @@ public class Application {
      * @param devices
      * @param tables
      */
-    public void initMapping(List<Device> devices, List<Group> groups) {
-        this.initImeiDevice(devices);
+    public void initMapping(List<Student> students, List<Group> groups) {
+//        this.initImeiDevice(devices);
     }
 
     /**
