@@ -40,7 +40,6 @@ import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
-import cn.com.incito.wisdom.sdk.utils.BitmapUtils;
 
 /**
  * 绘画板activity Created by liguangming on 2014/7/28.
@@ -500,8 +499,9 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		messagePacking.putBodyData(DataType.INT, BufferUtils
 				.writeUTFString(MyApplication.getInstance().getDeviceId()));
 		// 图片
+		Logger.debug(BitmapUtil.bmpToByteArray(getBitMap(), true).length+"------");
 		messagePacking.putBodyData(DataType.INT,
-				BitmapUtils.bmpToByteArray(getBitMap(), true));
+				BitmapUtil.bmpToByteArray(getBitMap(), true));
 		CoreSocket.getInstance().sendMessage(messagePacking);
 		Logger.debug(Utils.getTime()+TAG+"启动作业提交...");
 		Log.i(TAG, "启动作业提交...");
