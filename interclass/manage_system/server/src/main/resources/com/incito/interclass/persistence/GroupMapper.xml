@@ -11,7 +11,7 @@
 	    <result column="class_id" property="classId"/>
 	    <result column="ctime" property="ctime"/>
 	    <result column="medals" property="medals"/>
-	    <result column="captainid" property="captainid"/>
+	    <result column="captainid" property="captainId"/>
 		<collection property="students" column="id" ofType="com.incito.interclass.entity.Student" 
 			select="com.incito.interclass.persistence.UserMapper.getStudentByGroupId">  
 		    <id column="id" property="id"/>
@@ -49,7 +49,7 @@
 		VALUES
 			(#{group_id},#{student_id})
 	</insert>
-	<select id="getGroupIdByCaptainId" parameterType="java.util.String" resultMap="com.incito.interclass.entity.Group">
+	<select id="getGroupIdByCaptainId" parameterType="java.lang.Integer" resultMap="GroupUserMap">
 	    SELECT 
 	    tb_group.id,tb_group.name,tb_group.logo,tb_group.slogan,tb_group.medals,tb_group.teacher_id,
 	    tb_group.captainid 
