@@ -112,6 +112,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 				btnImage.getIconHeight());
 		btnBegin.addMouseListener(this);
 		btnBegin.setVisible(false);
+		refresh();
 	}
 
 	public void refresh() {
