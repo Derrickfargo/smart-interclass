@@ -96,10 +96,6 @@ public class MainFrame extends MouseAdapter {
 		quizBottomPanel.synQuzingState();
 	}
 	
-	public void showGrouping() {
-		preparePanel.showGrouping();
-	}
-	
 	public void refreshPrepare() {
 		preparePanel.refresh();
 		quizPanel.refresh();

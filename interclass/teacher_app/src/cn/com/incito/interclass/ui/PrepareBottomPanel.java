@@ -169,25 +169,25 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 		}
 		// 编辑小组信息
 		app.setGrouping(true);
-		MainFrame.getInstance().showGrouping();
-		List<Group> groupList = app.getGroupList();
-		for (Group group : groupList) {
-			JSONObject json = new JSONObject();
-			json.put("group", groupList);
-			MessagePacking messagePacking = new MessagePacking(
-					Message.MESSAGE_GROUP_LIST);
-			messagePacking.putBodyData(DataType.INT,
-					BufferUtils.writeUTFString(json.toString()));
-			Map<String, SocketChannel> channels = app.getClientChannel();
-			List<SocketChannel> channelList = new ArrayList<SocketChannel>();
-			Set set = channels.entrySet();
-			for (Iterator iter = set.iterator(); iter.hasNext();) {
-				Map.Entry entry = (Map.Entry) iter.next();
-				SocketChannel value = (SocketChannel) entry.getValue();
-				channelList.add(value);
-			}
-			sendMessageToGroup(messagePacking, channelList);
-		}
+//		MainFrame.getInstance().showGrouping();
+//		List<Group> groupList = app.getGroupList();
+//		for (Group group : groupList) {
+//			JSONObject json = new JSONObject();
+//			json.put("group", groupList);
+//			MessagePacking messagePacking = new MessagePacking(
+//					Message.MESSAGE_GROUP_LIST);
+//			messagePacking.putBodyData(DataType.INT,
+//					BufferUtils.writeUTFString(json.toString()));
+//			Map<String, SocketChannel> channels = app.getClientChannel();
+//			List<SocketChannel> channelList = new ArrayList<SocketChannel>();
+//			Set set = channels.entrySet();
+//			for (Iterator iter = set.iterator(); iter.hasNext();) {
+//				Map.Entry entry = (Map.Entry) iter.next();
+//				SocketChannel value = (SocketChannel) entry.getValue();
+//				channelList.add(value);
+//			}
+//			sendMessageToGroup(messagePacking, channelList);
+//		}
 	}
 
 	public void setOnClass(boolean isOnClass) {
