@@ -64,7 +64,7 @@ public class Application {
 	private Set<Student> onlineStudent = new HashSet<Student>();
 
 	private Map<Integer, List<SocketChannel>> groupChannel;// 保存每组和已登录的socket
-	private Map<String, List<Student>> imeiStudent = new HashMap<String, List<Student>>();
+	private Map<String, Student> imeiStudent = new HashMap<String, Student>();//key是imei Student是
 	private Map<String, SocketChannel> clientChannel;// 保存所有设备登陆的socket，imei和socket
 	private Map<Integer, Group> groupMap = new HashMap<Integer, Group>();
 	private Map<Integer, JSONObject> tempGroup = new HashMap<Integer, JSONObject>();// 修改的分组信息
@@ -150,128 +150,25 @@ public class Application {
 		getFloatIcon().showQuizMessage(message);
 	}
 
+	
 	public void addLoginStudent(String imei, Student student) {
-		List<Student> studentList = imeiStudent.get(imei);
-		if (studentList == null) {
-			studentList = new ArrayList<Student>();
+		Student mStudent = imeiStudent.get(imei);
+		if (mStudent == null) {
+			mStudent = new Student();
 		}
 		boolean isLogin = false;
-		for (Student aStudent : studentList) {
-			if (aStudent.getName().equals(student.getName())
-					&& aStudent.getNumber().equals(student.getNumber())) {
-				isLogin = true;
-				break;
-			}
+		 for (String key : imeiStudent.keySet()) {
+			 if(imeiStudent.get(key).getName().equals(student.getName())&&imeiStudent.get(key).getNumber().equals(student.getNumber())){
+				 isLogin = true;
+					break;
+			 };
 		}
 		if (!isLogin) {
-			studentList.add(student);
-			imeiStudent.put(imei, studentList);
+			imeiStudent.put(imei, student);
 		}
 	}
 
-	// 需要移除两个容器
-	public void removeLoginStudent(String imei) {
-		List<Student> studentList = imeiStudent.get(imei);
-		if (studentList == null) {
-			studentList = new ArrayList<Student>();
-		}
 
-		for (Student aStudent : studentList) {
-			Iterator<Student> it = onlineStudent.iterator();
-			while (it.hasNext()) {
-				Student student = it.next();
-				if (aStudent.getName().equals(student.getName())
-						&& aStudent.getNumber().equals(student.getNumber())) {
-					it.remove();
-				}
-			}
-		}
-		imeiStudent.remove(imei);
-	}
-
-	/**
-	 * TODO 界面有更改，现需要遍历所有的在线学生
-	 * 
-	 * @param imei
-	 * @param student
-	 */
-	public void removeLoginStudent(String imei, Student student) {
-		List<Student> studentList = imeiStudent.get(imei);
-		if (studentList == null) {
-			studentList = new ArrayList<Student>();
-		}
-		// 先在当前IMEI下找
-		boolean hasStudent = false;
-		Iterator<Student> it = studentList.iterator();
-		while (it.hasNext()) {
-			Student aStudent = it.next();
-			if (aStudent.getName().equals(student.getName())
-					&& aStudent.getNumber().equals(student.getNumber())) {
-				it.remove();
-				hasStudent = true;
-				break;
-			}
-		}
-		if (!hasStudent) {
-			Set<Entry<String, List<Student>>> set = imeiStudent.entrySet();
-			Iterator<Entry<String, List<Student>>> its = set.iterator();
-			while (its.hasNext()) {
-				Entry<String, List<Student>> entry = its.next();
-				List<Student> students = entry.getValue();
-				Iterator<Student> iterator = students.iterator();
-				while (iterator.hasNext()) {
-					Student s = iterator.next();
-					if (s.getName().equals(student.getName())
-							&& s.getNumber().equals(student.getNumber())) {
-						iterator.remove();
-						break;
-					}
-				}
-			}
-		}
-		it = onlineStudent.iterator();
-		while (it.hasNext()) {
-			Student aStudent = it.next();
-			if (aStudent.getName().equals(student.getName())
-					&& aStudent.getNumber().equals(student.getNumber())) {
-				it.remove();
-				break;
-			}
-		}
-	}
-
-	/**
-	 * TODO 界面有更改，现需要遍历所有的在线学生
-	 * 
-	 * @param imei
-	 * @param student
-	 */
-	public void removeLoginStudent(Student student) {
-		Set<Entry<String, List<Student>>> set = imeiStudent.entrySet();
-		Iterator<Entry<String, List<Student>>> its = set.iterator();
-		while (its.hasNext()) {
-			Entry<String, List<Student>> entry = its.next();
-			List<Student> students = entry.getValue();
-			Iterator<Student> iterator = students.iterator();
-			while (iterator.hasNext()) {
-				Student s = iterator.next();
-				if (s.getName().equals(student.getName())
-						&& s.getNumber().equals(student.getNumber())) {
-					iterator.remove();
-					break;
-				}
-			}
-		}
-		Iterator<Student> it = onlineStudent.iterator();
-		while (it.hasNext()) {
-			Student aStudent = it.next();
-			if (aStudent.getName().equals(student.getName())
-					&& aStudent.getNumber().equals(student.getNumber())) {
-				it.remove();
-				break;
-			}
-		}
-	}
 
 	public Map<String, SocketChannel> getClientChannel() {
 		return clientChannel;
@@ -474,7 +371,7 @@ public class Application {
 		this.quizId = quizId;
 	}
 
-	public List<Student> getStudentByImei(String imei) {
+	public Student getStudentByImei(String imei) {
 		return imeiStudent.get(imei);
 	}
 

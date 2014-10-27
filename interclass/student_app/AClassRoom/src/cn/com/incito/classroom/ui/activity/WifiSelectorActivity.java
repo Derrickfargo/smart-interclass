@@ -13,6 +13,9 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -22,7 +25,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,21 +34,34 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.com.incito.classroom.R;
+import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.BaseActivity;
+import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.classroom.utils.ApiClient;
 import cn.com.incito.common.utils.ToastHelper;
+import cn.com.incito.socket.core.CoreSocket;
+import cn.com.incito.socket.core.Message;
+import cn.com.incito.socket.message.DataType;
+import cn.com.incito.socket.message.MessagePacking;
+import cn.com.incito.socket.utils.BufferUtils;
+import cn.com.incito.wisdom.sdk.log.WLog;
+
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * 无线WIFI选择页面.
  * 
  * @author lgm
  */
-public class WifiSelectorActivity extends BaseActivity {
-
-	private ListView gridView_wifi;
+public class WifiSelectorActivity extends BaseActivity  {
+	private ImageButton ib_setting_ip;
+	private IpSettingDialogFragment dialog;
+	private ListView listView_wifi;
 	private ArrayList<IWifiItem> mWifiItems = new ArrayList<IWifiItem>();
 	private IWifiListAdapter mWifiListAdapter;
 	private String TAG = "WifiSelectorActivity";
@@ -53,7 +69,6 @@ public class WifiSelectorActivity extends BaseActivity {
 	private IWifiStatusChangedReceiver mWifiIntentReceiver;
 	private INetStatusChangedReceiver mNetStatusChangedReceiver;
 	private WifiManager mWifiManager;
-	private Handler mHandler;
 	private boolean isAutoInvalidate = false;
 	
 	// 自动刷新Wifi列表的时长
@@ -63,6 +78,7 @@ public class WifiSelectorActivity extends BaseActivity {
 	
 	// 是否允许出现相同的wifi名称
 	private boolean isAllowRepeat = true;
+	private int code;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,21 +86,30 @@ public class WifiSelectorActivity extends BaseActivity {
 		setContentView(R.layout.activity_wifiselector);
 		initWifi();
 		initViews();
+		try {
+			PackageManager pm = getPackageManager();
+			PackageInfo info = pm.getPackageInfo("cn.com.incito.classroom", 0);
+			code = info.versionCode;
+		} catch (NameNotFoundException e) {
+			ApiClient.uploadErrorLog(e.getMessage());
+		}
 	}
 
 	/**
 	 * 初始化UI
 	 */
 	private void initViews() {
-		gridView_wifi = (ListView) findViewById(R.id.wifiselector_main_listview);
+		ib_setting_ip = (ImageButton) findViewById(R.id.ib_setting_ip);
+		ib_setting_ip.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				showSettingDialog();
+			}
+		});
+		listView_wifi = (ListView) findViewById(R.id.wifiselector_main_listview);
 		mWifiListAdapter = new IWifiListAdapter();
-		
-		
-		gridView_wifi.setAdapter(mWifiListAdapter);
-
-
-		gridView_wifi.setOnItemClickListener(new OnItemClickListener() {
-
+		listView_wifi.setAdapter(mWifiListAdapter);
+		listView_wifi.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
@@ -106,6 +131,7 @@ public class WifiSelectorActivity extends BaseActivity {
 									connectToWifi(mCurrentWifiItem,
 											passwordEdit.getText().toString(),
 											IWifiSecurityType.SECURITY_TYPE_WPA);
+								
 									dialog.dismiss();
 								}
 							}).setNegativeButton("取消", new OnClickListener() {
@@ -144,9 +170,8 @@ public class WifiSelectorActivity extends BaseActivity {
 	@SuppressLint("HandlerLeak")
 	private class IFlushHander extends Handler {
 		@Override
-		public void handleMessage(Message msg) {
+		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
-
 			default:
 				invalidateNetListData();
 				mWifiListAdapter.notifyDataSetChanged();
@@ -166,7 +191,6 @@ public class WifiSelectorActivity extends BaseActivity {
 	 */
 	private void initWifi() {
 		mWifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-
 		// 监听wifi状态变化
 		IntentFilter mWifiIntentFilter = new IntentFilter();
 		mWifiIntentFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
@@ -533,8 +557,7 @@ public class WifiSelectorActivity extends BaseActivity {
 		}
 		int wcgID = mWifiManager.addNetwork(config);
 		if (mWifiManager.enableNetwork(wcgID, true)) {
-			Intent intent = new Intent(this, SelectGroupActivity.class);
-			startActivity(intent);
+			startMain();
 		} else {
 			ToastHelper.showCustomToast(this, R.string.wifi_password_error);
 		}
@@ -549,8 +572,7 @@ public class WifiSelectorActivity extends BaseActivity {
 	private boolean isWifiNetConnected() {
 		boolean isConnected = false;
 		ConnectivityManager connectMgr = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-		NetworkInfo wifiNetInfo = connectMgr
-				.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+		NetworkInfo wifiNetInfo = connectMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 		isConnected = wifiNetInfo.isConnected();
 		/*
 		 * if(wifiNetInfo.isConnected()){ Toast.makeText(getBaseContext(),
@@ -600,7 +622,136 @@ public class WifiSelectorActivity extends BaseActivity {
 		}
 		return null;
 	}
+	/**
+	 * 启动主界面
+	 */
 
+	private void startMain() {
+		Log.i("WifiSelectorActivity", "startMain");
+		new Thread() {
+			public void run() {
+				while (true) {
+					Log.i("WifiSelectorActivity", "检查WiFi是否连接 ");
+					if (isWifiNetConnected()) {
+						MyApplication app = MyApplication.getInstance();
+						WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+						WifiInfo info = wifi.getConnectionInfo();
+						app.setDeviceId(info.getMacAddress().replace(":", "-"));
+						Log.i("WifiSelectorActivity", "WiFi已连接，检查Socket是否连接 ");
+						// //TODO 升级
+//						try {
+//							JSONObject updateResult = JSONObject
+//									.parseObject(ApiClient.updateApk(code));
+//							WLog.i(WifiSelectorActivity.class, "版本更新返回信息："
+//									+ updateResult);
+//							if (updateResult.getInteger("code") == 0) {
+//								Version version = JSON.parseObject(updateResult.getJSONObject("data").toJSONString(),Version.class);
+//								String url = "http://localhost:8080/api/version/download?id="+ version.getId();
+//								UpdateManager mUpdateManager = new UpdateManager(
+//										WifiSelectorActivity.this, url);
+//								mUpdateManager.checkUpdateInfo();
+//							} else {
+//							}
+//						} catch (AppException e) {
+//							ApiClient.uploadErrorLog(e.getMessage());
+//							e.printStackTrace();
+//						}
+						if (!CoreSocket.getInstance().isConnected()) {
+							Log.i("WifiSelectorActivity","Socket无连接，开始Socket重连，startMain退出 ");
+							CoreSocket.getInstance().disconnect();
+							showSetting();
+							restartConnector();
+							break;
+						} else {
+							Log.i("WifiSelectorActivity","Socket已连接，开始登陆，startMain退出 ");
+							startMainAct();
+						}
+						break;
+					}else{
+						
+					}
+				}
+			}
+		}.start();
+	}
+
+	private Handler mHandler = new Handler() {
+		@Override
+		public void handleMessage(android.os.Message msg) {
+			switch (msg.what) {
+			case 0:
+				ib_setting_ip.setVisibility(View.VISIBLE);
+			default:
+				break;
+			}
+		}
+	};
+	private void showSettingDialog() {
+		dialog = new IpSettingDialogFragment();
+		dialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+		dialog.show(getSupportFragmentManager(), "");
+	}
+	/**
+	 * 发送登陆请求
+	 */
+	public void startMainAct() {
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("imei", MyApplication.deviceId);
+		MessagePacking messagePacking = new MessagePacking(
+				Message.MESSAGE_STUDENT_LOGIN);
+		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(jsonObject.toJSONString()));
+		CoreSocket.getInstance().sendMessage(messagePacking);
+		WLog.i(WifiSelectorActivity.class,
+				"开始判定设备是否绑定..." + "request:" + jsonObject.toJSONString());
+	}
+
+	/**
+	 * 重新建立连接
+	 */
+	public void restartConnector() {
+		new Thread() {
+			public void run() {
+				while (Boolean.TRUE) {
+					WifiSelectorActivity.this.sleep(3000);
+					Log.i("WifiSelectorActivity", "Socket开始重连 ");
+					CoreSocket.getInstance().restartConnection();
+					WifiSelectorActivity.this.sleep(3000);// 等待1秒后检查连接
+					if (!CoreSocket.getInstance().isConnected()) {
+						Log.i("WifiSelectorActivity", "Socket未连接 ");
+						CoreSocket.getInstance().disconnect();
+						continue;
+					}
+					Log.i("WifiSelectorActivity", "Socket已连接 ");
+					if (dialog != null) {
+						dialog.dismiss();
+					}
+//					startMainAct();
+					break;
+				}
+			}
+		}.start();
+	}
+
+	public void sleep(int seconds) {
+		try {
+			Thread.sleep(seconds);
+		} catch (InterruptedException e) {
+			ApiClient.uploadErrorLog(e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	private void showSetting() {
+		android.os.Message message = new android.os.Message();
+		message.what = 0;
+		mHandler.sendMessage(message);
+		// mHandler.sendEmptyMessage(0);
+	}
+
+	@Override
+	public void onBackPressed() {
+		AppManager.getAppManager().AppExit(this);
+	}
+	
 	// /**
 	// * 跳转到模块选择页面
 	// */

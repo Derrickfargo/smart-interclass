@@ -4,19 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.com.incito.classroom.utils.ApiClient;
-import cn.com.incito.socket.handler.DeviceLoginHandler;
-import cn.com.incito.socket.handler.LockScreenHandler;
-import cn.com.incito.socket.handler.SavePaperResultHandler;
-import cn.com.incito.socket.handler.VoteGroupInfoHandler;
-import cn.com.incito.socket.handler.DeviceBindHandler;
-import cn.com.incito.socket.handler.DeviceHasBindHandler;
+import cn.com.incito.socket.handler.ClassReadyHandler;
 import cn.com.incito.socket.handler.DistributePaperHandler;
-import cn.com.incito.socket.handler.GroupSubmitHandler;
 import cn.com.incito.socket.handler.GroupEditHandler;
 import cn.com.incito.socket.handler.GroupListHandler;
+import cn.com.incito.socket.handler.GroupSubmitHandler;
 import cn.com.incito.socket.handler.HeartbeatHandler;
+import cn.com.incito.socket.handler.LockScreenHandler;
+import cn.com.incito.socket.handler.LoginHandler;
 import cn.com.incito.socket.handler.SavePaperHandler;
-import cn.com.incito.socket.handler.StudentLoginHandler;
+import cn.com.incito.socket.handler.SavePaperResultHandler;
 import cn.com.incito.wisdom.sdk.log.WLog;
 
 /**
@@ -39,22 +36,16 @@ public final class MessageHandlerResource {
 
     private MessageHandlerResource() {
         handlerResources = new HashMap<Byte, Class<? extends MessageHandler>>();
+        //学生登录的handler
+        handlerResources.put(Message.MESSAGE_STUDENT_LOGIN, ClassReadyHandler.class);
         //设备登陆消息回复，用于启动心跳
-        handlerResources.put(Message.MESSAGE_HAND_SHAKE, DeviceLoginHandler.class);
+        handlerResources.put(Message.MESSAGE_HAND_SHAKE, LoginHandler.class);
         //心跳消息
         handlerResources.put(Message.MESSAGE_HEART_BEAT, HeartbeatHandler.class);
         //获取分组消息
         handlerResources.put(Message.MESSAGE_GROUP_LIST, GroupListHandler.class);
-        //学生登陆消息
-        handlerResources.put(Message.MESSAGE_STUDENT_LOGIN, StudentLoginHandler.class);
-        //设备是否绑定消息
-        handlerResources.put(Message.MESSAGE_DEVICE_HAS_BIND, DeviceHasBindHandler.class);
-        //设备绑定消息
-        handlerResources.put(Message.MESSAGE_DEVICE_BIND, DeviceBindHandler.class);
         //编辑小组信息
         handlerResources.put(Message.MESSAGE_GROUP_EDIT, GroupEditHandler.class);
-        //确认小组信息
-        handlerResources.put(Message.MESSAGE_GROUP_VOTE, VoteGroupInfoHandler.class);
         //提交小组信息
         handlerResources.put(Message.MESSAGE_GROUP_CONFIRM, GroupSubmitHandler.class);
         //收到作业

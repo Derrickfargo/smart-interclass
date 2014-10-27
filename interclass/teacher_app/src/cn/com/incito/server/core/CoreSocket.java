@@ -10,10 +10,9 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -194,9 +193,9 @@ public final class CoreSocket extends Thread {
 					while (it.hasNext()) {
 						Entry<String, SocketChannel> entry = it.next();
 						String imei = entry.getKey();
-						List<Student> students = app.getStudentByImei(imei);
+						Student students = app.getStudentByImei(imei);
 						//记录有学生登陆的Pad
-						if (students != null && students.size() > 0) {
+						if (students != null) {
 							SocketChannel channel = entry.getValue();
 							if (channel != null && channel.isConnected()) {
 								// 输出到通道

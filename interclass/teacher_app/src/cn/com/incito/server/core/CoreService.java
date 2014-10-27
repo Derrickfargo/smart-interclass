@@ -59,7 +59,7 @@ public class CoreService {
 //				}
 //			}
 //		}
-		app.removeLoginStudent(imei);
+//		app.removeLoginStudent(imei);
 		app.getOnlineDevice().remove(imei);
 		Application.getInstance().getClientChannel().remove(imei);
 		app.refresh();// 更新UI
@@ -105,101 +105,18 @@ public class CoreService {
 	 * @param imei
 	 * @return
 	 */
-	public String login(String uname, int sex, String number, String imei) {
+	public String login(String imei) {
 		Device device = app.getImeiDevice().get(imei);
 		if (device == null) {
 			// 系统中无此设备
 			return JSONUtils.renderJSONString(1);// 失败
+		}else{
+			return JSONUtils.renderJSONString(0, app.getStudentByImei(imei));
 		}
-//		Group group = app.getTableGroup().get(table.getId());
-//		app.addGroup(group);
-//		for (Student student : group.getStudents()) {
-//			if (student.getUname().equals(uname)
-//					&& student.getNumber().equals(number)) {
-//				student.setLogin(true);
-//				app.getOnlineStudent().add(student);// 加入在线的学生
-//				app.addLoginStudent(imei, student);
-//				app.refresh();// 更新UI
-//				return JSONUtils.renderJSONString(0, group);
-//			}
-//		}
-		return register(uname, sex, number, imei);// 学生未注册
+		
 	}
 
-	/**
-	 * 注销
-	 *
-	 * @param uname
-	 * @param sex
-	 * @param number
-	 * @param imei
-	 * @return
-	 */
-	public String logout(String uname, int sex, String number, String imei) {
-		Device device = app.getImeiDevice().get(imei);
-		if (device == null) {
-			// 系统中无此设备
-			return JSONUtils.renderJSONString(1);// 失败
-		}
-//		Group group = app.getTableGroup().get(device.getId());
-//		for (Student student : group.getStudents()) {
-//			if (student.getUname().equals(uname)
-//					&& student.getNumber().equals(number)) {
-//				student.setLogin(false);
-//				app.getOnlineStudent().remove(student);
-//				app.removeLoginStudent(imei, student);
-//				app.refresh();// 更新UI
-//				return JSONUtils.renderJSONString(0, group);
-//			}
-//		}
-		return JSONUtils.renderJSONString(3);// 失败
-	}
 
-	/**
-	 * 注册
-	 *
-	 * @param uname
-	 * @param sex
-	 * @param number
-	 * @param imei
-	 * @return
-	 */
-	public String register(String uname, int sex, String number, String imei) {
-		try {
-			final String result = ApiClient.loginForStudent(uname, sex, number, imei);
-			if (result != null && !result.equals("")) {
-				JSONObject jsonObject = JSON.parseObject(result);
-				if (jsonObject.getIntValue("code") == 0) {
-					String data = jsonObject.getString("data");
-					Group group = JSON.parseObject(data, Group.class);
-					for (Student student : group.getStudents()) {
-						if ((student.getName() + student.getNumber()).equals(uname + number)) {
-							student.setLogin(true);
-							//检查当前注册的学生是否之前在别的小组，存在则从之前的组中剔除
-							sendOtherPadLogout(uname, number);
-							//注册学生必须在这里先移除，有可能是切换分组
-							app.removeLoginStudent(student);
-							app.getOnlineStudent().add(student);
-							app.addLoginStudent(imei, student);
-						}
-						if (app.getOnlineStudent().contains(student)) {
-							student.setLogin(true);
-						}
-					}
-					app.addGroup(group);
-//					app.getTableGroup().put(group.getTableId(), group);
-					app.refresh();// 更新UI
-					return JSONUtils.renderJSONString(JSONUtils.SUCCESS, group);
-				}
-				return result;
-			}
-		} catch (Exception e) {
-			if (e instanceof AppException) {
-				return JSONUtils.renderJSONString(1);// 失败
-			}
-		}
-		return JSONUtils.renderJSONString(2);// 失败
-	}
 
 	/**
 	 * 将其他组的相同人员剔除
@@ -340,15 +257,10 @@ public class CoreService {
 		quiz.setImei(imei);
 		quiz.setLessionid(lessionid);
 		StringBuffer name = new StringBuffer();
-		List<Student> students = app.getStudentByImei(imei);
-		if (students != null) {
-			for (Student student : students) {
-				name.append(student.getName());
-				name.append(",");
-			}
-		}
-		if (name.length() != 0) {
-			quiz.setName(name.deleteCharAt(name.length() - 1).toString());
+		
+		Student students = app.getStudentByImei(imei);
+		if (students.getName().length() != 0) {
+			quiz.setName(students.getName());
 		}
 		quiz.setTime(System.currentTimeMillis());
 		Group group = getGroupObjectByIMEI(imei);
