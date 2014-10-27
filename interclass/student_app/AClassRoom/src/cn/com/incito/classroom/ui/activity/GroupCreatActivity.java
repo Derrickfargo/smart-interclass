@@ -3,6 +3,8 @@ package cn.com.incito.classroom.ui.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,6 +31,11 @@ public class GroupCreatActivity extends BaseActivity implements OnClickListener{
 		setContentView(R.layout.creat_group_activity);
 		
 		initView();
+	}
+	
+	public static void startSelf(Context context){
+		Intent intent = new Intent(context,GroupCreatActivity.class);
+		context.startActivity(intent);
 	}
 	
 	private void initView(){

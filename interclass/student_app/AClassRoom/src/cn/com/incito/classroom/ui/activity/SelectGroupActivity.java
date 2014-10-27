@@ -3,7 +3,6 @@ package cn.com.incito.classroom.ui.activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -38,8 +37,7 @@ public class SelectGroupActivity extends BaseActivity implements OnClickListener
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.btn_create_group:
-				Intent intent = new Intent(this,GroupCreatActivity.class);
-				startActivity(intent);			
+				GroupCreatActivity.startSelf(this);	
 			break;
 		default:
 			break;
