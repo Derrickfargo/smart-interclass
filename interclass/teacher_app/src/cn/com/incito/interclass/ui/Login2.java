@@ -181,11 +181,11 @@ public class Login2 extends MouseAdapter {
 	}
 
 	private void initData() {
-//		for (Course course : courseList) {
-//			Item item = new Item(course.getId(), course.getName());
-//			jcbCourse.addItem(item);
-//		}
-//		jcbCourse.setMaximumRowCount(7);
+		for (Course course : courseList) {
+			Item item = new Item(course.getId(), course.getName());
+			jcbCourse.addItem(item);
+		}
+		jcbCourse.setMaximumRowCount(7);
 		for (int i = 1; i <= 9; i++) {
 			Item item = new Item(i, i + "年级");
 			jcbClass.addItem(item);
@@ -295,9 +295,8 @@ public class Login2 extends MouseAdapter {
 	private void doGetGroup() {
 		int schoolId = app.getTeacher().getSchoolId();
 		int teacherId = app.getTeacher().getId();
-//		Item course = (Item) jcbCourse.getSelectedItem();
-//		int courseId = course.getKey();
-		int courseId = 0;
+		Item course = (Item) jcbCourse.getSelectedItem();
+		int courseId = course.getKey();
 		
 		Item classItem = (Item)jcbClass.getSelectedItem();
 		int grade = classItem.getKey();
@@ -340,7 +339,10 @@ public class Login2 extends MouseAdapter {
 					frame.setVisible(false);
 					// 第二步获得班级、课程、设备、课桌、分组数据
 					Application.getInstance().setClasses(resultData.getClasses());
-//					Application.getInstance().setCourse(resultData.getCourse());
+					Application.getInstance().setCourse(resultData.getCourse());
+					Application.getInstance().setGroupList(resultData.getGroups());
+//					Application.getInstance().setDeviceList(resultData.getDevices());
+					Application.getInstance().setStudentList(resultData.getStudents());
 //					Application.getInstance().initMapping(resultData.getDevices(), resultData.getGroups());
 					MainFrame.getInstance().setVisible(true);
 					SwingUtilities.invokeLater(new Runnable() {
