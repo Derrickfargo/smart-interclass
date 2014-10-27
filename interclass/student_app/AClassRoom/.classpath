@@ -8,6 +8,7 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry exported="true" kind="lib" path="libs/netty-android-3.8.0.Final.jar"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/framwork"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/framework"/>
+	<classpathentry kind="src" path="/WisdomUIComp"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

@@ -30,4 +30,7 @@
     <string name="btn_retry">重试</string>
     <string name="btn_setting">设置</string>
     
+    <string name="wifi_password_error">wifi密码输入错误</string>
+    <string name="please_input_group_name">请输入小组名称</string>
+    
 </resources>
