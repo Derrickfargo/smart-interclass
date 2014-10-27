@@ -3,15 +3,33 @@ package com.incito.interclass.app.result;
 import java.util.List;
 
 import com.incito.interclass.entity.Classes;
+import com.incito.interclass.entity.Course;
 import com.incito.interclass.entity.Device;
 import com.incito.interclass.entity.Group;
-import com.incito.interclass.entity.Table;
+import com.incito.interclass.entity.Student;
 
 public class TeacherGroupResultData implements IApiResultData {
-	private List<Group> groups;
-	private List<Table> tables;
-	private List<Device> devices;
+	private Course course;
 	private Classes classes;
+	private List<Group> groups;
+	private List<Device> devices;
+	private List<Student> students;
+
+	public Course getCourse() {
+		return course;
+	}
+
+	public void setCourse(Course course) {
+		this.course = course;
+	}
+
+	public Classes getClasses() {
+		return classes;
+	}
+
+	public void setClasses(Classes classes) {
+		this.classes = classes;
+	}
 
 	public List<Group> getGroups() {
 		return groups;
@@ -19,14 +37,6 @@ public class TeacherGroupResultData implements IApiResultData {
 
 	public void setGroups(List<Group> groups) {
 		this.groups = groups;
-	}
-
-	public List<Table> getTables() {
-		return tables;
-	}
-
-	public void setTables(List<Table> tables) {
-		this.tables = tables;
 	}
 
 	public List<Device> getDevices() {
@@ -37,12 +47,12 @@ public class TeacherGroupResultData implements IApiResultData {
 		this.devices = devices;
 	}
 
-	public Classes getClasses() {
-		return classes;
+	public List<Student> getStudents() {
+		return students;
 	}
 
-	public void setClasses(Classes classes) {
-		this.classes = classes;
+	public void setStudents(List<Student> students) {
+		this.students = students;
 	}
 
 }

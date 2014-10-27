@@ -14,8 +14,7 @@ import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.ui.activity.BindDeskActivity;
 import cn.com.incito.classroom.ui.activity.DrawBoxActivity;
 import cn.com.incito.classroom.ui.activity.WaitingActivity;
-//import cn.com.incito.classroom.vo.GroupVo;
-//import cn.com.incito.interclass.po.Group;
+import cn.com.incito.classroom.vo.GroupVo;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -132,13 +131,13 @@ public class UIHelper {
 	/**
 	 * 显示小组列表
 	 */
-//	public void showGroupListActivity(List<GroupVo> groupList){
-//		Intent intent = new Intent();
-//		intent.putExtra("group", (Serializable)groupList);
-//		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//		intent.setAction(Constants.ACTION_SHOW_GROUP_LIST);
-//		app.startActivity(intent);
-//	}
+	public void showGroupListActivity(List<GroupVo> groupList){
+		Intent intent = new Intent();
+		intent.putExtra("group", (Serializable)groupList);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.setAction(Constants.ACTION_SHOW_GROUP_LIST);
+		app.startActivity(intent);
+	}
 	
 	
 //	

@@ -1,6 +1,5 @@
 package cn.com.incito.socket.handler;
 
-import android.util.Log;
 import cn.com.incito.socket.core.ConnectionManager;
 import cn.com.incito.socket.core.MessageHandler;
 import cn.com.incito.wisdom.sdk.log.WLog;

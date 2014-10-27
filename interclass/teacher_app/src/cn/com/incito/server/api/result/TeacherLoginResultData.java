@@ -8,6 +8,7 @@ import cn.com.incito.interclass.po.Teacher;
 
 public class TeacherLoginResultData implements IApiResultData {
 	private Teacher teacher;
+	private Course course;
 	private List<Course> courses;
 	private List<Classes> classes;
 
@@ -17,6 +18,14 @@ public class TeacherLoginResultData implements IApiResultData {
 
 	public void setTeacher(Teacher teacher) {
 		this.teacher = teacher;
+	}
+
+	public Course getCourse() {
+		return course;
+	}
+
+	public void setCourse(Course course) {
+		this.course = course;
 	}
 
 	public List<Course> getCourses() {

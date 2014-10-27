@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.incito.interclass.entity.Room;
+import com.incito.interclass.entity.School;
 import com.incito.interclass.persistence.RoomMapper;
 
 @Service
@@ -48,5 +49,12 @@ public class RoomService {
 
 	public void deleteRoom(int roomId) {
 		roomMapper.delete(roomId);
+	}
+
+	public List<School> search(String name, int pageNum) {
+	
+		List<School> room=roomMapper.getRoomListByVagueName(name,pageNum);
+		
+		return room;
 	}
 }

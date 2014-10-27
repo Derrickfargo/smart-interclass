@@ -10,7 +10,8 @@
 	    <result column="teacher_id" property="teacherId"/>
 	    <result column="class_id" property="classId"/>
 	    <result column="ctime" property="ctime"/>
-	     <result column="medals" property="medals"/>
+	    <result column="medals" property="medals"/>
+	    <result column="captainid" property="captainId"/>
 		<collection property="students" column="id" ofType="com.incito.interclass.entity.Student" 
 			select="com.incito.interclass.persistence.UserMapper.getStudentByGroupId">  
 		    <id column="id" property="id"/>
@@ -24,7 +25,7 @@
 		    <result column="ctime" property="ctime"/>
 		    <result column="number" property="number"/>
 		    <result column="avatar" property="avatar"/>
-		     <result column="score" property="score"/>
+		    <result column="score" property="score"/>
 		    
 	    </collection>
 	    <collection property="devices" column="id" ofType="com.incito.interclass.entity.Device" 
@@ -37,9 +38,9 @@
 	
   	<insert id="creatGroup" parameterType="com.incito.interclass.entity.Group" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO 
-			tb_group(name,logo,slogan,teacher_id,class_id,ctime)
+			tb_group(name,logo,slogan,teacher_id,class_id,ctime,captainid)
 		VALUES
-			(#{name},#{logo},#{slogan},#{teacherId},#{classId},now())
+			(#{name},#{logo},#{slogan},#{teacherId},#{classId},now(),#{captainid})
 	</insert>
 	
 	<insert id="joinGroup" parameterType="java.util.Map" >
@@ -48,8 +49,14 @@
 		VALUES
 			(#{group_id},#{student_id})
 	</insert>
-	
-  	
+	<select id="getGroupIdByCaptainId" parameterType="java.lang.Integer" resultMap="GroupUserMap">
+	    SELECT 
+	    tb_group.id,tb_group.name,tb_group.logo,tb_group.slogan,tb_group.medals,tb_group.teacher_id,
+	    tb_group.captainid 
+	    FROM
+	    tb_group
+	    WHERE tb_group.captainid=#{studentId}
+	</select>
   	
 	<select id="getGroupList" resultMap="GroupUserMap" parameterType="java.util.Map">
 		SELECT DISTINCT
@@ -108,7 +115,7 @@
 	
 	<select id="getGroupByIMEI" resultMap="GroupUserMap" parameterType="java.util.Map">
 		SELECT DISTINCT
-			tb_group.id,tb_group.name,tb_group.logo,tb_group.slogan,tb_group.medals,
+			tb_group.id,tb_group.name,tb_group.logo,tb_group.slogan,tb_group.medals,tb_group.captainid,
 			tb_group.teacher_id AS teacherId,
 			tb_group.class_id AS classId,tb_table.number AS tableNumber
 		FROM 

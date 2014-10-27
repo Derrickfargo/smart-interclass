@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import com.incito.interclass.entity.Log;
 
 public interface LogMapper {
-	List<Log> getLogListByCondition(@Param("type")int type,@Param("key")String key);
+	List<Log> getLogListByCondition(@Param("type")int type,@Param("key")String key, @Param("address")String address);
 
 	Log getLogById(int id);
 

@@ -7,6 +7,7 @@
 		  	<ul class="nav">
 		    	<li class=""><a href="${path}/school/list" > 学校管理</a></li>
 		    	<!-- <li class=""><a href="${path}/class/list" > 班级管理</a></li> -->
+		    	<li class=""><a href="${path}/course/list" > 课程管理</a></li>
 		  	</ul>
 		  	<a href="#" class="list-group-item active"> 教师信息管理</a>
 			<ul class="nav">

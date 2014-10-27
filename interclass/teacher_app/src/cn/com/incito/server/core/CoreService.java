@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.imageio.stream.FileImageOutputStream;
 
@@ -26,12 +28,13 @@ import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
 import cn.com.incito.server.utils.ImageUtil;
 import cn.com.incito.server.utils.JSONUtils;
+import cn.com.incito.server.utils.URLs;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 public class CoreService {
-	private Application app = Application.getInstance();
+	private static Application app = Application.getInstance();
 	private Logger logger = Logger.getLogger(CoreService.class.getName());
 
 	public void deviceLogin(String imei) {
@@ -84,7 +87,7 @@ public class CoreService {
 						TeacherGroupResultData.class);
 
 				// 第二步获得班级、课程、设备、课桌、分组数据
-				Application.getInstance().initMapping(resultData.getDevices(), app.getGroupList());
+//				Application.getInstance().initMapping(resultData.getDevices(), app.getGroupList());
 				Application.getInstance().refresh();
 			}
 			logger.info(result);
@@ -368,4 +371,44 @@ public class CoreService {
 		return JSONUtils.renderJSONString(0);
 	}
 
+	/**
+	 * 学生加入一个小组
+	 * 
+	 * @param groupId
+	 * @param studentId
+	 * @return
+	 */
+	public static String joinGroup(String groupId, String studentId)
+			throws AppException {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("groupId", groupId);
+		params.put("studentId", studentId);
+		try {
+			return ApiClient._post(URLs.URL_JOIN_GROUP, params, null);
+		} catch (Exception e) {
+			if (e instanceof AppException)
+				throw (AppException) e;
+			throw AppException.network(e);
+		}
+	}
+
+	/**
+	 * 删除一个小组
+	 * 
+	 * @param groupId
+	 * @param studentId
+	 * @return
+	 */
+	public static String deleteGroup(String groupId)
+			throws AppException {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("groupId", groupId);
+		try {
+			 return  ApiClient._post(URLs.URL_DELETE_GROUP, params, null);
+		} catch (Exception e) {
+			if (e instanceof AppException)
+				throw (AppException) e;
+			throw AppException.network(e);
+		}
+	}
 }

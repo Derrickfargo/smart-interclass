@@ -117,6 +117,10 @@ public class UserService {
 	public Student getStudent(String name, String number) {
 		return userMapper.getStudent(name, number);
 	}
+	
+	public List<Student> getStudentByClassId(int classId){
+		return userMapper.getStudentByClassId(classId);
+	}
 
 	@Transactional(rollbackFor = AppException.class)
 	public boolean saveTeacher(Teacher teacher) throws AppException {

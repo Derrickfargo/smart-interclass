@@ -51,18 +51,18 @@ public class Message {
 	public static final Byte MESSAGE_DEVICE_HAS_BIND = 0x04;
 	
 	/**
-	 * 编辑小组信息(pc-android)
+	 * 创建小组信息(pc-android)
 	 */
-	public static final Byte MESSAGE_GROUP_EDIT = 0x05;
+	public static final Byte MESSAGE_GROUP_CREAT = 0x05;
 	
 	/**
-	 * 确认小组信息(pc-android),编辑完成后点保存
+	 * 删除小组信息(pc-android)
 	 */
-	public static final Byte MESSAGE_GROUP_CONFIRM = 0x06;
+	public static final Byte MESSAGE_GROUP_DELETE = 0x06;
 	/**
-	 * 保存小组信息(android-pc)
+	 * 加入小组(android-pc)
 	 */
-	public static final Byte MESSAGE_GROUP_VOTE = 0x07;
+	public static final Byte MESSAGE_GROUP_JOIN = 0x07;
 	/**
 	 * 发送作业(android-pc)
 	 */

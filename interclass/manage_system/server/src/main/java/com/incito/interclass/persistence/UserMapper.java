@@ -50,4 +50,6 @@ public interface UserMapper {
 	@Transactional
 	Integer updateMedals(@Param("groupId")int groupId,@Param("medals")String medals);
 
+	List<Student> getStudentByClassId(int classId);
+
 }

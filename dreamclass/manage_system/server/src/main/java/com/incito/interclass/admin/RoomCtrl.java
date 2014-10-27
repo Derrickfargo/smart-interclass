@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSON;
 import com.incito.interclass.business.RoomService;
 import com.incito.interclass.business.SchoolService;
 import com.incito.interclass.common.BaseCtrl;
 import com.incito.interclass.entity.Room;
+import com.incito.interclass.entity.School;
 import com.incito.parent.pagehelper.PageHelper;
 import com.incito.parent.pagehelper.PageInfo;
 
@@ -56,7 +58,7 @@ public class RoomCtrl extends BaseCtrl {
 	 * @return
 	 */
 	@RequestMapping(value = "/save")
-	public ModelAndView save(Room room,Model model) {
+	public ModelAndView save( Room room,Model model) {
 		roomService.saveRoom(room);
 		return new ModelAndView("redirect:list");
 		
@@ -89,5 +91,16 @@ public class RoomCtrl extends BaseCtrl {
 			return new ModelAndView("redirect:list");
 		}
 		return new ModelAndView("room/roomEdit");
+	}
+	
+	/**
+	 * 模糊查询
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/search", produces = { "application/json;charset=UTF-8" })
+	public String search(String name,int pageNum){
+		List<School> room=roomService.search(name,pageNum);
+		return JSON.toJSONString(room);
 	}
 }
