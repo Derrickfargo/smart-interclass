@@ -1,32 +1,19 @@
 package cn.com.incito.interclass.ui;
 
-import java.util.ArrayList;
+import java.awt.Color;
 import java.util.List;
 
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import cn.com.incito.interclass.po.Device;
-import cn.com.incito.interclass.po.Group;
+import cn.com.incito.interclass.po.Student;
 import cn.com.incito.server.api.Application;
 
 public class PreparePanel extends JPanel{
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 6316121486627261595L;
 	private static final String ICON_NO_DESK = "images/main/bg_binding_desk.png";
+	private static final int ROW_COUNT = 8;//每行显示8个学生
 	private Application app = Application.getInstance();
-	/**
-	 * 当前教室所有Table，初始化界面时初始化本属性
-	 */
-	private List<PrepareGroupPanel> tableList = new ArrayList<PrepareGroupPanel>();
-	/**
-	 * 当前教室所有Group，初始化数据时初始化本属性
-	 */
-	private List<Group> groupList = new ArrayList<Group>();
 
 	public PreparePanel() {
 		// this.setSize(878, 620);
@@ -40,93 +27,45 @@ public class PreparePanel extends JPanel{
 	}
 
 	private void initView() {
-		int i = 0;
+		List<Student> students = app.getStudentList();
+		int rows = students.size() / ROW_COUNT;
+		if(students.size() % ROW_COUNT > 0){
+			rows ++;
+		}
+		int x = 0;
 		int y = 10;
-		while (i < 12) {
-			PrepareGroupPanel pnlLeft = new PrepareGroupPanel();
-			pnlLeft.setBounds(10, y, 410, 210);
-			add(pnlLeft);
-			tableList.add(pnlLeft);
-			if (++i < 12) {
-				PrepareGroupPanel pnlRight = new PrepareGroupPanel();
-				pnlRight.setBounds(438, y, 410, 210);
-				add(pnlRight);
-				tableList.add(pnlRight);
+		int index = 0;
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < 8; j++) {
+				JLabel lblName = getNameLabel();
+				Student student = students.get(index);
+				lblName.setText(student.getName());
+				lblName.setBounds(x, y, 81, 24);
+				add(lblName);
+				x += 10;
 			}
-			i++;
-			y += 220;
+			x = 0;
+			y += 50;
 		}
 	}
 
+	private JLabel getNameLabel(){
+		JLabel lblName = new JLabel("", JLabel.CENTER);
+		lblName.setOpaque(true);
+		lblName.setBackground(new Color(Integer.parseInt("E1E1E1", 16)));
+		lblName.setForeground(new Color(Integer.parseInt("FFFFFF", 16)));
+		return lblName;
+	}
+	
 	public void refresh() {
-		initData();
-		// 遍历内存模型，绑定到物理模型
-		for (int i = 0; i < groupList.size(); i++) {// 遍历分组内存模型
-			Group group = groupList.get(i);
-			PrepareGroupPanel tablePanel = tableList.get(i);
-			tablePanel.setGroup(group);
-			tablePanel.setVisible(true);
-			tablePanel.setTableNumber(group.getTableNumber());
-			if (group.getName() != null) {// 显示小组名称
-				tablePanel.getLblGroupName().setVisible(true);
-				tablePanel.getLblGroupName().setText(group.getName());
-				tablePanel.getLblGroupName().setToolTipText(group.getName());
-			}
-			tablePanel.showGrouping(false);
-			if (app.isGrouping() && !app.getTempGrouped().contains(group.getId())) {
-				tablePanel.showGrouping(true);
-			}
-			if (app.getTempGrouped().size() == app.getGroupChannel().size()) {
-				app.setGrouping(false);
-				app.getTempGrouped().clear();
-			}
-			// 遍历当前组/桌的设备，内存模型
-			List<PadPanel> devicePanelList = tablePanel.getDeviceList();
-			List<Device> deviceList = group.getDevices();
-			// 遍历设备内存模型，重绘所有pad状态
-			for (int j = 0; j < deviceList.size(); j++) {
-				Device device = deviceList.get(j);
-				String imei = device.getImei();
-				PadPanel pnlPad = devicePanelList.get(j);
-				pnlPad.isOnline(app.getOnlineDevice().contains(imei));
-				pnlPad.setStudents(app.getStudentByImei(imei));
-				pnlPad.repaint();
-				pnlPad.setVisible(true);
-			}
-		}
-		repaint();
-		revalidate();
+		
 	}
 
 	private void initData() {
-//		groupList = new ArrayList<Group>();
-//		// 课桌绑定分组，生成内存模型
-//		List<Table> tables = app.getTableList();
-//		for (Table table : tables) {
-//			// 获得课桌对应的分组
-//			Group group = app.getTableGroup().get(table.getId());
-//			if (group == null) {
-//				group = new Group();
-//			}
-//			group.setTableNumber(table.getNumber());
-//			group.setDevices(table.getDevices());
-//			groupList.add(group);
-//		}
-//		Collections.sort(groupList);
+		
 	}
 	
 	public void showGrouping(){
-		initData();
-		// 遍历内存模型，绑定到物理模型
-		for (int i = 0; i < groupList.size(); i++) {// 遍历分组内存模型
-			Group group = groupList.get(i);
-			PrepareGroupPanel tablePanel = tableList.get(i);
-			tablePanel.setGroup(group);
-			tablePanel.setVisible(true);
-			tablePanel.setTableNumber(group.getTableNumber());
-			tablePanel.showGrouping(true);
-		}
-		repaint();
-		revalidate();
+		
 	}
 }
