@@ -4,19 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal" 
+    android:layout_gravity="center_vertical"
     >
-    <!-- 图标展示 -->
-    <ImageView 
-        android:id="@+id/wifiselector_gridview_item_img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
-	<!-- wifi名称 -->
     <TextView 
-        android:textSize="25sp"
+        android:textSize="14sp"
         android:id="@+id/wifiselector_gridview_item_name"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_gravity="center"
+        android:drawablePadding="5dp"
+        android:textColor="@android:color/black"
+        android:drawableLeft="@drawable/pic_wifi_yes"
+        android:text="@string/app_name"
         />
     
 </LinearLayout>

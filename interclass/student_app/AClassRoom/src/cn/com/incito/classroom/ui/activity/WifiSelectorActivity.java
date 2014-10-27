@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -30,12 +31,12 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
+import cn.com.incito.common.utils.ToastHelper;
 
 /**
  * 无线WIFI选择页面.
@@ -54,11 +55,13 @@ public class WifiSelectorActivity extends BaseActivity {
 	private WifiManager mWifiManager;
 	private Handler mHandler;
 	private boolean isAutoInvalidate = false;
-	//自动刷新Wifi列表的时长
-	private long TIMEINMILLS_REFLUSHLIST = 10*1000;
-	private IWifiItem mCurrentWifiItem ;
+	
+	// 自动刷新Wifi列表的时长
+	private long TIMEINMILLS_REFLUSHLIST = 10 * 1000;
+	private IWifiItem mCurrentWifiItem;
 	private static final int message_checkNetStatus = 0x11;
-	//是否允许出现相同的wifi名称
+	
+	// 是否允许出现相同的wifi名称
 	private boolean isAllowRepeat = true;
 
 	@Override
@@ -75,7 +78,11 @@ public class WifiSelectorActivity extends BaseActivity {
 	private void initViews() {
 		gridView_wifi = (ListView) findViewById(R.id.wifiselector_main_listview);
 		mWifiListAdapter = new IWifiListAdapter();
+		
+		
 		gridView_wifi.setAdapter(mWifiListAdapter);
+
+
 		gridView_wifi.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -85,38 +92,36 @@ public class WifiSelectorActivity extends BaseActivity {
 				switch (mCurrentWifiItem.wifiType) {
 				case WIFITYPE_NORMAL:
 					mWifiInfo = mWifiManager.getConnectionInfo();
-					if (mWifiInfo.getBSSID().equals(mCurrentWifiItem.getScanResult().BSSID)&&isWifiNetConnected()) {
-//						skipToMoudle();
-					}else {
-						final EditText passwordEdit=new EditText(WifiSelectorActivity.this); 
-						//显示输入密码对话框
-						new AlertDialog.Builder(WifiSelectorActivity.this).setTitle("请输入密码").setIcon(
-							     android.R.drawable.ic_dialog_info).setView(
-							    		 passwordEdit).setPositiveButton("确定",new OnClickListener() {
-									@Override
-									public void onClick(DialogInterface dialog, int which) {
-//										connectToWifi(mCurrentWifiItem, "incito.com.cn",
-//												IWifiSecurityType.SECURITY_TYPE_WPA);
-										connectToWifi(mCurrentWifiItem, passwordEdit.getText().toString(),
-												IWifiSecurityType.SECURITY_TYPE_WPA);
-										
-									}
-								} )
-							     .setNegativeButton("取消", new OnClickListener() {
-									@Override
-									public void onClick(DialogInterface dialog, int which) {
-										dialog.dismiss();
-										
-									}
-								}).show();
-						
-					}
+					final EditText passwordEdit = new EditText(
+							WifiSelectorActivity.this);
+					// 显示输入密码对话框
+					new AlertDialog.Builder(WifiSelectorActivity.this)
+							.setTitle("请输入密码")
+							.setIcon(android.R.drawable.ic_dialog_info)
+							.setView(passwordEdit)
+							.setPositiveButton("确定", new OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									connectToWifi(mCurrentWifiItem,
+											passwordEdit.getText().toString(),
+											IWifiSecurityType.SECURITY_TYPE_WPA);
+									dialog.dismiss();
+								}
+							}).setNegativeButton("取消", new OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									dialog.dismiss();
+								}
+							}).show();
+
 					break;
 				case WIFITYPE_3G:
-					if(isMobileNetConnected()){
-//						skipToMoudle();
-					}else{
-						Toast.makeText(getBaseContext(), "当前手机网络不可用", Toast.LENGTH_LONG).show();
+					if (isMobileNetConnected()) {
+					} else {
+						Toast.makeText(getBaseContext(), "当前手机网络不可用",
+								Toast.LENGTH_LONG).show();
 					}
 					break;
 
@@ -136,20 +141,21 @@ public class WifiSelectorActivity extends BaseActivity {
 	 * 刷新页面
 	 * 
 	 */
+	@SuppressLint("HandlerLeak")
 	private class IFlushHander extends Handler {
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-			
+
 			default:
 				invalidateNetListData();
 				mWifiListAdapter.notifyDataSetChanged();
 				if (isAutoInvalidate) {
-					mHandler.sendMessageDelayed(mHandler.obtainMessage(), TIMEINMILLS_REFLUSHLIST);
+					mHandler.sendMessageDelayed(mHandler.obtainMessage(),
+							TIMEINMILLS_REFLUSHLIST);
 				}
 				break;
 			}
-			
 
 		}
 
@@ -160,20 +166,23 @@ public class WifiSelectorActivity extends BaseActivity {
 	 */
 	private void initWifi() {
 		mWifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-		
-		//监听wifi状态变化
+
+		// 监听wifi状态变化
 		IntentFilter mWifiIntentFilter = new IntentFilter();
 		mWifiIntentFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
 		mWifiIntentReceiver = new IWifiStatusChangedReceiver();
 		registerReceiver(mWifiIntentReceiver, mWifiIntentFilter);
-		
-	/*	//监听网络连接状态的变化
-		IntentFilter intentFilter_netConnect = new IntentFilter();
-		intentFilter_netConnect.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-		mNetStatusChangedReceiver = new INetStatusChangedReceiver();
-		registerReceiver(mNetStatusChangedReceiver, intentFilter_netConnect);
-	*/
+
+		/*
+		 * //监听网络连接状态的变化 IntentFilter intentFilter_netConnect = new
+		 * IntentFilter();
+		 * intentFilter_netConnect.addAction(ConnectivityManager.
+		 * CONNECTIVITY_ACTION); mNetStatusChangedReceiver = new
+		 * INetStatusChangedReceiver();
+		 * registerReceiver(mNetStatusChangedReceiver, intentFilter_netConnect);
+		 */
 	}
+
 	/**
 	 * 刷新wifi列表数据
 	 */
@@ -204,7 +213,7 @@ public class WifiSelectorActivity extends BaseActivity {
 				if (isAllowRepeat)
 					mWifiItems.add(wifiItem);
 				else {
-					if(!mWifiItems.contains(wifiItem))
+					if (!mWifiItems.contains(wifiItem))
 						mWifiItems.add(wifiItem);
 				}
 			}
@@ -213,7 +222,7 @@ public class WifiSelectorActivity extends BaseActivity {
 			mWifiItems.clear();
 		}
 
-		//手机本机网络
+		// 手机本机网络
 		IWifiItem wifiItem = new IWifiItem();
 		wifiItem.wifiName = "本机3G/2G网络";
 		wifiItem.wifiType = IWifiType.WIFITYPE_3G;
@@ -249,33 +258,35 @@ public class WifiSelectorActivity extends BaseActivity {
 		}
 
 	}
-	
+
 	/**
 	 * 监听网络状态发生变化
+	 * 
 	 * @author lgm
-	 *
+	 * 
 	 */
-	private class INetStatusChangedReceiver extends BroadcastReceiver{
+	private class INetStatusChangedReceiver extends BroadcastReceiver {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
 
-		    ConnectivityManager connectMgr = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-		    NetworkInfo mobNetInfo = connectMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-		    NetworkInfo wifiNetInfo = connectMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-		    
-		    if(wifiNetInfo.isConnected()){
-		    	Toast.makeText(getBaseContext(), "已经连接", Toast.LENGTH_LONG).show();
-		    }
-		    if(!wifiNetInfo.isConnectedOrConnecting()){
-		    	Toast.makeText(getBaseContext(), "WIFI已经断了", Toast.LENGTH_LONG).show();
-		    }
-		    
+			ConnectivityManager connectMgr = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+			NetworkInfo mobNetInfo = connectMgr
+					.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+			NetworkInfo wifiNetInfo = connectMgr
+					.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+			if (wifiNetInfo.isConnected()) {
+				Toast.makeText(getBaseContext(), "已经连接", Toast.LENGTH_LONG)
+						.show();
+			}
+			if (!wifiNetInfo.isConnectedOrConnecting()) {
+				Toast.makeText(getBaseContext(), "WIFI已经断了", Toast.LENGTH_LONG)
+						.show();
+			}
 
 		}
-		
-		
-		
+
 	}
 
 	private class IWifiListAdapter extends BaseAdapter {
@@ -306,8 +317,6 @@ public class WifiSelectorActivity extends BaseActivity {
 				mWifiHolder = new IWifiHolder();
 				contentView = LayoutInflater.from(WifiSelectorActivity.this)
 						.inflate(R.layout.wifiselector_gridview_item, null);
-				mWifiHolder.imageView_icon = (ImageView) contentView
-						.findViewById(R.id.wifiselector_gridview_item_img);
 				mWifiHolder.textView_name = (TextView) contentView
 						.findViewById(R.id.wifiselector_gridview_item_name);
 				contentView.setTag(mWifiHolder);
@@ -315,35 +324,26 @@ public class WifiSelectorActivity extends BaseActivity {
 				mWifiHolder = (IWifiHolder) contentView.getTag();
 			}
 
-//			mWifiHolder.imageView_icon.setImageResource(R.drawable.cat);
-			
 			switch (wifiItem.getWifiType()) {
 			case WIFITYPE_CLASS:
-				
+
 				break;
 			case WIFITYPE_3G:
 				mWifiHolder.textView_name.setText(wifiItem.getWifiName());
 				mWifiHolder.textView_name.setTextColor(Color.BLACK);
-				
+
 				break;
-				
+
 			case WIFITYPE_NORMAL:
-				mWifiHolder.textView_name.setText(wifiItem.getScanResult().SSID);
-//						+ "\n" + Math.abs(wifiItem.getScanResult().level));
-				// 当前连接的网络设为红色字体
-				mWifiInfo = mWifiManager.getConnectionInfo();
-				if (mWifiInfo.getBSSID().equals(wifiItem.getScanResult().BSSID)) {
-					mWifiHolder.textView_name.setTextColor(Color.RED);
-				} else {
-					mWifiHolder.textView_name.setTextColor(Color.BLACK);
-				}
+				mWifiHolder.textView_name
+						.setText(wifiItem.getScanResult().SSID);
+				mWifiHolder.textView_name.setTextColor(Color.BLACK);
 				break;
 
 			default:
 				break;
 			}
-			
-			
+
 			return contentView;
 		}
 
@@ -351,7 +351,6 @@ public class WifiSelectorActivity extends BaseActivity {
 
 	private class IWifiHolder {
 
-		ImageView imageView_icon;
 		TextView textView_name;
 
 	}
@@ -364,11 +363,11 @@ public class WifiSelectorActivity extends BaseActivity {
 	 */
 	private class IWifiItem {
 
-		//wifi名称
+		// wifi名称
 		private String wifiName = "";
-		//wifi类型
+		// wifi类型
 		private IWifiType wifiType = IWifiType.WIFITYPE_NORMAL;
-		//wifi所对应的对象
+		// wifi所对应的对象
 		private ScanResult scanResult;
 
 		public String getWifiName() {
@@ -458,12 +457,13 @@ public class WifiSelectorActivity extends BaseActivity {
 	protected void onDestroy() {
 		super.onDestroy();
 		unregisterReceiver(mWifiIntentReceiver);
-		//unregisterReceiver(mNetStatusChangedReceiver);
 	}
 
 	@Override
 	protected void onStart() {
 		isAutoInvalidate = true;
+
+		// 强制隐藏键盘
 		super.onStart();
 	}
 
@@ -532,51 +532,61 @@ public class WifiSelectorActivity extends BaseActivity {
 			break;
 		}
 		int wcgID = mWifiManager.addNetwork(config);
-		mWifiManager.enableNetwork(wcgID, true);
-		
-		Message message = mHandler.obtainMessage();
-		mHandler.sendMessageDelayed(message, 1000);
+		if (mWifiManager.enableNetwork(wcgID, true)) {
+			Intent intent = new Intent(this, SelectGroupActivity.class);
+			startActivity(intent);
+		} else {
+			ToastHelper.showCustomToast(this, R.string.wifi_password_error);
+		}
+
 	}
-	
+
 	/**
 	 * 检测WIFI网络是否已经连接
+	 * 
 	 * @return
 	 */
-	private boolean isWifiNetConnected(){
-			boolean isConnected  = false ; 
-		    ConnectivityManager connectMgr = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-		    NetworkInfo wifiNetInfo = connectMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-		    isConnected = wifiNetInfo.isConnected();
-		  /*  if(wifiNetInfo.isConnected()){
-		    	Toast.makeText(getBaseContext(), "已经连接", Toast.LENGTH_LONG).show();
-		    }
-		    if(!wifiNetInfo.isConnectedOrConnecting()){
-		    	Toast.makeText(getBaseContext(), "WIFI已经断了", Toast.LENGTH_LONG).show();
-		    }*/
-		    return isConnected;
+	private boolean isWifiNetConnected() {
+		boolean isConnected = false;
+		ConnectivityManager connectMgr = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+		NetworkInfo wifiNetInfo = connectMgr
+				.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+		isConnected = wifiNetInfo.isConnected();
+		/*
+		 * if(wifiNetInfo.isConnected()){ Toast.makeText(getBaseContext(),
+		 * "已经连接", Toast.LENGTH_LONG).show(); }
+		 * if(!wifiNetInfo.isConnectedOrConnecting()){
+		 * Toast.makeText(getBaseContext(), "WIFI已经断了",
+		 * Toast.LENGTH_LONG).show(); }
+		 */
+		return isConnected;
 	}
+
 	/**
 	 * 检测手机网络是否已经连接
+	 * 
 	 * @return
 	 */
-	private boolean isMobileNetConnected(){
-		boolean isConnected  = false ; 
-	    ConnectivityManager connectMgr = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-	    NetworkInfo mobNetInfo = connectMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-	    isConnected = mobNetInfo.isConnected();
-	  /*  if(mobNetInfo.isConnected()){
-	    	Toast.makeText(getBaseContext(), "手机网络已经连接", Toast.LENGTH_LONG).show();
-	    }
-	    if(!mobNetInfo.isConnectedOrConnecting()){
-	    	Toast.makeText(getBaseContext(), "手机网络已经断了", Toast.LENGTH_LONG).show();
-	    }*/
-	    return isConnected;
-		
+	private boolean isMobileNetConnected() {
+		boolean isConnected = false;
+		ConnectivityManager connectMgr = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+		NetworkInfo mobNetInfo = connectMgr
+				.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+		isConnected = mobNetInfo.isConnected();
+		/*
+		 * if(mobNetInfo.isConnected()){ Toast.makeText(getBaseContext(),
+		 * "手机网络已经连接", Toast.LENGTH_LONG).show(); }
+		 * if(!mobNetInfo.isConnectedOrConnecting()){
+		 * Toast.makeText(getBaseContext(), "手机网络已经断了",
+		 * Toast.LENGTH_LONG).show(); }
+		 */
+		return isConnected;
+
 	}
-	
 
 	/**
 	 * 是否已经存在指定的WIFI
+	 * 
 	 * @param SSID
 	 * @return
 	 */
@@ -590,14 +600,15 @@ public class WifiSelectorActivity extends BaseActivity {
 		}
 		return null;
 	}
-	
-//	/**
-//	 * 跳转到模块选择页面
-//	 */
-//	private void skipToMoudle(){
-//		Intent intent = new Intent(this,MoudleSelectorActivity.class);
-//		startActivity(intent);
-//		finish();
-//		
-//	}
+
+	// /**
+	// * 跳转到模块选择页面
+	// */
+	// private void skipToMoudle(){
+	// Intent intent = new Intent(this,MoudleSelectorActivity.class);
+	// startActivity(intent);
+	// finish();
+	//
+	// }
 }
+	

@@ -17,6 +17,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -32,6 +34,7 @@ import org.apache.log4j.Logger;
 import cn.com.incito.http.AsyncHttpConnection;
 import cn.com.incito.http.StringResponseHandler;
 import cn.com.incito.http.support.ParamsWrapper;
+import cn.com.incito.interclass.po.Course;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.api.result.TeacherLoginResultData;
 import cn.com.incito.server.utils.Md5Utils;
@@ -312,7 +315,9 @@ public class Login extends MouseAdapter {
 
 					frame.setVisible(false);
 					Application.getInstance().setTeacher(resultData.getTeacher());
-					Login2 login2 = new Login2(resultData.getCourses());
+					List<Course> courses = new ArrayList<Course>();
+					courses.add(resultData.getCourse());
+					Login2 login2 = new Login2(courses);
 					login2.getFrame().setVisible(true);
 					logger.info("登陆返回结果：" + content);
 				}

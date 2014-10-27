@@ -33,83 +33,84 @@ import com.alibaba.fastjson.JSONObject;
 
 public class Application {
 	public boolean isLockScreen;
-    
+
 	public boolean isLockScreen() {
 		return isLockScreen;
 	}
 
-	
 	public void setLockScreen(boolean isLockScreen) {
 		this.isLockScreen = isLockScreen;
 	}
 
 	private static Application instance;
 	private boolean isGrouping = false;
-    private FloatIcon floatIcon;
-    private String quizId;   //考试流水号
-    /**
+	private FloatIcon floatIcon;
+	private String quizId; // 考试流水号
+	/**
 	 * 课堂id
 	 */
 	private String lessionid;
-	private String mac;//当前登录的mac地址
-    private Teacher teacher;// 当前登录的老师，教师登陆完后初始化
-    private Course course;// 当前上课的课程，教师登陆完后初始化
-    private Classes classes;// 当前上课的班级，教师登陆完后初始化
+	private String mac;// 当前登录的mac地址
+	private Teacher teacher;// 当前登录的老师，教师登陆完后初始化
+	private Course course;// 当前上课的课程，教师登陆完后初始化
+	private Classes classes;// 当前上课的班级，教师登陆完后初始化
 
-    public static boolean isOnClass;//正在上课
-    public static boolean hasQuiz;//是否在作业
-    private List<Group> groupList = new ArrayList<Group>();// 本堂课的所有分组
-    private List<Device> deviceList = new ArrayList<Device>();// 本教室所有的Device
-    private Set<String> onlineDevice = new HashSet<String>();
-    private Set<Student> onlineStudent = new HashSet<Student>();
+	public static boolean isOnClass;// 正在上课
+	public static boolean hasQuiz;// 是否在作业
+	private List<Group> groupList = new ArrayList<Group>();// 本堂课的所有分组
+	private List<Device> deviceList = new ArrayList<Device>();// 本教室所有的Device
+	private List<Student> studentList = new ArrayList<Student>();// 本班级的所有学生
+	private Set<String> onlineDevice = new HashSet<String>();
+	private Set<Student> onlineStudent = new HashSet<Student>();
 
-    private Map<Integer, List<SocketChannel>> groupChannel;// 保存每组和已登录的socket
-    private Map<String, List<Student>> imeiStudent = new HashMap<String, List<Student>>();
-    private Map<String, SocketChannel> clientChannel;// 保存所有设备登陆的socket，imei和socket
-    private Map<Integer, Group> groupMap = new HashMap<Integer, Group>();
-    private Map<Integer, JSONObject> tempGroup = new HashMap<Integer, JSONObject>();// 修改的分组信息
-    private Map<Integer, List<Integer>> tempVote = new HashMap<Integer, List<Integer>>();// 小组的投票信息
-    private List<String> tempQuizIMEI = new ArrayList<String>();
-    private Map<String, Quiz> tempQuiz = new HashMap<String, Quiz>();//随堂联系
-    private List<Integer> tempGrouped = new ArrayList<Integer>();//已编辑完成的小组
-    private List<Quiz> quizList = new ArrayList<Quiz>();//作业
-    private FileLock lock;
-    /**
-     * IMEI和设备的对应关系(key:imei,value:Device)，教师登陆完后初始化
-     */
-    private Map<String, Device> imeiDevice;
+	private Map<Integer, List<SocketChannel>> groupChannel;// 保存每组和已登录的socket
+	private Map<String, List<Student>> imeiStudent = new HashMap<String, List<Student>>();
+	private Map<String, SocketChannel> clientChannel;// 保存所有设备登陆的socket，imei和socket
+	private Map<Integer, Group> groupMap = new HashMap<Integer, Group>();
+	private Map<Integer, JSONObject> tempGroup = new HashMap<Integer, JSONObject>();// 修改的分组信息
+	private Map<Integer, List<Integer>> tempVote = new HashMap<Integer, List<Integer>>();// 小组的投票信息
+	private List<String> tempQuizIMEI = new ArrayList<String>();
+	private Map<String, Quiz> tempQuiz = new HashMap<String, Quiz>();// 随堂联系
+	private List<Integer> tempGrouped = new ArrayList<Integer>();// 已编辑完成的小组
+	private List<Quiz> quizList = new ArrayList<Quiz>();// 作业
+	private FileLock lock;
+	/**
+	 * IMEI和设备的对应关系(key:imei,value:Device)，教师登陆完后初始化
+	 */
+	private Map<String, Device> imeiDevice;
 
-    private Application() {
-    	lock();
-        clear();
-        new Login();
-    }
-    
-    private void lock(){
-    	try {
-            File locFile = new File(FileUtils.getProjectPath(), Constants.LOC_FILE);
-            if (!locFile.exists()) {
-                locFile.createNewFile();
-            }
-            RandomAccessFile raf = new RandomAccessFile(locFile, "rw");
-            lock = raf.getChannel().tryLock();//得到锁
-            if (lock == null) {
-            	raf.close();
-                JOptionPane.showMessageDialog(null, "程序已经在运行!");
-                System.exit(1);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-    }
-    
-    public void clear(){
-    	imeiDevice = new HashMap<String, Device>();
-        clientChannel = new HashMap<String, SocketChannel>();
-        groupChannel = new HashMap<Integer, List<SocketChannel>>();
-    }
-    
+	private Application() {
+		lock();
+		clear();
+		new Login();
+	}
+
+	private void lock() {
+		try {
+			File locFile = new File(FileUtils.getProjectPath(),
+					Constants.LOC_FILE);
+			if (!locFile.exists()) {
+				locFile.createNewFile();
+			}
+			RandomAccessFile raf = new RandomAccessFile(locFile, "rw");
+			lock = raf.getChannel().tryLock();// 得到锁
+			if (lock == null) {
+				raf.close();
+				JOptionPane.showMessageDialog(null, "程序已经在运行!");
+				System.exit(1);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
+
+	public void clear() {
+		imeiDevice = new HashMap<String, Device>();
+		clientChannel = new HashMap<String, SocketChannel>();
+		groupChannel = new HashMap<Integer, List<SocketChannel>>();
+	}
+
 	public FloatIcon getFloatIcon() {
 		return floatIcon;
 	}
@@ -141,40 +142,42 @@ public class Application {
 	public List<String> getTempQuizIMEI() {
 		return tempQuizIMEI;
 	}
-	
+
 	public void addQuizIMEI(String imei) {
 		tempQuizIMEI.add(imei);
-		String message = String.format(Constants.MESSAGE_QUIZ, 0, tempQuizIMEI.size());
+		String message = String.format(Constants.MESSAGE_QUIZ, 0,
+				tempQuizIMEI.size());
 		getFloatIcon().showQuizMessage(message);
 	}
 
-    public void addLoginStudent(String imei,Student student){
-    	List<Student> studentList = imeiStudent.get(imei);
-        if (studentList == null) {
-        	studentList = new ArrayList<Student>();
-        }
-        boolean isLogin = false;
-        for(Student aStudent : studentList){
+	public void addLoginStudent(String imei, Student student) {
+		List<Student> studentList = imeiStudent.get(imei);
+		if (studentList == null) {
+			studentList = new ArrayList<Student>();
+		}
+		boolean isLogin = false;
+		for (Student aStudent : studentList) {
 			if (aStudent.getName().equals(student.getName())
 					&& aStudent.getNumber().equals(student.getNumber())) {
-        		isLogin = true;
-        		break;
-        	}
-        }
+				isLogin = true;
+				break;
+			}
+		}
 		if (!isLogin) {
 			studentList.add(student);
 			imeiStudent.put(imei, studentList);
 		}
-    }
-    //需要移除两个容器
-    public void removeLoginStudent(String imei){
-    	List<Student> studentList = imeiStudent.get(imei);
-    	if (studentList == null) {
-        	studentList = new ArrayList<Student>();
-        }
-    	
-    	for(Student aStudent : studentList){
-    		Iterator<Student> it = onlineStudent.iterator();
+	}
+
+	// 需要移除两个容器
+	public void removeLoginStudent(String imei) {
+		List<Student> studentList = imeiStudent.get(imei);
+		if (studentList == null) {
+			studentList = new ArrayList<Student>();
+		}
+
+		for (Student aStudent : studentList) {
+			Iterator<Student> it = onlineStudent.iterator();
 			while (it.hasNext()) {
 				Student student = it.next();
 				if (aStudent.getName().equals(student.getName())
@@ -182,32 +185,33 @@ public class Application {
 					it.remove();
 				}
 			}
-    	}
-    	imeiStudent.remove(imei);
-    }
-    
-    /**
-     * TODO 界面有更改，现需要遍历所有的在线学生
-     * @param imei
-     * @param student
-     */
-    public void removeLoginStudent(String imei,Student student){
-    	List<Student> studentList = imeiStudent.get(imei);
-    	if (studentList == null) {
-        	studentList = new ArrayList<Student>();
-        }
-    	//先在当前IMEI下找
-    	boolean hasStudent = false;
-    	Iterator<Student> it = studentList.iterator();
-    	while (it.hasNext()) {
-    		Student aStudent = it.next();
-    		if (aStudent.getName().equals(student.getName())
+		}
+		imeiStudent.remove(imei);
+	}
+
+	/**
+	 * TODO 界面有更改，现需要遍历所有的在线学生
+	 * 
+	 * @param imei
+	 * @param student
+	 */
+	public void removeLoginStudent(String imei, Student student) {
+		List<Student> studentList = imeiStudent.get(imei);
+		if (studentList == null) {
+			studentList = new ArrayList<Student>();
+		}
+		// 先在当前IMEI下找
+		boolean hasStudent = false;
+		Iterator<Student> it = studentList.iterator();
+		while (it.hasNext()) {
+			Student aStudent = it.next();
+			if (aStudent.getName().equals(student.getName())
 					&& aStudent.getNumber().equals(student.getNumber())) {
 				it.remove();
 				hasStudent = true;
 				break;
 			}
-    	}
+		}
 		if (!hasStudent) {
 			Set<Entry<String, List<Student>>> set = imeiStudent.entrySet();
 			Iterator<Entry<String, List<Student>>> its = set.iterator();
@@ -225,8 +229,8 @@ public class Application {
 				}
 			}
 		}
-    	it = onlineStudent.iterator();
-    	while (it.hasNext()) {
+		it = onlineStudent.iterator();
+		while (it.hasNext()) {
 			Student aStudent = it.next();
 			if (aStudent.getName().equals(student.getName())
 					&& aStudent.getNumber().equals(student.getNumber())) {
@@ -234,13 +238,14 @@ public class Application {
 				break;
 			}
 		}
-    }
-    
-    /**
-     * TODO 界面有更改，现需要遍历所有的在线学生
-     * @param imei
-     * @param student
-     */
+	}
+
+	/**
+	 * TODO 界面有更改，现需要遍历所有的在线学生
+	 * 
+	 * @param imei
+	 * @param student
+	 */
 	public void removeLoginStudent(Student student) {
 		Set<Entry<String, List<Student>>> set = imeiStudent.entrySet();
 		Iterator<Entry<String, List<Student>>> its = set.iterator();
@@ -267,199 +272,207 @@ public class Application {
 			}
 		}
 	}
-    
-    public Map<String, SocketChannel> getClientChannel() {
-        return clientChannel;
-    }
 
-    public static Application getInstance() {
-        if (instance == null) {
-            instance = new Application();
-        }
-        return instance;
-    }
+	public Map<String, SocketChannel> getClientChannel() {
+		return clientChannel;
+	}
 
-    /**
-     * 初始化映射关系
-     *
-     * @param devices
-     * @param tables
-     */
-    public void initMapping(List<Student> students, List<Group> groups) {
-//        this.initImeiDevice(devices);
-    }
+	public static Application getInstance() {
+		if (instance == null) {
+			instance = new Application();
+		}
+		return instance;
+	}
 
-    /**
-     * 初始化IMEI设备映射
-     *
-     * @param devices
-     */
-    private void initImeiDevice(List<Device> devices) {
-        deviceList = devices;
-        imeiDevice.clear();
-        for (Device device : devices) {
-            imeiDevice.put(device.getImei(), device);
-        }
-    }
+	/**
+	 * 初始化映射关系
+	 * 
+	 * @param devices
+	 * @param tables
+	 */
+	public void initMapping(List<Student> students, List<Group> groups) {
+		// this.initImeiDevice(devices);
+	}
 
+	/**
+	 * 初始化IMEI设备映射
+	 * 
+	 * @param devices
+	 */
+	private void initImeiDevice(List<Device> devices) {
+		deviceList = devices;
+		imeiDevice.clear();
+		for (Device device : devices) {
+			imeiDevice.put(device.getImei(), device);
+		}
+	}
 
-    public void addGroup(Group group) {
-        groupMap.put(group.getId(), group);
+	public void setDeviceList(List<Device> deviceList) {
+		this.deviceList = deviceList;
+	}
 
-        Iterator<Group> it = groupList.iterator();
-        while (it.hasNext()) {
-            Group aGroup = it.next();
-            if (aGroup.getId() == group.getId()) {
-                it.remove();
-                break;
-            }
-        }
-        groupList.add(group);
-    }
+	public void addGroup(Group group) {
+		groupMap.put(group.getId(), group);
 
-    public Group getGroupById(Integer id) {
-        return groupMap.get(id);
-    }
+		Iterator<Group> it = groupList.iterator();
+		while (it.hasNext()) {
+			Group aGroup = it.next();
+			if (aGroup.getId() == group.getId()) {
+				it.remove();
+				break;
+			}
+		}
+		groupList.add(group);
+	}
 
+	public Group getGroupById(Integer id) {
+		return groupMap.get(id);
+	}
 
-    public List<Group> getGroupList() {
-        return groupList;
-    }
+	public List<Group> getGroupList() {
+		return groupList;
+	}
 
-    public void setGroupList(List<Group> groupList) {
-        this.groupList = groupList;
-    }
+	public void setGroupList(List<Group> groupList) {
+		this.groupList = groupList;
+	}
 
-    public Classes getClasses() {
-        return classes;
-    }
+	public Classes getClasses() {
+		return classes;
+	}
 
-    public void setClasses(Classes classes) {
-        this.classes = classes;
-    }
+	public void setClasses(Classes classes) {
+		this.classes = classes;
+	}
 
-    public Teacher getTeacher() {
-        return teacher;
-    }
+	public Teacher getTeacher() {
+		return teacher;
+	}
 
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
-    }
+	public void setTeacher(Teacher teacher) {
+		this.teacher = teacher;
+	}
 
-    public List<Device> getDeviceList() {
-        return deviceList;
-    }
+	public List<Device> getDeviceList() {
+		return deviceList;
+	}
 
-    public Course getCourse() {
-        return course;
-    }
+	public Course getCourse() {
+		return course;
+	}
 
-    public void setCourse(Course course) {
-        this.course = course;
-    }
+	public void setCourse(Course course) {
+		this.course = course;
+	}
 
-    /**
-     * @param imei
-     * @param channel
-     */
-    public void addSocketChannel(String imei, SocketChannel channel) {
-        clientChannel.put(imei, channel);
-    }
+	/**
+	 * @param imei
+	 * @param channel
+	 */
+	public void addSocketChannel(String imei, SocketChannel channel) {
+		clientChannel.put(imei, channel);
+	}
 
-    public void addSocketChannel(Integer groupId, SocketChannel channel) {
-        List<SocketChannel> channels = groupChannel.get(groupId);
-        if (channels == null) {
-            channels = new ArrayList<SocketChannel>();
-        }
-        if (channels.contains(channel)) {
-            channels.remove(channel);
-        }
-        channels.add(channel);
-        groupChannel.put(groupId, channels);
-    }
+	public void addSocketChannel(Integer groupId, SocketChannel channel) {
+		List<SocketChannel> channels = groupChannel.get(groupId);
+		if (channels == null) {
+			channels = new ArrayList<SocketChannel>();
+		}
+		if (channels.contains(channel)) {
+			channels.remove(channel);
+		}
+		channels.add(channel);
+		groupChannel.put(groupId, channels);
+	}
 
-    public List<SocketChannel> getClientChannelByGroup(Integer groupId) {
-    	List<SocketChannel> channels = groupChannel.get(groupId);
-    	List<SocketChannel> retval = new ArrayList<SocketChannel>();
-    	if(channels != null){
-    		Iterator<SocketChannel> it = channels.iterator();
-        	while(it.hasNext()){
-        		SocketChannel channel = it.next();
-    			if (channel.isOpen()) {
-    				retval.add(channel);
-    			}
-        	}
-        	groupChannel.put(groupId, retval);
-    	}
-        return retval;
-    }
+	public List<SocketChannel> getClientChannelByGroup(Integer groupId) {
+		List<SocketChannel> channels = groupChannel.get(groupId);
+		List<SocketChannel> retval = new ArrayList<SocketChannel>();
+		if (channels != null) {
+			Iterator<SocketChannel> it = channels.iterator();
+			while (it.hasNext()) {
+				SocketChannel channel = it.next();
+				if (channel.isOpen()) {
+					retval.add(channel);
+				}
+			}
+			groupChannel.put(groupId, retval);
+		}
+		return retval;
+	}
 
-    public Map<Integer, List<SocketChannel>> getGroupChannel() {
+	public List<Student> getStudentList() {
+		return studentList;
+	}
+
+	public void setStudentList(List<Student> studentList) {
+		this.studentList = studentList;
+	}
+
+	public Map<Integer, List<SocketChannel>> getGroupChannel() {
 		return groupChannel;
 	}
 
 	public Map<String, Device> getImeiDevice() {
-        return imeiDevice;
-    }
+		return imeiDevice;
+	}
 
-    public Set<String> getOnlineDevice() {
-        return onlineDevice;
-    }
+	public Set<String> getOnlineDevice() {
+		return onlineDevice;
+	}
 
-    public void setOnlineDevice(Set<String> onlineDevice) {
-        this.onlineDevice = onlineDevice;
-    }
+	public void setOnlineDevice(Set<String> onlineDevice) {
+		this.onlineDevice = onlineDevice;
+	}
 
-    public Set<Student> getOnlineStudent() {
-        return onlineStudent;
-    }
+	public Set<Student> getOnlineStudent() {
+		return onlineStudent;
+	}
 
-    public void setOnlineStudent(Set<Student> onlineStudent) {
-        this.onlineStudent = onlineStudent;
-    }
+	public void setOnlineStudent(Set<Student> onlineStudent) {
+		this.onlineStudent = onlineStudent;
+	}
 
-    public Map<Integer, JSONObject> getTempGroup() {
-        return tempGroup;
-    }
+	public Map<Integer, JSONObject> getTempGroup() {
+		return tempGroup;
+	}
 
-    public Map<Integer, List<Integer>> getTempVote() {
-        return tempVote;
-    }
+	public Map<Integer, List<Integer>> getTempVote() {
+		return tempVote;
+	}
 
-    public Map<String, Quiz> getTempQuiz() {
-        return tempQuiz;
-    }
-    
+	public Map<String, Quiz> getTempQuiz() {
+		return tempQuiz;
+	}
+
 	public List<Quiz> getQuizList() {
 		return quizList;
 	}
 
 	public void refresh() {
-        MainFrame.getInstance().refreshPrepare();
-        MainFrame.getInstance().refreshQuiz();
-    }
-
-    public void refreshQuiz() {
-        MainFrame.getInstance().refreshQuiz();
-    }
-
-    public String getQuizId() {
-        return quizId;
-    }
-
-    public String getLessionid() {
-		return lessionid;
+		MainFrame.getInstance().refreshPrepare();
+		MainFrame.getInstance().refreshQuiz();
 	}
 
+	public void refreshQuiz() {
+		MainFrame.getInstance().refreshQuiz();
+	}
+
+	public String getQuizId() {
+		return quizId;
+	}
+
+	public String getLessionid() {
+		return lessionid;
+	}
 
 	public void setLessionid(String lessionid) {
 		this.lessionid = lessionid;
 	}
 
-
 	public void setQuizId(String quizId) {
-        this.quizId = quizId;
-    }
+		this.quizId = quizId;
+	}
 
 	public List<Student> getStudentByImei(String imei) {
 		return imeiStudent.get(imei);

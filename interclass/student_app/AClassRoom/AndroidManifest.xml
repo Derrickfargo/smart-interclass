@@ -8,8 +8,10 @@
         android:minSdkVersion="17"
         android:targetSdkVersion="19" />
 
+    <!--
     <uses-permission android:name="android.permission.INJECT_EVENTS" />
-    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
+    -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -29,35 +31,45 @@
 
     <application
         android:name="cn.com.incito.classroom.base.MyApplication"
-        android:largeHeap="true"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:screenOrientation="landscape"
         android:theme="@style/MyAppTheme" >
         <activity
             android:name="cn.com.incito.classroom.ui.activity.SplashActivity"
             android:screenOrientation="landscape" >
+
+            <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>
+            -->
         </activity>
-         <activity android:name="cn.com.incito.classroom.ui.activity.GroupListActvity"
-            android:screenOrientation="landscape"
-            >
+        <activity
+            android:name="cn.com.incito.classroom.ui.activity.GroupListActvity"
+            android:screenOrientation="landscape" >
             <intent-filter>
                 <action android:name="cn.com.classroom.SHOW_GROUP_LIST" />
             </intent-filter>
-          </activity>
-          <activity android:name="cn.com.incito.classroom.ui.activity.WifiSelectorActivity"
-            android:screenOrientation="landscape"
-            />
+        </activity>
+        <activity
+            android:name="cn.com.incito.classroom.ui.activity.WifiSelectorActivity"
+            android:screenOrientation="landscape" >
+             <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name="cn.com.incito.classroom.ui.activity.DrawBoxActivity"
             android:screenOrientation="landscape" >
             <intent-filter>
                 <action android:name="cn.com.classroom.SHOW_DRAWBOX" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -68,18 +80,33 @@
         <activity
             android:name="cn.com.incito.classroom.ui.activity.BindDeskActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".ui.activity.EditGroupInfoActivity"
-            android:launchMode="singleTask">
+        <activity
+            android:name=".ui.activity.EditGroupInfoActivity"
+            android:launchMode="singleTask" >
             <intent-filter>
                 <action android:name="cn.com.classroom.SHOW_EDIT_GROUP" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.ConfirmGroupInfoActivity" >
             <intent-filter>
                 <action android:name="cn.com.classroom.SHOW_CONFIRM_GROUP" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+        </activity>
+
+        <!-- 选择分组activity -->
+        <activity
+            android:name="cn.com.incito.classroom.ui.activity.SelectGroupActivity"
+            android:screenOrientation="landscape" >
+        </activity>
+
+        <!-- 新建分组activity -->
+        <activity
+            android:name="cn.com.incito.classroom.ui.activity.GroupCreatActivity"
+            android:screenOrientation="landscape" >
         </activity>
 
         <service android:name="cn.com.incito.classroom.service.SocketService" >
