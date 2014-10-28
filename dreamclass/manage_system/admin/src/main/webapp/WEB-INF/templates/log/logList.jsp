@@ -12,10 +12,17 @@
     <meta name="author" content="">
     <title>互动课堂后台管理平台</title>
     <jsp:include page="../common/common.jsp" />
+    <link href="/admin/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/admin/lib/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
     <script type="text/javascript" src="${path}/js/log.js"></script>
+      <script type="text/javascript" src="${path}/lib/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="${path}/lib/bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>
+    <script type="text/javascript" src="${path}/lib/bootstrap-datetimepicker/locales/bootstrap-datetimepicker.fr.js"></script>
+
   </head>
 
   <body>
+
   	<jsp:include page="../common/header.jsp" />
     <div class="container">
       <div class="row row-offcanvas row-offcanvas-right">
@@ -71,10 +78,19 @@
 									<div class="col-xs-2">
 										<input type="text" name="key" value="${key}" class="form-control borderRadiusIE8">
 									</div>
+									<br>
+									<br>
+									<br>
 									<label class="col-xs-1 control-label">Mac地址:</label>
 									<div class="col-xs-2">
 										<input type="text" name="address" class="form-control borderRadiusIE8" value="${address}">
 									</div>
+									
+									<label class="col-xs-1 control-label">日期:</label>
+									<div class="col-xs-2">
+										<input size="16" type="text" value="${date}" name="date" readonly class="form-control borderRadiusIE8 form_datetime">
+									</div>
+									
 									<button type="button" class="btn btn-primary" onclick="searchLog('1')">搜索</button>
 									<button type="button" class="btn btn-primary" onclick="emptyForm('searchForm')">清空</button>
 								</div>
@@ -88,7 +104,7 @@
 											<th>Mac地址</th>
 											<th>错误描述</th>
 											<th>时间</th>
-											<th>操作</th>
+											<th>操作</th>	
 										</tr>
 									</thead>
 									<tbody>

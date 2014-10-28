@@ -1,8 +1,8 @@
 //页面初始化设置
 $(document).ready(function() {
-	$("#logForm").validate({
-		submitHandler:function(form){
-			var flag = true;
+//	$("#logForm").validate({
+//		submitHandler:function(form){
+//			var flag = true;
 			//学校名称
 //			if (!new RegExp(/^[\u4e00-\u9fa5]{2,8}$/).test($("#logName").val())) {
 //				$("#checkLogNameTip").removeClass("hidden");
@@ -26,11 +26,16 @@ $(document).ready(function() {
 //				flag = false;
 //			}
 			
-			if (flag) {
-				form.submit();
-			}
-		}
-	});
+//			if (flag) {
+//				form.submit();
+//			}
+//		}
+//	});
+	  $(".form_datetime").datetimepicker({
+		  	format:'yyyy-mm-dd',
+	        autoclose: 1,
+	        minView:2
+		  });
 });
 
 

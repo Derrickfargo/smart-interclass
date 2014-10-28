@@ -41,7 +41,7 @@
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>所属学校：</label>
 												<div class="col-xs-4">
 													
-													<input id="autocompleteInput" name="schoolId" class="form-control" autocomplete="off">
+													<input id="autocompleteInput" name="schoolName" class="form-control required" autocomplete="off">
 													<!-- <select id="schoolId" name="schoolId" class="form-control" >
 														<c:forEach items="${schools}" var="school">
 														<option value="${school.id }">${school.name }</option>
