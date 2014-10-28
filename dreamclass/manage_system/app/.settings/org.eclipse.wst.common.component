@@ -13,9 +13,6 @@
         <dependent-module archiveName="class-parent-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/class-parent/class-parent">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="class-parent-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/class-parent/class-parent">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <property name="context-root" value="app"/>
         <property name="java-output-path" value="/app/target/classes"/>
     </wb-module>

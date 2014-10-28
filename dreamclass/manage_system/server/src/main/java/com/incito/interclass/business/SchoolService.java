@@ -1,3 +1,4 @@
+
 package com.incito.interclass.business;
 
 import java.util.List;
@@ -25,5 +26,10 @@ public class SchoolService {
 
 	public void deleteSchool(int schoolId) {
 		schoolMapper.delete(schoolId);
+	}
+
+	public int getSchoolIdByName(String schoolName) {
+		
+		return schoolMapper.getSchoolIdByName(schoolName);
 	}
 }
