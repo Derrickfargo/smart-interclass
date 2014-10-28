@@ -4,8 +4,16 @@ import java.util.List;
 
 public class Group {
 	
+	private  int iconSourceId;
 	private String name;
 	private List<String> memberNames;
+	
+	public int getIconSourceId() {
+		return iconSourceId;
+	}
+	public void setIconSourceId(int iconSourceId) {
+		this.iconSourceId = iconSourceId;
+	}
 	public String getName() {
 		return name;
 	}

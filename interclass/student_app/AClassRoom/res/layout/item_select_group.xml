@@ -9,8 +9,7 @@
         android:layout_width="50dp"
         android:layout_height="62dp"
         android:layout_marginLeft="15dp"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/ic_classroom"/>
+        android:contentDescription="@string/app_name"/>
     
      <TextView 
          android:id="@+id/text_group_name"

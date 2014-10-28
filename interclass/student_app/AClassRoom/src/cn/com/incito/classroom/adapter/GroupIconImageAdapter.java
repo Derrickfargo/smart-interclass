@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import cn.com.incito.classroom.R;
 
 public class GroupIconImageAdapter extends BaseAdapter {
 	
@@ -43,6 +44,8 @@ public class GroupIconImageAdapter extends BaseAdapter {
 			
 			// 设置布局 图片120×120显示
             imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
+            imageView.setBackgroundResource(R.drawable.bg_ico_group);
+            imageView.setPadding(8, 8, 8, 8); 
             // 设置显示比例类型
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             
