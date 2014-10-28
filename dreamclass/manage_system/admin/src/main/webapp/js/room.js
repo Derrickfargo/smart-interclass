@@ -1,5 +1,6 @@
 //页面初始化设置
 $(document).ready(function() {
+	//新增教室的自动填充
 	$("#autocompleteInput").autocomplete({
 	    source:function(query,process){
 	        var matchCount = this.options.items;//返回结果集最大数量
@@ -21,9 +22,15 @@ $(document).ready(function() {
 	    alert(regionCode);
 	});	 
 	
-//	$("#roomForm").validate({
-//		submitHandler:function(form){
-//			var flag = true;
+	$("#roomForm").validate({
+		submitHandler:function(form){
+			var flag = true;
+			//校验mac地址是否合法
+			if(!new RegExp(/[A-Fa-f0-9]{2}-[A-Fa-f0-9]{2}-[A-Fa-f0-9]{2}-[A-Fa-f0-9]{2}-[A-Fa-f0-9]{2}-[A-Fa-f0-9]{2}/).test($("#mac").val())){
+				$("#checkMacTip").removeClass("hidden");
+				flag=false;
+			}
+			
 			//学校名称
 //			if (!new RegExp(/^[\u4e00-\u9fa5]{2,8}$/).test($("#roomName").val())) {
 //				$("#checkRoomNameTip").removeClass("hidden");
@@ -47,11 +54,11 @@ $(document).ready(function() {
 //				flag = false;
 //			}
 			
-//			if (flag) {
-//				form.submit();
-//			}
-//		}
-//	});
+			if (flag) {
+				form.submit();
+			}
+		}
+	});
 });
 
 

@@ -53,7 +53,7 @@
 												</div>
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>教室名称：</label>
 												<div class="col-xs-4">
-													<input type="text" name="name" id="autocompleteInput" value="${room.name}" maxlength="128" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkRoomNameTip').addClass('hidden')" autocomplete="off">
+													<input type="text" name="name"  value="${room.name}" maxlength="128" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkRoomNameTip').addClass('hidden')" autocomplete="off">
 													<p id="checkRoomNameTip" class="help-block hidden"><font color="red"><b>请输入教室名称</b></font></p>
 												</div>
 											</div>
