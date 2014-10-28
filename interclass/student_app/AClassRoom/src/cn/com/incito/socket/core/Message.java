@@ -36,10 +36,6 @@ public class Message implements Serializable{
      */
     public static final Byte MESSAGE_STUDENT_LOGIN = 0x02;
     /**
-     * 设备绑定消息
-     */
-    public static final Byte MESSAGE_DEVICE_BIND = 0x03;
-    /**
      * 判断设备是否绑定
      */
     public static final Byte MESSAGE_DEVICE_HAS_BIND = 0x04;

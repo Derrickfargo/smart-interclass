@@ -1,8 +1,8 @@
 //页面初始化设置
 $(document).ready(function() {
-//	$("#schoolForm").validate({
-//		submitHandler:function(form){
-//			var flag = true;
+	$("#schoolForm").validate({
+		submitHandler:function(form){
+			var flag = true;
 			//学校名称
 //			if (!new RegExp(/^[\u4e00-\u9fa5]{2,8}$/).test($("#schoolName").val())) {
 //				$("#checkSchoolNameTip").removeClass("hidden");
@@ -26,17 +26,15 @@ $(document).ready(function() {
 //				flag = false;
 //			}
 			
-//			if (flag) {
-//				form.submit();
-//			} else {
-//				alert()
-//				return false;
-//			}
-//		}
-//	});
-
+			if (flag) {
+				form.submit();
+			} else {
+				alert()
+				return false;
+			}
+		}
+	});
 });
-
 
 
 // 搜索教师信息
@@ -77,6 +75,4 @@ function mouseOut(obj){
 function saveSchool() {
 	$("#schoolForm").submit();
 }
-
-
 

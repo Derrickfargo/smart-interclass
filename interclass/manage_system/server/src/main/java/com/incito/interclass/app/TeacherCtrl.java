@@ -89,7 +89,8 @@ public class TeacherCtrl extends BaseCtrl {
 	 * @return
 	 */
 	@RequestMapping(value = "/group", produces = { "application/json;charset=UTF-8" })
-	public String group(int schoolId, int teacherId, int year, int classNumber) {
+	public String group(int schoolId, int teacherId, int courseId, int year,
+			int classNumber) {
 		Classes classes = classService.getClassByNumber(schoolId, year, classNumber);
 		if (classes == null || classes.getId() == 0) {//不存在当前班级，添加
 			classes = new Classes();
@@ -100,10 +101,13 @@ public class TeacherCtrl extends BaseCtrl {
 		}
 		//获得当前课堂的分组列表
 		List<Group> groups = groupService.getGroupList(teacherId,classes.getId());
-		List<Student> student = userService.getStudentByClassId(classes.getId());
+		List<Student> students = userService.getStudentByClassId(classes.getId());
+		Course course = courseService.getCourseById(courseId);
 		TeacherGroupResultData data = new TeacherGroupResultData();
+		data.setCourse(course);
 		data.setGroups(groups);
 		data.setClasses(classes);
+		data.setStudents(students);
 		ApiResult result = new ApiResult();
 		result.setCode(ApiResult.SUCCESS);
 		result.setData(data);

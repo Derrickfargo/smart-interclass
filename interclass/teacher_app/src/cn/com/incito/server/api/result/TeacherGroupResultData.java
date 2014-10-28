@@ -9,11 +9,27 @@ import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Student;
 
 public class TeacherGroupResultData implements IApiResultData {
+	private Course course;
+	private Classes classes;
 	private List<Group> groups;
 	private List<Device> devices;
 	private List<Student> students;
-	private Classes classes;
-	private Course course;
+
+	public Course getCourse() {
+		return course;
+	}
+
+	public void setCourse(Course course) {
+		this.course = course;
+	}
+
+	public Classes getClasses() {
+		return classes;
+	}
+
+	public void setClasses(Classes classes) {
+		this.classes = classes;
+	}
 
 	public List<Group> getGroups() {
 		return groups;
@@ -29,22 +45,6 @@ public class TeacherGroupResultData implements IApiResultData {
 
 	public void setDevices(List<Device> devices) {
 		this.devices = devices;
-	}
-
-	public Classes getClasses() {
-		return classes;
-	}
-
-	public void setClasses(Classes classes) {
-		this.classes = classes;
-	}
-
-	public Course getCourse() {
-		return course;
-	}
-
-	public void setCourse(Course course) {
-		this.course = course;
 	}
 
 	public List<Student> getStudents() {

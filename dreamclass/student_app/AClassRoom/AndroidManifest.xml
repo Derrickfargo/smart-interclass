@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.com.incito.classroom"
-    android:versionCode="16"
-    android:versionName="V100R001C004B004" >
+    android:versionCode="18"
+    android:versionName="V100R001C004B006" >
 
     <uses-sdk
         android:minSdkVersion="17"
@@ -77,11 +77,11 @@
                 <action android:name="cn.com.incito.classroom.service.SOCKET_SERVICE" />
             </intent-filter>
         </service>
-        <service android:name="cn.com.incito.classroom.service.LogService" >
+       <!--  <service android:name="cn.com.incito.classroom.service.LogService" >
             <intent-filter>
                 <action android:name="cn.com.incito.classroom.service.LOG_SERVICE" />
             </intent-filter>
-        </service>
+        </service> -->
     </application>
 
 </manifest>

@@ -1,21 +1,20 @@
 package cn.com.incito.common.utils;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.widget.Toast;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
-import cn.com.incito.classroom.ui.activity.BindDeskActivity;
+import cn.com.incito.classroom.ui.activity.ClassReadyActivity;
 import cn.com.incito.classroom.ui.activity.DrawBoxActivity;
+import cn.com.incito.classroom.ui.activity.SelectGroupActivity;
 import cn.com.incito.classroom.ui.activity.WaitingActivity;
+import cn.com.incito.classroom.ui.activity.WifiSelectorActivity;
 import cn.com.incito.classroom.vo.GroupVo;
-import cn.com.incito.interclass.po.Group;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -23,7 +22,6 @@ public class UIHelper {
 	private static UIHelper instance;
 	private MyApplication app;
 	private WaitingActivity waitingActivity;
-	private BindDeskActivity bindDeskActivity;
 	private DrawBoxActivity drawBoxActivity;
 
 	private UIHelper() {
@@ -41,9 +39,6 @@ public class UIHelper {
 		this.waitingActivity = waitingActivity;
 	}
 
-	public void setBindDeskActivity(BindDeskActivity bindDeskActivity) {
-		this.bindDeskActivity = bindDeskActivity;
-	}
 
 	/*
 	 * public SplashActivity getSplashActivity() { return splashActivity; }
@@ -53,9 +48,6 @@ public class UIHelper {
 		return waitingActivity;
 	}
 
-	public BindDeskActivity getBindDeskActivity() {
-		return bindDeskActivity;
-	}
 
 	public DrawBoxActivity getDrawBoxActivity() {
 		return drawBoxActivity;
@@ -70,48 +62,18 @@ public class UIHelper {
 	}
 
 	/**
-	 * 显示登录界面
+	 * 显示选择小组界面
 	 */
-	public void showWaitingActivity() {
-		/*
-		 * if (splashActivity == null) { return; }
-		 */
-		Intent intent = new Intent(app, WaitingActivity.class);
+	public void showGroupActivity() {
+		Intent intent = new Intent(app, SelectGroupActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		app.startActivity(intent);
-//		AppManager.getAppManager().currentActivity().finish();
-		/*
-		 * splashActivity.finish(); splashActivity = null;
-		 */
 	}
 
-	/**
-	 * 显示课桌绑定界面
-	 */
-	public void showBindDeskActivity() {
-		/*
-		 * if (splashActivity == null) { return; }
-		 */
-		Intent intent = new Intent(app, BindDeskActivity.class);
+	public void showSelectWifiActivity(){
+		Intent intent = new Intent(app, WifiSelectorActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		app.startActivity(intent);
-		/*
-		 * splashActivity.finish(); splashActivity = null;
-		 */
-	}
-
-	/**
-	 * 显示登录界面
-	 */
-	public void showLoginActivity() {
-		if (bindDeskActivity == null) {
-			return;
-		}
-		Intent intent = new Intent(bindDeskActivity, WaitingActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		app.startActivity(intent);
-		bindDeskActivity.finish();
-		bindDeskActivity = null;
 	}
 
 	/**
@@ -132,9 +94,9 @@ public class UIHelper {
 	/**
 	 * 显示小组列表
 	 */
-	public void showGroupListActivity(List<GroupVo> groupList){
+	public void showGroupListActivity(){
 		Intent intent = new Intent();
-		intent.putExtra("group", (Serializable)groupList);
+//		intent.putExtra("group", (Serializable)groupList);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.setAction(Constants.ACTION_SHOW_GROUP_LIST);
 		app.startActivity(intent);
@@ -172,5 +134,16 @@ public class UIHelper {
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.setAction(Constants.ACTION_SHOW_EDIT_GROUP);
 		app.startActivity(intent);
+	}
+
+	/**
+	 * 显示准备界面
+	 */
+	public void showClassReadyActivity() {
+		Intent intent = new Intent(app.getApplicationContext(),
+				ClassReadyActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		app.startActivity(intent);
+		
 	}
 }

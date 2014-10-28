@@ -1,27 +1,8 @@
 //页面初始化设置
 $(document).ready(function() {
 	$("#versionForm").validate({
-		
-		
 		submitHandler:function(form){
 			var flag = true;
-			
-			//上传版本文件格式是否正确
-			if(!new RegExp(/\.xls$/i).test($("#file").val())){
-			
-				$("#fileTip").removeClass("hidden");
-				flag=false;
-				
-			};
-			//版本代码格式是否正确
-			if(!new RegExp( /^[1-9]\d*$/).test($("#code").val())){
-				
-				$("#checkCodeTip").removeClass("hidden");
-				flag=false;
-				
-			};
-			
-			
 			//学校名称
 //			if (!new RegExp(/^[\u4e00-\u9fa5]{2,8}$/).test($("#versionName").val())) {
 //				$("#checkVersionNameTip").removeClass("hidden");

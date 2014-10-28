@@ -12,7 +12,6 @@
     <title>互动课堂后台管理平台</title>
     <jsp:include page="../common/common.jsp" />
     <script type="text/javascript" src="${path}/js/school.js"></script>
-    <script type="text/javascript" src="${path}/lib/bootstrap.autocomplete/bootstrap.autocomplete.js"></script>
   </head>
 
   <body>
@@ -40,7 +39,7 @@
 								<div class="form-group">
 									<label class="col-xs-1 control-label">学校名称:</label>
 									<div class="col-xs-2">
-										<input type="text" name="name"  id="autocompleteInput" value="${name}" class="form-control borderRadiusIE8">
+										<input type="text" name="name" value="${name}" class="form-control borderRadiusIE8">
 									</div>
 									<label class="col-xs-1 control-label">学校性质:</label>
 									<div class="col-xs-2">
@@ -79,8 +78,8 @@
 											</c:choose>
 										</select>
 									</div>
-									<button type="button" id="btnsearch" class="btn btn-primary" onclick="searchSchool('1')">搜索</button>
-									<button type="button" id="btn-reset" class="btn btn-primary" onclick="emptyForm('searchForm')">清空</button>
+									<button type="button" class="btn btn-primary" onclick="searchSchool('1')">搜索</button>
+									<button type="button" class="btn btn-primary" onclick="emptyForm('searchForm')">清空</button>
 								</div>
 							</div>
 
@@ -97,7 +96,7 @@
 									<tbody>
 										<c:forEach items="${page.list}" var="school">
 											<tr>
-												<td>"${school.name}"</td>
+												<td>${school.name}</td>
 												<td>
 													<c:if test="${school.schoolType =='1' }">
 														小学
@@ -144,10 +143,6 @@
 									</c:otherwise>
 								</c:choose>
 							</div>
-							<!--  
-							第二个input 隐藏提交
-							
-							-->
 							<input type="hidden" id="pageNum" name="pageNum" value="${page.pageNum}"> 
 							<input type="hidden" id="pageSize" name="pageSize" value="">
 							<input type="hidden" id="opType" name="opType" value="">
@@ -157,6 +152,8 @@
 					</div>
 				</div>
 			</div>
+<!-- 		示例 结束 -->
+<!-- 			end- -这是 每个页面右边 不同的部分 -->
       </div>
       <footer>
          <!--nothing-->
