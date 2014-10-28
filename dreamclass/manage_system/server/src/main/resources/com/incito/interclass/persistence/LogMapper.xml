@@ -18,6 +18,9 @@
 			<if test="key != null and key != ''">
 				AND reason LIKE '%' #{key} '%'
 			</if>
+			<if test="date != null and date!='' ">
+				AND ctime between #{date} and #{aftdate}
+			</if>
 		</where>
 		ORDER BY
 			id

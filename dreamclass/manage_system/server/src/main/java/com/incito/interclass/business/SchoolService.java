@@ -26,4 +26,9 @@ public class SchoolService {
 	public void deleteSchool(int schoolId) {
 		schoolMapper.delete(schoolId);
 	}
+
+	public int getSchoolIdByName(String schoolName) {
+		// TODO Auto-generated method stub
+		return schoolMapper.getSchoolIdByName(schoolName);
+	}
 }

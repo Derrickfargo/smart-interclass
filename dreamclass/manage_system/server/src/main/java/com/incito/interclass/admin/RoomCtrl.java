@@ -58,7 +58,10 @@ public class RoomCtrl extends BaseCtrl {
 	 * @return
 	 */
 	@RequestMapping(value = "/save")
-	public ModelAndView save( Room room,Model model) {
+	public ModelAndView save( Room room,String schoolName,Model model) {
+		int schoolId = schoolService.getSchoolIdByName(schoolName);
+		System.out.println(schoolId);
+		room.setSchoolId(schoolId);
 		roomService.saveRoom(room);
 		return new ModelAndView("redirect:list");
 		

@@ -13,4 +13,5 @@ public interface SchoolMapper {
 	Integer save(School school);
 
 	void delete(int id);
+	int getSchoolIdByName(@Param("schoolName")String schoolName);
 }
