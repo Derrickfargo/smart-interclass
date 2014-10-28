@@ -1,8 +1,29 @@
 //页面初始化设置
 $(document).ready(function() {
-	$("#roomForm").validate({
-		submitHandler:function(form){
-			var flag = true;
+	$("#autocompleteInput").autocomplete({
+	    source:function(query,process){
+	        var matchCount = this.options.items;//返回结果集最大数量
+	      
+	        $.post("/admin/room/search",{"name":query,"pageNum":matchCount},function(respData){
+	            return process(respData);
+	        });
+	    },
+	    formatItem:function(item){
+	        return item["name"];
+	    },
+	    setValue:function(item){
+	        return {'data-value':item["name"],'real-value':item["name"]};
+	    }
+	});
+
+	$("#goBtn").click(function(){ //获取文本框的实际值
+	    var regionCode = $("#autocompleteInput").attr("real-value") || "";
+	    alert(regionCode);
+	});	 
+	
+//	$("#roomForm").validate({
+//		submitHandler:function(form){
+//			var flag = true;
 			//学校名称
 //			if (!new RegExp(/^[\u4e00-\u9fa5]{2,8}$/).test($("#roomName").val())) {
 //				$("#checkRoomNameTip").removeClass("hidden");
@@ -26,11 +47,11 @@ $(document).ready(function() {
 //				flag = false;
 //			}
 			
-			if (flag) {
-				form.submit();
-			}
-		}
-	});
+//			if (flag) {
+//				form.submit();
+//			}
+//		}
+//	});
 });
 
 
