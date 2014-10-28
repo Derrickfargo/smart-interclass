@@ -10,4 +10,5 @@ public class ClassReadyActivity extends BaseActivity {
 		super.onAfterOnCreate(savedInstanceState);
 		setContentView(R.layout.activity_classready);
 	}
+	
 }
