@@ -18,13 +18,17 @@ public class Constants {
 	public final static String UPDATE_HOST = "192.168.30.152:8080/app";
 	public final static String HTTP = "http://";
 	private final static String URL_SPLITTER = "/";
-	public final static String HOST = IP + ":" + PORT + "/app";
+	private static String SERVER_PORT;
+	private static String SERVER_IP;
+	public final static String HOST = SERVER_IP + ":" + SERVER_PORT + "/app";
 	private final static String URL_API_HOST = HTTP + HOST + URL_SPLITTER;
+	
+	
 	
 	/**
 	 * 上传日志文件
 	 */
-	public static String URL_UPLOAD_LOG = URL_API_HOST + "api/log/save";
+	public static String URL_UPLOAD_LOG = URL_API_HOST+ "api/log/save";
 	/**
 	 * 更新apk
 	 */
@@ -61,8 +65,24 @@ public class Constants {
 	public final static int SMALL_PEN_WIDTH = 5;
 	// 注册学生最大数量
 	public static final int STUDENT_MAX_NUM = 15;
-
 	//
 	public static final String PREFERENCE_IP = "prefence_ip";
+
+	public static String getSERVER_PORT() {
+		return SERVER_PORT;
+	}
+
+	public static void setSERVER_PORT(String sERVER_PORT) {
+		SERVER_PORT = sERVER_PORT;
+	}
+
+	public static String getSERVER_IP() {
+		return SERVER_IP;
+	}
+
+	public static void setSERVER_IP(String sERVER_IP) {
+		SERVER_IP = sERVER_IP;
+	}
+	
 
 }
