@@ -24,14 +24,16 @@ public class StudentLoginHandler extends MessageHandler {
 	@Override
 	public void handleMessage() {
         final String imei = data.getString("imei");
+        logger.info("登陆0-----------------------:" + imei);
         Application app = Application.getInstance();
         	String result = service.login(imei);
-        	logger.info("登陆:" + result);
+        	logger.info("收到设备登陆消息:" + result);
+        	
         	SocketChannel mSocketChannel=app.getClientChannel().get("imei");
         	sendResponse(result,mSocketChannel);
 	}
 	private void sendResponse(String json,SocketChannel channels) {
-			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
+			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_BIND);
 	        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
 	        byte[] messageData = messagePacking.pack().array();
 	        ByteBuffer buffer = ByteBuffer.allocate(messageData.length);

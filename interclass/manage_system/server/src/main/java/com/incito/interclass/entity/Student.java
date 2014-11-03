@@ -18,7 +18,7 @@ public class Student extends User {
 	private String address;
 	private int classId;
 	private int deviceId;
-
+	private Device device;
 	private int year;
 	private int classNumber;
 	private String schoolName;
@@ -30,6 +30,14 @@ public class Student extends User {
 
 	public void setScore(int score) {
 		this.score = score;
+	}
+
+	public Device getDevice() {
+		return device;
+	}
+
+	public void setDevice(Device device) {
+		this.device = device;
 	}
 
 	public int getId() {

@@ -35,16 +35,12 @@ public final class MessageHandlerResource {
 
     private MessageHandlerResource() {
         handlerResources = new HashMap<Byte, Class<? extends MessageHandler>>();
-        //学生登录的handler
-        handlerResources.put(Message.MESSAGE_STUDENT_BIND, ClassReadyHandler.class);
         //设备登陆消息回复，用于启动心跳
         handlerResources.put(Message.MESSAGE_HAND_SHAKE, LoginHandler.class);
         //心跳消息
         handlerResources.put(Message.MESSAGE_HEART_BEAT, HeartbeatHandler.class);
         //获取分组消息
         handlerResources.put(Message.MESSAGE_GROUP_LIST, GroupListHandler.class);
-        //提交小组信息
-        handlerResources.put(Message.MESSAGE_GROUP_CONFIRM, GroupSubmitHandler.class);
         //收到作业
         handlerResources.put(Message.MESSAGE_DISTRIBUTE_PAPER, DistributePaperHandler.class);
         //保存作业图片

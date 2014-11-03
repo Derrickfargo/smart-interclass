@@ -31,6 +31,7 @@ public final class MessageHandlerResource {
 	}
 	
 	private MessageHandlerResource(){
+		
 		handlerResources = new HashMap<Byte, Class<? extends MessageHandler>>();
 		//握手消息
 		handlerResources.put(Message.MESSAGE_HAND_SHAKE, DeviceLoginHandler.class);

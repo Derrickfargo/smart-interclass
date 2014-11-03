@@ -15,65 +15,66 @@ import cn.com.incito.server.exception.NoHandlerException;
  */
 public class Message {
 
-	/**
-	 * 消息识别码
-	 */
-	public static final int MESSAGE_FAKE_ID = 0xFAFB;
+    /**
+     * 消息识别码
+     */
+    public static final int MESSAGE_FAKE_ID = 0xFAFB;
 
-	/**
-	 * 握手消息
-	 */
-	public static final Byte MESSAGE_HAND_SHAKE = (byte)0xFF;
-	
-	/**
-	 * 心跳消息
-	 */
-	public static final Byte MESSAGE_HEART_BEAT = (byte) 0xFE;
+    /**
+     * 握手消息
+     */
+    public static final Byte MESSAGE_HAND_SHAKE = (byte) 0xFF;
 
-	/**
-	 * 获取分组信息
-	 */
-	public static final Byte MESSAGE_GROUP_LIST = 0x01;
-	
-	/**
-	 * 登陆消息
-	 */
+    /**
+     * 心跳消息
+     */
+    public static final Byte MESSAGE_HEART_BEAT = (byte) 0xFE;
+   
+    /**
+     * 获取分组信息
+     */
+    public static final Byte MESSAGE_GROUP_LIST = 0x01;
+
+    /**
+     * 选择wifi登陆
+     */
 	public static final Byte MESSAGE_STUDENT_LOGIN = 0x02;
 	
-	/**
-	 * 设备绑定消息
+	
+	 /**
+	 * 删除小组
 	 */
-	public static final Byte MESSAGE_DEVICE_BIND = 0x03;
+	public static final Byte MESSAGE_GROUP_DELETE = 0x03;
+    /**
+     * 判断设备是否绑定
+     */
+    public static final Byte MESSAGE_DEVICE_HAS_BIND = 0x04;
+
+    /**
+	 * 分组信息(pc-android)
+	 */
+	public static final Byte MESSAGE_GROUP_EDIT = 0x05;
 	
 	/**
-	 * 判断设备是否绑定
+	 * 创建小组(android-pc)
 	 */
-	public static final Byte MESSAGE_DEVICE_HAS_BIND = 0x04;
+	public static final Byte MESSAGE_GROUP_CREAT = 0x06;
 	
-	/**
-	 * 创建小组信息(pc-android)
-	 */
-	public static final Byte MESSAGE_GROUP_CREAT = 0x05;
-	
-	/**
-	 * 删除小组信息(pc-android)
-	 */
-	public static final Byte MESSAGE_GROUP_DELETE = 0x06;
 	/**
 	 * 加入小组(android-pc)
 	 */
 	public static final Byte MESSAGE_GROUP_JOIN = 0x07;
-	/**
-	 * 发送作业(android-pc)
-	 */
-	public static final Byte MESSAGE_DISTRIBUTE_PAPER = 0x08;
-	/**
-	 * 保存作业(android-pc)
-	 */
-	public static final Byte MESSAGE_SAVE_PAPER = 0x09;
-	
-	/**
-	 * 保存作业后传给andorid端的保存信息
+    /**
+     * 发送作业(android-pc)
+     */
+    public static final Byte MESSAGE_DISTRIBUTE_PAPER = 0x08;
+    /**
+     * 保存作业(android-pc)
+     */
+    public static final Byte MESSAGE_SAVE_PAPER = 0x09;
+    
+    /**
+	 * 保存作业后PC端传回的信息
 	 */
 	public static final Byte MESSAGE_SAVE_PAPER_RESULT=0x0A;
 	
@@ -86,6 +87,10 @@ public class Message {
 	 */
 	public static final Byte MESSAGE_LOCK_SCREEN=0x0C;
 	
+	/**
+	 * 学生登录后的返回(PC-PAD)
+	 */
+	public static final Byte MESSAGE_STUDENT_BIND=0x0D;
 	private Logger log = Logger.getLogger(Message.class);
 	
 	private byte msgID;

@@ -7,7 +7,6 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 
 import cn.com.incito.interclass.po.Device;
-import cn.com.incito.interclass.po.Group;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.config.AppConfig;
 import cn.com.incito.server.core.ConnectionManager;
@@ -36,8 +35,12 @@ public class DeviceLoginHandler extends MessageHandler {
 		Application app = Application.getInstance();
 		app.addSocketChannel(imei, message.getChannel());
 		Device device = app.getImeiDevice().get(imei);
+		
         if (device != null) {
             //TODO 
+        }else{
+        	Device mDevice=new Device();
+        	mDevice.setImei(imei);
         }
 		
 		//回复设备登陆消息
@@ -47,7 +50,8 @@ public class DeviceLoginHandler extends MessageHandler {
 		data.put(AppConfig.CONF_SERVER_IP, ip);
 		data.put(AppConfig.CONF_SERVER_PORT, port);
         logger.info("回复设备登陆消息:" + data.toJSONString());
-		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_HAND_SHAKE);
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_BIND);
+	
 		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(data.toJSONString()));
 		byte[] handShakResponse = messagePacking.pack().array();
         ByteBuffer buffer = ByteBuffer.allocate(handShakResponse.length);
