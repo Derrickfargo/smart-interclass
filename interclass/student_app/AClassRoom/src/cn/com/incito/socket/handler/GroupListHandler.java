@@ -3,6 +3,8 @@ package cn.com.incito.socket.handler;
 
 //import cn.com.incito.classroom.vo.GroupVo;
 
+import com.alibaba.fastjson.JSONObject;
+
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;
 /**
@@ -13,7 +15,13 @@ public class GroupListHandler extends MessageHandler {
 
 	@Override
 	protected void handleMessage() {
-		UIHelper.getInstance().showGroupListActivity();
+		
+		if(0 == data.getIntValue("code")){
+			JSONObject json = data.getJSONObject("data");
+			UIHelper.getInstance().showSelectGroup(json.toString());
+		}
+		
+//		UIHelper.getInstance().showGroupListActivity();
 	}
 
 }
