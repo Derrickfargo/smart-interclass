@@ -4,11 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.com.incito.classroom.utils.ApiClient;
-import cn.com.incito.socket.handler.ClassReadyHandler;
 import cn.com.incito.socket.handler.DistributePaperHandler;
 import cn.com.incito.socket.handler.GroupListHandler;
-import cn.com.incito.socket.handler.GroupSubmitHandler;
 import cn.com.incito.socket.handler.HeartbeatHandler;
+import cn.com.incito.socket.handler.IpSettingHandler;
 import cn.com.incito.socket.handler.LockScreenHandler;
 import cn.com.incito.socket.handler.LoginHandler;
 import cn.com.incito.socket.handler.SavePaperHandler;
@@ -37,6 +36,8 @@ public final class MessageHandlerResource {
         handlerResources = new HashMap<Byte, Class<? extends MessageHandler>>();
         //设备登陆消息回复，用于启动心跳
         handlerResources.put(Message.MESSAGE_HAND_SHAKE, LoginHandler.class);
+        //收到返回的IP地址
+        handlerResources.put(Message.MESSAGE_STUDENT_BIND, IpSettingHandler.class);
         //心跳消息
         handlerResources.put(Message.MESSAGE_HEART_BEAT, HeartbeatHandler.class);
         //获取分组消息

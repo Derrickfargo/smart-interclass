@@ -7,7 +7,6 @@ import java.nio.channels.SocketChannel;
 import android.util.Log;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.utils.ApiClient;
-import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;

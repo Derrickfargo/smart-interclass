@@ -22,11 +22,9 @@ public class GroupListHandler extends MessageHandler {
 	
 	@Override
 	public void handleMessage() {
-		logger.info("收到获取分组消息:" + data);
-		
 		String imei = data.getString("imei");
 		logger.info("IMEI:" + imei);
-		//需要给组中所以的设备发送
+		//需要给组中所有的设备发送
 		String result = service.getGroupByIMEI(imei);
 		logger.info(result);
 		sendResponse(result);
