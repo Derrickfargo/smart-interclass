@@ -28,6 +28,19 @@ public class UIHelper {
 		}
 		return instance;
 	}
+	
+	
+	/**
+	 * 显示选择分组界面 
+	 * @param json  服务器上传来分组数据
+	 */
+	public  void showSelectGroup(String json){
+		Intent intent = new Intent(app,SelectGroupActivity.class);
+		intent.putExtra("data", json);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		app.startActivity(intent);
+		
+	}
 
 
 
