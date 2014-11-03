@@ -6,7 +6,6 @@ import java.util.Map;
 import cn.com.incito.classroom.utils.ApiClient;
 import cn.com.incito.socket.handler.ClassReadyHandler;
 import cn.com.incito.socket.handler.DistributePaperHandler;
-import cn.com.incito.socket.handler.GroupEditHandler;
 import cn.com.incito.socket.handler.GroupListHandler;
 import cn.com.incito.socket.handler.GroupSubmitHandler;
 import cn.com.incito.socket.handler.HeartbeatHandler;
@@ -37,15 +36,13 @@ public final class MessageHandlerResource {
     private MessageHandlerResource() {
         handlerResources = new HashMap<Byte, Class<? extends MessageHandler>>();
         //学生登录的handler
-        handlerResources.put(Message.MESSAGE_STUDENT_LOGIN, ClassReadyHandler.class);
+        handlerResources.put(Message.MESSAGE_STUDENT_BIND, ClassReadyHandler.class);
         //设备登陆消息回复，用于启动心跳
         handlerResources.put(Message.MESSAGE_HAND_SHAKE, LoginHandler.class);
         //心跳消息
         handlerResources.put(Message.MESSAGE_HEART_BEAT, HeartbeatHandler.class);
         //获取分组消息
         handlerResources.put(Message.MESSAGE_GROUP_LIST, GroupListHandler.class);
-        //编辑小组信息
-        handlerResources.put(Message.MESSAGE_GROUP_EDIT, GroupEditHandler.class);
         //提交小组信息
         handlerResources.put(Message.MESSAGE_GROUP_CONFIRM, GroupSubmitHandler.class);
         //收到作业
