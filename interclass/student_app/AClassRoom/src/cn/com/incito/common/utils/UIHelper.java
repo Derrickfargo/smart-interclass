@@ -1,8 +1,5 @@
 package cn.com.incito.common.utils;
 
-import java.io.Serializable;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,16 +9,13 @@ import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.ui.activity.ClassReadyActivity;
 import cn.com.incito.classroom.ui.activity.DrawBoxActivity;
 import cn.com.incito.classroom.ui.activity.SelectGroupActivity;
-import cn.com.incito.classroom.ui.activity.WaitingActivity;
 import cn.com.incito.classroom.ui.activity.WifiSelectorActivity;
-import cn.com.incito.classroom.vo.GroupVo;
 
 import com.alibaba.fastjson.JSONObject;
 
 public class UIHelper {
 	private static UIHelper instance;
 	private MyApplication app;
-	private WaitingActivity waitingActivity;
 	private DrawBoxActivity drawBoxActivity;
 
 	private UIHelper() {
@@ -35,18 +29,12 @@ public class UIHelper {
 		return instance;
 	}
 
-	public void setWaitingActivity(WaitingActivity waitingActivity) {
-		this.waitingActivity = waitingActivity;
-	}
 
 
 	/*
 	 * public SplashActivity getSplashActivity() { return splashActivity; }
 	 */
 
-	public WaitingActivity getWaitingActivity() {
-		return waitingActivity;
-	}
 
 
 	public DrawBoxActivity getDrawBoxActivity() {

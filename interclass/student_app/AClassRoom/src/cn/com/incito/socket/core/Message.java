@@ -26,32 +26,33 @@ public class Message implements Serializable{
      */
     public static final Byte MESSAGE_HEART_BEAT = (byte) 0xFE;
 
+   
     /**
      * 获取分组信息
      */
     public static final Byte MESSAGE_GROUP_LIST = 0x01;
 
     /**
-     * 登陆消息
+     * 选择wifi登陆
      */
-    public static final Byte MESSAGE_STUDENT_LOGIN = 0x02;
+	public static final Byte MESSAGE_STUDENT_LOGIN = 0x02;
     /**
      * 判断设备是否绑定
      */
     public static final Byte MESSAGE_DEVICE_HAS_BIND = 0x04;
 
     /**
-	 * 编辑小组信息(pc-android)
+	 * 分组信息(pc-android)
 	 */
 	public static final Byte MESSAGE_GROUP_EDIT = 0x05;
 	
 	/**
-	 * 确认小组信息(android-pc)
+	 * 创建小组(android-pc)
 	 */
 	public static final Byte MESSAGE_GROUP_CONFIRM = 0x06;
 	
 	/**
-	 * 保存小组信息(android-pc)
+	 * 加入小组(android-pc)
 	 */
 	public static final Byte MESSAGE_GROUP_VOTE = 0x07;
     /**
@@ -76,6 +77,11 @@ public class Message implements Serializable{
 	 * 锁屏
 	 */
 	public static final Byte MESSAGE_LOCK_SCREEN=0x0C;
+	/**
+	 * 学生登录后的返回
+	 */
+	public static final Byte MESSAGE_STUDENT_BIND=0x0d;
+	
 	
     private byte msgID;
     private int msgSize;
