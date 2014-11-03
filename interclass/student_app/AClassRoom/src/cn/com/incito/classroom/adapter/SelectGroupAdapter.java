@@ -13,6 +13,7 @@ import android.widget.TextView;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.ui.activity.SelectGroupActivity;
 import cn.com.incito.classroom.vo.Group;
+import cn.com.incito.classroom.vo.Student;
 
 public class SelectGroupAdapter extends BaseAdapter {
 	
@@ -56,14 +57,14 @@ public class SelectGroupAdapter extends BaseAdapter {
 		}else{
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		List<String> memberNames = group.getMemberNames();
+		List<Student> memberNames = group.getStudents();
 		StringBuilder sb = new StringBuilder();
 		for(int i = 0; i < memberNames.size(); i++){
 			sb.append(memberNames.get(i) + " ");
 		}
 		
 		//设置小组图标 
-		viewHolder.img_group_icon.setBackgroundResource(group.getIconSourceId());
+//		viewHolder.img_group_icon.setBackgroundResource(group.getIconSourceId());
 		//设置小组成员以及名称 
 		viewHolder.text_name.setText( Html.fromHtml(group.getName()+"<br><font color='#ecf2fc'> "+ sb.toString() + "</font>"));
 		

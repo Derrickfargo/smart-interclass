@@ -84,9 +84,7 @@ public class SelectGroupActivity extends BaseActivity implements
 		memberNames.add("王五 ");
 
 		Group g = new Group();
-		g.setMemberNames(memberNames);
 		g.setName("潜水小组");
-		g.setIconSourceId(R.drawable.ic_classroom);
 		groupList = new ArrayList<Group>();
 		groupList.add(g);
 		groupList.add(g);
