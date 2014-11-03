@@ -60,11 +60,11 @@ public class SelectGroupAdapter extends BaseAdapter {
 		List<Student> memberNames = group.getStudents();
 		StringBuilder sb = new StringBuilder();
 		for(int i = 0; i < memberNames.size(); i++){
-			sb.append(memberNames.get(i) + " ");
+			sb.append(memberNames.get(i).getName() + " ");
 		}
 		
 		//设置小组图标 
-//		viewHolder.img_group_icon.setBackgroundResource(group.getIconSourceId());
+		viewHolder.img_group_icon.setBackgroundResource(group.getLogo());
 		//设置小组成员以及名称 
 		viewHolder.text_name.setText( Html.fromHtml(group.getName()+"<br><font color='#ecf2fc'> "+ sb.toString() + "</font>"));
 		
