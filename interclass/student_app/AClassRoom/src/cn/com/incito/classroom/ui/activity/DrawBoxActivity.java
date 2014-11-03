@@ -184,7 +184,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 			}
 		} else {
 			bitmap = BitmapFactory
-					.decodeResource(getResources(), R.drawable.bg);
+					.decodeResource(getResources(), R.drawable.bg_teacher_teaching);
 			changeBtn.setClickable(true);
 		}
 		initPaint(bitmap);
@@ -389,7 +389,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 				isBlack = false;
 			} else {
 				m_sketchPad.setBkBitmap(((BitmapDrawable) (getResources()
-						.getDrawable(R.drawable.bg))).getBitmap());
+						.getDrawable(R.drawable.bg_teacher_teaching))).getBitmap());
 				changeBtn.setBackgroundResource(R.drawable.bg_cgbg_white);
 				isBlack = true;
 			}

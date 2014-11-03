@@ -39,10 +39,7 @@
         <activity
             android:name="cn.com.incito.classroom.ui.activity.SplashActivity"
             android:screenOrientation="landscape" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>        </activity>
+                   </activity>
         <activity
             android:name="cn.com.incito.classroom.ui.activity.GroupListActvity"
             android:screenOrientation="landscape" >
@@ -88,12 +85,22 @@
         <activity
             android:name="cn.com.incito.classroom.ui.activity.SelectGroupActivity"
             android:screenOrientation="landscape" >
+             <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <!-- 新建分组activity -->
         <activity
             android:name="cn.com.incito.classroom.ui.activity.GroupCreatActivity"
             android:screenOrientation="landscape" >
+        </activity>
+        
+        <!-- 等待小组其他成员 -->
+        <activity android:name="cn.com.incito.classroom.ui.activity.WaitForOtherMembersActivity"
+            android:screenOrientation="landscape">
+            
         </activity>
         <activity
             android:name="cn.com.incito.classroom.ui.activity.ClassReadyActivity"

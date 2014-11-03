@@ -29,7 +29,7 @@ public class SchoolService {
 	}
 
 	public int getSchoolIdByName(String schoolName) {
-		
-		return schoolMapper.getSchoolIdByName(schoolName);
+		List<Integer> schools=schoolMapper.getSchoolIdByName(schoolName);
+		return schools.get(0);
 	}
 }

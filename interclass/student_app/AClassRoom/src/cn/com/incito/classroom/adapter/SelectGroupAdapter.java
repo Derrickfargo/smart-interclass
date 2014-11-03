@@ -11,26 +11,25 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import cn.com.incito.classroom.R;
+import cn.com.incito.classroom.ui.activity.SelectGroupActivity;
 import cn.com.incito.classroom.vo.Group;
 
 public class SelectGroupAdapter extends BaseAdapter {
 	
-	private Context context;
-	private List<Group> groupList;
+	private SelectGroupActivity activity;
 	
-	public SelectGroupAdapter(Context context,List<Group> groupList){
-		this.context = context;
-		this.groupList = groupList;
+	public SelectGroupAdapter(Context context){
+		this.activity = (SelectGroupActivity) context;
 	}
 
 	@Override
 	public int getCount() {
-		return groupList.size();
+		return activity.getGroupList().size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return groupList.get(position);
+		return activity.getGroupList().get(position);
 	}
 
 	@Override
@@ -41,12 +40,12 @@ public class SelectGroupAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		
-		Group group = groupList.get(position);
+		Group group = (Group) getItem(position);
 		
 		ViewHolder viewHolder;
 		
 		if(convertView == null){
-			convertView = LayoutInflater.from(context).inflate(R.layout.item_select_group, null);
+			convertView = LayoutInflater.from(activity).inflate(R.layout.item_select_group, null);
 			
 			viewHolder = new ViewHolder();
 			
@@ -63,6 +62,9 @@ public class SelectGroupAdapter extends BaseAdapter {
 			sb.append(memberNames.get(i) + " ");
 		}
 		
+		//设置小组图标 
+		viewHolder.img_group_icon.setBackgroundResource(group.getIconSourceId());
+		//设置小组成员以及名称 
 		viewHolder.text_name.setText( Html.fromHtml(group.getName()+"<br><font color='#ecf2fc'> "+ sb.toString() + "</font>"));
 		
 		return convertView;
@@ -71,7 +73,6 @@ public class SelectGroupAdapter extends BaseAdapter {
 	private class ViewHolder{
 		TextView text_name;
 		ImageView img_group_icon;
-		
 	}
 
 }
