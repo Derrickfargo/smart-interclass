@@ -586,7 +586,6 @@ public class WifiSelectorActivity extends BaseActivity  {
 
 	/**
 	 * 检测手机网络是否已经连接
-	 * 
 	 * @return
 	 */
 	private boolean isMobileNetConnected() {
