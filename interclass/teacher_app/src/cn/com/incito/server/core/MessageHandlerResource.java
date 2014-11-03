@@ -7,6 +7,9 @@ import org.apache.log4j.Logger;
 
 import cn.com.incito.server.handler.DeviceLoginHandler;
 import cn.com.incito.server.handler.DeviceLogoutHandler;
+import cn.com.incito.server.handler.GroupCreatHandler;
+import cn.com.incito.server.handler.GroupDeleteHandler;
+import cn.com.incito.server.handler.GroupJoinHandler;
 import cn.com.incito.server.handler.GroupListHandler;
 import cn.com.incito.server.handler.HeartbeatHandler;
 import cn.com.incito.server.handler.SavePaperHandler;
@@ -41,11 +44,13 @@ public final class MessageHandlerResource {
 		handlerResources.put(Message.MESSAGE_GROUP_LIST, GroupListHandler.class);
 		//学生登陆消息
 		handlerResources.put(Message.MESSAGE_STUDENT_LOGIN, StudentLoginHandler.class);
-//		//编辑组信息
-//		handlerResources.put(Message.MESSAGE_GROUP_EDIT, GroupSubmitHandler.class);
-//		//小组投票消息
-//		handlerResources.put(Message.MESSAGE_GROUP_VOTE, GroupVoteHandler.class);
-//		//收作业信息
+		//加入小组
+		handlerResources.put(Message.MESSAGE_GROUP_JOIN,GroupJoinHandler.class);
+		//删除小组
+		handlerResources.put(Message.MESSAGE_GROUP_DELETE, GroupDeleteHandler.class);
+		//创建小组
+		handlerResources.put(Message.MESSAGE_GROUP_CREAT, GroupCreatHandler.class);
+		//收作业信息
 		handlerResources.put(Message.MESSAGE_SAVE_PAPER, SavePaperHandler.class);
 		//设备退出
 		handlerResources.put(Message.MESSAGE_DEVICE_LOGOUT, DeviceLogoutHandler.class);

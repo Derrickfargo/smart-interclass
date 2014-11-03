@@ -29,7 +29,7 @@ public class GroupDeleteHandler extends MessageHandler {
 		} catch (AppException e) {
 			e.printStackTrace();
 		}
-		sendResponse(result.toString(), channels);
+//		sendResponse(result.toString(), channels);
 	}
 	private void sendResponse(String json, List<SocketChannel> channels) {
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_DELETE);
