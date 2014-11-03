@@ -2,8 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
-	<classpathentry exported="true" kind="lib" path="libs/slf4j-android-1.5.8.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/fastjson-1.1.37.jar"/>
+	<classpathentry kind="lib" path="libs/microlog4android-1.0.0.jar"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry exported="true" kind="lib" path="libs/netty-android-3.8.0.Final.jar"/>
