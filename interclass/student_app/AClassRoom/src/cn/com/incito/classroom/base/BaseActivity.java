@@ -11,6 +11,8 @@ import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import cn.com.incito.classroom.ui.widget.NetWorkDialog;
 
+import com.google.code.microlog4android.config.PropertyConfigurator;
+
 /**
  * activity基类 Created by popoy on 2014/8/5.
  */
@@ -29,7 +31,7 @@ public class BaseActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		PropertyConfigurator.getConfigurator(this).configure();//读取配置文件
 		AppManager.getAppManager().addActivity(this);
 		onAfterOnCreate(savedInstanceState);
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);

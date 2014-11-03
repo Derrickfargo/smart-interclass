@@ -39,6 +39,8 @@ import cn.com.incito.wisdom.sdk.net.download.SlowNetworkImageDownloader;
 import cn.com.incito.wisdom.sdk.openudid.OpenUDIDManager;
 import cn.com.incito.wisdom.sdk.utils.StorageUtils;
 
+import com.google.code.microlog4android.Logger;
+import com.google.code.microlog4android.LoggerFactory;
 import com.umeng.analytics.MobclickAgent;
 
 /**
@@ -47,6 +49,8 @@ import com.umeng.analytics.MobclickAgent;
 public class MyApplication extends Application {
 
 	public boolean isOnClass;// 是否在上课
+	
+	public static final Logger LOGGER = LoggerFactory.getLogger();
 
 	public boolean isOnClass() {
 		return isOnClass;
