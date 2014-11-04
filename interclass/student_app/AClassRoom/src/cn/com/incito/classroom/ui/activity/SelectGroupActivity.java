@@ -1,5 +1,6 @@
 package cn.com.incito.classroom.ui.activity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
@@ -30,7 +31,9 @@ public class SelectGroupActivity extends BaseActivity implements
 	private Button btn_create_group;
 	private ListView select_group_listview;
 	private SelectGroupAdapter selectGroupAdapter;
-	private List<Group> groupList;
+	private List<Group> groupList = new ArrayList<Group>();
+	
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +41,7 @@ public class SelectGroupActivity extends BaseActivity implements
 		setContentView(R.layout.activity_select_group);
 		
 		Intent intent = new Intent();
-		setGroupData(intent.getStringExtra("data"));
+		setGroupData(intent.getStringExtra("group"));
 		// 初始化UI组件
 		initViews();
 	}
@@ -90,7 +93,7 @@ public class SelectGroupActivity extends BaseActivity implements
 							messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(jsonObject.toJSONString()));
 							CoreSocket.getInstance().sendMessage(messagePacking);
 							
-							MyApplication.LOGGER.debug(System.currentTimeMillis() + "开始发送分组请求 ");
+							MyApplication.Logger.debug(System.currentTimeMillis() + "开始发送分组请求 ");
 						}
 					}
 				}
@@ -115,6 +118,6 @@ public class SelectGroupActivity extends BaseActivity implements
 	@SuppressWarnings("unchecked")
 	private void setGroupData(String json) {
 		JSONObject jsonObject = JSONObject.parseObject(json);
-		groupList = (List<Group>) jsonObject.get("group");
+		groupList = (List<Group>) jsonObject.get("data");
 	}
 }

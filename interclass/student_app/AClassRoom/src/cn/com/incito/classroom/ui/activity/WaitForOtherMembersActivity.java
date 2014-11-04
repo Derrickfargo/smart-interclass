@@ -1,8 +1,11 @@
 package cn.com.incito.classroom.ui.activity;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.filterfw.io.TextGraphReader;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -10,6 +13,17 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import cn.com.incito.classroom.R;
+import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.classroom.vo.Device;
+import cn.com.incito.classroom.vo.Group;
+import cn.com.incito.classroom.vo.Student;
+import cn.com.incito.socket.core.CoreSocket;
+import cn.com.incito.socket.core.Message;
+import cn.com.incito.socket.message.DataType;
+import cn.com.incito.socket.message.MessagePacking;
+import cn.com.incito.socket.utils.BufferUtils;
+
+import com.alibaba.fastjson.JSONObject;
 
 public class WaitForOtherMembersActivity extends Activity implements OnClickListener{
 	
@@ -19,6 +33,8 @@ public class WaitForOtherMembersActivity extends Activity implements OnClickList
 	private TextView text_group_name;
 	private TextView text_group_members_name;
 	private Button btn_waiting;
+	private Group group;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,16 +56,38 @@ public class WaitForOtherMembersActivity extends Activity implements OnClickList
 		
 		//获取传递过来的数据
 		Intent intent = getIntent();
-		int iconSrourceId = intent.getIntExtra("iconSrourceId", 0);
-		String groupName = intent.getStringExtra("groupName");
+		String data = intent.getStringExtra("group");
+		JSONObject jsonObject = JSONObject.parseObject(data);
+		
+		List<Group> groupList = (List<Group>) jsonObject.get("data");
+		
+		for(int i = 0; i < groupList.size(); i++){
+			List<Device> devices = groupList.get(i).getDevices();
+			for(int j = 0; j < devices.size(); j++){
+				if(devices.get(j).getImei().equals(MyApplication.deviceId)){
+					group = groupList.get(i);
+					break;
+				}
+			}
+		}
+		
 		
 		image_group_icon = (ImageView) findViewById(R.id.image_group_icon);
-		image_group_icon.setImageResource(iconSrourceId);
+		image_group_icon.setImageResource(group.getLogo());
 		
 		text_group_name = (TextView) findViewById(R.id.text_gourp_name);
-		text_group_name.setText(groupName);
+		text_group_name.setText(group.getName());
 		
 		text_group_members_name = (TextView) findViewById(R.id.text_group_members_name);
+		
+		//循环显示学生姓名
+		StringBuilder sb = new StringBuilder();
+		List<Student> students = group.getStudents();
+		for(int i = 0; i < students.size(); i++){
+			sb.append(students.get(i).getName() + "\t");
+		}
+		
+		text_group_members_name.setText(sb.toString());
 	}
 	
 	/**
@@ -58,11 +96,10 @@ public class WaitForOtherMembersActivity extends Activity implements OnClickList
 	 * @param groupName  小组名称
 	 * @param iconSourceId   小组图标Id
 	 */
-	public static void startSelf(Context context,String groupName,int iconSourceId){
+	public static void startSelf(Context context,String group){
 		
 		Intent intent = new Intent(context,WaitForOtherMembersActivity.class);
-		intent.putExtra("groupName", groupName);
-		intent.putExtra("iconSrourceId", iconSourceId);
+		intent.putExtra("group", group);
 		
 		context.startActivity(intent);
 	}
@@ -72,7 +109,14 @@ public class WaitForOtherMembersActivity extends Activity implements OnClickList
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.btn_back:
-			this.finish();
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("groupId", group.getId());
+			
+			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_DELETE);
+			messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(jsonObject.toJSONString()));
+			CoreSocket.getInstance().sendMessage(messagePacking);
+			
+//			this.finish();
 			break;
 
 		default:
