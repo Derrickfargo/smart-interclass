@@ -17,7 +17,7 @@ public class GroupService {
 
 	@Autowired
 	private GroupMapper groupMapper;
-	
+
 	public List<Group> getGroupList(int teacherId, int courseId, int classId) {
 		return groupMapper.getGroupList(teacherId, courseId, classId);
 	}
@@ -52,19 +52,8 @@ public class GroupService {
 		return group;
 	}
 
-	public Group save(Group group) {
-		List<Student> students = group.getStudents();
-		groupMapper.save(group);
-		if(group.getId() > 0){
-			for (Student student : students) {
-				StudentGroup ug = new StudentGroup();
-				ug.setGroupId(group.getId());
-				ug.setStudentId(student.getId());
-				groupMapper.saveStudentGroup(ug);
-			}
-			return group;
-		}
-		return null;
+	public Integer save(Group group) {
+		return groupMapper.save(group);
 	}
 	
 	public Group getGroupByTableId(int tableId, int teacherId, int courseId, int classId){
