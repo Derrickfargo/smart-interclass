@@ -1,126 +1,93 @@
 package cn.com.incito.interclass.ui;
 
+import java.awt.CardLayout;
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
-import cn.com.incito.interclass.po.Student;
 import cn.com.incito.server.api.Application;
 
 public class PreparePanel extends JPanel{
 	private static final long serialVersionUID = 6316121486627261595L;
 	private static final int ROW_COUNT = 8;//每行显示8个学生
+	private static final String CARD_NO_GROUP = "NO_GROUP";
+	private static final String CARD_GROUP = "GROUP";
+	
 	private Application app = Application.getInstance();
-
+	private CardLayout centerCardLayout;
+	private JPanel centerCardPanel;
+	private PrepareNoGroupPanel noGroupPanel;
+	private PrepareGroupPanel groupPanel;
+	
+	private JButton btnNoGroup;
+	private JButton btnGroup;
+	private JLabel lblCardBackground;
+	
 	public PreparePanel() {
-		// this.setSize(878, 620);
 		this.setLayout(null);
 		this.setOpaque(true);
-		// 初始化界面
-		initView();
-
-		// 加载数据
-		refresh();
-	}
-
-	private void initView() {
-		List<Student> students = app.getStudentList();
+		// 初始化选项卡按钮
+		btnNoGroup = new JButton("未分组");
+		btnNoGroup.setFocusPainted(false);
+		btnNoGroup.setBorderPainted(false);// 设置边框不可见
+		btnNoGroup.setContentAreaFilled(false);// 设置透明
+		btnNoGroup.setBorder(BorderFactory.createTitledBorder(""));
+		add(btnNoGroup);
+		btnNoGroup.setBounds(3, 4, 137, 35);
+		btnNoGroup.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+            	centerCardLayout.show(centerCardPanel, CARD_NO_GROUP);
+            	lblCardBackground.setIcon(new ImageIcon("images/prepare/bg_nogroup.jpg"));
+            }
+        });
 		
-		//一下8行是测试代码
-		for (int k = 0; k < 23; k++) {
-			Student s = new Student();
-			s.setName("测试" + k);
-			students.add(s);
-		}
-		students.get(6).setLogin(true);
-		students.get(11).setLogin(true);
-		app.setStudentList(students);
+		btnGroup = new JButton("分组");
+		btnGroup.setFocusPainted(false);
+		btnGroup.setBorderPainted(false);// 设置边框不可见
+		btnGroup.setContentAreaFilled(false);// 设置透明
+		btnGroup.setBorder(BorderFactory.createTitledBorder(""));
+		add(btnGroup);
+		btnGroup.setBounds(141, 4, 137, 35);
+		btnGroup.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+            	centerCardLayout.show(centerCardPanel, CARD_GROUP);
+            	lblCardBackground.setIcon(new ImageIcon("images/prepare/bg_group.png"));
+            }
+        });
 		
-		refresh();
-	}
-
-	private void initOfflineStudent(int y) {
-		List<Student> students = app.getStudentList();
-		List<Student> offline = new ArrayList<Student>();
-		for (Student student : students) {
-			if (!student.isLogin()) {
-				offline.add(student);
-			}
-		}
-		int rows = offline.size() / ROW_COUNT;
-		if(offline.size() % ROW_COUNT > 0){
-			rows ++;
-		}
-		int x = 30;
-		int index = 0;
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < 8; j++) {
-				if(index == offline.size()){
-					break;
-				}
-				JLabel lblName = getNameLabel();
-				Student student = offline.get(index);
-				lblName.setBackground(new Color(Integer.parseInt("e1e1e1", 16)));
-				lblName.setText(student.getName());
-				lblName.setBounds(x, y, 81, 24);
-				add(lblName);
-				x += 100;
-				index ++;
-			}
-			x = 30;
-			y += 40;
-		}
-	}
-
-	private int initOnlineStudent(){
-		List<Student> students = app.getStudentList();
-		List<Student> online = new ArrayList<Student>();
-		for (Student student : students) {
-			if (student.isLogin()) {
-				online.add(student);
-			}
-		}
-		int rows = online.size() / ROW_COUNT;
-		if(online.size() % ROW_COUNT > 0){
-			rows ++;
-		}
-		int x = 30;
-		int y = 20;
-		int index = 0;
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < 8; j++) {
-				if(index == online.size()){
-					break;
-				}
-				JLabel lblName = getNameLabel();
-				Student student = online.get(index);
-				lblName.setBackground(new Color(Integer.parseInt("5ec996", 16)));
-				lblName.setText(student.getName());
-				lblName.setBounds(x, y, 81, 24);
-				add(lblName);
-				x += 100;
-				index ++;
-			}
-			x = 30;
-			y += 40;
-		}
-		return y + 30;
-	}
-	
-	private JLabel getNameLabel(){
-		JLabel lblName = new JLabel("", JLabel.CENTER);
-		lblName.setOpaque(true);
-		lblName.setBackground(new Color(Integer.parseInt("E1E1E1", 16)));
-		lblName.setForeground(new Color(Integer.parseInt("FFFFFF", 16)));
-		return lblName;
-	}
-	
-	public void refresh() {
-		int y = initOnlineStudent();
-		initOfflineStudent(y);
+		lblCardBackground = new JLabel();
+		lblCardBackground.setIcon(new ImageIcon("images/prepare/bg_nogroup.jpg"));
+		lblCardBackground.setBounds(0, 0, 838, 40);
+		add(lblCardBackground);
+		
+		centerCardLayout = new CardLayout();
+		centerCardPanel = new JPanel(centerCardLayout);
+		centerCardPanel.setBounds(0, 0, 876, 620);
+		add(centerCardPanel);
+		
+		//未分组card
+		noGroupPanel = new PrepareNoGroupPanel();
+		noGroupPanel.setBackground(Color.WHITE);
+		noGroupPanel.setBounds(0, 0, 838, 620);
+		noGroupPanel.revalidate();
+		centerCardPanel.add(noGroupPanel, CARD_NO_GROUP);
+		//分组card
+		groupPanel = new PrepareGroupPanel();
+		groupPanel.setBackground(Color.WHITE);
+		groupPanel.setBounds(0, 0, 838, 620);
+        groupPanel.revalidate();
+		centerCardPanel.add(groupPanel, CARD_GROUP);
 	}
 
 }
