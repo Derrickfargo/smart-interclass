@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import cn.com.incito.interclass.po.Group;
+import cn.com.incito.server.api.Application;
 import cn.com.incito.server.utils.UIHelper;
 
 public class PrepareGroupPanel extends JPanel {
@@ -24,70 +25,77 @@ public class PrepareGroupPanel extends JPanel {
 	private JLabel lblNumber;
 	private JLabel lblGroupName;
 	private List<PadPanel> deviceList = new ArrayList<PadPanel>();
-	
-	@Override
-	protected void paintComponent(Graphics g) {
-		Image bg = new ImageIcon("images/main/bg_index_list.png").getImage();
-		g.drawImage(bg, 0, 0, this.getWidth(), this.getHeight(),this);
-	}
-	
-	public PrepareGroupPanel(){
+	private Application app = Application.getInstance();
+
+	public PrepareGroupPanel() {
 		setLayout(null);
 		setVisible(false);
-		
-		//课桌号
+		List<Group> groups = app.getGroupList();
+//		for(Group group : groups){
+//			
+//		}
+		createGroup(null);
+	}
+
+	private void createGroup(Group group) {
+		// 组号
 		lblNumber = createDeskNumber();
 		add(lblNumber);
-		lblNumber.setBounds(15, 10, 25, 25);
+		lblNumber.setBounds(20, 55, 25, 25);
 
 		//分组loading图标
 		lblLogo = new JLabel("", JLabel.CENTER);
 		lblLogo.setIcon(new ImageIcon("images/main/load_groupinfo.gif"));
 		add(lblLogo);
-		lblLogo.setBounds(45, 9, 32,32);
+		lblLogo.setBounds(50, 95, 32, 32);
 		lblLogo.setVisible(false);
-		
-		//小组名称
+
+		// 小组名称
 		lblGroupName = new JLabel();
 		lblGroupName.setForeground(UIHelper.getDefaultFontColor());
 		add(lblGroupName);
-		lblGroupName.setBounds(45, 10, 80,30);
+		lblGroupName.setBounds(50, 95, 80, 30);
 		lblGroupName.setVisible(false);
-		
-		//小组与pad的分割线
+
+		// 小组与pad的分割线
 		JLabel lblLine = getLine();
 		add(lblLine);
-		lblLine.setBounds(15, 45, 380,2);
-		
-		//pad列表
-		int x = 15;
+		lblLine.setBounds(15, 85, 812, 2);
+
+		// pad列表
+		int y = 95;
 		for (int i = 0; i < 4; i++) {
-			int y = 55;
-			PadPanel pad = new PadPanel();
-			add(pad);
-			pad.setBounds(x, y, 81, 140);
-			deviceList.add(pad);
-			x += 100;
+			JLabel lblName = getNameLabel();
+			y += 150;
 		}
+		//背景
+		JLabel lblBackground = new JLabel();
+		ImageIcon bg = new ImageIcon("images/main/bg_index_list.png");
+		lblBackground.setIcon(bg);
+		lblBackground.setBounds(8, 45, 825, 90);
+		bg.setImage(bg.getImage().getScaledInstance(823,90,Image.SCALE_DEFAULT));
+		add(lblBackground);
 	}
-	
-	private JLabel createDeskNumber(){
+
+	private JLabel createDeskNumber() {
 		JLabel lblDesk = new JLabel("", JLabel.CENTER);
 		lblDesk.setOpaque(true);
 		lblDesk.setBackground(new Color(Integer.parseInt("a4b981", 16)));
 		lblDesk.setForeground(new Color(Integer.parseInt("ffffff", 16)));
 		return lblDesk;
 	}
-	
+
 	private JLabel getLine() {
 		return new JLabel() {
 			private static final long serialVersionUID = 2679733728559406364L;
+
 			@Override
 			public void paint(Graphics g) {
 				Graphics2D g2d = (Graphics2D) g;
 				Stroke stroke = g2d.getStroke();
 				Color color = g2d.getColor();
-				g2d.setStroke(new BasicStroke(2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER));
+				g2d.setStroke(new BasicStroke(2, BasicStroke.CAP_ROUND,
+						BasicStroke.JOIN_MITER));
 				g2d.setColor(new Color(Integer.parseInt("e1e1e1", 16)));
 				g2d.drawLine(0, 0, this.getWidth(), 0);
 				g2d.setStroke(stroke);
@@ -97,6 +105,14 @@ public class PrepareGroupPanel extends JPanel {
 		};
 	}
 
+	private JLabel getNameLabel(){
+		JLabel lblName = new JLabel("", JLabel.CENTER);
+		lblName.setOpaque(true);
+		lblName.setBackground(new Color(Integer.parseInt("E1E1E1", 16)));
+		lblName.setForeground(new Color(Integer.parseInt("FFFFFF", 16)));
+		return lblName;
+	}
+	
 	public Group getGroup() {
 		return group;
 	}
@@ -123,7 +139,7 @@ public class PrepareGroupPanel extends JPanel {
 		return deviceList;
 	}
 
-	public void setTableNumber(int tableNumber){
+	public void setTableNumber(int tableNumber) {
 		lblNumber.setText(String.valueOf(tableNumber));
 	}
 }
