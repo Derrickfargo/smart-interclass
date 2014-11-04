@@ -69,8 +69,19 @@ public class GroupService {
 		return group;
 	}
 
-	public Integer save(Group group) {
-		return groupMapper.save(group);
+	public Group save(Group group) {
+		List<Student> students = group.getStudents();
+		groupMapper.save(group);
+		if(group.getId() > 0){
+			for (Student student : students) {
+				StudentGroup ug = new StudentGroup();
+				ug.setGroupId(group.getId());
+				ug.setStudentId(student.getId());
+				groupMapper.saveStudentGroup(ug);
+			}
+			return group;
+		}
+		return null;
 	}
 	
 	public Group getGroupByTableId( int teacherId, int classId){
