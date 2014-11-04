@@ -38,8 +38,6 @@ public final class MessageHandlerResource {
         handlerResources = new HashMap<Byte, Class<? extends MessageHandler>>();
         //设备登陆消息回复，用于启动心跳
         handlerResources.put(Message.MESSAGE_STUDENT_LOGIN, LoginHandler.class);
-        //收到返回的IP地址
-        handlerResources.put(Message.MESSAGE_STUDENT_BIND, IpSettingHandler.class);
         //心跳消息
         handlerResources.put(Message.MESSAGE_HEART_BEAT, HeartbeatHandler.class);
         //收到作业
