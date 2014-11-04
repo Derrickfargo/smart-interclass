@@ -637,6 +637,8 @@ public class WifiSelectorActivity extends BaseActivity  {
 						WifiInfo info = wifi.getConnectionInfo();
 						app.setDeviceId(info.getMacAddress().replace(":", "-"));
 						Log.i("WifiSelectorActivity", "WiFi已连接，检查Socket是否连接 ");
+						new Thread(CoreSocket.getInstance()).start();//连接socket
+						WifiSelectorActivity.this.sleep(1000);
 						// //TODO 升级
 //						try {
 //							JSONObject updateResult = JSONObject
@@ -666,9 +668,8 @@ public class WifiSelectorActivity extends BaseActivity  {
 							startMainAct();
 						}
 						break;
-					}else{
-						
 					}
+					WifiSelectorActivity.this.sleep(3000);
 				}
 			}
 		}.start();
@@ -724,7 +725,7 @@ public class WifiSelectorActivity extends BaseActivity  {
 					if (dialog != null) {
 						dialog.dismiss();
 					}
-//					startMainAct();
+					startMainAct();
 					break;
 				}
 			}

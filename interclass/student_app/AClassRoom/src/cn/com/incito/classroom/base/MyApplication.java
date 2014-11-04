@@ -179,9 +179,6 @@ public class MyApplication extends Application {
 		initMacAddress();
 		
 		//启动socket和日志服务
-		Intent service = new Intent("cn.com.incito.classroom.service.SOCKET_SERVICE");
-		startService(service);
-		WLog.i(MyApplication.class, "socket service started");
 		if (Constants.LOG_OPEN) {
 			Intent logservice = new Intent("cn.com.incito.classroom.service.LOG_SERVICE");
 			startService(logservice);

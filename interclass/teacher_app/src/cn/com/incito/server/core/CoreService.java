@@ -37,11 +37,6 @@ public class CoreService {
 	private static Application app = Application.getInstance();
 	private Logger logger = Logger.getLogger(CoreService.class.getName());
 
-	public void deviceLogin(String imei) {
-		app.getOnlineDevice().add(imei);
-		app.refresh();// 更新UI
-	}
-
 	public Group deviceLogout(String imei) {
 		Device device = app.getImeiDevice().get(imei);
 		if (device == null) {
@@ -111,9 +106,10 @@ public class CoreService {
 			// 系统中无此设备
 			return JSONUtils.renderJSONString(1);// 失败
 		}else{
+			app.getOnlineDevice().add(imei);
+			app.refresh();// 更新UI
 			return JSONUtils.renderJSONString(0, app.getStudentByImei(imei));
 		}
-		
 	}
 
 
