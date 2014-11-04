@@ -19,6 +19,16 @@ public class GroupCtrl extends BaseCtrl {
 	
 
 	/**
+	 * 保存分组
+	 * @param group
+	 * @return
+	 */
+	@RequestMapping(value = "/save", produces = { "application/json;charset=UTF-8" })
+	public String saveGroup(Group group) {
+		return renderJSONString(SUCCESS, groupService.save(group));
+	}
+	
+	/**
 	 * 根据IMEI获得分组
 	 * @param imei
 	 * @return
