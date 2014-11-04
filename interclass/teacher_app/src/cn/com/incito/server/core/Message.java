@@ -88,9 +88,17 @@ public class Message {
 	public static final Byte MESSAGE_LOCK_SCREEN=0x0C;
 	
 	/**
+	 * 删除小组返回结果
+	 */
+	public static final Byte MESSAGE_GROUP_DELETE_RESPONSE=0x0D;
+	/**
 	 * 学生登录后的返回(PC-PAD)
 	 */
-	public static final Byte MESSAGE_STUDENT_BIND=0x0D;
+	public static final Byte MESSAGE_STUDENT_BIND=0x0E;
+	/**
+	 * 学生加入小组后的返回
+	 */
+	public static final byte MESSAGE_GROUP_JOIN_RESPONSE=0x0F;
 	private Logger log = Logger.getLogger(Message.class);
 	
 	private byte msgID;
