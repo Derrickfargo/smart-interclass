@@ -57,9 +57,7 @@ public class Application {
 	public static boolean isOnClass;// 正在上课
 	public static boolean hasQuiz;// 是否在作业
 	private List<Group> groupList = new ArrayList<Group>();// 本堂课的所有分组
-	private List<Device> deviceList = new ArrayList<Device>();// 本教室所有的Device
 	private List<Student> studentList = new ArrayList<Student>();// 本班级的所有学生
-	private Set<String> onlineDevice = new HashSet<String>();
 	private Set<Student> onlineStudent = new HashSet<Student>();
 
 	private Map<Integer, List<SocketChannel>> groupChannel;// 保存每组和已登录的socket
@@ -73,10 +71,6 @@ public class Application {
 	private List<Integer> tempGrouped = new ArrayList<Integer>();// 已编辑完成的小组
 	private List<Quiz> quizList = new ArrayList<Quiz>();// 作业
 	private FileLock lock;
-	/**
-	 * IMEI和设备的对应关系(key:imei,value:Device)，教师登陆完后初始化
-	 */
-	private Map<String, Device> imeiDevice;
 
 	private Application() {
 		lock();
@@ -105,7 +99,6 @@ public class Application {
 	}
 
 	public void clear() {
-		imeiDevice = new HashMap<String, Device>();
 		clientChannel = new HashMap<String, SocketChannel>();
 		groupChannel = new HashMap<Integer, List<SocketChannel>>();
 	}
@@ -150,25 +143,6 @@ public class Application {
 	}
 
 	
-	public void addLoginStudent(String imei, Student student) {
-		Student mStudent = imeiStudent.get(imei);
-		if (mStudent == null) {
-			mStudent = new Student();
-		}
-		boolean isLogin = false;
-		 for (String key : imeiStudent.keySet()) {
-			 if(imeiStudent.get(key).getName().equals(student.getName())&&imeiStudent.get(key).getNumber().equals(student.getNumber())){
-				 isLogin = true;
-					break;
-			 };
-		}
-		if (!isLogin) {
-			imeiStudent.put(imei, student);
-		}
-	}
-
-
-
 	public Map<String, SocketChannel> getClientChannel() {
 		return clientChannel;
 	}
@@ -178,33 +152,6 @@ public class Application {
 			instance = new Application();
 		}
 		return instance;
-	}
-
-	/**
-	 * 初始化映射关系
-	 * 
-	 * @param devices
-	 * @param tables
-	 */
-	public void initMapping(List<Student> students, List<Group> groups) {
-		// this.initImeiDevice(devices);
-	}
-
-	/**
-	 * 初始化IMEI设备映射
-	 * 
-	 * @param devices
-	 */
-	private void initImeiDevice(List<Device> devices) {
-		deviceList = devices;
-		imeiDevice.clear();
-		for (Device device : devices) {
-			imeiDevice.put(device.getImei(), device);
-		}
-	}
-
-	public void setDeviceList(List<Device> deviceList) {
-		this.deviceList = deviceList;
 	}
 
 	public void addGroup(Group group) {
@@ -247,10 +194,6 @@ public class Application {
 
 	public void setTeacher(Teacher teacher) {
 		this.teacher = teacher;
-	}
-
-	public List<Device> getDeviceList() {
-		return deviceList;
 	}
 
 	public Course getCourse() {
@@ -303,22 +246,16 @@ public class Application {
 
 	public void setStudentList(List<Student> studentList) {
 		this.studentList = studentList;
+		if (studentList == null || studentList.size() == 0) {
+			return;
+		}
+		for (Student student : studentList) {
+			imeiStudent.put(student.getImei(), student);
+		}
 	}
 
 	public Map<Integer, List<SocketChannel>> getGroupChannel() {
 		return groupChannel;
-	}
-
-	public Map<String, Device> getImeiDevice() {
-		return imeiDevice;
-	}
-
-	public Set<String> getOnlineDevice() {
-		return onlineDevice;
-	}
-
-	public void setOnlineDevice(Set<String> onlineDevice) {
-		this.onlineDevice = onlineDevice;
 	}
 
 	public Set<Student> getOnlineStudent() {

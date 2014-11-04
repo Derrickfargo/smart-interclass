@@ -38,10 +38,10 @@ public class CoreService {
 	private Logger logger = Logger.getLogger(CoreService.class.getName());
 
 	public Group deviceLogout(String imei) {
-		Device device = app.getImeiDevice().get(imei);
-		if (device == null) {
-			return null;
-		}
+//		Device device = app.getImeiDevice().get(imei);
+//		if (device == null) {
+//			return null;
+//		}
 //		Group group = app.getTableGroup().get(device.getId());
 //		List<Student> students = app.getStudentByImei(imei);
 //		if (students != null) {
@@ -55,9 +55,9 @@ public class CoreService {
 //			}
 //		}
 //		app.removeLoginStudent(imei);
-		app.getOnlineDevice().remove(imei);
-		Application.getInstance().getClientChannel().remove(imei);
-		app.refresh();// 更新UI
+//		app.getOnlineDevice().remove(imei);
+//		Application.getInstance().getClientChannel().remove(imei);
+//		app.refresh();// 更新UI
 		return new Group();
 	}
 
@@ -101,12 +101,13 @@ public class CoreService {
 	 * @return
 	 */
 	public String login(String imei) {
-		Device device = app.getImeiDevice().get(imei);
-		if (device == null) {
-			// 系统中无此设备
+		Student student = app.getStudentByImei(imei);
+		if (student == null) {
+			// 系统中无此设备，登陆失败
 			return JSONUtils.renderJSONString(1);// 失败
-		}else{
-			app.getOnlineDevice().add(imei);
+		} else {
+			student.setLogin(true);
+			app.getOnlineStudent().add(student);
 			app.refresh();// 更新UI
 			return JSONUtils.renderJSONString(0, app.getStudentByImei(imei));
 		}
@@ -196,21 +197,16 @@ public class CoreService {
 	 * @return
 	 */
 	public String getGroupByIMEI(String imei) {
-		Device device = app.getImeiDevice().get(imei);
-		if (device == null) {
-			// 系统中无此设备
-			return JSONUtils.renderJSONString(1);// 失败
-		}
+//		Device device = app.getImeiDevice().get(imei);
+//		if (device == null) {
+//			// 系统中无此设备
+//			return JSONUtils.renderJSONString(1);// 失败
+//		}
 		List<Group> groupList = app.getGroupList();
 		return JSONUtils.renderJSONString(0, groupList);
 	}
 
 	public Group getGroupObjectByIMEI(String imei) {
-		Device device = app.getImeiDevice().get(imei);
-		if (device == null) {
-			// 系统中无此设备
-			return null;
-		}
 		return new Group();
 	}
 

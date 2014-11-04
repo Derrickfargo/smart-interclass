@@ -341,9 +341,7 @@ public class Login2 extends MouseAdapter {
 					Application.getInstance().setClasses(resultData.getClasses());
 					Application.getInstance().setCourse(resultData.getCourse());
 					Application.getInstance().setGroupList(resultData.getGroups());
-//					Application.getInstance().setDeviceList(resultData.getDevices());
 					Application.getInstance().setStudentList(resultData.getStudents());
-//					Application.getInstance().initMapping(resultData.getDevices(), resultData.getGroups());
 					MainFrame.getInstance().setVisible(true);
 					SwingUtilities.invokeLater(new Runnable() {
 

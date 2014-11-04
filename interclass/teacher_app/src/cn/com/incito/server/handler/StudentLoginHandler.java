@@ -34,14 +34,14 @@ public class StudentLoginHandler extends MessageHandler {
 		ConnectionManager.notification(imei, message.getChannel());
 		Application app = Application.getInstance();
 		app.addSocketChannel(imei, message.getChannel());
-		Device device = app.getImeiDevice().get(imei);
-
-		if (device != null) {
-			// TODO
-		} else {
-			Device mDevice = new Device();
-			mDevice.setImei(imei);
-		}
+//		Device device = app.getImeiDevice().get(imei);
+//
+//		if (device != null) {
+//			// TODO
+//		} else {
+//			Device mDevice = new Device();
+//			mDevice.setImei(imei);
+//		}
 
 		// 回复设备登陆消息
 		Properties props = AppConfig.getProperties();
