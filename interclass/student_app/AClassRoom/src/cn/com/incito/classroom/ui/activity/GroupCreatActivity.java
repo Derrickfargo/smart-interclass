@@ -137,7 +137,7 @@ public class GroupCreatActivity extends BaseActivity implements OnClickListener 
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("group", group);
 			
-			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_CREAT);
+			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_SUBMIT);
 			messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(jsonObject.toJSONString()));
 			CoreSocket.getInstance().sendMessage(messagePacking);
 			

@@ -70,8 +70,8 @@ public final class CoreSocket implements Runnable {
 
 	// 发送设备登陆消息至服务器
 	private void sendDeviceLoginMessage() {
-		Log.i("CoreSocket", "发送设备登陆");
-		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_HAND_SHAKE);
+		Log.i("CoreSocket", "发送设备（学生）登陆");
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("imei", MyApplication.deviceId);
 		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));

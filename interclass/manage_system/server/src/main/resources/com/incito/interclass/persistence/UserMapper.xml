@@ -57,7 +57,7 @@
 			tb_student
 		INNER JOIN
 			tb_user ON tb_student.id = tb_user.id
-		INNER JOIN
+		LEFT JOIN
 			tb_device ON tb_device.id = tb_student.device_id
 		WHERE 
 			tb_student.class_id = #{classId}
