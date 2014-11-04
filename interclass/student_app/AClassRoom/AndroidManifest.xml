@@ -39,7 +39,10 @@
         <activity
             android:name="cn.com.incito.classroom.ui.activity.SplashActivity"
             android:screenOrientation="landscape" >
-                   </activity>
+           <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>        </activity>
         <activity
             android:name="cn.com.incito.classroom.ui.activity.GroupListActvity"
             android:screenOrientation="landscape" >
@@ -50,10 +53,7 @@
         <activity
             android:name="cn.com.incito.classroom.ui.activity.WifiSelectorActivity"
             android:screenOrientation="landscape" >
-            <!--  <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter> -->
+             
         </activity>
         <activity
             android:name="cn.com.incito.classroom.ui.activity.DrawBoxActivity"
@@ -89,10 +89,6 @@
         <activity
             android:name="cn.com.incito.classroom.ui.activity.SelectGroupActivity"
             android:screenOrientation="landscape" >
-             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!-- 新建分组activity -->
@@ -110,11 +106,6 @@
             android:name="cn.com.incito.classroom.ui.activity.ClassReadyActivity"
             android:screenOrientation="landscape" >
         </activity>
-        <service android:name="cn.com.incito.classroom.service.SocketService" >
-            <intent-filter>
-                <action android:name="cn.com.incito.classroom.service.SOCKET_SERVICE" />
-            </intent-filter>
-        </service>
     </application>
 
 </manifest>
