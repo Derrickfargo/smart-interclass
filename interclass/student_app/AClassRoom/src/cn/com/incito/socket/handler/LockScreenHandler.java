@@ -2,17 +2,11 @@ package cn.com.incito.socket.handler;
 
 import java.nio.ByteBuffer;
 
-import android.provider.Settings;
-import android.app.ExecRootCmd;
-import android.content.ContentResolver;
 import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.classroom.constants.Constants;
-import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.core.MessageHandler;
 import cn.com.incito.socket.utils.BufferUtils;
-import cn.com.incito.wisdom.sdk.log.WLog;
 
 public class LockScreenHandler extends MessageHandler {
 

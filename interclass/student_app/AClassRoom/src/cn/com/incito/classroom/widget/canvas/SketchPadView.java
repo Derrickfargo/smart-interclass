@@ -1,25 +1,22 @@
 package cn.com.incito.classroom.widget.canvas;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-import cn.com.incito.classroom.R;
-import cn.com.incito.classroom.constants.Constants;
-import cn.com.incito.classroom.utils.ApiClient;
-import cn.com.incito.classroom.utils.BitmapUtil;
-import cn.com.incito.wisdom.sdk.log.WLog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import cn.com.incito.classroom.R;
+import cn.com.incito.classroom.constants.Constants;
+import cn.com.incito.classroom.utils.BitmapUtil;
+import cn.com.incito.wisdom.sdk.log.WLog;
 
 /**
  * The SketchPadView class provides method to draw strokes on it like as a
