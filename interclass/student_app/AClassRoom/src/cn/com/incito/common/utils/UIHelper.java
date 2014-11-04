@@ -1,5 +1,7 @@
 package cn.com.incito.common.utils;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +11,9 @@ import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.ui.activity.ClassReadyActivity;
 import cn.com.incito.classroom.ui.activity.DrawBoxActivity;
 import cn.com.incito.classroom.ui.activity.SelectGroupActivity;
+import cn.com.incito.classroom.ui.activity.WaitForOtherMembersActivity;
 import cn.com.incito.classroom.ui.activity.WifiSelectorActivity;
+import cn.com.incito.classroom.vo.Group;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -34,9 +38,9 @@ public class UIHelper {
 	 * 显示选择分组界面 
 	 * @param json  服务器上传来分组数据
 	 */
-	public  void showSelectGroup(String json){
+	public  void showGroupSelect(String json){
 		Intent intent = new Intent(app,SelectGroupActivity.class);
-		intent.putExtra("data", json);
+		intent.putExtra("group", json);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		app.startActivity(intent);
 		
@@ -97,27 +101,15 @@ public class UIHelper {
 	 */
 	public void showGroupListActivity(){
 		Intent intent = new Intent();
-//		intent.putExtra("group", (Serializable)groupList);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.setAction(Constants.ACTION_SHOW_GROUP_LIST);
 		app.startActivity(intent);
 	}
 	
 	
-//	
-//	public void showEditGroupActivity(int groupID) {
-//		Intent intent = new Intent();
-//		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//		intent.putExtra("id", groupID);
-//		intent.setAction(Constants.ACTION_SHOW_EDIT_GROUP);
-//		app.startActivity(intent);
-//	}
+
 
 	public void showConfirmGroupActivity(JSONObject data) {
-		/*
-		 * Intent intent = new Intent(editGroupInfoActivity,
-		 * ConfirmGroupInfoActivity.class);
-		 */
 		Intent intent = new Intent(Constants.ACTION_SHOW_CONFIRM_GROUP);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.putExtra("data", data);
@@ -146,5 +138,13 @@ public class UIHelper {
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		app.startActivity(intent);
 		
+	}
+
+	/**
+	 * 显示等待其他小组成员 
+	 * @param string
+	 */
+	public void showWaitOtherMembers(String jsonObject) {
+		WaitForOtherMembersActivity.startSelf(app, jsonObject);
 	}
 }
