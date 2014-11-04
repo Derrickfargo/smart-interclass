@@ -19,9 +19,7 @@ import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 
 import cn.com.incito.interclass.main.Main;
-import cn.com.incito.interclass.po.Device;
 import cn.com.incito.server.exception.AppException;
-import cn.com.incito.server.utils.JSONUtils;
 import cn.com.incito.server.utils.Md5Utils;
 import cn.com.incito.server.utils.URLs;
 
@@ -281,40 +279,6 @@ public class ApiClient {
 		params.put("className", className);
 		try {
 			return _post(URLs.URL_TEACHER_GROUP, params, null);
-		} catch (Exception e) {
-			if (e instanceof AppException)
-				throw (AppException) e;
-			throw AppException.network(e);
-		}
-	}
-
-	/**
-	 * 注册学生走这个api
-	 * 
-	 * @param name
-	 * @param sex
-	 * @param number
-	 * @param imei
-	 * @return
-	 * @throws AppException
-	 */
-	public static String loginForStudent(String name, int sex, String number,
-			String imei) throws AppException {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("courseId", Application.getInstance().getCourse().getId());
-		params.put("classId", Application.getInstance().getClasses().getId());
-		params.put("teacherId", Application.getInstance().getTeacher().getId());
-		Device device = Application.getInstance().getImeiDevice().get(imei);
-		if (device == null) {
-			// 系统中无此设备
-			return JSONUtils.renderJSONString(1);// 失败
-		}
-		params.put("name", name);
-		params.put("sex", sex);
-		params.put("number", number);
-		params.put("imei", imei);
-		try {
-			return _post(URLs.URL_STUDENT_LOGIN, params, null);
 		} catch (Exception e) {
 			if (e instanceof AppException)
 				throw (AppException) e;
