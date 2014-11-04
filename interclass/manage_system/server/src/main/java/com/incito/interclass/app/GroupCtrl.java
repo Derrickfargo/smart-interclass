@@ -19,30 +19,15 @@ public class GroupCtrl extends BaseCtrl {
 	
 	
 	/**
-	 * 保存小组信息
+	 * 保存分组
+	 * @param group
 	 * @return
 	 */
-	public String saveGroup(){
-	return null;	
+	@RequestMapping(value = "/save", produces = { "application/json;charset=UTF-8" })
+	public String saveGroup(Group group) {
+		return renderJSONString(SUCCESS, groupService.save(group));
 	}
-	/**
-	 * 学生创建小组
-	 * @param name
-	 * @param logo
-	 * @param teacherId
-	 * @param classId
-	 * @param studentId
-	 * @return
-	 */
-	@RequestMapping(value = "/creat", produces = { "application/json;charset=UTF-8" })
-	public String creatGroup(Group group){
-		 Integer result = groupService.creatGroup(group);
-		 if(result==1){
-			 return renderJSONString(SUCCESS, group.getId());
-		 }else{
-			 return renderJSONString(1);
-		 }
-	}
+	
 	/**
 	 * 删除小组
 	 * @param name
@@ -64,23 +49,7 @@ public class GroupCtrl extends BaseCtrl {
 	}
 	
 	
-	/**
-	 * 学生加入小组
-	 * @param groupId
-	 * @param studentId
-	 * @return
-	 */
-	@RequestMapping(value = "/join", produces = { "application/json;charset=UTF-8" })
-	public String joinGroup(String groupId,String studentId){
-		//删除学生曾经是队长的组
-		Group oldGroupId=groupService.getGroupIdByCaptainId(studentId);
-		if(oldGroupId!=null){
-			groupService.deleteGroupById(String.valueOf(oldGroupId.getId()));
-		}
-		groupService.joinGroup(groupId,studentId);
-		List<Group> groups = groupService.getGroupList(1, 1);
-		return renderJSONString(SUCCESS, groups);
-	}
+
 	/**
 	 * 根据IMEI获得分组
 	 * @param imei
@@ -104,19 +73,4 @@ public class GroupCtrl extends BaseCtrl {
 		List<Group> groups = groupService.getGroupList(teacherId, classId);
 		return renderJSONString(SUCCESS, groups);
 	}
-	
-//	@RequestMapping(value = "/update", produces = { "application/json;charset=UTF-8" })
-//	public String update(int id, String name, String logo) {
-//		Group group = new Group();
-//		group.setId(id);
-//		group.setName(name);
-//		group.setLogo(logo);
-//		try {
-//			groupService.updateGroup(group);
-//			group = groupService.getGroupById(id);
-//		} catch (Exception e) {
-//			return renderJSONString(1);//更新失败
-//		}
-//		return renderJSONString(SUCCESS, group);
-//	}
 }

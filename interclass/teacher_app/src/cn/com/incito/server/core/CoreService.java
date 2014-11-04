@@ -206,10 +206,7 @@ public class CoreService {
 			return JSONUtils.renderJSONString(1);// 失败
 		}
 		List<Group> groupList = app.getGroupList();
-		for (Group group : groupList) {
-
-		}
-		return JSONUtils.renderJSONString(0, new Group());
+		return JSONUtils.renderJSONString(0, groupList);
 	}
 
 	public Group getGroupObjectByIMEI(String imei) {
