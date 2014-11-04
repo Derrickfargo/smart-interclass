@@ -31,7 +31,6 @@ public class BaseActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		PropertyConfigurator.getConfigurator(this).configure();//读取配置文件
 		AppManager.getAppManager().addActivity(this);
 		onAfterOnCreate(savedInstanceState);
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
