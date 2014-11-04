@@ -2,11 +2,14 @@ package cn.com.incito.server.handler;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.channels.SocketChannel;
+import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
+import cn.com.incito.interclass.po.Device;
 import cn.com.incito.server.api.Application;
+import cn.com.incito.server.config.AppConfig;
+import cn.com.incito.server.core.ConnectionManager;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
 import cn.com.incito.server.message.DataType;
@@ -14,38 +17,51 @@ import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
 
 /**
- * 登陆消息处理器
+ * 设备登陆消息处理器
  * 
  * @author 刘世平
  * 
  */
 public class StudentLoginHandler extends MessageHandler {
 	private Logger logger = Logger.getLogger(StudentLoginHandler.class.getName());
+	private String imei;
+
 	@Override
 	public void handleMessage() {
-        final String imei = data.getString("imei");
-        logger.info("登陆0-----------------------:" + imei);
-        Application app = Application.getInstance();
-        	String result = service.login(imei);
-        	logger.info("收到设备登陆消息:" + result);
-        	
-        	SocketChannel mSocketChannel=app.getClientChannel().get("imei");
-        	sendResponse(result,mSocketChannel);
+		imei = data.getString("imei");
+		logger.info("收到设备（学生）登陆消息:" + data.toJSONString());
+		String result = service.login(imei);
+		ConnectionManager.notification(imei, message.getChannel());
+		Application app = Application.getInstance();
+		app.addSocketChannel(imei, message.getChannel());
+		Device device = app.getImeiDevice().get(imei);
+
+		if (device != null) {
+			// TODO
+		} else {
+			Device mDevice = new Device();
+			mDevice.setImei(imei);
+		}
+
+		// 回复设备登陆消息
+		Properties props = AppConfig.getProperties();
+		String ip = props.get(AppConfig.CONF_SERVER_IP).toString();
+		String port = props.get(AppConfig.CONF_SERVER_PORT).toString();
+		data.put(AppConfig.CONF_SERVER_IP, ip);
+		data.put(AppConfig.CONF_SERVER_PORT, port);
+		logger.info("回复设备登陆消息:" + data.toJSONString());
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
+
+		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(data.toJSONString()));
+		byte[] handShakResponse = messagePacking.pack().array();
+		ByteBuffer buffer = ByteBuffer.allocate(handShakResponse.length);
+		buffer.put(handShakResponse);
+		buffer.flip();
+		try {
+			message.getChannel().write(buffer);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
-	private void sendResponse(String json,SocketChannel channels) {
-			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_BIND);
-	        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
-	        byte[] messageData = messagePacking.pack().array();
-	        ByteBuffer buffer = ByteBuffer.allocate(messageData.length);
-	        buffer.put(messageData);
-	        buffer.flip();
-			try {
-				if (channels.isConnected()) { 
-					channels.write(buffer);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-	}
-	
+
 }

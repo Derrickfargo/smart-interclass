@@ -11,8 +11,8 @@ import cn.com.incito.server.core.MessageHandler;
  * @author 刘世平
  * 
  */
-public class DeviceLogoutHandler extends MessageHandler {
-	private Logger logger = Logger.getLogger(DeviceLogoutHandler.class.getName());
+public class StudentLogoutHandler extends MessageHandler {
+	private Logger logger = Logger.getLogger(StudentLogoutHandler.class.getName());
 	private String imei;
 
 	@Override

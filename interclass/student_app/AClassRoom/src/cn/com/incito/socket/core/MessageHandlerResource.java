@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.com.incito.classroom.utils.ApiClient;
+import cn.com.incito.socket.handler.CreateGroupHandler;
+import cn.com.incito.socket.handler.DeleteGroupHandler;
 import cn.com.incito.socket.handler.DistributePaperHandler;
 import cn.com.incito.socket.handler.GroupListHandler;
 import cn.com.incito.socket.handler.HeartbeatHandler;
@@ -35,13 +37,11 @@ public final class MessageHandlerResource {
     private MessageHandlerResource() {
         handlerResources = new HashMap<Byte, Class<? extends MessageHandler>>();
         //设备登陆消息回复，用于启动心跳
-        handlerResources.put(Message.MESSAGE_HAND_SHAKE, LoginHandler.class);
+        handlerResources.put(Message.MESSAGE_STUDENT_LOGIN, LoginHandler.class);
         //收到返回的IP地址
         handlerResources.put(Message.MESSAGE_STUDENT_BIND, IpSettingHandler.class);
         //心跳消息
         handlerResources.put(Message.MESSAGE_HEART_BEAT, HeartbeatHandler.class);
-        //获取分组消息
-        handlerResources.put(Message.MESSAGE_GROUP_LIST, GroupListHandler.class);
         //收到作业
         handlerResources.put(Message.MESSAGE_DISTRIBUTE_PAPER, DistributePaperHandler.class);
         //保存作业图片
@@ -50,6 +50,10 @@ public final class MessageHandlerResource {
         handlerResources.put(Message.MESSAGE_SAVE_PAPER_RESULT, SavePaperResultHandler.class);
         //解锁屏信息
         handlerResources.put(Message.MESSAGE_LOCK_SCREEN, LockScreenHandler.class);
+        //创建小组后进入等待其他成员的界面
+        handlerResources.put(Message.MESSAGE_GROUP_CREATE, CreateGroupHandler.class);
+        //删除小组后进入选择小组界面
+        handlerResources.put(Message.MESSAGE_GROUP_DELETE, DeleteGroupHandler.class);
     }
 
     public MessageHandler getMessageHandler(Byte key) {

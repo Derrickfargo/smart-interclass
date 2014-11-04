@@ -73,19 +73,4 @@ public class IpSettingDialogFragment extends DialogFragment {
 		return matcher.matches();
 	}
 
-	/**
-	 * 发送连接请求
-	 */
-	public void startMainAct() {
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("imei", MyApplication.deviceId);
-		MessagePacking messagePacking = new MessagePacking(
-				Message.MESSAGE_DEVICE_HAS_BIND);
-		messagePacking.putBodyData(DataType.INT,
-				BufferUtils.writeUTFString(jsonObject.toJSONString()));
-		CoreSocket.getInstance().sendMessage(messagePacking);
-		WLog.i(SplashActivity.class,
-				"开始判定设备是否绑定..." + "request:" + jsonObject.toJSONString());
-	}
-
 }

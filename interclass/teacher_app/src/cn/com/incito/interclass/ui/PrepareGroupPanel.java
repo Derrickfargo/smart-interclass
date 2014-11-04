@@ -31,10 +31,15 @@ public class PrepareGroupPanel extends JPanel {
 		setLayout(null);
 		setVisible(false);
 		List<Group> groups = app.getGroupList();
+		
+		for (int i = 0; i < 8; i++) {
+			Group g = new Group();
+			g.setName("测试" + i);
+		}
+		
 //		for(Group group : groups){
-//			
+			createGroup(null);
 //		}
-		createGroup(null);
 	}
 
 	private void createGroup(Group group) {

@@ -637,6 +637,8 @@ public class WifiSelectorActivity extends BaseActivity  {
 						WifiInfo info = wifi.getConnectionInfo();
 						app.setDeviceId(info.getMacAddress().replace(":", "-"));
 						Log.i("WifiSelectorActivity", "WiFi已连接，检查Socket是否连接 ");
+						new Thread(CoreSocket.getInstance()).start();//连接socket
+						WifiSelectorActivity.this.sleep(1000);
 						// //TODO 升级
 //						try {
 //							JSONObject updateResult = JSONObject
@@ -666,9 +668,8 @@ public class WifiSelectorActivity extends BaseActivity  {
 							startMainAct();
 						}
 						break;
-					}else{
-						
 					}
+					WifiSelectorActivity.this.sleep(3000);
 				}
 			}
 		}.start();
@@ -696,12 +697,10 @@ public class WifiSelectorActivity extends BaseActivity  {
 	public void startMainAct() {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("imei", MyApplication.deviceId);
-		MessagePacking messagePacking = new MessagePacking(
-				Message.MESSAGE_STUDENT_LOGIN);
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
 		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(jsonObject.toJSONString()));
 		CoreSocket.getInstance().sendMessage(messagePacking);
-		WLog.i(WifiSelectorActivity.class,
-				"开始判定设备是否绑定..." + "request:" + jsonObject.toJSONString());
+		WLog.i(WifiSelectorActivity.class, "开始判定设备是否绑定..." + "request:" + jsonObject.toJSONString());
 	}
 
 	/**
@@ -724,7 +723,7 @@ public class WifiSelectorActivity extends BaseActivity  {
 					if (dialog != null) {
 						dialog.dismiss();
 					}
-//					startMainAct();
+					startMainAct();
 					break;
 				}
 			}

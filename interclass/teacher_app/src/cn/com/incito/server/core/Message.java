@@ -21,45 +21,25 @@ public class Message {
     public static final int MESSAGE_FAKE_ID = 0xFAFB;
 
     /**
-     * 握手消息
-     */
-    public static final Byte MESSAGE_HAND_SHAKE = (byte) 0xFF;
-
-    /**
      * 心跳消息
      */
     public static final Byte MESSAGE_HEART_BEAT = (byte) 0xFE;
    
     /**
-     * 获取分组信息
+     * 设备（学生）登陆消息
      */
-    public static final Byte MESSAGE_GROUP_LIST = 0x01;
-
-    /**
-     * 选择wifi登陆
+	public static final Byte MESSAGE_STUDENT_LOGIN = 0x01;
+	
+	/**
+     * 创建分组命令
      */
-	public static final Byte MESSAGE_STUDENT_LOGIN = 0x02;
-	
-	
+    public static final Byte MESSAGE_GROUP_CREATE = 0x02;
+    
 	 /**
 	 * 删除小组
 	 */
 	public static final Byte MESSAGE_GROUP_DELETE = 0x03;
-    /**
-     * 判断设备是否绑定
-     */
-    public static final Byte MESSAGE_DEVICE_HAS_BIND = 0x04;
 
-    /**
-	 * 分组信息(pc-android)
-	 */
-	public static final Byte MESSAGE_GROUP_EDIT = 0x05;
-	
-	/**
-	 * 创建小组(android-pc)
-	 */
-	public static final Byte MESSAGE_GROUP_CREAT = 0x06;
-	
 	/**
 	 * 加入小组(android-pc)
 	 */
