@@ -50,7 +50,7 @@ public class MyApplication extends Application {
 
 	public boolean isOnClass;// 是否在上课
 	
-	public static final Logger LOGGER = LoggerFactory.getLogger();
+	public static  Logger Logger = LoggerFactory.getLogger();
 
 	public boolean isOnClass() {
 		return isOnClass;
