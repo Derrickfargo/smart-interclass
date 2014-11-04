@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.com.incito.classroom.utils.ApiClient;
+import cn.com.incito.socket.handler.CreateGroupHandler;
+import cn.com.incito.socket.handler.DeleteGroupHandler;
 import cn.com.incito.socket.handler.DistributePaperHandler;
 import cn.com.incito.socket.handler.GroupListHandler;
 import cn.com.incito.socket.handler.HeartbeatHandler;
@@ -50,6 +52,10 @@ public final class MessageHandlerResource {
         handlerResources.put(Message.MESSAGE_SAVE_PAPER_RESULT, SavePaperResultHandler.class);
         //解锁屏信息
         handlerResources.put(Message.MESSAGE_LOCK_SCREEN, LockScreenHandler.class);
+        //创建小组后进入等待其他成员的界面
+        handlerResources.put(Message.MESSAGE_GROUP_CREAT, CreateGroupHandler.class);
+        //删除小组后进入选择小组界面
+        handlerResources.put(Message.MESSAGE_GROUP_DELETE, DeleteGroupHandler.class);
     }
 
     public MessageHandler getMessageHandler(Byte key) {
