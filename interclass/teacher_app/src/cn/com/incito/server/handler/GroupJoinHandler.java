@@ -8,10 +8,8 @@ import java.util.List;
 import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.server.api.Application;
-import cn.com.incito.server.core.CoreService;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
-import cn.com.incito.server.exception.AppException;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
@@ -33,7 +31,6 @@ public class GroupJoinHandler extends MessageHandler{
 				groupList.get(i).getDevices().add(device);
 			}
 		}
-		
 		JSONObject result = new JSONObject();
 		result.put("code", 0);
 		result.put("data",Application.getInstance().getGroupList());

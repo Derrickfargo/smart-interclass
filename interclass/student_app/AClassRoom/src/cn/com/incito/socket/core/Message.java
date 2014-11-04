@@ -96,6 +96,11 @@ public class Message implements Serializable {
 	 * 学生加入小组后的返回
 	 */
 	public static final byte MESSAGE_GROUP_JOIN_RESPONSE=0x0F;
+
+	/**
+	 *创建小组后的返回
+	 */
+	public static final byte MESSAGE_GROUP_CREAT_RESPONSE=0x10;
 	
 	private byte msgID;
 	private int msgSize;

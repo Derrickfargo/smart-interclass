@@ -5,17 +5,14 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.List;
 
-import com.alibaba.fastjson.JSONObject;
-
-import cn.com.incito.server.api.ApiClient;
 import cn.com.incito.server.api.Application;
-import cn.com.incito.server.core.CoreService;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
-import cn.com.incito.server.exception.AppException;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
+
+import com.alibaba.fastjson.JSONObject;
 
 public class GroupDeleteHandler extends MessageHandler {
 

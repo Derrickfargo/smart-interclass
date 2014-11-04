@@ -29,7 +29,6 @@ public class GroupListHandler extends MessageHandler {
 		logger.info(result);
 		sendResponse(result);
 	}
-
 	private void sendResponse(String json) {
 		logger.info("回复获取分组消息:" + json);
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_LIST);
