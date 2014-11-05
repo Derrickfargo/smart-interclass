@@ -17,7 +17,6 @@ import javax.swing.JOptionPane;
 
 import cn.com.incito.interclass.po.Classes;
 import cn.com.incito.interclass.po.Course;
-import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Quiz;
 import cn.com.incito.interclass.po.Student;
@@ -59,6 +58,7 @@ public class Application {
 	private List<Group> groupList = new ArrayList<Group>();// 本堂课的所有分组
 	private List<Student> studentList = new ArrayList<Student>();// 本班级的所有学生
 	private Set<Student> onlineStudent = new HashSet<Student>();
+	private Set<Student> offlineStudent = new HashSet<Student>();
 
 	private Map<Integer, List<SocketChannel>> groupChannel;// 保存每组和已登录的socket
 	private Map<String, Student> imeiStudent = new HashMap<String, Student>();//key是imei Student是
@@ -250,6 +250,7 @@ public class Application {
 			return;
 		}
 		for (Student student : studentList) {
+			offlineStudent.add(student);
 			imeiStudent.put(student.getImei(), student);
 		}
 	}
@@ -264,6 +265,14 @@ public class Application {
 
 	public void setOnlineStudent(Set<Student> onlineStudent) {
 		this.onlineStudent = onlineStudent;
+	}
+
+	public Set<Student> getOfflineStudent() {
+		return offlineStudent;
+	}
+
+	public void setOfflineStudent(Set<Student> offlineStudent) {
+		this.offlineStudent = offlineStudent;
 	}
 
 	public Map<Integer, JSONObject> getTempGroup() {

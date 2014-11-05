@@ -107,6 +107,7 @@ public class CoreService {
 			if (student.getImei().equals(imei)) {
 				student.setLogin(true);
 				app.getOnlineStudent().add(student);
+				app.getOfflineStudent().remove(student);
 				app.refresh();// 更新UI
 				return student;
 			}
