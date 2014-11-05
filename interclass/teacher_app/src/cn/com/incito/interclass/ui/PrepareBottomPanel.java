@@ -173,7 +173,13 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 		List<Group> groupList = app.getGroupList();
 //		for (Group group : groupList) {
 			JSONObject json = new JSONObject();
-			json.put("group", groupList);
+			if(groupList!=null&&groupList.size()>0){
+				json.put("group", groupList);
+			}else{
+				List<Group> groupListRes=new ArrayList<Group>();
+				json.put("group",groupListRes);
+			}
+			
 			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_CREATE);
 			messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(json.toString()));
 			Map<String, SocketChannel> channels = app.getClientChannel();
