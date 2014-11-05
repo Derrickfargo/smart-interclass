@@ -93,7 +93,7 @@ public class SketchPadView extends View implements IUndoCommand {
 		super(context, attrs);
 		this.context = context;
 		isfirst = true;
-		Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bg_teacher_teaching);
+		Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bg_class_ready);
 		m_bkBitmap = bitmap;
 		initialize();
 	}
