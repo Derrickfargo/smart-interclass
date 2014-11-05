@@ -1,6 +1,8 @@
 package cn.com.incito.classroom.utils;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import android.content.res.TypedArray;
@@ -14,6 +16,11 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import cn.com.incito.classroom.vo.Device;
+import cn.com.incito.classroom.vo.Group;
+
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 
 public class Utils {
 
@@ -126,5 +133,30 @@ public class Utils {
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * 将jsonarray转换成List
+	 * @param jsonArray
+	 * @return
+	 */
+	public static List<Group> getGroupList(JSONArray jsonArray){
+		List<Group> groupList  = new ArrayList<>();
+		
+		for(int i = 0; i < jsonArray.size(); i++){
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+			Group group = new Group();
+			group.setName(jsonObject.getString("name"));
+			group.setLogo(jsonObject.getString("logo"));
+			
+			@SuppressWarnings("unchecked")
+			List<Device> devices = (List<Device>) jsonObject.get("devices");
+			for(int j = 0; j < devices.size(); j++){
+				group.getDevices().add(devices.get(j));
+			}
+			
+			groupList.add(group);
+		}
+		return groupList;
 	}
 }
