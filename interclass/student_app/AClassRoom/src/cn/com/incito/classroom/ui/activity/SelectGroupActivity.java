@@ -3,7 +3,6 @@ package cn.com.incito.classroom.ui.activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,6 +14,7 @@ import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.adapter.SelectGroupAdapter;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.classroom.vo.Device;
 import cn.com.incito.classroom.vo.Group;
 import cn.com.incito.socket.core.CoreSocket;
@@ -23,6 +23,7 @@ import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 public class SelectGroupActivity extends BaseActivity implements
@@ -119,10 +120,9 @@ public class SelectGroupActivity extends BaseActivity implements
 	/**
 	 * 设置数据
 	 */
-	@SuppressWarnings("unchecked")
 	private void setGroupData(String json) {
-		JSONObject jsonObject = JSONObject.parseObject(json);
-		groupList = (List<Group>) jsonObject.get("data");
+		JSONArray jsonArray = JSONArray.parseArray(json);
+		groupList = Utils.getGroupList(jsonArray);
 
 	}
 }
