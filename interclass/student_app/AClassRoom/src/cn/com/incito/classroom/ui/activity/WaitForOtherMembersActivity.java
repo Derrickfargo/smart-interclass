@@ -101,7 +101,7 @@ public class WaitForOtherMembersActivity extends Activity implements OnClickList
 		
 		Intent intent = new Intent(context,WaitForOtherMembersActivity.class);
 		intent.putExtra("group", group);
-		
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(intent);
 	}
 

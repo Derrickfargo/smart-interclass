@@ -97,7 +97,7 @@ public class MainFrame extends MouseAdapter {
 	}
 	
 	public void refreshPrepare() {
-//		preparePanel.refresh();
+		preparePanel.refresh();
 		quizPanel.refresh();
 		quizBottomPanel.refresh();
 		prepareBottomPanel.refresh();

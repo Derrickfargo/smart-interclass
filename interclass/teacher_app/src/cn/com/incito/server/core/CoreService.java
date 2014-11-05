@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +12,6 @@ import javax.imageio.stream.FileImageOutputStream;
 
 import org.apache.log4j.Logger;
 
-import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Quiz;
 import cn.com.incito.interclass.po.Student;
@@ -100,66 +98,24 @@ public class CoreService {
 	 * @param imei
 	 * @return
 	 */
-	public String login(String imei) {
-		Student student = app.getStudentByImei(imei);
-		if (student == null) {
-			// 系统中无此设备，登陆失败
-			return JSONUtils.renderJSONString(1);// 失败
-		} else {
-			student.setLogin(true);
-			app.getOnlineStudent().add(student);
-			app.refresh();// 更新UI
-			return JSONUtils.renderJSONString(0, app.getStudentByImei(imei));
+	public Student login(String imei) {
+		List<Student> students = app.getStudentList();
+		if (students == null || students.size() == 0) {
+			return null;// 失败
 		}
-	}
-
-
-
-	/**
-	 * 将其他组的相同人员剔除
-	 * @param uname
-	 * @param number
-	 * @param groupId 新组id
-	 */
-	private void sendOtherPadLogout(String uname, String number) {
-		Application app = Application.getInstance();
-		List<Group> groupList = app.getGroupList();
-		if (groupList == null || groupList.size() == 0) {
-			return;
-		}
-		Group group = findGroup(groupList, uname, number);
-		if(group != null){
-			Iterator<Student> it = group.getStudents().iterator();
-			while (it.hasNext()) {
-				Student temp = it.next();
-				if ((temp.getName() + temp.getNumber()).equals(uname + number)) {
-					it.remove();
-					break;
-				}
-			}
-			app.addGroup(group);
-//			app.getTableGroup().put(group.getTableId(), group);
-			app.refresh();// 更新UI
-			String result = JSONUtils.renderJSONString(0, group);//更新消息发往pad端
-			sendResponse(result,Application.getInstance().getClientChannelByGroup(group.getId()));
-		}
-	}
-	
-	private Group findGroup(List<Group> groupList, String uname, String number){
-		for (Group group : groupList) {
-			List<Student> students = group.getStudents();
-			if (students == null || students.size() == 0) {
-				continue;
-			}
-			for (Student temp : students) {
-				if ((temp.getName() + temp.getNumber()).equals(uname + number)) {
-					return group;
-				}
+		for (Student student : students) {
+			if (student.getImei().equals(imei)) {
+				student.setLogin(true);
+				app.getOnlineStudent().add(student);
+				app.refresh();// 更新UI
+				return student;
 			}
 		}
 		return null;
 	}
-	
+
+
+
 	public Student getStudentByNumber(String number){
 		for (Group group : app.getGroupList()) {
 			List<Student> students = group.getStudents();

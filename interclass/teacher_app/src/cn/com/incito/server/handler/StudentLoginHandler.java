@@ -6,7 +6,7 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
-import cn.com.incito.interclass.po.Device;
+import cn.com.incito.interclass.po.Student;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.config.AppConfig;
 import cn.com.incito.server.core.ConnectionManager;
@@ -30,18 +30,10 @@ public class StudentLoginHandler extends MessageHandler {
 	public void handleMessage() {
 		imei = data.getString("imei");
 		logger.info("收到设备（学生）登陆消息:" + data.toJSONString());
-		String result = service.login(imei);
+		Student student = service.login(imei);
 		ConnectionManager.notification(imei, message.getChannel());
 		Application app = Application.getInstance();
 		app.addSocketChannel(imei, message.getChannel());
-//		Device device = app.getImeiDevice().get(imei);
-//
-//		if (device != null) {
-//			// TODO
-//		} else {
-//			Device mDevice = new Device();
-//			mDevice.setImei(imei);
-//		}
 
 		// 回复设备登陆消息
 		Properties props = AppConfig.getProperties();
@@ -49,6 +41,9 @@ public class StudentLoginHandler extends MessageHandler {
 		String port = props.get(AppConfig.CONF_SERVER_PORT).toString();
 		data.put(AppConfig.CONF_SERVER_IP, ip);
 		data.put(AppConfig.CONF_SERVER_PORT, port);
+		if (student != null) {
+			data.put("student", student);
+		}
 		logger.info("回复设备登陆消息:" + data.toJSONString());
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
 

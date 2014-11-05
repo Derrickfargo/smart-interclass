@@ -90,4 +90,7 @@ public class PreparePanel extends JPanel{
 		centerCardPanel.add(groupPanel, CARD_GROUP);
 	}
 
+	public void refresh(){
+		noGroupPanel.refresh();
+	}
 }

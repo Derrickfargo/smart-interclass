@@ -27,18 +27,6 @@ public class PrepareNoGroupPanel extends JPanel {
 	}
 	
 	private void initView() {
-//		List<Student> students = app.getStudentList();
-//		
-//		//一下8行是测试代码
-//		for (int k = 0; k < 23; k++) {
-//			Student s = new Student();
-//			s.setName("测试" + k);
-//			students.add(s);
-//		}
-//		students.get(6).setLogin(true);
-//		students.get(11).setLogin(true);
-//		app.setStudentList(students);
-		
 		refresh();
 	}
 
