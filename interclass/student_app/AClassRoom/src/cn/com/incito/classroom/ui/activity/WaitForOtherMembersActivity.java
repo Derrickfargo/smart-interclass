@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.classroom.vo.Device;
 import cn.com.incito.classroom.vo.Group;
 import cn.com.incito.classroom.vo.Student;
@@ -22,6 +23,7 @@ import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 public class WaitForOtherMembersActivity extends Activity implements OnClickListener{
@@ -57,9 +59,10 @@ public class WaitForOtherMembersActivity extends Activity implements OnClickList
 		//获取传递过来的数据
 		Intent intent = getIntent();
 		String data = intent.getStringExtra("group");
-		JSONObject jsonObject = JSONObject.parseObject(data);
+		JSONArray jsonArray = JSONArray.parseArray(data);
+		List<Group> groupList  =Utils.getGroupList(jsonArray);
 		
-		List<Group> groupList = (List<Group>) jsonObject.get("data");
+		
 		if(groupList!=null&&groupList.size()>0){
 			for(int i = 0; i < groupList.size(); i++){
 				List<Device> devices = groupList.get(i).getDevices();
