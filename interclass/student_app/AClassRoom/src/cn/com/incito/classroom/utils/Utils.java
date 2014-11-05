@@ -149,10 +149,14 @@ public class Utils {
 			group.setName(jsonObject.getString("name"));
 			group.setLogo(jsonObject.getString("logo"));
 			
-			@SuppressWarnings("unchecked")
-			List<Device> devices = (List<Device>) jsonObject.get("devices");
-			for(int j = 0; j < devices.size(); j++){
-				group.getDevices().add(devices.get(j));
+			
+			JSONArray deviceArray = jsonObject.getJSONArray("devices");
+			for(int j = 0; j < deviceArray.size(); j++){
+				JSONObject deviceObject = deviceArray.getJSONObject(j);
+				Device device = new Device();
+				device.setImei(deviceObject.getString("imei"));
+				
+				group.getDevices().add(device);
 			}
 			
 			groupList.add(group);
