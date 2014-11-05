@@ -32,7 +32,7 @@ public class GroupDeleteHandler extends MessageHandler {
 		sendResponse(result.toString(),channels);
 	}
 	private void sendResponse(String json, List<SocketChannel> channels) {
-		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_DELETE_RESPONSE);
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_DELETE);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
         byte[] messageData = messagePacking.pack().array();
         ByteBuffer buffer = ByteBuffer.allocate(messageData.length);

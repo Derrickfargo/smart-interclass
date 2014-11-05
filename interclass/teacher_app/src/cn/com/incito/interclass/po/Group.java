@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class Group implements Serializable, Comparable<Group> {
+public class Group implements Serializable {
 
 	/**
 	 * 
@@ -14,13 +14,12 @@ public class Group implements Serializable, Comparable<Group> {
 	private int score;
 	private int id;
 	private String name;
-	private String logo = "rainbow";
+	private String logo;
 	private String slogan;
 	private int teacherId;
 	private int classId;
 	private Date ctime;
-
-	private int tableNumber;
+	private String captainid;
 	private List<Device> devices;
 	private List<Student> students;
 	private List<Quiz> quizs;
@@ -29,22 +28,27 @@ public class Group implements Serializable, Comparable<Group> {
 	public int getId() {
 		return id;
 	}
+
 	public int getScore() {
 		return score;
 	}
 
+	public String getCaptainid() {
+		return captainid;
+	}
 
-	
+	public void setCaptainid(String captainid) {
+		this.captainid = captainid;
+	}
+
 	public void setScore(int score) {
 		this.score = score;
 	}
-
 
 	public String getMedals() {
 		return medals;
 	}
 
-	
 	public void setMedals(String medals) {
 		this.medals = medals;
 	}
@@ -77,7 +81,6 @@ public class Group implements Serializable, Comparable<Group> {
 		this.slogan = slogan;
 	}
 
-
 	public int getTeacherId() {
 		return teacherId;
 	}
@@ -94,21 +97,12 @@ public class Group implements Serializable, Comparable<Group> {
 		this.classId = classId;
 	}
 
-
 	public Date getCtime() {
 		return ctime;
 	}
 
 	public void setCtime(Date ctime) {
 		this.ctime = ctime;
-	}
-
-	public int getTableNumber() {
-		return tableNumber;
-	}
-
-	public void setTableNumber(int tableNumber) {
-		this.tableNumber = tableNumber;
 	}
 
 	public String getTeacherName() {
@@ -163,10 +157,5 @@ public class Group implements Serializable, Comparable<Group> {
 		if (id != other.id)
 			return false;
 		return true;
-	}
-
-	@Override
-	public int compareTo(Group group) {
-		return this.tableNumber-group.tableNumber;
 	}
 }

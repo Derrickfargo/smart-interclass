@@ -1,5 +1,6 @@
 package cn.com.incito.socket.handler;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import cn.com.incito.classroom.base.MyApplication;
@@ -16,8 +17,9 @@ public class GroupSubmitHandler extends MessageHandler {
 	protected void handleMessage() {
 		int code = data.getIntValue("code");
 		if (code == 0) {
-			JSONObject json = data.getJSONObject("data");
-			UIHelper.getInstance().showConfirmGroupActivity(json);
+			JSONArray json = data.getJSONArray("data");
+			System.out.println(json);
+//			UIHelper.getInstance().showConfirmGroupActivity(json);
 		} else {
 		}
 

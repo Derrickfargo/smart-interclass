@@ -91,7 +91,7 @@ public class QuizPanel extends JPanel {
 	private void showQuizGroup(QuizGroupPanel panel, Group group) {
 		panel.setVisible(true);
 		panel.setGroup(group);
-		panel.getLblDesk().setText(String.format("%d号桌", group.getTableNumber()));
+//		panel.getLblDesk().setText(String.format("%d号桌", group.getTableNumber()));
 //		panel.getLblLogo().setIcon(new ImageIcon(LogoUtils.getInstance().getLogo24(group.getLogo())));
 		panel.getLblGroupName().setText(group.getName());
 		panel.getLblGroupName().setToolTipText(group.getName());

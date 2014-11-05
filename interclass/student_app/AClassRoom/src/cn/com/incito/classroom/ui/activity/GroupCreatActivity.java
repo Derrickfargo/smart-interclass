@@ -126,21 +126,21 @@ public class GroupCreatActivity extends BaseActivity implements OnClickListener 
 			//封装一个group对象
 			Group group = new Group();
 			group.setName(group_name);
-			group.setLogo(iconResourceId);
+			group.setLogo("1");
 			List<Device> devices = new ArrayList<Device>();
 			Device device = new Device();
 			device.setImei(MyApplication.deviceId);
 			devices.add(device);
 			group.setDevices(devices);
-			
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("group", group);
-			
+		
 			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_SUBMIT);
 			messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(jsonObject.toJSONString()));
+			MyApplication.Logger.debug("发送创建分组请求："+jsonObject.toJSONString());
 			CoreSocket.getInstance().sendMessage(messagePacking);
 			
-			MyApplication.Logger.debug("发送创建分组请求");
+			
 			
 			//返回的group带到下一个界面
 //			WaitForOtherMembersActivity.startSelf(this, edit_group_name

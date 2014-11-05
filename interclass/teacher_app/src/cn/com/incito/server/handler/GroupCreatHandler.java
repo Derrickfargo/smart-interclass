@@ -22,7 +22,8 @@ public class GroupCreatHandler extends MessageHandler{
 
 	@Override
 	protected void handleMessage() {
-		Group group=(Group) data.get("group");
+//		Group group=(Group) data.get("group");
+		Group group = data.getObject("group", Group.class);
 		Application.getInstance().addGroup(group);
 		Map<String, SocketChannel> channels = Application.getInstance().getClientChannel();
 		List<SocketChannel>  channelsRes=new ArrayList<SocketChannel>();
@@ -35,7 +36,7 @@ public class GroupCreatHandler extends MessageHandler{
 		sendResponse(result.toString(), channelsRes);
 	}
 	private void sendResponse(String json, List<SocketChannel> channels) {
-		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_CREAT_RESPONSE);
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_SUBMIT);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
         byte[] messageData = messagePacking.pack().array();
         ByteBuffer buffer = ByteBuffer.allocate(messageData.length);

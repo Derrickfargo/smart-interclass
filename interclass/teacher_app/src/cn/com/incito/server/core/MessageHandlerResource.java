@@ -38,17 +38,16 @@ public final class MessageHandlerResource {
 		handlerResources.put(Message.MESSAGE_STUDENT_LOGIN, StudentLoginHandler.class);
 		//心跳消息
 		handlerResources.put(Message.MESSAGE_HEART_BEAT, HeartbeatHandler.class);
-		
+		//提交的创建小组信息
+		handlerResources.put(Message.MESSAGE_GROUP_SUBMIT, GroupCreatHandler.class);
 		//创建分组消息
-		handlerResources.put(Message.MESSAGE_GROUP_CREATE, GroupCreatHandler.class);
+//		handlerResources.put(Message.MESSAGE_GROUP_CREATE, GroupCreatHandler.class);
 		//加入小组
 		handlerResources.put(Message.MESSAGE_GROUP_JOIN,GroupJoinHandler.class);
 		//删除小组
 		handlerResources.put(Message.MESSAGE_GROUP_DELETE, GroupDeleteHandler.class);
-		
 		//收作业信息
 		handlerResources.put(Message.MESSAGE_SAVE_PAPER, SavePaperHandler.class);
-		
 		//设备退出
 		handlerResources.put(Message.MESSAGE_DEVICE_LOGOUT, StudentLogoutHandler.class);
 	}

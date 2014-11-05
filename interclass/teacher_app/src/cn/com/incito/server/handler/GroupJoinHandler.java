@@ -37,7 +37,7 @@ public class GroupJoinHandler extends MessageHandler{
 		sendResponse(result.toString(), channels);
 	}
 	private void sendResponse(String json, List<SocketChannel> channels) {
-		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_JOIN_RESPONSE);
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_JOIN);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
         byte[] messageData = messagePacking.pack().array();
         ByteBuffer buffer = ByteBuffer.allocate(messageData.length);

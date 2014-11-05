@@ -13,17 +13,38 @@ public class Group {
 	private int score;
 	private int id;
 	private String name;
-	private int logo ;
+	private String logo ;
 	private String slogan;
 	private int teacherId;
 	private int classId;
 	private Date ctime;
-
+	private String captainid;
+	
 	private List<Device> devices;
 	private List<Student> students;
 	private String teacherName;
+	private List<Quiz> quizs;
 	
 	
+	
+	public List<Quiz> getQuizs() {
+		return quizs;
+	}
+	public void setQuizs(List<Quiz> quizs) {
+		this.quizs = quizs;
+	}
+	public String getLogo() {
+		return logo;
+	}
+	public void setLogo(String logo) {
+		this.logo = logo;
+	}
+	public String getCaptainid() {
+		return captainid;
+	}
+	public void setCaptainid(String captainid) {
+		this.captainid = captainid;
+	}
 	public String getMedals() {
 		return medals;
 	}
@@ -41,12 +62,6 @@ public class Group {
 	}
 	public void setId(int id) {
 		this.id = id;
-	}
-	public int getLogo() {
-		return logo;
-	}
-	public void setLogo(int logo) {
-		this.logo = logo;
 	}
 	public String getSlogan() {
 		return slogan;

@@ -60,20 +60,22 @@ public class WaitForOtherMembersActivity extends Activity implements OnClickList
 		JSONObject jsonObject = JSONObject.parseObject(data);
 		
 		List<Group> groupList = (List<Group>) jsonObject.get("data");
-		
-		for(int i = 0; i < groupList.size(); i++){
-			List<Device> devices = groupList.get(i).getDevices();
-			for(int j = 0; j < devices.size(); j++){
-				if(devices.get(j).getImei().equals(MyApplication.deviceId)){
-					group = groupList.get(i);
-					break;
+		if(groupList!=null&&groupList.size()>0){
+			for(int i = 0; i < groupList.size(); i++){
+				List<Device> devices = groupList.get(i).getDevices();
+				for(int j = 0; j < devices.size(); j++){
+					if(devices.get(j).getImei().equals(MyApplication.deviceId)){
+						group = groupList.get(i);
+						break;
+					}
 				}
 			}
 		}
 		
 		
+		
 		image_group_icon = (ImageView) findViewById(R.id.image_group_icon);
-		image_group_icon.setImageResource(group.getLogo());
+		image_group_icon.setImageResource(R.drawable.ico_powder_blue);
 		
 		text_group_name = (TextView) findViewById(R.id.text_gourp_name);
 		text_group_name.setText(group.getName());

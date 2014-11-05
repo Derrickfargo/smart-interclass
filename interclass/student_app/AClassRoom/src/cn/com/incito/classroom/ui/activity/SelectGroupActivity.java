@@ -32,16 +32,15 @@ public class SelectGroupActivity extends BaseActivity implements
 	private ListView select_group_listview;
 	private SelectGroupAdapter selectGroupAdapter;
 	private List<Group> groupList = new ArrayList<Group>();
-	
-	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_select_group);
-		
-		Intent intent = new Intent();
-		setGroupData(intent.getStringExtra("group"));
+
+		if (getIntent().getStringExtra("group") != null
+				&& !"".equals(getIntent().getStringExtra("group")))
+			setGroupData(getIntent().getStringExtra("group"));
 		// 初始化UI组件
 		initViews();
 	}
@@ -66,49 +65,54 @@ public class SelectGroupActivity extends BaseActivity implements
 		btn_create_group.setOnClickListener(this);
 
 		select_group_listview = (ListView) findViewById(R.id.select_group_listview);
-		
 
-		// 设置每项点击事件 发送请求  并且更新界面
+		// 设置每项点击事件 发送请求 并且更新界面
 		select_group_listview.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				//1.封装要发送的数据 小组ID  学生ID
+				// 1.封装要发送的数据 小组ID 学生ID
 				int groupId = groupList.get(position).getId();
 				String deviceId = MyApplication.deviceId;
-				
-				//2.判断当前设备是否已经加入该分组
-				for(int i = 0; i < groupList.size(); i++){
+
+				// 2.判断当前设备是否已经加入该分组
+				for (int i = 0; i < groupList.size(); i++) {
 					Group group = groupList.get(i);
 					List<Device> deviceList = group.getDevices();
-					for(int j = 0; i < deviceList.size(); j++){
+					for (int j = 0; i < deviceList.size(); j++) {
 						Device device = deviceList.get(j);
-						if(!device.getImei().equals(deviceId)){//没有加入分组才发送请求 
+						if (!device.getImei().equals(deviceId)) {// 没有加入分组才发送请求
 							JSONObject jsonObject = new JSONObject();
 							jsonObject.put("groupId", groupId);
 							jsonObject.put("imei", deviceId);
-							
-							MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_JOIN);
-							messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(jsonObject.toJSONString()));
-							CoreSocket.getInstance().sendMessage(messagePacking);
-							
-							MyApplication.Logger.debug(System.currentTimeMillis() + "开始发送加入请求 ");
+
+							MessagePacking messagePacking = new MessagePacking(
+									Message.MESSAGE_GROUP_JOIN);
+							messagePacking.putBodyData(DataType.INT,
+									BufferUtils.writeUTFString(jsonObject
+											.toJSONString()));
+							CoreSocket.getInstance()
+									.sendMessage(messagePacking);
+
+							MyApplication.Logger.debug(System
+									.currentTimeMillis() + "开始发送加入请求 ");
 						}
 					}
 				}
-				
+
 			}
 		});
-		
+
 		selectGroupAdapter = new SelectGroupAdapter(this);
 		selectGroupAdapter.notifyDataSetChanged();
 
 		select_group_listview.setAdapter(selectGroupAdapter);
 
 	}
-	
-	public List<Group> getGroupList(){
+
+	public List<Group> getGroupList() {
+
 		return groupList;
 	}
 
@@ -119,5 +123,6 @@ public class SelectGroupActivity extends BaseActivity implements
 	private void setGroupData(String json) {
 		JSONObject jsonObject = JSONObject.parseObject(json);
 		groupList = (List<Group>) jsonObject.get("data");
+
 	}
 }
