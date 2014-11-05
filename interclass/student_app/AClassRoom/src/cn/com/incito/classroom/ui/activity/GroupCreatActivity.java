@@ -3,8 +3,6 @@ package cn.com.incito.classroom.ui.activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.alibaba.fastjson.JSONObject;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,12 +22,13 @@ import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.vo.Device;
 import cn.com.incito.classroom.vo.Group;
 import cn.com.incito.common.utils.ToastHelper;
-import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
+
+import com.alibaba.fastjson.JSONObject;
 
 public class GroupCreatActivity extends BaseActivity implements OnClickListener {
 
