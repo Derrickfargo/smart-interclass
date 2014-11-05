@@ -53,6 +53,7 @@ public class WaitForOtherMembersActivity extends Activity implements OnClickList
 		btn_back.setOnClickListener(this);
 		
 		btn_waiting = (Button) findViewById(R.id.btn_waiting);
+		btn_waiting.setOnClickListener(this);
 		
 		//获取传递过来的数据
 		Intent intent = getIntent();
@@ -115,9 +116,18 @@ public class WaitForOtherMembersActivity extends Activity implements OnClickList
 			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_DELETE);
 			messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(jsonObject.toJSONString()));
 			CoreSocket.getInstance().sendMessage(messagePacking);
+			MyApplication.Logger.debug("删除小组");
 			
-//			this.finish();
 			break;
+		case R.id.btn_waiting:
+			JSONObject json = new JSONObject();
+			json.put("group", group);
+			
+			MessagePacking message = new MessagePacking(Message.MESSAGE_GROUP_DELETE);
+			message.putBodyData(DataType.INT,BufferUtils.writeUTFString(json.toJSONString()));
+			CoreSocket.getInstance().sendMessage(message);
+			
+			MyApplication.Logger.debug("停止其他小组成员添加");
 
 		default:
 			break;
