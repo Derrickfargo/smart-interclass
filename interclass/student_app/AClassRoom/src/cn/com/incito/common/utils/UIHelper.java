@@ -16,6 +16,7 @@ import cn.com.incito.classroom.ui.activity.WifiSelectorActivity;
 import cn.com.incito.classroom.vo.Group;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonArray;
 
 public class UIHelper {
 	private static UIHelper instance;
@@ -111,8 +112,8 @@ public class UIHelper {
 	 * 启动等待小组其他成员界面
 	 * @param data  返回的json数据
 	 */
-	public void showConfirmGroupActivity(JSONObject data) {
-		WaitForOtherMembersActivity.startSelf(app, data.toString());
+	public void showConfirmGroupActivity(String data) {
+		WaitForOtherMembersActivity.startSelf(app, data);
 
 	}
 
