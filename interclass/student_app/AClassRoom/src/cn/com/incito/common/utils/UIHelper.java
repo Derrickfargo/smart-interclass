@@ -106,14 +106,13 @@ public class UIHelper {
 		app.startActivity(intent);
 	}
 	
-	
 
-
+	/**
+	 * 启动等待小组其他成员界面
+	 * @param data  返回的json数据
+	 */
 	public void showConfirmGroupActivity(JSONObject data) {
-		Intent intent = new Intent(Constants.ACTION_SHOW_CONFIRM_GROUP);
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		intent.putExtra("data", data);
-		app.startActivity(intent);
+		WaitForOtherMembersActivity.startSelf(app, data.toString());
 
 	}
 
@@ -138,13 +137,5 @@ public class UIHelper {
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		app.startActivity(intent);
 		
-	}
-
-	/**
-	 * 显示等待其他小组成员 
-	 * @param string
-	 */
-	public void showWaitOtherMembers(String jsonObject) {
-		WaitForOtherMembersActivity.startSelf(app, jsonObject);
 	}
 }

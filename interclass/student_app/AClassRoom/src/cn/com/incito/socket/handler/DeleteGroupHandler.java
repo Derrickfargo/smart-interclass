@@ -8,7 +8,6 @@ public class DeleteGroupHandler extends MessageHandler {
 	@Override
 	protected void handleMessage() {
 		if(0 == data.getIntValue("code")){
-//			JSONObject json = data.getJSONObject("data");
 				UIHelper.getInstance().showGroupSelect(data.toString());
 		}
 

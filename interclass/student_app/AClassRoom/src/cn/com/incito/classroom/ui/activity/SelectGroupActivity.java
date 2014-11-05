@@ -93,7 +93,7 @@ public class SelectGroupActivity extends BaseActivity implements
 							messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(jsonObject.toJSONString()));
 							CoreSocket.getInstance().sendMessage(messagePacking);
 							
-							MyApplication.Logger.debug(System.currentTimeMillis() + "开始发送分组请求 ");
+							MyApplication.Logger.debug(System.currentTimeMillis() + "开始发送加入请求 ");
 						}
 					}
 				}

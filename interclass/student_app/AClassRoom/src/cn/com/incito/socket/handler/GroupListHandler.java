@@ -15,9 +15,8 @@ public class GroupListHandler extends MessageHandler {
 	protected void handleMessage() {
 		
 		if(0 == data.getIntValue("code")){
-//			JSONObject json = data.getJSONObject("data");
 			if(AppManager.getAppManager().currentActivity().getComponentName().getClassName().equals("WaitForOtherMembersActivity")){
-				UIHelper.getInstance().showWaitOtherMembers(data.toString());
+				UIHelper.getInstance().showConfirmGroupActivity(data);
 			}else{
 				UIHelper.getInstance().showGroupSelect(data.toString());
 			}
