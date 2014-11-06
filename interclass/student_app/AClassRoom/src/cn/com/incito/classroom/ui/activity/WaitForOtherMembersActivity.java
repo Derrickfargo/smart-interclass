@@ -1,6 +1,7 @@
 package cn.com.incito.classroom.ui.activity;
 
 import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -13,18 +14,21 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import cn.com.incito.classroom.R;
+import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.vo.Group;
 import cn.com.incito.classroom.vo.Student;
+import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
-public class WaitForOtherMembersActivity extends Activity implements
+public class WaitForOtherMembersActivity extends BaseActivity implements
 		OnClickListener {
 
 	private Button btn_back;
@@ -38,6 +42,7 @@ public class WaitForOtherMembersActivity extends Activity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_wait_for_other_members);
+		UIHelper.getInstance().setWaitingForOtherMembersActivity(this);
 		initView();
 	}
 
@@ -96,7 +101,7 @@ public class WaitForOtherMembersActivity extends Activity implements
 	 * 设置界面数据
 	 * @param students  该小组的成员
 	 */
-	public void setText(String data){
+	public void setTextName(String data){
 		Group g = new Group();
 		List<Group> groupList = JSON.parseArray(data, Group.class);
 		Student student = MyApplication.getInstance().getStudent();
@@ -146,7 +151,8 @@ public class WaitForOtherMembersActivity extends Activity implements
 		switch (v.getId()) {
 		case R.id.btn_back:
 			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("studentId", group.getCaptainid());
+			jsonObject.put("captainId", group.getCaptainid());
+			jsonObject.put("studentId", MyApplication.getInstance().getStudent().getId());
 			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_DELETE);
 			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
 			MyApplication.Logger.debug("删除小组信息："+jsonObject.toJSONString());

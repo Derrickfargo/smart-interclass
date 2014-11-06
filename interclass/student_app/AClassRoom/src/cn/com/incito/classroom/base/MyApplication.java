@@ -23,6 +23,7 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.exception.AppUncaughtException;
+import cn.com.incito.classroom.vo.Group;
 import cn.com.incito.classroom.vo.LoginResVo;
 import cn.com.incito.classroom.vo.Student;
 import cn.com.incito.socket.handler.LockScreenHandler;
@@ -65,7 +66,17 @@ public class MyApplication extends Application {
 
 	public static String deviceId;
 
-	public Student student;
+	private Student student;
+	
+	private Group group;
+
+	public Group getGroup() {
+		return group;
+	}
+
+	public void setGroup(Group group) {
+		this.group = group;
+	}
 
 	private static final String TAG = MyApplication.class.getSimpleName();
 

@@ -23,11 +23,10 @@ public class JoinGroupHandler extends MessageHandler {
 	protected void handleMessage() {
 		MyApplication.Logger.debug("加入小组返回信息:" + data.getString("data"));
 		int code = data.getInteger("code");// 加入小组返回代码
-		if (code == 0) {// 加入成功进行跳转
-			MyApplication.Logger.debug("加入小组成功跳转进等待小组其他成员:"+ data.getString("data"));
-			// 如果是已经在该节面则只是刷新界面数据
-			if ((AppManager.getAppManager().currentActivity().getComponentName().getClassName().equals("WaitForOtherMembersActivity"))) {
-				UIHelper.getInstance().getWaitForOtherMembersActivity().setText(data.getString("data"));
+		if (code == 0) {
+			//如果在等待其他小组成员加入界面，刷新界面数据
+			if ((("WaitForOtherMembersActivity").equals(AppManager.getAppManager().currentActivity().getClass().getSimpleName()))) {
+				UIHelper.getInstance().getWaitForOtherMembersActivity().setTextName(data.getString("data"));
 			} else if (isNewAdd(data.getString("data"))) { // 如果没有在该界面而且是新加入的则进行跳转
 				UIHelper.getInstance().showConfirmGroupActivity(data.getString("data"));
 			} else {
@@ -52,7 +51,7 @@ public class JoinGroupHandler extends MessageHandler {
 		for (int i = 0; i < groupList.size(); i++) {
 			Group group = groupList.get(i);
 			if (group.getStudents().contains(
-					MyApplication.getInstance().student)) {
+					MyApplication.getInstance().getStudent())) {
 				return true;
 			}
 		}

@@ -24,7 +24,7 @@ public class BaseActivity extends FragmentActivity {
 
 	protected float mDensity;
 
-	NetWorkReceiver receiver;
+//	NetWorkReceiver receiver;
 
 	public NetWorkDialog netWorkDialog;
 
@@ -69,28 +69,28 @@ public class BaseActivity extends FragmentActivity {
 		AppManager.getAppManager().finishActivity(this);
 	}
 
-	class NetWorkReceiver extends BroadcastReceiver {
-
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			if (intent.getAction().equals("android.net.conn.CONNECTIVITY_CHANGE")) {
-				ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-				NetworkInfo wifiInfo = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-				NetworkInfo activeInfo = manager.getActiveNetworkInfo();
-				if (activeInfo == null || wifiInfo == null) {
-					if (netWorkDialog == null) {
-						netWorkDialog = new NetWorkDialog(context);
-						netWorkDialog.setCancelable(false);
-						netWorkDialog.show();
-					} else {
-						if (!netWorkDialog.isShowing()) {
-							netWorkDialog.show();
-						}
-					}
-
-				}
-			}
-		}
-
-	}
+//	class NetWorkReceiver extends BroadcastReceiver {
+//
+//		@Override
+//		public void onReceive(Context context, Intent intent) {
+//			if (intent.getAction().equals("android.net.conn.CONNECTIVITY_CHANGE")) {
+//				ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+//				NetworkInfo wifiInfo = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+//				NetworkInfo activeInfo = manager.getActiveNetworkInfo();
+//				if (activeInfo == null || wifiInfo == null) {
+//					if (netWorkDialog == null) {
+//						netWorkDialog = new NetWorkDialog(context);
+//						netWorkDialog.setCancelable(false);
+//						netWorkDialog.show();
+//					} else {
+//						if (!netWorkDialog.isShowing()) {
+//							netWorkDialog.show();
+//						}
+//					}
+//
+//				}
+//			}
+//		}
+//
+//	}
 }
