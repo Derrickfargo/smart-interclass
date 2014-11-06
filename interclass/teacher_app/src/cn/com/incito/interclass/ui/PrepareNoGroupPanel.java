@@ -15,7 +15,7 @@ public class PrepareNoGroupPanel extends JPanel {
 
 	private static final long serialVersionUID = 882552987989905663L;
 	private static final int COLUMN_COUNT = 8;//每行最多8个学生
-	private static final int ROW_COUNT = 13;//最多14行
+	private static final int ROW_COUNT = 13;//最多13行
 	private Application app = Application.getInstance();
 	private List<JLabel> nameList = new ArrayList<JLabel>();
 	private int startRows = 0;
@@ -32,7 +32,7 @@ public class PrepareNoGroupPanel extends JPanel {
 	
 	private void initView() {
 		int x = 30, y = 50;
-		for (int i = 0; i < ROW_COUNT; i++) {//最多14行
+		for (int i = 0; i < ROW_COUNT; i++) {
 			for (int j = 0; j < COLUMN_COUNT; j++) {
 				JLabel lblName = getNameLabel();
 				lblName.setBackground(new Color(Integer.parseInt("e1e1e1", 16)));
