@@ -122,17 +122,17 @@ public class WaitForOtherMembersActivity extends Activity implements
 
 			break;
 		case R.id.btn_waiting:
-			JSONObject json = new JSONObject();
-			json.put("group", group);
-
-			MessagePacking message = new MessagePacking(
-					Message.MESSAGE_GROUP_CONFIRM);
-			message.putBodyData(DataType.INT,
-					BufferUtils.writeUTFString(json.toJSONString()));
-			CoreSocket.getInstance().sendMessage(message);
-
-			MyApplication.Logger.debug("停止其他小组成员添加");
-
+//			JSONObject json = new JSONObject();
+//			json.put("group", group);
+//
+//			MessagePacking message = new MessagePacking(
+//					Message.MESSAGE_GROUP_CONFIRM);
+//			message.putBodyData(DataType.INT,
+//					BufferUtils.writeUTFString(json.toJSONString()));
+//			MyApplication.Logger.debug("停止其他小组成员添加："+json.toJSONString());
+//			CoreSocket.getInstance().sendMessage(message);
+			Intent mIntent=new Intent(this,ClassReadyActivity.class);
+			this.startActivity(mIntent);
 		default:
 			break;
 		}
