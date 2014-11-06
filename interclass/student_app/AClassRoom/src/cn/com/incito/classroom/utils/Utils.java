@@ -136,33 +136,4 @@ public class Utils {
 		return null;
 	}
 
-	/**
-	 * 将jsonarray转换成List
-	 * 
-	 * @param jsonArray
-	 * @return
-	 */
-	public static List<Group> getGroupList(JSONArray jsonArray){
-		List<Group> groupList  = new ArrayList<Group>();
-		for(int i = 0; i < jsonArray.size(); i++){
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
-			Group group = new Group();
-			group.setName(jsonObject.getString("name"));
-			group.setLogo(jsonObject.getString("logo"));
-			// 封装学生属性
-			List<Student> studentList = new ArrayList<Student>();
-			JSONArray studentArray = jsonObject.getJSONArray("students");
-			if(studentArray!=null&&studentArray.size()>0){
-				for (int j = 0; j < studentArray.size(); j++) {
-					JSONObject studentObject = studentArray.getJSONObject(j);
-					Student student = new Student();
-					student.setName(studentObject.getString("name"));
-					studentList.add(student);
-				}
-			}
-			group.setStudents(studentList);
-			groupList.add(group);
-		}
-		return groupList;
-	}
 }

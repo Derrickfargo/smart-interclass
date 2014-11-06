@@ -14,7 +14,6 @@ import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.adapter.SelectGroupAdapter;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.classroom.vo.Group;
 import cn.com.incito.classroom.vo.Student;
 import cn.com.incito.socket.core.CoreSocket;
@@ -23,7 +22,7 @@ import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
 
-import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 public class SelectGroupActivity extends BaseActivity implements
@@ -41,7 +40,7 @@ public class SelectGroupActivity extends BaseActivity implements
 
 		if (getIntent().getStringExtra("group") != null
 				&& !"".equals(getIntent().getStringExtra("group")))
-			setGroupData(getIntent().getStringExtra("group"));
+			groupList = JSON.parseArray(getIntent().getStringExtra("group"), Group.class);
 		// 初始化UI组件
 		initViews();
 	}
@@ -112,12 +111,4 @@ public class SelectGroupActivity extends BaseActivity implements
 		return groupList;
 	}
 
-	/**
-	 * 设置数据
-	 */
-	private void setGroupData(String json) {
-		JSONArray jsonArray = JSONArray.parseArray(json);
-		groupList = Utils.getGroupList(jsonArray);
-
-	}
 }

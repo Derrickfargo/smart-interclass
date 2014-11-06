@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.classroom.vo.Group;
 import cn.com.incito.classroom.vo.Student;
 import cn.com.incito.socket.core.CoreSocket;
@@ -22,7 +21,7 @@ import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
 
-import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 public class WaitForOtherMembersActivity extends Activity implements
@@ -52,8 +51,7 @@ public class WaitForOtherMembersActivity extends Activity implements
 		// 获取传递过来的数据
 		Intent intent = getIntent();
 		String data = intent.getStringExtra("group");
-		JSONArray jsonArray = JSONArray.parseArray(data);
-		List<Group> groupList = Utils.getGroupList(jsonArray);
+		List<Group> groupList = JSON.parseArray(data, Group.class);
 		Student student = MyApplication.getInstance().getStudent();
 		for (Group group : groupList) {
 			if(group.getCaptainid() == student.getId()){
