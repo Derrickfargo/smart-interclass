@@ -18,79 +18,80 @@ import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import cn.com.incito.classroom.vo.Device;
 import cn.com.incito.classroom.vo.Group;
+import cn.com.incito.classroom.vo.Student;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 public class Utils {
 
-    public static final int MARK_INT = 0xFF;
-    public static int PORT = 9001;
-    public static String ip = "localhost";
-    public static final char MARK = '|';
-    public static final char CUSTOMER_MARK = '&';
-    public static final int BUFF_SIZE = 1024;
-    public static final int HEAD_LEN = 5;
+	public static final int MARK_INT = 0xFF;
+	public static int PORT = 9001;
+	public static String ip = "localhost";
+	public static final char MARK = '|';
+	public static final char CUSTOMER_MARK = '&';
+	public static final int BUFF_SIZE = 1024;
+	public static final int HEAD_LEN = 5;
 
-    /**
-     * int to byte[] *
-     */
-    public static byte[] intTobyte(int num) {
-        byte intByte[] = new byte[4];
-        intByte[0] = (byte) (num & MARK_INT);
-        intByte[1] = (byte) ((num >> 8) & MARK_INT);
-        intByte[2] = (byte) ((num >> 16) & MARK_INT);
-        intByte[3] = (byte) ((num >> 24) & MARK_INT);
-        return intByte;
-    }
+	/**
+	 * int to byte[] *
+	 */
+	public static byte[] intTobyte(int num) {
+		byte intByte[] = new byte[4];
+		intByte[0] = (byte) (num & MARK_INT);
+		intByte[1] = (byte) ((num >> 8) & MARK_INT);
+		intByte[2] = (byte) ((num >> 16) & MARK_INT);
+		intByte[3] = (byte) ((num >> 24) & MARK_INT);
+		return intByte;
+	}
 
-    public static int byteToint(byte[] num) {
-        int x = 0;
-        for (int i = num.length - 1; i >= 0; i--) {
-            x <<= 8;
-            x |= num[i] & MARK_INT;
-        }
-        return x;
-    }
+	public static int byteToint(byte[] num) {
+		int x = 0;
+		for (int i = num.length - 1; i >= 0; i--) {
+			x <<= 8;
+			x |= num[i] & MARK_INT;
+		}
+		return x;
+	}
 
-    public static byte[] readData(InputStream input) throws Exception {
-        byte intLen[] = new byte[4];
-        byte data[] = null;
-        while (input.available() == -1) {
-            Thread.sleep(500);
-            continue;
-        }
-        int size = 0, len = 0, count = 4;
-        size = input.read(intLen, 0, 4);
-        len = byteToint(intLen) + HEAD_LEN;
-        data = new byte[len];
-        System.arraycopy(intLen, 0, data, 0, 4);
-        while (true) {
-            size = input.read(data, count, Math.min(BUFF_SIZE, (len - count)));
-            count += size;
-            if (count == len)
-                break;
-        }
-        return data;
-    }
+	public static byte[] readData(InputStream input) throws Exception {
+		byte intLen[] = new byte[4];
+		byte data[] = null;
+		while (input.available() == -1) {
+			Thread.sleep(500);
+			continue;
+		}
+		int size = 0, len = 0, count = 4;
+		size = input.read(intLen, 0, 4);
+		len = byteToint(intLen) + HEAD_LEN;
+		data = new byte[len];
+		System.arraycopy(intLen, 0, data, 0, 4);
+		while (true) {
+			size = input.read(data, count, Math.min(BUFF_SIZE, (len - count)));
+			count += size;
+			if (count == len)
+				break;
+		}
+		return data;
+	}
 
-    public static String getRandomNum(int len) {
-        String s = "";
-        while (s.length() <= len) {
-            s = s.concat(String.valueOf(new Random().nextInt(10)));
-        }
-        return s;
-    }
+	public static String getRandomNum(int len) {
+		String s = "";
+		while (s.length() <= len) {
+			s = s.concat(String.valueOf(new Random().nextInt(10)));
+		}
+		return s;
+	}
 
-    public static void main(String args[]) {
-        byte[] b = Utils.intTobyte(1000);
-        for (byte bb : b) {
-            System.out.println(bb);
-        }
-        System.out.println(Utils.byteToint(b));
-    }
+	public static void main(String args[]) {
+		byte[] b = Utils.intTobyte(1000);
+		for (byte bb : b) {
+			System.out.println(bb);
+		}
+		System.out.println(Utils.byteToint(b));
+	}
 
-    public static Bitmap drawableToBitmap(Drawable drawable) {
+	public static Bitmap drawableToBitmap(Drawable drawable) {
 		int w = drawable.getIntrinsicWidth();
 		int h = drawable.getIntrinsicHeight();
 
@@ -104,61 +105,71 @@ public class Utils {
 	}
 
 	public static Bitmap getRoundedCornerBitmap(Bitmap bitmap, float roundPx) {
-        int w = bitmap.getWidth();
-        int h = bitmap.getHeight();
-        Bitmap output = Bitmap.createBitmap(w, h, Config.ARGB_8888);
-        Canvas canvas = new Canvas(output);
-        final int color = 0xff424242;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, w, h);
-        final RectF rectF = new RectF(rect);
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
-        paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
+		int w = bitmap.getWidth();
+		int h = bitmap.getHeight();
+		Bitmap output = Bitmap.createBitmap(w, h, Config.ARGB_8888);
+		Canvas canvas = new Canvas(output);
+		final int color = 0xff424242;
+		final Paint paint = new Paint();
+		final Rect rect = new Rect(0, 0, w, h);
+		final RectF rectF = new RectF(rect);
+		paint.setAntiAlias(true);
+		canvas.drawARGB(0, 0, 0, 0);
+		paint.setColor(color);
+		canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+		paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
+		canvas.drawBitmap(bitmap, rect, rect, paint);
 
-        return output;
-    }
+		return output;
+	}
 
-	public static Drawable getGroupIconByName(TypedArray iconSource,String[] iconsName, String iconName){
-		if(iconName != null && !"".equals(iconName)
-				&& iconSource != null && iconSource.length() > 0
-				&& iconsName != null && iconsName.length > 0){
-			for(int i=0;i<iconsName.length;i++){
-				if(iconName.equals(iconsName[i])){
+	public static Drawable getGroupIconByName(TypedArray iconSource,
+			String[] iconsName, String iconName) {
+		if (iconName != null && !"".equals(iconName) && iconSource != null
+				&& iconSource.length() > 0 && iconsName != null
+				&& iconsName.length > 0) {
+			for (int i = 0; i < iconsName.length; i++) {
+				if (iconName.equals(iconsName[i])) {
 					return iconSource.getDrawable(i);
 				}
 			}
 		}
 		return null;
 	}
-	
+
 	/**
 	 * 将jsonarray转换成List
+	 * 
 	 * @param jsonArray
 	 * @return
 	 */
-	public static List<Group> getGroupList(JSONArray jsonArray){
-		List<Group> groupList  = new ArrayList<>();
-		
-		for(int i = 0; i < jsonArray.size(); i++){
+	public static List<Group> getGroupList(JSONArray jsonArray) {
+		List<Group> groupList = new ArrayList<>();
+		for (int i = 0; i < jsonArray.size(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
 			Group group = new Group();
 			group.setName(jsonObject.getString("name"));
 			group.setLogo(jsonObject.getString("logo"));
-			
-			
+			// 封装设备属性
+			List<Device> deviceList = new ArrayList<Device>();
 			JSONArray deviceArray = jsonObject.getJSONArray("devices");
-			for(int j = 0; j < deviceArray.size(); j++){
+			for (int j = 0; j < deviceArray.size(); j++) {
 				JSONObject deviceObject = deviceArray.getJSONObject(j);
 				Device device = new Device();
 				device.setImei(deviceObject.getString("imei"));
-				
-				group.getDevices().add(device);
+				deviceList.add(device);
 			}
-			
+			// 封装学生属性
+			List<Student> studentList = new ArrayList<Student>();
+			JSONArray studentArray = jsonObject.getJSONArray("students");
+			for (int j = 0; j < studentArray.size(); j++) {
+				JSONObject studentObject = studentArray.getJSONObject(j);
+				Student student = new Student();
+				student.setName(studentObject.getString("name"));
+				studentList.add(student);
+			}
+			group.setStudents(studentList);
+			group.setDevices(deviceList);
 			groupList.add(group);
 		}
 		return groupList;

@@ -19,8 +19,9 @@ public class GroupSubmitHandler extends MessageHandler {
 		if (code == 0) {
 			JSONArray json = data.getJSONArray("data");
 			System.out.println(json);
-//			UIHelper.getInstance().showConfirmGroupActivity(json);
+			UIHelper.getInstance().showConfirmGroupActivity(json.toJSONString());
 		} else {
+			
 		}
 
 	}

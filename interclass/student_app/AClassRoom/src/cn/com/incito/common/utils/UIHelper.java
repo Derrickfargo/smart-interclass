@@ -122,8 +122,7 @@ public class UIHelper {
 	}
 
 	public void showDrawBoxActivity() {
-		Intent intent = new Intent(app.getApplicationContext(),
-				DrawBoxActivity.class);
+		Intent intent = new Intent(app.getApplicationContext(),DrawBoxActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.setAction(Constants.ACTION_SHOW_EDIT_GROUP);
 		app.startActivity(intent);
