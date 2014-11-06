@@ -27,8 +27,6 @@ import cn.com.incito.interclass.ui.MainFrame;
 import cn.com.incito.server.config.Constants;
 import cn.com.incito.server.utils.FileUtils;
 
-import com.alibaba.fastjson.JSONObject;
-
 public class Application {
 	public boolean isLockScreen;
 
@@ -55,7 +53,6 @@ public class Application {
 
 	public static boolean isOnClass;// 正在上课
 	public static boolean hasQuiz;// 是否在作业
-	private List<Group> groupList = new ArrayList<Group>();// 本堂课的所有分组
 	private List<Student> studentList = new ArrayList<Student>();// 本班级的所有学生
 	private Set<Student> onlineStudent = new HashSet<Student>();
 	private Set<Student> offlineStudent = new HashSet<Student>();
@@ -64,11 +61,10 @@ public class Application {
 	private Map<String, Student> imeiStudent = new HashMap<String, Student>();//key是imei Student是
 	private Map<String, SocketChannel> clientChannel;// 保存所有设备登陆的socket，imei和socket
 	private Map<Integer, Group> groupMap = new HashMap<Integer, Group>();
-	private Map<Integer, JSONObject> tempGroup = new HashMap<Integer, JSONObject>();// 修改的分组信息
-	private Map<Integer, List<Integer>> tempVote = new HashMap<Integer, List<Integer>>();// 小组的投票信息
+	private List<Group> groupList = new ArrayList<Group>();// 本堂课的所有分组
+	private Map<String, Group> tempGroup = new HashMap<String, Group>();// 修改的分组信息
 	private List<String> tempQuizIMEI = new ArrayList<String>();
 	private Map<String, Quiz> tempQuiz = new HashMap<String, Quiz>();// 随堂联系
-	private List<Integer> tempGrouped = new ArrayList<Integer>();// 已编辑完成的小组
 	private List<Quiz> quizList = new ArrayList<Quiz>();// 作业
 	private FileLock lock;
 
@@ -125,10 +121,6 @@ public class Application {
 
 	public void setGrouping(boolean isGrouping) {
 		this.isGrouping = isGrouping;
-	}
-
-	public List<Integer> getTempGrouped() {
-		return tempGrouped;
 	}
 
 	public List<String> getTempQuizIMEI() {
@@ -275,12 +267,8 @@ public class Application {
 		this.offlineStudent = offlineStudent;
 	}
 
-	public Map<Integer, JSONObject> getTempGroup() {
+	public Map<String, Group> getTempGroup() {
 		return tempGroup;
-	}
-
-	public Map<Integer, List<Integer>> getTempVote() {
-		return tempVote;
 	}
 
 	public Map<String, Quiz> getTempQuiz() {

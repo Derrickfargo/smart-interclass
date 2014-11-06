@@ -18,9 +18,8 @@ public class Group {
 	private int teacherId;
 	private int classId;
 	private Date ctime;
-	private String captainid;
+	private int captainid;
 	
-	private List<Device> devices;
 	private List<Student> students;
 	private String teacherName;
 	private List<Quiz> quizs;
@@ -39,10 +38,10 @@ public class Group {
 	public void setLogo(String logo) {
 		this.logo = logo;
 	}
-	public String getCaptainid() {
+	public int getCaptainid() {
 		return captainid;
 	}
-	public void setCaptainid(String captainid) {
+	public void setCaptainid(int captainid) {
 		this.captainid = captainid;
 	}
 	public String getMedals() {
@@ -87,12 +86,7 @@ public class Group {
 	public void setCtime(Date ctime) {
 		this.ctime = ctime;
 	}
-	public List<Device> getDevices() {
-		return devices;
-	}
-	public void setDevices(List<Device> devices) {
-		this.devices = devices;
-	}
+	
 	public List<Student> getStudents() {
 		return students;
 	}

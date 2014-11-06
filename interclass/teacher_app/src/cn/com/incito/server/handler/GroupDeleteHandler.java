@@ -5,6 +5,8 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
@@ -15,9 +17,10 @@ import cn.com.incito.server.utils.BufferUtils;
 import com.alibaba.fastjson.JSONObject;
 
 public class GroupDeleteHandler extends MessageHandler {
-
+	private Logger logger = Logger.getLogger(GroupDeleteHandler.class.getName());
 	@Override
 	protected void handleMessage() {
+		logger.info("收到删除小组消息：" + data);
 		int groupId = data.getIntValue("groupId");
 		for (int i = 0; i < Application.getInstance().getGroupList().size(); i++) {
 			int id=Application.getInstance().getGroupList().get(i).getId();
@@ -29,6 +32,7 @@ public class GroupDeleteHandler extends MessageHandler {
 		JSONObject result = new JSONObject();
 		result.put("code", 0);
 		result.put("data", Application.getInstance().getGroupList());
+		logger.info("回复删除小组消息：" + result);
 		sendResponse(result.toString(),channels);
 	}
 	private void sendResponse(String json, List<SocketChannel> channels) {

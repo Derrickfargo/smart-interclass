@@ -1,6 +1,7 @@
 package cn.com.incito.interclass.po;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,9 +20,9 @@ public class Group implements Serializable {
 	private int teacherId;
 	private int classId;
 	private Date ctime;
-	private String captainid;
+	private int captainid;
 	private List<Device> devices;
-	private List<Student> students;
+	private List<Student> students = new ArrayList<Student>();
 	private List<Quiz> quizs;
 	private String teacherName;
 
@@ -33,11 +34,11 @@ public class Group implements Serializable {
 		return score;
 	}
 
-	public String getCaptainid() {
+	public int getCaptainid() {
 		return captainid;
 	}
 
-	public void setCaptainid(String captainid) {
+	public void setCaptainid(int captainid) {
 		this.captainid = captainid;
 	}
 

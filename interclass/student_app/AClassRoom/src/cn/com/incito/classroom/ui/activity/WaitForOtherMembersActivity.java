@@ -14,7 +14,6 @@ import android.widget.TextView;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.utils.Utils;
-import cn.com.incito.classroom.vo.Device;
 import cn.com.incito.classroom.vo.Group;
 import cn.com.incito.classroom.vo.Student;
 import cn.com.incito.socket.core.CoreSocket;
@@ -55,16 +54,11 @@ public class WaitForOtherMembersActivity extends Activity implements
 		String data = intent.getStringExtra("group");
 		JSONArray jsonArray = JSONArray.parseArray(data);
 		List<Group> groupList = Utils.getGroupList(jsonArray);
-
-		if (groupList != null && groupList.size() > 0) {
-			for (int i = 0; i < groupList.size(); i++) {
-				List<Device> devices = groupList.get(i).getDevices();
-				for (int j = 0; j < devices.size(); j++) {
-					if (devices.get(j).getImei().equals(MyApplication.deviceId)) {
-						group = groupList.get(i);
-						break;
-					}
-				}
+		Student student = MyApplication.getInstance().getStudent();
+		for (Group group : groupList) {
+			if(group.getCaptainid() == student.getId()){
+				this.group = group;
+				break;
 			}
 		}
 

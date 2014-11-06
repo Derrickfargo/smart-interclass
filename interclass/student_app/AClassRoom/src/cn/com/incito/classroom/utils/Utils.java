@@ -16,7 +16,6 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
-import cn.com.incito.classroom.vo.Device;
 import cn.com.incito.classroom.vo.Group;
 import cn.com.incito.classroom.vo.Student;
 
@@ -150,15 +149,6 @@ public class Utils {
 			Group group = new Group();
 			group.setName(jsonObject.getString("name"));
 			group.setLogo(jsonObject.getString("logo"));
-			// 封装设备属性
-			List<Device> deviceList = new ArrayList<Device>();
-			JSONArray deviceArray = jsonObject.getJSONArray("devices");
-			for (int j = 0; j < deviceArray.size(); j++) {
-				JSONObject deviceObject = deviceArray.getJSONObject(j);
-				Device device = new Device();
-				device.setImei(deviceObject.getString("imei"));
-				deviceList.add(device);
-			}
 			// 封装学生属性
 			List<Student> studentList = new ArrayList<Student>();
 			JSONArray studentArray = jsonObject.getJSONArray("students");
@@ -171,7 +161,6 @@ public class Utils {
 				}
 			}
 			group.setStudents(studentList);
-			group.setDevices(deviceList);
 			groupList.add(group);
 		}
 		return groupList;

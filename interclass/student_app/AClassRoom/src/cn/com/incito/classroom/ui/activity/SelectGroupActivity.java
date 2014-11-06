@@ -15,8 +15,8 @@ import cn.com.incito.classroom.adapter.SelectGroupAdapter;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.utils.Utils;
-import cn.com.incito.classroom.vo.Device;
 import cn.com.incito.classroom.vo.Group;
+import cn.com.incito.classroom.vo.Student;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
@@ -75,29 +75,24 @@ public class SelectGroupActivity extends BaseActivity implements
 					int position, long id) {
 				// 1.封装要发送的数据 小组ID 学生ID
 				int groupId = groupList.get(position).getId();
-				String deviceId = MyApplication.deviceId;
+				Student me = MyApplication.getInstance().getStudent();
 
 				// 2.判断当前设备是否已经加入该分组
 				for (int i = 0; i < groupList.size(); i++) {
 					Group group = groupList.get(i);
-					List<Device> deviceList = group.getDevices();
-					for (int j = 0; i < deviceList.size(); j++) {
-						Device device = deviceList.get(j);
-						if (!device.getImei().equals(deviceId)) {// 没有加入分组才发送请求
+					List<Student> studentList = group.getStudents();
+					for (int j = 0; i < studentList.size(); j++) {
+						Student student = studentList.get(j);
+						if (me.getId() != student.getId()) {// 没有加入分组才发送请求
 							JSONObject jsonObject = new JSONObject();
 							jsonObject.put("groupId", groupId);
-							jsonObject.put("imei", deviceId);
+							jsonObject.put("student", me);
 
-							MessagePacking messagePacking = new MessagePacking(
-									Message.MESSAGE_GROUP_JOIN);
-							messagePacking.putBodyData(DataType.INT,
-									BufferUtils.writeUTFString(jsonObject
-											.toJSONString()));
-							CoreSocket.getInstance()
-									.sendMessage(messagePacking);
+							MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_JOIN);
+							messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
+							CoreSocket.getInstance().sendMessage(messagePacking);
 
-							MyApplication.Logger.debug(System
-									.currentTimeMillis() + "开始发送加入请求 ");
+							MyApplication.Logger.debug(System.currentTimeMillis() + "开始发送加入请求 ");
 						}
 					}
 				}

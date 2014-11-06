@@ -24,6 +24,7 @@ import android.provider.Settings;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.exception.AppUncaughtException;
 import cn.com.incito.classroom.vo.LoginResVo;
+import cn.com.incito.classroom.vo.Student;
 import cn.com.incito.socket.handler.LockScreenHandler;
 import cn.com.incito.wisdom.sdk.cache.disk.impl.TotalSizeLimitedDiscCache;
 import cn.com.incito.wisdom.sdk.cache.disk.naming.Md5FileNameGenerator;
@@ -49,8 +50,8 @@ import com.umeng.analytics.MobclickAgent;
 public class MyApplication extends Application {
 
 	public boolean isOnClass;// 是否在上课
-	
-	public static  Logger Logger = LoggerFactory.getLogger();
+
+	public static Logger Logger = LoggerFactory.getLogger();
 
 	public boolean isOnClass() {
 		return isOnClass;
@@ -64,6 +65,8 @@ public class MyApplication extends Application {
 
 	public static String deviceId;
 
+	public Student student;
+
 	private static final String TAG = MyApplication.class.getSimpleName();
 
 	private static MyApplication mInstance = null;
@@ -75,6 +78,14 @@ public class MyApplication extends Application {
 	private boolean isLockScreen;// 是否锁定屏幕
 
 	ContentResolver mContentResolver;
+
+	public Student getStudent() {
+		return student;
+	}
+
+	public void setStudent(Student student) {
+		this.student = student;
+	}
 
 	public boolean isLockScreen() {
 		return isLockScreen;
@@ -122,11 +133,13 @@ public class MyApplication extends Application {
 		appException.init(this);
 		PowerManager pmManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
 		WifiManager manager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-		mWifiLock = manager.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, "cn.com.incito.classroom");
-		wl = pmManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"My Tag");
+		mWifiLock = manager
+				.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF,
+						"cn.com.incito.classroom");
+		wl = pmManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "My Tag");
 		wl.acquire();
 		mWifiLock.acquire();
-		
+
 		mInstance = this;
 		mPrefs = PreferenceManager
 				.getDefaultSharedPreferences(getApplicationContext());
@@ -160,27 +173,29 @@ public class MyApplication extends Application {
 
 	}
 
-	public void release(){
+	public void release() {
 		mWifiLock.release();
 		wl.release();
 	}
+
 	public static MyApplication getInstance() {
 		return mInstance;
 	}
 
 	private void initApplication() {
-		//初始化服务端ip
+		// 初始化服务端ip
 		String ip = mPrefs.getString(Constants.PREFERENCE_IP, "");
 		if (ip != null && !ip.trim().equals("")) {
 			Constants.setIP(ip);
 		}
-		
-		//初始化本机mac地址
+
+		// 初始化本机mac地址
 		initMacAddress();
-		
-		//启动socket和日志服务
+
+		// 启动socket和日志服务
 		if (Constants.LOG_OPEN) {
-			Intent logservice = new Intent("cn.com.incito.classroom.service.LOG_SERVICE");
+			Intent logservice = new Intent(
+					"cn.com.incito.classroom.service.LOG_SERVICE");
 			startService(logservice);
 			WLog.i(MyApplication.class, "log service started");
 		}
@@ -204,9 +219,10 @@ public class MyApplication extends Application {
 			}
 		}
 	}
-	
+
 	public void stopSocketService() {
-		Intent service = new Intent("cn.com.incito.classroom.service.SOCKET_SERVICE");
+		Intent service = new Intent(
+				"cn.com.incito.classroom.service.SOCKET_SERVICE");
 		stopService(service);
 	}
 
@@ -239,9 +255,9 @@ public class MyApplication extends Application {
 	 *            true是锁频屏，false解屏
 	 */
 	public void lockScreen(boolean isLock) {
-		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);  
+		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
 		boolean screenOn = pm.isScreenOn();
-		
+
 		if (Constants.OPEN_LOCK_SCREEN) {
 			WLog.i(LockScreenHandler.class, "是否收到解锁屏信息：" + isLock);
 
@@ -255,7 +271,7 @@ public class MyApplication extends Application {
 				execRootCmd.powerkey();
 			} else {
 				if (MyApplication.getInstance().isLockScreen()) {
-					if(screenOn){
+					if (screenOn) {
 						MyApplication.getInstance().setLockScreen(isLock);
 						boolean ret1 = Settings.Global.putInt(mContentResolver,
 								"disable_powerkey", 0); // 打开电源按钮唤醒功能
@@ -266,7 +282,8 @@ public class MyApplication extends Application {
 							"disable_powerkey", 0); // 打开电源按钮唤醒功能
 					execRootCmd.powerkey();
 					KeyguardManager mManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
-					KeyguardLock mKeyguardLock = mManager.newKeyguardLock("Lock");
+					KeyguardLock mKeyguardLock = mManager
+							.newKeyguardLock("Lock");
 					// 让键盘锁失效
 					mKeyguardLock.disableKeyguard();
 				}

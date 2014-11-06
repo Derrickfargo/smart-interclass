@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.server.api.Application;
@@ -19,13 +21,17 @@ import cn.com.incito.server.utils.BufferUtils;
 import com.alibaba.fastjson.JSONObject;
 
 public class GroupCreatHandler extends MessageHandler{
-
+	private Logger logger = Logger.getLogger(GroupCreatHandler.class.getName());
+	
 	@Override
 	protected void handleMessage() {
-//		Group group=(Group) data.get("group");
+		logger.info("收到创建分组消息：" + data);
 		Group group = data.getObject("group", Group.class);
-		group.setStudents(new ArrayList<Student>());
+		Student student = data.getObject("student", Student.class);
+		group.getStudents().add(student);
+		group.setCaptainid(student.getId());
 		Application.getInstance().addGroup(group);
+		
 		Map<String, SocketChannel> channels = Application.getInstance().getClientChannel();
 		List<SocketChannel>  channelsRes=new ArrayList<SocketChannel>();
 		for (String key : channels.keySet()) {
@@ -34,6 +40,7 @@ public class GroupCreatHandler extends MessageHandler{
 		JSONObject result = new JSONObject();
 		result.put("code", 0);
 		result.put("data",Application.getInstance().getGroupList());
+		logger.info("回复创建分组消息：" + result);
 		sendResponse(result.toString(), channelsRes);
 	}
 	private void sendResponse(String json, List<SocketChannel> channels) {

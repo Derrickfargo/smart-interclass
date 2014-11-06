@@ -5,6 +5,8 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.server.api.Application;
@@ -17,9 +19,10 @@ import cn.com.incito.server.utils.BufferUtils;
 import com.alibaba.fastjson.JSONObject;
 
 public class GroupJoinHandler extends MessageHandler{
-
+	private Logger logger = Logger.getLogger(GroupJoinHandler.class.getName());
 	@Override
 	protected void handleMessage() {
+		logger.info("收到加入小组消息：" + data);
 		int groupId =Integer.parseInt((String) data.get("group")) ;
 		String deviceId=(String) data.get("imei");
 		Device  device=new Device();
@@ -34,6 +37,7 @@ public class GroupJoinHandler extends MessageHandler{
 		JSONObject result = new JSONObject();
 		result.put("code", 0);
 		result.put("data",Application.getInstance().getGroupList());
+		logger.info("回复加入小组消息：" + result);
 		sendResponse(result.toString(), channels);
 	}
 	private void sendResponse(String json, List<SocketChannel> channels) {

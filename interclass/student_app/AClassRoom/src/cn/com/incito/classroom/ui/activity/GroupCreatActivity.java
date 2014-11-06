@@ -19,8 +19,8 @@ import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.adapter.GroupIconImageAdapter;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.classroom.vo.Device;
 import cn.com.incito.classroom.vo.Group;
+import cn.com.incito.classroom.vo.Student;
 import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
@@ -122,29 +122,19 @@ public class GroupCreatActivity extends BaseActivity implements OnClickListener 
 				return;
 			}
 			
-			
 			//封装一个group对象
 			Group group = new Group();
 			group.setName(group_name);
-			group.setLogo("1");
-			List<Device> devices = new ArrayList<Device>();
-			Device device = new Device();
-			device.setImei(MyApplication.deviceId);
-			devices.add(device);
-			group.setDevices(devices);
+			group.setLogo("1");//TODO 修改logo
+			Student student = MyApplication.getInstance().getStudent();
 			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("student", student);
 			jsonObject.put("group", group);
 		
 			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_SUBMIT);
 			messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(jsonObject.toJSONString()));
 			MyApplication.Logger.debug("发送创建分组请求："+jsonObject.toJSONString());
 			CoreSocket.getInstance().sendMessage(messagePacking);
-			
-			
-			
-			//返回的group带到下一个界面
-//			WaitForOtherMembersActivity.startSelf(this, edit_group_name
-//					.getText().toString(), iconResourceId);
 			break;
 
 		default:
