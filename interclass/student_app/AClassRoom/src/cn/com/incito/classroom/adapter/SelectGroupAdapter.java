@@ -29,7 +29,7 @@ public class SelectGroupAdapter extends BaseAdapter {
 
 	public SelectGroupAdapter(Context context, List<Group> groupList2) {
 		this.activity = (SelectGroupActivity) context;
-		this.groupList=groupList2;
+		this.groupList = groupList2;
 	}
 
 	@Override
@@ -72,14 +72,12 @@ public class SelectGroupAdapter extends BaseAdapter {
 		for (int i = 0; i < memberNames.size(); i++) {
 			sb.append(memberNames.get(i).getName() + " ");
 		}
-
 		// 设置小组图标
 		viewHolder.img_group_icon
 				.setBackgroundResource(R.drawable.ico_eraser_mid);
 		// 设置小组成员以及名称
 		viewHolder.text_name.setText(Html.fromHtml(group.getName()
 				+ "<br><font color='#ecf2fc'> " + sb.toString() + "</font>"));
-
 		return convertView;
 	}
 
