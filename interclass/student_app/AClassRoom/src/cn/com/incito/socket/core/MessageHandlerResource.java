@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.com.incito.classroom.utils.ApiClient;
+import cn.com.incito.socket.handler.ClassReadyHandler;
 import cn.com.incito.socket.handler.DeleteGroupHandler;
 import cn.com.incito.socket.handler.DistributePaperHandler;
 import cn.com.incito.socket.handler.GroupListHandler;
@@ -55,6 +56,8 @@ public final class MessageHandlerResource {
         handlerResources.put(Message.MESSAGE_GROUP_JOIN, GroupListHandler.class);
         //创建小组
         handlerResources.put(Message.MESSAGE_GROUP_SUBMIT, GroupSubmitHandler.class);
+        //停止其他小组成员添加
+        handlerResources.put(Message.MESSAGE_GROUP_CONFIRM, ClassReadyHandler.class);
     }
 
     public MessageHandler getMessageHandler(Byte key) {

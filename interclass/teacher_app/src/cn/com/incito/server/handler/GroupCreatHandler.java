@@ -4,13 +4,11 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.alibaba.fastjson.JSONObject;
-
 import cn.com.incito.interclass.po.Group;
+import cn.com.incito.interclass.po.Student;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
@@ -18,12 +16,15 @@ import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
 
+import com.alibaba.fastjson.JSONObject;
+
 public class GroupCreatHandler extends MessageHandler{
 
 	@Override
 	protected void handleMessage() {
 //		Group group=(Group) data.get("group");
 		Group group = data.getObject("group", Group.class);
+		group.setStudents(new ArrayList<Student>());
 		Application.getInstance().addGroup(group);
 		Map<String, SocketChannel> channels = Application.getInstance().getClientChannel();
 		List<SocketChannel>  channelsRes=new ArrayList<SocketChannel>();

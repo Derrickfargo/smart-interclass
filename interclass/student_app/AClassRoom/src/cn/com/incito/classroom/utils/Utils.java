@@ -143,9 +143,9 @@ public class Utils {
 	 * @param jsonArray
 	 * @return
 	 */
-	public static List<Group> getGroupList(JSONArray jsonArray) {
-		List<Group> groupList = new ArrayList<>();
-		for (int i = 0; i < jsonArray.size(); i++) {
+	public static List<Group> getGroupList(JSONArray jsonArray){
+		List<Group> groupList  = new ArrayList<Group>();
+		for(int i = 0; i < jsonArray.size(); i++){
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
 			Group group = new Group();
 			group.setName(jsonObject.getString("name"));
