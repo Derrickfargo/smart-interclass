@@ -31,7 +31,7 @@ public class PrepareNoGroupPanel extends JPanel {
 	}
 	
 	private void initView() {
-		int x = 30, y = 50;
+		int x = 30, y = 10;
 		for (int i = 0; i < ROW_COUNT; i++) {
 			for (int j = 0; j < COLUMN_COUNT; j++) {
 				JLabel lblName = getNameLabel();

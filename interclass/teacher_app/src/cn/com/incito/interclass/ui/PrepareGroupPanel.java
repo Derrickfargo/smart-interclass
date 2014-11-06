@@ -14,14 +14,14 @@ public class PrepareGroupPanel extends JPanel {
 
 	public PrepareGroupPanel() {
 		setLayout(null);
-		setVisible(false);
+		setOpaque(true);
 		initView();
 	}
 
 	private void initView() {
 		Set<Group> groups = app.getGroupList();
-		int x = 10, y = 55;
-		for (int i = 0; i < 8; i++) {
+		int x = 10, y = 10;
+		for (int i = 0; i < 1; i++) {
 			Group g = new Group();
 			g.setName("测试" + i);
 			GroupPanel groupPanel = new GroupPanel(g);
