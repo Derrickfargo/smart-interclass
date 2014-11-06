@@ -142,7 +142,7 @@ public class Group implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + id;
+		result = prime * result + captainid;
 		return result;
 	}
 
@@ -155,7 +155,7 @@ public class Group implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Group other = (Group) obj;
-		if (id != other.id)
+		if (captainid != other.captainid)
 			return false;
 		return true;
 	}
