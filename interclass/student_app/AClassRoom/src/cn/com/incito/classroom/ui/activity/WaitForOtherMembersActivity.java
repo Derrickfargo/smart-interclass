@@ -97,12 +97,24 @@ public class WaitForOtherMembersActivity extends Activity implements
 	 * @param students  该小组的成员
 	 */
 	public void setText(String data){
+		Group g = new Group();
+		List<Group> groupList = JSON.parseArray(data, Group.class);
+		Student student = MyApplication.getInstance().getStudent();
+		
+		for (int i = 0; i < groupList.size(); i++) {
+			if(groupList.get(i).getStudents().contains(student)){
+				g = groupList.get(i);
+				break;
+			}
+		}
+		
+		List<Student> students = g.getStudents();
 		StringBuilder sb = new StringBuilder();
-//		if (students != null && students.size() > 0) {
-//			for (int i = 0; i < students.size(); i++) {
-//				sb.append(students.get(i).getName() + "\t");
-//			}
-//		}
+		if (students != null && students.size() > 0) {
+			for (int i = 0; i < students.size(); i++) {
+				sb.append(students.get(i).getName() + "\t");
+			}
+		}
 		Bundle bundle = new Bundle();
 		bundle.putString("studentNames", sb.toString());
 		android.os.Message message = new android.os.Message();
