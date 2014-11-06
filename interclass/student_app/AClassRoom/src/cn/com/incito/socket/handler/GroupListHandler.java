@@ -17,7 +17,7 @@ public class GroupListHandler extends MessageHandler {
 		MyApplication.Logger.debug(System.currentTimeMillis()+"收到分组列表消息：" + data);
 		if(0 == data.getIntValue("code")){
 			if(AppManager.getAppManager().currentActivity().getComponentName().getClassName().equals("WaitForOtherMembersActivity")){
-				UIHelper.getInstance().showConfirmGroupActivity(data.getString("data"));
+				UIHelper.getInstance().getWaitForOtherMembersActivity().setText(data.getString("data"));
 			} else {
 				UIHelper.getInstance().showGroupSelect(data.getString("data"));
 			}
