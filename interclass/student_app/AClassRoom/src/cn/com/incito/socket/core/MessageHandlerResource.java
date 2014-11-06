@@ -10,6 +10,7 @@ import cn.com.incito.socket.handler.DistributePaperHandler;
 import cn.com.incito.socket.handler.GroupListHandler;
 import cn.com.incito.socket.handler.GroupSubmitHandler;
 import cn.com.incito.socket.handler.HeartbeatHandler;
+import cn.com.incito.socket.handler.JoinGroupHandler;
 import cn.com.incito.socket.handler.LockScreenHandler;
 import cn.com.incito.socket.handler.LoginHandler;
 import cn.com.incito.socket.handler.SavePaperHandler;
@@ -53,7 +54,7 @@ public final class MessageHandlerResource {
         //删除小组后进入选择小组界面
         handlerResources.put(Message.MESSAGE_GROUP_DELETE, DeleteGroupHandler.class);
         //加入小组
-        handlerResources.put(Message.MESSAGE_GROUP_JOIN, GroupListHandler.class);
+        handlerResources.put(Message.MESSAGE_GROUP_JOIN, JoinGroupHandler.class);
         //创建小组
         handlerResources.put(Message.MESSAGE_GROUP_SUBMIT, GroupSubmitHandler.class);
         //停止其他小组成员添加
