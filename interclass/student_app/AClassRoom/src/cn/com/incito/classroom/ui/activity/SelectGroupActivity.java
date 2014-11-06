@@ -16,6 +16,7 @@ import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.vo.Group;
 import cn.com.incito.classroom.vo.Student;
+import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
@@ -37,7 +38,7 @@ public class SelectGroupActivity extends BaseActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_select_group);
-
+		UIHelper.getInstance().setmSelectGroupActivity(this);
 		if (getIntent().getStringExtra("group") != null
 				&& !"".equals(getIntent().getStringExtra("group")))
 			groupList = JSON.parseArray(getIntent().getStringExtra("group"), Group.class);
@@ -105,10 +106,7 @@ public class SelectGroupActivity extends BaseActivity implements
 		select_group_listview.setAdapter(selectGroupAdapter);
 
 	}
-
-	public List<Group> getGroupList() {
-
-		return groupList;
+	public void setData(List<Group> groupList){
+		selectGroupAdapter.setGroupList(groupList);
 	}
-
 }

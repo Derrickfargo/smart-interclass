@@ -1,7 +1,5 @@
 package cn.com.incito.common.utils;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,15 +11,12 @@ import cn.com.incito.classroom.ui.activity.DrawBoxActivity;
 import cn.com.incito.classroom.ui.activity.SelectGroupActivity;
 import cn.com.incito.classroom.ui.activity.WaitForOtherMembersActivity;
 import cn.com.incito.classroom.ui.activity.WifiSelectorActivity;
-import cn.com.incito.classroom.vo.Group;
-
-import com.alibaba.fastjson.JSONObject;
-import com.google.gson.JsonArray;
 
 public class UIHelper {
 	private static UIHelper instance;
 	private MyApplication app;
 	private DrawBoxActivity drawBoxActivity;
+	private SelectGroupActivity mSelectGroupActivity;
 
 	private UIHelper() {
 		app = MyApplication.getInstance();
@@ -65,6 +60,18 @@ public class UIHelper {
 			this.drawBoxActivity = null;
 		}
 		this.drawBoxActivity = drawBoxActivity;
+	}
+
+	public SelectGroupActivity getmSelectGroupActivity() {
+		return mSelectGroupActivity;
+	}
+
+	public void setmSelectGroupActivity(SelectGroupActivity mSelectGroupActivity) {
+		if (this.mSelectGroupActivity != null) {
+			this.mSelectGroupActivity.finish();
+			this.mSelectGroupActivity = null;
+		}
+		this.mSelectGroupActivity = mSelectGroupActivity;
 	}
 
 	/**
