@@ -98,5 +98,6 @@ public class PreparePanel extends JPanel{
 
 	public void refresh(){
 		noGroupPanel.refresh();
+		groupPanel.refresh();
 	}
 }

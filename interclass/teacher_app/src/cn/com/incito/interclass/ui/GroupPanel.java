@@ -25,19 +25,20 @@ public class GroupPanel extends JPanel {
 	private JLabel lblNumber;
 	private JLabel lblGroupName;
 	private List<JLabel> studentList = new ArrayList<JLabel>();
+	
 
-	public GroupPanel(Group group) {
+	public GroupPanel() {
 		setLayout(null);
 		setSize(823, 95);
 		setBackground(Color.white);
-		initView(group);
+		initView();
 	}
 
-	private void initView(Group group) {
+	private void initView() {
 		// 组号
 		lblNumber = createDeskNumber();
 		add(lblNumber);
-		lblNumber.setBounds(20, 5, 25, 25);
+		lblNumber.setBounds(20, 9, 20, 20);
 
 		// 分组loading图标
 		lblLogo = new JLabel("", JLabel.CENTER);
@@ -60,10 +61,12 @@ public class GroupPanel extends JPanel {
 
 		// pad列表
 		int x = 20;
-		for (int i = 0; i < 8; i++) {
+		for (int i = 0; i < COLUMN_COUNT; i++) {
 			JLabel lblName = getNameLabel();
 			lblName.setBounds(x, 45, 81, 24);
 			add(lblName);
+			lblName.setVisible(false);
+			studentList.add(lblName);
 			x += 100;
 		}
 		// 背景
@@ -92,8 +95,7 @@ public class GroupPanel extends JPanel {
 				Graphics2D g2d = (Graphics2D) g;
 				Stroke stroke = g2d.getStroke();
 				Color color = g2d.getColor();
-				g2d.setStroke(new BasicStroke(2, BasicStroke.CAP_ROUND,
-						BasicStroke.JOIN_MITER));
+				g2d.setStroke(new BasicStroke(2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER));
 				g2d.setColor(new Color(Integer.parseInt("e1e1e1", 16)));
 				g2d.drawLine(0, 0, this.getWidth(), 0);
 				g2d.setStroke(stroke);
@@ -139,9 +141,5 @@ public class GroupPanel extends JPanel {
 
 	public void setTableNumber(int tableNumber) {
 		lblNumber.setText(String.valueOf(tableNumber));
-	}
-
-	public void refresh() {
-
 	}
 }
