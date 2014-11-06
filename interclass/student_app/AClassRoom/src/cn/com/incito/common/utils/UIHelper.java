@@ -17,6 +17,7 @@ public class UIHelper {
 	private MyApplication app;
 	private DrawBoxActivity drawBoxActivity;
 	private SelectGroupActivity mSelectGroupActivity;
+	private WaitForOtherMembersActivity waitForOtherMembersActivity;
 
 	private UIHelper() {
 		app = MyApplication.getInstance();
@@ -64,6 +65,18 @@ public class UIHelper {
 
 	public SelectGroupActivity getmSelectGroupActivity() {
 		return mSelectGroupActivity;
+	}
+	
+	public WaitForOtherMembersActivity getWaitForOtherMembersActivity(){
+		return waitForOtherMembersActivity;
+	}
+	
+	public void setWaitingForOtherMembersActivity(WaitForOtherMembersActivity waitForOtherMembersActivity){
+		if(this.waitForOtherMembersActivity != null){
+			this.waitForOtherMembersActivity.finish();
+			this.waitForOtherMembersActivity = null;
+		}
+		this.waitForOtherMembersActivity = waitForOtherMembersActivity;
 	}
 
 	public void setmSelectGroupActivity(SelectGroupActivity mSelectGroupActivity) {

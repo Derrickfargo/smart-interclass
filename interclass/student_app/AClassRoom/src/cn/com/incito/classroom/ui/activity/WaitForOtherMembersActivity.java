@@ -1,11 +1,12 @@
 package cn.com.incito.classroom.ui.activity;
 
 import java.util.List;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -20,7 +21,6 @@ import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
@@ -77,6 +77,38 @@ public class WaitForOtherMembersActivity extends Activity implements
 			}
 		}
 		text_group_members_name.setText(sb.toString());
+	}
+	
+	@SuppressLint("HandlerLeak")
+	private Handler handler = new Handler(){
+		public void handleMessage(android.os.Message msg) {
+			switch (msg.what) {
+			case 0:
+				text_group_members_name.setText(msg.getData().get("studentNames").toString());
+				break;
+
+			default:
+				break;
+			}
+		};
+	};
+	/**
+	 * 设置界面数据
+	 * @param students  该小组的成员
+	 */
+	public void setText(String data){
+		StringBuilder sb = new StringBuilder();
+//		if (students != null && students.size() > 0) {
+//			for (int i = 0; i < students.size(); i++) {
+//				sb.append(students.get(i).getName() + "\t");
+//			}
+//		}
+		Bundle bundle = new Bundle();
+		bundle.putString("studentNames", sb.toString());
+		android.os.Message message = new android.os.Message();
+		message.setData(bundle);
+		message.what = 0;
+		handler.sendMessage(message);
 	}
 
 	/**
