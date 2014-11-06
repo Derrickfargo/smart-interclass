@@ -100,9 +100,7 @@ public class SelectGroupActivity extends BaseActivity implements
 			}
 		});
 
-		selectGroupAdapter = new SelectGroupAdapter(this);
-		selectGroupAdapter.notifyDataSetChanged();
-
+		selectGroupAdapter = new SelectGroupAdapter(this,groupList);
 		select_group_listview.setAdapter(selectGroupAdapter);
 
 	}

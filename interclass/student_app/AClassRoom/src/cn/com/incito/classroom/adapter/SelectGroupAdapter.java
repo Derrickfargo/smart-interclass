@@ -27,8 +27,9 @@ public class SelectGroupAdapter extends BaseAdapter {
 		this.notifyDataSetInvalidated();
 	}
 
-	public SelectGroupAdapter(Context context) {
+	public SelectGroupAdapter(Context context, List<Group> groupList2) {
 		this.activity = (SelectGroupActivity) context;
+		this.groupList=groupList2;
 	}
 
 	@Override
