@@ -3,7 +3,9 @@ package cn.com.incito.server.handler;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -28,10 +30,12 @@ public class GroupJoinHandler extends MessageHandler{
 		Device  device=new Device();
 		device.setImei(deviceId);
 		List<SocketChannel> channels = service.getGroupSocketChannelByGroupId(groupId);
-		List<Group> groupList=Application.getInstance().getGroupList();
-		for (int i = 0; i < groupList.size(); i++) {
-			if(groupList.get(i).getId()==groupId){
-				groupList.get(i).getDevices().add(device);
+		Set<Group> groupList=Application.getInstance().getGroupList();
+		Iterator<Group> it = groupList.iterator();
+		while (it.hasNext()) {
+			Group group = it.next();
+			if (group.getId() == groupId) {
+				group.getDevices().add(device);
 			}
 		}
 		JSONObject result = new JSONObject();

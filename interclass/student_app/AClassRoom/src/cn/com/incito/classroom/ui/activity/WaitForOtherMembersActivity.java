@@ -102,16 +102,11 @@ public class WaitForOtherMembersActivity extends Activity implements
 		switch (v.getId()) {
 		case R.id.btn_back:
 			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("groupId", group.getId());
-
-			MessagePacking messagePacking = new MessagePacking(
-					Message.MESSAGE_GROUP_DELETE);
-			messagePacking.putBodyData(DataType.INT,
-					BufferUtils.writeUTFString(jsonObject.toJSONString()));
+			jsonObject.put("studentId", group.getCaptainid());
+			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_DELETE);
+			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
 			MyApplication.Logger.debug("删除小组信息："+jsonObject.toJSONString());
 			CoreSocket.getInstance().sendMessage(messagePacking);
-			
-
 			break;
 		case R.id.btn_waiting:
 //			JSONObject json = new JSONObject();

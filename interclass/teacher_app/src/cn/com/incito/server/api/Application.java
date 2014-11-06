@@ -60,9 +60,11 @@ public class Application {
 	private Map<Integer, List<SocketChannel>> groupChannel;// 保存每组和已登录的socket
 	private Map<String, Student> imeiStudent = new HashMap<String, Student>();//key是imei Student是
 	private Map<String, SocketChannel> clientChannel;// 保存所有设备登陆的socket，imei和socket
-	private Map<Integer, Group> groupMap = new HashMap<Integer, Group>();
-	private List<Group> groupList = new ArrayList<Group>();// 本堂课的所有分组
-	private Map<String, Group> tempGroup = new HashMap<String, Group>();// 修改的分组信息
+	
+	private Set<Group> groupList = new HashSet<Group>();// 本堂课的所有分组
+	private Map<Integer, Group> groupMap = new HashMap<Integer, Group>(); //以保存的分组信息
+	private Map<Integer, Group> tempGroup = new HashMap<Integer, Group>();// 未保存的分组信息,key是创建学生id
+	
 	private List<String> tempQuizIMEI = new ArrayList<String>();
 	private Map<String, Quiz> tempQuiz = new HashMap<String, Quiz>();// 随堂联系
 	private List<Quiz> quizList = new ArrayList<Quiz>();// 作业
@@ -164,11 +166,11 @@ public class Application {
 		return groupMap.get(id);
 	}
 
-	public List<Group> getGroupList() {
+	public Set<Group> getGroupList() {
 		return groupList;
 	}
 
-	public void setGroupList(List<Group> groupList) {
+	public void setGroupList(Set<Group> groupList) {
 		this.groupList = groupList;
 	}
 
@@ -267,7 +269,7 @@ public class Application {
 		this.offlineStudent = offlineStudent;
 	}
 
-	public Map<String, Group> getTempGroup() {
+	public Map<Integer, Group> getTempGroup() {
 		return tempGroup;
 	}
 

@@ -170,7 +170,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 		// 编辑小组信息
 		app.setGrouping(true);
 //		MainFrame.getInstance().showGrouping();
-		List<Group> groupList = app.getGroupList();
+		Set<Group> groupList = app.getGroupList();
 //		for (Group group : groupList) {
 			JSONObject json = new JSONObject();
 			json.put("data", groupList);

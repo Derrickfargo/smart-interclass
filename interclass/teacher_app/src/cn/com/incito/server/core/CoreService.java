@@ -7,6 +7,7 @@ import java.nio.channels.SocketChannel;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.imageio.stream.FileImageOutputStream;
 
@@ -159,7 +160,7 @@ public class CoreService {
 //			// 系统中无此设备
 //			return JSONUtils.renderJSONString(1);// 失败
 //		}
-		List<Group> groupList = app.getGroupList();
+		Set<Group> groupList = app.getGroupList();
 		return JSONUtils.renderJSONString(0, groupList);
 	}
 

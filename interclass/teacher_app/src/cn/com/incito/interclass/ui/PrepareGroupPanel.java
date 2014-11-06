@@ -1,6 +1,6 @@
 package cn.com.incito.interclass.ui;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.swing.JPanel;
 
@@ -19,7 +19,7 @@ public class PrepareGroupPanel extends JPanel {
 	}
 
 	private void initView() {
-		List<Group> groups = app.getGroupList();
+		Set<Group> groups = app.getGroupList();
 		int x = 10, y = 55;
 		for (int i = 0; i < 8; i++) {
 			Group g = new Group();
