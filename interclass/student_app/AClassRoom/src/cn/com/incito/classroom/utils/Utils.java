@@ -141,7 +141,7 @@ public class Utils {
 	 * @return
 	 */
 	public static List<Group> getGroupList(JSONArray jsonArray){
-		List<Group> groupList  = new ArrayList<>();
+		List<Group> groupList  = new ArrayList<Group>();
 		
 		for(int i = 0; i < jsonArray.size(); i++){
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
