@@ -162,11 +162,13 @@ public class Utils {
 			// 封装学生属性
 			List<Student> studentList = new ArrayList<Student>();
 			JSONArray studentArray = jsonObject.getJSONArray("students");
-			for (int j = 0; j < studentArray.size(); j++) {
-				JSONObject studentObject = studentArray.getJSONObject(j);
-				Student student = new Student();
-				student.setName(studentObject.getString("name"));
-				studentList.add(student);
+			if(studentArray!=null&&studentArray.size()>0){
+				for (int j = 0; j < studentArray.size(); j++) {
+					JSONObject studentObject = studentArray.getJSONObject(j);
+					Student student = new Student();
+					student.setName(studentObject.getString("name"));
+					studentList.add(student);
+				}
 			}
 			group.setStudents(studentList);
 			group.setDevices(deviceList);

@@ -116,8 +116,9 @@ public class WaitForOtherMembersActivity extends Activity implements
 					Message.MESSAGE_GROUP_DELETE);
 			messagePacking.putBodyData(DataType.INT,
 					BufferUtils.writeUTFString(jsonObject.toJSONString()));
+			MyApplication.Logger.debug("删除小组信息："+jsonObject.toJSONString());
 			CoreSocket.getInstance().sendMessage(messagePacking);
-			MyApplication.Logger.debug("删除小组");
+			
 
 			break;
 		case R.id.btn_waiting:
