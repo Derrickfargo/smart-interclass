@@ -1,4 +1,4 @@
-package com.incito.update;
+package src.com.incito.update;
 
 import java.awt.Font;
 import java.io.File;

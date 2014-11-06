@@ -53,13 +53,13 @@ public class WaitForOtherMembersActivity extends Activity implements
 		String data = intent.getStringExtra("group");
 		List<Group> groupList = JSON.parseArray(data, Group.class);
 		Student student = MyApplication.getInstance().getStudent();
-		for (Group group : groupList) {
-			if(group.getCaptainid() == student.getId()){
-				this.group = group;
+		
+		for (int i = 0; i < groupList.size(); i++) {
+			if(groupList.get(i).getStudents().contains(student)){
+				this.group = groupList.get(i);
 				break;
 			}
 		}
-
 		image_group_icon = (ImageView) findViewById(R.id.image_group_icon);
 		image_group_icon.setImageResource(R.drawable.ico_powder_blue);
 

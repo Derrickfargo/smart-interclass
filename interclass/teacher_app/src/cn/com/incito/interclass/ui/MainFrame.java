@@ -327,14 +327,7 @@ public class MainFrame extends MouseAdapter {
 		//准备上课card
 		preparePanel = new PreparePanel();
 		preparePanel.setBackground(Color.WHITE);
-		JScrollPane prepareScrollPane = new JScrollPane(preparePanel);
-		prepareScrollPane.getVerticalScrollBar().setUnitIncrement(50);
-		prepareScrollPane.setBorder(null);
-		prepareScrollPane.setBounds(0, 0, 876, 630);
-		 //TODO 根据分组的多少动态调整
-		preparePanel.setPreferredSize(new Dimension(prepareScrollPane.getWidth() - 50, (prepareScrollPane.getHeight() + 30) * 2));
-		preparePanel.revalidate();
-		centerCardPanel.add(prepareScrollPane, CARD_PREPARE);
+		centerCardPanel.add(preparePanel, CARD_PREPARE);
 		
 		//作业card
 		quizPanel = new QuizPanel();
