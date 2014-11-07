@@ -76,7 +76,7 @@ public class GroupCreatActivity extends BaseActivity implements OnClickListener 
 		String[] iconsName = getResources().getStringArray(R.array.groupicons_name);
 		
 		for (int i = 0; i < iconsName.length; i++) {
-			Map<String,Drawable> map=new HashMap<>();
+			Map<String,Drawable> map=new HashMap<String,Drawable>();
 			map.put(iconsName[i], groupIcons.getDrawable(i));
 			iconResourceIdList.add(map);
 		}
