@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 
 import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.core.MessageHandler;
 import cn.com.incito.socket.utils.BufferUtils;
@@ -32,6 +33,12 @@ public class LockScreenHandler extends MessageHandler {
 		if (isLock.equals("true")) {
 				MyApplication.getInstance().setOnClass(true);
 				MyApplication.getInstance().lockScreen(true);
+				
+				if(!"ClassingActivity".equals(AppManager.getAppManager().currentActivity().getClass().getSimpleName())){
+					UIHelper.getInstance().showClassingActivity();
+				}
+				
+				
 		} else if(isLock.equals("false")){
 			MyApplication.getInstance().lockScreen(false);
 		}else{
