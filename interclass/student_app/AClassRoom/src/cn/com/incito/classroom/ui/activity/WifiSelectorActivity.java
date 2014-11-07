@@ -50,6 +50,7 @@ import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
 import cn.com.incito.wisdom.sdk.log.WLog;
+import cn.com.incito.wisdom.uicomp.widget.dialog.ProgressiveDialog;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -70,7 +71,7 @@ public class WifiSelectorActivity extends BaseActivity  {
 	private INetStatusChangedReceiver mNetStatusChangedReceiver;
 	private WifiManager mWifiManager;
 	private boolean isAutoInvalidate = false;
-	
+	private ProgressiveDialog mProgressDialog;
 	// 自动刷新Wifi列表的时长
 	private long TIMEINMILLS_REFLUSHLIST = 10 * 1000;
 	private IWifiItem mCurrentWifiItem;
@@ -84,6 +85,8 @@ public class WifiSelectorActivity extends BaseActivity  {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_wifiselector);
+		mProgressDialog = new ProgressiveDialog(this);
+		mProgressDialog.setMessage(R.string.waiting_access_wifi);
 		initWifi();
 		initViews();
 		try {
@@ -126,12 +129,10 @@ public class WifiSelectorActivity extends BaseActivity  {
 							.setView(passwordEdit)
 							.setPositiveButton("确定", new OnClickListener() {
 								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									connectToWifi(mCurrentWifiItem,
-											passwordEdit.getText().toString(),
+								public void onClick(DialogInterface dialog,int which) {
+									mProgressDialog.show();
+									connectToWifi(mCurrentWifiItem,passwordEdit.getText().toString(),
 											IWifiSecurityType.SECURITY_TYPE_WPA);
-								
 									dialog.dismiss();
 								}
 							}).setNegativeButton("取消", new OnClickListener() {
@@ -560,6 +561,7 @@ public class WifiSelectorActivity extends BaseActivity  {
 		int wcgID = mWifiManager.addNetwork(config);
 		if (mWifiManager.enableNetwork(wcgID, true)) {
 			startMain();
+		
 		} else {
 			ToastHelper.showCustomToast(this, R.string.wifi_password_error);
 		}
@@ -641,7 +643,7 @@ public class WifiSelectorActivity extends BaseActivity  {
 						Log.i("WifiSelectorActivity", "WiFi已连接，检查Socket是否连接 ");
 						new Thread(CoreSocket.getInstance()).start();//连接socket
 						WifiSelectorActivity.this.sleep(1000);
-						// //TODO 升级
+						 //TODO 升级
 //						try {
 //							JSONObject updateResult = JSONObject
 //									.parseObject(ApiClient.updateApk(code));
@@ -666,6 +668,7 @@ public class WifiSelectorActivity extends BaseActivity  {
 							restartConnector();
 							break;
 						} else {
+							mProgressDialog.dismiss();;
 							Log.i("WifiSelectorActivity","Socket已连接，开始登陆，startMain退出 ");
 							startMainAct();
 						}
