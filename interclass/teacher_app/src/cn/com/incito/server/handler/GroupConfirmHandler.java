@@ -12,7 +12,6 @@ import org.apache.log4j.Logger;
 import com.alibaba.fastjson.JSONObject;
 
 import cn.com.incito.interclass.po.Group;
-import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.ui.MainFrame;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.CoreService;
@@ -31,6 +30,11 @@ public class GroupConfirmHandler extends MessageHandler {
 		logger.info("收到pad端的提交小组信息：" + data);
 		Group group = data.getObject("group", Group.class);
 		Application.getInstance().getTempGroup().remove(group.getCaptainid());
+		List<Group> groupList=new ArrayList<Group>();
+		//遍历临时分组 将还没有分组的小组列表传回给pad端
+		for (Integer key : Application.getInstance().getTempGroup().keySet()) {
+			groupList.add(Application.getInstance().getTempGroup().get(key));
+		}
 		try {
 			CoreService.saveGroup(group);
 			logger.info("保存小组信息到数据库返回：" + CoreService.saveGroup(group));
@@ -43,10 +47,9 @@ public class GroupConfirmHandler extends MessageHandler {
 		for (String key : channels.keySet()) {
 			channelsRes.add(channels.get(key));
 		}
-		
 		JSONObject result = new JSONObject();
 		result.put("code", 0);
-		result.put("data", Application.getInstance().getGroupList());
+		result.put("data", groupList);
 		logger.info("确认分组消息返回内容：" + result);
 		sendResponse(result.toString(), channelsRes);
 	}
