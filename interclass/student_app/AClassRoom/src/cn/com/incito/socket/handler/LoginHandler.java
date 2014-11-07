@@ -29,6 +29,7 @@ public class LoginHandler extends MessageHandler {
 			Toast.makeText(AppManager.getAppManager().currentActivity(), "该pad还未绑定学生，请先绑定学生", Toast.LENGTH_LONG).show();
 		}
 		MyApplication.getInstance().setStudent(student);
+		AppManager.getAppManager().currentActivity().finish();
 		UIHelper.getInstance().showClassReadyActivity();
 		//启动心跳检测
 		ConnectionManager.getInstance(message.getChannel());
