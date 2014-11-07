@@ -47,12 +47,13 @@ public class PrepareGroupPanel extends JPanel {
 			groupPanel.setVisible(true);
 			groupPanel.setGroup(group);
 			groupPanel.getLblGroupName().setText(group.getName());
+			groupPanel.getLblGroupName().setVisible(true);
 			List<JLabel> lblStudents = groupPanel.getStudentList();
 			List<Student> students = group.getStudents();
 			for (int i = 0; i < students.size(); i++) {
 				Student student = students.get(i);
 				JLabel lblName = lblStudents.get(i);
-				lblName.setName(student.getName());
+				lblName.setText(student.getName());
 				lblName.setVisible(true);
 			}
 		}
