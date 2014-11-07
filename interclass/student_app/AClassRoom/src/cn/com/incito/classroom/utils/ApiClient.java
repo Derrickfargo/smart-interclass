@@ -273,8 +273,9 @@ public class ApiClient {
 		Map<String, File> files = new HashMap<String, File>();
 		files.put("file", new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "MyApp" + File.separator + "log"));
 		try {
-//			_post(Constants.URL_UPLOAD_LOG, params, files);
+			_post(Constants.URL_UPLOAD_LOG, params, files);
 		} catch (Exception e) {
+			ApiClient.uploadErrorLog(e.getMessage());
 		}
 	}
 	
