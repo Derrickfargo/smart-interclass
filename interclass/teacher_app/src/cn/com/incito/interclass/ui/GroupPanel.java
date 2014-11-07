@@ -22,7 +22,6 @@ public class GroupPanel extends JPanel {
 	private static final int COLUMN_COUNT = 8;//每行最多8个学生
 	private Group group;
 	private JLabel lblLogo;
-	private JLabel lblNumber;
 	private JLabel lblGroupName;
 	private List<JLabel> studentList = new ArrayList<JLabel>();
 	
@@ -35,23 +34,18 @@ public class GroupPanel extends JPanel {
 	}
 
 	private void initView() {
-		// 组号
-		lblNumber = createDeskNumber();
-		add(lblNumber);
-		lblNumber.setBounds(20, 9, 20, 20);
-
-		// 分组loading图标
+		// 小组图标
 		lblLogo = new JLabel("", JLabel.CENTER);
 		lblLogo.setIcon(new ImageIcon("images/main/load_groupinfo.gif"));
 		add(lblLogo);
-		lblLogo.setBounds(50, 45, 32, 32);
+		lblLogo.setBounds(10, 2, 32, 32);
 		lblLogo.setVisible(false);
 
 		// 小组名称
 		lblGroupName = new JLabel();
 		lblGroupName.setForeground(UIHelper.getDefaultFontColor());
 		add(lblGroupName);
-		lblGroupName.setBounds(50, 45, 80, 30);
+		lblGroupName.setBounds(50, 5, 80, 30);
 		lblGroupName.setVisible(false);
 
 		// 小组与pad的分割线
@@ -78,14 +72,6 @@ public class GroupPanel extends JPanel {
 		add(lblBackground);
 	}
 
-	private JLabel createDeskNumber() {
-		JLabel lblDesk = new JLabel("", JLabel.CENTER);
-		lblDesk.setOpaque(true);
-		lblDesk.setBackground(new Color(Integer.parseInt("a4b981", 16)));
-		lblDesk.setForeground(new Color(Integer.parseInt("ffffff", 16)));
-		return lblDesk;
-	}
-
 	private JLabel getLine() {
 		return new JLabel() {
 			private static final long serialVersionUID = 2679733728559406364L;
@@ -108,7 +94,7 @@ public class GroupPanel extends JPanel {
 	private JLabel getNameLabel() {
 		JLabel lblName = new JLabel("", JLabel.CENTER);
 		lblName.setOpaque(true);
-		lblName.setBackground(new Color(Integer.parseInt("E1E1E1", 16)));
+		lblName.setBackground(new Color(Integer.parseInt("5ec996", 16)));
 		lblName.setForeground(new Color(Integer.parseInt("FFFFFF", 16)));
 		return lblName;
 	}
@@ -139,7 +125,4 @@ public class GroupPanel extends JPanel {
 		return studentList;
 	}
 
-	public void setTableNumber(int tableNumber) {
-		lblNumber.setText(String.valueOf(tableNumber));
-	}
 }
