@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -130,41 +131,13 @@ public class CoreService {
 		return null;
 	}
 	
-	private void sendResponse(String json,List<SocketChannel> channels) {
-		for (SocketChannel channel : channels) {
-			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
-	        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
-	        byte[] messageData = messagePacking.pack().array();
-	        ByteBuffer buffer = ByteBuffer.allocate(messageData.length);
-	        buffer.put(messageData);
-	        buffer.flip();
-			try {
-				if (channel.isConnected()) { 
-					channel.write(buffer);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	/**
-	 * 根据IMEI获取所在组
-	 *
-	 * @param imei
-	 * @return
-	 */
-	public String getGroupByIMEI(String imei) {
-//		Device device = app.getImeiDevice().get(imei);
-//		if (device == null) {
-//			// 系统中无此设备
-//			return JSONUtils.renderJSONString(1);// 失败
-//		}
-		Set<Group> groupList = app.getGroupList();
-		return JSONUtils.renderJSONString(0, groupList);
-	}
-
 	public Group getGroupObjectByIMEI(String imei) {
+		Set<Group> groups = app.getGroupList();
+		Iterator<Group> it = groups.iterator();
+		while (it.hasNext()) {
+			Group group = it.next();
+			
+		}
 		return new Group();
 	}
 
@@ -192,9 +165,9 @@ public class CoreService {
 			imageOutput.write(imageByte, 0, imageByte.length);
 			imageOutput.close();
 			ImageUtil.resize(file, file, 865, 1f);
-			logger.error("大图生成：" + file.getAbsoluteFile());
+			logger.info("大图生成：" + file.getAbsoluteFile());
 			ImageUtil.resize(file, thumbnail, 186, 1f);
-			logger.error("缩略图生成：" + thumbnail.getAbsoluteFile());
+			logger.info("缩略图生成：" + thumbnail.getAbsoluteFile());
 		} catch (IOException e) {
 			logger.error("保存作业图片出现错误:", e);
 		}
@@ -203,16 +176,15 @@ public class CoreService {
 		quiz.setId(quizid);
 		quiz.setImei(imei);
 		quiz.setLessionid(lessionid);
-		StringBuffer name = new StringBuffer();
-		
 		Student students = app.getStudentByImei(imei);
 		if (students.getName().length() != 0) {
 			quiz.setName(students.getName());
 		}
 		quiz.setTime(System.currentTimeMillis());
-		Group group = getGroupObjectByIMEI(imei);
-		quiz.setGroupId(group.getId());
-		quiz.setGroup(group);
+		
+//		Group group = getGroupObjectByIMEI(imei);
+//		quiz.setGroupId(group.getId());
+//		quiz.setGroup(group);
 		quiz.setQuizUrl(file.getAbsolutePath());
 		quiz.setThumbnail(thumbnail.getAbsolutePath());
 		app.getTempQuiz().put(imei, quiz);

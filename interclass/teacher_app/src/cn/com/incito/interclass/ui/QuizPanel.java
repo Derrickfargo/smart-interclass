@@ -135,7 +135,6 @@ public class QuizPanel extends JPanel {
 				}
 			} else {
 				panel.addImage(i, null);
-				quizList.get(i).setText("");
 				//设置作业为排名
 				JLabel lblOrder = orderList.get(i);
 				lblOrder.setVisible(false);
