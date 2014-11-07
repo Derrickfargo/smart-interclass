@@ -43,7 +43,7 @@ public class GroupCreatActivity extends BaseActivity implements OnClickListener 
 	private GridView grid_group_icon;
 	private Button btn_back;
 	private Button btn_create_group_ok;
-	private List<Map<String,Drawable>> iconResourceIdList = new ArrayList<>();
+	private List<Map<String,Drawable>> iconResourceIdList = new ArrayList<Map<String,Drawable>>();
 	private ImageView historyView;                		//上次被点击的图标的位置
 	private TypedArray groupIcons;
 	private String logo = "";
