@@ -747,22 +747,11 @@ public class WifiSelectorActivity extends BaseActivity  {
 		android.os.Message message = new android.os.Message();
 		message.what = 0;
 		mHandler.sendMessage(message);
-		// mHandler.sendEmptyMessage(0);
 	}
 
 	@Override
 	public void onBackPressed() {
 		AppManager.getAppManager().AppExit(this);
 	}
-	
-	// /**
-	// * 跳转到模块选择页面
-	// */
-	// private void skipToMoudle(){
-	// Intent intent = new Intent(this,MoudleSelectorActivity.class);
-	// startActivity(intent);
-	// finish();
-	//
-	// }
 }
 	
