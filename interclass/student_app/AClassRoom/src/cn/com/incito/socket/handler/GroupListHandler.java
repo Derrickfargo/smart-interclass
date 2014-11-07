@@ -19,12 +19,12 @@ public class GroupListHandler extends MessageHandler {
 	protected void handleMessage() {
 		MyApplication.Logger.debug(System.currentTimeMillis()+":GroupListHandler:收到分组列表消息：" + data);
 		if(0 == data.getIntValue("code")){
-			//如果该学生的activity是等待老师分组的activity则将这个activity finish
+			//如果该学生的界面是等待老师分组界面的则将等待上课界面关闭
 			if("ClassReadyActivity".equals(AppManager.getAppManager().currentActivity().getClass().getSimpleName())){
 				AppManager.getAppManager().currentActivity().finish();
 			}
-			
-			if(AppManager.getAppManager().currentActivity().getComponentName().getClassName().equals("WaitForOtherMembersActivity")){
+			//如果当前界面是等待其他小组成员界面,刷新界面，否则进去选择选择小组界面
+			if(AppManager.getAppManager().currentActivity().getClass().getSimpleName().equals("WaitForOtherMembersActivity")){
 				UIHelper.getInstance().getWaitForOtherMembersActivity().setTextName(data.getString("data"));
 			} else {
 				if(UIHelper.getInstance().getmSelectGroupActivity()==null){
