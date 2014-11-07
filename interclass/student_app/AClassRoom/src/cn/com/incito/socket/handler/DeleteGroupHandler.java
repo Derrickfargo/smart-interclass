@@ -14,21 +14,27 @@ public class DeleteGroupHandler extends MessageHandler {
 
 	@Override
 	protected void handleMessage() {
-		if (0 == data.getIntValue("code")) {
-			if (isGrouper(data)) {// 组长删除小组
-				AppManager.getAppManager().currentActivity().finish();
-				UIHelper.getInstance().showGroupSelect(data.getString("data"));
-			} else if (isSelf(data)) {// 该pad的小组成员退出
-				AppManager.getAppManager().currentActivity().finish();
-				UIHelper.getInstance().getmSelectGroupActivity().setData(JSON.parseArray(data.getString("data"),Group.class));
-			} else {// 其他成员
-				if (AppManager.getAppManager().currentActivity().getClass().getSimpleName().equals("WaitForOtherMembersActivity")) {
-					UIHelper.getInstance().getWaitForOtherMembersActivity().setTextName(data.getString("data"));
-				} else {
+		
+		String currentActivityName = AppManager.getAppManager().currentActivity().getClass().getSimpleName();
+		if(!"ClassingActivity".equals(currentActivityName)&&!"GroupCreatActivity".equals(currentActivityName)){
+			if (0 == data.getIntValue("code")) {
+				if (isGrouper(data)) {// 组长删除小组
+					AppManager.getAppManager().currentActivity().finish();
 					UIHelper.getInstance().getmSelectGroupActivity().setData(JSON.parseArray(data.getString("data"),Group.class));
+				} else if (isSelf(data)) {// 该pad的小组成员退出
+					AppManager.getAppManager().currentActivity().finish();
+					UIHelper.getInstance().getmSelectGroupActivity().setData(JSON.parseArray(data.getString("data"),Group.class));
+				} else {// 其他成员
+					if (currentActivityName.equals("WaitForOtherMembersActivity")) {
+						UIHelper.getInstance().getWaitForOtherMembersActivity().setTextName(data.getString("data"));
+					} else {
+						UIHelper.getInstance().getmSelectGroupActivity().setData(JSON.parseArray(data.getString("data"),Group.class));
+					}
 				}
 			}
 		}
+		
+		
 	}
 
 	/**

@@ -3,8 +3,9 @@ package cn.com.incito.classroom.ui.activity;
 import java.util.List;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -150,26 +151,49 @@ public class WaitForOtherMembersActivity extends BaseActivity implements
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.btn_back:
-			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("captainId", group.getCaptainid());
-			jsonObject.put("studentId", MyApplication.getInstance().getStudent().getId());
-			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_DELETE);
-			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
-			MyApplication.Logger.debug("删除小组信息："+jsonObject.toJSONString());
-			CoreSocket.getInstance().sendMessage(messagePacking);
+			
+			String title = "";
+			if(group.getCaptainid() == MyApplication.getInstance().getStudent().getId()){
+				title = "您是组长,退出后小组将解散,确认退出吗?";
+			}else{
+				title = "退出后您将可以选择其他小组加入,确认退出吗?";
+			}
+			//弹出确认对话框
+			new AlertDialog.Builder(this).setTitle(title)
+			.setIcon(android.R.drawable.ic_dialog_info)
+			.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					JSONObject jsonObject = new JSONObject();
+					jsonObject.put("captainId", group.getCaptainid());
+					jsonObject.put("studentId", MyApplication.getInstance().getStudent().getId());
+					MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_DELETE);
+					messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
+					MyApplication.Logger.debug("删除小组信息："+jsonObject.toJSONString());
+					CoreSocket.getInstance().sendMessage(messagePacking);
+					
+				}
+			}).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					MyApplication.Logger.debug("取消退出小组");
+				}
+			});
+			
+			
 			break;
 		case R.id.btn_waiting:
-//			JSONObject json = new JSONObject();
-//			json.put("group", group);
-//
-//			MessagePacking message = new MessagePacking(
-//					Message.MESSAGE_GROUP_CONFIRM);
-//			message.putBodyData(DataType.INT,
-//					BufferUtils.writeUTFString(json.toJSONString()));
-//			MyApplication.Logger.debug("停止其他小组成员添加："+json.toJSONString());
-//			CoreSocket.getInstance().sendMessage(message);
-			Intent mIntent=new Intent(this,ClassReadyActivity.class);
-			this.startActivity(mIntent);
+			JSONObject json = new JSONObject();
+			json.put("group", group);
+
+			MessagePacking message = new MessagePacking(
+					Message.MESSAGE_GROUP_CONFIRM);
+			message.putBodyData(DataType.INT,
+					BufferUtils.writeUTFString(json.toJSONString()));
+			MyApplication.Logger.debug("停止其他小组成员添加："+json.toJSONString());
+			CoreSocket.getInstance().sendMessage(message);
 		default:
 			break;
 		}

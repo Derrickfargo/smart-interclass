@@ -7,8 +7,9 @@ public class ClassReadyHandler  extends MessageHandler{
 
 	@Override
 	protected void handleMessage() {
-		System.out.println(data.toJSONString());
-		UIHelper.getInstance().showClassReadyActivity();
+		if(0 == data.getIntValue("code")){
+			UIHelper.getInstance().showClassingActivity();
+		}
 	}
 
 }

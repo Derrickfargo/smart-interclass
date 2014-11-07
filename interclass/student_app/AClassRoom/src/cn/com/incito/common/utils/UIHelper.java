@@ -7,6 +7,7 @@ import android.widget.Toast;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.ui.activity.ClassReadyActivity;
+import cn.com.incito.classroom.ui.activity.ClassingActivity;
 import cn.com.incito.classroom.ui.activity.DrawBoxActivity;
 import cn.com.incito.classroom.ui.activity.SelectGroupActivity;
 import cn.com.incito.classroom.ui.activity.WaitForOtherMembersActivity;
@@ -154,6 +155,16 @@ public class UIHelper {
 	public void showClassReadyActivity() {
 		Intent intent = new Intent(app.getApplicationContext(),
 				ClassReadyActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		app.startActivity(intent);
+		
+	}
+
+	/**
+	 * 显示老师正在上课界面
+	 */
+	public void showClassingActivity() {
+		Intent intent = new Intent(app,ClassingActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		app.startActivity(intent);
 		

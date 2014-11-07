@@ -191,6 +191,7 @@ public class WifiSelectorActivity extends BaseActivity  {
 	 */
 	private void initWifi() {
 		mWifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+		mWifiManager.setWifiEnabled(true);
 		// 监听wifi状态变化
 		IntentFilter mWifiIntentFilter = new IntentFilter();
 		mWifiIntentFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
@@ -243,6 +244,7 @@ public class WifiSelectorActivity extends BaseActivity  {
 			}
 
 		} else {
+			mWifiManager.setWifiEnabled(true);
 			mWifiItems.clear();
 		}
 
