@@ -282,7 +282,7 @@ public class Application {
 	}
 
 	public void refresh() {
-		MainFrame.getInstance().refreshPrepare();
+		MainFrame.getInstance().refresh();
 		MainFrame.getInstance().refreshQuiz();
 	}
 

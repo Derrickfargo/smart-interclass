@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -13,6 +14,7 @@ import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Quiz;
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.server.api.Application;
+import cn.com.incito.server.utils.LogoUtils;
 
 /**
  * 任务缩略图列表面板
@@ -93,7 +95,7 @@ public class QuizPanel extends JPanel {
 		panel.setVisible(true);
 		panel.setGroup(group);
 //		panel.getLblDesk().setText(String.format("%d号桌", group.getTableNumber()));
-//		panel.getLblLogo().setIcon(new ImageIcon(LogoUtils.getInstance().getLogo24(group.getLogo())));
+		panel.getLblLogo().setIcon(new ImageIcon(LogoUtils.getInstance().getLogo24(group.getLogo())));
 		panel.getLblGroupName().setText(group.getName());
 		panel.getLblGroupName().setToolTipText(group.getName());
 		
