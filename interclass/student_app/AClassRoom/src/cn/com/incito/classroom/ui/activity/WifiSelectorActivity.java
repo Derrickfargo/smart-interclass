@@ -522,6 +522,7 @@ public class WifiSelectorActivity extends BaseActivity  {
 	 */
 	private void connectToWifi(IWifiItem wifiItem, String password,
 			IWifiSecurityType securityType) {
+		mProgressDialog.show();
 		WifiConfiguration config = new WifiConfiguration();
 		config.allowedAuthAlgorithms.clear();
 		config.allowedGroupCiphers.clear();
@@ -574,16 +575,14 @@ public class WifiSelectorActivity extends BaseActivity  {
 			break;
 		}
 		int wcgID = mWifiManager.addNetwork(config);
+		SharedPreferences sharedPreferences = getSharedPreferences("wifi", MODE_APPEND);
+		SharedPreferences.Editor editor = sharedPreferences.edit();
 		if (mWifiManager.enableNetwork(wcgID, true)) {
-			SharedPreferences sharedPreferences = getSharedPreferences("wifi", MODE_APPEND);
-			SharedPreferences.Editor editor = sharedPreferences.edit();
 			editor.putString(mCurrentWifiItem.getScanResult().BSSID, password);
 			editor.commit();
 			startMain();
-		
 		} else {
-			SharedPreferences sharedPreferences = getSharedPreferences("wifi", MODE_APPEND);
-			SharedPreferences.Editor editor = sharedPreferences.edit();
+			mProgressDialog.dismiss();
 			editor.remove(mCurrentWifiItem.getScanResult().BSSID);
 			editor.commit();
 			ToastHelper.showCustomToast(this, R.string.wifi_password_error);
