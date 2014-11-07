@@ -20,16 +20,31 @@
         
     </LinearLayout>
     
-    <LinearLayout 
+    <LinearLayout
         android:layout_marginTop="136dp"
         android:layout_marginLeft="40dp"
         android:layout_width="880dp"
+        android:orientation="vertical"
         android:layout_height="250dp">
         
         <ListView 
             android:id="@+id/select_group_listview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></ListView>
+            android:layout_height="wrap_content">
+            
+        </ListView>
+        
+        <TextView 
+            android:id="@+id/text_empty"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:visibility="gone"
+            android:text="还没有小组哦,你可以去创建哦!"
+            />
+        
+        
     </LinearLayout>
 
 </LinearLayout>

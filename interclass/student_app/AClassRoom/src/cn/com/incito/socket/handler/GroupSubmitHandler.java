@@ -2,6 +2,7 @@ package cn.com.incito.socket.handler;
 
 import java.util.List;
 
+import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.vo.Group;
 import cn.com.incito.classroom.vo.Student;
@@ -17,6 +18,8 @@ public class GroupSubmitHandler extends MessageHandler {
 
 	@Override
 	protected void handleMessage() {
+		MyApplication.Logger.debug("收到分组submit信息:" +data.getString("data") );
+		
 		int code = data.getIntValue("code");
 		if (code == 0) {
 			MyApplication app = MyApplication.getInstance();
@@ -25,15 +28,21 @@ public class GroupSubmitHandler extends MessageHandler {
 					Group.class);
 			for (Group group : groupList) {
 				if (group.getCaptainid() == student.getId()) {
-					MyApplication.getInstance().setGroup(group);
-					UIHelper.getInstance().showConfirmGroupActivity(
-							data.getString("data"));
-					return;
+					
+					//如果不是刚创建的小组组长而是其他小组的组长则不进行跳转
+					if(!"WaitForOtherMembersActivity".equals(AppManager.getAppManager().currentActivity().getClass().getSimpleName())){
+						MyApplication.getInstance().setGroup(group);
+						AppManager.getAppManager().currentActivity().finish();
+						UIHelper.getInstance().showConfirmGroupActivity(data.getString("data"));
+						return;
+					}
+					
+					
 				}
 			}
 			UIHelper.getInstance().getmSelectGroupActivity().setData(groupList);
 		} else {
-
+			
 		}
 
 	}

@@ -3,6 +3,7 @@ package cn.com.incito.classroom.ui.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.adapter.SelectGroupAdapter;
 import cn.com.incito.classroom.base.BaseActivity;
@@ -34,11 +36,20 @@ public class SelectGroupActivity extends BaseActivity implements
 	private ListView select_group_listview;
 	private SelectGroupAdapter selectGroupAdapter;
 	private List<Group> groupList = new ArrayList<Group>();
+	private TextView text_empty;
+	
+	@SuppressLint("HandlerLeak")
 	private Handler handler = new Handler() {
 		@Override
 		public void handleMessage(android.os.Message msg) {
 			super.handleMessage(msg);
-			selectGroupAdapter.setGroupList(groupList);
+//			if(groupList == null || groupList.size() == 0){
+				//没有小组出现提示信息
+				selectGroupAdapter.setGroupList(groupList);
+//			}else{
+//				selectGroupAdapter.setGroupList(groupList);
+//			}
+			
 		}
 	};
 
@@ -47,10 +58,9 @@ public class SelectGroupActivity extends BaseActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_select_group);
 		UIHelper.getInstance().setmSelectGroupActivity(this);
-		if (getIntent().getStringExtra("group") != null
-				&& !"".equals(getIntent().getStringExtra("group")))
-			groupList = JSON.parseArray(getIntent().getStringExtra("group"),
-					Group.class);
+		if (getIntent().getStringExtra("group") != null && !"".equals(getIntent().getStringExtra("group"))){
+			groupList = JSON.parseArray(getIntent().getStringExtra("group"),Group.class);
+		}
 		// 初始化UI组件
 		initViews();
 	}
@@ -70,6 +80,8 @@ public class SelectGroupActivity extends BaseActivity implements
 	 * 初始化UI组件
 	 */
 	private void initViews() {
+		
+		text_empty = (TextView) findViewById(R.id.text_empty);
 		btn_create_group = (Button) findViewById(R.id.btn_create_group);
 		btn_create_group.setOnClickListener(this);
 		select_group_listview = (ListView) findViewById(R.id.select_group_listview);
@@ -95,6 +107,7 @@ public class SelectGroupActivity extends BaseActivity implements
 
 		selectGroupAdapter = new SelectGroupAdapter(this, groupList);
 		select_group_listview.setAdapter(selectGroupAdapter);
+		select_group_listview.setEmptyView(text_empty);
 
 	}
 

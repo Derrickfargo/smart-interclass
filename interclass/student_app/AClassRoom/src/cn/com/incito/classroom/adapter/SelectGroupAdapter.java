@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.ui.activity.SelectGroupActivity;
+import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.classroom.vo.Group;
 import cn.com.incito.classroom.vo.Student;
 
@@ -20,6 +22,9 @@ public class SelectGroupAdapter extends BaseAdapter {
 
 	private SelectGroupActivity activity;
 	private List<Group> groupList = new ArrayList<Group>();
+	private TypedArray groupIcons;
+	private String[] iconsName;
+
 
 	public void setGroupList(List<Group> groupList) {
 		this.groupList = groupList;
@@ -30,6 +35,8 @@ public class SelectGroupAdapter extends BaseAdapter {
 	public SelectGroupAdapter(Context context, List<Group> groupList2) {
 		this.activity = (SelectGroupActivity) context;
 		this.groupList = groupList2;
+		groupIcons = activity.getResources().obtainTypedArray(R.array.groupIcons);
+		iconsName = activity.getResources().getStringArray(R.array.groupicons_name);
 	}
 
 	@Override
@@ -73,8 +80,7 @@ public class SelectGroupAdapter extends BaseAdapter {
 			sb.append(memberNames.get(i).getName() + " ");
 		}
 		// 设置小组图标
-		viewHolder.img_group_icon
-				.setBackgroundResource(R.drawable.ico_eraser_mid);
+		viewHolder.img_group_icon.setBackground(Utils.getGroupIconByName(groupIcons, iconsName, group.getLogo()));
 		// 设置小组成员以及名称
 		viewHolder.text_name.setText(Html.fromHtml(group.getName()
 				+ "<br><font color='#ecf2fc'> " + sb.toString() + "</font>"));

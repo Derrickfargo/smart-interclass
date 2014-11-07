@@ -50,8 +50,9 @@ public class JoinGroupHandler extends MessageHandler {
 		List<Group> groupList = JSON.parseArray(data, Group.class);
 		for (int i = 0; i < groupList.size(); i++) {
 			Group group = groupList.get(i);
-			if (group.getStudents().contains(
-					MyApplication.getInstance().getStudent())) {
+			if (group.getStudents().contains(MyApplication.getInstance().getStudent())) {
+				
+				MyApplication.getInstance().setGroup(group);
 				return true;
 			}
 		}

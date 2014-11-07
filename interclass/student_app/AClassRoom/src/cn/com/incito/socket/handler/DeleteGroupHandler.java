@@ -14,15 +14,17 @@ public class DeleteGroupHandler extends MessageHandler {
 
 	@Override
 	protected void handleMessage() {
-		
+		MyApplication.Logger.debug("收到删除或者退出小组信息:" + data.getString("data"));
 		String currentActivityName = AppManager.getAppManager().currentActivity().getClass().getSimpleName();
 		if(!"ClassingActivity".equals(currentActivityName)&&!"GroupCreatActivity".equals(currentActivityName)){
 			if (0 == data.getIntValue("code")) {
 				if (isGrouper(data)) {// 组长删除小组
 					AppManager.getAppManager().currentActivity().finish();
+					MyApplication.getInstance().setGroup(null);  //清楚该组成员中 application中保存的小组
 					UIHelper.getInstance().getmSelectGroupActivity().setData(JSON.parseArray(data.getString("data"),Group.class));
 				} else if (isSelf(data)) {// 该pad的小组成员退出
 					AppManager.getAppManager().currentActivity().finish();
+					MyApplication.getInstance().setGroup(null);  //成员退出该小组时  application中的小组也应该清楚 
 					UIHelper.getInstance().getmSelectGroupActivity().setData(JSON.parseArray(data.getString("data"),Group.class));
 				} else {// 其他成员
 					if (currentActivityName.equals("WaitForOtherMembersActivity")) {
@@ -47,8 +49,7 @@ public class DeleteGroupHandler extends MessageHandler {
 
 		Group group = MyApplication.getInstance().getGroup();
 
-		if (group != null
-				&& data.getInteger("studentId") == group.getCaptainid()) {
+		if (group != null && data.getInteger("studentId") == group.getCaptainid()) {
 			return true;
 		}
 

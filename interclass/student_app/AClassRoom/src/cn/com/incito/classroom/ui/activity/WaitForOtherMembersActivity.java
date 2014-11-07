@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.classroom.vo.Group;
 import cn.com.incito.classroom.vo.Student;
 import cn.com.incito.common.utils.UIHelper;
@@ -37,6 +39,7 @@ public class WaitForOtherMembersActivity extends BaseActivity implements
 	private TextView text_group_name;
 	private TextView text_group_members_name;
 	private Button btn_waiting;
+	private TypedArray groupIcons;
 	private Group group;
 
 	@Override
@@ -67,7 +70,9 @@ public class WaitForOtherMembersActivity extends BaseActivity implements
 			}
 		}
 		image_group_icon = (ImageView) findViewById(R.id.image_group_icon);
-		image_group_icon.setImageResource(R.drawable.ico_powder_blue);
+		groupIcons = getResources().obtainTypedArray(R.array.groupIcons);
+		String[] iconsName = getResources().getStringArray(R.array.groupicons_name);
+		image_group_icon.setImageDrawable(Utils.getGroupIconByName(groupIcons, iconsName, group.getLogo()));
 
 		text_group_name = (TextView) findViewById(R.id.text_gourp_name);
 		text_group_name.setText(group.getName());
@@ -179,23 +184,49 @@ public class WaitForOtherMembersActivity extends BaseActivity implements
 				@Override
 				public void onClick(DialogInterface arg0, int arg1) {
 					MyApplication.Logger.debug("取消退出小组");
+					arg0.dismiss();
 				}
-			});
+			}).show();
 			
 			
 			break;
 		case R.id.btn_waiting:
-			JSONObject json = new JSONObject();
-			json.put("group", group);
+			//小组组长点击该按钮时询问是否确定提交该小组
+			//弹出确认对话框
+			new AlertDialog.Builder(this).setTitle("您确定创建该小组吗?")
+			.setIcon(android.R.drawable.ic_dialog_info)
+			.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					JSONObject json = new JSONObject();
+					json.put("group", group);
 
-			MessagePacking message = new MessagePacking(
-					Message.MESSAGE_GROUP_CONFIRM);
-			message.putBodyData(DataType.INT,
-					BufferUtils.writeUTFString(json.toJSONString()));
-			MyApplication.Logger.debug("停止其他小组成员添加："+json.toJSONString());
-			CoreSocket.getInstance().sendMessage(message);
+					MessagePacking message = new MessagePacking(
+							Message.MESSAGE_GROUP_CONFIRM);
+					message.putBodyData(DataType.INT,
+							BufferUtils.writeUTFString(json.toJSONString()));
+					MyApplication.Logger.debug("停止其他小组成员添加："+json.toJSONString());
+					CoreSocket.getInstance().sendMessage(message);
+					
+				}
+			}).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					MyApplication.Logger.debug("提交小组分组");
+					arg0.dismiss();
+				}
+			}).show();
+			
 		default:
 			break;
 		}
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		groupIcons.recycle();
 	}
 }
