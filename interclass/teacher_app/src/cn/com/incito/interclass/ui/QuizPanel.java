@@ -2,15 +2,16 @@ package cn.com.incito.interclass.ui;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Quiz;
+import cn.com.incito.interclass.po.Student;
 import cn.com.incito.server.api.Application;
 
 /**
@@ -24,8 +25,8 @@ public class QuizPanel extends JPanel {
      *
      */
 	private static final long serialVersionUID = 6316121486627261595L;
-	private static final String ICON_NO_DESK = "images/main/bg_binding_desk.png";
-	private JLabel lblNoDesk;
+//	private static final String ICON_NO_DESK = "images/main/bg_binding_desk.png";
+//	private JLabel lblNoDesk;
 	private Application app = Application.getInstance();
 	/**
 	 * 当前教室所有试题，初始化界面时初始化本属性
@@ -59,21 +60,21 @@ public class QuizPanel extends JPanel {
 			i++;
 			y += 380;
 		}
-		lblNoDesk = new JLabel();
-		ImageIcon icon = new ImageIcon(ICON_NO_DESK);
-		lblNoDesk.setIcon(icon);
-		lblNoDesk.setBounds(288, 235, 300, 160);
-		lblNoDesk.setVisible(false);
-		add(lblNoDesk);
+//		lblNoDesk = new JLabel();
+//		ImageIcon icon = new ImageIcon(ICON_NO_DESK);
+//		lblNoDesk.setIcon(icon);
+//		lblNoDesk.setBounds(288, 235, 300, 160);
+//		lblNoDesk.setVisible(false);
+//		add(lblNoDesk);
 	}
 
 	public void refresh() {
 		initData();
-		if (groupList.size() == 0) {//未绑定 
-			lblNoDesk.setVisible(true);
-			return;
-		}
-		lblNoDesk.setVisible(false);
+//		if (groupList.size() == 0) {//未绑定 
+//			lblNoDesk.setVisible(true);
+//			return;
+//		}
+//		lblNoDesk.setVisible(false);
 		int i = 0;
 		while (i < groupList.size()) {
 			QuizGroupPanel pnlLeft = quizGroupList.get(i);
@@ -96,20 +97,22 @@ public class QuizPanel extends JPanel {
 		panel.getLblGroupName().setText(group.getName());
 		panel.getLblGroupName().setToolTipText(group.getName());
 		
-		List<Device> deviceList = group.getDevices();
+		List<Student> studentList = group.getStudents();
 		List<JPanel> quizPanel = panel.getQuizPanel();
 		List<JLabel> quizList = panel.getNameList();
 		List<JLabel> orderList = panel.getOrderList();
-		for (int i = 0; i < deviceList.size(); i++) {
-			Device device = deviceList.get(i);
+		for (int i = 0; i < studentList.size(); i++) {
+			Student student = studentList.get(i);
 			quizPanel.get(i).setVisible(true);
-			String imei = device.getImei();
+			
+			JLabel lblName = quizList.get(i);
+			lblName.setText(student.getName());
+			lblName.setToolTipText(student.getName());
+			
+			String imei = student.getImei();
 			Quiz quiz = app.getTempQuiz().get(imei);
 			if (quiz != null) {
 				panel.addImage(i, quiz);
-				JLabel lblName = quizList.get(i);
-				lblName.setText(quiz.getName());
-				lblName.setToolTipText(quiz.getName());
 				//设置作业为排名
 				JLabel lblOrder = orderList.get(i);
 				lblOrder.setVisible(true);
@@ -139,19 +142,15 @@ public class QuizPanel extends JPanel {
 	}
 
 	private void initData() {
-//		groupList = new ArrayList<Group>();
-//		// 课桌绑定分组，生成内存模型
-//		List<Table> tables = app.getTableList();
-//		for (Table table : tables) {
-//			// 获得课桌对应的分组
-//			Group group = app.getTableGroup().get(table.getId());
-//			if (group == null) {
-//				group = new Group();
-//			}
-//			group.setTableNumber(table.getNumber());
-//			group.setDevices(table.getDevices());
-//			groupList.add(group);
-//		}
+		groupList = new ArrayList<Group>();
+		// 课桌绑定分组，生成内存模型
+		Set<Group> groups = app.getGroupList();
+		Iterator<Group> it = groups.iterator();
+		while (it.hasNext()) {
+			// 获得课桌对应的分组
+			Group group = it.next();
+			groupList.add(group);
+		}
 //		Collections.sort(groupList);
 	}
 }
