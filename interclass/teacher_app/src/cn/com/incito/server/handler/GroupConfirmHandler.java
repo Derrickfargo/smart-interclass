@@ -41,7 +41,7 @@ public class GroupConfirmHandler extends MessageHandler {
 		} catch (AppException e) {
 			e.printStackTrace();
 		}
-		MainFrame.getInstance().refreshPrepare();
+		MainFrame.getInstance().refresh();
 		Map<String, SocketChannel> channels = Application.getInstance().getClientChannel();
 		List<SocketChannel> channelsRes = new ArrayList<SocketChannel>();
 		for (String key : channels.keySet()) {

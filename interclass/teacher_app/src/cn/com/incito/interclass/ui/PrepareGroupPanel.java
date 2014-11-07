@@ -5,12 +5,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.server.api.Application;
+import cn.com.incito.server.utils.LogoUtils;
 
 public class PrepareGroupPanel extends JPanel {
 
@@ -46,6 +48,9 @@ public class PrepareGroupPanel extends JPanel {
 			GroupPanel groupPanel = gpList.get(index);
 			groupPanel.setVisible(true);
 			groupPanel.setGroup(group);
+			String logo = LogoUtils.getInstance().getLogo24(group.getLogo());
+			ImageIcon icon = new ImageIcon(logo);
+			groupPanel.getLblLogo().setIcon(icon);
 			groupPanel.getLblGroupName().setText(group.getName());
 			groupPanel.getLblGroupName().setVisible(true);
 			List<JLabel> lblStudents = groupPanel.getStudentList();

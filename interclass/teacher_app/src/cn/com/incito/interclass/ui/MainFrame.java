@@ -96,9 +96,10 @@ public class MainFrame extends MouseAdapter {
 		quizBottomPanel.synQuzingState();
 	}
 	
-	public void refreshPrepare() {
+	public void refresh() {
 		preparePanel.refresh();
 		quizPanel.refresh();
+		praisePanel.refresh();
 		quizBottomPanel.refresh();
 		prepareBottomPanel.refresh();
 		int total = 0;
@@ -206,7 +207,7 @@ public class MainFrame extends MouseAdapter {
 		frame.setBackground(new Color(0,0,0,0));//窗体透明
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowActivated(WindowEvent e) {
-				refreshPrepare();
+				refresh();
 				refreshQuiz();
 			}
 		});

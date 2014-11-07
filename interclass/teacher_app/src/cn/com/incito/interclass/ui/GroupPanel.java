@@ -36,16 +36,16 @@ public class GroupPanel extends JPanel {
 	private void initView() {
 		// 小组图标
 		lblLogo = new JLabel("", JLabel.CENTER);
-		lblLogo.setIcon(new ImageIcon("images/main/load_groupinfo.gif"));
+//		lblLogo.setIcon(new ImageIcon("images/main/load_groupinfo.gif"));
 		add(lblLogo);
 		lblLogo.setBounds(10, 2, 32, 32);
-		lblLogo.setVisible(false);
+		lblLogo.setVisible(true);
 
 		// 小组名称
 		lblGroupName = new JLabel();
 		lblGroupName.setForeground(UIHelper.getDefaultFontColor());
 		add(lblGroupName);
-		lblGroupName.setBounds(50, 5, 80, 30);
+		lblGroupName.setBounds(50, 5, 800, 30);
 		lblGroupName.setVisible(false);
 
 		// 小组与pad的分割线
@@ -115,6 +115,10 @@ public class GroupPanel extends JPanel {
 			lblGroupName.setVisible(true);
 			lblLogo.setVisible(false);
 		}
+	}
+
+	public JLabel getLblLogo() {
+		return lblLogo;
 	}
 
 	public JLabel getLblGroupName() {

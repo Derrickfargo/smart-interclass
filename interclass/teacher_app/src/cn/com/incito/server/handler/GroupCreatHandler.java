@@ -33,7 +33,7 @@ public class GroupCreatHandler extends MessageHandler{
 		group.setCaptainid(student.getId());
 		Application.getInstance().addGroup(group);
 		Application.getInstance().getTempGroup().put(student.getId(), group);
-		MainFrame.getInstance().refreshPrepare();
+		MainFrame.getInstance().refresh();
 		
 		Map<String, SocketChannel> channels = Application.getInstance().getClientChannel();
 		List<SocketChannel>  channelsRes=new ArrayList<SocketChannel>();

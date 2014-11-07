@@ -54,14 +54,6 @@ public class MyApplication extends Application {
 
 	public static Logger Logger = LoggerFactory.getLogger();
 
-	public boolean isOnClass() {
-		return isOnClass;
-	}
-
-	public void setOnClass(boolean isOnClass) {
-		this.isOnClass = isOnClass;
-	}
-
 	private LoginResVo loginResVo;
 
 	public static String deviceId;
@@ -70,14 +62,7 @@ public class MyApplication extends Application {
 	
 	private Group group;
 
-	public Group getGroup() {
-		return group;
-	}
-
-	public void setGroup(Group group) {
-		this.group = group;
-	}
-
+	
 	private static final String TAG = MyApplication.class.getSimpleName();
 
 	private static MyApplication mInstance = null;
@@ -111,7 +96,20 @@ public class MyApplication extends Application {
 		android.provider.Settings.System.putInt(mContentResolver,
 				android.provider.Settings.System.LOCK_PATTERN_ENABLED, 0);
 	}
+	public Group getGroup() {
+		return group;
+	}
 
+	public void setGroup(Group group) {
+		this.group = group;
+	}
+	public boolean isOnClass() {
+		return isOnClass;
+	}
+
+	public void setOnClass(boolean isOnClass) {
+		this.isOnClass = isOnClass;
+	}
 	public boolean isSubmitPaper() {
 		return isSubmitPaper;
 	}

@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import cn.com.incito.classroom.utils.ApiClient;
+import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.socket.core.ConnectionManager;
 import cn.com.incito.socket.core.CoreSocket;
 
@@ -113,6 +114,7 @@ public class AppManager {
 //            System.exit(0);
         } catch (Exception e) {
         	ApiClient.uploadErrorLog(e.getMessage());
+        	MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":AppManager:应用退出");
         	e.printStackTrace();
         }
     }
