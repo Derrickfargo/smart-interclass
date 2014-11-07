@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -452,5 +453,23 @@ public class AndroidUtil {
 		}
 		return false;
 	}
+	/**
+	 * 描述：获取表示当前日期时间的字符串.
+	 * 
+	 * @param format
+	 *            格式化字符串，如："yyyy-MM-dd HH:mm:ss"
+	 * @return String String类型的当前日期时间
+	 */
+	public static String getCurrentDate(String format) {
+		String curDateTime = null;
+		try {
+			SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat(format);
+			Calendar c = new GregorianCalendar();
+			curDateTime = mSimpleDateFormat.format(c.getTime());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return curDateTime;
 
+	}
 }

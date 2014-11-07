@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import cn.com.incito.server.handler.GroupConfirmHandler;
 import cn.com.incito.server.handler.StudentLoginHandler;
 import cn.com.incito.server.handler.StudentLogoutHandler;
 import cn.com.incito.server.handler.GroupCreatHandler;
@@ -40,8 +41,8 @@ public final class MessageHandlerResource {
 		handlerResources.put(Message.MESSAGE_HEART_BEAT, HeartbeatHandler.class);
 		//提交的创建小组信息
 		handlerResources.put(Message.MESSAGE_GROUP_SUBMIT, GroupCreatHandler.class);
-		//创建分组消息
-//		handlerResources.put(Message.MESSAGE_GROUP_CREATE, GroupCreatHandler.class);
+		//提交小组信息
+		handlerResources.put(Message.MESSAGE_GROUP_CONFIRM, GroupConfirmHandler.class);
 		//加入小组
 		handlerResources.put(Message.MESSAGE_GROUP_JOIN,GroupJoinHandler.class);
 		//删除小组

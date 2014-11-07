@@ -28,25 +28,6 @@ public class GroupCtrl extends BaseCtrl {
 		return renderJSONString(SUCCESS, groupService.save(group));
 	}
 	
-	/**
-	 * 删除小组
-	 * @param name
-	 * @param logo
-	 * @param teacherId
-	 * @param classId
-	 * @param studentId
-	 * @return
-	 */
-	@RequestMapping(value = "/delete", produces = { "application/json;charset=UTF-8" })
-	public String deleteGroup(String groupId){
-		Integer result =groupService.deleteGroupById(groupId);
-		if(result==1){
-			List<Group> groups = groupService.getGroupList(1, 1);
-			return renderJSONString(SUCCESS,groups);
-		 }else{
-			 return renderJSONString(1);
-		 }
-	}
 	
 	
 

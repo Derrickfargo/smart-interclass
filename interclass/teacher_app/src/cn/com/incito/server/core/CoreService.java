@@ -231,19 +231,18 @@ public class CoreService {
 	}
 
 	/**
-	 * 学生加入一个小组
+	 * 保存小组信息
 	 * 
 	 * @param groupId
 	 * @param studentId
 	 * @return
+	 * @throws AppException 
 	 */
-	public static String joinGroup(String groupId, String studentId)
-			throws AppException {
+	public static String  saveGroup(Group group) throws AppException{
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("groupId", groupId);
-		params.put("studentId", studentId);
+		params.put("group", group);
 		try {
-			return ApiClient._post(URLs.URL_JOIN_GROUP, params, null);
+			return ApiClient._post(URLs.URL_GROUP_SAVE, params, null);
 		} catch (Exception e) {
 			if (e instanceof AppException)
 				throw (AppException) e;
@@ -251,23 +250,4 @@ public class CoreService {
 		}
 	}
 
-	/**
-	 * 删除一个小组
-	 * 
-	 * @param groupId
-	 * @param studentId
-	 * @return
-	 */
-	public static String deleteGroup(String groupId)
-			throws AppException {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("groupId", groupId);
-		try {
-			 return  ApiClient._post(URLs.URL_DELETE_GROUP, params, null);
-		} catch (Exception e) {
-			if (e instanceof AppException)
-				throw (AppException) e;
-			throw AppException.network(e);
-		}
-	}
 }
