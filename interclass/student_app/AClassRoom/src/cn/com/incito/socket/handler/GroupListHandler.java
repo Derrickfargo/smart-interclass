@@ -28,6 +28,7 @@ public class GroupListHandler extends MessageHandler {
 				UIHelper.getInstance().getWaitForOtherMembersActivity().setTextName(data.getString("data"));
 			} else {
 				if(UIHelper.getInstance().getmSelectGroupActivity()==null){
+					MyApplication.getInstance().setGroup(null);
 					UIHelper.getInstance().showGroupSelect(data.getString("data"));
 				}else{
 					UIHelper.getInstance().getmSelectGroupActivity().setData(JSON.parseArray(data.getString("data"), Group.class));
