@@ -5,6 +5,7 @@ import java.util.List;
 import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.vo.Group;
+import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;
@@ -21,7 +22,7 @@ public class JoinGroupHandler extends MessageHandler {
 
 	@Override
 	protected void handleMessage() {
-		MyApplication.Logger.debug("加入小组返回信息:" + data.getString("data"));
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":JoinGroupHandler:收到加入小组返回信息:" + data.getString("data"));
 		int code = data.getInteger("code");// 加入小组返回代码
 		if (code == 0) {
 			//如果在等待其他小组成员加入界面，刷新界面数据

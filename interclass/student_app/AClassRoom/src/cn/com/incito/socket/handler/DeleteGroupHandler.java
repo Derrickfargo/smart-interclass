@@ -4,6 +4,7 @@ import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.vo.Group;
 import cn.com.incito.classroom.vo.Student;
+import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;
 
@@ -14,7 +15,7 @@ public class DeleteGroupHandler extends MessageHandler {
 
 	@Override
 	protected void handleMessage() {
-		MyApplication.Logger.debug("收到删除或者退出小组信息:" + data.getString("data"));
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":DeleteGroupHandler:收到删除或者退出小组信息:" + data.getString("data"));
 		String currentActivityName = AppManager.getAppManager().currentActivity().getClass().getSimpleName();
 		if(!"ClassingActivity".equals(currentActivityName)&&!"GroupCreatActivity".equals(currentActivityName)){
 			if (0 == data.getIntValue("code")) {

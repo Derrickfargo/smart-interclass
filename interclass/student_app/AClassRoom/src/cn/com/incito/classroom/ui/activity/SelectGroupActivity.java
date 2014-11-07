@@ -19,6 +19,7 @@ import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.vo.Group;
 import cn.com.incito.classroom.vo.Student;
+import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
@@ -99,7 +100,7 @@ public class SelectGroupActivity extends BaseActivity implements
 				jsonObject.put("student", me);
 				MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_JOIN);
 				messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(jsonObject.toJSONString()));
-				MyApplication.Logger.debug(System.currentTimeMillis()+ "开始发送加入请求: " + jsonObject.toJSONString());
+				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":SelectGroupActivity:开始发送加入请求: " + jsonObject.toJSONString());
 				CoreSocket.getInstance().sendMessage(messagePacking);
 
 			}
@@ -114,6 +115,5 @@ public class SelectGroupActivity extends BaseActivity implements
 	public void setData(List<Group> groupList) {
 		this.groupList = groupList;
 		handler.sendEmptyMessage(0);
-
 	}
 }

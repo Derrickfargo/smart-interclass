@@ -17,7 +17,7 @@ public class ClassReadyHandler  extends MessageHandler{
 	@Override
 	protected void handleMessage() {
 		
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":ClassReadyHandler:收到学生confirm小组或者老师点击开始上课信息:" + data.getString("data"));
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":ClassReadyHandler:收到学生确认小组信息或者老师点击开始上课信息:" + data.getString("data"));
 		if(0 == data.getIntValue("code")){
 			//如果当前学生是在选择小组界面则刷新界面数据
 			if("SelectGroupActivity".equals(AppManager.getAppManager().currentActivity().getClass().getSimpleName())){

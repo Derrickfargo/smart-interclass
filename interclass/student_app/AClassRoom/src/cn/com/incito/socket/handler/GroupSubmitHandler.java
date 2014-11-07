@@ -6,6 +6,7 @@ import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.vo.Group;
 import cn.com.incito.classroom.vo.Student;
+import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;
 
@@ -18,7 +19,7 @@ public class GroupSubmitHandler extends MessageHandler {
 
 	@Override
 	protected void handleMessage() {
-		MyApplication.Logger.debug("收到分组submit信息:" +data.getString("data") );
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() +"：GroupSubmitHandler：收到分组创建信息:" +data.getString("data") );
 		
 		int code = data.getIntValue("code");
 		if (code == 0) {

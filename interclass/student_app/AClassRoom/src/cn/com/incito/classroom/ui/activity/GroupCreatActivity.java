@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
@@ -15,6 +14,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -27,6 +27,7 @@ import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.vo.Group;
 import cn.com.incito.classroom.vo.Student;
+import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
@@ -36,15 +37,14 @@ import cn.com.incito.socket.utils.BufferUtils;
 
 import com.alibaba.fastjson.JSONObject;
 
-@SuppressLint("Recycle")
 public class GroupCreatActivity extends BaseActivity implements OnClickListener {
 
 	private EditText edit_group_name;
 	private GridView grid_group_icon;
 	private Button btn_back;
 	private Button btn_create_group_ok;
-	private List<Map<String,Drawable>> iconResourceIdList = new ArrayList<Map<String,Drawable>>();
-	private ImageView historyView;                		//上次被点击的图标的位置
+	private List<Map<String, Drawable>> iconResourceIdList = new ArrayList<Map<String, Drawable>>();
+	private ImageView historyView; // 上次被点击的图标的位置
 	private TypedArray groupIcons;
 	private String logo = "";
 
@@ -66,17 +66,20 @@ public class GroupCreatActivity extends BaseActivity implements OnClickListener 
 
 	private void initView() {
 		edit_group_name = (EditText) findViewById(R.id.edit_group_name);
+		findViewById(R.id.root).setOnClickListener(this);
+
 		btn_back = (Button) findViewById(R.id.btn_back);
 		btn_back.setOnClickListener(this);
 		btn_create_group_ok = (Button) findViewById(R.id.btn_create_group_ok);
 		btn_create_group_ok.setOnClickListener(this);
 		grid_group_icon = (GridView) findViewById(R.id.grid_gourp_icon);
-		
+
 		groupIcons = getResources().obtainTypedArray(R.array.groupIcons);
-		String[] iconsName = getResources().getStringArray(R.array.groupicons_name);
-		
+		String[] iconsName = getResources().getStringArray(
+				R.array.groupicons_name);
+
 		for (int i = 0; i < iconsName.length; i++) {
-			Map<String,Drawable> map=new HashMap<String,Drawable>();
+			Map<String, Drawable> map = new HashMap<String, Drawable>();
 			map.put(iconsName[i], groupIcons.getDrawable(i));
 			iconResourceIdList.add(map);
 		}
@@ -89,22 +92,20 @@ public class GroupCreatActivity extends BaseActivity implements OnClickListener 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				if(historyView != null){
+				if (historyView != null) {
 					historyView.setBackgroundResource(R.drawable.bg_ico_group);
 				}
 				historyView = (ImageView) view;
-				
-				Map<String,Drawable> map = iconResourceIdList.get(position);
+
+				Map<String, Drawable> map = iconResourceIdList.get(position);
 				Iterator<String> it = map.keySet().iterator();
-				while(it.hasNext()){
+				while (it.hasNext()) {
 					logo = it.next();
 				}
 				historyView.setBackgroundResource(R.drawable.bg_ico_group_hover);
 			}
 		});
 	}
-
-
 
 	@Override
 	public void onClick(View v) {
@@ -114,16 +115,16 @@ public class GroupCreatActivity extends BaseActivity implements OnClickListener 
 			break;
 		case R.id.btn_create_group_ok:
 			String group_name = edit_group_name.getText().toString();
-			if(TextUtils.isEmpty(group_name) || group_name.length() < 2){
+			if (TextUtils.isEmpty(group_name) || group_name.length() < 2) {
 				ToastHelper.showCustomToast(this, "请输入组名");
 				return;
 			}
-			if(TextUtils.isEmpty(logo)){
+			if (TextUtils.isEmpty(logo)) {
 				ToastHelper.showCustomToast(this, "请选择小组图标");
 				return;
 			}
-			
-			//封装一个group对象
+
+			// 封装一个group对象
 			Group group = new Group();
 			group.setName(group_name);
 			group.setLogo(logo);
@@ -131,22 +132,29 @@ public class GroupCreatActivity extends BaseActivity implements OnClickListener 
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("student", student);
 			jsonObject.put("group", group);
-		
-			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_SUBMIT);
-			messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(jsonObject.toJSONString()));
-			MyApplication.Logger.debug("发送创建分组请求："+jsonObject.toJSONString());
+
+			MessagePacking messagePacking = new MessagePacking(
+					Message.MESSAGE_GROUP_SUBMIT);
+			messagePacking.putBodyData(DataType.INT,
+					BufferUtils.writeUTFString(jsonObject.toJSONString()));
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()
+					+ ":GroupCreatActivity:发送创建分组请求："
+					+ jsonObject.toJSONString());
 			CoreSocket.getInstance().sendMessage(messagePacking);
 			break;
-
+			
+		case R.id.root:
+			InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);  
+	         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);  
+	         break;
 		default:
 			break;
 		}
 	}
-	
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		groupIcons.recycle();
 	}
-
 }

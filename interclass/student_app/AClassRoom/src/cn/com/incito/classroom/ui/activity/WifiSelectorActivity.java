@@ -13,6 +13,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -50,7 +51,9 @@ import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
 import cn.com.incito.wisdom.sdk.log.WLog;
+import cn.com.incito.wisdom.uicomp.widget.dialog.ProgressiveDialog;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 /**
@@ -70,7 +73,7 @@ public class WifiSelectorActivity extends BaseActivity  {
 	private INetStatusChangedReceiver mNetStatusChangedReceiver;
 	private WifiManager mWifiManager;
 	private boolean isAutoInvalidate = false;
-	
+	private ProgressiveDialog mProgressDialog;
 	// 自动刷新Wifi列表的时长
 	private long TIMEINMILLS_REFLUSHLIST = 10 * 1000;
 	private IWifiItem mCurrentWifiItem;
@@ -84,6 +87,8 @@ public class WifiSelectorActivity extends BaseActivity  {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_wifiselector);
+		mProgressDialog = new ProgressiveDialog(this);
+		mProgressDialog.setMessage(R.string.waiting_access_wifi);
 		initWifi();
 		initViews();
 		try {
@@ -114,46 +119,54 @@ public class WifiSelectorActivity extends BaseActivity  {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				mCurrentWifiItem = mWifiItems.get(arg2);
-				switch (mCurrentWifiItem.wifiType) {
-				case WIFITYPE_NORMAL:
-					mWifiInfo = mWifiManager.getConnectionInfo();
-					final EditText passwordEdit = new EditText(
-							WifiSelectorActivity.this);
-					// 显示输入密码对话框
-					new AlertDialog.Builder(WifiSelectorActivity.this)
-							.setTitle("请输入密码")
-							.setIcon(android.R.drawable.ic_dialog_info)
-							.setView(passwordEdit)
-							.setPositiveButton("确定", new OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									connectToWifi(mCurrentWifiItem,
-											passwordEdit.getText().toString(),
-											IWifiSecurityType.SECURITY_TYPE_WPA);
-								
-									dialog.dismiss();
-								}
-							}).setNegativeButton("取消", new OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									dialog.dismiss();
-								}
-							}).show();
+				//点击的时候 判断点击的wifi以前是否正确连接过
+				SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("wifi",MODE_APPEND);
+				if(sharedPreferences.contains(mCurrentWifiItem.getScanResult().BSSID)){
+					connectToWifi(mCurrentWifiItem, sharedPreferences.getString(mCurrentWifiItem.getScanResult().BSSID, ""),IWifiSecurityType.SECURITY_TYPE_WPA);
+				}else{
+					switch (mCurrentWifiItem.wifiType) {
+					case WIFITYPE_NORMAL:
+						mWifiInfo = mWifiManager.getConnectionInfo();
+						final EditText passwordEdit = new EditText(
+								WifiSelectorActivity.this);
+						// 显示输入密码对话框
+						new AlertDialog.Builder(WifiSelectorActivity.this)
+								.setTitle("请输入密码")
+								.setIcon(android.R.drawable.ic_dialog_info)
+								.setView(passwordEdit)
+								.setPositiveButton("确定", new OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										connectToWifi(mCurrentWifiItem,
+												passwordEdit.getText().toString(),
+												IWifiSecurityType.SECURITY_TYPE_WPA);
+									
+										dialog.dismiss();
+									}
+								}).setNegativeButton("取消", new OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										dialog.dismiss();
+									}
+								}).show();
 
-					break;
-				case WIFITYPE_3G:
-					if (isMobileNetConnected()) {
-					} else {
-						Toast.makeText(getBaseContext(), "当前手机网络不可用",
-								Toast.LENGTH_LONG).show();
+						break;
+					case WIFITYPE_3G:
+						if (isMobileNetConnected()) {
+						} else {
+							Toast.makeText(getBaseContext(), "当前手机网络不可用",
+									Toast.LENGTH_LONG).show();
+						}
+						break;
+
+					default:
+						break;
 					}
-					break;
-
-				default:
-					break;
 				}
+				
+			
 			}
 		});
 
@@ -559,8 +572,16 @@ public class WifiSelectorActivity extends BaseActivity  {
 		}
 		int wcgID = mWifiManager.addNetwork(config);
 		if (mWifiManager.enableNetwork(wcgID, true)) {
+			SharedPreferences sharedPreferences = getSharedPreferences("wifi", MODE_APPEND);
+			SharedPreferences.Editor editor = sharedPreferences.edit();
+			editor.putString(mCurrentWifiItem.getScanResult().BSSID, password);
+			editor.commit();
 			startMain();
 		} else {
+			SharedPreferences sharedPreferences = getSharedPreferences("wifi", MODE_APPEND);
+			SharedPreferences.Editor editor = sharedPreferences.edit();
+			editor.remove(mCurrentWifiItem.getScanResult().BSSID);
+			editor.commit();
 			ToastHelper.showCustomToast(this, R.string.wifi_password_error);
 		}
 
@@ -666,6 +687,7 @@ public class WifiSelectorActivity extends BaseActivity  {
 							restartConnector();
 							break;
 						} else {
+							mProgressDialog.dismiss();;
 							Log.i("WifiSelectorActivity","Socket已连接，开始登陆，startMain退出 ");
 							startMainAct();
 						}
@@ -744,22 +766,11 @@ public class WifiSelectorActivity extends BaseActivity  {
 		android.os.Message message = new android.os.Message();
 		message.what = 0;
 		mHandler.sendMessage(message);
-		// mHandler.sendEmptyMessage(0);
 	}
 
 	@Override
 	public void onBackPressed() {
 		AppManager.getAppManager().AppExit(this);
 	}
-	
-	// /**
-	// * 跳转到模块选择页面
-	// */
-	// private void skipToMoudle(){
-	// Intent intent = new Intent(this,MoudleSelectorActivity.class);
-	// startActivity(intent);
-	// finish();
-	//
-	// }
 }
 	

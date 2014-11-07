@@ -17,6 +17,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.utils.ApiClient;
 import cn.com.incito.wisdom.sdk.log.WLog;
 import android.app.AlarmManager;
@@ -202,7 +203,7 @@ public class LogService extends Service {
 			} catch (Exception e) {
 				ApiClient.uploadErrorLog(e.getMessage());
 				e.printStackTrace();
-				recordLogServiceLog(Log.getStackTraceString(e));
+//				recordLogServiceLog(Log.getStackTraceString(e));
 			}
 		}
 	}

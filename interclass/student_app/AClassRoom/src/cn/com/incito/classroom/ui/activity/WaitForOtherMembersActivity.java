@@ -21,6 +21,7 @@ import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.classroom.vo.Group;
 import cn.com.incito.classroom.vo.Student;
+import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
@@ -69,6 +70,12 @@ public class WaitForOtherMembersActivity extends BaseActivity implements
 				break;
 			}
 		}
+		
+		//不是本小组的组长则不显示comfirm按钮 
+		if(group.getCaptainid() != MyApplication.getInstance().getStudent().getId()){
+			btn_waiting.setVisibility(View.GONE);
+		}
+		
 		image_group_icon = (ImageView) findViewById(R.id.image_group_icon);
 		groupIcons = getResources().obtainTypedArray(R.array.groupIcons);
 		String[] iconsName = getResources().getStringArray(R.array.groupicons_name);
@@ -175,7 +182,7 @@ public class WaitForOtherMembersActivity extends BaseActivity implements
 					jsonObject.put("studentId", MyApplication.getInstance().getStudent().getId());
 					MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_DELETE);
 					messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
-					MyApplication.Logger.debug("删除小组信息："+jsonObject.toJSONString());
+					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":WaitForOtherMembersActivity:发送删除小组信息："+jsonObject.toJSONString());
 					CoreSocket.getInstance().sendMessage(messagePacking);
 					
 				}
@@ -183,7 +190,7 @@ public class WaitForOtherMembersActivity extends BaseActivity implements
 				
 				@Override
 				public void onClick(DialogInterface arg0, int arg1) {
-					MyApplication.Logger.debug("取消退出小组");
+					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":WaitForOtherMembersActivity:取消退出小组");
 					arg0.dismiss();
 				}
 			}).show();
@@ -206,7 +213,7 @@ public class WaitForOtherMembersActivity extends BaseActivity implements
 							Message.MESSAGE_GROUP_CONFIRM);
 					message.putBodyData(DataType.INT,
 							BufferUtils.writeUTFString(json.toJSONString()));
-					MyApplication.Logger.debug("停止其他小组成员添加："+json.toJSONString());
+					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":WaitForOtherMembersActivity:停止其他小组成员添加："+json.toJSONString());
 					CoreSocket.getInstance().sendMessage(message);
 					
 				}
@@ -214,7 +221,7 @@ public class WaitForOtherMembersActivity extends BaseActivity implements
 				
 				@Override
 				public void onClick(DialogInterface arg0, int arg1) {
-					MyApplication.Logger.debug("提交小组分组");
+					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":WaitForOtherMembersActivity:提交小组分组");
 					arg0.dismiss();
 				}
 			}).show();
