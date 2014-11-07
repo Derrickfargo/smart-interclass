@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 
@@ -135,6 +136,10 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 			JOptionPane.showMessageDialog(getParent().getParent(), "当前还没有学生登陆，请先登录后再上课!");
 			return;
 		}
+		if(app.getGroupList().size() == 0){
+			JOptionPane.showMessageDialog(getParent().getParent(), "学生还未分组，请先分组后再上课!");
+			return;
+		}
 		Set<Student> noGroupStudent = getNoGroupStudent();
 		if (noGroupStudent.size() != 0) {
 			String message = "还有以下学生未加入小组：\n%s是否要立即结束分组开始上课？";
@@ -142,8 +147,9 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 			Iterator<Student> it = noGroupStudent.iterator();
 			while (it.hasNext()) {
 				args.append(it.next().getName());
-				args.append("\n");
+				args.append("、");
 			}
+			args.append("\n");
 			int result = JOptionPane.showConfirmDialog(getParent().getParent(), 
 					String.format(message, args), "提示", JOptionPane.YES_NO_OPTION);
 			if (result == JOptionPane.YES_OPTION) {
@@ -204,9 +210,9 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 			messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(json.toString()));
 			Map<String, SocketChannel> channels = app.getClientChannel();
 			List<SocketChannel> channelList = new ArrayList<SocketChannel>();
-			Set set = channels.entrySet();
-			for (Iterator iter = set.iterator(); iter.hasNext();) {
-				Map.Entry entry = (Map.Entry) iter.next();
+			Set<Entry<String, SocketChannel>> set = channels.entrySet();
+			for (Iterator<Entry<String, SocketChannel>> iter = set.iterator(); iter.hasNext();) {
+				Map.Entry<String, SocketChannel> entry = (Map.Entry<String, SocketChannel>) iter.next();
 				SocketChannel value = (SocketChannel) entry.getValue();
 				channelList.add(value);
 //			}
