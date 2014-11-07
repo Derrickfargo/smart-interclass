@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 
 import cn.com.incito.interclass.po.Group;
+import cn.com.incito.interclass.po.Student;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.message.DataType;
@@ -129,25 +131,49 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 	}
 
 	private void doBegin() {
-		if (app.isGrouping()) {
-			int result = JOptionPane.showConfirmDialog(getParent().getParent(),
-					"学生正在分组，是否立即结束分组开始上课？", "提示", JOptionPane.YES_NO_OPTION);
+		if (app.getOnlineStudent().size() == 0) {
+			JOptionPane.showMessageDialog(getParent().getParent(), "当前还没有学生登陆，请先登录后再上课!");
+			return;
+		}
+		Set<Student> noGroupStudent = getNoGroupStudent();
+		if (noGroupStudent.size() != 0) {
+			String message = "还有以下学生未加入小组：\n%s是否要立即结束分组开始上课？";
+			StringBuffer args = new StringBuffer();
+			Iterator<Student> it = noGroupStudent.iterator();
+			while (it.hasNext()) {
+				args.append(it.next().getName());
+				args.append("\n");
+			}
+			int result = JOptionPane.showConfirmDialog(getParent().getParent(), 
+					String.format(message, args), "提示", JOptionPane.YES_NO_OPTION);
 			if (result == JOptionPane.YES_OPTION) {
 				app.setGrouping(false);
 			} else {
 				return;
 			}
 		}
-		if (app.getOnlineStudent().size() == 0) {
-			JOptionPane.showMessageDialog(getParent().getParent(),
-					"当前还没有学生登陆，请先登录后再上课!");
-			return;
-		}
-
+		app.setGrouping(false);//TODO 新增
 		MainFrame.getInstance().setVisible(false);
 		setOnClass(true);
 	}
 
+	private Set<Student> getNoGroupStudent() {
+		Set<Student> onGroupStudents = new HashSet<Student>();
+		Set<Student> onlines = app.getOnlineStudent();
+		Iterator<Student> it = onlines.iterator();
+		while (it.hasNext()) {
+			onGroupStudents.add(it.next());
+		}
+		Set<Group> groups = app.getGroupList();
+		for (Group group : groups) {
+			List<Student> studentList = group.getStudents();
+			for (Student student : studentList) {
+				onGroupStudents.remove(student);
+			}
+		}
+		return onGroupStudents;
+	}
+	
 	/**
 	 * 发送分组命令
 	 */
@@ -157,11 +183,11 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 					"当前还没有学生登陆，请先登陆后再分组!");
 			return;
 		}
-		if (app.isGrouping()) {
-			JOptionPane.showMessageDialog(getParent().getParent(),
-					"学生正在分组，请等待分组完成!");
-			return;
-		}
+//		if (app.isGrouping()) {
+//			JOptionPane.showMessageDialog(getParent().getParent(),
+//					"学生正在分组，请等待分组完成!");
+//			return;
+//		}
 		if (Application.hasQuiz) {// TODO 格式不一致，统一修改重构
 			JOptionPane.showMessageDialog(getParent().getParent(),
 					"学生正在做作业，不能分组!");
