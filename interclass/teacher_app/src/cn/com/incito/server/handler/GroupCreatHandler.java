@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Student;
+import cn.com.incito.interclass.ui.MainFrame;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
@@ -32,6 +33,7 @@ public class GroupCreatHandler extends MessageHandler{
 		group.setCaptainid(student.getId());
 		Application.getInstance().addGroup(group);
 		Application.getInstance().getTempGroup().put(student.getId(), group);
+		MainFrame.getInstance().refreshPrepare();
 		
 		Map<String, SocketChannel> channels = Application.getInstance().getClientChannel();
 		List<SocketChannel>  channelsRes=new ArrayList<SocketChannel>();
