@@ -42,7 +42,11 @@ import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.classroom.constants.Constants;
+import cn.com.incito.classroom.exception.AppException;
 import cn.com.incito.classroom.utils.ApiClient;
+import cn.com.incito.classroom.utils.UpdateManager;
+import cn.com.incito.classroom.vo.Version;
 import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
@@ -52,6 +56,7 @@ import cn.com.incito.socket.utils.BufferUtils;
 import cn.com.incito.wisdom.sdk.log.WLog;
 import cn.com.incito.wisdom.uicomp.widget.dialog.ProgressiveDialog;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 /**
@@ -222,7 +227,6 @@ public class WifiSelectorActivity extends BaseActivity  {
 			IWifiItem wifiItem;
 			ScanResult scanResult;
 			Collections.sort(scanResults, new Comparator<ScanResult>() {
-
 				@Override
 				public int compare(ScanResult arg0, ScanResult arg1) {
 					return Math.abs(arg0.level) - Math.abs(arg1.level);
@@ -643,17 +647,14 @@ public class WifiSelectorActivity extends BaseActivity  {
 						Log.i("WifiSelectorActivity", "WiFi已连接，检查Socket是否连接 ");
 						new Thread(CoreSocket.getInstance()).start();//连接socket
 						WifiSelectorActivity.this.sleep(1000);
-						 //TODO 升级
+						//TODO 升级
 //						try {
-//							JSONObject updateResult = JSONObject
-//									.parseObject(ApiClient.updateApk(code));
-//							WLog.i(WifiSelectorActivity.class, "版本更新返回信息："
-//									+ updateResult);
+//							JSONObject updateResult = JSONObject.parseObject(ApiClient.updateApk(code));
+//							WLog.i(WifiSelectorActivity.class, "版本更新返回信息："+ updateResult);
 //							if (updateResult.getInteger("code") == 0) {
 //								Version version = JSON.parseObject(updateResult.getJSONObject("data").toJSONString(),Version.class);
-//								String url = "http://localhost:8080/api/version/download?id="+ version.getId();
-//								UpdateManager mUpdateManager = new UpdateManager(
-//										WifiSelectorActivity.this, url);
+//								String url = "http://"+Constants.getSERVER_IP()+":"+Constants.getSERVER_PORT()+"/app/api/version/download?id="+ version.getId();
+//								UpdateManager mUpdateManager = new UpdateManager(WifiSelectorActivity.this, url);
 //								mUpdateManager.checkUpdateInfo();
 //							} else {
 //							}
