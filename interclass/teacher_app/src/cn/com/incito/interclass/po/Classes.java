@@ -1,6 +1,7 @@
 package cn.com.incito.interclass.po;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Classes implements Serializable {
@@ -11,10 +12,9 @@ public class Classes implements Serializable {
 	private static final long serialVersionUID = 4858685768837161501L;
 
 	private int id;
-	private String name;
 	private int schoolId;
-	private int year;
-	private int teacherId;
+	private int year;// 年级，哪年入学
+	private int number;//班级，如2班等
 	private Date ctime;
 
 	public int getId() {
@@ -26,11 +26,15 @@ public class Classes implements Serializable {
 	}
 
 	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+		Calendar calendar = Calendar.getInstance();
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH) + 1;
+		year = year - this.year;
+		if (month >= 9) {
+			year += 1;
+		}
+		String className = "%d年级%d班";
+		return String.format(className, year, number);
 	}
 
 	public int getSchoolId() {
@@ -49,14 +53,6 @@ public class Classes implements Serializable {
 		this.year = year;
 	}
 
-	public int getTeacherId() {
-		return teacherId;
-	}
-
-	public void setTeacherId(int teacherId) {
-		this.teacherId = teacherId;
-	}
-
 	public Date getCtime() {
 		return ctime;
 	}
@@ -65,4 +61,44 @@ public class Classes implements Serializable {
 		this.ctime = ctime;
 	}
 
+	public int getNumber() {
+		return number;
+	}
+
+	public void setNumber(int number) {
+		this.number = number;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		result = prime * result + number;
+		result = prime * result + schoolId;
+		result = prime * result + year;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Classes other = (Classes) obj;
+		if (id != other.id)
+			return false;
+		if (number != other.number)
+			return false;
+		if (schoolId != other.schoolId)
+			return false;
+		if (year != other.year)
+			return false;
+		return true;
+	}
+
+	
 }
