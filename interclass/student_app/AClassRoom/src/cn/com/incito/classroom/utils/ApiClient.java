@@ -275,7 +275,7 @@ public class ApiClient {
 		try {
 			_post(Constants.URL_UPLOAD_LOG, params, files);
 		} catch (Exception e) {
-			ApiClient.uploadErrorLog(e.getMessage());
+			
 		}
 	}
 	
