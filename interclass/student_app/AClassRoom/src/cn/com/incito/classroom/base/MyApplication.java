@@ -27,7 +27,6 @@ import cn.com.incito.classroom.vo.Group;
 import cn.com.incito.classroom.vo.LoginResVo;
 import cn.com.incito.classroom.vo.Student;
 import cn.com.incito.common.utils.AndroidUtil;
-import cn.com.incito.socket.handler.LockScreenHandler;
 import cn.com.incito.wisdom.sdk.cache.disk.impl.TotalSizeLimitedDiscCache;
 import cn.com.incito.wisdom.sdk.cache.disk.naming.Md5FileNameGenerator;
 import cn.com.incito.wisdom.sdk.cache.mem.AbstractMemoryCache;
@@ -36,7 +35,6 @@ import cn.com.incito.wisdom.sdk.image.loader.ImageLoaderConfiguration;
 import cn.com.incito.wisdom.sdk.image.loader.assist.LRULimitedMemoryCacheBitmapCache;
 import cn.com.incito.wisdom.sdk.image.loader.assist.LRUMemoryCacheBitmapCache;
 import cn.com.incito.wisdom.sdk.image.loader.assist.QueueProcessingType;
-import cn.com.incito.wisdom.sdk.log.WLog;
 import cn.com.incito.wisdom.sdk.net.download.BaseImageDownloader;
 import cn.com.incito.wisdom.sdk.net.download.SlowNetworkImageDownloader;
 import cn.com.incito.wisdom.sdk.openudid.OpenUDIDManager;
@@ -44,6 +42,8 @@ import cn.com.incito.wisdom.sdk.utils.StorageUtils;
 
 import com.google.code.microlog4android.Logger;
 import com.google.code.microlog4android.LoggerFactory;
+import com.google.code.microlog4android.appender.FileAppender;
+import com.google.code.microlog4android.config.PropertyConfigurator;
 import com.umeng.analytics.MobclickAgent;
 
 /**
@@ -137,6 +137,9 @@ public class MyApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		PropertyConfigurator.getConfigurator(this).configure();
+		final FileAppender  fa =   (FileAppender) Logger.getAppender(1);    
+		fa.setAppend(true);
 		AppUncaughtException appException = AppUncaughtException.getInstance();
 		appException.init(this);
 		PowerManager pmManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
