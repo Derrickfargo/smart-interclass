@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Student;
+import cn.com.incito.interclass.ui.MainFrame;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.CoreSocket;
 import cn.com.incito.server.core.Message;
@@ -50,6 +51,7 @@ public class GroupDeleteHandler extends MessageHandler {
 		for (Integer key : Application.getInstance().getTempGroup().keySet()) {
 			groupList.add(Application.getInstance().getTempGroup().get(key));
 		}
+		MainFrame.getInstance().refresh();
 		result.put("studentId", studentId);
 		result.put("code", 0);
 		result.put("data", groupList);

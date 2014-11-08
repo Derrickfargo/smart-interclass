@@ -43,11 +43,6 @@ import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.classroom.constants.Constants;
-import cn.com.incito.classroom.exception.AppException;
-import cn.com.incito.classroom.utils.ApiClient;
-import cn.com.incito.classroom.utils.UpdateManager;
-import cn.com.incito.classroom.vo.Version;
 import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
@@ -57,7 +52,6 @@ import cn.com.incito.socket.utils.BufferUtils;
 import cn.com.incito.wisdom.sdk.log.WLog;
 import cn.com.incito.wisdom.uicomp.widget.dialog.ProgressiveDialog;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 /**
@@ -100,7 +94,6 @@ public class WifiSelectorActivity extends BaseActivity  {
 			PackageInfo info = pm.getPackageInfo("cn.com.incito.classroom", 0);
 			code = info.versionCode;
 		} catch (NameNotFoundException e) {
-			ApiClient.uploadErrorLog(e.getMessage());
 		}
 	}
 
@@ -758,7 +751,6 @@ public class WifiSelectorActivity extends BaseActivity  {
 		try {
 			Thread.sleep(seconds);
 		} catch (InterruptedException e) {
-			ApiClient.uploadErrorLog(e.getMessage());
 			e.printStackTrace();
 		}
 	}

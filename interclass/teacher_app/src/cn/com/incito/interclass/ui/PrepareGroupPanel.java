@@ -29,7 +29,7 @@ public class PrepareGroupPanel extends JPanel {
 
 	private void initView() {
 		int x = 10, y = 10;
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 12; i++) {
 			GroupPanel groupPanel = new GroupPanel();
 			groupPanel.setBounds(x, y, 825, 100);
 			add(groupPanel);
