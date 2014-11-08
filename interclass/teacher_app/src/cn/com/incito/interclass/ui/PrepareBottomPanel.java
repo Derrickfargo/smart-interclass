@@ -189,11 +189,11 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 					"当前还没有学生登陆，请先登陆后再分组!");
 			return;
 		}
-//		if (app.isGrouping()) {
-//			JOptionPane.showMessageDialog(getParent().getParent(),
-//					"学生正在分组，请等待分组完成!");
-//			return;
-//		}
+		if (app.isGrouping()) {
+			JOptionPane.showMessageDialog(getParent().getParent(),
+					"学生正在分组，请等待分组完成!");
+			return;
+		}
 		if (Application.hasQuiz) {// TODO 格式不一致，统一修改重构
 			JOptionPane.showMessageDialog(getParent().getParent(),
 					"学生正在做作业，不能分组!");
