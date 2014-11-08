@@ -26,6 +26,7 @@ import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.server.api.ApiClient;
 import cn.com.incito.server.api.Application;
+import cn.com.incito.server.core.CoreService;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.exception.AppException;
 import cn.com.incito.server.message.DataType;
@@ -237,7 +238,18 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 	
 	public void setOnClass(boolean isOnClass) {
 		UIHelper.sendLockScreenMessage(true);
+		//发送上课命令
+		
 		if (isOnClass) {
+			//遍历临时分组 将还没有提交分组的小组强制分组
+			CoreService service=new CoreService();
+			for (Integer key : Application.getInstance().getTempGroup().keySet()) {
+				try {
+					service.saveGroup(Application.getInstance().getTempGroup().get(key));
+				} catch (AppException e) {
+					e.printStackTrace();
+				}
+			}
 			btnBegin.setIcon(new ImageIcon("images/main/btn_end.png"));// 设置图片
 			Application.isOnClass = true;
 			Application.getInstance()
