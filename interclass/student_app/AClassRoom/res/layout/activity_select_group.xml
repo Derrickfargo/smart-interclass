@@ -41,7 +41,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="100dp"
             android:visibility="gone"
-            android:text="还没有小组哦,你可以去创建哦!"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:text="@string/no_group"
             />
         
         

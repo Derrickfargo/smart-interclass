@@ -87,11 +87,11 @@ public class WaitForOtherMembersActivity extends BaseActivity implements
 		text_group_members_name = (TextView) findViewById(R.id.text_group_members_name);
 
 		// 循环显示学生姓名
-		StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder("\t\t");
 		List<Student> students = group.getStudents();
 		if (students != null && students.size() > 0) {
 			for (int i = 0; i < students.size(); i++) {
-				sb.append(students.get(i).getName() + "\t");
+				sb.append(students.get(i).getName() + "\t\t");
 			}
 		}
 		text_group_members_name.setText(sb.toString());
@@ -127,10 +127,10 @@ public class WaitForOtherMembersActivity extends BaseActivity implements
 		}
 		
 		List<Student> students = g.getStudents();
-		StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder("\t\t");
 		if (students != null && students.size() > 0) {
 			for (int i = 0; i < students.size(); i++) {
-				sb.append(students.get(i).getName() + "\t");
+				sb.append(students.get(i).getName() + "\t\t");
 			}
 		}
 		Bundle bundle = new Bundle();

@@ -31,5 +31,6 @@
     
     <string name="wifi_password_error">wifi密码输入错误</string>
     <string name="please_input_group_name">请输入小组名称</string>
+    <string name="no_group">当前没有小组,你可以创建</string>
     
 </resources>
