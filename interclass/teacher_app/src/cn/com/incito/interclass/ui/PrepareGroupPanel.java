@@ -45,7 +45,7 @@ public class PrepareGroupPanel extends JPanel {
 		int index = 0;
 		while (it.hasNext()) {
 			Group group = it.next();
-			GroupPanel groupPanel = gpList.get(index);
+			GroupPanel groupPanel = gpList.get(index++);
 			groupPanel.setVisible(true);
 			groupPanel.setGroup(group);
 			String logo = LogoUtils.getInstance().getLogo24(group.getLogo());

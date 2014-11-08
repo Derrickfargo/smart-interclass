@@ -149,17 +149,8 @@ public class Application {
 	}
 
 	public void addGroup(Group group) {
-		groupMap.put(group.getId(), group);
-
-		Iterator<Group> it = groupList.iterator();
-		while (it.hasNext()) {
-			Group aGroup = it.next();
-			if (aGroup.getId() == group.getId()) {
-				it.remove();
-				break;
-			}
-		}
 		groupList.add(group);
+		groupMap.put(group.getId(), group);
 	}
 
 	public Group getGroupById(Integer id) {
