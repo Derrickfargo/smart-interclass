@@ -9,18 +9,17 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import com.alibaba.fastjson.JSONObject;
-
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.ui.MainFrame;
 import cn.com.incito.server.api.Application;
-import cn.com.incito.server.core.CoreService;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
 import cn.com.incito.server.exception.AppException;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
+
+import com.alibaba.fastjson.JSONObject;
 
 public class GroupConfirmHandler extends MessageHandler {
 	private Logger logger = Logger.getLogger(GroupCreatHandler.class.getName());
@@ -36,8 +35,8 @@ public class GroupConfirmHandler extends MessageHandler {
 			groupList.add(Application.getInstance().getTempGroup().get(key));
 		}
 		try {
-			CoreService.saveGroup(group);
-			logger.info("保存小组信息到数据库返回：" + CoreService.saveGroup(group));
+			String result = service.saveGroup(group);
+			logger.info("保存小组信息到数据库返回：" + result);
 		} catch (AppException e) {
 			e.printStackTrace();
 		}

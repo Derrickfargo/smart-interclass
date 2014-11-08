@@ -104,15 +104,6 @@ public class GroupService {
 		return groupMapper.delete(groupId);
 	}
 
-	public Integer creatGroup(Group group) {
-		return groupMapper.creatGroup(group);
-	}
-
-	public Group joinGroup(String groupId, String studentId) {
-		 groupMapper.joinGroup(groupId, studentId);
-		 return null;
-	}
-
 	/**
 	 * 通过队长ID 找到组的ID 并删除
 	 * @param studentId

@@ -28,47 +28,36 @@
 		    <result column="score" property="score"/>
 		    
 	    </collection>
+	    <!-- 
 	    <collection property="devices" column="id" ofType="com.incito.interclass.entity.Device" 
 			select="com.incito.interclass.persistence.DeviceMapper.getDeviceByGroupId">  
 		    <id column="id" property="id"/>
 		    <result column="imei" property="imei"/>
 		    <result column="ctime" property="ctime"/>
 	    </collection>
+	   	 -->
 	</resultMap>
 	
-  	<insert id="creatGroup" parameterType="com.incito.interclass.entity.Group" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO 
-			tb_group(name,logo,slogan,teacher_id,class_id,ctime,captainid)
-		VALUES
-			(#{name},#{logo},#{slogan},#{teacherId},#{classId},now(),#{captainid})
-	</insert>
-	
-	<insert id="joinGroup" parameterType="java.util.Map" >
-		INSERT INTO 
-			tb_student_group(group_id,student_id)
-		VALUES
-			(#{group_id},#{student_id})
-	</insert>
 	<select id="getGroupIdByCaptainId" parameterType="java.lang.Integer" resultMap="GroupUserMap">
 	    SELECT 
 	    tb_group.id,tb_group.name,tb_group.logo,tb_group.slogan,tb_group.medals,tb_group.teacher_id,
-	    tb_group.captainid 
+	    tb_group.teacher_id AS teacherId,tb_group.captain_id AS captainId
 	    FROM
 	    tb_group
 	    WHERE tb_group.captainid=#{studentId}
 	</select>
   	
 	<select id="getGroupList" resultMap="GroupUserMap" parameterType="java.util.Map">
-		SELECT DISTINCT
+		SELECT 
 			tb_group.id,tb_group.name,tb_group.logo,tb_group.slogan,tb_group.medals,
-			tb_group.teacher_id AS teacherId, tb_group.class_id AS classId
+			tb_group.teacher_id AS teacherId, tb_group.class_id AS classId,tb_group.captain_id AS captainId
 		FROM 
 			tb_group
 		INNER JOIN 
 			tb_teacher ON tb_teacher.id = tb_group.teacher_id
 		INNER JOIN 
 			tb_user ON tb_user.id = tb_teacher.id
-		LEFT JOIN
+		INNER JOIN
 			tb_class ON tb_class.id = tb_group.class_id
 		WHERE
 			tb_user.id = #{teacherId}
@@ -80,7 +69,7 @@
 	<select id="getGroupById" resultMap="GroupUserMap" parameterType="java.lang.Integer">
 		SELECT DISTINCT
 			tb_group.id,tb_group.name,tb_group.logo,tb_group.slogan,tb_group.medals,
-			tb_group.teacher_id AS teacherId,
+			tb_group.teacher_id AS teacherId, tb_group.captain_id AS captainId
 			tb_group.class_id AS classId,tb_table.number AS tableNumber
 		FROM 
 			tb_group
@@ -92,25 +81,6 @@
 			tb_class ON tb_class.id = tb_group.class_id
 		WHERE
 			tb_group.id = #{id}
-	</select>
-	
-	<select id="getGroupByTableId" resultMap="GroupUserMap" parameterType="java.util.Map">
-		SELECT DISTINCT
-			tb_group.id,tb_group.name,tb_group.logo,tb_group.slogan,tb_group.medals,
-			tb_group.teacher_id AS teacherId,
-			tb_group.class_id AS classId,tb_table.number AS tableNumber
-		FROM 
-			tb_group
-		INNER JOIN 
-			tb_teacher ON tb_teacher.id = tb_group.teacher_id
-		INNER JOIN 
-			tb_user ON tb_user.id = tb_teacher.id
-		INNER JOIN
-			tb_class ON tb_class.id = tb_group.class_id
-		WHERE
-			tb_table.id = #{tableId}
-			AND tb_teacher.id = #{teacherId}
-			AND tb_class.id = #{classId}
 	</select>
 	
 	<select id="getGroupByIMEI" resultMap="GroupUserMap" parameterType="java.util.Map">
@@ -173,9 +143,9 @@
 	
 	<insert id="save" parameterType="com.incito.interclass.entity.Group" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO 
-			tb_group(name,logo,slogan,teacher_id,class_id,ctime,medals)
+			tb_group(name,logo,slogan,teacher_id,class_id,ctime,captain_id)
 		VALUES
-			(#{name},#{logo},#{slogan},#{teacherId},#{classId},now(),#{medals})
+			(#{name},#{logo},#{slogan},#{teacherId},#{classId},now(),#{captainId})
 	</insert>
 	
 	<insert id="saveStudentGroup" parameterType="com.incito.interclass.entity.StudentGroup" useGeneratedKeys="true" keyProperty="id">
