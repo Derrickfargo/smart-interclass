@@ -1,5 +1,6 @@
 package cn.com.incito.server.handler;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -44,9 +45,14 @@ public class GroupDeleteHandler extends MessageHandler {
 					
 			}
 		}
+		List<Group> groupList=new ArrayList<Group>();
+		//遍历临时分组 将还没有分组的小组列表传回给pad端
+		for (Integer key : Application.getInstance().getTempGroup().keySet()) {
+			groupList.add(Application.getInstance().getTempGroup().get(key));
+		}
 		result.put("studentId", studentId);
 		result.put("code", 0);
-		result.put("data", Application.getInstance().getGroupList());
+		result.put("data", groupList);
 		logger.info("回复删除小组消息：" + result);
 		sendResponse(result.toString());
 	}
