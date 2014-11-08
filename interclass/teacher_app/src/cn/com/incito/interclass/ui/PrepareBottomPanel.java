@@ -50,13 +50,9 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 		setLayout(null);
 		setOpaque(false);
 
-		int total = 0;
-		for (Group group : app.getGroupList()) {
-			total += group.getStudents().size();
-		}
 		String msg = "应到 %d 人  | 实到 %d 人";
-		lblExpected = new JLabel(String.format(msg, total, app
-				.getOnlineStudent().size()), JLabel.CENTER);
+		lblExpected = new JLabel(String.format(msg, app.getStudentList().size(), 
+				app.getOnlineStudent().size()), JLabel.CENTER);
 		lblExpected.setForeground(UIHelper.getDefaultFontColor());
 		lblExpected.setBounds(10, 15, 150, 35);
 		add(lblExpected);

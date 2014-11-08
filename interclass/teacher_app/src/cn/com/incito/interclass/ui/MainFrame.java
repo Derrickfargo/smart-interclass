@@ -30,7 +30,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
-import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.ui.widget.IpDialog;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.config.AppConfig;
@@ -102,12 +101,9 @@ public class MainFrame extends MouseAdapter {
 		praisePanel.refresh();
 		quizBottomPanel.refresh();
 		prepareBottomPanel.refresh();
-		int total = 0;
-		for (Group group : app.getGroupList()) {
-			total += group.getStudents().size();
-		}
 		String msg = "应到 %d 人  | 实到 %d 人";
-		String text = String.format(msg, total, app.getOnlineStudent().size());
+		String text = String.format(msg, app.getStudentList().size(), app
+				.getOnlineStudent().size());
 		prepareBottomPanel.getLblExpected().setText(text);
 	}
 	
