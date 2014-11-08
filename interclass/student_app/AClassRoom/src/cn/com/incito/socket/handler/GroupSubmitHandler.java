@@ -19,17 +19,14 @@ public class GroupSubmitHandler extends MessageHandler {
 
 	@Override
 	protected void handleMessage() {
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() +"：GroupSubmitHandler：收到分组创建信息:" +data.getString("data") );
-		
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() +"：GroupSubmitHandler：收到创建分组信息:" +data.getString("data") );
 		int code = data.getIntValue("code");
 		if (code == 0) {
 			MyApplication app = MyApplication.getInstance();
 			Student student = app.getStudent();
-			List<Group> groupList = JSON.parseArray(data.getString("data"),
-					Group.class);
+			List<Group> groupList = JSON.parseArray(data.getString("data"),Group.class);
 			for (Group group : groupList) {
 				if (group.getCaptainid() == student.getId()) {
-					
 					//如果不是刚创建的小组组长而是其他小组的组长则不进行跳转
 					if(!"WaitForOtherMembersActivity".equals(AppManager.getAppManager().currentActivity().getClass().getSimpleName())){
 						MyApplication.getInstance().setGroup(group);
@@ -37,8 +34,6 @@ public class GroupSubmitHandler extends MessageHandler {
 						UIHelper.getInstance().showConfirmGroupActivity(data.getString("data"));
 						return;
 					}
-					
-					
 				}
 			}
 			UIHelper.getInstance().getmSelectGroupActivity().setData(groupList);

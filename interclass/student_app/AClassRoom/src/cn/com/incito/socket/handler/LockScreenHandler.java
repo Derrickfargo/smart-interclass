@@ -33,12 +33,9 @@ public class LockScreenHandler extends MessageHandler {
 		if (isLock.equals("true")) {
 				MyApplication.getInstance().setOnClass(true);
 				MyApplication.getInstance().lockScreen(true);
-				
 				if(!"ClassingActivity".equals(AppManager.getAppManager().currentActivity().getClass().getSimpleName())){
 					UIHelper.getInstance().showClassingActivity();
 				}
-				
-				
 		} else if(isLock.equals("false")){
 			MyApplication.getInstance().lockScreen(false);
 		}else{

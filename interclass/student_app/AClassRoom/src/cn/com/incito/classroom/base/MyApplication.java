@@ -26,6 +26,7 @@ import cn.com.incito.classroom.exception.AppUncaughtException;
 import cn.com.incito.classroom.vo.Group;
 import cn.com.incito.classroom.vo.LoginResVo;
 import cn.com.incito.classroom.vo.Student;
+import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.socket.handler.LockScreenHandler;
 import cn.com.incito.wisdom.sdk.cache.disk.impl.TotalSizeLimitedDiscCache;
 import cn.com.incito.wisdom.sdk.cache.disk.naming.Md5FileNameGenerator;
@@ -195,12 +196,12 @@ public class MyApplication extends Application {
 		initMacAddress();
 
 		// 启动socket和日志服务
-		if (Constants.LOG_OPEN) {
-			Intent logservice = new Intent(
-					"cn.com.incito.classroom.service.LOG_SERVICE");
-			startService(logservice);
-			WLog.i(MyApplication.class, "log service started");
-		}
+//		if (Constants.LOG_OPEN) {
+//			Intent logservice = new Intent(
+//					"cn.com.incito.classroom.service.LOG_SERVICE");
+//			startService(logservice);
+//			WLog.i(MyApplication.class, "log service started");
+//		}
 
 	}
 
@@ -223,8 +224,7 @@ public class MyApplication extends Application {
 	}
 
 	public void stopSocketService() {
-		Intent service = new Intent(
-				"cn.com.incito.classroom.service.SOCKET_SERVICE");
+		Intent service = new Intent("cn.com.incito.classroom.service.SOCKET_SERVICE");
 		stopService(service);
 	}
 
@@ -261,8 +261,7 @@ public class MyApplication extends Application {
 		boolean screenOn = pm.isScreenOn();
 
 		if (Constants.OPEN_LOCK_SCREEN) {
-			WLog.i(LockScreenHandler.class, "是否收到解锁屏信息：" + isLock);
-
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"LockScreenHandler.class:"+"是否收到解锁屏信息：" + isLock);
 			ContentResolver mContentResolver = this.getApplicationContext()
 					.getContentResolver();
 			ExecRootCmd execRootCmd = new ExecRootCmd();
@@ -293,17 +292,17 @@ public class MyApplication extends Application {
 		}
 	}
 
-	@Override
-	public void onLowMemory() {
-		super.onLowMemory();
-		sendBroadcast(new Intent("android.intent.action.SHOW_NAVIGATION_BAR"));
-	}
-
-	@Override
-	public void onTerminate() {
-		super.onTerminate();
-		sendBroadcast(new Intent("android.intent.action.SHOW_NAVIGATION_BAR"));
-		WLog.i(MyApplication.class, "广播发出");
-
-	}
+//	@Override
+//	public void onLowMemory() {
+//		super.onLowMemory();
+//		sendBroadcast(new Intent("android.intent.action.SHOW_NAVIGATION_BAR"));
+//	}
+//
+//	@Override
+//	public void onTerminate() {
+//		super.onTerminate();
+//		sendBroadcast(new Intent("android.intent.action.SHOW_NAVIGATION_BAR"));
+//		WLog.i(MyApplication.class, "广播发出");
+//
+//	}
 }

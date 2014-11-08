@@ -2,6 +2,7 @@ package cn.com.incito.socket.handler;
 
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.utils.ApiClient;
+import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;
 import cn.com.incito.wisdom.sdk.log.WLog;
@@ -17,7 +18,7 @@ public class SavePaperHandler extends MessageHandler {
 			MyApplication.getInstance().setSubmitPaper(false);
 		}else{
 			int delay = data.getIntValue("delay");
-			WLog.i(SavePaperHandler.class, "作业延迟时间:" + delay);
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"SavePaperHandler.class:"+"作业延迟时间:" + delay);
 			try {
 				Thread.sleep(delay);
 			} catch (InterruptedException e) {
