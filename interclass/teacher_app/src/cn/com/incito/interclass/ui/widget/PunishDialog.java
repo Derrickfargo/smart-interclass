@@ -239,7 +239,7 @@ public class PunishDialog extends JDialog implements MouseListener {
 		ParamsWrapper params = new ParamsWrapper();
 		params.put("studentId", studentId);
 		params.put("score", updateScore);
-		params.put("groupId", group.getId());
+		params.put("groupId", group.getCaptainId());
 		http.post(URLs.URL_UPDATE_SCORE, params, new StringResponseHandler() {
 
 			@Override

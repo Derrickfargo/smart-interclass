@@ -219,9 +219,9 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 				Map.Entry<String, SocketChannel> entry = (Map.Entry<String, SocketChannel>) iter.next();
 				SocketChannel value = (SocketChannel) entry.getValue();
 				channelList.add(value);
-//			}
+			}
 			sendMessageToGroup(messagePacking, channelList);
-		}
+//		}
 	}
 
 	private boolean doDeleteGroup() {
