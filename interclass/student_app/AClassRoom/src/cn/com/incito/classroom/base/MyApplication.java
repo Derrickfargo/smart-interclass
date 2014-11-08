@@ -136,25 +136,18 @@ public class MyApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		sendBroadcast(new Intent("android.intent.action.HIDE_NAVIGATION_BAR"));
-		// closeSysScreenLock();
 		AppUncaughtException appException = AppUncaughtException.getInstance();
 		appException.init(this);
 		PowerManager pmManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
 		WifiManager manager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-		mWifiLock = manager
-				.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF,
-						"cn.com.incito.classroom");
+		mWifiLock = manager.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF,"cn.com.incito.classroom");
 		wl = pmManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "My Tag");
 		wl.acquire();
 		mWifiLock.acquire();
-
 		mInstance = this;
-		mPrefs = PreferenceManager
-				.getDefaultSharedPreferences(getApplicationContext());
+		mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		initApplication();
 		MobclickAgent.openActivityDurationTrack(false);// 禁止友盟的自动统计功能
-
 		OpenUDIDManager.sync(this);
 		File cacheDir = StorageUtils.getOwnCacheDirectory(
 				getApplicationContext(),

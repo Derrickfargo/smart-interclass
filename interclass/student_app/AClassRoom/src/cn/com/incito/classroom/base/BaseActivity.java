@@ -1,17 +1,10 @@
 package cn.com.incito.classroom.base;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import cn.com.incito.classroom.ui.widget.NetWorkDialog;
-
-import com.google.code.microlog4android.config.PropertyConfigurator;
 
 /**
  * activity基类 Created by popoy on 2014/8/5.
@@ -24,7 +17,6 @@ public class BaseActivity extends FragmentActivity {
 
 	protected float mDensity;
 
-//	NetWorkReceiver receiver;
 
 	public NetWorkDialog netWorkDialog;
 
@@ -49,17 +41,12 @@ public class BaseActivity extends FragmentActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-//		receiver = new NetWorkReceiver();
-//		IntentFilter intentFilter = new IntentFilter();
-//		intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-//		registerReceiver(receiver, intentFilter);
 
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-//		unregisterReceiver(receiver);
 
 	}
 

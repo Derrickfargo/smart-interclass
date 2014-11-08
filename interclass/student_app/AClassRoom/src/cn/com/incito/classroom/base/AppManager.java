@@ -101,7 +101,6 @@ public class AppManager {
      */
     public void AppExit(Context context) {
         try {
-        	MyApplication.getInstance().sendBroadcast(new Intent("android.intent.action.SHOW_NAVIGATION_BAR"));
         	MyApplication.getInstance().release();
             finishAllActivity();
             CoreSocket.getInstance().stopConnection();
@@ -109,9 +108,6 @@ public class AppManager {
             ConnectionManager.getInstance(null).close(true);
             MyApplication.getInstance().stopSocketService();
             android.os.Process.killProcess(android.os.Process.myPid());
-//            ActivityManager activityMgr = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-//            activityMgr.restartPackage(context.getPackageName());
-//            System.exit(0);
         } catch (Exception e) {
         	ApiClient.uploadErrorLog(e.getMessage());
         	MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":AppManager:应用退出");
