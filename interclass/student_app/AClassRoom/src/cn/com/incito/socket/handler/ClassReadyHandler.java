@@ -43,7 +43,7 @@ public class ClassReadyHandler  extends MessageHandler{
 		if(groupList != null && groupList.size() > 0){
 			for(int i = 0; i < groupList.size(); i++){
 				Group temp = groupList.get(i);
-				if(temp.getCaptainid() == myGroup.getCaptainid()){
+				if(temp.getCaptainId() == myGroup.getCaptainId()){
 					return true;
 				}
 			}

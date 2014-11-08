@@ -96,7 +96,7 @@ public class SelectGroupActivity extends BaseActivity implements
 				// 2.判断当前设备是否已经加入该分组
 				Group group = groupList.get(position);
 				JSONObject jsonObject = new JSONObject();
-				jsonObject.put("groupId", group.getCaptainid());
+				jsonObject.put("groupId", group.getCaptainId());
 				jsonObject.put("student", me);
 				MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_JOIN);
 				messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(jsonObject.toJSONString()));

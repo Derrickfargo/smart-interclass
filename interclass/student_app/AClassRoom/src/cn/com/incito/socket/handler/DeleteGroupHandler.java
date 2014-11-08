@@ -50,7 +50,7 @@ public class DeleteGroupHandler extends MessageHandler {
 
 		Group group = MyApplication.getInstance().getGroup();
 
-		if (group != null && data.getInteger("studentId") == group.getCaptainid()) {
+		if (group != null && data.getInteger("studentId") == group.getCaptainId()) {
 			return true;
 		}
 

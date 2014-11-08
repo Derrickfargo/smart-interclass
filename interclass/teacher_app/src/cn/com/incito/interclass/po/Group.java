@@ -20,7 +20,7 @@ public class Group implements Serializable {
 	private int teacherId;
 	private int classId;
 	private Date ctime;
-	private int captainid;
+	private int captainId;
 	private List<Device> devices;
 	private List<Student> students = new ArrayList<Student>();
 	private List<Quiz> quizs;
@@ -34,12 +34,12 @@ public class Group implements Serializable {
 		return score;
 	}
 
-	public int getCaptainid() {
-		return captainid;
+	public int getCaptainId() {
+		return captainId;
 	}
 
-	public void setCaptainid(int captainid) {
-		this.captainid = captainid;
+	public void setCaptainId(int captainId) {
+		this.captainId = captainId;
 	}
 
 	public void setScore(int score) {
@@ -142,7 +142,7 @@ public class Group implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + captainid;
+		result = prime * result + captainId;
 		return result;
 	}
 
@@ -155,7 +155,7 @@ public class Group implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Group other = (Group) obj;
-		if (captainid != other.captainid)
+		if (captainId != other.captainId)
 			return false;
 		return true;
 	}

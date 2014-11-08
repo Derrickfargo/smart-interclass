@@ -72,7 +72,7 @@ public class WaitForOtherMembersActivity extends BaseActivity implements
 		}
 		
 		//不是本小组的组长则不显示comfirm按钮 
-		if(group.getCaptainid() != MyApplication.getInstance().getStudent().getId()){
+		if(group.getCaptainId() != MyApplication.getInstance().getStudent().getId()){
 			btn_waiting.setVisibility(View.GONE);
 		}
 		
@@ -165,7 +165,7 @@ public class WaitForOtherMembersActivity extends BaseActivity implements
 		case R.id.btn_back:
 			
 			String title = "";
-			if(group.getCaptainid() == MyApplication.getInstance().getStudent().getId()){
+			if(group.getCaptainId() == MyApplication.getInstance().getStudent().getId()){
 				title = "您是组长,退出后小组将解散,确认退出吗?";
 			}else{
 				title = "退出后您将可以选择其他小组加入,确认退出吗?";
@@ -178,7 +178,7 @@ public class WaitForOtherMembersActivity extends BaseActivity implements
 				@Override
 				public void onClick(DialogInterface arg0, int arg1) {
 					JSONObject jsonObject = new JSONObject();
-					jsonObject.put("captainId", group.getCaptainid());
+					jsonObject.put("captainId", group.getCaptainId());
 					jsonObject.put("studentId", MyApplication.getInstance().getStudent().getId());
 					MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_DELETE);
 					messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));

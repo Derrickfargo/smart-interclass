@@ -18,7 +18,7 @@ public class Group {
 	private int teacherId;
 	private int classId;
 	private Date ctime;
-	private int captainid;
+	private int captainId;
 	
 	private List<Student> students;
 	private String teacherName;
@@ -38,11 +38,11 @@ public class Group {
 	public void setLogo(String logo) {
 		this.logo = logo;
 	}
-	public int getCaptainid() {
-		return captainid;
+	public int getCaptainId() {
+		return captainId;
 	}
-	public void setCaptainid(int captainid) {
-		this.captainid = captainid;
+	public void setCaptainId(int captainId) {
+		this.captainId = captainId;
 	}
 	public String getMedals() {
 		return medals;

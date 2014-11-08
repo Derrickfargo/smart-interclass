@@ -30,7 +30,7 @@ public class GroupCreatHandler extends MessageHandler{
 		Group group = data.getObject("group", Group.class);
 		Student student = data.getObject("student", Student.class);
 		group.getStudents().add(student);
-		group.setCaptainid(student.getId());
+		group.setCaptainId(student.getId());
 		Application.getInstance().addGroup(group);
 		Application.getInstance().getTempGroup().put(student.getId(), group);
 		MainFrame.getInstance().refresh();

@@ -26,7 +26,7 @@ public class GroupSubmitHandler extends MessageHandler {
 			Student student = app.getStudent();
 			List<Group> groupList = JSON.parseArray(data.getString("data"),Group.class);
 			for (Group group : groupList) {
-				if (group.getCaptainid() == student.getId()) {
+				if (group.getCaptainId() == student.getId()) {
 					//如果不是刚创建的小组组长而是其他小组的组长则不进行跳转
 					if(!"WaitForOtherMembersActivity".equals(AppManager.getAppManager().currentActivity().getClass().getSimpleName())){
 						MyApplication.getInstance().setGroup(group);

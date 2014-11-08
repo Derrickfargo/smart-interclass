@@ -9,17 +9,18 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.alibaba.fastjson.JSONObject;
+
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.ui.MainFrame;
 import cn.com.incito.server.api.Application;
+import cn.com.incito.server.core.CoreService;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
 import cn.com.incito.server.exception.AppException;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
-
-import com.alibaba.fastjson.JSONObject;
 
 public class GroupConfirmHandler extends MessageHandler {
 	private Logger logger = Logger.getLogger(GroupCreatHandler.class.getName());
@@ -28,7 +29,7 @@ public class GroupConfirmHandler extends MessageHandler {
 	protected void handleMessage() {
 		logger.info("收到pad端的提交小组信息：" + data);
 		Group group = data.getObject("group", Group.class);
-		Application.getInstance().getTempGroup().remove(group.getCaptainid());
+		Application.getInstance().getTempGroup().remove(group.getCaptainId());
 		List<Group> groupList=new ArrayList<Group>();
 		//遍历临时分组 将还没有分组的小组列表传回给pad端
 		for (Integer key : Application.getInstance().getTempGroup().keySet()) {
