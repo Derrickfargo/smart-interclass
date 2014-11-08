@@ -62,7 +62,6 @@ public class Application {
 	private Map<String, SocketChannel> clientChannel;// 保存所有设备登陆的socket，imei和socket
 	
 	private Set<Group> groupList = new HashSet<Group>();// 本堂课的所有分组
-	private Map<Integer, Group> groupMap = new HashMap<Integer, Group>(); //以保存的分组信息
 	private Map<Integer, Group> tempGroup = new HashMap<Integer, Group>();// 未保存的分组信息,key是创建学生id
 	
 	private List<String> tempQuizIMEI = new ArrayList<String>();
@@ -150,11 +149,6 @@ public class Application {
 
 	public void addGroup(Group group) {
 		groupList.add(group);
-		groupMap.put(group.getId(), group);
-	}
-
-	public Group getGroupById(Integer id) {
-		return groupMap.get(id);
 	}
 
 	public Set<Group> getGroupList() {

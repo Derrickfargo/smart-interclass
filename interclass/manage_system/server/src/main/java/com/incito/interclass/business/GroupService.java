@@ -100,8 +100,17 @@ public class GroupService {
 		groupMapper.updateGroup(group);
 	}
 
-	public Integer deleteGroupById(String groupId) {
+	public Integer deleteGroupById(int groupId) {
 		return groupMapper.delete(groupId);
+	}
+	
+	public void claerGroup(int teacherId,int classId){
+		List<Group> groupList = groupMapper.getGroupList(teacherId, classId);
+		for (Group group : groupList) {
+			groupMapper.delete(group.getId());
+			groupMapper.deleteStudentGroup(group.getId());
+		}
+		
 	}
 
 	/**
@@ -109,7 +118,7 @@ public class GroupService {
 	 * @param studentId
 	 * @return
 	 */
-	public Group getGroupIdByCaptainId(String studentId) {
+	public Group getGroupIdByCaptainId(int studentId) {
 		return groupMapper.getGroupIdByCaptainId(studentId);
 	}
 }

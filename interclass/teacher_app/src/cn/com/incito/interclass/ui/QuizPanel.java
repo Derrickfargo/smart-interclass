@@ -70,7 +70,39 @@ public class QuizPanel extends JPanel {
 //		add(lblNoDesk);
 	}
 
+	private void hideGroup() {
+		int i = 0;
+		while (i < groupList.size()) {
+			hideQuizGroup(quizGroupList.get(i));
+			if (++i < groupList.size()) {
+				hideQuizGroup(quizGroupList.get(i));
+			}
+			i++;
+		}
+	}
+	
+	private void hideQuizGroup(QuizGroupPanel panel) {
+		panel.setVisible(false);
+		panel.getLblLogo().setIcon(new ImageIcon(""));
+		panel.getLblGroupName().setText("");
+		panel.getLblGroupName().setToolTipText("");
+		
+		List<JPanel> quizPanel = panel.getQuizPanel();
+		List<JLabel> quizList = panel.getNameList();
+		List<JLabel> orderList = panel.getOrderList();
+		for (int i = 0; i < quizPanel.size(); i++) {
+			JLabel lblOrder = orderList.get(i);
+			quizPanel.get(i).setVisible(false);
+			lblOrder.setVisible(false);
+			JLabel lblName = quizList.get(i);
+			lblName.setText("");
+			lblName.setToolTipText("");
+			panel.addImage(i, null);
+		}
+	}
+	
 	public void refresh() {
+		hideGroup();
 		initData();
 //		if (groupList.size() == 0) {//未绑定 
 //			lblNoDesk.setVisible(true);

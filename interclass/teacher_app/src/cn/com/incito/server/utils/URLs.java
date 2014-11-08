@@ -68,6 +68,11 @@ public class URLs {
 	 * 更新组信息
 	 */
 	public static String URL_UPDATE_GROUP = URL_API_HOST + "api/group/update";
+	
+	/**
+	 * 删除组信息
+	 */
+	public static String URL_DELETE_GROUP = URL_API_HOST + "api/group/delete";
 
 	/**
 	 * 随堂作业云同步

@@ -301,6 +301,20 @@ public class ApiClient {
 		}
 	}
 
+	public static String deleteGroup(int teacherId, int classId)
+			throws AppException {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("teacherId", teacherId);
+		params.put("classId", classId);
+		try {
+			return _post(URLs.URL_DELETE_GROUP, params, null);
+		} catch (Exception e) {
+			if (e instanceof AppException)
+				throw (AppException) e;
+			throw AppException.network(e);
+		}
+	}
+	
 	public static void uploadErrorLog(String reason) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("type", 1);

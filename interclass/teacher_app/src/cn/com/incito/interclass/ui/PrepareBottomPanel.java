@@ -24,8 +24,10 @@ import org.apache.log4j.Logger;
 
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Student;
+import cn.com.incito.server.api.ApiClient;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.Message;
+import cn.com.incito.server.exception.AppException;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
@@ -195,6 +197,12 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 					"学生正在做作业，不能分组!");
 			return;
 		}
+		if(!doDeleteGroup()){//先删除分组
+			
+		}
+		app.getGroupList().clear();
+		app.getTempGroup().clear();
+		app.refresh();
 		// 编辑小组信息
 		app.setGrouping(true);
 //		MainFrame.getInstance().showGrouping();
@@ -216,6 +224,17 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 		}
 	}
 
+	private boolean doDeleteGroup() {
+		int teacherId = app.getTeacher().getId();
+		int classId = app.getClasses().getId();
+		try {
+			ApiClient.deleteGroup(teacherId, classId);
+			return true;
+		} catch (AppException e) {
+			return false;
+		}
+	}
+	
 	public void setOnClass(boolean isOnClass) {
 		UIHelper.sendLockScreenMessage(true);
 		if (isOnClass) {

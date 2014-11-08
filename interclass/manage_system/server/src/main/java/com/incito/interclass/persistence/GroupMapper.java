@@ -43,13 +43,14 @@ public interface GroupMapper {
 	 * 根据小组Id 删除小组
 	 * @param groupId
 	 */
-	Integer delete(String groupId);
+	Integer delete(int groupId);
 
 	/**
 	 * 查找队长所在的组的groupId
 	 * @param studentId
 	 */
-	Group getGroupIdByCaptainId(String studentId);
+	Group getGroupIdByCaptainId(int studentId);
 
+	Integer deleteStudentGroup(int groupId);
 	
 }

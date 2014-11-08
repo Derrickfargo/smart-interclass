@@ -158,4 +158,8 @@
 	<delete id="delete" parameterType="java.lang.Integer">
 		DELETE FROM tb_group WHERE id = #{id} 
 	</delete>
+	
+	<delete id="deleteStudentGroup" parameterType="java.lang.Integer">
+		DELETE FROM tb_student_group WHERE group_id = #{groupId}
+	</delete>
 </mapper>

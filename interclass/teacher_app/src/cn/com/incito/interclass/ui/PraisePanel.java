@@ -56,6 +56,7 @@ public class PraisePanel extends JPanel {
 	}
 
 	public void refresh() {
+		hideGroup();
 		initData();
 //		if (groupList.size() == 0) {// 未绑定
 //			lblNoDesk.setVisible(true);
@@ -129,4 +130,24 @@ public class PraisePanel extends JPanel {
 //		});
 	}
 
+	private void hideGroup() {
+		int i = 0;
+		for (int row = 0; row < 4; row++) {
+			for (int column = 0; column < 3; column++) {
+				PraiseGroupPanel panel = praiseGroupList.get(i++);
+				hidePraiseGroupPanel(panel);
+			}
+		}
+	}
+	
+	private void hidePraiseGroupPanel(PraiseGroupPanel panel) {
+		panel.setVisible(false);
+		ImageIcon icon = new ImageIcon("");
+		panel.getLblLogo().setIcon(icon);
+		panel.getLblGroupName().setText("");
+		panel.getLblGroupName().setToolTipText("");
+		panel.getLblMember().setText("");
+		panel.getLblMember().setToolTipText("");
+		panel.getLblScore().setText("");
+	}
 }

@@ -40,6 +40,7 @@ public class PrepareGroupPanel extends JPanel {
 	}
 
 	public void refresh() {
+		hideGroup();
 		Set<Group> groups = app.getGroupList();
 		Iterator<Group> it = groups.iterator();
 		int index = 0;
@@ -60,6 +61,21 @@ public class PrepareGroupPanel extends JPanel {
 				JLabel lblName = lblStudents.get(i);
 				lblName.setText(student.getName());
 				lblName.setVisible(true);
+			}
+		}
+	}
+	
+	private void hideGroup() {
+		for (GroupPanel groupPanel : gpList) {
+			groupPanel.setVisible(false);
+			ImageIcon icon = new ImageIcon("");
+			groupPanel.getLblLogo().setIcon(icon);
+			groupPanel.getLblGroupName().setText("");
+			groupPanel.getLblGroupName().setVisible(false);
+			List<JLabel> lblStudents = groupPanel.getStudentList();
+			for (JLabel lblName : lblStudents) {
+				lblName.setText("");
+				lblName.setVisible(false);
 			}
 		}
 	}

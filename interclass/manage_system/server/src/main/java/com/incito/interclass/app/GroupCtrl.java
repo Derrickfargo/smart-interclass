@@ -32,8 +32,17 @@ public class GroupCtrl extends BaseCtrl {
 		return renderJSONString(SUCCESS, groupService.save(g));
 	}
 	
-	
-	
+	/**
+	 * 删除分组
+	 * @param teacherId
+	 * @param classId
+	 * @return
+	 */
+	@RequestMapping(value = "/delete", produces = { "application/json;charset=UTF-8" })
+	public String deleteGroup(int teacherId,int classId){
+		groupService.claerGroup(teacherId, classId);
+		return renderJSONString(SUCCESS);
+	}
 
 	/**
 	 * 根据IMEI获得分组
