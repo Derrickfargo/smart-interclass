@@ -24,14 +24,19 @@ public class ClassReadyHandler  extends MessageHandler{
 				UIHelper.getInstance().getmSelectGroupActivity().setData(JSON.parseArray(data.getString("data"), Group.class));
 				return;
 			}
+			if("GroupCreatActivity".equals(AppManager.getAppManager().currentActivity().getClass().getSimpleName())){
+				UIHelper.getInstance().getmSelectGroupActivity().setData(JSON.parseArray(data.getString("data"), Group.class));
+			}
 			if(!"ClassingActivity".equals(AppManager.getAppManager().currentActivity().getClass().getSimpleName())){
 				
 				if("WaitForOtherMembersActivity".equals(AppManager.getAppManager().currentActivity().getClass().getSimpleName())){
 					if(!isContainGroup(JSONArray.parseArray(data.getString("data"), Group.class))){
 						//如果是该小组的成员则进行界面跳转 
 						UIHelper.getInstance().showClassingActivity();
+						return;
 					}
 				}
+				
 			}
 		}
 	}
