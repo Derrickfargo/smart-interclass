@@ -2,7 +2,6 @@ package cn.com.incito.server.core;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -23,9 +22,6 @@ import cn.com.incito.server.api.Application;
 import cn.com.incito.server.api.result.TeacherGroupResultData;
 import cn.com.incito.server.config.Constants;
 import cn.com.incito.server.exception.AppException;
-import cn.com.incito.server.message.DataType;
-import cn.com.incito.server.message.MessagePacking;
-import cn.com.incito.server.utils.BufferUtils;
 import cn.com.incito.server.utils.ImageUtil;
 import cn.com.incito.server.utils.JSONUtils;
 import cn.com.incito.server.utils.URLs;
@@ -210,9 +206,13 @@ public class CoreService {
 	 * @return
 	 * @throws AppException 
 	 */
-	public static String  saveGroup(Group group) throws AppException{
+	public String  saveGroup(Group group) throws AppException{
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("group", group);
+		JSONObject result = new JSONObject();
+		result.put("group", group);
+		group.setTeacherId(app.getTeacher().getId());
+		group.setClassId(app.getClasses().getId());
+		params.put("group", result.toJSONString());
 		try {
 			return ApiClient._post(URLs.URL_GROUP_SAVE, params, null);
 		} catch (Exception e) {
