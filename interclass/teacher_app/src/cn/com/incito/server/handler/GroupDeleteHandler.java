@@ -39,6 +39,7 @@ public class GroupDeleteHandler extends MessageHandler {
 				Student student=it.next();
 				if (student.getId() == studentId){
 					studentList.remove(student);
+					break;
 				}
 					
 			}
