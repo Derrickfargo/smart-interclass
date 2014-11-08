@@ -83,7 +83,7 @@ public class SelectGroupAdapter extends BaseAdapter {
 		viewHolder.img_group_icon.setBackground(Utils.getGroupIconByName(groupIcons, iconsName, group.getLogo()));
 		// 设置小组成员以及名称
 		viewHolder.text_name.setText(Html.fromHtml(group.getName()
-				+ "<br><font color='#ecf2fc'> " + sb.toString() + "</font>"));
+				+ "<br><br><font color='#ecf2fc'> " + sb.toString() + "</font>&nbsp"));
 		return convertView;
 	}
 
