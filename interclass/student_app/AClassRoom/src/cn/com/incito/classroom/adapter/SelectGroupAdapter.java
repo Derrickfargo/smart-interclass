@@ -2,7 +2,7 @@ package cn.com.incito.classroom.adapter;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.Html;
@@ -18,6 +18,7 @@ import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.classroom.vo.Group;
 import cn.com.incito.classroom.vo.Student;
 
+@SuppressLint("Recycle")
 public class SelectGroupAdapter extends BaseAdapter {
 
 	private SelectGroupActivity activity;
@@ -83,7 +84,7 @@ public class SelectGroupAdapter extends BaseAdapter {
 		viewHolder.img_group_icon.setBackground(Utils.getGroupIconByName(groupIcons, iconsName, group.getLogo()));
 		// 设置小组成员以及名称
 		viewHolder.text_name.setText(Html.fromHtml(group.getName()
-				+ "<br><br><font color='#ecf2fc'> " + sb.toString() + "</font>&nbsp"));
+				+ "<br><font color='#ecf2fc'> " + sb.toString() + "</font>&nbsp"));
 		return convertView;
 	}
 
