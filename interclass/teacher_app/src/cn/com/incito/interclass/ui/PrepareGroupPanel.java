@@ -1,5 +1,6 @@
 package cn.com.incito.interclass.ui;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -61,6 +62,9 @@ public class PrepareGroupPanel extends JPanel {
 				JLabel lblName = lblStudents.get(i);
 				lblName.setText(student.getName());
 				lblName.setVisible(true);
+				if(!student.isLogin()){
+					lblName.setBackground(new Color(Integer.parseInt("e1e1e1", 16)));
+				}
 			}
 		}
 	}
