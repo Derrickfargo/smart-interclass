@@ -2,17 +2,14 @@ package cn.com.incito.interclass.ui;
 
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -73,21 +70,31 @@ public class PreparePanel extends JPanel{
 		
 		centerCardLayout = new CardLayout();
 		centerCardPanel = new JPanel(centerCardLayout);
-		centerCardPanel.setBounds(0, 0, 876, 620);
+		centerCardPanel.setBounds(0, 45, 876, 575);
 		add(centerCardPanel);
 		
 		//未分组card
 		noGroupPanel = new PrepareNoGroupPanel();
 		noGroupPanel.setBackground(Color.WHITE);
-		noGroupPanel.setBounds(0, 0, 838, 620);
-		noGroupPanel.revalidate();
-		centerCardPanel.add(noGroupPanel, CARD_NO_GROUP);
+		JScrollPane noGroupScroll = new JScrollPane(noGroupPanel);
+		noGroupScroll.getVerticalScrollBar().setUnitIncrement(100);
+		noGroupScroll.setBorder(null);
+		noGroupScroll.setBounds(0, 45, 876, 585);
+		noGroupPanel.setPreferredSize(new Dimension(noGroupScroll.getWidth() - 50, (noGroupScroll.getHeight() - 50) * 2));
+		centerCardPanel.add(noGroupScroll, CARD_NO_GROUP);
 		//分组card
 		groupPanel = new PrepareGroupPanel();
 		groupPanel.setBackground(Color.WHITE);
-		groupPanel.setBounds(0, 0, 838, 620);
-        groupPanel.revalidate();
-		centerCardPanel.add(groupPanel, CARD_GROUP);
+        JScrollPane groupScroll = new JScrollPane(groupPanel);
+        groupScroll.getVerticalScrollBar().setUnitIncrement(100);
+        groupScroll.setBorder(null);
+        groupScroll.setBounds(0, 45, 876, 585);
+		groupPanel.setPreferredSize(new Dimension(groupScroll.getWidth() - 50, (groupScroll.getHeight() - 50) * 4));
+		centerCardPanel.add(groupScroll, CARD_GROUP);
 	}
 
+	public void refresh(){
+		noGroupPanel.refresh();
+		groupPanel.refresh();
+	}
 }

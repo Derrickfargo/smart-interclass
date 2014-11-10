@@ -19,9 +19,7 @@ import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 
 import cn.com.incito.interclass.main.Main;
-import cn.com.incito.interclass.po.Device;
 import cn.com.incito.server.exception.AppException;
-import cn.com.incito.server.utils.JSONUtils;
 import cn.com.incito.server.utils.Md5Utils;
 import cn.com.incito.server.utils.URLs;
 
@@ -288,40 +286,6 @@ public class ApiClient {
 		}
 	}
 
-	/**
-	 * 注册学生走这个api
-	 * 
-	 * @param name
-	 * @param sex
-	 * @param number
-	 * @param imei
-	 * @return
-	 * @throws AppException
-	 */
-	public static String loginForStudent(String name, int sex, String number,
-			String imei) throws AppException {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("courseId", Application.getInstance().getCourse().getId());
-		params.put("classId", Application.getInstance().getClasses().getId());
-		params.put("teacherId", Application.getInstance().getTeacher().getId());
-		Device device = Application.getInstance().getImeiDevice().get(imei);
-		if (device == null) {
-			// 系统中无此设备
-			return JSONUtils.renderJSONString(1);// 失败
-		}
-		params.put("name", name);
-		params.put("sex", sex);
-		params.put("number", number);
-		params.put("imei", imei);
-		try {
-			return _post(URLs.URL_STUDENT_LOGIN, params, null);
-		} catch (Exception e) {
-			if (e instanceof AppException)
-				throw (AppException) e;
-			throw AppException.network(e);
-		}
-	}
-
 	public static String updateGroup(int id, String name, String logo)
 			throws AppException {
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -337,6 +301,20 @@ public class ApiClient {
 		}
 	}
 
+	public static String deleteGroup(int teacherId, int classId)
+			throws AppException {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("teacherId", teacherId);
+		params.put("classId", classId);
+		try {
+			return _post(URLs.URL_DELETE_GROUP, params, null);
+		} catch (Exception e) {
+			if (e instanceof AppException)
+				throw (AppException) e;
+			throw AppException.network(e);
+		}
+	}
+	
 	public static void uploadErrorLog(String reason) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("type", 1);

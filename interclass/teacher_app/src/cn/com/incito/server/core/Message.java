@@ -15,15 +15,10 @@ import cn.com.incito.server.exception.NoHandlerException;
  */
 public class Message {
 
-    /**
+	 /**
      * 消息识别码
      */
     public static final int MESSAGE_FAKE_ID = 0xFAFB;
-
-    /**
-     * 握手消息
-     */
-    public static final Byte MESSAGE_HAND_SHAKE = (byte) 0xFF;
 
     /**
      * 心跳消息
@@ -31,34 +26,29 @@ public class Message {
     public static final Byte MESSAGE_HEART_BEAT = (byte) 0xFE;
    
     /**
-     * 获取分组信息
+     * 设备（学生）登陆消息
      */
-    public static final Byte MESSAGE_GROUP_LIST = 0x01;
-
-    /**
-     * 选择wifi登陆
+	public static final Byte MESSAGE_STUDENT_LOGIN = 0x01;
+	
+	/**
+     * 创建小组信息
      */
-	public static final Byte MESSAGE_STUDENT_LOGIN = 0x02;
-	
-	
+    public static final Byte MESSAGE_GROUP_CREATE = 0x02;
+    
 	 /**
 	 * 删除小组
 	 */
 	public static final Byte MESSAGE_GROUP_DELETE = 0x03;
-    /**
-     * 判断设备是否绑定
-     */
-    public static final Byte MESSAGE_DEVICE_HAS_BIND = 0x04;
-
-    /**
-	 * 分组信息(pc-android)
-	 */
-	public static final Byte MESSAGE_GROUP_EDIT = 0x05;
 	
 	/**
-	 * 创建小组(android-pc)
+	 * 提交小组信息
 	 */
-	public static final Byte MESSAGE_GROUP_CREAT = 0x06;
+	public static final Byte MESSAGE_GROUP_SUBMIT = 0x04;
+
+	/**
+	 * 确认小组信息
+	 */
+	public static final Byte MESSAGE_GROUP_CONFIRM = 0x05;
 	
 	/**
 	 * 加入小组(android-pc)
@@ -87,24 +77,6 @@ public class Message {
 	 */
 	public static final Byte MESSAGE_LOCK_SCREEN=0x0C;
 	
-	/**
-	 * 删除小组返回结果
-	 */
-	public static final Byte MESSAGE_GROUP_DELETE_RESPONSE=0x0D;
-	/**
-	 * 学生登录后的返回(PC-PAD)
-	 */
-	public static final Byte MESSAGE_STUDENT_BIND=0x0E;
-	/**
-	 * 学生加入小组后的返回
-	 */
-	public static final byte MESSAGE_GROUP_JOIN_RESPONSE=0x0F;
-	
-	
-	/**
-	 *创建小组后的返回
-	 */
-	public static final byte MESSAGE_GROUP_CREAT_RESPONSE=0x10;
 	private Logger log = Logger.getLogger(Message.class);
 	
 	private byte msgID;

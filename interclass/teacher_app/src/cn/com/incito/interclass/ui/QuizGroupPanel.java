@@ -44,7 +44,7 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 	
 	private Group group;
 	private JLabel lblDesk;
-//	private JLabel lblLogo;
+	private JLabel lblLogo;
 	private JLabel lblGroupName;
 //	private JLabel lblScore;
 	private JButton btnPlus,btnMinus,btnMedal;
@@ -104,12 +104,12 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 		add(quiz4);
 		quizPanel.add(quiz4);
 		
-		//小组课桌号
-		lblDesk = createDeskLabel();
-		add(lblDesk);
-		//TODO 去掉小组logo
-//		lblLogo = createLogoLabel();
-//		add(lblLogo);
+//		//小组课桌号
+//		lblDesk = createDeskLabel();
+//		add(lblDesk);
+		//小组logo
+		lblLogo = createLogoLabel();
+		add(lblLogo);
 		//小组名字
 		lblGroupName = createGroupName();
 		add(lblGroupName);
@@ -144,14 +144,14 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 		JLabel lblLogo = new JLabel();
 		final ImageIcon icon = new ImageIcon("images/logo/24/rainbow.png");
 		lblLogo.setIcon(icon);
-		lblLogo.setBounds(76, 331, 24, 24);
+		lblLogo.setBounds(20, 331, 24, 24);
 		return lblLogo;
 	}
 	
 	private JLabel createGroupName(){
 		JLabel lblName = new JLabel("");
 //		lblName.setBounds(105,331, 100, 24);
-		lblName.setBounds(76,331, 100, 24);
+		lblName.setBounds(56,331, 100, 24);
 		lblName.setForeground(UIHelper.getDefaultFontColor());
 		return lblName;
 	}
@@ -264,9 +264,9 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 //		return lblScore;
 //	}
 
-//	public JLabel getLblLogo() {
-//		return lblLogo;
-//	}
+	public JLabel getLblLogo() {
+		return lblLogo;
+	}
 
 	public JLabel getLblGroupName() {
 		return lblGroupName;

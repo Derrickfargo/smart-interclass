@@ -4,13 +4,14 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.alibaba.fastjson.JSONObject;
+import org.apache.log4j.Logger;
 
 import cn.com.incito.interclass.po.Group;
+import cn.com.incito.interclass.po.Student;
+import cn.com.incito.interclass.ui.MainFrame;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
@@ -18,24 +19,40 @@ import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
 
-public class GroupCreatHandler extends MessageHandler{
+import com.alibaba.fastjson.JSONObject;
 
+public class GroupCreatHandler extends MessageHandler{
+	private Logger logger = Logger.getLogger(GroupCreatHandler.class.getName());
+	
 	@Override
 	protected void handleMessage() {
-		Group group=(Group) data.get("group");
+		logger.info("收到创建分组消息：" + data);
+		Group group = data.getObject("group", Group.class);
+		Student student = data.getObject("student", Student.class);
+		group.getStudents().add(student);
+		group.setCaptainId(student.getId());
 		Application.getInstance().addGroup(group);
+		Application.getInstance().getTempGroup().put(student.getId(), group);
+		MainFrame.getInstance().refresh();
+		
 		Map<String, SocketChannel> channels = Application.getInstance().getClientChannel();
 		List<SocketChannel>  channelsRes=new ArrayList<SocketChannel>();
 		for (String key : channels.keySet()) {
 			channelsRes.add(channels.get(key));
 		}
+		List<Group> groupList=new ArrayList<Group>();
+		//遍历临时分组 将还没有分组的小组列表传回给pad端
+		for (Integer key : Application.getInstance().getTempGroup().keySet()) {
+			groupList.add(Application.getInstance().getTempGroup().get(key));
+		}
 		JSONObject result = new JSONObject();
 		result.put("code", 0);
-		result.put("data",Application.getInstance().getGroupList());
+		result.put("data",groupList);
+		logger.info("回复创建分组消息：" + result);
 		sendResponse(result.toString(), channelsRes);
 	}
 	private void sendResponse(String json, List<SocketChannel> channels) {
-		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_CREAT_RESPONSE);
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_SUBMIT);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
         byte[] messageData = messagePacking.pack().array();
         ByteBuffer buffer = ByteBuffer.allocate(messageData.length);

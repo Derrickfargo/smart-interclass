@@ -23,8 +23,10 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.exception.AppUncaughtException;
+import cn.com.incito.classroom.vo.Group;
 import cn.com.incito.classroom.vo.LoginResVo;
-import cn.com.incito.socket.handler.LockScreenHandler;
+import cn.com.incito.classroom.vo.Student;
+import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.wisdom.sdk.cache.disk.impl.TotalSizeLimitedDiscCache;
 import cn.com.incito.wisdom.sdk.cache.disk.naming.Md5FileNameGenerator;
 import cn.com.incito.wisdom.sdk.cache.mem.AbstractMemoryCache;
@@ -33,7 +35,6 @@ import cn.com.incito.wisdom.sdk.image.loader.ImageLoaderConfiguration;
 import cn.com.incito.wisdom.sdk.image.loader.assist.LRULimitedMemoryCacheBitmapCache;
 import cn.com.incito.wisdom.sdk.image.loader.assist.LRUMemoryCacheBitmapCache;
 import cn.com.incito.wisdom.sdk.image.loader.assist.QueueProcessingType;
-import cn.com.incito.wisdom.sdk.log.WLog;
 import cn.com.incito.wisdom.sdk.net.download.BaseImageDownloader;
 import cn.com.incito.wisdom.sdk.net.download.SlowNetworkImageDownloader;
 import cn.com.incito.wisdom.sdk.openudid.OpenUDIDManager;
@@ -41,6 +42,8 @@ import cn.com.incito.wisdom.sdk.utils.StorageUtils;
 
 import com.google.code.microlog4android.Logger;
 import com.google.code.microlog4android.LoggerFactory;
+import com.google.code.microlog4android.appender.FileAppender;
+import com.google.code.microlog4android.config.PropertyConfigurator;
 import com.umeng.analytics.MobclickAgent;
 
 /**
@@ -49,21 +52,18 @@ import com.umeng.analytics.MobclickAgent;
 public class MyApplication extends Application {
 
 	public boolean isOnClass;// 是否在上课
-	
-	public static  Logger Logger = LoggerFactory.getLogger();
 
-	public boolean isOnClass() {
-		return isOnClass;
-	}
-
-	public void setOnClass(boolean isOnClass) {
-		this.isOnClass = isOnClass;
-	}
+	public static Logger Logger = LoggerFactory.getLogger();
 
 	private LoginResVo loginResVo;
 
 	public static String deviceId;
 
+	private Student student;
+	
+	private Group group;
+
+	
 	private static final String TAG = MyApplication.class.getSimpleName();
 
 	private static MyApplication mInstance = null;
@@ -75,6 +75,14 @@ public class MyApplication extends Application {
 	private boolean isLockScreen;// 是否锁定屏幕
 
 	ContentResolver mContentResolver;
+
+	public Student getStudent() {
+		return student;
+	}
+
+	public void setStudent(Student student) {
+		this.student = student;
+	}
 
 	public boolean isLockScreen() {
 		return isLockScreen;
@@ -89,7 +97,20 @@ public class MyApplication extends Application {
 		android.provider.Settings.System.putInt(mContentResolver,
 				android.provider.Settings.System.LOCK_PATTERN_ENABLED, 0);
 	}
+	public Group getGroup() {
+		return group;
+	}
 
+	public void setGroup(Group group) {
+		this.group = group;
+	}
+	public boolean isOnClass() {
+		return isOnClass;
+	}
+
+	public void setOnClass(boolean isOnClass) {
+		this.isOnClass = isOnClass;
+	}
 	public boolean isSubmitPaper() {
 		return isSubmitPaper;
 	}
@@ -116,23 +137,21 @@ public class MyApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		sendBroadcast(new Intent("android.intent.action.HIDE_NAVIGATION_BAR"));
-		// closeSysScreenLock();
+		PropertyConfigurator.getConfigurator(this).configure();
+		final FileAppender  fa =   (FileAppender) Logger.getAppender(1);    
+		fa.setAppend(true);
 		AppUncaughtException appException = AppUncaughtException.getInstance();
 		appException.init(this);
 		PowerManager pmManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
 		WifiManager manager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-		mWifiLock = manager.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, "cn.com.incito.classroom");
-		wl = pmManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"My Tag");
+		mWifiLock = manager.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF,"cn.com.incito.classroom");
+		wl = pmManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "My Tag");
 		wl.acquire();
 		mWifiLock.acquire();
-		
 		mInstance = this;
-		mPrefs = PreferenceManager
-				.getDefaultSharedPreferences(getApplicationContext());
+		mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		initApplication();
 		MobclickAgent.openActivityDurationTrack(false);// 禁止友盟的自动统计功能
-
 		OpenUDIDManager.sync(this);
 		File cacheDir = StorageUtils.getOwnCacheDirectory(
 				getApplicationContext(),
@@ -160,33 +179,32 @@ public class MyApplication extends Application {
 
 	}
 
-	public void release(){
+	public void release() {
 		mWifiLock.release();
 		wl.release();
 	}
+
 	public static MyApplication getInstance() {
 		return mInstance;
 	}
 
 	private void initApplication() {
-		//初始化服务端ip
+		// 初始化服务端ip
 		String ip = mPrefs.getString(Constants.PREFERENCE_IP, "");
 		if (ip != null && !ip.trim().equals("")) {
 			Constants.setIP(ip);
 		}
-		
-		//初始化本机mac地址
+
+		// 初始化本机mac地址
 		initMacAddress();
-		
-		//启动socket和日志服务
-		Intent service = new Intent("cn.com.incito.classroom.service.SOCKET_SERVICE");
-		startService(service);
-		WLog.i(MyApplication.class, "socket service started");
-		if (Constants.LOG_OPEN) {
-			Intent logservice = new Intent("cn.com.incito.classroom.service.LOG_SERVICE");
-			startService(logservice);
-			WLog.i(MyApplication.class, "log service started");
-		}
+
+		// 启动socket和日志服务
+//		if (Constants.LOG_OPEN) {
+//			Intent logservice = new Intent(
+//					"cn.com.incito.classroom.service.LOG_SERVICE");
+//			startService(logservice);
+//			WLog.i(MyApplication.class, "log service started");
+//		}
 
 	}
 
@@ -207,7 +225,7 @@ public class MyApplication extends Application {
 			}
 		}
 	}
-	
+
 	public void stopSocketService() {
 		Intent service = new Intent("cn.com.incito.classroom.service.SOCKET_SERVICE");
 		stopService(service);
@@ -242,12 +260,11 @@ public class MyApplication extends Application {
 	 *            true是锁频屏，false解屏
 	 */
 	public void lockScreen(boolean isLock) {
-		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);  
+		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
 		boolean screenOn = pm.isScreenOn();
-		
-		if (Constants.OPEN_LOCK_SCREEN) {
-			WLog.i(LockScreenHandler.class, "是否收到解锁屏信息：" + isLock);
 
+		if (Constants.OPEN_LOCK_SCREEN) {
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"LockScreenHandler.class:"+"是否收到解锁屏信息：" + isLock);
 			ContentResolver mContentResolver = this.getApplicationContext()
 					.getContentResolver();
 			ExecRootCmd execRootCmd = new ExecRootCmd();
@@ -258,7 +275,7 @@ public class MyApplication extends Application {
 				execRootCmd.powerkey();
 			} else {
 				if (MyApplication.getInstance().isLockScreen()) {
-					if(screenOn){
+					if (screenOn) {
 						MyApplication.getInstance().setLockScreen(isLock);
 						boolean ret1 = Settings.Global.putInt(mContentResolver,
 								"disable_powerkey", 0); // 打开电源按钮唤醒功能
@@ -269,7 +286,8 @@ public class MyApplication extends Application {
 							"disable_powerkey", 0); // 打开电源按钮唤醒功能
 					execRootCmd.powerkey();
 					KeyguardManager mManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
-					KeyguardLock mKeyguardLock = mManager.newKeyguardLock("Lock");
+					KeyguardLock mKeyguardLock = mManager
+							.newKeyguardLock("Lock");
 					// 让键盘锁失效
 					mKeyguardLock.disableKeyguard();
 				}
@@ -277,17 +295,17 @@ public class MyApplication extends Application {
 		}
 	}
 
-	@Override
-	public void onLowMemory() {
-		super.onLowMemory();
-		sendBroadcast(new Intent("android.intent.action.SHOW_NAVIGATION_BAR"));
-	}
-
-	@Override
-	public void onTerminate() {
-		super.onTerminate();
-		sendBroadcast(new Intent("android.intent.action.SHOW_NAVIGATION_BAR"));
-		WLog.i(MyApplication.class, "广播发出");
-
-	}
+//	@Override
+//	public void onLowMemory() {
+//		super.onLowMemory();
+//		sendBroadcast(new Intent("android.intent.action.SHOW_NAVIGATION_BAR"));
+//	}
+//
+//	@Override
+//	public void onTerminate() {
+//		super.onTerminate();
+//		sendBroadcast(new Intent("android.intent.action.SHOW_NAVIGATION_BAR"));
+//		WLog.i(MyApplication.class, "广播发出");
+//
+//	}
 }

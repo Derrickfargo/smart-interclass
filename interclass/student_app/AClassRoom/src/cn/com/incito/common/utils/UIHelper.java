@@ -1,7 +1,5 @@
 package cn.com.incito.common.utils;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,18 +7,18 @@ import android.widget.Toast;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.ui.activity.ClassReadyActivity;
+import cn.com.incito.classroom.ui.activity.ClassingActivity;
 import cn.com.incito.classroom.ui.activity.DrawBoxActivity;
 import cn.com.incito.classroom.ui.activity.SelectGroupActivity;
 import cn.com.incito.classroom.ui.activity.WaitForOtherMembersActivity;
 import cn.com.incito.classroom.ui.activity.WifiSelectorActivity;
-import cn.com.incito.classroom.vo.Group;
-
-import com.alibaba.fastjson.JSONObject;
 
 public class UIHelper {
 	private static UIHelper instance;
 	private MyApplication app;
 	private DrawBoxActivity drawBoxActivity;
+	private SelectGroupActivity mSelectGroupActivity;
+	private WaitForOtherMembersActivity waitForOtherMembersActivity;
 
 	private UIHelper() {
 		app = MyApplication.getInstance();
@@ -66,6 +64,30 @@ public class UIHelper {
 		this.drawBoxActivity = drawBoxActivity;
 	}
 
+	public SelectGroupActivity getmSelectGroupActivity() {
+		return mSelectGroupActivity;
+	}
+	
+	public WaitForOtherMembersActivity getWaitForOtherMembersActivity(){
+		return waitForOtherMembersActivity;
+	}
+	
+	public void setWaitingForOtherMembersActivity(WaitForOtherMembersActivity waitForOtherMembersActivity){
+		if(this.waitForOtherMembersActivity != null){
+			this.waitForOtherMembersActivity.finish();
+			this.waitForOtherMembersActivity = null;
+		}
+		this.waitForOtherMembersActivity = waitForOtherMembersActivity;
+	}
+
+	public void setmSelectGroupActivity(SelectGroupActivity mSelectGroupActivity) {
+		if (this.mSelectGroupActivity != null) {
+			this.mSelectGroupActivity.finish();
+			this.mSelectGroupActivity = null;
+		}
+		this.mSelectGroupActivity = mSelectGroupActivity;
+	}
+
 	/**
 	 * 显示选择小组界面
 	 */
@@ -106,14 +128,13 @@ public class UIHelper {
 		app.startActivity(intent);
 	}
 	
-	
 
-
-	public void showConfirmGroupActivity(JSONObject data) {
-		Intent intent = new Intent(Constants.ACTION_SHOW_CONFIRM_GROUP);
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		intent.putExtra("data", data);
-		app.startActivity(intent);
+	/**
+	 * 启动等待小组其他成员界面
+	 * @param data  返回的json数据
+	 */
+	public void showConfirmGroupActivity(String data) {
+		WaitForOtherMembersActivity.startSelf(app, data);
 
 	}
 
@@ -122,8 +143,7 @@ public class UIHelper {
 	}
 
 	public void showDrawBoxActivity() {
-		Intent intent = new Intent(app.getApplicationContext(),
-				DrawBoxActivity.class);
+		Intent intent = new Intent(app.getApplicationContext(),DrawBoxActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.setAction(Constants.ACTION_SHOW_EDIT_GROUP);
 		app.startActivity(intent);
@@ -141,10 +161,12 @@ public class UIHelper {
 	}
 
 	/**
-	 * 显示等待其他小组成员 
-	 * @param string
+	 * 显示老师正在上课界面
 	 */
-	public void showWaitOtherMembers(String jsonObject) {
-		WaitForOtherMembersActivity.startSelf(app, jsonObject);
+	public void showClassingActivity() {
+		Intent intent = new Intent(app,ClassingActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		app.startActivity(intent);
+		
 	}
 }

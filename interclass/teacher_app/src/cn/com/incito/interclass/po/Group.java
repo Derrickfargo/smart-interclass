@@ -1,10 +1,11 @@
 package cn.com.incito.interclass.po;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Group implements Serializable, Comparable<Group> {
+public class Group implements Serializable {
 
 	/**
 	 * 
@@ -14,37 +15,41 @@ public class Group implements Serializable, Comparable<Group> {
 	private int score;
 	private int id;
 	private String name;
-	private String logo = "rainbow";
+	private String logo;
 	private String slogan;
 	private int teacherId;
 	private int classId;
 	private Date ctime;
-
-	private int tableNumber;
+	private int captainId;
 	private List<Device> devices;
-	private List<Student> students;
+	private List<Student> students = new ArrayList<Student>();
 	private List<Quiz> quizs;
 	private String teacherName;
 
 	public int getId() {
 		return id;
 	}
+
 	public int getScore() {
 		return score;
 	}
 
+	public int getCaptainId() {
+		return captainId;
+	}
 
-	
+	public void setCaptainId(int captainId) {
+		this.captainId = captainId;
+	}
+
 	public void setScore(int score) {
 		this.score = score;
 	}
-
 
 	public String getMedals() {
 		return medals;
 	}
 
-	
 	public void setMedals(String medals) {
 		this.medals = medals;
 	}
@@ -77,7 +82,6 @@ public class Group implements Serializable, Comparable<Group> {
 		this.slogan = slogan;
 	}
 
-
 	public int getTeacherId() {
 		return teacherId;
 	}
@@ -94,21 +98,12 @@ public class Group implements Serializable, Comparable<Group> {
 		this.classId = classId;
 	}
 
-
 	public Date getCtime() {
 		return ctime;
 	}
 
 	public void setCtime(Date ctime) {
 		this.ctime = ctime;
-	}
-
-	public int getTableNumber() {
-		return tableNumber;
-	}
-
-	public void setTableNumber(int tableNumber) {
-		this.tableNumber = tableNumber;
 	}
 
 	public String getTeacherName() {
@@ -147,7 +142,7 @@ public class Group implements Serializable, Comparable<Group> {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + id;
+		result = prime * result + captainId;
 		return result;
 	}
 
@@ -160,13 +155,8 @@ public class Group implements Serializable, Comparable<Group> {
 		if (getClass() != obj.getClass())
 			return false;
 		Group other = (Group) obj;
-		if (id != other.id)
+		if (captainId != other.captainId)
 			return false;
 		return true;
-	}
-
-	@Override
-	public int compareTo(Group group) {
-		return this.tableNumber-group.tableNumber;
 	}
 }

@@ -30,7 +30,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
-import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.ui.widget.IpDialog;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.config.AppConfig;
@@ -96,17 +95,15 @@ public class MainFrame extends MouseAdapter {
 		quizBottomPanel.synQuzingState();
 	}
 	
-	public void refreshPrepare() {
-//		preparePanel.refresh();
+	public void refresh() {
+		preparePanel.refresh();
 		quizPanel.refresh();
+		praisePanel.refresh();
 		quizBottomPanel.refresh();
 		prepareBottomPanel.refresh();
-		int total = 0;
-		for (Group group : app.getGroupList()) {
-			total += group.getStudents().size();
-		}
 		String msg = "应到 %d 人  | 实到 %d 人";
-		String text = String.format(msg, total, app.getOnlineStudent().size());
+		String text = String.format(msg, app.getStudentList().size(), app
+				.getOnlineStudent().size());
 		prepareBottomPanel.getLblExpected().setText(text);
 	}
 	
@@ -206,7 +203,7 @@ public class MainFrame extends MouseAdapter {
 		frame.setBackground(new Color(0,0,0,0));//窗体透明
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowActivated(WindowEvent e) {
-				refreshPrepare();
+				refresh();
 				refreshQuiz();
 			}
 		});
@@ -327,14 +324,7 @@ public class MainFrame extends MouseAdapter {
 		//准备上课card
 		preparePanel = new PreparePanel();
 		preparePanel.setBackground(Color.WHITE);
-		JScrollPane prepareScrollPane = new JScrollPane(preparePanel);
-		prepareScrollPane.getVerticalScrollBar().setUnitIncrement(50);
-		prepareScrollPane.setBorder(null);
-		prepareScrollPane.setBounds(0, 0, 876, 630);
-		 //TODO 根据分组的多少动态调整
-		preparePanel.setPreferredSize(new Dimension(prepareScrollPane.getWidth() - 50, (prepareScrollPane.getHeight() + 30) * 2));
-		preparePanel.revalidate();
-		centerCardPanel.add(prepareScrollPane, CARD_PREPARE);
+		centerCardPanel.add(preparePanel, CARD_PREPARE);
 		
 		//作业card
 		quizPanel = new QuizPanel();

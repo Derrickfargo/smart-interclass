@@ -7,6 +7,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.swing.ImageIcon;
@@ -17,6 +18,7 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
+import cn.com.incito.interclass.po.Group;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.CoreSocket;
 import cn.com.incito.server.core.Message;
@@ -56,11 +58,11 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 	}
 	
 	public void refresh(){
-//		Application app = Application.getInstance();
-//		List<Table> tables = app.getTableList();
-//		if (tables.size() != 0) {
-//			btnQuiz.setVisible(true);
-//		}
+		Application app = Application.getInstance();
+		Set<Group> tables = app.getGroupList();
+		if (tables.size() != 0) {
+			btnQuiz.setVisible(true);
+		}
 	}
 
 	public void doSendQuiz(){

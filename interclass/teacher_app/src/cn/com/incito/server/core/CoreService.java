@@ -2,18 +2,17 @@ package cn.com.incito.server.core;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.imageio.stream.FileImageOutputStream;
 
 import org.apache.log4j.Logger;
 
-import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Quiz;
 import cn.com.incito.interclass.po.Student;
@@ -23,9 +22,6 @@ import cn.com.incito.server.api.Application;
 import cn.com.incito.server.api.result.TeacherGroupResultData;
 import cn.com.incito.server.config.Constants;
 import cn.com.incito.server.exception.AppException;
-import cn.com.incito.server.message.DataType;
-import cn.com.incito.server.message.MessagePacking;
-import cn.com.incito.server.utils.BufferUtils;
 import cn.com.incito.server.utils.ImageUtil;
 import cn.com.incito.server.utils.JSONUtils;
 import cn.com.incito.server.utils.URLs;
@@ -37,16 +33,11 @@ public class CoreService {
 	private static Application app = Application.getInstance();
 	private Logger logger = Logger.getLogger(CoreService.class.getName());
 
-	public void deviceLogin(String imei) {
-		app.getOnlineDevice().add(imei);
-		app.refresh();// 更新UI
-	}
-
 	public Group deviceLogout(String imei) {
-		Device device = app.getImeiDevice().get(imei);
-		if (device == null) {
-			return null;
-		}
+//		Device device = app.getImeiDevice().get(imei);
+//		if (device == null) {
+//			return null;
+//		}
 //		Group group = app.getTableGroup().get(device.getId());
 //		List<Student> students = app.getStudentByImei(imei);
 //		if (students != null) {
@@ -60,9 +51,9 @@ public class CoreService {
 //			}
 //		}
 //		app.removeLoginStudent(imei);
-		app.getOnlineDevice().remove(imei);
-		Application.getInstance().getClientChannel().remove(imei);
-		app.refresh();// 更新UI
+//		app.getOnlineDevice().remove(imei);
+//		Application.getInstance().getClientChannel().remove(imei);
+//		app.refresh();// 更新UI
 		return new Group();
 	}
 
@@ -105,64 +96,25 @@ public class CoreService {
 	 * @param imei
 	 * @return
 	 */
-	public String login(String imei) {
-		Device device = app.getImeiDevice().get(imei);
-		if (device == null) {
-			// 系统中无此设备
-			return JSONUtils.renderJSONString(1);// 失败
-		}else{
-			return JSONUtils.renderJSONString(0, app.getStudentByImei(imei));
+	public Student login(String imei) {
+		List<Student> students = app.getStudentList();
+		if (students == null || students.size() == 0) {
+			return null;// 失败
 		}
-		
-	}
-
-
-
-	/**
-	 * 将其他组的相同人员剔除
-	 * @param uname
-	 * @param number
-	 * @param groupId 新组id
-	 */
-	private void sendOtherPadLogout(String uname, String number) {
-		Application app = Application.getInstance();
-		List<Group> groupList = app.getGroupList();
-		if (groupList == null || groupList.size() == 0) {
-			return;
-		}
-		Group group = findGroup(groupList, uname, number);
-		if(group != null){
-			Iterator<Student> it = group.getStudents().iterator();
-			while (it.hasNext()) {
-				Student temp = it.next();
-				if ((temp.getName() + temp.getNumber()).equals(uname + number)) {
-					it.remove();
-					break;
-				}
-			}
-			app.addGroup(group);
-//			app.getTableGroup().put(group.getTableId(), group);
-			app.refresh();// 更新UI
-			String result = JSONUtils.renderJSONString(0, group);//更新消息发往pad端
-			sendResponse(result,Application.getInstance().getClientChannelByGroup(group.getId()));
-		}
-	}
-	
-	private Group findGroup(List<Group> groupList, String uname, String number){
-		for (Group group : groupList) {
-			List<Student> students = group.getStudents();
-			if (students == null || students.size() == 0) {
-				continue;
-			}
-			for (Student temp : students) {
-				if ((temp.getName() + temp.getNumber()).equals(uname + number)) {
-					return group;
-				}
+		for (Student student : students) {
+			if (student.getImei().equals(imei)) {
+				student.setLogin(true);
+				app.getOnlineStudent().add(student);
+				app.getOfflineStudent().remove(student);
+				app.refresh();// 更新UI
+				return student;
 			}
 		}
 		return null;
 	}
-	
+
+
+
 	public Student getStudentByNumber(String number){
 		for (Group group : app.getGroupList()) {
 			List<Student> students = group.getStudents();
@@ -175,45 +127,12 @@ public class CoreService {
 		return null;
 	}
 	
-	private void sendResponse(String json,List<SocketChannel> channels) {
-		for (SocketChannel channel : channels) {
-			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
-	        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
-	        byte[] messageData = messagePacking.pack().array();
-	        ByteBuffer buffer = ByteBuffer.allocate(messageData.length);
-	        buffer.put(messageData);
-	        buffer.flip();
-			try {
-				if (channel.isConnected()) { 
-					channel.write(buffer);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	/**
-	 * 根据IMEI获取所在组
-	 *
-	 * @param imei
-	 * @return
-	 */
-	public String getGroupByIMEI(String imei) {
-		Device device = app.getImeiDevice().get(imei);
-		if (device == null) {
-			// 系统中无此设备
-			return JSONUtils.renderJSONString(1);// 失败
-		}
-		List<Group> groupList = app.getGroupList();
-		return JSONUtils.renderJSONString(0, groupList);
-	}
-
 	public Group getGroupObjectByIMEI(String imei) {
-		Device device = app.getImeiDevice().get(imei);
-		if (device == null) {
-			// 系统中无此设备
-			return null;
+		Set<Group> groups = app.getGroupList();
+		Iterator<Group> it = groups.iterator();
+		while (it.hasNext()) {
+			Group group = it.next();
+			
 		}
 		return new Group();
 	}
@@ -242,9 +161,9 @@ public class CoreService {
 			imageOutput.write(imageByte, 0, imageByte.length);
 			imageOutput.close();
 			ImageUtil.resize(file, file, 865, 1f);
-			logger.error("大图生成：" + file.getAbsoluteFile());
+			logger.info("大图生成：" + file.getAbsoluteFile());
 			ImageUtil.resize(file, thumbnail, 186, 1f);
-			logger.error("缩略图生成：" + thumbnail.getAbsoluteFile());
+			logger.info("缩略图生成：" + thumbnail.getAbsoluteFile());
 		} catch (IOException e) {
 			logger.error("保存作业图片出现错误:", e);
 		}
@@ -253,16 +172,15 @@ public class CoreService {
 		quiz.setId(quizid);
 		quiz.setImei(imei);
 		quiz.setLessionid(lessionid);
-		StringBuffer name = new StringBuffer();
-		
 		Student students = app.getStudentByImei(imei);
 		if (students.getName().length() != 0) {
 			quiz.setName(students.getName());
 		}
 		quiz.setTime(System.currentTimeMillis());
-		Group group = getGroupObjectByIMEI(imei);
-		quiz.setGroupId(group.getId());
-		quiz.setGroup(group);
+		
+//		Group group = getGroupObjectByIMEI(imei);
+//		quiz.setGroupId(group.getId());
+//		quiz.setGroup(group);
 		quiz.setQuizUrl(file.getAbsolutePath());
 		quiz.setThumbnail(thumbnail.getAbsolutePath());
 		app.getTempQuiz().put(imei, quiz);
@@ -281,19 +199,22 @@ public class CoreService {
 	}
 
 	/**
-	 * 学生加入一个小组
+	 * 保存小组信息
 	 * 
 	 * @param groupId
 	 * @param studentId
 	 * @return
+	 * @throws AppException 
 	 */
-	public static String joinGroup(String groupId, String studentId)
-			throws AppException {
+	public String  saveGroup(Group group) throws AppException{
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("groupId", groupId);
-		params.put("studentId", studentId);
+		JSONObject result = new JSONObject();
+		result.put("group", group);
+		group.setTeacherId(app.getTeacher().getId());
+		group.setClassId(app.getClasses().getId());
+		params.put("group", result.toJSONString());
 		try {
-			return ApiClient._post(URLs.URL_JOIN_GROUP, params, null);
+			return ApiClient._post(URLs.URL_GROUP_SAVE, params, null);
 		} catch (Exception e) {
 			if (e instanceof AppException)
 				throw (AppException) e;
@@ -301,23 +222,4 @@ public class CoreService {
 		}
 	}
 
-	/**
-	 * 删除一个小组
-	 * 
-	 * @param groupId
-	 * @param studentId
-	 * @return
-	 */
-	public static String deleteGroup(String groupId)
-			throws AppException {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("groupId", groupId);
-		try {
-			 return  ApiClient._post(URLs.URL_DELETE_GROUP, params, null);
-		} catch (Exception e) {
-			if (e instanceof AppException)
-				throw (AppException) e;
-			throw AppException.network(e);
-		}
-	}
 }

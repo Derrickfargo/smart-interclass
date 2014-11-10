@@ -16,24 +16,24 @@ public class Main {
 	public static void main(String[] args) {
 		setLookAndFeel();
 		initGlobalFontSetting();
-//		args = new String[] { "\"C:\\Users\\JOHN\\Desktop\\dream class  å®‰è£…åŒ…\\release\\äº’åŠ¨è¯¾å ‚PCç«¯V100R001C00\\backup\\äº’åŠ¨è¯¾å ‚_V100R001C00(2).exe\"" };
+//		args = new String[] { "\"C:\\Users\\JOHN\\Desktop\\dream class  °²×°°ü\\release\\»¥¶¯¿ÎÌÃPC¶ËV100R001C00\\backup\\»¥¶¯¿ÎÌÃ_V100R001C00(2).exe\"" };
 		if (args.length != 1) {
-			JOptionPane.showMessageDialog(null, "åº”ç”¨ç¨‹åºå‡çº§å¤±è´¥ï¼Œç£ç›˜ä¸Šæœªæ‰¾åˆ°æœ€æ–°æ›´æ–°åŒ…ï¼");
+			JOptionPane.showMessageDialog(null, "Ó¦ÓÃ³ÌĞòÉı¼¶Ê§°Ü£¬´ÅÅÌÉÏÎ´ÕÒµ½×îĞÂ¸üĞÂ°ü£¡");
 			System.exit(0);
 		}
 		String url = args[0].replace('*', ' ');
 		File source = new File(url);
 		if(!source.exists()){
-			JOptionPane.showMessageDialog(null, "åº”ç”¨ç¨‹åºå‡çº§å¤±è´¥ï¼Œç£ç›˜ä¸Šæœªæ‰¾åˆ°æœ€æ–°æ›´æ–°åŒ…ï¼");
+			JOptionPane.showMessageDialog(null, "Ó¦ÓÃ³ÌĞòÉı¼¶Ê§°Ü£¬´ÅÅÌÉÏÎ´ÕÒµ½×îĞÂ¸üĞÂ°ü£¡");
 			System.exit(0);
 		}
-		File target = new File(source.getParentFile().getParent(), "äº’åŠ¨è¯¾å ‚.exe");
-		target.delete();//åˆ é™¤åŸæ¥çš„æ–‡ä»¶
+		File target = new File(source.getParentFile().getParent(), "»¥¶¯¿ÎÌÃ.exe");
+		target.delete();//É¾³ıÔ­À´µÄÎÄ¼ş
 		
 		try {
 			copy(source, target);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "åº”ç”¨ç¨‹åºå‡çº§å¤±è´¥ï¼Œæœªèƒ½å¤åˆ¶æœ€æ–°å®‰è£…åŒ…ï¼");
+			JOptionPane.showMessageDialog(null, "Ó¦ÓÃ³ÌĞòÉı¼¶Ê§°Ü£¬Î´ÄÜ¸´ÖÆ×îĞÂ°²×°°ü£¡");
 			System.exit(0);
 		}
 		Runtime runtime = Runtime.getRuntime();

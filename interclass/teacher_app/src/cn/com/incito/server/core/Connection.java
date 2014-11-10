@@ -65,11 +65,11 @@ public class Connection {
 	}
 	
 	private void doLogout(){
-		Application app = Application.getInstance();
-		Device device = app.getImeiDevice().get(imei);
-		if (device == null) {
-			return;
-		}
+//		Application app = Application.getInstance();
+//		Device device = app.getImeiDevice().get(imei);
+//		if (device == null) {
+//			return;
+//		}
 		//TODO 
 //		Group group = app.getTableGroup().get(table.getId());
 //		List<Student> students = app.getStudentByImei(imei);

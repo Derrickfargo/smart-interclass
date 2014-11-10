@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -452,5 +453,4 @@ public class AndroidUtil {
 		}
 		return false;
 	}
-
 }

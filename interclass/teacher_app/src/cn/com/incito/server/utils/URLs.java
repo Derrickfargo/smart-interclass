@@ -24,13 +24,9 @@ public class URLs {
 	public final static String HOST = IP + ":" + PORT + "/app";
 	private final static String URL_API_HOST = HTTP + HOST + URL_SPLITTER;
 	/**
-	 * 加入小组
+	 * 保存小组信息
 	 */
-	public static String URL_JOIN_GROUP = URL_API_HOST + "api/group/join";
-	/**
-	 * 创建小组
-	 */
-	public static String URL_DELETE_GROUP = URL_API_HOST + "api/group/delete";
+	public static String URL_GROUP_SAVE = URL_API_HOST + "api/group/save";
 	
 	
 	/**
@@ -72,6 +68,11 @@ public class URLs {
 	 * 更新组信息
 	 */
 	public static String URL_UPDATE_GROUP = URL_API_HOST + "api/group/update";
+	
+	/**
+	 * 删除组信息
+	 */
+	public static String URL_DELETE_GROUP = URL_API_HOST + "api/group/delete";
 
 	/**
 	 * 随堂作业云同步

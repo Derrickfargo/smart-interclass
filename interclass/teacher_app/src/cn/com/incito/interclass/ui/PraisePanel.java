@@ -1,10 +1,11 @@
 package cn.com.incito.interclass.ui;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import cn.com.incito.interclass.po.Group;
@@ -15,9 +16,9 @@ import cn.com.incito.server.utils.LogoUtils;
 public class PraisePanel extends JPanel {
 
 	private static final long serialVersionUID = 6316121486627261595L;
-	private static final String ICON_NO_DESK = "images/main/bg_binding_desk.png";
+//	private static final String ICON_NO_DESK = "images/main/bg_binding_desk.png";
 	private Application app = Application.getInstance();
-	private JLabel lblNoDesk;
+//	private JLabel lblNoDesk;
 	private List<Group> groupList = new ArrayList<Group>();
 
 	private List<PraiseGroupPanel> praiseGroupList = new ArrayList<PraiseGroupPanel>();
@@ -46,21 +47,22 @@ public class PraisePanel extends JPanel {
 			x = 15;
 			y += 265;
 		}
-		lblNoDesk = new JLabel();
-		ImageIcon icon = new ImageIcon(ICON_NO_DESK);
-		lblNoDesk.setIcon(icon);
-		lblNoDesk.setBounds(288, 235, 300, 160);
-		lblNoDesk.setVisible(false);
-		add(lblNoDesk);
+//		lblNoDesk = new JLabel();
+//		ImageIcon icon = new ImageIcon(ICON_NO_DESK);
+//		lblNoDesk.setIcon(icon);
+//		lblNoDesk.setBounds(288, 235, 300, 160);
+//		lblNoDesk.setVisible(false);
+//		add(lblNoDesk);
 	}
 
 	public void refresh() {
+		hideGroup();
 		initData();
-		if (groupList.size() == 0) {// 未绑定
-			lblNoDesk.setVisible(true);
-			return;
-		}
-		lblNoDesk.setVisible(false);
+//		if (groupList.size() == 0) {// 未绑定
+//			lblNoDesk.setVisible(true);
+//			return;
+//		}
+//		lblNoDesk.setVisible(false);
 		int i = 0;
 		while (i < groupList.size()) {
 			PraiseGroupPanel pnlLeft = praiseGroupList.get(i);
@@ -113,19 +115,13 @@ public class PraisePanel extends JPanel {
 	 * 初始化数据
 	 */
 	private void initData() {
-//		groupList = new ArrayList<Group>();
-//		// 课桌绑定分组，生成内存模型
-//		List<Table> tables = app.getTableList();
-//		for (Table table : tables) {
-//			// 获得课桌对应的分组
-//			Group group = app.getTableGroup().get(table.getId());
-//			if (group == null) {
-//				group = new Group();
-//			}
-//			group.setTableNumber(table.getNumber());
-//			group.setDevices(table.getDevices());
-//			groupList.add(group);
-//		}
+		groupList = new ArrayList<Group>();
+		Set<Group> groups = app.getGroupList();
+		Iterator<Group> it = groups.iterator();
+		while (it.hasNext()) {
+			Group group = it.next();
+			groupList.add(group);
+		}
 //		Collections.sort(groupList, new Comparator<Group>() {
 //			@Override
 //			public int compare(Group o1, Group o2) {
@@ -134,4 +130,24 @@ public class PraisePanel extends JPanel {
 //		});
 	}
 
+	private void hideGroup() {
+		int i = 0;
+		for (int row = 0; row < 4; row++) {
+			for (int column = 0; column < 3; column++) {
+				PraiseGroupPanel panel = praiseGroupList.get(i++);
+				hidePraiseGroupPanel(panel);
+			}
+		}
+	}
+	
+	private void hidePraiseGroupPanel(PraiseGroupPanel panel) {
+		panel.setVisible(false);
+		ImageIcon icon = new ImageIcon("");
+		panel.getLblLogo().setIcon(icon);
+		panel.getLblGroupName().setText("");
+		panel.getLblGroupName().setToolTipText("");
+		panel.getLblMember().setText("");
+		panel.getLblMember().setToolTipText("");
+		panel.getLblScore().setText("");
+	}
 }

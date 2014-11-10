@@ -31,7 +31,8 @@ public class SplashActivity extends BaseActivity {
 			@Override
 			public void onAnimationEnd(Animation arg0) {
 				Intent mIntent=new Intent(SplashActivity.this,WifiSelectorActivity.class);
-				SplashActivity.this.startActivity(mIntent);;
+				SplashActivity.this.startActivity(mIntent);
+				SplashActivity.this.finish();
 			}
 
 			@Override

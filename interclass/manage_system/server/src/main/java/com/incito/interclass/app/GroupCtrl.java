@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.incito.interclass.business.GroupService;
 import com.incito.interclass.common.BaseCtrl;
 import com.incito.interclass.entity.Group;
@@ -24,31 +26,23 @@ public class GroupCtrl extends BaseCtrl {
 	 * @return
 	 */
 	@RequestMapping(value = "/save", produces = { "application/json;charset=UTF-8" })
-	public String saveGroup(Group group) {
-		return renderJSONString(SUCCESS, groupService.save(group));
+	public String saveGroup(String group) {
+		JSONObject json = JSON.parseObject(group);
+		Group g = json.getObject("group", Group.class);
+		return renderJSONString(SUCCESS, groupService.save(g));
 	}
 	
 	/**
-	 * 删除小组
-	 * @param name
-	 * @param logo
+	 * 删除分组
 	 * @param teacherId
 	 * @param classId
-	 * @param studentId
 	 * @return
 	 */
 	@RequestMapping(value = "/delete", produces = { "application/json;charset=UTF-8" })
-	public String deleteGroup(String groupId){
-		Integer result =groupService.deleteGroupById(groupId);
-		if(result==1){
-			List<Group> groups = groupService.getGroupList(1, 1);
-			return renderJSONString(SUCCESS,groups);
-		 }else{
-			 return renderJSONString(1);
-		 }
+	public String deleteGroup(int teacherId,int classId){
+		groupService.claerGroup(teacherId, classId);
+		return renderJSONString(SUCCESS);
 	}
-	
-	
 
 	/**
 	 * 根据IMEI获得分组

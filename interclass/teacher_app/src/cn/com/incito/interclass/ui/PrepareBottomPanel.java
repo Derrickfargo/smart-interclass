@@ -6,9 +6,11 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 
@@ -21,8 +23,12 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 
 import cn.com.incito.interclass.po.Group;
+import cn.com.incito.interclass.po.Student;
+import cn.com.incito.server.api.ApiClient;
 import cn.com.incito.server.api.Application;
+import cn.com.incito.server.core.CoreService;
 import cn.com.incito.server.core.Message;
+import cn.com.incito.server.exception.AppException;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
@@ -47,13 +53,9 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 		setLayout(null);
 		setOpaque(false);
 
-		int total = 0;
-		for (Group group : app.getGroupList()) {
-			total += group.getStudents().size();
-		}
 		String msg = "应到 %d 人  | 实到 %d 人";
-		lblExpected = new JLabel(String.format(msg, total, app
-				.getOnlineStudent().size()), JLabel.CENTER);
+		lblExpected = new JLabel(String.format(msg, app.getStudentList().size(), 
+				app.getOnlineStudent().size()), JLabel.CENTER);
 		lblExpected.setForeground(UIHelper.getDefaultFontColor());
 		lblExpected.setBounds(10, 15, 150, 35);
 		add(lblExpected);
@@ -129,25 +131,54 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 	}
 
 	private void doBegin() {
-		if (app.isGrouping()) {
-			int result = JOptionPane.showConfirmDialog(getParent().getParent(),
-					"学生正在分组，是否立即结束分组开始上课？", "提示", JOptionPane.YES_NO_OPTION);
+		if (app.getOnlineStudent().size() == 0) {
+			JOptionPane.showMessageDialog(getParent().getParent(), "当前还没有学生登陆，请先登录后再上课!");
+			return;
+		}
+		if(app.getGroupList().size() == 0){
+			JOptionPane.showMessageDialog(getParent().getParent(), "学生还未分组，请先分组后再上课!");
+			return;
+		}
+		Set<Student> noGroupStudent = getNoGroupStudent();
+		if (noGroupStudent.size() != 0) {
+			String message = "还有以下学生未加入小组：\n%s是否要立即结束分组开始上课？";
+			StringBuffer args = new StringBuffer();
+			Iterator<Student> it = noGroupStudent.iterator();
+			while (it.hasNext()) {
+				args.append(it.next().getName());
+				args.append("、");
+			}
+			args.append("\n");
+			int result = JOptionPane.showConfirmDialog(getParent().getParent(), 
+					String.format(message, args), "提示", JOptionPane.YES_NO_OPTION);
 			if (result == JOptionPane.YES_OPTION) {
 				app.setGrouping(false);
 			} else {
 				return;
 			}
 		}
-		if (app.getOnlineStudent().size() == 0) {
-			JOptionPane.showMessageDialog(getParent().getParent(),
-					"当前还没有学生登陆，请先登录后再上课!");
-			return;
-		}
-
+		app.setGrouping(false);//TODO 新增
 		MainFrame.getInstance().setVisible(false);
 		setOnClass(true);
 	}
 
+	private Set<Student> getNoGroupStudent() {
+		Set<Student> onGroupStudents = new HashSet<Student>();
+		Set<Student> onlines = app.getOnlineStudent();
+		Iterator<Student> it = onlines.iterator();
+		while (it.hasNext()) {
+			onGroupStudents.add(it.next());
+		}
+		Set<Group> groups = app.getGroupList();
+		for (Group group : groups) {
+			List<Student> studentList = group.getStudents();
+			for (Student student : studentList) {
+				onGroupStudents.remove(student);
+			}
+		}
+		return onGroupStudents;
+	}
+	
 	/**
 	 * 发送分组命令
 	 */
@@ -167,30 +198,58 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 					"学生正在做作业，不能分组!");
 			return;
 		}
+		if(!doDeleteGroup()){//先删除分组
+			
+		}
+		app.getGroupList().clear();
+		app.getTempGroup().clear();
+		app.refresh();
 		// 编辑小组信息
 		app.setGrouping(true);
 //		MainFrame.getInstance().showGrouping();
-		List<Group> groupList = app.getGroupList();
+		Set<Group> groupList = app.getGroupList();
 //		for (Group group : groupList) {
 			JSONObject json = new JSONObject();
-			json.put("group", groupList);
-			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_LIST);
+			json.put("data", groupList);
+			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_CREATE);
 			messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(json.toString()));
 			Map<String, SocketChannel> channels = app.getClientChannel();
 			List<SocketChannel> channelList = new ArrayList<SocketChannel>();
-			Set set = channels.entrySet();
-			for (Iterator iter = set.iterator(); iter.hasNext();) {
-				Map.Entry entry = (Map.Entry) iter.next();
+			Set<Entry<String, SocketChannel>> set = channels.entrySet();
+			for (Iterator<Entry<String, SocketChannel>> iter = set.iterator(); iter.hasNext();) {
+				Map.Entry<String, SocketChannel> entry = (Map.Entry<String, SocketChannel>) iter.next();
 				SocketChannel value = (SocketChannel) entry.getValue();
 				channelList.add(value);
-//			}
+			}
 			sendMessageToGroup(messagePacking, channelList);
-		}
+//		}
 	}
 
+	private boolean doDeleteGroup() {
+		int teacherId = app.getTeacher().getId();
+		int classId = app.getClasses().getId();
+		try {
+			ApiClient.deleteGroup(teacherId, classId);
+			return true;
+		} catch (AppException e) {
+			return false;
+		}
+	}
+	
 	public void setOnClass(boolean isOnClass) {
 		UIHelper.sendLockScreenMessage(true);
+		//发送上课命令
+		
 		if (isOnClass) {
+			//遍历临时分组 将还没有提交分组的小组强制分组
+			CoreService service=new CoreService();
+			for (Integer key : Application.getInstance().getTempGroup().keySet()) {
+				try {
+					service.saveGroup(Application.getInstance().getTempGroup().get(key));
+				} catch (AppException e) {
+					e.printStackTrace();
+				}
+			}
 			btnBegin.setIcon(new ImageIcon("images/main/btn_end.png"));// 设置图片
 			Application.isOnClass = true;
 			Application.getInstance()

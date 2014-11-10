@@ -17,7 +17,6 @@ import javax.swing.JOptionPane;
 
 import cn.com.incito.interclass.po.Classes;
 import cn.com.incito.interclass.po.Course;
-import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Quiz;
 import cn.com.incito.interclass.po.Student;
@@ -27,8 +26,6 @@ import cn.com.incito.interclass.ui.Login;
 import cn.com.incito.interclass.ui.MainFrame;
 import cn.com.incito.server.config.Constants;
 import cn.com.incito.server.utils.FileUtils;
-
-import com.alibaba.fastjson.JSONObject;
 
 public class Application {
 	public boolean isLockScreen;
@@ -56,27 +53,21 @@ public class Application {
 
 	public static boolean isOnClass;// 正在上课
 	public static boolean hasQuiz;// 是否在作业
-	private List<Group> groupList = new ArrayList<Group>();// 本堂课的所有分组
-	private List<Device> deviceList = new ArrayList<Device>();// 本教室所有的Device
 	private List<Student> studentList = new ArrayList<Student>();// 本班级的所有学生
-	private Set<String> onlineDevice = new HashSet<String>();
 	private Set<Student> onlineStudent = new HashSet<Student>();
+	private Set<Student> offlineStudent = new HashSet<Student>();
 
 	private Map<Integer, List<SocketChannel>> groupChannel;// 保存每组和已登录的socket
 	private Map<String, Student> imeiStudent = new HashMap<String, Student>();//key是imei Student是
 	private Map<String, SocketChannel> clientChannel;// 保存所有设备登陆的socket，imei和socket
-	private Map<Integer, Group> groupMap = new HashMap<Integer, Group>();
-	private Map<Integer, JSONObject> tempGroup = new HashMap<Integer, JSONObject>();// 修改的分组信息
-	private Map<Integer, List<Integer>> tempVote = new HashMap<Integer, List<Integer>>();// 小组的投票信息
+	
+	private Set<Group> groupList = new HashSet<Group>();// 本堂课的所有分组
+	private Map<Integer, Group> tempGroup = new HashMap<Integer, Group>();// 未保存的分组信息,key是创建学生id
+	
 	private List<String> tempQuizIMEI = new ArrayList<String>();
 	private Map<String, Quiz> tempQuiz = new HashMap<String, Quiz>();// 随堂联系
-	private List<Integer> tempGrouped = new ArrayList<Integer>();// 已编辑完成的小组
 	private List<Quiz> quizList = new ArrayList<Quiz>();// 作业
 	private FileLock lock;
-	/**
-	 * IMEI和设备的对应关系(key:imei,value:Device)，教师登陆完后初始化
-	 */
-	private Map<String, Device> imeiDevice;
 
 	private Application() {
 		lock();
@@ -105,7 +96,6 @@ public class Application {
 	}
 
 	public void clear() {
-		imeiDevice = new HashMap<String, Device>();
 		clientChannel = new HashMap<String, SocketChannel>();
 		groupChannel = new HashMap<Integer, List<SocketChannel>>();
 	}
@@ -134,10 +124,6 @@ public class Application {
 		this.isGrouping = isGrouping;
 	}
 
-	public List<Integer> getTempGrouped() {
-		return tempGrouped;
-	}
-
 	public List<String> getTempQuizIMEI() {
 		return tempQuizIMEI;
 	}
@@ -150,25 +136,6 @@ public class Application {
 	}
 
 	
-	public void addLoginStudent(String imei, Student student) {
-		Student mStudent = imeiStudent.get(imei);
-		if (mStudent == null) {
-			mStudent = new Student();
-		}
-		boolean isLogin = false;
-		 for (String key : imeiStudent.keySet()) {
-			 if(imeiStudent.get(key).getName().equals(student.getName())&&imeiStudent.get(key).getNumber().equals(student.getNumber())){
-				 isLogin = true;
-					break;
-			 };
-		}
-		if (!isLogin) {
-			imeiStudent.put(imei, student);
-		}
-	}
-
-
-
 	public Map<String, SocketChannel> getClientChannel() {
 		return clientChannel;
 	}
@@ -180,56 +147,15 @@ public class Application {
 		return instance;
 	}
 
-	/**
-	 * 初始化映射关系
-	 * 
-	 * @param devices
-	 * @param tables
-	 */
-	public void initMapping(List<Student> students, List<Group> groups) {
-		// this.initImeiDevice(devices);
-	}
-
-	/**
-	 * 初始化IMEI设备映射
-	 * 
-	 * @param devices
-	 */
-	private void initImeiDevice(List<Device> devices) {
-		deviceList = devices;
-		imeiDevice.clear();
-		for (Device device : devices) {
-			imeiDevice.put(device.getImei(), device);
-		}
-	}
-
-	public void setDeviceList(List<Device> deviceList) {
-		this.deviceList = deviceList;
-	}
-
 	public void addGroup(Group group) {
-		groupMap.put(group.getId(), group);
-
-		Iterator<Group> it = groupList.iterator();
-		while (it.hasNext()) {
-			Group aGroup = it.next();
-			if (aGroup.getId() == group.getId()) {
-				it.remove();
-				break;
-			}
-		}
 		groupList.add(group);
 	}
 
-	public Group getGroupById(Integer id) {
-		return groupMap.get(id);
-	}
-
-	public List<Group> getGroupList() {
+	public Set<Group> getGroupList() {
 		return groupList;
 	}
 
-	public void setGroupList(List<Group> groupList) {
+	public void setGroupList(Set<Group> groupList) {
 		this.groupList = groupList;
 	}
 
@@ -247,10 +173,6 @@ public class Application {
 
 	public void setTeacher(Teacher teacher) {
 		this.teacher = teacher;
-	}
-
-	public List<Device> getDeviceList() {
-		return deviceList;
 	}
 
 	public Course getCourse() {
@@ -303,22 +225,17 @@ public class Application {
 
 	public void setStudentList(List<Student> studentList) {
 		this.studentList = studentList;
+		if (studentList == null || studentList.size() == 0) {
+			return;
+		}
+		for (Student student : studentList) {
+			offlineStudent.add(student);
+			imeiStudent.put(student.getImei(), student);
+		}
 	}
 
 	public Map<Integer, List<SocketChannel>> getGroupChannel() {
 		return groupChannel;
-	}
-
-	public Map<String, Device> getImeiDevice() {
-		return imeiDevice;
-	}
-
-	public Set<String> getOnlineDevice() {
-		return onlineDevice;
-	}
-
-	public void setOnlineDevice(Set<String> onlineDevice) {
-		this.onlineDevice = onlineDevice;
 	}
 
 	public Set<Student> getOnlineStudent() {
@@ -329,12 +246,16 @@ public class Application {
 		this.onlineStudent = onlineStudent;
 	}
 
-	public Map<Integer, JSONObject> getTempGroup() {
-		return tempGroup;
+	public Set<Student> getOfflineStudent() {
+		return offlineStudent;
 	}
 
-	public Map<Integer, List<Integer>> getTempVote() {
-		return tempVote;
+	public void setOfflineStudent(Set<Student> offlineStudent) {
+		this.offlineStudent = offlineStudent;
+	}
+
+	public Map<Integer, Group> getTempGroup() {
+		return tempGroup;
 	}
 
 	public Map<String, Quiz> getTempQuiz() {
@@ -346,7 +267,7 @@ public class Application {
 	}
 
 	public void refresh() {
-		MainFrame.getInstance().refreshPrepare();
+		MainFrame.getInstance().refresh();
 		MainFrame.getInstance().refreshQuiz();
 	}
 

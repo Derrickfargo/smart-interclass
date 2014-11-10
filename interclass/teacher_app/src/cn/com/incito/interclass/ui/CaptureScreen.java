@@ -73,7 +73,6 @@ public class CaptureScreen {
 	private Component jFrame;
 	private boolean isBarShow = false;
 	private int startX, startY, endX, endY, tempX, tempY;
-	private int startXBar, startYBar;
 	public final static String SCREEN_SHOT_CONFIRM = "images/screenshot/bg_btn.png";
 	public final static String SCREEN_SHOT_CONFIRM_HOVER = "images/screenshot/bg_btn_HOVER.png";
 	public final static String SCREEN_SHOT_QUIT = "images/screenshot/bg_btn2.png";

@@ -2,6 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
+    android:id="@+id/root"
     android:background="@drawable/bg_create_group"
     android:orientation="vertical" >
     
@@ -25,6 +27,7 @@
             android:layout_height="38dp"
             android:layout_marginLeft="45dp"
             android:layout_marginTop="6dp"
+            android:maxLength="8"
             android:background="@null"
             android:hint="@string/please_input_group_name"
             android:inputType="text" />
