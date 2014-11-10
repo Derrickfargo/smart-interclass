@@ -1,15 +1,10 @@
 package cn.com.incito.server.handler;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.channels.SocketChannel;
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.server.api.Application;
@@ -37,7 +32,12 @@ public class GroupJoinHandler extends MessageHandler{
 		}else{
 			result.put("code", 1);
 		}
-		result.put("data",Application.getInstance().getGroupList());
+		List<Group> groupList=new ArrayList<Group>();
+		//遍历临时分组 将还没有分组的小组列表传回给pad端
+		for (Integer key : Application.getInstance().getTempGroup().keySet()) {
+			groupList.add(Application.getInstance().getTempGroup().get(key));
+		}
+		result.put("data",groupList);
 		logger.info("回复加入小组消息：" + result);
 		sendResponse(result.toString());
 	}
