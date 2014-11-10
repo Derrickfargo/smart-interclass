@@ -86,7 +86,7 @@
 		INNER JOIN 
 			tb_group ON tb_student_group.group_id = tb_group.id
 		WHERE 
-			tb_group.id = #{id}
+			tb_group.captain_id = #{id}
 	</select>
 	
 	<select id="loginForStudent" resultType="com.incito.interclass.entity.Student" parameterType="com.incito.interclass.entity.Student">
