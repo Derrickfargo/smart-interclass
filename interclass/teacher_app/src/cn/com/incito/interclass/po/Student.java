@@ -22,7 +22,7 @@ public class Student extends User {
 	private int year;
 	private int classNumber;
 	private String schoolName;
-	private String imei;
+	private String imei = "";
 
 	private boolean isLogin;
 
