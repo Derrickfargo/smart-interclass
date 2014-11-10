@@ -79,7 +79,7 @@
 												<td>${student.address}</td>
 												<td>
 													<a href="#" onclick="modifyStudent('${student.id}')"><span title="修改" class="glyphicon glyphicon-pencil"></span></a>&nbsp; 
-													<a href="#" onclick="deleteStudent('${student.id}')"><span title="删除" class="glyphicon glyphicon-remove"></span></a>&nbsp;
+													<%-- <a href="#" onclick="deleteStudent('${student.id}')"><span title="删除" class="glyphicon glyphicon-remove"></span></a>&nbsp; --%>
 												</td>
 											</tr>
 										</c:forEach>
@@ -117,7 +117,7 @@
 							<input type="hidden" id="pageNum" name="pageNum" value="${page.pageNum}"> 
 							<input type="hidden" id="pageSize" name="pageSize" value="">
 							<input type="hidden" id="opType" name="opType" value="">
-							<input type="hidden" id="studentId" name="studentId" value="">
+							<input type="hidden" id="studentId" name="studentId" value="${student.id}">
 							<input type="hidden" id="pageType" name="pageType" value="">
 						</form>
 					</div>

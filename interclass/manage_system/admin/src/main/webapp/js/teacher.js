@@ -1,6 +1,51 @@
 //页面初始化设置
-$(document).ready(function() {
+$(document).ready(function() {	
 	$("#teacherForm").validate({
+		
+		
+		
+		//新增教师时对登录名,身份证号的重复验证
+		rules:{
+			uname:{
+				remote:{
+					type:"post",
+					url:"check",
+					data:{
+						uname:function(){
+							return $("#teacherUName").val();
+						},
+						id:function(){
+							return $("#teacherId").val();
+						}
+					}
+				}
+			},
+			idcard:{
+				remote:{
+					type:"post",
+					url:"check",
+					data:{
+						idcard:function(){
+							return $("#idcard").val();
+						},
+						id:function(){
+							return $("#teacherId").val();
+						}
+					}
+				}
+			}
+		
+		},
+		messages:{
+			uname:{
+				remote:"登录名已存在",
+			},
+			idcard:{
+				remote:"身份证号码已注册"
+			}
+			
+			
+		},
 		submitHandler:function(form){
 			var flag = true;
 			//登陆名
@@ -14,7 +59,7 @@ $(document).ready(function() {
 				flag = false;
 			}
 			//检查身份证格式是否正确
-			var idCarNo = new RegExp(/^\d{17}([0-9]|X)$|^(\d{15})$/);
+			var idCarNo = new RegExp(/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/);
 			if (!idCarNo.test($("#idcard").val())) {
 				$("#checkTeacherIdTip").removeClass("hidden");
 				flag = false;
@@ -47,10 +92,9 @@ function searchTeacher(pageNum) {
 	$("#searchForm").submit();
 }
 
-function modifyTeacher(teacherId, opType, pageType) {
+function modifyTeacher(teacherId) {
 	$("#teacherId").val(teacherId);
-	$("#pageType").val(pageType);
-	$("#searchForm").attr("action", _path + "/teacher/" + opType);
+	$("#searchForm").attr("action", _path + "/teacher/edit");
 	$("#searchForm").submit();
 }
 

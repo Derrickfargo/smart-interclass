@@ -82,10 +82,79 @@ public class TeacherCtrl extends BaseCtrl {
 		}
 		return new ModelAndView("redirect:list");
 	}
+//	/**
+//	 * 删除学生
+//	 * @param teacherId
+//	 * @return
+//	 */
+//	@RequestMapping(value = "/delete")
+//	public ModelAndView delete(int teacherId) {
+//		userService.deleteTeacher(teacherId);
+//		return new ModelAndView("redirect:list");
+//	}
 	
-	@RequestMapping(value = "/delete")
-	public ModelAndView delete(int teacherId) {
-		userService.deleteTeacher(teacherId);
+	/**
+	 * 新增教师时重复校验 
+	 * @return
+	 */
+	
+	@RequestMapping(value="/check")
+	public boolean check(String uname,String idcard,@RequestParam(value = "id", defaultValue = "-1") int id){
+		Teacher teacher = new Teacher();
+		if(id!=-1){
+			teacher =userService.getTeacherById(id);
+		}
+		if(uname!=null){
+			if(uname.equals(teacher.getUname())){
+				return true;
+			}
+			int flag=userService.getTeacherByUname(uname);
+			if(flag!=0)
+				return false;
+		}
+		if(idcard!=null){
+			int flag=userService.getTeacherByIdCard(idcard);
+			if(idcard.equals(teacher.getIdcard())){
+				return true;
+			}
+			if(flag!=0)
+				return false;
+		}
+		return true;
+	}
+	/**
+	 * 更新教师信息
+	 * 
+	 * @param teacher
+	 * @return
+	 */
+	@RequestMapping(value="/update")
+	public ModelAndView update(Teacher teacher){
+		try {
+			userService.updateTeacherById(teacher);
+		} catch (AppException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return new ModelAndView("redirect:list");
+	}
+	
+	
+	/**
+	 * 
+	 * 修改教师信息
+	 * @param teacherId
+	 * @return
+	 */
+	@RequestMapping(value="/edit")
+	public ModelAndView edit(int teacherId){
+		ModelAndView res= new ModelAndView("/teacher/teacherEdit");
+		Teacher teacher=userService.getTeacherById(teacherId);
+		List<School> schools = schoolService.getSchoolList();
+		List<Course> courses = courseService.getCourseList();
+		res.addObject("schools", schools);
+		res.addObject("courses", courses);
+		res.addObject("teacher",teacher);
+		return res;
 	}
 }

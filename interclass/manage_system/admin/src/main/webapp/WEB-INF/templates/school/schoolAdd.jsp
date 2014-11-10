@@ -39,7 +39,7 @@
 											<div class="form-group">
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>学校名称：</label>
 												<div class="col-xs-4">
-													<input type="text" name="name" id="schoolName" value="${school.name}" maxlength="128" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkSchoolNameTip').addClass('hidden')">
+													<input type="text" name="name" id="schoolName" value="${school.name}" maxlength="128" class="form-control borderRadiusIE8 required" autocomplete="off">
 													<p id="checkSchoolNameTip" class="help-block hidden"><font color="red"><b>请输入学校名称</b></font></p>
 												</div>
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>邮编：</label>
@@ -51,7 +51,7 @@
 											<div class="form-group">
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>邮箱：</label>
 												<div class="col-xs-4">
-													<input type="text" id="email" name="email" maxlength="18" value="${school.email}" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkEmailTip').addClass('hidden')">
+													<input type="text" id="email" name="email" maxlength="18" value="${school.email}" class="form-control borderRadiusIE8 required email"  onkeyup="$('#checkEmailTip').addClass('hidden')">
 													<p id="checkEmailTip" class="help-block hidden"><font color="red"><b>请输入正确的 邮箱</b></font></p>
 												</div>
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>联系电话：</label>
@@ -63,7 +63,7 @@
 											<div class="form-group">
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>通讯地址：</label>
 												<div class="col-xs-4">
-													<input type="text" id="address" name="address" value="${school.schoolName}" class="form-control borderRadiusIE8 required" onkeyup="$('#checkAddressTip').addClass('hidden')">
+													<input type="text" id="address" name="address" value="${school.address}" class="form-control borderRadiusIE8 required" onkeyup="$('#checkAddressTip').addClass('hidden')">
 													<p id="checkAddressTip" class="help-block hidden"><font color="red"><b>请输入所属学校</b></font></p>
 												</div>
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>学校性质：</label>
@@ -100,6 +100,7 @@
 										<div class="col-xs-1">&nbsp;</div>
 										<button type="button" class="btn btn-default col-xs-2" onclick="goback('新增学校')">取消</button>
 									</div>
+									<input type="hidden" name="id" id="schoolId" value="-1">
 								</form>
 							</div>
 						</div><!-- tab-content end -->

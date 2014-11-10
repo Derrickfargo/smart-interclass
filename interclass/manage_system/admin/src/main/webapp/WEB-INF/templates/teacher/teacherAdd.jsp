@@ -39,7 +39,7 @@
 											<div class="form-group">
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>登陆名：</label>
 												<div class="col-xs-4">
-													<input type="text" name="uname" id="teacherUName" value="${teacher.uname}" maxlength="8" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkTeacherUNameTip').addClass('hidden')">
+													<input type="text" name="uname" id="teacherUName" value="${teacher.uname}" maxlength="8" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkTeacherUNameTip').addClass('hidden')" autocomplete="off">
 													<p id="checkTeacherUNameTip" class="help-block hidden"><font color="red"><b>请输入登陆名，2-8个字符</b></font></p>
 												</div>
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>教师姓名：</label>
@@ -51,7 +51,7 @@
 											<div class="form-group">
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>身份证号：</label>
 												<div class="col-xs-4">
-													<input type="text" id="idcard" name="idcard" maxlength="18" value="${teacher.idcard}" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkTeacherTip').addClass('hidden')">
+													<input type="text" id="idcard" name="idcard" maxlength="18" value="${teacher.idcard}" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkTeacherIdTip').addClass('hidden')" autocomplete="off">
 													<p id="checkTeacherTip" class="help-block hidden"><font color="red"><b>该教师已存在！</b></font></p>
 													<p id="checkTeacherIdTip" class="help-block hidden"><font color="red"><b>请输入正确的身份证号码</b></font></p>
 												</div>
@@ -102,6 +102,7 @@
 										<button type="submit" class="btn btn-success col-xs-2">完成</button>
 										<div class="col-xs-1">&nbsp;</div>
 										<button type="button" class="btn btn-default col-xs-2" onclick="goback('新增教师')">取消</button>
+										<input type="hidden" id="teacherId" value="-1">
 									</div>
 								</form>
 							</div>

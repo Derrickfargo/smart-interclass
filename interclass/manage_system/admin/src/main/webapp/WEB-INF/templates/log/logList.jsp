@@ -13,6 +13,10 @@
     <title>互动课堂后台管理平台</title>
     <jsp:include page="../common/common.jsp" />
     <script type="text/javascript" src="${path}/js/log.js"></script>
+    <script type="text/javascript"></script>
+    <script type="text/javascript"></script>
+    <script type="text/javascript"></script>
+    <script type="text/javascript"></script>
   </head>
 
   <body>
@@ -60,6 +64,17 @@
 										</select>
 									</div>
 									<label class="col-xs-1 control-label">关键字:</label>
+									<div class="col-xs-2">
+										<input type="text" name="key" value="${key}" class="form-control borderRadiusIE8">
+									</div>
+									<br>
+									<br>
+								
+									<label class="col-xs-1 control-label">Mac地址:</label>
+									<div class="col-xs-2">
+										<input type="text" name="mac" value="${key}" class="form-control borderRadiusIE8">
+									</div>
+									<label class="col-xs-1 control-label">时间:</label>
 									<div class="col-xs-2">
 										<input type="text" name="key" value="${key}" class="form-control borderRadiusIE8">
 									</div>

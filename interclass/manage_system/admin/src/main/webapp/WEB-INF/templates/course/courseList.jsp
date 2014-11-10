@@ -63,7 +63,8 @@
 											<tr>
 												<td>${course.name}</td>
 												<td>
-													<a href="#" onclick="deleteCourse('${course.id}')"><span title="删除" class="glyphicon glyphicon-remove"></span></a>&nbsp;
+													<%-- <a href="#" onclick="deleteCourse('${course.id}')"><span title="删除" class="glyphicon glyphicon-remove"></span></a>&nbsp; --%>
+													<a href="#" onclick="modifyCourse('${course.id}')"><span title="修改" class="glyphicon glyphicon-pencil"></span></a>&nbsp;
 												</td>
 											</tr>
 										</c:forEach>

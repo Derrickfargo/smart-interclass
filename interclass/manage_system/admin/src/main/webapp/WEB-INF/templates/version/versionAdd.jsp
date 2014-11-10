@@ -54,12 +54,12 @@
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>版本代码：</label>
 												<div class="col-xs-4">
 													<input type="text" name="code" id="code" value="${version.code}" maxlength="8" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkCodeTip').addClass('hidden')">
-													<p id="checkCodeTip" class="help-block hidden"><font color="red"><b>请输入2-8个汉字</b></font></p>
+													<p id="checkCodeTip" class="help-block hidden"><font color="red"><b>请输入2-8个数字</b></font></p>
 												</div>
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>版本文件：</label>
 												<div class="col-xs-4">
-													<input type="file" id="file" name="file" class="form-control borderRadiusIE8 required" onkeyup="$('#fileTip').addClass('hidden')"/>
-													<p id="fileTip" class="help-block hidden"><font color="red"><b>请选择要导入的Excel文件</b></font></p>
+													<input type="file" id="file" name="file" class="form-control borderRadiusIE8 required " onkeyup="$('#fileTip').addClass('hidden')"/>
+													<p id="fileTip" class="help-block hidden"><font color="red"><b>请正确选择要导入的Excel文件</b></font></p>
 												</div>
 											</div>
 											<div class="form-group">

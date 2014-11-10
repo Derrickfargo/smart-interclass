@@ -47,4 +47,20 @@
 	<delete id="delete" parameterType="java.lang.Integer">
 		DELETE FROM tb_course WHERE id = #{id} 
 	</delete>
+	<select id="getCourseByName" parameterType="java.lang.String" resultType="java.lang.Integer">
+		SELECT 
+			COUNT(1)
+		FROM 
+			tb_course
+		WHERE 
+			name=#{name}
+	</select>
+	<update id="update">
+		UPDATE
+			tb_course
+		SET 
+			name=#{name},intro=#{intro}
+		WHERE
+			id=#{id}
+	</update>
 </mapper>

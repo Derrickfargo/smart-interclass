@@ -16,4 +16,8 @@ public interface CourseMapper {
 	Integer save(Course course);
 
 	void delete(int id);
+
+	Integer getCourseByName(String name);
+
+	Integer update(Course course);
 }

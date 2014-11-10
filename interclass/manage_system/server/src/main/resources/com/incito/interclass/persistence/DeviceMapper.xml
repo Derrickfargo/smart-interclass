@@ -42,9 +42,9 @@
 	
 	<insert id="save" parameterType="com.incito.interclass.entity.Device" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO 
-			tb_device(imei,ctime)
+			tb_device(imei,ctime,student_id)
 		VALUES
-			(#{imei},now())
+			(#{imei},now(),#{studentId)
 	</insert>
 	
 	<delete id="delete" parameterType="java.lang.Integer">

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.incito.base.exception.AppException;
 import com.incito.interclass.business.ClassService;
 import com.incito.interclass.business.DeviceService;
 import com.incito.interclass.business.SchoolService;
@@ -102,6 +103,7 @@ public class StudentCtrl extends BaseCtrl {
 		Student student = new Student();
 		student.setClassId(classes.getId());
 		student.setUname(name);
+		student.setNumber(number);
 		student.setName(name);
 		student.setSex(sex);
 		student.setGuardian(guardian);
@@ -117,12 +119,16 @@ public class StudentCtrl extends BaseCtrl {
 		userService.saveStudent(student);
 		return new ModelAndView("redirect:list");
 	}
-	
-	@RequestMapping(value = "/delete")
-	public ModelAndView delete(int studentId) {
-		userService.deleteStudent(studentId);
-		return new ModelAndView("redirect:list");
-	}
+//	/**
+//	 * 删除学生
+//	 * @param studentId
+//	 * @return
+//	 */
+//	@RequestMapping(value = "/delete")
+//	public ModelAndView delete(int studentId) {
+//		userService.deleteStudent(studentId);
+//		return new ModelAndView("redirect:list");
+//	}
 	
 	@RequestMapping(value = "/import")
 	public ModelAndView importStudent() {
@@ -161,4 +167,80 @@ public class StudentCtrl extends BaseCtrl {
 		mav.addObject("unbind", result.get("unbind"));
 		return mav;
 	}
+	/**
+	 *编辑学生基本信息 
+	 * @param studentId
+	 * @return
+	 */
+	@RequestMapping(value="/edit")
+	public ModelAndView edit(int studentId){
+		ModelAndView res = new ModelAndView("student/studentEdit");
+		Student student =userService.getStudentById(studentId);
+		res.addObject("student", student);
+		//入学学年转换为班级年
+		int year=student.getYear();
+		int newYear=0;
+		Calendar calendar = Calendar.getInstance();
+		int month = calendar.get(Calendar.MONTH) + 1;
+		if(month < 9){
+			newYear=calendar.get(Calendar.YEAR)-year;
+		} else {
+			newYear=calendar.get(Calendar.YEAR)-year+1;
+		}
+		List<School> schools = schoolService.getSchoolList();
+		res.addObject("schools", schools);
+		res.addObject("year", newYear);
+		return res;
+	}
+	/**
+	 * 更新学生
+	 * @param student
+	 * @param className
+	 * @param deviceId
+	 * @param newImei
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value="/update")
+	public ModelAndView update(Student student,String newImei,int id){
+		//班年级转换为入学学年
+				Calendar calendar = Calendar.getInstance();
+				int month = calendar.get(Calendar.MONTH) + 1;
+				if(month < 9){
+					calendar.add(Calendar.YEAR, student.getYear() * -1);
+				} else {
+					calendar.add(Calendar.YEAR, (student.getYear()-1) * -1);
+				}
+				int newYear = calendar.get(Calendar.YEAR);
+		
+		//更新班级表
+		Classes classes = classService.getClassByNumber(student.getSchoolId(), newYear,student.getClassNumber());
+		if(classes==null || classes.getId()==0){
+			classes=new Classes();
+			classes.setNumber(student.getClassNumber());
+			classes.setSchoolId(student.getSchoolId());
+			classes.setYear(newYear);
+			classService.saveClass(classes);
+			student.setClassId(classes.getId());
+		}
+		//更新device表
+		if(!newImei.equals(student.getImei())){
+			Device device= new Device();
+			device.setImei(newImei);
+			device.setStudentId(id);
+			deviceService.saveDevice(device);
+			student.setDeviceId(device.getId());
+		}
+		
+		//更新user表和student表
+		try {
+			student.setUname(student.getName());
+			userService.updateStudent(student);
+		} catch (AppException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new ModelAndView("redirect:list");
+	}
+
 }

@@ -30,4 +30,14 @@ public class CourseService {
 	public void deleteCourse(int courseId) {
 		courseMapper.delete(courseId);
 	}
+
+	public int getCourseByName(String name) {
+		// TODO Auto-generated method stub
+		return courseMapper.getCourseByName(name);
+	}
+
+	public void update(Course course) {
+		// TODO Auto-generated method stub
+		 courseMapper.update(course);
+	}
 }

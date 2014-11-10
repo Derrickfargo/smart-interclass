@@ -25,6 +25,16 @@ $(document).ready(function() {
 //				$('#checkVersionVersionTip').removeClass('hidden');
 //				flag = false;
 //			}
+			//检查版本代码格式
+			if(!new RegExp(/[0-9]*[1-9][0-9]*$/).test($("#code").val())){
+				$("#checkCodeTip").removeClass("hidden");
+				flag=false;
+			}
+			//检查上传版本文件
+			if(!new RegExp(/(\.xls)$/).test($("#file").val())){
+				$("#fileTip").removeClass("hidden");
+				flag=false;
+			}
 			
 			if (flag) {
 				form.submit();
