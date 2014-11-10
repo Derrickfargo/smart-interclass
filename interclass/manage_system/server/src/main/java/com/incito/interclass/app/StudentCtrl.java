@@ -29,51 +29,56 @@ public class StudentCtrl extends BaseCtrl {
 
 	@Autowired
 	private GroupService groupService;
-
-	/**
-	 * 注册学生
-	 * 
-	 * @param courseId
-	 *            课程id
-	 * @param classId
-	 *            课程id
-	 * @param teacherId
-	 *            教师id
-	 * @param tableId
-	 *            课桌id
-	 * @param studentId
-	 *            学生id
-	 * @return
-	 */
-	@RequestMapping(value = "/login", produces = { "application/json;charset=UTF-8" })
-	public String addStudent( int classId, int teacherId, String name, String number, int sex, String imei) {
-		// 查学生是否存在
-		Student student = userService.getStudent(name, number);
-		// 不存在保存学生
-		if (student == null || student.getId() == 0) {
-			student = new Student();
-			student.setSex(sex);
-			student.setUname(name);
-			student.setName(name);
-			student.setNumber(number);
-			if(!userService.saveStudent(student)){
-				return renderJSONString(REGISTER_ERROR);
-			}
-		}
-
-		// 根据学生id保存组
-		try {
-			Group group = groupService.addStudent( classId, teacherId, student.getId());
-			if (group == null || group.getId() == 0) {
-				return renderJSONString(REGISTER_ERROR);
-			} else {
-				group = groupService.getGroupById(group.getId());
-				return renderJSONString(SUCCESS, group);
-			}
-		} catch (AppException e) {
-			return renderJSONString(REGISTER_ERROR);
-		}
-	}
+//
+//	/**
+//	 * 注册学生
+//	 * 
+//	 * @param courseId
+//	 *            课程id
+//	 * @param classId
+//	 *            课程id
+//	 * @param teacherId
+//	 *            教师id
+//	 * @param tableId
+//	 *            课桌id
+//	 * @param studentId
+//	 *            学生id
+//	 * @return
+//	 */
+//	@RequestMapping(value = "/login", produces = { "application/json;charset=UTF-8" })
+//	public String addStudent( int classId, int teacherId, String name, String number, int sex, String imei) {
+//		// 查学生是否存在
+//		Student student = userService.getStudent(name, number);
+//		// 不存在保存学生
+//		if (student == null || student.getId() == 0) {
+//			student = new Student();
+//			student.setSex(sex);
+//			student.setUname(name);
+//			student.setName(name);
+//			student.setNumber(number);
+//			try {
+//				if(!userService.saveStudent(student)){
+//					return renderJSONString(REGISTER_ERROR);
+//				}
+//			} catch (AppException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//
+//		// 根据学生id保存组
+//		try {
+//			Group group = groupService.addStudent( classId, teacherId, student.getId());
+//			if (group == null || group.getId() == 0) {
+//				return renderJSONString(REGISTER_ERROR);
+//			} else {
+//				group = groupService.getGroupById(group.getId());
+//				return renderJSONString(SUCCESS, group);
+//			}
+//		} catch (AppException e) {
+//			return renderJSONString(REGISTER_ERROR);
+//		}
+//	}
 
 	/**
 	 * 学生增减分

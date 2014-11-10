@@ -50,4 +50,17 @@
 	<delete id="delete" parameterType="java.lang.Integer">
 		DELETE FROM tb_device WHERE id = #{id} 
 	</delete>
+	<update id="update" parameterType="com.incito.interclass.entity.Device">
+		UPDATE
+			tb_device
+		SET
+			<if test="imei!=null and imei!=''">
+				imei=#{imei},
+			</if>
+			<if test="studentId!=0">
+				student_id=#{studentId}
+			</if>
+		WHERE
+			id=#{id}
+	</update>
 </mapper>

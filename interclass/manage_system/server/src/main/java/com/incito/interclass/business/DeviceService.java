@@ -26,7 +26,16 @@ public class DeviceService {
 		return (Integer) deviceMapper.save(device) == 1;
 	}
 
-	public void deleteDevice(int deviceId) {
-		deviceMapper.delete(deviceId);
+//	public void deleteDevice(int deviceId) {
+//		deviceMapper.delete(deviceId);
+//	}
+	
+	/**
+	 * device 属性值有变动才会返回true
+	 * @param device
+	 * @return
+	 */
+	public boolean update(Device device) {	
+		return deviceMapper.update(device)==1;
 	}
 }

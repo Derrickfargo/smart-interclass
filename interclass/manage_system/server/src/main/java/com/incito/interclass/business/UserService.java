@@ -42,6 +42,10 @@ public class UserService {
 	private SchoolMapper schoolMapper;
 	@Autowired
 	private DeviceMapper deviceMapper;
+	@Autowired
+	private ClassService classService;
+	@Autowired
+	private DeviceService deviceService;
 
 	/**
 	 * 改变学生的分数
@@ -133,15 +137,52 @@ public class UserService {
 	}
 
 	@Transactional(rollbackFor = AppException.class)
-	public boolean saveStudent(Student student) {
+	public boolean saveStudent(Student student) throws AppException {
+		//检查class表，没有数据将创建。注：需要将class表，device表相关的字段封装在Student中传递进来
+		Classes classes= classService.getClassByNumber(student.getSchoolId(), student.getYear(), student.getClassNumber());
+		if(classes==null||classes.getId()==0){
+			classes= new Classes();
+			classes.setNumber(student.getClassNumber());
+			classes.setSchoolId(student.getSchoolId());
+			classes.setYear(student.getYear());
+			boolean flag=classService.saveClass(classes);
+			while(flag==false){
+				throw AppException.database(0);
+			}
+		}
+		student.setClassId(classes.getId());
+		
+		//检查Device表，没有数据将创建
+		Device device=deviceService.getDeviceByIMEI(student.getImei());
+		if(device==null||device.getId()==0){
+			device=new Device();
+			device.setImei(student.getImei());
+			boolean flag=deviceService.saveDevice(device);
+			while(flag==false){
+				throw AppException.database(0);
+			}
+		}
+		
+		//student表创建
 		student.setActive(true);
 		student.setRole(User.ROLE_STUDENT);
-		userMapper.saveUser(student);
-		if (student.getId() <= 0) {
-			return false;
+		student.setClassId(classes.getId());
+		student.setDeviceId(device.getId());	
+		int flag=userMapper.saveUser(student);
+		if (flag!=1) {
+			throw AppException.database(0);
 		}
 		int result = userMapper.saveStudent(student);
-		return result == 1;
+		if(result!=1){
+			throw AppException.database(0);
+		}
+		//device表更新studentId
+		device.setStudentId(student.getId());
+		boolean outcome= deviceService.update(device);
+		while(outcome==false){
+			throw AppException.database(0);
+		}
+		return outcome;
 	}
 
 	public void deleteTeacher(int teacherId) {
@@ -154,7 +195,7 @@ public class UserService {
 		userMapper.deleteStudent(studentId);
 	}
 
-	public Map<String, Object> saveStudent(File file) {
+	public Map<String, Object> saveStudent(File file) throws AppException {
 		Map<String, Object> result = new HashMap<String, Object>();
 		//导入学校
 		School school = null;
@@ -398,22 +439,18 @@ public class UserService {
 	}
 
 	public int getTeacherByUname(String uname) {
-		// TODO Auto-generated method stub
 		return userMapper.getTeacherByUname(uname);
 	}
 
 	public int getTeacherByIdCard(String idcard) {
-		// TODO Auto-generated method stub
 		return userMapper.getTeacherByIdCard(idcard);
 	}
 
 	public Teacher getTeacherById(int teacherId) {
-		// TODO Auto-generated method stub
 		return userMapper.getTeacherById(teacherId);
 	}
 	@Transactional(rollbackFor=AppException.class)
 	public boolean updateTeacherById(Teacher teacher) throws AppException{
-		// TODO Auto-generated method stub
 		teacher.setActive(true);
 		teacher.setRole(User.ROLE_TEACHER);
 		int flag=userMapper.updateUserById(teacher);
@@ -427,13 +464,11 @@ public class UserService {
 	}
 
 	public Student getStudentById(int studentId) {
-		// TODO Auto-generated method stub
 		return userMapper.getStudentById(studentId);
 	}
 	
 	@Transactional(rollbackFor=AppException.class)
 	public boolean updateStudent(Student student) throws AppException {
-		// TODO Auto-generated method stub
 		student.setActive(true);
 		student.setRole(User.ROLE_STUDENT);
 		int flag=userMapper.updateUserById(student);
@@ -442,5 +477,5 @@ public class UserService {
 		}
 		flag=userMapper.updateStudentById(student);
 		return flag>=0;
-	}
+	}	
 }
