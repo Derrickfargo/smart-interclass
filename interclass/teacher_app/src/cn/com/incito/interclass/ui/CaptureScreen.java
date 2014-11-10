@@ -60,6 +60,7 @@ import cn.com.incito.server.core.Message;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
+import cn.com.incito.server.utils.ImageUtil;
 
 import com.sun.image.codec.jpeg.ImageFormatException;
 
@@ -103,10 +104,24 @@ public class CaptureScreen {
 	 * @throws ImageFormatException
 	 */
 	public void distributePaper(BufferedImage image) {
+		logger.info("作业图像宽度:" + image.getWidth());
+		if (image.getWidth() > 1280) {
+			try {
+				File dir = new File("temp");
+				dir.mkdirs();
+				File file = new File(dir, "temp.png");
+				ImageIO.write(image, "jpg", file);
+				ImageUtil.resize(file, file, 1280, 1f);
+				image = ImageIO.read(file);
+			} catch (Exception e) {
+				logger.error("图像压缩失败!", e);
+			}
+		}
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DISTRIBUTE_PAPER);
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		try {
-			ImageIO.write(image, "png", os);
+			ImageIO.write(image, "jpg", os);
+			logger.info("图片大小:" + os.toByteArray().length);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

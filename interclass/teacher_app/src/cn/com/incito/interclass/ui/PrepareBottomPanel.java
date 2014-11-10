@@ -141,7 +141,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 		}
 		Set<Student> noGroupStudent = getNoGroupStudent();
 		if (noGroupStudent.size() != 0) {
-			String message = "还有以下学生未加入小组：\n%s是否要立即结束分组开始上课？";
+			String message = "还有以下学生未加入小组：\n%s\n需要全部加入后才能开始上课？";
 			StringBuffer args = new StringBuffer();
 			Iterator<Student> it = noGroupStudent.iterator();
 			while (it.hasNext()) {
@@ -149,13 +149,15 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 				args.append("、");
 			}
 			args.append("\n");
-			int result = JOptionPane.showConfirmDialog(getParent().getParent(), 
-					String.format(message, args), "提示", JOptionPane.YES_NO_OPTION);
-			if (result == JOptionPane.YES_OPTION) {
-				app.setGrouping(false);
-			} else {
-				return;
-			}
+//			int result = JOptionPane.showConfirmDialog(getParent().getParent(), 
+//					String.format(message, args), "提示", JOptionPane.YES_NO_OPTION);
+//			if (result == JOptionPane.YES_OPTION) {
+//				app.setGrouping(false);
+//			} else {
+//				return;
+//			}
+			JOptionPane.showMessageDialog(getParent().getParent(), message);
+			return;
 		}
 		app.setGrouping(false);//TODO 新增
 		MainFrame.getInstance().setVisible(false);
