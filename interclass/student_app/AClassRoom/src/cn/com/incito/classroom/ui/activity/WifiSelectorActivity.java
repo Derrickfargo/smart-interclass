@@ -77,7 +77,7 @@ public class WifiSelectorActivity extends BaseActivity  {
 	private long TIMEINMILLS_REFLUSHLIST = 10 * 1000;
 	private IWifiItem mCurrentWifiItem;
 	private static final int message_checkNetStatus = 0x11;
-	
+	private boolean firstConnect=true;
 	// 是否允许出现相同的wifi名称
 	private boolean isAllowRepeat = true;
 	private int code;
@@ -521,6 +521,10 @@ public class WifiSelectorActivity extends BaseActivity  {
 	 */
 	private void connectToWifi(IWifiItem wifiItem, String password,
 			IWifiSecurityType securityType) {
+		if(mProgressDialog==null){
+			mProgressDialog = new ProgressiveDialog(this);
+			mProgressDialog.setMessage(R.string.waiting_access_wifi);
+		}
 		mProgressDialog.show();
 		WifiConfiguration config = new WifiConfiguration();
 		config.allowedAuthAlgorithms.clear();
@@ -579,7 +583,11 @@ public class WifiSelectorActivity extends BaseActivity  {
 		if (mWifiManager.enableNetwork(wcgID, true)) {
 			editor.putString(mCurrentWifiItem.getScanResult().BSSID, password);
 			editor.commit();
-			startMain();
+			if(firstConnect){
+				startMain();
+				firstConnect=false;
+			}
+			
 		} else {
 			mProgressDialog.dismiss();
 			editor.remove(mCurrentWifiItem.getScanResult().BSSID);
