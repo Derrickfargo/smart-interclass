@@ -47,6 +47,9 @@ public class BaseActivity extends FragmentActivity {
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if("WifiSelectorActivity".equals(AppManager.getAppManager().currentActivity().getClass().getSimpleName())){
+			return super.onKeyDown(keyCode, event);
+		}
 		return true;
 	}
 

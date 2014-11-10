@@ -83,7 +83,6 @@ public class StudentCtrl extends BaseCtrl {
 	@RequestMapping(value = "/save")
 	public ModelAndView save(Integer schoolId, Integer year, Integer classNumber, String name, 
 			String number, Integer sex, String guardian, String phone, String address, String imei) {
-		//班年级转换为入学学年
 		Calendar calendar = Calendar.getInstance();
 		int month = calendar.get(Calendar.MONTH) + 1;
 		if(month < 9){
@@ -92,16 +91,13 @@ public class StudentCtrl extends BaseCtrl {
 			calendar.add(Calendar.YEAR, (year-1) * -1);
 		}
 		int newYear = calendar.get(Calendar.YEAR);
-		Classes classes = classService.getClassByNumber(schoolId, newYear, classNumber);
-		if (classes == null || classes.getId() == 0) {
-			classes = new Classes();
-			classes.setNumber(classNumber);
-			classes.setSchoolId(schoolId);
-			classes.setYear(newYear);
-			classService.saveClass(classes);
-		}
+
+		//更新学生表
 		Student student = new Student();
-		student.setClassId(classes.getId());
+		student.setClassNumber(classNumber);
+		student.setSchoolId(schoolId);
+		student.setImei(imei);
+		student.setYear(newYear);
 		student.setUname(name);
 		student.setNumber(number);
 		student.setName(name);
@@ -112,11 +108,13 @@ public class StudentCtrl extends BaseCtrl {
 		student.setActive(true);
 		//用户角色为学生
 		student.setRole(User.ROLE_STUDENT);
-		Device device = new Device();
-		device.setImei(imei);
-		deviceService.saveDevice(device);
-		student.setDeviceId(device.getId());
-		userService.saveStudent(student);
+		
+		try {
+			userService.saveStudent(student);
+		} catch (AppException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return new ModelAndView("redirect:list");
 	}
 //	/**
@@ -157,7 +155,13 @@ public class StudentCtrl extends BaseCtrl {
 			mav.addObject("message", "文件获取失败，请重试！");
 			return mav;
 		}
-		Map<String, Object> result = userService.saveStudent(newFile);
+		Map<String, Object> result =null; 
+			try {
+				result=	userService.saveStudent(newFile);
+			} catch (AppException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		ModelAndView mav = new ModelAndView("redirect:list");
 		Object code = result.get("code");
 		if (code != null && Integer.parseInt(code.toString()) != 0){

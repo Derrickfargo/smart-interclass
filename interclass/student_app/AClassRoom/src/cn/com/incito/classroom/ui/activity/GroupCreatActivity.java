@@ -12,6 +12,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
@@ -21,6 +22,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.adapter.GroupIconImageAdapter;
 import cn.com.incito.classroom.base.BaseActivity;
@@ -66,6 +69,18 @@ public class GroupCreatActivity extends BaseActivity implements OnClickListener 
 
 	private void initView() {
 		edit_group_name = (EditText) findViewById(R.id.edit_group_name);
+		edit_group_name.setOnEditorActionListener(new OnEditorActionListener() {
+			
+			@Override
+			public boolean onEditorAction(TextView arg0, int arg1, KeyEvent arg2) {
+				if(5 == arg1){
+					InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);  
+			         imm.hideSoftInputFromWindow(arg0.getWindowToken(), 0);  
+				}
+				return true;
+			}
+		});
+		
 		findViewById(R.id.root).setOnClickListener(this);
 
 		btn_back = (Button) findViewById(R.id.btn_back);
@@ -144,7 +159,7 @@ public class GroupCreatActivity extends BaseActivity implements OnClickListener 
 			break;
 			
 		case R.id.root:
-			InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);  
+			 InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);  
 	         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);  
 	         break;
 		default:
