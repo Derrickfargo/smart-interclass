@@ -11,6 +11,7 @@
     <meta name="author" content="">
     <title>互动课堂后台管理平台</title>
     <jsp:include page="../common/common.jsp" />
+	<script type="text/javascript" src="${path}/lib/bootstrap.autocomplete.js"></script>
     <script type="text/javascript" src="${path}/js/school.js"></script>
   </head>
 
@@ -39,13 +40,14 @@
 								<div class="form-group">
 									<label class="col-xs-1 control-label">学校名称:</label>
 									<div class="col-xs-2">
-										<input type="text" name="name" value="${name}" class="form-control borderRadiusIE8">
+										<input type="text" id="autocompleteInput" name="name" value="${name}" class="form-control borderRadiusIE8" autocomplete="off">
 									</div>
 									<label class="col-xs-1 control-label">学校性质:</label>
 									<div class="col-xs-2">
 										<select id="schoolType" name="schoolType" class="form-control" >
+													<option value="-1" <c:if test="${schoolType==0}">selected</c:if>></option>	
 											<c:choose>
-												<c:when test="${schoolType == 1 || schoolType == -1}">
+												<c:when test="${schoolType == 1}">
 													<option value="1" selected>小学</option>
 												</c:when>
 												<c:otherwise>
@@ -108,8 +110,8 @@
 												<td>${school.phone}</td>
 												<td>${school.address}</td>
 												<td>
-													<!-- <a href="#" onclick="modifySchool('${school.id}')"><span title="修改" class="glyphicon glyphicon-pencil"></span></a>&nbsp; --> 
-													<a href="#" onclick="deleteSchool('${school.id}')"><span title="删除" class="glyphicon glyphicon-remove"></span></a>&nbsp;
+													<a href="#" onclick="modifySchool('${school.id}')"><span title="修改" class="glyphicon glyphicon-pencil"></span></a>&nbsp; 
+													<%-- <a href="#" onclick="deleteSchool('${school.id}')"><span title="删除" class="glyphicon glyphicon-remove"></span></a>&nbsp; --%>
 												</td>
 											</tr>
 										</c:forEach>

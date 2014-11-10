@@ -396,4 +396,51 @@ public class UserService {
 		}
 		return -1;
 	}
+
+	public int getTeacherByUname(String uname) {
+		// TODO Auto-generated method stub
+		return userMapper.getTeacherByUname(uname);
+	}
+
+	public int getTeacherByIdCard(String idcard) {
+		// TODO Auto-generated method stub
+		return userMapper.getTeacherByIdCard(idcard);
+	}
+
+	public Teacher getTeacherById(int teacherId) {
+		// TODO Auto-generated method stub
+		return userMapper.getTeacherById(teacherId);
+	}
+	@Transactional(rollbackFor=AppException.class)
+	public boolean updateTeacherById(Teacher teacher) throws AppException{
+		// TODO Auto-generated method stub
+		teacher.setActive(true);
+		teacher.setRole(User.ROLE_TEACHER);
+		int flag=userMapper.updateUserById(teacher);
+		if(flag<0)
+		{
+			throw AppException.database(0);
+		}
+		 flag=userMapper.updateTeacherById(teacher);
+		 
+		return flag>=0;
+	}
+
+	public Student getStudentById(int studentId) {
+		// TODO Auto-generated method stub
+		return userMapper.getStudentById(studentId);
+	}
+	
+	@Transactional(rollbackFor=AppException.class)
+	public boolean updateStudent(Student student) throws AppException {
+		// TODO Auto-generated method stub
+		student.setActive(true);
+		student.setRole(User.ROLE_STUDENT);
+		int flag=userMapper.updateUserById(student);
+		if(flag<0){
+			throw AppException.database(0);
+		}
+		flag=userMapper.updateStudentById(student);
+		return flag>=0;
+	}
 }

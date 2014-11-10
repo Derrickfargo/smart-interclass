@@ -1,6 +1,32 @@
 //页面初始化设置
 $(document).ready(function() {
 	$("#courseForm").validate({
+		//新增课程重复校验
+		rules:{
+			name:{
+				required: true,
+				remote:{
+					type:"POST",
+					url:"check",
+					data:{
+						courseName:function(){
+							return $("#courseName").val();
+						},
+						name:function(){
+							return $("#name").val();
+						}
+						}
+					}
+				}
+			},
+		
+		messages:{
+			name:{
+				remote:"该课程已存在",
+			}	
+		},
+		
+		
 		submitHandler:function(form){
 			var flag = true;
 			//学校名称
@@ -44,8 +70,8 @@ function searchCourse(pageNum) {
 // 页面跳转，查看教师详情或者修改教师信息
 function modifyCourse(courseId) {
 	$("#courseId").val(courseId);
-	$("#pageType").val(pageType);
-	$("#searchForm").attr("action", _path + "/course/" + opType);
+//	$("#pageType").val(pageType);
+	$("#searchForm").attr("action", _path + "/course/edit");
 	$("#searchForm").submit();
 }
 

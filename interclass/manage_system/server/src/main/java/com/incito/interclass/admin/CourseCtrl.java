@@ -48,4 +48,42 @@ public class CourseCtrl extends BaseCtrl {
 		courseService.deleteCourse(courseId);
 		return new ModelAndView("redirect:list");
 	}
+	/**
+	 * 课程重复校验
+	 * @param name
+	 * @return
+	 */
+	@RequestMapping(value="/check")
+	public boolean check(String name,@RequestParam(value="courseName",defaultValue="null")String courseName){
+		System.out.println(name+":"+courseName);
+		if(courseName!=null){
+			while(name.equals(courseName)){
+				return true;
+			}
+		}
+			
+		int flag=courseService.getCourseByName(name);
+		if(flag==1){
+			return false;
+		}
+		return true;
+	}
+	/**
+	 * 课程编辑
+	 * @param courseId
+	 * @return
+	 */
+	@RequestMapping(value="/edit")
+	public ModelAndView edit(int courseId){
+		Course course=courseService.getCourseById(courseId);
+		ModelAndView res= new ModelAndView("course/courseEdit");
+		res.addObject("course", course);
+		return res;
+		}
+	
+	@RequestMapping(value="/update")
+	public ModelAndView update(Course course){
+		courseService.update(course);
+		return new ModelAndView("redirect:list");
+	}
 }

@@ -1,7 +1,5 @@
 package com.incito.interclass.entity;
 
-import java.util.Calendar;
-
 public class Student extends User {
 
 	/**
@@ -23,6 +21,7 @@ public class Student extends User {
 	private int classNumber;
 	private String schoolName;
 	private String imei;
+	private int schoolId;
 
 	public int getScore() {
 		return score;
@@ -103,17 +102,18 @@ public class Student extends User {
 	public void setClassId(int classId) {
 		this.classId = classId;
 	}
-
+	
 	public String getClassName() {
-		Calendar calendar = Calendar.getInstance();
-		int year = calendar.get(Calendar.YEAR);
-		int month = calendar.get(Calendar.MONTH) + 1;
-		year = year - this.year;
-		if (month >= 9) {
-			year += 1;
-		}
-		String className = "%d年级%d班";
-		return String.format(className, year, classNumber);
+	//根据入学时间推算年级	
+//		Calendar calendar = Calendar.getInstance();
+//		int year = calendar.get(Calendar.YEAR);
+//		int month = calendar.get(Calendar.MONTH) + 1;
+//		year = year - this.year;
+//		if (month >= 9) {
+//			year += 1;
+//		}
+		String className = "%d班";
+		return String.format(className,classNumber);
 	}
 
 	public String getSchoolName() {
@@ -146,6 +146,14 @@ public class Student extends User {
 
 	public void setImei(String imei) {
 		this.imei = imei;
+	}
+
+	public int getSchoolId() {
+		return schoolId;
+	}
+
+	public void setSchoolId(int schoolId) {
+		this.schoolId = schoolId;
 	}
 
 }

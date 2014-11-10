@@ -30,4 +30,19 @@ public class SchoolService {
 	public void deleteSchool(int schoolId) {
 		schoolMapper.delete(schoolId);
 	}
+
+	public int searchSchoolByName(String name) {
+		// TODO Auto-generated method stub
+		return schoolMapper.searchSchoolByName(name);
+	}
+
+	public  School getSchoolById(int schoolId) {
+		// TODO Auto-generated method stub
+		return schoolMapper.getSchoolById(schoolId);
+	}
+
+	public void editSchool(School school) {
+		// TODO Auto-generated method stub
+		 schoolMapper.editSchool(school);
+	}
 }

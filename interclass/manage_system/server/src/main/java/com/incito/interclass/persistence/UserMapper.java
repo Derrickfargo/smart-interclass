@@ -52,4 +52,18 @@ public interface UserMapper {
 
 	List<Student> getStudentByClassId(int classId);
 
+	int getTeacherByUname(String uname);
+
+	int getTeacherByIdCard(String idcard);
+
+	Teacher getTeacherById(int teacherId);
+
+	Student getStudentById(int studentId);
+
+	Integer updateTeacherById(Teacher teacher);
+
+	Integer updateUserById(User user);
+
+	Integer updateStudentById(Student student);
+
 }

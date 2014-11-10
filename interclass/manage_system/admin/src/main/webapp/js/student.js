@@ -14,18 +14,27 @@ $(document).ready(function() {
 //				$("#checkStudentIdTip").removeClass("hidden");
 //				flag = false;
 //			}
-//			//检查联系方式格式是否正确
-//			var isTelNum = new RegExp(/^\d{11}/);
-//			if (!isTelNum.test($("#studentTel").val())) {
-//				$("#checkStudentTelTip").removeClass("hidden");
-//				flag = false;
-//			}
-//
-//			if ($("#studentName").val() == "") {
-//				$('#checkStudentStudentTip').removeClass('hidden');
-//				flag = false;
-//			}
-			
+			//检查班级
+			if(!new RegExp(/^\d{1,9}$/).test($("#classNumber").val())){
+				$("#checkClassNumberTip").removeClass("hidden");
+				flag=false;
+			}
+			//检查联系方式格式是否正确
+			var isTelNum = new RegExp(/^\d{11}/);
+			if (!isTelNum.test($("#phone").val())) {
+				$("#checkPhoneTip").removeClass("hidden");
+				flag = false;
+			}
+			//姓名
+			if (!new RegExp(/^[\u4e00-\u9fa5]{2,8}$/).test($("#name").val())) {
+				$("#checkNameTip").removeClass("hidden");
+				flag = false;
+			}
+			//监护人
+			if (!new RegExp(/^[\u4e00-\u9fa5]{2,8}$/).test($("#guardian").val())) {
+				$("#checkGuardianTip").removeClass("hidden");
+				flag = false;
+			}
 			if (flag) {
 				form.submit();
 			}
@@ -43,8 +52,8 @@ function searchStudent(currentPage) {
 // 页面跳转，查看教师详情或者修改教师信息
 function modifyStudent(studentId) {
 	$("#studentId").val(studentId);
-	$("#pageType").val(pageType);
-	$("#searchForm").attr("action", _path + "/student/" + opType);
+//	$("#pageType").val(pageType);
+	$("#searchForm").attr("action", _path + "/student/edit");
 	$("#searchForm").submit();
 }
 

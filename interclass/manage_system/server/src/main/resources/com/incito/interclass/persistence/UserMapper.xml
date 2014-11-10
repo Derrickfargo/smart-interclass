@@ -233,4 +233,70 @@
 	    WHERE
 	    	id=#{groupId}
 	</update>
+	<select id="getTeacherByUname" parameterType="java.lang.String" resultType="java.lang.Integer">
+		SELECT
+			count(1)
+		FROM
+			tb_user
+		WHERE
+			uname=#{uname}
+	</select>
+	<select id="getTeacherByIdCard" parameterType="java.lang.String" resultType="java.lang.Integer">
+		SELECT 
+			count(1)
+		FROM
+			tb_teacher
+		WHERE
+			idcard=#{idcard}
+	</select>
+	<select id="getTeacherById" parameterType="java.lang.Integer" resultType="com.incito.interclass.entity.Teacher">
+		SELECT
+			tb_user.*,tb_teacher.*, tb_teacher.school_id AS schoolId,tb_teacher.course_id AS courseId
+		FROM
+			tb_user
+		INNER JOIN
+			tb_teacher
+		ON tb_user.id=tb_teacher.id
+		WHERE
+			tb_user.id=#{teacherId}
+	</select>
+	<update id="updateTeacherById" parameterType="com.incito.interclass.entity.Teacher">
+		UPDATE
+			tb_teacher
+		SET
+			school_id=#{schoolId},course_id=#{courseId},phone=#{phone},idcard=#{idcard}
+		WHERE
+			id=#{id}
+	</update>
+	<update id="updateUserById" parameterType="com.incito.interclass.entity.User">
+		UPDATE
+			tb_user
+		SET
+			uname=#{uname},name=#{name},email=#{email},sex=#{sex}
+		WHERE
+			id=#{id}
+	</update>
+	<update id="updateStudentById" parameterType="com.incito.interclass.entity.Student">
+	UPDATE
+		tb_student
+	SET
+		number=#{number},avatar=#{avatar},score=#{score},guardian=#{guardian},phone=#{phone},address=#{address},device_id=#{deviceId},class_id=#{classId}
+	WHERE
+		 id=#{id}
+	</update>
+	<select id="getStudentById" parameterType="java.lang.Integer" resultType="com.incito.interclass.entity.Student">
+	SELECT 
+		tb_user.*,tb_student.*,tb_user.is_active as isActive,tb_student.device_id as deviceId,tb_student.class_id as classId,
+		tb_class.year,tb_class.number as classNumber,tb_class.school_id as schoolId,tb_device.imei
+	FROM
+		tb_student
+	INNER JOIN 
+		tb_user on tb_user.id=tb_student.id
+	INNER JOIN
+		tb_device on tb_student.device_id=tb_device.id
+	INNER JOIN
+		tb_class on tb_student.class_id=tb_class.id
+	WHERE
+		tb_student.id=#{studentId}
+	</select>
 </mapper>

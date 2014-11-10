@@ -33,7 +33,7 @@
 						<div class="col-xs-12" style="height:10px;"></div>
 						<div class="tab-content">
 							<div class="tab-pane active" id="schoolinfo">
-								<form action="${path}/student/save" id="schoolForm" method="post" class="form-horizontal">
+								<form action="${path}/student/save" id="studentForm" method="post" class="form-horizontal">
 									<div class="col-xs-12">
 										<div class="col-xs-12">
 											<div class="form-group">
@@ -64,12 +64,12 @@
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>班级：</label>
 												<div class="col-xs-4">
 													<input type="text" id="classNumber" name="classNumber" maxlength="2" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkClassNumberTip').addClass('hidden')">
-													<p id="checkClassNumberTip" class="help-block hidden"><font color="red"><b>请输入班级</b></font></p>
+													<p id="checkClassNumberTip" class="help-block hidden"><font color="red"><b>请输入班级，只接受数字</b></font></p>
 												</div>
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>姓名：</label>
 												<div class="col-xs-4">
 													<input type="text" id="name" name="name" maxlength="18" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkNameTip').addClass('hidden')">
-													<p id="checkNameTip" class="help-block hidden"><font color="red"><b>请输入姓名</b></font></p>
+													<p id="checkNameTip" class="help-block hidden"><font color="red"><b>请输入2-8位汉字</b></font></p>
 												</div>
 											</div>
 											<div class="form-group">
@@ -90,11 +90,11 @@
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>监护人：</label>
 												<div class="col-xs-4">
 													<input type="text" name="guardian" id="guardian" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkGuardianTip').addClass('hidden')">
-													<p id="checkGuardianTip" class="help-block hidden"><font color="red"><b>请输入正确的监护人</b></font></p>
+													<p id="checkGuardianTip" class="help-block hidden"><font color="red"><b>请输入2-8位汉字</b></font></p>
 												</div>
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>联系电话：</label>
 												<div class="col-xs-4">
-													<input type="text" name="phone" id="phone" maxlength="12" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkPhoneTip').addClass('hidden')">
+													<input type="text" name="phone" id="phone" maxlength="11" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkPhoneTip').addClass('hidden')">
 													<p id="checkPhoneTip" class="help-block hidden"><font color="red"><b>请输入正确的电话或手机号码</b></font></p>
 												</div>
 											</div>
@@ -104,10 +104,10 @@
 													<input type="text" id="address" name="address" class="form-control borderRadiusIE8 required" onkeyup="$('#checkAddressTip').addClass('hidden')">
 													<p id="checkAddressTip" class="help-block hidden"><font color="red"><b>请输入所属学校</b></font></p>
 												</div>
-												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>Pad设备号：</label>
+												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>Pad Mac地址：</label>
 												<div class="col-xs-4">
 													<input type="text" name="imei" id="imei" maxlength="36" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkIMEITip').addClass('hidden')">
-													<p id="checkIMEITip" class="help-block hidden"><font color="red"><b>Pad设备号</b></font></p>
+													<p id="checkIMEITip" class="help-block hidden"><font color="red"><b>Pad Mac地址</b></font></p>
 												</div>
 											</div>
 											<!-- 

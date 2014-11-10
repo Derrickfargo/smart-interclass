@@ -19,6 +19,8 @@ public class Device implements Serializable {
 
 	private String schoolName;
 	private String studentName;
+	
+	private int studentId;
 
 	public int getId() {
 		return id;
@@ -86,6 +88,14 @@ public class Device implements Serializable {
 
 	public void setClassNumber(int classNumber) {
 		this.classNumber = classNumber;
+	}
+
+	public int getStudentId() {
+		return studentId;
+	}
+
+	public void setStudentId(int studentId) {
+		this.studentId = studentId;
 	}
 
 }

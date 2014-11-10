@@ -16,4 +16,10 @@ public interface SchoolMapper {
 
 	School getSchoolByName(String name);
 	void delete(int id);
+
+	int searchSchoolByName(String name);
+
+	School getSchoolById(int schoolId);
+
+	void editSchool(School school);
 }
