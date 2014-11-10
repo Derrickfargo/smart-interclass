@@ -14,4 +14,7 @@ public interface DeviceMapper {
 	Integer save(Device device);
 	
 	void delete(int id);
+
+	Integer update(Device device);
+
 }
