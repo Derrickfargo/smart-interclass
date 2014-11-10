@@ -62,7 +62,7 @@ public class IpSettingDialogFragment extends DialogFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		getDialog().getWindow().setLayout(420, 320);
+		getDialog().getWindow().setLayout(520, 420);
 	}
 
 	public boolean ipMatch() {

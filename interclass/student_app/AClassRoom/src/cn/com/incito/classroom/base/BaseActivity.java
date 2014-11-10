@@ -3,6 +3,7 @@ package cn.com.incito.classroom.base;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
 import android.view.WindowManager;
 import cn.com.incito.classroom.ui.widget.NetWorkDialog;
 
@@ -42,6 +43,11 @@ public class BaseActivity extends FragmentActivity {
 	protected void onResume() {
 		super.onResume();
 
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		return true;
 	}
 
 	@Override
