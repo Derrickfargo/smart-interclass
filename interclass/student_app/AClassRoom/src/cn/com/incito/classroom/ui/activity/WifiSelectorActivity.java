@@ -44,6 +44,7 @@ import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.common.utils.ToastHelper;
+import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
@@ -85,6 +86,7 @@ public class WifiSelectorActivity extends BaseActivity  {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_wifiselector);
+		UIHelper.getInstance().setWifiSelectorActivity(this);
 		mProgressDialog = new ProgressiveDialog(this);
 		mProgressDialog.setMessage(R.string.waiting_access_wifi);
 		initWifi();
@@ -182,6 +184,10 @@ public class WifiSelectorActivity extends BaseActivity  {
 		@Override
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
+			case 11:
+				MyApplication.Logger.debug("显示提示信息");
+				ToastHelper.showCustomToast(WifiSelectorActivity.this, "当前设备没有注册请联系老师注册 ！");
+				break;
 			default:
 				invalidateNetListData();
 				mWifiListAdapter.notifyDataSetChanged();
@@ -698,6 +704,11 @@ public class WifiSelectorActivity extends BaseActivity  {
 			switch (msg.what) {
 			case 0:
 				ib_setting_ip.setVisibility(View.VISIBLE);
+				break;
+			case 11:
+				MyApplication.Logger.debug("显示提示信息");
+				ToastHelper.showCustomToast(WifiSelectorActivity.this, "当前设备没有注册请联系老师注册 ！");
+				break;
 			default:
 				break;
 			}
@@ -746,7 +757,6 @@ public class WifiSelectorActivity extends BaseActivity  {
 			}
 		}.start();
 	}
-
 	public void sleep(int seconds) {
 		try {
 			Thread.sleep(seconds);
@@ -763,6 +773,12 @@ public class WifiSelectorActivity extends BaseActivity  {
 	@Override
 	public void onBackPressed() {
 		AppManager.getAppManager().AppExit(this);
+	}
+	
+	public void showToast(){
+		android.os.Message message = new android.os.Message();
+		message.what = 11;
+		mHandler.sendMessage(message);
 	}
 }
 	

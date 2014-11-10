@@ -15,14 +15,6 @@ import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.common.utils.ToastHelper;
-import cn.com.incito.socket.core.CoreSocket;
-import cn.com.incito.socket.core.Message;
-import cn.com.incito.socket.message.DataType;
-import cn.com.incito.socket.message.MessagePacking;
-import cn.com.incito.socket.utils.BufferUtils;
-import cn.com.incito.wisdom.sdk.log.WLog;
-
-import com.alibaba.fastjson.JSONObject;
 
 public class IpSettingDialogFragment extends DialogFragment {
 	private EditText editIP;
@@ -62,7 +54,7 @@ public class IpSettingDialogFragment extends DialogFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		getDialog().getWindow().setLayout(420, 320);
+		getDialog().getWindow().setLayout(520, 420);
 	}
 
 	public boolean ipMatch() {

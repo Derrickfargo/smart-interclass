@@ -27,7 +27,9 @@ public class LoginHandler extends MessageHandler {
 		//TODO 有可能这台pad没有绑定学生，
 		Student student = data.getObject("student", Student.class);
 		if(student==null){
-			Toast.makeText(AppManager.getAppManager().currentActivity(), "该pad还未绑定学生，请先绑定学生", Toast.LENGTH_LONG).show();
+			UIHelper.getInstance().getWifiSelectorActivity().showToast();
+			return;
+//			Toast.makeText(AppManager.getAppManager().currentActivity(), "该pad还未绑定学生，请先绑定学生", Toast.LENGTH_LONG).show();
 		}
 		MyApplication.getInstance().setStudent(student);
 		AppManager.getAppManager().currentActivity().finish();

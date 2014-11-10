@@ -8,10 +8,10 @@
     <ListView
         android:id="@+id/wifiselector_main_listview"
         android:layout_width="420dp"
-        android:layout_height="502dp"
+        android:layout_height="500dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="92dp"
-        android:layout_marginTop="200dp" />
+        android:layout_marginBottom="95dp"
+        android:layout_marginTop="205dp" />
 
     <ImageButton
         android:id="@+id/ib_setting_ip"

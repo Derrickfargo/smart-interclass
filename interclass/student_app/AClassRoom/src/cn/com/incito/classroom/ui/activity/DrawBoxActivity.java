@@ -2,32 +2,13 @@ package cn.com.incito.classroom.ui.activity;
 
 import java.io.ByteArrayOutputStream;
 
-import cn.com.incito.classroom.R;
-import cn.com.incito.classroom.base.BaseActivity;
-import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.classroom.constants.Constants;
-import cn.com.incito.classroom.utils.BitmapUtil;
-import cn.com.incito.classroom.widget.canvas.ISketchPadCallback;
-import cn.com.incito.classroom.widget.canvas.SketchPadView;
-import cn.com.incito.common.utils.UIHelper;
-import cn.com.incito.socket.core.CoreSocket;
-import cn.com.incito.socket.core.Message;
-import cn.com.incito.socket.handler.DistributePaperHandler;
-import cn.com.incito.socket.message.DataType;
-import cn.com.incito.socket.message.MessagePacking;
-import cn.com.incito.socket.utils.BufferUtils;
-import cn.com.incito.wisdom.sdk.log.WLog;
-import cn.com.incito.wisdom.sdk.utils.BitmapUtils;
 import android.app.AlertDialog;
-import android.app.ExecRootCmd;
-import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -44,6 +25,21 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import cn.com.incito.classroom.R;
+import cn.com.incito.classroom.base.BaseActivity;
+import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.classroom.constants.Constants;
+import cn.com.incito.classroom.utils.BitmapUtil;
+import cn.com.incito.classroom.widget.canvas.ISketchPadCallback;
+import cn.com.incito.classroom.widget.canvas.SketchPadView;
+import cn.com.incito.common.utils.UIHelper;
+import cn.com.incito.socket.core.CoreSocket;
+import cn.com.incito.socket.core.Message;
+import cn.com.incito.socket.handler.DistributePaperHandler;
+import cn.com.incito.socket.message.DataType;
+import cn.com.incito.socket.message.MessagePacking;
+import cn.com.incito.socket.utils.BufferUtils;
+import cn.com.incito.wisdom.sdk.log.WLog;
 
 /**
  * 绘画板activity Created by liguangming on 2014/7/28.
@@ -54,7 +50,6 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	private ImageView cleanBtn;
 	private ImageButton delAllBtn;
 	private FrameLayout line;
-	private LinearLayout line1;
 	private SketchPadView m_sketchPad = null;
 	private Button changeBtn;
 	private ImageView color_white;
@@ -504,7 +499,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 				.writeUTFString(MyApplication.getInstance().getDeviceId()));
 		// 图片
 		messagePacking.putBodyData(DataType.INT,
-				BitmapUtils.bmpToByteArray(getBitMap(), true));
+				bmpToByteArray(getBitMap(), true));
 		CoreSocket.getInstance().sendMessage(messagePacking);
 		WLog.i(DrawBoxActivity.class, "启动作业提交..."+"request:");
 		MyApplication.getInstance().setSubmitPaper(true);
@@ -513,7 +508,6 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		this.finish();
 	}
 	public void initPopwindow(){
-		 line1=(LinearLayout) findViewById(R.id.line1);
 		 LayoutInflater layoutInflater = LayoutInflater.from(this); 
 	     View popupWindow = layoutInflater.inflate(R.layout.popup_window, null); 
 	     mPopupWindow = new PopupWindow(popupWindow,LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
@@ -532,6 +526,20 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		 int[] location = new int[2];
 	     cleanBtn.getLocationOnScreen(location);
 	     mPopupWindow.showAtLocation(cleanBtn, Gravity.NO_GRAVITY, location[0]-160, 570);
-	   
+	}
+	public static byte[] bmpToByteArray(final Bitmap bmp,
+			final boolean needRecycle) {
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		bmp.compress(CompressFormat.JPEG, 70, output);
+		if (needRecycle) {
+			bmp.recycle();
+		}
+		byte[] result = output.toByteArray();
+		try {
+			output.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 }
