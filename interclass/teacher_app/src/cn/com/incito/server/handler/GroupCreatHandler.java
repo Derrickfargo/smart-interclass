@@ -40,9 +40,14 @@ public class GroupCreatHandler extends MessageHandler{
 		for (String key : channels.keySet()) {
 			channelsRes.add(channels.get(key));
 		}
+		List<Group> groupList=new ArrayList<Group>();
+		//遍历临时分组 将还没有分组的小组列表传回给pad端
+		for (Integer key : Application.getInstance().getTempGroup().keySet()) {
+			groupList.add(Application.getInstance().getTempGroup().get(key));
+		}
 		JSONObject result = new JSONObject();
 		result.put("code", 0);
-		result.put("data",Application.getInstance().getGroupList());
+		result.put("data",groupList);
 		logger.info("回复创建分组消息：" + result);
 		sendResponse(result.toString(), channelsRes);
 	}
