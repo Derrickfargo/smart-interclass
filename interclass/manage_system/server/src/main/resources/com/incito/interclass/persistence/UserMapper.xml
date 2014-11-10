@@ -76,13 +76,15 @@
 	
 	<select id="getStudentByGroupId" resultType="com.incito.interclass.entity.Student" parameterType="java.lang.Integer">
 		SELECT	
-			tb_user.* ,tb_student.*
+			tb_user.* ,tb_student.*,tb_device.imei AS imei
 		FROM 
 			tb_student_group
 		INNER JOIN
 			tb_user ON tb_student_group.student_id = tb_user.id
 		INNER JOIN 
 			tb_student ON tb_user.id = tb_student.id
+		LEFT JOIN 
+			tb_device ON tb_device.id = tb_student.device_id
 		WHERE 
 			tb_student_group.group_id = #{id}
 	</select>
