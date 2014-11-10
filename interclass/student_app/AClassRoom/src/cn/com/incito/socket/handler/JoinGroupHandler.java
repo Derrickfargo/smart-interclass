@@ -24,16 +24,20 @@ public class JoinGroupHandler extends MessageHandler {
 	protected void handleMessage() {
 		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":JoinGroupHandler:收到加入小组返回信息:" + data.getString("data"));
 		int code = data.getInteger("code");// 加入小组返回代码
+		
 		if (code == 0) {
-			//如果在等待其他小组成员加入界面，刷新界面数据
-			if ((("WaitForOtherMembersActivity").equals(AppManager.getAppManager().currentActivity().getClass().getSimpleName()))) {
-				UIHelper.getInstance().getWaitForOtherMembersActivity().setTextName(data.getString("data"));
-			} else if (isNewAdd(data.getString("data"))) { // 如果没有在该界面而且是新加入的则进行跳转
-				UIHelper.getInstance().showConfirmGroupActivity(data.getString("data"));
-			} else {
-				// 前两者都不是则只刷新界面
-				UIHelper.getInstance().getmSelectGroupActivity().setData(JSON.parseArray(data.getString("data"),Group.class));
+			if(!"ClassingActivity".equals(AppManager.getAppManager().currentActivity().getClass().getSimpleName())){
+				//如果在等待其他小组成员加入界面，刷新界面数据
+				if ((("WaitForOtherMembersActivity").equals(AppManager.getAppManager().currentActivity().getClass().getSimpleName()))) {
+					UIHelper.getInstance().getWaitForOtherMembersActivity().setTextName(data.getString("data"));
+				} else if (isNewAdd(data.getString("data"))) { // 如果没有在该界面而且是新加入的则进行跳转
+					UIHelper.getInstance().showConfirmGroupActivity(data.getString("data"));
+				} else {
+					// 前两者都不是则只刷新界面
+					UIHelper.getInstance().getmSelectGroupActivity().setData(JSON.parseArray(data.getString("data"),Group.class));
+				}
 			}
+			
 		} else {// 不进行跳转
 			MyApplication.Logger.debug("加入小组失败不跳转");
 			ToastHelper.showCustomToast(AppManager.getAppManager().currentActivity(), "该小组不存在,请重新加入!");

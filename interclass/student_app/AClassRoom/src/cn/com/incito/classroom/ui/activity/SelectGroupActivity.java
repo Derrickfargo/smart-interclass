@@ -20,6 +20,7 @@ import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.vo.Group;
 import cn.com.incito.classroom.vo.Student;
 import cn.com.incito.common.utils.AndroidUtil;
+import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
@@ -95,6 +96,13 @@ public class SelectGroupActivity extends BaseActivity implements
 				Student me = MyApplication.getInstance().getStudent();
 				// 2.判断当前设备是否已经加入该分组
 				Group group = groupList.get(position);
+				
+				//如果要加入的小组已经有四个人则提示该学生小组成员以满选择其他小组加入
+				if(group.getStudents().size() >= 4){
+					ToastHelper.showCustomToast(SelectGroupActivity.this, "小组成员以满,请选择其他小组");
+					return;
+				}
+				
 				JSONObject jsonObject = new JSONObject();
 				jsonObject.put("groupId", group.getCaptainId());
 				jsonObject.put("student", me);
