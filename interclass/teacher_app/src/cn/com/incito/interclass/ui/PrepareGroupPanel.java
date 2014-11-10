@@ -62,8 +62,10 @@ public class PrepareGroupPanel extends JPanel {
 				JLabel lblName = lblStudents.get(i);
 				lblName.setText(student.getName());
 				lblName.setVisible(true);
-				if(!student.isLogin()){
+				if (!student.isLogin()) {
 					lblName.setBackground(new Color(Integer.parseInt("e1e1e1", 16)));
+				} else {
+					lblName.setBackground(new Color(Integer.parseInt("5ec996", 16)));
 				}
 			}
 		}

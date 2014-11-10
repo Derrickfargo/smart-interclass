@@ -106,6 +106,17 @@ public class CoreService {
 				student.setLogin(true);
 				app.getOnlineStudent().add(student);
 				app.getOfflineStudent().remove(student);
+				Set<Group> groupSet = app.getGroupList();
+				Iterator<Group> it = groupSet.iterator();
+				while(it.hasNext()){
+					Group group = it.next();
+					for (Student aStudent : group.getStudents()) {
+						if (student.getId() == aStudent.getId()) {
+							aStudent.setLogin(true);
+							break;
+						}
+					}
+				}
 				app.refresh();// 更新UI
 				return student;
 			}
