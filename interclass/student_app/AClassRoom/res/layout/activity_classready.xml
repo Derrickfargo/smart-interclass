@@ -2,15 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_class_ready"
+    android:background="@drawable/lock_prt1"
     android:orientation="vertical" >
     
-    <TextView 
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="请注意力集中,老师准备开始上课"
-        android:gravity="center"
-        android:textSize="34sp"
-        />
-
 </LinearLayout>

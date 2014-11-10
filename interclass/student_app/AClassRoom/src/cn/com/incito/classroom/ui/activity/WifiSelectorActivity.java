@@ -257,11 +257,11 @@ public class WifiSelectorActivity extends BaseActivity  {
 			mWifiItems.clear();
 		}
 
-		// 手机本机网络
-		IWifiItem wifiItem = new IWifiItem();
-		wifiItem.wifiName = "本机3G/2G网络";
-		wifiItem.wifiType = IWifiType.WIFITYPE_3G;
-		mWifiItems.add(wifiItem);
+//		// 手机本机网络
+//		IWifiItem wifiItem = new IWifiItem();
+//		wifiItem.wifiName = "本机3G/2G网络";
+//		wifiItem.wifiType = IWifiType.WIFITYPE_3G;
+//		mWifiItems.add(wifiItem);
 	}
 
 	/**
