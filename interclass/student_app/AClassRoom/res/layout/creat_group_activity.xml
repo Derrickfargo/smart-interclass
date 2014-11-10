@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:clickable="true"
     android:id="@+id/root"
-    android:background="@drawable/bg_create_group"
+    android:background="@drawable/bg_create_group1"
     android:orientation="vertical" >
     
     <Button
