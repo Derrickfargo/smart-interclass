@@ -19,6 +19,7 @@ public class UIHelper {
 	private DrawBoxActivity drawBoxActivity;
 	private SelectGroupActivity mSelectGroupActivity;
 	private WaitForOtherMembersActivity waitForOtherMembersActivity;
+	private WifiSelectorActivity wifiSelectorActivity;
 
 	private UIHelper() {
 		app = MyApplication.getInstance();
@@ -46,9 +47,17 @@ public class UIHelper {
 
 
 
-	/*
-	 * public SplashActivity getSplashActivity() { return splashActivity; }
-	 */
+	public WifiSelectorActivity getWifiSelectorActivity(){
+		return this.wifiSelectorActivity;
+	}
+	
+	public void setWifiSelectorActivity(WifiSelectorActivity wifiSelectorActivity) {
+		if (this.wifiSelectorActivity != null) {
+			this.wifiSelectorActivity.finish();
+			this.wifiSelectorActivity = null;
+		}
+		this.wifiSelectorActivity = wifiSelectorActivity;
+	}
 
 
 
