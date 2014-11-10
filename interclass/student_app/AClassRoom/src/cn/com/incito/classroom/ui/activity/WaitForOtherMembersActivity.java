@@ -115,18 +115,18 @@ public class WaitForOtherMembersActivity extends BaseActivity implements
 	 * @param students  该小组的成员
 	 */
 	public void setTextName(String data){
-		Group g = new Group();
 		List<Group> groupList = JSON.parseArray(data, Group.class);
 		Student student = MyApplication.getInstance().getStudent();
 		
 		for (int i = 0; i < groupList.size(); i++) {
 			if(groupList.get(i).getStudents().contains(student)){
-				g = groupList.get(i);
+				this.group = groupList.get(i);
+				MyApplication.getInstance().setGroup(group);
 				break;
 			}
 		}
 		
-		List<Student> students = g.getStudents();
+		List<Student> students = group.getStudents();
 		StringBuilder sb = new StringBuilder("\t\t");
 		if (students != null && students.size() > 0) {
 			for (int i = 0; i < students.size(); i++) {
