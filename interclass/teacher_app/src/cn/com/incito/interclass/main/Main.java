@@ -41,8 +41,6 @@ public class Main {
 		setLookAndFeel();
 		//设置字体
 		initGlobalFontSetting();
-		//初始化自定义字体
-		initDefinedFont();
 		//检查升级
 		checkUpdate();
 	}
@@ -68,6 +66,8 @@ public class Main {
 					if (jsonObject.getIntValue("code") == 1) {//没有升级
 						// 初始化应用程序
 						Application.getInstance();
+						//初始化自定义字体
+						initDefinedFont();
 						return;
 					}
 					File file = new File("update.exe");
@@ -75,6 +75,8 @@ public class Main {
 						JOptionPane.showMessageDialog(null, "检测到程序需要更新，但缺少必要的升级程序!");
 						// 初始化应用程序
 						Application.getInstance();
+						//初始化自定义字体
+						initDefinedFont();
 						return;
 					}
 					long freeSize = file.getFreeSpace();
