@@ -10,7 +10,8 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -19,7 +20,6 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import cn.com.incito.classroom.utils.ApiClient;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.ActivityNotFoundException;
@@ -41,6 +41,7 @@ import android.provider.Settings.System;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import cn.com.incito.classroom.utils.ApiClient;
 /**
  * @author john
  *android 工具类
@@ -452,5 +453,34 @@ public class AndroidUtil {
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * 判断字符串有多个汉字
+	 * @param str
+	 * @return
+	 */
+	public static int TextNumber(String str){
+		int count=0;
+		String regEx = "[\\u4e00-\\u9fa5]";
+		Pattern p = Pattern.compile(regEx);
+		for(int i = 0; i < str.length(); i++){
+			Matcher m = p.matcher(str.charAt(i)+"");
+			if(m.matches()){
+				count++;
+			}
+		}
+		
+		
+		return count;
+	}
+	
+	/**
+	 * 非汉字的个数
+	 * @param str
+	 * @return
+	 */
+	public static int notTextNumber(String str){
+		return str.length() - TextNumber(str);
 	}
 }
