@@ -1,5 +1,6 @@
 package cn.com.incito.server.api;
 
+import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -29,22 +30,11 @@ import cn.com.incito.server.utils.FileUtils;
 
 public class Application {
 	public boolean isLockScreen;
-
-	public boolean isLockScreen() {
-		return isLockScreen;
-	}
-
-	public void setLockScreen(boolean isLockScreen) {
-		this.isLockScreen = isLockScreen;
-	}
-
+	private Font definedFont;
 	private static Application instance;
 	private boolean isGrouping = false;
 	private FloatIcon floatIcon;
 	private String quizId; // 考试流水号
-	/**
-	 * 课堂id
-	 */
 	private String lessionid;
 	private String mac;// 当前登录的mac地址
 	private Teacher teacher;// 当前登录的老师，教师登陆完后初始化
@@ -93,6 +83,22 @@ public class Application {
 			e.printStackTrace();
 			System.exit(1);
 		}
+	}
+
+	public boolean isLockScreen() {
+		return isLockScreen;
+	}
+
+	public void setLockScreen(boolean isLockScreen) {
+		this.isLockScreen = isLockScreen;
+	}
+	
+	public Font getDefinedFont() {
+		return definedFont;
+	}
+
+	public void setDefinedFont(Font definedFont) {
+		this.definedFont = definedFont;
 	}
 
 	public void clear() {

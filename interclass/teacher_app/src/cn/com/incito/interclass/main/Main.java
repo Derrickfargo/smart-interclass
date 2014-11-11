@@ -1,7 +1,9 @@
 package cn.com.incito.interclass.main;
 
 import java.awt.Font;
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Enumeration;
@@ -29,7 +31,7 @@ import com.alibaba.fastjson.JSONObject;
  * 
  */
 public class Main {
-	public static final int VERSION_CODE = 1;
+	public static final int VERSION_CODE = 2;
 	private static final long FREE_SIZE = 1024 * 1024 * 100;//100M
 	
 	public static void main(String args[]) {
@@ -39,6 +41,8 @@ public class Main {
 		setLookAndFeel();
 		//设置字体
 		initGlobalFontSetting();
+		//初始化自定义字体
+		initDefinedFont();
 		//检查升级
 		checkUpdate();
 	}
@@ -118,5 +122,25 @@ public class Main {
 	
 	private static void registerExceptionHandler(){
 		Thread.setDefaultUncaughtExceptionHandler(new AppExceptionHandler());
+	}
+	
+	private static void initDefinedFont() {
+		BufferedInputStream bis = null;
+		try {
+			bis = new BufferedInputStream(new FileInputStream(
+					"font/新蒂小丸子小学版.ttf"));
+			Font font = Font.createFont(Font.TRUETYPE_FONT, bis);
+			Application.getInstance().setDefinedFont(font);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (null != bis) {
+					bis.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
