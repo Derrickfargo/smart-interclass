@@ -111,7 +111,7 @@
 												</div>
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>Pad Mac地址：</label>
 												<div class="col-xs-4">
-													<input type="text" name="newImei" id="imei" maxlength="36" class="form-control borderRadiusIE8 required" value="${student.imei}" onkeyup="$('#checkIMEITip').addClass('hidden')">
+													<input type="text" name="imei" id="imei" maxlength="36" class="form-control borderRadiusIE8 required" value="${student.imei}" onkeyup="$('#checkIMEITip').addClass('hidden')" autocomplete="off">
 													<p id="checkIMEITip" class="help-block hidden"><font color="red"><b>Pad地址</b></font></p>
 												</div>
 											</div>
@@ -129,8 +129,7 @@
 										<button type="button" class="btn btn-default col-xs-2" onclick="goback('修改学生信息')">取消</button>
 									</div>
 									<input type="hidden" name="deviceId" value="${student.deviceId}"/>
-									<input type="hidden" name="imei" value="${student.imei}"/>
-									<input type="hidden" name="id" value="${student.id }"/>
+									<input type="hidden" id="studentId" name="id" value="${student.id }"/>
 									<input type="hidden" name="classId" value="${student.classId}"/>
 									<input type="hidden" name="avatar"  value="${student.avatar}"/>
 								</form>

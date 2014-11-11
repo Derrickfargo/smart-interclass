@@ -1,6 +1,25 @@
 //页面初始化设置
 $(document).ready(function() {
 	$("#studentForm").validate({
+		rules:{
+			imei:{
+				remote:{
+					type:"post",
+					url:"check",
+					data:{
+						studentId:function(){
+							return $("#studentId").val();
+						},
+						imei:function(){
+							return $("#imei").val();
+						}
+					}
+				}
+			}
+		},
+		messages:{
+			imei:"该mac地址已被其他用户使用"
+		},
 		submitHandler:function(form){
 			var flag = true;
 			//学校名称

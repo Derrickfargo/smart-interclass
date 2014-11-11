@@ -123,6 +123,7 @@
 										<div class="col-xs-1">&nbsp;</div>
 										<button type="button" class="btn btn-default col-xs-2" onclick="goback('新增学生')">取消</button>
 									</div>
+									<input type="hidden" id="studentId" value="-1"/>
 								</form>
 							</div>
 						</div><!-- tab-content end -->
