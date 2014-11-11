@@ -31,7 +31,7 @@
 	
 	<select id="getDeviceByIMEI" resultType="com.incito.interclass.entity.Device" parameterType="java.lang.String">
 		SELECT	
-			tb_device.id,imei,tb_device.ctime
+			tb_device.id,imei,tb_device.ctime,student_id as studentId
 		FROM 
 			tb_device
 		WHERE

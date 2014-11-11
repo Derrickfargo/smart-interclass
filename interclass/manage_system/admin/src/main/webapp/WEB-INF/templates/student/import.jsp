@@ -50,7 +50,9 @@
 											</c:if>
 										</div>
 									</div>
-									
+									<div class="col-xs-offset-1">
+									<a href="/admin/student/download">Excel文件模版下载</a>
+									</div>
 									<div class='col-xs-offset-4'>
 										<button type="submit" class="btn btn-success col-xs-2">完成</button>
 										<div class="col-xs-1">&nbsp;</div>

@@ -29,6 +29,7 @@ import cn.com.incito.http.support.ParamsWrapper;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.ui.MainFrame;
+import cn.com.incito.interclass.ui.PraiseFrame;
 import cn.com.incito.interclass.ui.PraiseGroupPanel;
 import cn.com.incito.server.utils.URLs;
 
@@ -320,6 +321,7 @@ public class PraiseDialog extends JDialog implements MouseListener {
 							}
 						}
 						group.setScore((int) Math.round(scoreResult));
+						new PraiseFrame(group.getName(), updateScore);
 						// 设置小组总分
 						if (frame != null) {
 							frame.setScore(String.valueOf(Math.round(scoreResult)));
