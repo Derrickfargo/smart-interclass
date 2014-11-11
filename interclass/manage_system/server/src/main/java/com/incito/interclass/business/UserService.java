@@ -65,8 +65,8 @@ public class UserService {
 			}
 		}
 
-		for (int i = 0; i < userMapper.getStudentByGroupId(groupId).size(); i++) {
-			int studentScore = userMapper.getStudentByGroupId(groupId).get(i)
+		for (int i = 0; i < userMapper.getStudentByCaptainId(groupId).size(); i++) {
+			int studentScore = userMapper.getStudentByCaptainId(groupId).get(i)
 					.getScore();
 			Score = Score + studentScore;
 		}

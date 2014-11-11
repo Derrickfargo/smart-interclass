@@ -18,7 +18,9 @@ public interface UserMapper {
 	Student loginForStudent(Student student);
 
 	List<Student> getStudentByGroupId(int groupId);
-
+	
+	List<Student> getStudentByCaptainId(int captainId);
+	
 	List<Teacher> getTeacherListByCondition(@Param("name") String name,
 			@Param("schoolName") String schoolName);
 
@@ -65,5 +67,6 @@ public interface UserMapper {
 	Integer updateUserById(User user);
 
 	Integer updateStudentById(Student student);
+
 
 }
