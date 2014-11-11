@@ -1,12 +1,18 @@
 package com.incito.interclass.admin;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -149,7 +155,7 @@ public class StudentCtrl extends BaseCtrl {
 		dir.mkdirs();
 		File newFile = new File(dir, filename);
 		try {
-			file.transferTo(newFile);
+			file.transferTo(newFile);//注意这里
 		} catch (IOException e) {
 			ModelAndView mav = new ModelAndView("student/import");
 			mav.addObject("message", "文件获取失败，请重试！");
@@ -201,12 +207,12 @@ public class StudentCtrl extends BaseCtrl {
 	 * @param student
 	 * @param className
 	 * @param deviceId
-	 * @param newImei
+	 * @param imei
 	 * @param id
 	 * @return
 	 */
 	@RequestMapping(value="/update")
-	public ModelAndView update(Student student,String newImei,int id){
+	public ModelAndView update(Student student,String imei,int id){
 		//班年级转换为入学学年
 				Calendar calendar = Calendar.getInstance();
 				int month = calendar.get(Calendar.MONTH) + 1;
@@ -228,9 +234,9 @@ public class StudentCtrl extends BaseCtrl {
 			student.setClassId(classes.getId());
 		}
 		//更新device表
-		if(!newImei.equals(student.getImei())){
+		if(!imei.equals(student.getImei())){
 			Device device= new Device();
-			device.setImei(newImei);
+			device.setImei(imei);
 			device.setStudentId(id);
 			deviceService.saveDevice(device);
 			student.setDeviceId(device.getId());
@@ -245,6 +251,62 @@ public class StudentCtrl extends BaseCtrl {
 			e.printStackTrace();
 		}
 		return new ModelAndView("redirect:list");
+	}
+	
+	@RequestMapping(value="/check")
+	public boolean check(String imei,@RequestParam(value="studentId",defaultValue="-1")int studentId){
+		Device device=deviceService.getDeviceByIMEI(imei);
+		if(device==null||device.getId()==0){
+			return true;
+		}
+		if(device.getStudentId()==studentId){
+			return true;
+		}
+		
+		
+		return false;
+	}
+	/**
+	 * 模版下载
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/download")
+	public ModelAndView download(HttpServletRequest request,HttpServletResponse response) throws Exception{
+			
+		String downLoadPath=request.getSession().getServletContext().getRealPath("/")+"\\"+"documention\\"+"学生信息模板.xls";
+		File file = new File(downLoadPath);
+		String fileName= "学生信息模版.xls";
+		response.setContentType("text/html;charset=utf-8");   
+	    request.setCharacterEncoding("UTF-8");   
+	    java.io.BufferedInputStream bis = null;   
+	    java.io.BufferedOutputStream bos = null; 
+	    try{
+	        long fileLength= file.length();
+	        response.setContentType("application/vnd.ms-excel");
+	        response.setHeader("Content-disposition", "attachment; filename="  
+                    + new String(fileName.getBytes("utf-8"), "ISO8859-1")); 
+	        response.setHeader("Content-Length", String.valueOf(fileLength)); 
+	        bis = new BufferedInputStream(new FileInputStream(downLoadPath));   
+            bos = new BufferedOutputStream(response.getOutputStream());   
+            byte[] buff = new byte[2048];   
+            int bytesRead;   
+            while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {   
+                bos.write(buff, 0, bytesRead);   
+            }  
+	        }
+	    catch(Exception e){
+	        	
+	        }
+	    finally{
+	        	if (bis != null)   
+	                bis.close();   
+	            if (bos != null)   
+	                bos.close();
+	        }
+		return  null;
 	}
 
 }
