@@ -114,7 +114,7 @@
 									</c:otherwise>
 								</c:choose>
 							</div>
-							<input type="hidden" id="pageNum" name="pageNum" value="${page.pageNum}"> 
+							<input type="hidden" id="currentPage" name="pageNum" value="${page.pageNum}"> 
 							<input type="hidden" id="pageSize" name="pageSize" value="">
 							<input type="hidden" id="opType" name="opType" value="">
 							<input type="hidden" id="studentId" name="studentId" value="${student.id}">

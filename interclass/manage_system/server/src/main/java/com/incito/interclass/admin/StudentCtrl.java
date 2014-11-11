@@ -207,12 +207,11 @@ public class StudentCtrl extends BaseCtrl {
 	 * @param student
 	 * @param className
 	 * @param deviceId
-	 * @param imei
 	 * @param id
 	 * @return
 	 */
 	@RequestMapping(value="/update")
-	public ModelAndView update(Student student,String imei,int id){
+	public ModelAndView update(Student student,int id){
 		//班年级转换为入学学年
 				Calendar calendar = Calendar.getInstance();
 				int month = calendar.get(Calendar.MONTH) + 1;
@@ -231,16 +230,18 @@ public class StudentCtrl extends BaseCtrl {
 			classes.setSchoolId(student.getSchoolId());
 			classes.setYear(newYear);
 			classService.saveClass(classes);
-			student.setClassId(classes.getId());
 		}
+		student.setClassId(classes.getId());
 		//更新device表
-		if(!imei.equals(student.getImei())){
-			Device device= new Device();
-			device.setImei(imei);
+		Device device=deviceService.getDeviceByIMEI(student.getImei());
+		if(device==null||device.getId()==0){
+			device= new Device();
+			device.setImei(student.getImei());
 			device.setStudentId(id);
 			deviceService.saveDevice(device);
-			student.setDeviceId(device.getId());
 		}
+		
+		student.setDeviceId(device.getId());
 		
 		//更新user表和student表
 		try {

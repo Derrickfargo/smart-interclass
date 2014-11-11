@@ -476,6 +476,7 @@ public class UserService {
 			throw AppException.database(0);
 		}
 		flag=userMapper.updateStudentById(student);
+		
 		return flag>=0;
 	}	
 }

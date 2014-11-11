@@ -39,14 +39,16 @@
 											<div class="form-group">
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>学校：</label>
 												<div class="col-xs-4">
+												
 													<select id="schoolId" name="schoolId" class="form-control" >
 														<c:forEach items="${schools}" var="school">
 														<c:if test="${school.id==student.schoolId}">
-														<option value="${school.id }" selected>${school.name }</option>
+														<option value="${school.id}" selected>${school.name }</option>
 														</c:if>
-														<c:if test="${school.id!=studetn.schoolId}">
+														<c:if test="${school.id!=student.schoolId}">
 														<option value="${school.id}">${school.name }</option>
 														</c:if>
+													
 														</c:forEach>
 													</select>
 												</div>
