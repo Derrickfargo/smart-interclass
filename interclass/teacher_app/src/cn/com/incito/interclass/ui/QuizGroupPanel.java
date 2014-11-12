@@ -1,349 +1,189 @@
 package cn.com.incito.interclass.ui;
 
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.apache.log4j.Logger;
-
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Quiz;
-import cn.com.incito.interclass.ui.widget.MedalDialog;
-import cn.com.incito.interclass.ui.widget.PraiseDialog;
-import cn.com.incito.interclass.ui.widget.PunishDialog;
-import cn.com.incito.server.utils.UIHelper;
+import cn.com.incito.interclass.po.Student;
+import cn.com.incito.server.api.Application;
+import cn.com.incito.server.utils.LogoUtils;
 
 /**
- * 小组作业Panel
+ * 任务缩略图列表面板
+ * 
  * @author 刘世平
- *
  */
-public class QuizGroupPanel extends JPanel implements MouseListener{
-	 private Logger logger = Logger.getLogger(QuizGroupPanel.class.getName());
-	private static final long serialVersionUID = 882552987989905663L;
-	private static final String BTN_PLUS_NORMAL = "images/quiz/ico_add.png";
-	private static final String BTN_PLUS_HOVER = "images/quiz/ico_add_hover.png";
-	
-	private static final String BTN_MINUS_NORMAL = "images/quiz/ico_js.png";
-	private static final String BTN_MINUS_HOVER = "images/quiz/ico_js_hover.png";
-	
-	private static final String BTN_MEDAL_NORMAL = "images/quiz/ico_medal.png";
-	private static final String BTN_MEDAL_HOVER = "images/quiz/ico_medalz_hover.png";
-	
-	private Group group;
-	private JLabel lblDesk;
-	private JLabel lblLogo;
-	private JLabel lblGroupName;
-//	private JLabel lblScore;
-	private JButton btnPlus,btnMinus,btnMedal;
-	private List<JLabel> quizList = new ArrayList<JLabel>();
-	private List<JPanel> quizPanel = new ArrayList<JPanel>();
-	private List<JLabel> nameList = new ArrayList<JLabel>();
-	private List<JLabel> orderList = new ArrayList<JLabel>();
-	private Map<String,Quiz> quizMap = new HashMap<String, Quiz>();
-	
-	@Override
-	protected void paintComponent(Graphics g) {
-		Image image = new ImageIcon("images/quiz/bg_list.png").getImage();
-		g.drawImage(image, 0, 0, this.getWidth(), this.getHeight(),this);
-	}
-	
-	public QuizGroupPanel(){
-		setLayout(null);
-		setVisible(false);
-		
-		JLabel lblOrder1 = getOrderLabel();
-		lblOrder1.setVisible(false);
-		lblOrder1.setBounds(16, 17, 15, 15);
-		add(lblOrder1);
-		orderList.add(lblOrder1);
-		JPanel quiz1 = createImagePanel(14,15);
-		quiz1.setVisible(false);
-		add(quiz1);
-		quizPanel.add(quiz1);
-		
-		JLabel lblOrder2 = getOrderLabel();
-		lblOrder2.setVisible(false);
-		lblOrder2.setBounds(210, 17, 15, 15);
-		add(lblOrder2);
-		orderList.add(lblOrder2);
-		JPanel quiz2 = createImagePanel(208,15);
-		quiz2.setVisible(false);
-		add(quiz2);
-		quizPanel.add(quiz2);
-		
-		JLabel lblOrder3 = getOrderLabel();
-		lblOrder3.setVisible(false);
-		lblOrder3.setBounds(16, 167, 15, 15);
-		add(lblOrder3);
-		orderList.add(lblOrder3);
-		JPanel quiz3 = createImagePanel(14,165);
-		quiz3.setVisible(false);
-		add(quiz3);
-		quizPanel.add(quiz3);
-		
-		JLabel lblOrder4 = getOrderLabel();
-		lblOrder4.setVisible(false);
-		lblOrder4.setBounds(210, 167, 15, 15);
-		add(lblOrder4);
-		orderList.add(lblOrder4);
-		JPanel quiz4 = createImagePanel(208,165);
-		quiz4.setVisible(false);
-		add(quiz4);
-		quizPanel.add(quiz4);
-		
-//		//小组课桌号
-//		lblDesk = createDeskLabel();
-//		add(lblDesk);
-		//小组logo
-		lblLogo = createLogoLabel();
-		add(lblLogo);
-		//小组名字
-		lblGroupName = createGroupName();
-		add(lblGroupName);
-		//TODO 去掉小组积分
-//		lblScore = createScoreLabel();
-//		add(lblScore);
-		//小组加分按钮
-		btnPlus = createPlusButton();
-		btnPlus.addMouseListener(this);
-		add(btnPlus);
-		//小组减分按钮
-		btnMinus = createMinusButton();
-		btnMinus.addMouseListener(this);
-		add(btnMinus);
-		//小组勋章按钮
-		btnMedal = createMedalButton();
-		btnMedal.addMouseListener(this);
-		add(btnMedal);
+public class QuizGroupPanel extends JPanel {
 
-	}
+	/**
+     *
+     */
+	private static final long serialVersionUID = 6316121486627261595L;
+//	private static final String ICON_NO_DESK = "images/main/bg_binding_desk.png";
+//	private JLabel lblNoDesk;
+	private Application app = Application.getInstance();
+	/**
+	 * 当前教室所有试题，初始化界面时初始化本属性
+	 */
+	private List<QuizGroup> quizGroupList = new ArrayList<QuizGroup>();
+	private List<Group> groupList = new ArrayList<Group>();
 	
-	private JLabel createDeskLabel(){
-		JLabel lblDesk = new JLabel("", JLabel.CENTER);
-		lblDesk.setOpaque(true);
-		lblDesk.setBounds(14,331, 60, 24);
-		lblDesk.setBackground(new Color(Integer.parseInt("39a2de", 16)));
-		lblDesk.setForeground(new Color(Integer.parseInt("ffffff", 16)));
-		return lblDesk;
+	public QuizGroupPanel() {
+		this.setLayout(null);
+		this.setOpaque(true);
+		// 初始化界面
+		initView();
+		// 加载数据
+		refresh();
 	}
-	
-	private JLabel createLogoLabel(){
-		JLabel lblLogo = new JLabel();
-		final ImageIcon icon = new ImageIcon("images/logo/24/rainbow.png");
-		lblLogo.setIcon(icon);
-		lblLogo.setBounds(20, 331, 24, 24);
-		return lblLogo;
-	}
-	
-	private JLabel createGroupName(){
-		JLabel lblName = new JLabel("");
-//		lblName.setBounds(105,331, 100, 24);
-		lblName.setBounds(56,331, 100, 24);
-		lblName.setForeground(UIHelper.getDefaultFontColor());
-		return lblName;
-	}
-	
-	private JLabel getOrderLabel() {
-		JLabel lblPad = new JLabel("", JLabel.CENTER);
-		lblPad.setForeground(new Color(Integer.parseInt("FFFFFF", 16)));
-		lblPad.setOpaque(true);
-		return lblPad;
-	}
-	
-	private JLabel createScoreLabel(){
-		JLabel lblDesk = new JLabel("0分", JLabel.CENTER);
-		lblDesk.setOpaque(true);
-		lblDesk.setBounds(210,331, 40, 24);
-		lblDesk.setBackground(Color.RED);
-		lblDesk.setForeground(Color.WHITE);
-		return lblDesk;
-	}
-	
-	private JButton createPlusButton(){
-		JButton lblPlus = new JButton();
-		Icon iconPlus = new ImageIcon(BTN_PLUS_NORMAL);
-		lblPlus = new JButton();
-		lblPlus.setIcon(iconPlus);
-		lblPlus.setFocusPainted(false);
-		lblPlus.setBorderPainted(false);// 设置边框不可见
-		lblPlus.setContentAreaFilled(false);// 设置透明
-		lblPlus.setBounds(260,329, iconPlus.getIconWidth(), iconPlus.getIconHeight());
-		return lblPlus;
-	}
-	
-	private JButton createMinusButton(){
-		JButton lblMinus = new JButton();
-		Icon iconMinus = new ImageIcon(BTN_MINUS_NORMAL);
-		lblMinus = new JButton();
-		lblMinus.setIcon(iconMinus);
-		lblMinus.setFocusPainted(false);
-		lblMinus.setBorderPainted(false);// 设置边框不可见
-		lblMinus.setContentAreaFilled(false);// 设置透明
-		lblMinus.setBounds(295,329, iconMinus.getIconWidth(), iconMinus.getIconHeight());
-		return lblMinus;
-	}
-	
-	private JButton createMedalButton(){
-		JButton lblMedal = new JButton();
-		Icon iconMedal = new ImageIcon(BTN_MEDAL_NORMAL);
-		lblMedal = new JButton();
-		lblMedal.setIcon(iconMedal);
-		lblMedal.setFocusPainted(false);
-		lblMedal.setBorderPainted(false);// 设置边框不可见
-		lblMedal.setContentAreaFilled(false);// 设置透明
-		lblMedal.setBounds(330,329, iconMedal.getIconWidth(), iconMedal.getIconHeight());
-		return lblMedal;
-	}
-	
-	private JPanel createImagePanel(int x, int y) {
-		final ImageIcon icon = new ImageIcon("images/quiz/bg_img.png");
-		JPanel imagePanel = new JPanel(){
-			private static final long serialVersionUID = -5620925583420692590L;
-			@Override
-			protected void paintComponent(Graphics g) {
-				g.drawImage(icon.getImage(), 0, 0, icon.getIconWidth(), icon.getIconHeight(),this);
+
+	private void initView() {
+		int i = 0;
+		int y = 10;
+		while (i < 12) {
+			QuizGroup pnlLeft = new QuizGroup();
+			pnlLeft.setBounds(10, y, 410, 374);
+			add(pnlLeft);
+			quizGroupList.add(pnlLeft);
+			if (++i < 12) {
+				QuizGroup pnlRight = new QuizGroup();
+				pnlRight.setBounds(438, y, 410, 374);
+				add(pnlRight);
+				quizGroupList.add(pnlRight);
 			}
-		};
-		imagePanel.setLayout(null);
-		imagePanel.setBounds(x, y, icon.getIconWidth(), icon.getIconHeight());
-		JLabel lblImage = new JLabel();
-		lblImage.setBounds(2, 2, 185, 109);
-		quizList.add(lblImage);
-		imagePanel.add(lblImage);
-		imagePanel.addMouseListener(this);
-		
-		JLabel lblName = new JLabel("", JLabel.CENTER);
-		lblName.setForeground(UIHelper.getDefaultFontColor());
-		nameList.add(lblName);
-		lblName.setBounds(0, icon.getIconHeight()- 25 , icon.getIconWidth(), 25);
-		imagePanel.add(lblName);
-		return imagePanel;
+			i++;
+			y += 380;
+		}
+//		lblNoDesk = new JLabel();
+//		ImageIcon icon = new ImageIcon(ICON_NO_DESK);
+//		lblNoDesk.setIcon(icon);
+//		lblNoDesk.setBounds(288, 235, 300, 160);
+//		lblNoDesk.setVisible(false);
+//		add(lblNoDesk);
 	}
-	
-	public void addImage(int i, Quiz quiz) {
-		if (quiz != null) {
-			String url = quiz.getThumbnail();
-			Icon icon1 = new ImageIcon(url);
-			quizList.get(i).setIcon(icon1);
-			quizList.get(i).getParent().setName(quiz.getQuizUrl());
-			quizMap.put(quiz.getImei(), quiz);
-		} else {
-			Icon icon = new ImageIcon("");
-			quizList.get(i).setIcon(icon);
-			quizList.get(i).getParent().setName("");
-			quizMap.clear();
+
+	private void hideGroup() {
+		int i = 0;
+		while (i < groupList.size()) {
+			hideQuizGroup(quizGroupList.get(i));
+			if (++i < groupList.size()) {
+				hideQuizGroup(quizGroupList.get(i));
+			}
+			i++;
 		}
 	}
 	
-	public Group getGroup() {
-		return group;
-	}
-
-	public void setGroup(Group group) {
-		this.group = group;
-	}
-
-	public JLabel getLblDesk() {
-		return lblDesk;
-	}
-
-//	public JLabel getLblScore() {
-//		return lblScore;
-//	}
-
-	public JLabel getLblLogo() {
-		return lblLogo;
-	}
-
-	public JLabel getLblGroupName() {
-		return lblGroupName;
-	}
-
-	public List<JLabel> getOrderList() {
-		return orderList;
-	}
-
-	public List<JLabel> getQuizList() {
-		return quizList;
-	}
-
-	public List<JLabel> getNameList() {
-		return nameList;
-	}
-
-	public List<JPanel> getQuizPanel() {
-		return quizPanel;
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
+	private void hideQuizGroup(QuizGroup panel) {
+		panel.setVisible(false);
+		panel.getLblLogo().setIcon(new ImageIcon(""));
+		panel.getLblGroupName().setText("");
+		panel.getLblGroupName().setToolTipText("");
 		
+		List<JPanel> quizPanel = panel.getQuizPanel();
+		List<JLabel> quizList = panel.getNameList();
+		List<JLabel> orderList = panel.getOrderList();
+		for (int i = 0; i < quizPanel.size(); i++) {
+			JLabel lblOrder = orderList.get(i);
+			quizPanel.get(i).setVisible(false);
+			lblOrder.setVisible(false);
+			JLabel lblName = quizList.get(i);
+			lblName.setText("");
+			lblName.setToolTipText("");
+			panel.addImage(i, null);
+		}
+	}
+	
+	public void refresh() {
+		hideGroup();
+		initData();
+//		if (groupList.size() == 0) {//未绑定 
+//			lblNoDesk.setVisible(true);
+//			return;
+//		}
+//		lblNoDesk.setVisible(false);
+		int i = 0;
+		while (i < groupList.size()) {
+			QuizGroup pnlLeft = quizGroupList.get(i);
+			showQuizGroup(pnlLeft, groupList.get(i));
+			if (++i < groupList.size()) {
+				QuizGroup pnlRight = quizGroupList.get(i);
+				showQuizGroup(pnlRight, groupList.get(i));
+			}
+			i++;
+		}
+		repaint();
+		revalidate();
 	}
 
-	@Override
-	public void mouseReleased(MouseEvent e) {
+	private void showQuizGroup(QuizGroup panel, Group group) {
+		panel.setVisible(true);
+		panel.setGroup(group);
+//		panel.getLblDesk().setText(String.format("%d号桌", group.getTableNumber()));
+		panel.getLblLogo().setIcon(new ImageIcon(LogoUtils.getInstance().getLogo24(group.getLogo())));
+		panel.getLblGroupName().setText(group.getName());
+		panel.getLblGroupName().setToolTipText(group.getName());
 		
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		if (e.getSource() == btnPlus) {
-			new PraiseDialog(null, group);
+		List<Student> studentList = group.getStudents();
+		List<JPanel> quizPanel = panel.getQuizPanel();
+		List<JLabel> quizList = panel.getNameList();
+		List<JLabel> orderList = panel.getOrderList();
+		for (int i = 0; i < studentList.size(); i++) {
+			Student student = studentList.get(i);
+			quizPanel.get(i).setVisible(true);
 			
-		}
-		if (e.getSource() == btnMinus) {
-			new PunishDialog(null, group);
-		}
-		if (e.getSource() == btnMedal) {
-			new MedalDialog(MainFrame.getInstance().getFrame(), group);
-		}
-		if (quizPanel.contains(e.getSource())) {
-			if (e.getClickCount() == 2) {
-				JPanel lblPanel = (JPanel) e.getSource();
-				String url = lblPanel.getName();
-				if (url != null && !url.equals("")) {
-					new PhotoFrame(url);
+			JLabel lblName = quizList.get(i);
+			lblName.setText(student.getName());
+			lblName.setToolTipText(student.getName());
+			
+			String imei = student.getImei();
+			Quiz quiz = app.getTempQuiz().get(imei);
+			if (quiz != null) {
+				panel.addImage(i, quiz);
+				//设置作业为排名
+				JLabel lblOrder = orderList.get(i);
+				lblOrder.setVisible(true);
+				int order = Application.getInstance().getQuizList().indexOf(quiz) + 1;
+				lblOrder.setText(String.valueOf(order));
+				switch (order) {
+				case 1:
+					lblOrder.setBackground(new Color(Integer.parseInt("BC3412", 16)));
+					break;
+				case 2:
+					lblOrder.setBackground(new Color(Integer.parseInt("E07C00", 16)));
+					break;
+				case 3:
+					lblOrder.setBackground(new Color(Integer.parseInt("F5DB00", 16)));
+					break;
+				default:
+					lblOrder.setBackground(new Color(Integer.parseInt("ADADAD", 16)));
 				}
+			} else {
+				panel.addImage(i, null);
+				//设置作业为排名
+				JLabel lblOrder = orderList.get(i);
+				lblOrder.setVisible(false);
 			}
 		}
 	}
-	
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		if (e.getSource() == btnPlus) {
-			btnPlus.setIcon(new ImageIcon(BTN_PLUS_HOVER));
-		}
-		if (e.getSource() == btnMinus) {
-			btnMinus.setIcon(new ImageIcon(BTN_MINUS_HOVER));
-		}
-		if (e.getSource() == btnMedal) {
-			btnMedal.setIcon(new ImageIcon(BTN_MEDAL_HOVER));
-		}
-	}
 
-	@Override
-	public void mouseExited(MouseEvent e) {
-		if (e.getSource() == btnPlus) {
-			btnPlus.setIcon(new ImageIcon(BTN_PLUS_NORMAL));
+	private void initData() {
+		groupList = new ArrayList<Group>();
+		// 课桌绑定分组，生成内存模型
+		Set<Group> groups = app.getGroupList();
+		Iterator<Group> it = groups.iterator();
+		while (it.hasNext()) {
+			// 获得课桌对应的分组
+			Group group = it.next();
+			groupList.add(group);
 		}
-		if (e.getSource() == btnMinus) {
-			btnMinus.setIcon(new ImageIcon(BTN_MINUS_NORMAL));
-		}
-		if (e.getSource() == btnMedal) {
-			btnMedal.setIcon(new ImageIcon(BTN_MEDAL_NORMAL));
-		}
+//		Collections.sort(groupList);
 	}
 }

@@ -329,12 +329,7 @@ public class MainFrame extends MouseAdapter {
 		//作业card
 		quizPanel = new QuizPanel();
         quizPanel.setBackground(Color.WHITE);
-        JScrollPane quizScrollPane = new JScrollPane(quizPanel);
-        quizScrollPane.getVerticalScrollBar().setUnitIncrement(100);
-        quizScrollPane.setBorder(null);
-        quizScrollPane.setBounds(0, 0, 876, 630);
-        quizPanel.setPreferredSize(new Dimension(quizScrollPane.getWidth() - 50, (quizScrollPane.getHeight() - 50) * 4));
-		centerCardPanel.add(quizScrollPane, CARD_QUIZ);
+		centerCardPanel.add(quizPanel, CARD_QUIZ);
 		
 		//表扬card
 		praisePanel = new PraisePanel();
