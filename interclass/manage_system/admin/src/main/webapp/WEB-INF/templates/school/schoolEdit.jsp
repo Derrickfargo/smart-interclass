@@ -15,6 +15,7 @@
 <script type="text/javascript" src="${path}/lib/jquery-validation/jquery.validate.js"></script>
 <script type="text/javascript" src="${path}/lib/jquery-validation/jquery.metadata.js"></script>
 <script type="text/javascript" src="${path}/lib/jquery-validation/messages_zh.js"></script>
+<script type="text/javascript" src="${path}/lib/bootstrap.autocomplete.js"></script>
 <script type="text/javascript" src="${path}/lib/md5.js"></script>
 <script type="text/javascript" src="${path}/js/school.js"></script>
 </head>
@@ -39,12 +40,12 @@
 											<div class="form-group">
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>学校名称：</label>
 												<div class="col-xs-4">
-													<input type="text" name="name" id="schoolName" value="${school.name}" maxlength="128" class="form-control borderRadiusIE8" autocomplete="off">
-													<p id="checkSchoolNameTip" class="help-block hidden"><font color="red"><b>请输入学校名称</b></font></p>
+													<input type="text" name="name" id="schoolName" value="${school.name}" maxlength="40" class="form-control borderRadiusIE8 required" autocomplete="off">
+													<p id="checkSchoolNameTip" class="help-block hidden"><font color="red"><b>请输入正确的学校名称（2~20个汉字）</b></font></p>
 												</div>
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>邮编：</label>
 												<div class="col-xs-4">
-													<input type="text" name="zipCode" id="zipCode" value="${school.zipCode}" maxlength="8" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkZipCodeTip').addClass('hidden')">
+													<input type="text" name="zipCode" id="zipCode" value="${school.zipCode}" maxlength="6" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkZipCodeTip').addClass('hidden')">
 													<p id="checkZipCodeTip" class="help-block hidden"><font color="red"><b>请输入正确的 邮编</b></font></p>
 												</div>
 											</div>
@@ -56,14 +57,14 @@
 												</div>
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>联系电话：</label>
 												<div class="col-xs-4">
-													<input type="text" name="phone" id="phone" value="${school.phone}" maxlength="12" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkPhoneTip').addClass('hidden')">
+													<input type="text" name="phone" id="phone" value="${school.phone}" maxlength="11" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkPhoneTip').addClass('hidden')">
 													<p id="checkPhoneTip" class="help-block hidden"><font color="red"><b>请输入正确的电话或手机号码</b></font></p>
 												</div>
 											</div>
 											<div class="form-group">
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>通讯地址：</label>
 												<div class="col-xs-4">
-													<input type="text" id="address" name="address" value="${school.address}" class="form-control borderRadiusIE8 required" onkeyup="$('#checkAddressTip').addClass('hidden')">
+													<input type="text" id="address" name="address" value="${school.address}" maxlength="30" class="form-control borderRadiusIE8 required" onkeyup="$('#checkAddressTip').addClass('hidden')">
 													<p id="checkAddressTip" class="help-block hidden"><font color="red"><b>请输入所属学校</b></font></p>
 												</div>
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>学校性质：</label>

@@ -39,9 +39,9 @@
 											<div class="form-group">
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>课程名称：</label>
 												<div class="col-xs-4">
-													<input type="text" name="name" id="name" value="${course.name}" maxlength="128" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkCourseNameTip').addClass('hidden')"
+													<input type="text" name="name" id="name" value="${course.name}" maxlength="40" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkCourseNameTip').addClass('hidden')"
 													autocomplete="off">
-													<p id="checkCourseNameTip" class="help-block hidden"><font color="red"><b>请输入课程名称</b></font></p>
+													<p id="checkCourseNameTip" class="help-block hidden"><font color="red"><b>请输入正确课程名称（2~8汉字）</b></font></p>
 												</div>
 											</div>
 											<!-- 

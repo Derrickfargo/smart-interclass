@@ -26,7 +26,7 @@ public class CourseCtrl extends BaseCtrl {
 			@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
 		ModelAndView res = new ModelAndView("course/courseList");
 		PageHelper.startPage(pageNum, PAGE_SIZE);
-		List<Course> courses = courseService.getCourseList();
+		List<Course> courses = courseService.getCourseListByCondition(course.getName());
 		PageInfo<Course> page = new PageInfo<Course>(courses);
 		res.addObject("page", page);
 		return res;
@@ -55,7 +55,6 @@ public class CourseCtrl extends BaseCtrl {
 	 */
 	@RequestMapping(value="/check")
 	public boolean check(String name,@RequestParam(value="courseName",defaultValue="null")String courseName){
-		System.out.println(name+":"+courseName);
 		if(courseName!=null){
 			while(name.equals(courseName)){
 				return true;
@@ -63,7 +62,7 @@ public class CourseCtrl extends BaseCtrl {
 		}
 			
 		int flag=courseService.getCourseByName(name);
-		if(flag==1){
+		if(flag!=0){
 			return false;
 		}
 		return true;

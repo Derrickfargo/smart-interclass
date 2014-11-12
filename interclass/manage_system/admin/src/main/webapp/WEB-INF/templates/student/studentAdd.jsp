@@ -89,7 +89,7 @@
 											<div class="form-group">
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>监护人：</label>
 												<div class="col-xs-4">
-													<input type="text" name="guardian" id="guardian" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkGuardianTip').addClass('hidden')">
+													<input type="text" name="guardian" id="guardian" maxlength="8" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkGuardianTip').addClass('hidden')">
 													<p id="checkGuardianTip" class="help-block hidden"><font color="red"><b>请输入2-8位汉字</b></font></p>
 												</div>
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>联系电话：</label>
@@ -101,12 +101,12 @@
 											<div class="form-group">
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>通讯地址：</label>
 												<div class="col-xs-4">
-													<input type="text" id="address" name="address" class="form-control borderRadiusIE8 required" onkeyup="$('#checkAddressTip').addClass('hidden')">
+													<input type="text" id="address" name="address"  maxlength="30" class="form-control borderRadiusIE8 required" onkeyup="$('#checkAddressTip').addClass('hidden')">
 													<p id="checkAddressTip" class="help-block hidden"><font color="red"><b>请输入所属学校</b></font></p>
 												</div>
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>Pad Mac地址：</label>
 												<div class="col-xs-4">
-													<input type="text" name="imei" id="imei" maxlength="36" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkIMEITip').addClass('hidden')">
+													<input type="text" name="imei" id="imei" maxlength="36" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkIMEITip').addClass('hidden')" autocomplete="off">
 													<p id="checkIMEITip" class="help-block hidden"><font color="red"><b>Pad Mac地址</b></font></p>
 												</div>
 											</div>

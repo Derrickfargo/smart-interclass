@@ -29,11 +29,11 @@ $(document).ready(function() {
 		
 		submitHandler:function(form){
 			var flag = true;
-			//学校名称
-//			if (!new RegExp(/^[\u4e00-\u9fa5]{2,8}$/).test($("#courseName").val())) {
-//				$("#checkCourseNameTip").removeClass("hidden");
-//				flag = false;
-//			}
+//			课程名称
+			if (!new RegExp(/^[\u4e00-\u9fa5]{2,8}$/).test($("#name").val())) {
+				$("#checkCourseNameTip").removeClass("hidden");
+				flag = false;
+			}
 //			//检查身份证格式是否正确
 //			var idCarNo = new RegExp(/^\d{17}([0-9]|X)$|^(\d{15})$/);
 //			if (!idCarNo.test($("#idcard").val())) {

@@ -40,4 +40,9 @@ public class CourseService {
 		// TODO Auto-generated method stub
 		 courseMapper.update(course);
 	}
+
+	public List<Course> getCourseListByCondition(String name) {
+		// TODO Auto-generated method stub
+		return courseMapper.getCourseListByCondition(name);
+	}
 }

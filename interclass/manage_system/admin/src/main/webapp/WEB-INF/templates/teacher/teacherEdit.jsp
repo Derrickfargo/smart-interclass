@@ -40,11 +40,11 @@
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>登陆名：</label>
 												<div class="col-xs-4">
 													<input type="text" name="uname" id="teacherUName" value="${teacher.uname}" maxlength="8" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkTeacherUNameTip').addClass('hidden')">
-													<p id="checkTeacherUNameTip" class="help-block hidden"><font color="red"><b>请输入登陆名，2-8个字符</b></font></p>
+													<p id="checkTeacherUNameTip" class="help-block hidden"><font color="red"><b>请输入登陆名，首字符为字母的2-8个字符或2~8个中文字符</b></font></p>
 												</div>
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>教师姓名：</label>
 												<div class="col-xs-4">
-													<input type="text" name="name" id="teacherName" value="${teacher.name}" maxlength="8" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkTeacherNameTip').addClass('hidden')" autocomplete="off">
+													<input type="text" name="name" id="teacherName" value="${teacher.name}" maxlength="9" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkTeacherNameTip').addClass('hidden')" autocomplete="off">
 													<p id="checkTeacherNameTip" class="help-block hidden"><font color="red"><b>请输入2-8个汉字</b></font></p>
 												</div>
 											</div>
