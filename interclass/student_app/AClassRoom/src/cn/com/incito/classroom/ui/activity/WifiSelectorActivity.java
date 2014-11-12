@@ -81,6 +81,7 @@ public class WifiSelectorActivity extends BaseActivity  {
 	// 是否允许出现相同的wifi名称
 	private boolean isAllowRepeat = true;
 	private int code;
+	private IFlushHander mHandler;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -277,6 +278,7 @@ public class WifiSelectorActivity extends BaseActivity  {
 	 * 
 	 */
 	private class IWifiStatusChangedReceiver extends BroadcastReceiver {
+
 
 		public void onReceive(Context context, Intent intent) {
 
@@ -519,7 +521,7 @@ public class WifiSelectorActivity extends BaseActivity  {
 	 * 
 	 * @param wifiItem
 	 */
-	private void connectToWifi(IWifiItem wifiItem, String password,
+	private void connectToWifi(IWifiItem wifiItem, final String password,
 			IWifiSecurityType securityType) {
 		if(mProgressDialog==null){
 			mProgressDialog = new ProgressiveDialog(this);
@@ -581,20 +583,32 @@ public class WifiSelectorActivity extends BaseActivity  {
 		SharedPreferences sharedPreferences = getSharedPreferences("wifi", MODE_APPEND);
 		SharedPreferences.Editor editor = sharedPreferences.edit();
 		if (mWifiManager.enableNetwork(wcgID, true)) {
-			editor.putString(mCurrentWifiItem.getScanResult().BSSID, password);
-			editor.commit();
-			if(firstConnect){
-				startMain();
-				firstConnect=false;
+			if (mWifiManager.enableNetwork(wcgID, true)) {
+				new Thread() {
+					public void run() {
+						try {
+							Thread.sleep(5000);
+							SharedPreferences sharedPreferences = getSharedPreferences(
+									"wifi", MODE_APPEND);
+							SharedPreferences.Editor editor = sharedPreferences.edit();
+							if (isWifiNetConnected()) {
+								editor.putString(mCurrentWifiItem.getScanResult().BSSID,password);
+								editor.commit();
+								startMain();
+							} else {
+								android.os.Message message = new android.os.Message();
+								message.what = 2;
+								myHandler.sendMessage(message);
+								editor.remove(mCurrentWifiItem.getScanResult().BSSID);
+								editor.commit();
+							}
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				}.start();
 			}
-			
-		} else {
-			mProgressDialog.dismiss();
-			editor.remove(mCurrentWifiItem.getScanResult().BSSID);
-			editor.commit();
-			ToastHelper.showCustomToast(this, R.string.wifi_password_error);
 		}
-
 	}
 
 	/**
@@ -706,12 +720,16 @@ public class WifiSelectorActivity extends BaseActivity  {
 		}.start();
 	}
 
-	private Handler mHandler = new Handler() {
+	private Handler myHandler = new Handler() {
 		@Override
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case 0:
 				ib_setting_ip.setVisibility(View.VISIBLE);
+				break;
+			case 2:
+				mProgressDialog.dismiss();
+				ToastHelper.showCustomToast(WifiSelectorActivity.this, "网络连接失败，请重试");
 				break;
 			case 11:
 				MyApplication.Logger.debug("显示提示信息");
@@ -775,7 +793,7 @@ public class WifiSelectorActivity extends BaseActivity  {
 	private void showSetting() {
 		android.os.Message message = new android.os.Message();
 		message.what = 0;
-		mHandler.sendMessage(message);
+		myHandler.sendMessage(message);
 	}
 
 	@Override
@@ -786,7 +804,7 @@ public class WifiSelectorActivity extends BaseActivity  {
 	public void showToast(){
 		android.os.Message message = new android.os.Message();
 		message.what = 11;
-		mHandler.sendMessage(message);
+		myHandler.sendMessage(message);
 	}
 }
 	
