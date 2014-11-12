@@ -14,10 +14,6 @@ $(document).ready(function() {
             return {'data-value':item["name"],'real-value':item["name"]};
         }
     });
- 
-$("#goBtn").click(function(){ //获取文本框的实际值
-        var regionCode = $("#autocompleteInput").attr("real-value") || "";
-    });
 	
 	$("#schoolForm").validate({
 		//新增及修改学校时重复校验
@@ -47,11 +43,11 @@ $("#goBtn").click(function(){ //获取文本框的实际值
 		
 		submitHandler:function(form){
 		    var flag = true;
-			//学校名称
-//			if (!new RegExp(/^[\u4e00-\u9fa5]{2,8}$/).test($("#schoolName").val())) {
-//				$("#checkSchoolNameTip").removeClass("hidden");
-//				flag = false;
-//			}
+//			学校名称
+			if (!new RegExp(/^[\u4e00-\u9fa5]{2,20}$/).test($("#schoolName").val())) {
+				$("#checkSchoolNameTip").removeClass("hidden");
+				flag = false;
+			}
 //			//检查身份证格式是否正确
 //			var idCarNo = new RegExp(/^\d{17}([0-9]|X)$|^(\d{15})$/);
 //			if (!idCarNo.test($("#idcard").val())) {
@@ -64,11 +60,11 @@ $("#goBtn").click(function(){ //获取文本框的实际值
 				$("#checkPhoneTip").removeClass("hidden");
 				flag = false;
 			}
-//
-//			if ($("#schoolName").val() == "") {
-//				$('#checkSchoolSchoolTip').removeClass('hidden');
-//				flag = false;
-//			}
+			//校验邮编格式是否正确
+			if(!new RegExp(/^\d{6}$/).test($("#zipCode").val())){
+				$("#checkZipCodeTip").removeClass("hidden");
+				flag=false;
+			}
 			
 			if (flag) {
 				form.submit();
@@ -78,8 +74,7 @@ $("#goBtn").click(function(){ //获取文本框的实际值
 			}
 		}
 	});
-});
-
+	});
 // 搜索教师信息
 function searchSchool(pageNum) {
 	$("#pageNum").val(pageNum);

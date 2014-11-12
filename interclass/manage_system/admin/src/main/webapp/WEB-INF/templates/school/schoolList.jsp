@@ -11,6 +11,9 @@
     <meta name="author" content="">
     <title>互动课堂后台管理平台</title>
     <jsp:include page="../common/common.jsp" />
+    <script type="text/javascript" src="${path}/lib/jquery-validation/jquery.validate.js"></script>
+	<script type="text/javascript" src="${path}/lib/jquery-validation/jquery.metadata.js"></script>
+	<script type="text/javascript" src="${path}/lib/jquery-validation/messages_zh.js"></script>
 	<script type="text/javascript" src="${path}/lib/bootstrap.autocomplete.js"></script>
     <script type="text/javascript" src="${path}/js/school.js"></script>
   </head>

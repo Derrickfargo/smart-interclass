@@ -54,6 +54,12 @@ $(document).ready(function() {
 				$("#checkGuardianTip").removeClass("hidden");
 				flag = false;
 			}
+			//mac地址格式
+			if(!new RegExp(/^[0-9a-fA-F]{2}-[0-9a-fA-F]{2}-[0-9a-fA-F]{2}-[0-9a-fA-F]{2}-[0-9a-fA-F]{2}-[0-9a-fA-F]{2}$/)
+			.test($("#imei").val())){
+				$("#checkIMEITip").removeClass("hidden");
+				flag=false;
+			}
 			if (flag) {
 				form.submit();
 			}

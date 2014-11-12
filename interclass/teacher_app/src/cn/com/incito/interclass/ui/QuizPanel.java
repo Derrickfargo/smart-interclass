@@ -1,20 +1,17 @@
 package cn.com.incito.interclass.ui;
 
+import java.awt.CardLayout;
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-import cn.com.incito.interclass.po.Group;
-import cn.com.incito.interclass.po.Quiz;
-import cn.com.incito.interclass.po.Student;
-import cn.com.incito.server.api.Application;
-import cn.com.incito.server.utils.LogoUtils;
+import javax.swing.JScrollPane;
 
 /**
  * 任务缩略图列表面板
@@ -22,168 +19,83 @@ import cn.com.incito.server.utils.LogoUtils;
  * @author 刘世平
  */
 public class QuizPanel extends JPanel {
-
-	/**
-     *
-     */
 	private static final long serialVersionUID = 6316121486627261595L;
-//	private static final String ICON_NO_DESK = "images/main/bg_binding_desk.png";
-//	private JLabel lblNoDesk;
-	private Application app = Application.getInstance();
-	/**
-	 * 当前教室所有试题，初始化界面时初始化本属性
-	 */
-	private List<QuizGroupPanel> quizGroupList = new ArrayList<QuizGroupPanel>();
-	private List<Group> groupList = new ArrayList<Group>();
+	private static final String CARD_NO_GROUP = "NO_GROUP";
+	private static final String CARD_GROUP = "GROUP";
+	
+	private CardLayout centerCardLayout;
+	private JPanel centerCardPanel;
+	private QuizNoGroupPanel noGroupPanel;
+	private QuizGroupPanel groupPanel;
+	
+	private JButton btnNoGroup;
+	private JButton btnGroup;
+	private JLabel lblCardBackground;
 	
 	public QuizPanel() {
 		this.setLayout(null);
 		this.setOpaque(true);
-		// 初始化界面
-		initView();
-		// 加载数据
-		refresh();
-	}
-
-	private void initView() {
-		int i = 0;
-		int y = 10;
-		while (i < 12) {
-			QuizGroupPanel pnlLeft = new QuizGroupPanel();
-			pnlLeft.setBounds(10, y, 410, 374);
-			add(pnlLeft);
-			quizGroupList.add(pnlLeft);
-			if (++i < 12) {
-				QuizGroupPanel pnlRight = new QuizGroupPanel();
-				pnlRight.setBounds(438, y, 410, 374);
-				add(pnlRight);
-				quizGroupList.add(pnlRight);
-			}
-			i++;
-			y += 380;
-		}
-//		lblNoDesk = new JLabel();
-//		ImageIcon icon = new ImageIcon(ICON_NO_DESK);
-//		lblNoDesk.setIcon(icon);
-//		lblNoDesk.setBounds(288, 235, 300, 160);
-//		lblNoDesk.setVisible(false);
-//		add(lblNoDesk);
-	}
-
-	private void hideGroup() {
-		int i = 0;
-		while (i < groupList.size()) {
-			hideQuizGroup(quizGroupList.get(i));
-			if (++i < groupList.size()) {
-				hideQuizGroup(quizGroupList.get(i));
-			}
-			i++;
-		}
-	}
-	
-	private void hideQuizGroup(QuizGroupPanel panel) {
-		panel.setVisible(false);
-		panel.getLblLogo().setIcon(new ImageIcon(""));
-		panel.getLblGroupName().setText("");
-		panel.getLblGroupName().setToolTipText("");
+		// 初始化选项卡按钮
+		btnNoGroup = new JButton("学生");
+		btnNoGroup.setFocusPainted(false);
+		btnNoGroup.setBorderPainted(false);// 设置边框不可见
+		btnNoGroup.setContentAreaFilled(false);// 设置透明
+		btnNoGroup.setBorder(BorderFactory.createTitledBorder(""));
+		add(btnNoGroup);
+		btnNoGroup.setBounds(3, 4, 137, 35);
+		btnNoGroup.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+            	centerCardLayout.show(centerCardPanel, CARD_NO_GROUP);
+            	lblCardBackground.setIcon(new ImageIcon("images/prepare/bg_nogroup.jpg"));
+            }
+        });
 		
-		List<JPanel> quizPanel = panel.getQuizPanel();
-		List<JLabel> quizList = panel.getNameList();
-		List<JLabel> orderList = panel.getOrderList();
-		for (int i = 0; i < quizPanel.size(); i++) {
-			JLabel lblOrder = orderList.get(i);
-			quizPanel.get(i).setVisible(false);
-			lblOrder.setVisible(false);
-			JLabel lblName = quizList.get(i);
-			lblName.setText("");
-			lblName.setToolTipText("");
-			panel.addImage(i, null);
-		}
-	}
-	
-	public void refresh() {
-		hideGroup();
-		initData();
-//		if (groupList.size() == 0) {//未绑定 
-//			lblNoDesk.setVisible(true);
-//			return;
-//		}
-//		lblNoDesk.setVisible(false);
-		int i = 0;
-		while (i < groupList.size()) {
-			QuizGroupPanel pnlLeft = quizGroupList.get(i);
-			showQuizGroup(pnlLeft, groupList.get(i));
-			if (++i < groupList.size()) {
-				QuizGroupPanel pnlRight = quizGroupList.get(i);
-				showQuizGroup(pnlRight, groupList.get(i));
-			}
-			i++;
-		}
-		repaint();
-		revalidate();
-	}
-
-	private void showQuizGroup(QuizGroupPanel panel, Group group) {
-		panel.setVisible(true);
-		panel.setGroup(group);
-//		panel.getLblDesk().setText(String.format("%d号桌", group.getTableNumber()));
-		panel.getLblLogo().setIcon(new ImageIcon(LogoUtils.getInstance().getLogo24(group.getLogo())));
-		panel.getLblGroupName().setText(group.getName());
-		panel.getLblGroupName().setToolTipText(group.getName());
+		btnGroup = new JButton("小组");
+		btnGroup.setFocusPainted(false);
+		btnGroup.setBorderPainted(false);// 设置边框不可见
+		btnGroup.setContentAreaFilled(false);// 设置透明
+		btnGroup.setBorder(BorderFactory.createTitledBorder(""));
+		add(btnGroup);
+		btnGroup.setBounds(141, 4, 137, 35);
+		btnGroup.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+            	centerCardLayout.show(centerCardPanel, CARD_GROUP);
+            	lblCardBackground.setIcon(new ImageIcon("images/prepare/bg_group.png"));
+            }
+        });
 		
-		List<Student> studentList = group.getStudents();
-		List<JPanel> quizPanel = panel.getQuizPanel();
-		List<JLabel> quizList = panel.getNameList();
-		List<JLabel> orderList = panel.getOrderList();
-		for (int i = 0; i < studentList.size(); i++) {
-			Student student = studentList.get(i);
-			quizPanel.get(i).setVisible(true);
-			
-			JLabel lblName = quizList.get(i);
-			lblName.setText(student.getName());
-			lblName.setToolTipText(student.getName());
-			
-			String imei = student.getImei();
-			Quiz quiz = app.getTempQuiz().get(imei);
-			if (quiz != null) {
-				panel.addImage(i, quiz);
-				//设置作业为排名
-				JLabel lblOrder = orderList.get(i);
-				lblOrder.setVisible(true);
-				int order = Application.getInstance().getQuizList().indexOf(quiz) + 1;
-				lblOrder.setText(String.valueOf(order));
-				switch (order) {
-				case 1:
-					lblOrder.setBackground(new Color(Integer.parseInt("BC3412", 16)));
-					break;
-				case 2:
-					lblOrder.setBackground(new Color(Integer.parseInt("E07C00", 16)));
-					break;
-				case 3:
-					lblOrder.setBackground(new Color(Integer.parseInt("F5DB00", 16)));
-					break;
-				default:
-					lblOrder.setBackground(new Color(Integer.parseInt("ADADAD", 16)));
-				}
-			} else {
-				panel.addImage(i, null);
-				//设置作业为排名
-				JLabel lblOrder = orderList.get(i);
-				lblOrder.setVisible(false);
-			}
-		}
+		lblCardBackground = new JLabel();
+		lblCardBackground.setIcon(new ImageIcon("images/prepare/bg_nogroup.jpg"));
+		lblCardBackground.setBounds(0, 0, 838, 40);
+		add(lblCardBackground);
+		
+		centerCardLayout = new CardLayout();
+		centerCardPanel = new JPanel(centerCardLayout);
+		centerCardPanel.setBounds(0, 45, 876, 575);
+		add(centerCardPanel);
+		
+		//未分组card
+		noGroupPanel = new QuizNoGroupPanel();
+		noGroupPanel.setBackground(Color.WHITE);
+		JScrollPane noGroupScroll = new JScrollPane(noGroupPanel);
+		noGroupScroll.getVerticalScrollBar().setUnitIncrement(100);
+		noGroupScroll.setBorder(null);
+		noGroupScroll.setBounds(0, 45, 876, 585);
+		noGroupPanel.setPreferredSize(new Dimension(noGroupScroll.getWidth() - 50, (noGroupScroll.getHeight() - 50) * 2));
+		centerCardPanel.add(noGroupScroll, CARD_NO_GROUP);
+		//分组card
+		groupPanel = new QuizGroupPanel();
+		groupPanel.setBackground(Color.WHITE);
+        JScrollPane groupScroll = new JScrollPane(groupPanel);
+        groupScroll.getVerticalScrollBar().setUnitIncrement(100);
+        groupScroll.setBorder(null);
+        groupScroll.setBounds(0, 45, 876, 585);
+		groupPanel.setPreferredSize(new Dimension(groupScroll.getWidth() - 50, (groupScroll.getHeight() - 50) * 4));
+		centerCardPanel.add(groupScroll, CARD_GROUP);
 	}
 
-	private void initData() {
-		groupList = new ArrayList<Group>();
-		// 课桌绑定分组，生成内存模型
-		Set<Group> groups = app.getGroupList();
-		Iterator<Group> it = groups.iterator();
-		while (it.hasNext()) {
-			// 获得课桌对应的分组
-			Group group = it.next();
-			groupList.add(group);
-		}
-//		Collections.sort(groupList);
+	public void refresh(){
+		noGroupPanel.refresh();
+		groupPanel.refresh();
 	}
 }

@@ -39,14 +39,16 @@
 											<div class="form-group">
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>学校：</label>
 												<div class="col-xs-4">
+												
 													<select id="schoolId" name="schoolId" class="form-control" >
 														<c:forEach items="${schools}" var="school">
 														<c:if test="${school.id==student.schoolId}">
-														<option value="${school.id }" selected>${school.name }</option>
+														<option value="${school.id}" selected>${school.name }</option>
 														</c:if>
-														<c:if test="${school.id!=studetn.schoolId}">
+														<c:if test="${school.id!=student.schoolId}">
 														<option value="${school.id}">${school.name }</option>
 														</c:if>
+													
 														</c:forEach>
 													</select>
 												</div>
@@ -94,7 +96,7 @@
 											<div class="form-group">
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>监护人：</label>
 												<div class="col-xs-4">
-													<input type="text" name="guardian" id="guardian" class="form-control borderRadiusIE8 required" value="${student.guardian}" onkeyup="$('#checkGuardianTip').addClass('hidden')">
+													<input type="text" name="guardian" id="guardian" maxlength="8" class="form-control borderRadiusIE8 required" value="${student.guardian}" onkeyup="$('#checkGuardianTip').addClass('hidden')">
 													<p id="checkGuardianTip" class="help-block hidden"><font color="red"><b>请输入正确的监护人</b></font></p>
 												</div>
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>联系电话：</label>
@@ -106,13 +108,13 @@
 											<div class="form-group">
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>通讯地址：</label>
 												<div class="col-xs-4">
-													<input type="text" id="address" name="address" class="form-control borderRadiusIE8 required" value="${student.address}" onkeyup="$('#checkAddressTip').addClass('hidden')">
+													<input type="text" id="address" name="address" maxlength="30" class="form-control borderRadiusIE8 required" value="${student.address}" onkeyup="$('#checkAddressTip').addClass('hidden')">
 													<p id="checkAddressTip" class="help-block hidden"><font color="red"><b>请输入所属学校</b></font></p>
 												</div>
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>Pad Mac地址：</label>
 												<div class="col-xs-4">
 													<input type="text" name="imei" id="imei" maxlength="36" class="form-control borderRadiusIE8 required" value="${student.imei}" onkeyup="$('#checkIMEITip').addClass('hidden')" autocomplete="off">
-													<p id="checkIMEITip" class="help-block hidden"><font color="red"><b>Pad地址</b></font></p>
+													<p id="checkIMEITip" class="help-block hidden"><font color="red"><b>请输入正确的Pad MAC地址</b></font></p>
 												</div>
 											</div>
 											<!-- 

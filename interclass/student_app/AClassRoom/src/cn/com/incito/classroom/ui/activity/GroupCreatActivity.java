@@ -130,8 +130,9 @@ public class GroupCreatActivity extends BaseActivity implements OnClickListener 
 			break;
 		case R.id.btn_create_group_ok:
 			String group_name = edit_group_name.getText().toString();
-			if (TextUtils.isEmpty(group_name) || group_name.length() < 2) {
-				ToastHelper.showCustomToast(this, "请输入组名");
+			
+			if (TextUtils.isEmpty(group_name) || group_name.length() < 2 || (AndroidUtil.TextNumber(group_name) * 2 + AndroidUtil.notTextNumber(group_name))> 16) {
+				ToastHelper.showCustomToast(this, "组名不符合要求！");
 				return;
 			}
 			if (TextUtils.isEmpty(logo)) {

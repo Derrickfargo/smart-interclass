@@ -31,7 +31,8 @@ import com.alibaba.fastjson.JSONObject;
  * 
  */
 public class Main {
-	public static final int VERSION_CODE = 2;
+	public static final int VERSION_CODE = 4;
+	public static final String VERSION_NAME = "V200R001C001B004";
 	private static final long FREE_SIZE = 1024 * 1024 * 100;//100M
 	
 	public static void main(String args[]) {
@@ -66,8 +67,12 @@ public class Main {
 					if (jsonObject.getIntValue("code") == 1) {//没有升级
 						// 初始化应用程序
 						Application.getInstance();
-						//初始化自定义字体
-						initDefinedFont();
+						new Thread() {
+							public void run() {
+								// 初始化自定义字体
+								initDefinedFont();
+							}
+						}.start();
 						return;
 					}
 					File file = new File("update.exe");
@@ -75,8 +80,12 @@ public class Main {
 						JOptionPane.showMessageDialog(null, "检测到程序需要更新，但缺少必要的升级程序!");
 						// 初始化应用程序
 						Application.getInstance();
-						//初始化自定义字体
-						initDefinedFont();
+						new Thread() {
+							public void run() {
+								// 初始化自定义字体
+								initDefinedFont();
+							}
+						}.start();
 						return;
 					}
 					long freeSize = file.getFreeSpace();

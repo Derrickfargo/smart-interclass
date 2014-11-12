@@ -13,15 +13,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import cn.com.incito.server.api.Application;
-
 public class PreparePanel extends JPanel{
 	private static final long serialVersionUID = 6316121486627261595L;
-	private static final int ROW_COUNT = 8;//每行显示8个学生
 	private static final String CARD_NO_GROUP = "NO_GROUP";
 	private static final String CARD_GROUP = "GROUP";
 	
-	private Application app = Application.getInstance();
 	private CardLayout centerCardLayout;
 	private JPanel centerCardPanel;
 	private PrepareNoGroupPanel noGroupPanel;
@@ -35,7 +31,7 @@ public class PreparePanel extends JPanel{
 		this.setLayout(null);
 		this.setOpaque(true);
 		// 初始化选项卡按钮
-		btnNoGroup = new JButton("未分组");
+		btnNoGroup = new JButton("学生");
 		btnNoGroup.setFocusPainted(false);
 		btnNoGroup.setBorderPainted(false);// 设置边框不可见
 		btnNoGroup.setContentAreaFilled(false);// 设置透明
@@ -49,7 +45,7 @@ public class PreparePanel extends JPanel{
             }
         });
 		
-		btnGroup = new JButton("分组");
+		btnGroup = new JButton("小组");
 		btnGroup.setFocusPainted(false);
 		btnGroup.setBorderPainted(false);// 设置边框不可见
 		btnGroup.setContentAreaFilled(false);// 设置透明

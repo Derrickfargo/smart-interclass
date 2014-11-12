@@ -1,9 +1,6 @@
 //页面初始化设置
 $(document).ready(function() {	
 	$("#teacherForm").validate({
-		
-		
-		
 		//新增教师时对登录名,身份证号的重复验证
 		rules:{
 			uname:{
@@ -49,7 +46,7 @@ $(document).ready(function() {
 		submitHandler:function(form){
 			var flag = true;
 			//登陆名
-			if (!new RegExp(/^[a-zA-Z][a-zA-Z0-9]{1,15}$/).test($("#teacherUName").val())) {
+			if (!new RegExp(/^[a-zA-Z][a-zA-Z0-9]{1,15}$|(^[\u4e00-\u9fa5]{2,8}$)/).test($("#teacherUName").val())) {
 				$("#checkTeacherUNameTip").removeClass("hidden");
 				flag = false;
 			}
@@ -65,14 +62,9 @@ $(document).ready(function() {
 				flag = false;
 			}
 			//检查联系方式格式是否正确
-			var isTelNum = new RegExp(/^\d{11}/);
+			var isTelNum = new RegExp(/^\d{11}$/);
 			if (!isTelNum.test($("#teacherTel").val())) {
 				$("#checkTeacherTelTip").removeClass("hidden");
-				flag = false;
-			}
-
-			if ($("#teacherName").val() == "") {
-				$('#checkTeacherTeacherTip').removeClass('hidden');
 				flag = false;
 			}
 			
