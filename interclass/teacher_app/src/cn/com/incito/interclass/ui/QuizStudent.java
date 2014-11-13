@@ -23,11 +23,11 @@ import cn.com.incito.server.utils.UIHelper;
  */
 public class QuizStudent extends JPanel implements MouseListener{
 	private static final long serialVersionUID = 882552987989905663L;
-	private static final String BTN_PLUS_NORMAL = "images/quiz/ico_add.png";
-	private static final String BTN_PLUS_HOVER = "images/quiz/ico_add_hover.png";
+	private static final String BTN_PLUS_NORMAL = "images/quiz/ico_add18x19.png";
+	private static final String BTN_PLUS_HOVER = "images/quiz/ico_add_hover18x19.png";
 	
-	private static final String BTN_MINUS_NORMAL = "images/quiz/ico_js.png";
-	private static final String BTN_MINUS_HOVER = "images/quiz/ico_js_hover.png";
+	private static final String BTN_MINUS_NORMAL = "images/quiz/ico_js18x19.png";
+	private static final String BTN_MINUS_HOVER = "images/quiz/ico_js_hover18x19.png";
 	
 	private static final String BTN_MEDAL_NORMAL = "images/quiz/ico_medal.png";
 	private static final String BTN_MEDAL_HOVER = "images/quiz/ico_medalz_hover.png";
@@ -47,11 +47,6 @@ public class QuizStudent extends JPanel implements MouseListener{
 		lblOrder.setBounds(2, 2, 15, 15);
 		add(lblOrder);
 		
-		imagePanel = createImagePanel(0,0);
-		imagePanel.setBounds(0, 0, imagePanel.getWidth(), imagePanel.getHeight());
-		imagePanel.addMouseListener(this);
-		add(imagePanel);
-		
 		//小组加分按钮
 		btnPlus = createPlusButton();
 		btnPlus.addMouseListener(this);
@@ -61,10 +56,14 @@ public class QuizStudent extends JPanel implements MouseListener{
 		btnMinus.addMouseListener(this);
 		add(btnMinus);
 		//小组勋章按钮
-		btnMedal = createMedalButton();
-		btnMedal.addMouseListener(this);
-		add(btnMedal);
+//		btnMedal = createMedalButton();
+//		btnMedal.addMouseListener(this);
+//		add(btnMedal);
 
+		imagePanel = createImagePanel(0,0);
+		imagePanel.setBounds(0, 0, imagePanel.getWidth(), imagePanel.getHeight());
+		imagePanel.addMouseListener(this);
+		add(imagePanel);
 	}
 	
 	
@@ -81,9 +80,9 @@ public class QuizStudent extends JPanel implements MouseListener{
 		lblPlus = new JButton();
 		lblPlus.setIcon(iconPlus);
 		lblPlus.setFocusPainted(false);
-		lblPlus.setBorderPainted(false);// 设置边框不可见
-		lblPlus.setContentAreaFilled(false);// 设置透明
-		lblPlus.setBounds(260,329, iconPlus.getIconWidth(), iconPlus.getIconHeight());
+//		lblPlus.setBorderPainted(false);// 设置边框不可见
+//		lblPlus.setContentAreaFilled(false);// 设置透明
+		lblPlus.setBounds(165,121, iconPlus.getIconWidth(), iconPlus.getIconHeight());
 		return lblPlus;
 	}
 	
@@ -95,21 +94,21 @@ public class QuizStudent extends JPanel implements MouseListener{
 		lblMinus.setFocusPainted(false);
 		lblMinus.setBorderPainted(false);// 设置边框不可见
 		lblMinus.setContentAreaFilled(false);// 设置透明
-		lblMinus.setBounds(295,329, iconMinus.getIconWidth(), iconMinus.getIconHeight());
+		lblMinus.setBounds(141,121, iconMinus.getIconWidth(), iconMinus.getIconHeight());
 		return lblMinus;
 	}
 	
-	private JButton createMedalButton(){
-		JButton lblMedal = new JButton();
-		Icon iconMedal = new ImageIcon(BTN_MEDAL_NORMAL);
-		lblMedal = new JButton();
-		lblMedal.setIcon(iconMedal);
-		lblMedal.setFocusPainted(false);
-		lblMedal.setBorderPainted(false);// 设置边框不可见
-		lblMedal.setContentAreaFilled(false);// 设置透明
-		lblMedal.setBounds(330,329, iconMedal.getIconWidth(), iconMedal.getIconHeight());
-		return lblMedal;
-	}
+//	private JButton createMedalButton(){
+//		JButton lblMedal = new JButton();
+//		Icon iconMedal = new ImageIcon(BTN_MEDAL_NORMAL);
+//		lblMedal = new JButton();
+//		lblMedal.setIcon(iconMedal);
+//		lblMedal.setFocusPainted(false);
+//		lblMedal.setBorderPainted(false);// 设置边框不可见
+//		lblMedal.setContentAreaFilled(false);// 设置透明
+//		lblMedal.setBounds(330,329, iconMedal.getIconWidth(), iconMedal.getIconHeight());
+//		return lblMedal;
+//	}
 	
 	private JPanel createImagePanel(int x, int y) {
 		final ImageIcon icon = new ImageIcon("images/quiz/bg_img.png");
@@ -126,9 +125,9 @@ public class QuizStudent extends JPanel implements MouseListener{
 		lblImage.setBounds(2, 2, 185, 109);
 		imagePanel.add(lblImage);
 		
-		lblName = new JLabel("", JLabel.CENTER);
+		lblName = new JLabel("", JLabel.LEFT);
 		lblName.setForeground(UIHelper.getDefaultFontColor());
-		lblName.setBounds(0, icon.getIconHeight()- 25 , icon.getIconWidth(), 25);
+		lblName.setBounds(5, icon.getIconHeight()- 25 , 100, 25);
 		imagePanel.add(lblName);
 		return imagePanel;
 	}

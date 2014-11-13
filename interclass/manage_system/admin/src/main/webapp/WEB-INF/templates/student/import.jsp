@@ -51,7 +51,7 @@
 										</div>
 									</div>
 									<div class="col-xs-offset-1">
-									<a href="${path}/documention/学生信息模板.xls">Excel文件模版下载</a>
+									<a href="${path}/documention/studentModel.xls">Excel文件模版下载</a>
 									</div>
 									<div class='col-xs-offset-4'>
 										<button type="submit" class="btn btn-success col-xs-2">完成</button>

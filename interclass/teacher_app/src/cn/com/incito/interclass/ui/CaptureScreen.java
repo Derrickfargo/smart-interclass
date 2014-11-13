@@ -65,6 +65,7 @@ import cn.com.incito.server.utils.ImageUtil;
 import com.sun.image.codec.jpeg.ImageFormatException;
 
 public class CaptureScreen {
+	private Application app = Application.getInstance();
 	Logger logger = Logger.getLogger(CaptureScreen.class.getName());
 	public final static String SCREENSHOT_ICON = "images/screenshot/icon.png";
 	public final static int BAR_WIDTH = 267;
@@ -135,9 +136,10 @@ public class CaptureScreen {
 			Application.getInstance().getTempQuiz().clear();
 			Application.getInstance().getQuizList().clear();
 			Application.getInstance().getTempQuizIMEI().clear();
-			
 			CoreSocket.getInstance().sendMessageToStudents(messagePacking.pack().array());
 			logger.info("截图作业已经发出");
+			app.setState(3);//作业已发送
+			app.setQuiz(os.toByteArray());//设置发送的作业
 			Application.getInstance().setLockScreen(false);
 		} else {
 			JOptionPane.showMessageDialog(jFrame, "没有学生登录，无法进行随堂练习");

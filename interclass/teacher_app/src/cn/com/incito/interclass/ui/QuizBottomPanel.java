@@ -39,7 +39,7 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 	private static final String BTN_ACCEPT_HOVER = "images/quiz/btn_accept_works_hover.png";
 	
 	private JButton btnQuiz;
-	
+	private Application app = Application.getInstance();
 	public QuizBottomPanel(){
 		setSize(878, 48);
 		setLayout(null);
@@ -166,6 +166,7 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
      */
     public void collectPaper() {
     	logger.info("开始收取作业...");
+    	app.setState(4);//锁屏
     	Application app = Application.getInstance();
 		Map<String,SocketChannel> channels = app.getClientChannel();
 		Iterator<SocketChannel> it = channels.values().iterator();
@@ -201,6 +202,8 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
      * @throws ImageFormatException
      */
     public void distributePaper() {
+    	app.setState(3);//学生做作业
+    	app.setQuiz(null);
         MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DISTRIBUTE_PAPER);
         String uuid = UUID.randomUUID().toString();
         Application.getInstance().setQuizId(uuid);

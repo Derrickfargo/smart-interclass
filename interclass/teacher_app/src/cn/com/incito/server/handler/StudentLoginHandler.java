@@ -2,10 +2,13 @@ package cn.com.incito.server.handler;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
+import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.config.AppConfig;
@@ -34,13 +37,32 @@ public class StudentLoginHandler extends MessageHandler {
 		ConnectionManager.notification(imei, message.getChannel());
 		Application app = Application.getInstance();
 		app.addSocketChannel(imei, message.getChannel());
-
+		//1 等待老师上课，2分组中，3做作业，4锁屏
+		
 		// 回复设备登陆消息
 		Properties props = AppConfig.getProperties();
 		String ip = props.get(AppConfig.CONF_SERVER_IP).toString();
 		String port = props.get(AppConfig.CONF_SERVER_PORT).toString();
 		data.put(AppConfig.CONF_SERVER_IP, ip);
 		data.put(AppConfig.CONF_SERVER_PORT, port);
+		if(app.getState()==1){//等待老师上课
+			data.put("state", 1);
+		}else if(app.getState()==2){//分组中
+			data.put("state", 2);
+			List<Group> groupList=new ArrayList<Group>();
+			//遍历临时分组 将还没有分组的小组列表传回给pad端
+			for (Integer key : Application.getInstance().getTempGroup().keySet()) {
+				groupList.add(Application.getInstance().getTempGroup().get(key));
+			}
+			data.put("group", groupList);
+		}else if(app.getState()==3){//做作业
+			data.put("state", 3);
+			data.put("quiz",app.getQuiz());
+		}else if(app.getState()==4){//锁屏
+			data.put("state", 4);
+		}else{
+			data.put("state", 1);
+		}
 		if (student != null) {
 			data.put("student", student);
 		}

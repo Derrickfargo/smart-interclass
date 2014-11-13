@@ -40,7 +40,11 @@ public class Application {
 	private Teacher teacher;// 当前登录的老师，教师登陆完后初始化
 	private Course course;// 当前上课的课程，教师登陆完后初始化
 	private Classes classes;// 当前上课的班级，教师登陆完后初始化
-
+	private byte[] Quiz;//老师最近发送的作业
+	/**
+	 * 1 等待老师上课，2分组中，3做作业，4锁屏
+	 */
+	private int state;
 	public static boolean isOnClass;// 正在上课
 	public static boolean hasQuiz;// 是否在作业
 	private List<Student> studentList = new ArrayList<Student>();// 本班级的所有学生
@@ -301,4 +305,21 @@ public class Application {
 		return imeiStudent.get(imei);
 	}
 
+	public int getState() {
+		return state;
+	}
+
+	public void setState(int state) {
+		this.state = state;
+	}
+
+	public byte[] getQuiz() {
+		return Quiz;
+	}
+
+	public void setQuiz(byte[] quiz) {
+		Quiz = quiz;
+	}
+
+	
 }
