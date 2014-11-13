@@ -43,9 +43,9 @@
 													<p id="fileTip" class="help-block hidden"><font color="red"><b>请选择要导入的Excel文件</b></font></p>
 												</div>
 											</div>
-											<c:if test="error != null && error != ''">
+											<c:if test="message != null && message != ''">
 												<div class="form-group text-center help-block">
-														提示：${error }！
+														提示：${message}！
 												</div>
 											</c:if>
 										</div>
