@@ -1,6 +1,5 @@
 package cn.com.incito.socket.handler;
 
-import android.widget.Toast;
 import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
@@ -9,7 +8,6 @@ import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.ConnectionManager;
 import cn.com.incito.socket.core.MessageHandler;
-import cn.com.incito.wisdom.sdk.log.WLog;
 /**
  * 登陆处理hanlder
  * Created by liushiping on 2014/7/28.
@@ -29,11 +27,36 @@ public class LoginHandler extends MessageHandler {
 		if(student==null){
 			UIHelper.getInstance().getWifiSelectorActivity().showToast();
 			return;
-//			Toast.makeText(AppManager.getAppManager().currentActivity(), "该pad还未绑定学生，请先绑定学生", Toast.LENGTH_LONG).show();
 		}
 		MyApplication.getInstance().setStudent(student);
-		AppManager.getAppManager().currentActivity().finish();
-		UIHelper.getInstance().showClassReadyActivity();
+		
+		//判断学生状态跳转至不同的界面
+		int state =data.getIntValue("state");
+		
+		if(state == 1 ){
+			UIHelper.getInstance().showClassReadyActivity();
+			AppManager.getAppManager().currentActivity().finish();
+			return;
+		}
+		if(state == 2){
+			UIHelper.getInstance().showGroupSelect(data.getString("group"));
+			AppManager.getAppManager().currentActivity().finish();
+			return;
+		}
+		if(state == 3){
+			byte[] imageByte = data.getBytes("quiz");
+			UIHelper.getInstance().showDrawBoxActivity(imageByte);
+			AppManager.getAppManager().currentActivity().finish();
+			return;
+		}
+		if(state == 4){
+			UIHelper.getInstance().showClassingActivity();
+			AppManager.getAppManager().currentActivity().finish();
+			return;
+		}
+		
+		
+		
 		//启动心跳检测
 		ConnectionManager.getInstance(message.getChannel());
 	}

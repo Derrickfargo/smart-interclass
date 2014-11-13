@@ -105,7 +105,8 @@
         </activity>
         <!-- 老师开始上课activity -->
         <activity android:name="cn.com.incito.classroom.ui.activity.ClassingActivity"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape"
+            android:launchMode="singleTask"></activity>
         <activity
             android:name="cn.com.incito.classroom.ui.activity.ClassReadyActivity"
             android:screenOrientation="landscape" >

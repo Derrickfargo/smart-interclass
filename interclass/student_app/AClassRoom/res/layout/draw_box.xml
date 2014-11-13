@@ -36,7 +36,7 @@
                     android:id="@+id/bg_select_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="15dp"
                     android:background="@drawable/bg_cgbg_white" >
                 </Button>
@@ -224,7 +224,7 @@
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="5dp"
                     android:layout_marginTop="15dp" >
 
                     <RelativeLayout
@@ -237,7 +237,7 @@
                             android:id="@+id/pencile_big"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginLeft="10dp"
                             android:src="@drawable/ico_big" />
 
                         <ImageView
@@ -262,7 +262,7 @@
                             android:id="@+id/pencile_middle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginLeft="10dp"
                             android:src="@drawable/ico_mid" />
 
                         <ImageView
@@ -286,7 +286,7 @@
                             android:id="@+id/pencile_small"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginLeft="10dp"
                             android:src="@drawable/ico_sml" />
 
                         <ImageView
@@ -307,8 +307,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="20dp"
                     android:layout_marginTop="15dp"
+                    android:layout_marginLeft="-5dp"
                     android:background="@drawable/ico_eraser_big" />
 
                 <Button
@@ -316,7 +316,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="50dp"
+                    android:layout_marginLeft="-5dp"
                     android:background="@drawable/ic_send_btn" />
             </LinearLayout>
         </LinearLayout>
