@@ -19,7 +19,7 @@
 			tb_school ON tb_school.id = tb_class.school_id
 		<where>
 			<if test="imei != null and imei != ''">
-				tb_device.imei = #{imei}
+				tb_device.imei LIKE '%' #{imei} '%'
 			</if>
 			<if test="schoolName != null and schoolName != ''">
 				AND tb_school.name LIKE '%' #{schoolName} '%'
