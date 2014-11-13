@@ -135,6 +135,17 @@ public class UserService {
 		int result = userMapper.saveTeacher(teacher);
 		return result == 1;
 	}
+	@Transactional(rollbackFor=AppException.class)
+	public boolean saveStudentOnly(Student student) throws AppException{
+		student.setActive(true);
+		student.setRole(Student.ROLE_STUDENT);
+		userMapper.saveUser(student);
+		if(student.getId()<=0){
+			throw AppException.database(0);
+		}
+		int result=userMapper.saveStudent(student);
+		return result==1;
+	}
 
 	@Transactional(rollbackFor = AppException.class)
 	public boolean saveStudent(Student student) throws AppException {
@@ -259,18 +270,22 @@ public class UserService {
 					Student temp = userMapper.getStudentByImei(device.getImei());
 					if (temp != null && temp.getId() != 0) {
 						//TODO 设备已绑定学生，不能再绑定
-						saveStudent(student);
+						saveStudentOnly(student);
 						unbind.add(student.getName() + "(" + student.getNumber()+")");
 					} else {
 						student.setDeviceId(device.getId());
-						saveStudent(student);
+						saveStudentOnly(student);
+						device.setStudentId(student.getId());
+						deviceMapper.update(device);
 					}
 				} else {
 					device = new Device();
 					device.setImei(student.getImei());
 					deviceMapper.save(device);
 					student.setDeviceId(device.getId());
-					saveStudent(student);
+					saveStudentOnly(student);
+					device.setStudentId(student.getId());
+					deviceMapper.update(device);
 				}
 			} else {
 				//TODO 学生已存在，不导入

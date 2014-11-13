@@ -169,7 +169,13 @@ public class StudentCtrl extends BaseCtrl {
 				e.printStackTrace();
 			}
 		ModelAndView mav = new ModelAndView("redirect:list");
-		Object code = result.get("code");
+		Object code= null;
+		try{
+			 code = result.get("code");
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 		if (code != null && Integer.parseInt(code.toString()) != 0){
 			mav.addObject("code", Integer.parseInt(code.toString()));
 		}
