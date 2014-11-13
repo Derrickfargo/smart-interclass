@@ -114,7 +114,7 @@
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>Pad Mac地址：</label>
 												<div class="col-xs-4">
 													<input type="text" name="imei" id="imei" maxlength="36" class="form-control borderRadiusIE8 required" value="${student.imei}" onkeyup="$('#checkIMEITip').addClass('hidden')" autocomplete="off">
-													<p id="checkIMEITip" class="help-block hidden"><font color="red"><b>请输入正确的Pad MAC地址</b></font></p>
+													<p id="checkIMEITip" class="help-block hidden"><font color="red"><b>输入正确的Pad Mac地址（xx-xx-xx-xx-xx-xx）</b></font></p>
 												</div>
 											</div>
 											<!-- 

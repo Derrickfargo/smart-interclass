@@ -58,6 +58,7 @@
 										<button type="button" class="btn btn-default col-xs-2" onclick="goback('新增课程')">取消</button>
 									</div>
 									<input type="hidden" id="courseName" name="courseName" value="${course.name}"/>
+									<input type="hidden" name="id" value="${course.id}">
 								</form>
 							</div>
 						</div><!-- tab-content end -->
