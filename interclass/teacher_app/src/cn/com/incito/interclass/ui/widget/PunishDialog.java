@@ -20,7 +20,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import cn.com.incito.http.AsyncHttpConnection;
@@ -38,25 +37,30 @@ import com.alibaba.fastjson.JSONObject;
 public class PunishDialog extends JDialog implements MouseListener {
 
 	private static final long serialVersionUID = 281738161264828396L;
-
 	private Boolean isDragged;
-
 	private Point loc, tmp;
-
-	private Group group;
-
 	private JLabel lblBackground;
-
 	private JButton btnClose, btnPoint1;
-
 	private PraiseGroupPanel frame;
-
-	int score = 0;
-
+	
+	private Group group;
+	private Student student;
+	
+	public PunishDialog(PraiseGroupPanel panel, Student student) {
+		super(MainFrame.getInstance().getFrame(), true);
+		this.frame = panel;
+		this.student = student;
+		initFrame();
+	}
+	
 	public PunishDialog(PraiseGroupPanel panel, Group group) {
 		super(MainFrame.getInstance().getFrame(), true);
 		this.frame = panel;
 		this.group = group;
+		initFrame();
+	}
+	
+	private void initFrame(){
 		setSize(392, 170);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);// 设置窗体中间位置
@@ -76,11 +80,16 @@ public class PunishDialog extends JDialog implements MouseListener {
 		btnClose.addMouseListener(this);
 
 		JLabel lblMessage = new JLabel("", JLabel.LEFT);
-		if (group.getName() == null) {
-			lblMessage.setText("小组减分");
+		if(group == null){
+			String title = "\"%s\"同学扣分";
+			lblMessage.setText(String.format(title, student.getName()));
 		} else {
-			String title = "\"%s\"小组减分";
-			lblMessage.setText(String.format(title, group.getName()));
+			if (group.getName() == null) {
+				lblMessage.setText("小组扣分");
+			} else {
+				String title = "\"%s\"小组扣分";
+				lblMessage.setText(String.format(title, group.getName()));
+			}
 		}
 		lblMessage.setFont(new Font("Microsoft YaHei", Font.BOLD, 15));
 		lblMessage.setForeground(Color.WHITE);
@@ -175,7 +184,11 @@ public class PunishDialog extends JDialog implements MouseListener {
 		if (e.getSource() == btnPoint1) {
 			btnPoint1.setName("true");
 			btnPoint1.setIcon(new ImageIcon("images/dialog/ico_jian1_hover.png"));
-			changePoint(-1);//件减一分
+			if (group == null) {
+				changePoint(-1, student);
+			} else {
+				changePoint(-1, group);
+			}
 			dispose();
 		}
 	}
@@ -219,20 +232,13 @@ public class PunishDialog extends JDialog implements MouseListener {
 	 * 
 	 * @param updateScore
 	 */
-	public void changePoint(final int updateScore) {
+	public void changePoint(final int updateScore, final Group group) {
 		String studentId = "";
 		List<Student> studentList = group.getStudents();
-		if (studentList == null || studentList.size() < 0) {
-			return;
-		}
 		for (int i = 0; i < studentList.size(); i++) {
 			if (studentList.get(i).isLogin()) {
 				studentId = studentId + studentList.get(i).getId() + ",";
 			}
-		}
-		if (studentId == null || "".equals(studentId)) {
-			JOptionPane.showMessageDialog(this, "当前小组没有学生登陆，不能为小组减分！");
-			return;
 		}
 		// 使用Get方法，取得服务端响应流：
 		AsyncHttpConnection http = AsyncHttpConnection.getInstance();
@@ -285,4 +291,42 @@ public class PunishDialog extends JDialog implements MouseListener {
 		});
 	}
 
+	public void changePoint(final int updateScore, final Student student) {
+		AsyncHttpConnection http = AsyncHttpConnection.getInstance();
+		ParamsWrapper params = new ParamsWrapper();
+		params.put("studentId", student.getId());
+		params.put("score", updateScore);
+		params.put("groupId", -1);
+		http.post(URLs.URL_UPDATE_SCORE, params, new StringResponseHandler() {
+
+			@Override
+			protected void onResponse(String content, URL url) {
+				if (content != null && !content.equals("")) {
+					System.out.println("返回的数据" + content);
+					JSONObject jsonObject = JSON.parseObject(content);
+					if (jsonObject.getIntValue("code") == 1) {
+						return;
+					} else {
+//						if (frame != null) {
+//							frame.setScore(jsonObject.getString("score"));
+//						}
+					}
+				}
+			}
+
+			@Override
+			public void onSubmit(URL url, ParamsWrapper params) {
+			}
+
+			@Override
+			public void onConnectError(IOException exp) {
+				// JOptionPane.showMessageDialog((Component) quizPanel, "连接错误，请检查网络！");
+			}
+
+			@Override
+			public void onStreamError(IOException exp) {
+				// JOptionPane.showMessageDialog((Component) quizPanel, "数据解析错误！");
+			}
+		});
+	}
 }

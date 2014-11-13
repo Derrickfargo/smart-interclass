@@ -73,6 +73,10 @@ public class UserService {
 		return Score;
 	};
 
+	public Integer changePoint(String studentId, int score){
+		return userMapper.changePoint(studentId, score);
+	}
+	
 	/**
 	 * 获得勋章
 	 * 

@@ -9,10 +9,13 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import cn.com.incito.interclass.po.Quiz;
 import cn.com.incito.interclass.po.Student;
+import cn.com.incito.interclass.ui.widget.PraiseDialog;
+import cn.com.incito.interclass.ui.widget.PunishDialog;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.utils.UIHelper;
 
@@ -145,15 +148,25 @@ public class QuizStudent extends JPanel implements MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() == btnPlus) {
-//			new PraiseDialog(null, group);
+			if(!student.isLogin()){
+				JOptionPane.showMessageDialog(MainFrame.getInstance()
+						.getFrame(), "未登录的学生不能加分!");
+				return;
+			}
+			new PraiseDialog(null, student);
 			
 		}
 		if (e.getSource() == btnMinus) {
-//			new PunishDialog(null, group);
+			if(!student.isLogin()){
+				JOptionPane.showMessageDialog(MainFrame.getInstance()
+						.getFrame(), "未登录的学生不能扣分!");
+				return;
+			}
+			new PunishDialog(null, student);
 		}
-		if (e.getSource() == btnMedal) {
+//		if (e.getSource() == btnMedal) {
 //			new MedalDialog(MainFrame.getInstance().getFrame(), group);
-		}
+//		}
 		if (e.getSource() == imagePanel) {
 			if (e.getClickCount() == 2) {
 				if(quiz != null){
