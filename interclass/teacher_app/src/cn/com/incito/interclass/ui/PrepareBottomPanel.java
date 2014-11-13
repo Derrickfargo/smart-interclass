@@ -209,6 +209,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 		// 编辑小组信息
 		app.setGrouping(true);
 //		MainFrame.getInstance().showGrouping();
+		app.setState(2);//设置状态为分组中
 		Set<Group> groupList = app.getGroupList();
 //		for (Group group : groupList) {
 			JSONObject json = new JSONObject();
@@ -240,6 +241,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 	
 	public void setOnClass(boolean isOnClass) {
 		UIHelper.sendLockScreenMessage(true);
+		app.setState(4);//设置状态为锁屏
 		//发送上课命令
 		
 		if (isOnClass) {
