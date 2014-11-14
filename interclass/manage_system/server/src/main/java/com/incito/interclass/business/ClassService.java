@@ -1,5 +1,6 @@
 package com.incito.interclass.business;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +19,10 @@ public class ClassService {
 		return classMapper.getClassListByCondition();
 	}
 	
-	public List<Classes> getClassList(int schoolId) {
-//		Calendar calendar = Calendar.getInstance();
-//		int year = calendar.get(Calendar.YEAR);
-//		year -= 6;
-//		return classMapper.getClassBySchoolId(schoolId,year);
-		return classMapper.getClassList(schoolId);
+	public List<Classes> getClassBySchoolId(int schoolId) {
+		Calendar calendar = Calendar.getInstance();
+		int year = calendar.get(Calendar.YEAR);
+		return classMapper.getClassBySchoolId(schoolId,year);
 	}
 	
 	public Classes getClassByNumber(int schoolId, int year, int number){
