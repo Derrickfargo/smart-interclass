@@ -67,11 +67,6 @@ public class StudentCtrl extends BaseCtrl {
 	public ModelAndView add() {
 		ModelAndView mav = new ModelAndView("student/studentAdd");
 		List<School> schools = schoolService.getSchoolList();
-		if(schools != null && schools.get(0) != null){
-			School school = schools.get(0);
-			List<Classes> classes = classService.getClassList(school.getId());
-			mav.addObject("classes", classes);
-		}
 		mav.addObject("schools", schools);
 		return mav;
 	}
