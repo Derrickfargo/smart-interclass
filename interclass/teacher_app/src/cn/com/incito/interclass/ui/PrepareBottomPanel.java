@@ -156,7 +156,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 //			} else {
 //				return;
 //			}
-			JOptionPane.showMessageDialog(getParent().getParent(), message);
+			JOptionPane.showMessageDialog(getParent().getParent(), String.format(message, args));
 			return;
 		}
 		app.setGrouping(false);//TODO 新增

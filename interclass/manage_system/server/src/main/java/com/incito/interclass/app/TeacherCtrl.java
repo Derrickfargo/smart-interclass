@@ -1,6 +1,5 @@
 package com.incito.interclass.app;
 
-import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +30,6 @@ public class TeacherCtrl extends BaseCtrl {
 	 * 登陆失败，用户名或者密码错误
 	 */
 	private static final int USERNAME_OR_PASSWORD_ERROR = 1;
-	/**
-	 * 保存班级失败
-	 */
-	private static final int SAVE_CLASS_ERROR = 2;
 	
 	@Autowired
 	private UserService userService;
@@ -67,13 +62,9 @@ public class TeacherCtrl extends BaseCtrl {
 		if (teacher == null || teacher.getId() == 0) {
 			return renderJSONString(USERNAME_OR_PASSWORD_ERROR);
 		}
-		Calendar calendar = Calendar.getInstance();
-		int year = calendar.get(Calendar.YEAR);
-		List<Classes> classes = classService.getClassList(year);
 		Course course = courseService.getCourseById(teacher.getCourseId());
 		TeacherLoginResultData data = new TeacherLoginResultData();
 		data.setTeacher(teacher);
-		data.setClasses(classes);
 		data.setCourse(course);
 		ApiResult result = new ApiResult();
 		result.setCode(ApiResult.SUCCESS);
