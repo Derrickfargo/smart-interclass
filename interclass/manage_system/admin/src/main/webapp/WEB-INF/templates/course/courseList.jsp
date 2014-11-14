@@ -39,7 +39,7 @@
 								<div class="form-group">
 									<label class="col-xs-1 control-label">课程名称:</label>
 									<div class="col-xs-2">
-										<input type="text" id="name" name="name" value="${name}" class="form-control borderRadiusIE8">
+										<input type="text" id="name" name="name" value="${course.name}" class="form-control borderRadiusIE8">
 									</div>
 									<button type="button" class="btn btn-primary" onclick="searchCourse('1')">搜索</button>
 									<button type="button" class="btn btn-primary" onclick="emptyForm('searchForm')">清空</button>

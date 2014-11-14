@@ -20,7 +20,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import cn.com.incito.http.AsyncHttpConnection;
@@ -39,27 +38,31 @@ import com.alibaba.fastjson.JSONObject;
 public class PraiseDialog extends JDialog implements MouseListener {
 
 	private static final long serialVersionUID = 281738161264828396L;
-
 	private Boolean isDragged;
-
 	private Point loc, tmp;
-
-	private Group group;
-
 	private JLabel lblBackground;
-
 	private JButton btnClose;
-
 	private JButton btnPoint1, btnPoint2, btnPoint3;
+	private PraiseGroupPanel frame;
+	private int score = 0;
+	private Group group;
+	private Student student;
 
-	PraiseGroupPanel frame;
-
-	int score = 0;
-
+	public PraiseDialog(PraiseGroupPanel panel, Student student) {
+		super(MainFrame.getInstance().getFrame(), true);
+		this.frame = panel;
+		this.student = student;
+		initFrame();
+	}
+	
 	public PraiseDialog(PraiseGroupPanel panel, Group group) {
 		super(MainFrame.getInstance().getFrame(), true);
 		this.frame = panel;
 		this.group = group;
+		initFrame();
+	}
+
+	private void initFrame(){
 		setSize(392, 170);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);// 设置窗体中间位置
@@ -79,11 +82,16 @@ public class PraiseDialog extends JDialog implements MouseListener {
 		btnClose.addMouseListener(this);
 
 		JLabel lblMessage = new JLabel("", JLabel.LEFT);
-		if (group.getName() == null) {
-			lblMessage.setText("小组加分");
+		if(group == null){
+			String title = "\"%s\"同学加分";
+			lblMessage.setText(String.format(title, student.getName()));
 		} else {
-			String title = "\"%s\"小组加分";
-			lblMessage.setText(String.format(title, group.getName()));
+			if (group.getName() == null) {
+				lblMessage.setText("小组加分");
+			} else {
+				String title = "\"%s\"小组加分";
+				lblMessage.setText(String.format(title, group.getName()));
+			}
 		}
 		lblMessage.setFont(new Font("Microsoft YaHei", Font.BOLD, 15));
 		lblMessage.setForeground(Color.WHITE);
@@ -121,7 +129,7 @@ public class PraiseDialog extends JDialog implements MouseListener {
 		setDragable();
 		setVisible(true);
 	}
-
+	
 	private JLabel getLine() {
 		return new JLabel() {
 			private static final long serialVersionUID = 2679733728559406364L;
@@ -217,7 +225,11 @@ public class PraiseDialog extends JDialog implements MouseListener {
 			btnPoint3.setIcon(new ImageIcon("images/dialog/ico_add3_hover.png"));
 		}
 		if (e.getSource() instanceof JButton) {
-			changePoint(score);
+			if (group == null) {
+				changePoint(score, student);
+			} else {
+				changePoint(score, group);
+			}
 			dispose();
 		}
 
@@ -282,21 +294,13 @@ public class PraiseDialog extends JDialog implements MouseListener {
 	 * 
 	 * @param updateScore
 	 */
-	public void changePoint(final int updateScore) {
+	public void changePoint(final int updateScore, final Group group) {
 		String studentId = "";
 		List<Student> studentList = group.getStudents();
-		if (studentList == null || studentList.size() == 0) {
-			return;
-		}
 		for (int i = 0; i < studentList.size(); i++) {
 			if (studentList.get(i).isLogin()) {
 				studentId = studentId + studentList.get(i).getId() + ",";
 			}
-		}
-		//TODO 
-		if (studentId == null || "".equals(studentId)) {
-			JOptionPane.showMessageDialog(this, "当前小组没有学生登陆，不能为小组加分！");
-			return;
 		}
 		// 使用Get方法，取得服务端响应流：
 		AsyncHttpConnection http = AsyncHttpConnection.getInstance();
@@ -346,8 +350,48 @@ public class PraiseDialog extends JDialog implements MouseListener {
 		});
 	}
 
-	public static interface setScoreCallback {
+	public void changePoint(final int updateScore, final Student student) {
+		AsyncHttpConnection http = AsyncHttpConnection.getInstance();
+		ParamsWrapper params = new ParamsWrapper();
+		params.put("studentId", student.getId());
+		params.put("score", updateScore);
+		params.put("groupId",-1);
+		http.post(URLs.URL_UPDATE_SCORE, params, new StringResponseHandler() {
 
+			@Override
+			protected void onResponse(String content, URL url) {
+				if (content != null && !content.equals("")) {
+					System.out.println("加分返回数据" + content);
+					JSONObject jsonObject = JSON.parseObject(content);
+					if (jsonObject.getIntValue("code") == 1) {
+						return;
+					} else {
+						new PraiseFrame(student.getName(), updateScore);//表扬结果界面
+						// 设置新分数
+//						if (frame != null) {
+//							frame.setScore(jsonObject.getString("score"));
+//						}
+					}
+				}
+			}
+
+			@Override
+			public void onSubmit(URL url, ParamsWrapper params) {
+			}
+
+			@Override
+			public void onConnectError(IOException exp) {
+				// JOptionPane.showMessageDialog((Component) quizPanel, "连接错误，请检查网络！");
+			}
+
+			@Override
+			public void onStreamError(IOException exp) {
+				// JOptionPane.showMessageDialog((Component) quizPanel, "数据解析错误！");
+			}
+		});
+	}
+	
+	public static interface setScoreCallback {
 		public void setScore(String score);
 	}
 }
