@@ -26,7 +26,12 @@ public class DeleteGroupHandler extends MessageHandler {
 				} else if (isSelf(data)) {// 该pad的小组成员退出
 					AppManager.getAppManager().currentActivity().finish();
 					MyApplication.getInstance().setGroup(null);  //成员退出该小组时  application中的小组也应该清楚 
-					UIHelper.getInstance().getmSelectGroupActivity().setData(JSON.parseArray(data.getString("data"),Group.class));
+					
+					if(UIHelper.getInstance().getmSelectGroupActivity() != null){
+						UIHelper.getInstance().getmSelectGroupActivity().setData(JSON.parseArray(data.getString("data"),Group.class));
+					}else{
+						UIHelper.getInstance().showGroupSelect(data.getString("data"));
+					}
 				} else {// 其他成员
 					if (currentActivityName.equals("WaitForOtherMembersActivity")) {
 						UIHelper.getInstance().getWaitForOtherMembersActivity().setTextName(data.getString("data"));
