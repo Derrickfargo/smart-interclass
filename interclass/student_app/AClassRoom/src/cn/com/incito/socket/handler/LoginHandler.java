@@ -1,8 +1,13 @@
 package cn.com.incito.socket.handler;
 
+import java.util.List;
+
+import com.alibaba.fastjson.JSON;
+
 import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
+import cn.com.incito.classroom.vo.Group;
 import cn.com.incito.classroom.vo.Student;
 import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.common.utils.UIHelper;
@@ -37,7 +42,50 @@ public class LoginHandler extends MessageHandler {
 			AppManager.getAppManager().currentActivity().finish();
 		}
 		if(state == 2){
-			UIHelper.getInstance().showGroupSelect(data.getString("group"));
+			//判断该学生是在已经提交的组还是未提交的组还是没有分组 
+			List<Group> tempGrou = JSON.parseArray(data.getString("group"), Group.class);
+			List<Group> groupConfirm = JSON.parseArray(data.getString("groupConfirm"), Group.class);
+			
+			if(tempGrou != null && tempGrou.size() > 0){
+				//判断当前学生是否是未提交小组的成员 
+				for(int i = 0; i < tempGrou.size(); i++){
+					Group group = tempGrou.get(i);
+					if(student.getId() == group.getCaptainId()){//如果是组长则进入等待其他小组成员界面
+						UIHelper.getInstance().showConfirmGroupActivity(data.getString("group"));
+					}else{//判断是否是未提交小组成员
+						List<Student> students = 	group.getStudents();
+						for(int j = 0; j < students.size(); j++){
+							Student s = students.get(j);
+							if(s.getId() == student.getId()){
+								UIHelper.getInstance().showConfirmGroupActivity(data.getString("group"));
+							}else{
+								UIHelper.getInstance().showGroupSelect(data.getString("group"));
+							}
+						}
+					}
+				}
+			}else if(groupConfirm != null && groupConfirm.size() > 0){
+				//判断当前学生是否是已经提交的小组成员 
+				for(int i = 0; i < groupConfirm.size(); i++){
+					Group group = groupConfirm.get(i);
+					if(student.getId() == group.getCaptainId()){
+						UIHelper.getInstance().showClassingActivity();
+					}else{
+						List<Student> students = 	group.getStudents();
+						for(int j = 0; j < students.size(); j++){
+							Student s = students.get(j);
+							if(s.getId() == student.getId()){
+								UIHelper.getInstance().showClassingActivity();
+							}else{
+								UIHelper.getInstance().showGroupSelect(data.getString("group"));
+							}
+						}
+					}
+				}
+			}else{
+				UIHelper.getInstance().showGroupSelect(data.getString("group"));
+			}
+		
 			AppManager.getAppManager().currentActivity().finish();
 		}
 		if(state == 3){
