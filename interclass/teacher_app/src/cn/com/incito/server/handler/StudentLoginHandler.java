@@ -55,6 +55,7 @@ public class StudentLoginHandler extends MessageHandler {
 				groupList.add(Application.getInstance().getTempGroup().get(key));
 			}
 			data.put("group", groupList);
+			data.put("groupConfirm",Application.getInstance().getGroupList());
 		}else if(app.getState()==3){//做作业
 			data.put("state", 3);
 			data.put("quiz",app.getQuiz());
