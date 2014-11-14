@@ -27,8 +27,12 @@ public class GroupJoinHandler extends MessageHandler{
 		JSONObject result = new JSONObject();
 		Group group=Application.getInstance().getTempGroup().get(groupId);
 		if(group!=null){
-			group.getStudents().add(student);
-			result.put("code", 0);
+			if(group.getStudents().size()<=4){
+				group.getStudents().add(student);
+				result.put("code", 0);
+			}else{
+				result.put("code", 1);
+			}
 		}else{
 			result.put("code", 1);
 		}
