@@ -26,7 +26,6 @@ public class LoginHandler extends MessageHandler {
 		Student student = data.getObject("student", Student.class);
 		if(student==null){
 			UIHelper.getInstance().getWifiSelectorActivity().showToast();
-			return;
 		}
 		MyApplication.getInstance().setStudent(student);
 		
@@ -36,27 +35,20 @@ public class LoginHandler extends MessageHandler {
 		if(state == 1 ){
 			UIHelper.getInstance().showClassReadyActivity();
 			AppManager.getAppManager().currentActivity().finish();
-			return;
 		}
 		if(state == 2){
 			UIHelper.getInstance().showGroupSelect(data.getString("group"));
 			AppManager.getAppManager().currentActivity().finish();
-			return;
 		}
 		if(state == 3){
 			byte[] imageByte = data.getBytes("quiz");
 			UIHelper.getInstance().showDrawBoxActivity(imageByte);
 			AppManager.getAppManager().currentActivity().finish();
-			return;
 		}
 		if(state == 4){
 			UIHelper.getInstance().showClassingActivity();
 			AppManager.getAppManager().currentActivity().finish();
-			return;
 		}
-		
-		
-		
 		//启动心跳检测
 		ConnectionManager.getInstance(message.getChannel());
 	}
