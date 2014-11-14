@@ -21,14 +21,23 @@ public class GroupJoinHandler extends MessageHandler{
 	private Logger logger = Logger.getLogger(GroupJoinHandler.class.getName());
 	@Override
 	protected void handleMessage() {
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		logger.info("收到加入小组消息：" + data);
 		int groupId =data.getIntValue("groupId") ;
 		Student student=data.getObject("student", Student.class);
 		JSONObject result = new JSONObject();
 		Group group=Application.getInstance().getTempGroup().get(groupId);
 		if(group!=null){
-			group.getStudents().add(student);
-			result.put("code", 0);
+			if(group.getStudents().size()<=4){
+				group.getStudents().add(student);
+				result.put("code", 0);
+			}else{
+				result.put("code", 1);
+			}
 		}else{
 			result.put("code", 1);
 		}
@@ -40,6 +49,11 @@ public class GroupJoinHandler extends MessageHandler{
 		result.put("data",groupList);
 		logger.info("回复加入小组消息：" + result);
 		sendResponse(result.toString());
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	private void sendResponse(String json) {
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_JOIN);
