@@ -69,7 +69,7 @@ public class WifiSelectorActivity extends BaseActivity  {
 	private String TAG = "WifiSelectorActivity";
 	private WifiInfo mWifiInfo;
 	private IWifiStatusChangedReceiver mWifiIntentReceiver;
-	private INetStatusChangedReceiver mNetStatusChangedReceiver;
+//	private INetStatusChangedReceiver mNetStatusChangedReceiver;
 	private WifiManager mWifiManager;
 	private boolean isAutoInvalidate = false;
 	private ProgressiveDialog mProgressDialog;
@@ -82,6 +82,7 @@ public class WifiSelectorActivity extends BaseActivity  {
 	private boolean isAllowRepeat = true;
 	private int code;
 	private IFlushHander mHandler;
+	private boolean isFirstConnect=true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -141,7 +142,6 @@ public class WifiSelectorActivity extends BaseActivity  {
 										connectToWifi(mCurrentWifiItem,
 												passwordEdit.getText().toString(),
 												IWifiSecurityType.SECURITY_TYPE_WPA);
-									
 										dialog.dismiss();
 									}
 								}).setNegativeButton("取消", new OnClickListener() {
@@ -500,6 +500,7 @@ public class WifiSelectorActivity extends BaseActivity  {
 	protected void onDestroy() {
 		super.onDestroy();
 		unregisterReceiver(mWifiIntentReceiver);
+		
 	}
 
 	@Override
@@ -594,7 +595,10 @@ public class WifiSelectorActivity extends BaseActivity  {
 							if (isWifiNetConnected()) {
 								editor.putString(mCurrentWifiItem.getScanResult().BSSID,password);
 								editor.commit();
-								startMain();
+								if(isFirstConnect){
+									startMain();
+									isFirstConnect=false;
+								}
 							} else {
 								android.os.Message message = new android.os.Message();
 								message.what = 2;
