@@ -38,7 +38,11 @@ public class JoinGroupHandler extends MessageHandler {
 				}
 			}
 			
-		} else {// 不进行跳转
+		}else if(code == 1){
+			MyApplication.Logger.debug("加入小组失败不跳转");
+			ToastHelper.showCustomToast(AppManager.getAppManager().currentActivity(), "该小组已经满员,请选择其他小组加入!");
+		}
+		else {// 不进行跳转
 			MyApplication.Logger.debug("加入小组失败不跳转");
 			ToastHelper.showCustomToast(AppManager.getAppManager().currentActivity(), "该小组不存在,请重新加入!");
 		}
