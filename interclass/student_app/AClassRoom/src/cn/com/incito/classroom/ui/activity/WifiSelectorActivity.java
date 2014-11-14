@@ -77,7 +77,6 @@ public class WifiSelectorActivity extends BaseActivity  {
 	private long TIMEINMILLS_REFLUSHLIST = 10 * 1000;
 	private IWifiItem mCurrentWifiItem;
 	private static final int message_checkNetStatus = 0x11;
-	private boolean firstConnect=true;
 	// 是否允许出现相同的wifi名称
 	private boolean isAllowRepeat = true;
 	private int code;
@@ -506,7 +505,6 @@ public class WifiSelectorActivity extends BaseActivity  {
 	@Override
 	protected void onStart() {
 		isAutoInvalidate = true;
-
 		// 强制隐藏键盘
 		super.onStart();
 	}
@@ -583,7 +581,6 @@ public class WifiSelectorActivity extends BaseActivity  {
 		int wcgID = mWifiManager.addNetwork(config);
 		SharedPreferences sharedPreferences = getSharedPreferences("wifi", MODE_APPEND);
 		SharedPreferences.Editor editor = sharedPreferences.edit();
-		if (mWifiManager.enableNetwork(wcgID, true)) {
 			if (mWifiManager.enableNetwork(wcgID, true)) {
 				new Thread() {
 					public void run() {
@@ -613,7 +610,6 @@ public class WifiSelectorActivity extends BaseActivity  {
 				}.start();
 			}
 		}
-	}
 
 	/**
 	 * 检测WIFI网络是否已经连接
