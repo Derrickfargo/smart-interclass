@@ -27,6 +27,7 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -127,8 +128,10 @@ public class WifiSelectorActivity extends BaseActivity  {
 					switch (mCurrentWifiItem.wifiType) {
 					case WIFITYPE_NORMAL:
 						mWifiInfo = mWifiManager.getConnectionInfo();
-						final EditText passwordEdit = new EditText(
-								WifiSelectorActivity.this);
+						final EditText passwordEdit = new EditText(WifiSelectorActivity.this);
+						
+						passwordEdit.setTransformationMethod(PasswordTransformationMethod.getInstance());
+						
 						// 显示输入密码对话框
 						new AlertDialog.Builder(WifiSelectorActivity.this)
 								.setTitle("请输入密码")
