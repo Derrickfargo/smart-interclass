@@ -506,5 +506,9 @@ public class UserService {
 		flag=userMapper.updateStudentById(student);
 		
 		return flag>=0;
+	}
+
+	public Student getStudentByImei(String imei) {
+		return userMapper.getStudentByImei(imei);
 	}	
 }

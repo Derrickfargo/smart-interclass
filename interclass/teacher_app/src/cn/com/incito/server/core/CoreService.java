@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Quiz;
 import cn.com.incito.interclass.po.Student;
+import cn.com.incito.interclass.po.TempStudent;
 import cn.com.incito.interclass.ui.MainFrame;
 import cn.com.incito.server.api.ApiClient;
 import cn.com.incito.server.api.Application;
@@ -232,5 +233,17 @@ public class CoreService {
 			throw AppException.network(e);
 		}
 	}
-
+	public TempStudent getStudentIdByImei(String imei){
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("imei", imei);
+		try {
+			String content= ApiClient._post(URLs.URL_GETSTUDENT_BY_IMEI, params, null);
+			JSONObject jsonObject = JSON.parseObject(content);
+			TempStudent student=(TempStudent) JSON.parseObject(jsonObject.get("data").toString(), TempStudent.class);
+			return student;
+		} catch (AppException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

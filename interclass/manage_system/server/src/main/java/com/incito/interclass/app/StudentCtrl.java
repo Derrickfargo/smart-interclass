@@ -8,10 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
 import com.incito.interclass.business.GroupService;
 import com.incito.interclass.business.UserService;
 import com.incito.interclass.common.BaseCtrl;
 import com.incito.interclass.entity.Group;
+import com.incito.interclass.entity.Student;
 
 @RestController
 @RequestMapping("/api/student")
@@ -63,8 +65,20 @@ public class StudentCtrl extends BaseCtrl {
 		return map;
 
 	}
-	
-	
+	/**
+	 * 通过imei获得学生
+	 * @param imei
+	 * @return
+	 */
+	@RequestMapping(value = "/getStudentByImei", produces = {"application/json;charset=UTF-8" })
+	@ResponseBody
+	public String getStudentByImei(String imei){
+		Student student=userService.getStudentByImei(imei);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("code", 0);
+		map.put("data",student);
+		return JSON.toJSONString(map);
+	}
 	
 
 	@RequestMapping(value = "/test", produces = { "application/json;charset=UTF-8" })
