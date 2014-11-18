@@ -131,10 +131,16 @@ public class GroupCreatActivity extends BaseActivity implements OnClickListener 
 		case R.id.btn_create_group_ok:
 			String group_name = edit_group_name.getText().toString();
 			
-			if (TextUtils.isEmpty(group_name) || group_name.length() < 2 || (AndroidUtil.TextNumber(group_name) * 2 + AndroidUtil.notTextNumber(group_name))> 16) {
-				ToastHelper.showCustomToast(this, "组名不符合要求！");
+			if (TextUtils.isEmpty(group_name) || group_name.length() < 2) {
+				ToastHelper.showCustomToast(this, "组名不能为空且长度不能小于二");
 				return;
 			}
+			
+			if(AndroidUtil.TextNumber(group_name) * 2 + AndroidUtil.notTextNumber(group_name)> 16){
+				ToastHelper.showCustomToast(this, "组名不符合要求,要求为长度为2到16");
+				return;
+			}
+			
 			if (TextUtils.isEmpty(logo)) {
 				ToastHelper.showCustomToast(this, "请选择小组图标");
 				return;
