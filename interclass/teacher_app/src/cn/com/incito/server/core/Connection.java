@@ -3,14 +3,20 @@ package cn.com.incito.server.core;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import com.alibaba.fastjson.JSONObject;
+
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Student;
+import cn.com.incito.interclass.po.TempStudent;
+import cn.com.incito.interclass.ui.MainFrame;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
@@ -64,59 +70,47 @@ public class Connection {
 	
 	private void doLogout(){
 		Application app = Application.getInstance();
-		Set<Group> groupSet = app.getGroupList();
-		Iterator<Group> it = groupSet.iterator();
-		while(it.hasNext()){
-			Group group = it.next();
-			List<Student> students = group.getStudents();
-			for (Student student : students) {
-				for (Student aStudent : group.getStudents()) {
-					if (student.getName().equals(aStudent.getName())
-							&& student.getNumber().equals(aStudent.getNumber())) {
-						aStudent.setLogin(false);
-//						if(app.isGrouping()){//正在分组时，需要向同组其他设备发送退出通知
-//							List<SocketChannel> channels = Application.getInstance().getClientChannelByGroup(group.getId());
-//							JSONObject json = new JSONObject();
-//							json.put("code", JSONUtils.SUCCESS);
-//							json.put("data", group);
-//							sendResponse(json.toJSONString(), channels);
-//						}
-						break;
-					}
+		Map<Integer, Group> tempGroup = app.getTempGroup();
+		//通过imei获得学生ID
+		CoreService coreService=new CoreService();
+		TempStudent student=coreService.getStudentIdByImei(imei);
+		tempGroup.remove(student.getId());
+		Application.getInstance().getClientChannel().remove(imei);
+		List<Group> groupList=new ArrayList<Group>();
+		//遍历临时分组 将还没有分组的小组列表传回给pad端
+		for (Integer key : Application.getInstance().getTempGroup().keySet()) {
+			groupList.add(Application.getInstance().getTempGroup().get(key));
+		}
+		
+		for (int i = 0; i < groupList.size(); i++) {
+			Group group=groupList.get(i);
+			List<Student> studentList=group.getStudents();
+			Iterator<Student> it = studentList.iterator();
+			while (it.hasNext()) {
+				Student studentTemp=it.next();
+				if (student.getId() == studentTemp.getId()){
+					studentList.remove(studentTemp);
+					break;
 				}
 			}
 		}
-		
-		Set<Student> onLineStudents = app.getOnlineStudent();
-		for(Student student : onLineStudents){
-			if (student.getImei().equals(imei)) {
-				app.getOnlineStudent().remove(student);
-				app.getOfflineStudent().add(student);
-				break;
-			}
-		}
-		
-		Application.getInstance().getClientChannel().remove(imei);
+		JSONObject result = new JSONObject();
+		result.put("studentId", student.getId());
+		result.put("code", 0);
+		result.put("data", groupList);
 		app.refresh();// 更新UI
+		sendResponse(result.toString());
+		
+	}
+	private void sendResponse(String json) {
+		MessagePacking messagePacking = new MessagePacking(
+				Message.MESSAGE_GROUP_DELETE);
+		messagePacking.putBodyData(DataType.INT,
+				BufferUtils.writeUTFString(json));
+		byte[] messageData = messagePacking.pack().array();
+		CoreSocket.getInstance().sendMessage(messageData);
 	}
 	
-	private void sendResponse(String json,List<SocketChannel> channels) {
-		for (SocketChannel channel : channels) {
-			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
-	        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
-	        byte[] messageData = messagePacking.pack().array();
-	        ByteBuffer buffer = ByteBuffer.allocate(messageData.length);
-	        buffer.put(messageData);
-	        buffer.flip();
-			try {
-				if (this.channel != channel && channel.isConnected()) { 
-					channel.write(buffer);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
 	
 	public String getImei() {
 		return imei;

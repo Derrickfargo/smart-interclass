@@ -28,7 +28,10 @@ public class URLs {
 	 */
 	public static String URL_GROUP_SAVE = URL_API_HOST + "api/group/save";
 	
-	
+	/**
+	 * 通过imei获得学生
+	 */
+	public static String URL_GETSTUDENT_BY_IMEI = URL_API_HOST + "api/student/getStudentByImei";
 	/**
 	 * 分数奖励
 	 */
