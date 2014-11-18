@@ -31,74 +31,80 @@ public class LoginHandler extends MessageHandler {
 		Student student = data.getObject("student", Student.class);
 		if(student==null){
 			UIHelper.getInstance().getWifiSelectorActivity().showToast();
-		}
-		MyApplication.getInstance().setStudent(student);
-		
-		//判断学生状态跳转至不同的界面
-		int state =data.getIntValue("state");
-		
-		if(state == 1 ){
-			UIHelper.getInstance().showClassReadyActivity();
-			AppManager.getAppManager().currentActivity().finish();
-		}
-		if(state == 2){
-			//判断该学生是在已经提交的组还是未提交的组还是没有分组 
-			List<Group> tempGrou = JSON.parseArray(data.getString("group"), Group.class);
-			List<Group> groupConfirm = JSON.parseArray(data.getString("groupConfirm"), Group.class);
+		}else{
+			MyApplication.getInstance().setStudent(student);
 			
-			if(tempGrou != null && tempGrou.size() > 0){
-				//判断当前学生是否是未提交小组的成员 
-				for(int i = 0; i < tempGrou.size(); i++){
-					Group group = tempGrou.get(i);
-					if(student.getId() == group.getCaptainId()){//如果是组长则进入等待其他小组成员界面
-						UIHelper.getInstance().showConfirmGroupActivity(data.getString("group"));
-					}else{//判断是否是未提交小组成员
-						List<Student> students = 	group.getStudents();
-						for(int j = 0; j < students.size(); j++){
-							Student s = students.get(j);
-							if(s.getId() == student.getId()){
-								UIHelper.getInstance().showConfirmGroupActivity(data.getString("group"));
-							}else{
-								UIHelper.getInstance().showGroupSelect(data.getString("group"));
-							}
-						}
-					}
-				}
-			}else if(groupConfirm != null && groupConfirm.size() > 0){
-				//判断当前学生是否是已经提交的小组成员 
-				for(int i = 0; i < groupConfirm.size(); i++){
-					Group group = groupConfirm.get(i);
-					if(student.getId() == group.getCaptainId()){
-						UIHelper.getInstance().showClassingActivity();
-					}else{
-						List<Student> students = 	group.getStudents();
-						for(int j = 0; j < students.size(); j++){
-							Student s = students.get(j);
-							if(s.getId() == student.getId()){
-								UIHelper.getInstance().showClassingActivity();
-							}else{
-								UIHelper.getInstance().showGroupSelect(data.getString("group"));
-							}
-						}
-					}
-				}
-			}else{
-				UIHelper.getInstance().showGroupSelect(data.getString("group"));
+			//判断学生状态跳转至不同的界面
+			int state =data.getIntValue("state");
+			
+			if(state == 1 ){
+				UIHelper.getInstance().showClassReadyActivity();
+				AppManager.getAppManager().currentActivity().finish();
 			}
-		
-			AppManager.getAppManager().currentActivity().finish();
+			if(state == 2){
+				//判断该学生是在已经提交的组还是未提交的组还是没有分组 
+				List<Group> tempGrou = JSON.parseArray(data.getString("group"), Group.class);
+				List<Group> groupConfirm = JSON.parseArray(data.getString("groupConfirm"), Group.class);
+				
+				if(tempGrou != null && tempGrou.size() > 0){
+					//判断当前学生是否是未提交小组的成员 
+					for(int i = 0; i < tempGrou.size(); i++){
+						Group group = tempGrou.get(i);
+						if(student.getId() == group.getCaptainId()){//如果是组长则进入等待其他小组成员界面
+							MyApplication.getInstance().setGroup(group);
+							UIHelper.getInstance().showConfirmGroupActivity(data.getString("group"));
+							
+						}else{//判断是否是未提交小组成员
+							List<Student> students = 	group.getStudents();
+							for(int j = 0; j < students.size(); j++){
+								Student s = students.get(j);
+								if(s.getId() == student.getId()){
+									MyApplication.getInstance().setGroup(group);
+									UIHelper.getInstance().showConfirmGroupActivity(data.getString("group"));
+								}else{
+									UIHelper.getInstance().showGroupSelect(data.getString("group"));
+								}
+							}
+						}
+					}
+				}else if(groupConfirm != null && groupConfirm.size() > 0){
+					//判断当前学生是否是已经提交的小组成员 
+					for(int i = 0; i < groupConfirm.size(); i++){
+						Group group = groupConfirm.get(i);
+						if(student.getId() == group.getCaptainId()){
+							MyApplication.getInstance().setGroup(group);
+							UIHelper.getInstance().showClassingActivity();
+						}else{
+							List<Student> students = 	group.getStudents();
+							for(int j = 0; j < students.size(); j++){
+								Student s = students.get(j);
+								if(s.getId() == student.getId()){
+									MyApplication.getInstance().setGroup(group);
+									UIHelper.getInstance().showClassingActivity();
+								}else{
+									UIHelper.getInstance().showGroupSelect(data.getString("group"));
+								}
+							}
+						}
+					}
+				}else{
+					UIHelper.getInstance().showGroupSelect(data.getString("group"));
+				}
+			
+				AppManager.getAppManager().currentActivity().finish();
+			}
+			if(state == 3){
+				byte[] imageByte = data.getBytes("quiz");
+				UIHelper.getInstance().showDrawBoxActivity(imageByte);
+				AppManager.getAppManager().currentActivity().finish();
+			}
+			if(state == 4){
+				UIHelper.getInstance().showClassingActivity();
+				AppManager.getAppManager().currentActivity().finish();
+			}
+			//启动心跳检测
+			ConnectionManager.getInstance(message.getChannel());
 		}
-		if(state == 3){
-			byte[] imageByte = data.getBytes("quiz");
-			UIHelper.getInstance().showDrawBoxActivity(imageByte);
-			AppManager.getAppManager().currentActivity().finish();
-		}
-		if(state == 4){
-			UIHelper.getInstance().showClassingActivity();
-			AppManager.getAppManager().currentActivity().finish();
-		}
-		//启动心跳检测
-		ConnectionManager.getInstance(message.getChannel());
 	}
 
 }

@@ -2,11 +2,8 @@ package cn.com.incito.socket.handler;
 
 //import cn.com.incito.classroom.vo.GroupVo;
 
-import com.alibaba.fastjson.JSON;
-
 import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.classroom.vo.Group;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;
 
@@ -17,25 +14,21 @@ public class GroupListHandler extends MessageHandler {
 
 	@Override
 	protected void handleMessage() {
-		MyApplication.Logger.debug(System.currentTimeMillis()+":GroupListHandler:收到分组列表消息：" + data);
-		if(0 == data.getIntValue("code")){
-			//如果该学生的界面是等待老师分组界面的则将等待上课界面关闭
-			if("ClassReadyActivity".equals(AppManager.getAppManager().currentActivity().getClass().getSimpleName())){
+		MyApplication.Logger.debug(System.currentTimeMillis()
+				+ ":GroupListHandler:收到分组列表消息：" + data);
+
+		String currentActivityName = AppManager.getAppManager().currentActivity().getClass().getSimpleName();
+
+		if (0 == data.getIntValue("code")) {
+			// 如果该学生的界面是等待老师分组界面的则将等待上课界面关闭
+			if ("ClassReadyActivity".equals(currentActivityName)) {
+				UIHelper.getInstance().showGroupSelect(data.getString("data"));
 				AppManager.getAppManager().currentActivity().finish();
-			}
-			//如果当前界面是等待其他小组成员界面,刷新界面，否则进去选择选择小组界面
-			if(AppManager.getAppManager().currentActivity().getClass().getSimpleName().equals("WaitForOtherMembersActivity")){
+			} else if ("WaitForOtherMembersActivity".equals(currentActivityName)) {// 如果当前界面是等待其他小组成员界面,刷新界面，否则进去选择选择小组界面
 				UIHelper.getInstance().getWaitForOtherMembersActivity().setTextName(data.getString("data"));
-			} else {
-				if(UIHelper.getInstance().getmSelectGroupActivity()==null){
-					MyApplication.getInstance().setGroup(null);
-					UIHelper.getInstance().showGroupSelect(data.getString("data"));
-				}else{
-					UIHelper.getInstance().getmSelectGroupActivity().setData(JSON.parseArray(data.getString("data"), Group.class));
-				}
-				
+			} else if ("SelectGroupActivity".equals(currentActivityName)) {
+				UIHelper.getInstance().showGroupSelect(data.getString("data"));
 			}
 		}
-		
 	}
 }
