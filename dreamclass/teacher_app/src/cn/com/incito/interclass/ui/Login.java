@@ -212,6 +212,8 @@ public class Login extends MouseAdapter {
 		File checkingKey = new File("./key/key.dat");
 		if(!checkingKey.exists()){
 			try {
+				File file= new File("./key");
+				file.mkdirs();
 				KeyGenerator key = KeyGenerator.getInstance("HmacMD5");
 				key.init(64);
 				SecretKey secKey = key.generateKey();
