@@ -7,6 +7,7 @@ package cn.com.incito.interclass.ui;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -43,7 +44,6 @@ import cn.com.incito.http.StringResponseHandler;
 import cn.com.incito.http.support.ParamsWrapper;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.api.result.TeacherLoginResultData;
-import cn.com.incito.server.utils.NetworkUtils;
 import cn.com.incito.server.utils.UIHelper;
 import cn.com.incito.server.utils.URLs;
 
@@ -61,6 +61,7 @@ public class Login extends MouseAdapter {
 	private JLabel lblBackground;
 	private boolean doLogin = true;
 	private Logger logger = Logger.getLogger(Login.class.getName());
+	private JLabel link ;
 
 	// 构造函数、调用方法
 	public Login() {
@@ -178,7 +179,17 @@ public class Login extends MouseAdapter {
 				}
 			}
 		});
-
+		
+	//链接
+		link=new JLabel("了解更多");
+		link.setBounds(350, 223, 80, 40);
+		link.setFont(new Font("宋体",Font.ROMAN_BASELINE, 14));
+		link.setForeground(Color.BLUE);
+		link.setForeground(new Color(0, 80, 153));
+		link.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		link.addMouseListener(this);
+		frame.add(link);
+		
 		setBgimg();// 设置背景
 		frame.setVisible(true);
 	}
@@ -207,6 +218,7 @@ public class Login extends MouseAdapter {
 			}
 		});
 	}
+	
 //检查mac
 	private  String checkKey(){
 		File checkingKey = new File("./key/key.dat");
@@ -260,7 +272,7 @@ public class Login extends MouseAdapter {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-
+		
 	}
 
 	@Override
@@ -274,6 +286,9 @@ public class Login extends MouseAdapter {
 		}
 		if (e.getSource() == btnClose) {
 			btnClose.setIcon(new ImageIcon("images/login/7.png"));
+		}
+		if(e.getSource() == link){
+			link.setForeground(new Color(144, 200, 255));
 		}
 	}
 
@@ -292,7 +307,14 @@ public class Login extends MouseAdapter {
 		if (e.getSource() == btnClose) {
 			btnClose.setIcon(new ImageIcon("images/login/8.png"));
 			System.exit(0);
-
+		}
+		if(e.getSource() == link){
+			link.setForeground(new Color(0, 80, 153));
+			try {
+				Runtime.getRuntime().exec("cmd /c start http://www.baidu.com");
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 
@@ -307,6 +329,9 @@ public class Login extends MouseAdapter {
 		}
 		if (e.getSource() == btnClose) {
 			btnClose.setIcon(new ImageIcon("images/login/8.png"));
+		}
+		if(e.getSource()==link){
+			link.setForeground(new Color(144, 200, 255));
 		}
 	}
 
@@ -323,6 +348,9 @@ public class Login extends MouseAdapter {
 		}
 		if (e.getSource() == btnClose) {
 			btnClose.setIcon(new ImageIcon("images/login/7.png"));
+		}
+		if(e.getSource()==link){
+			link.setForeground(new Color(17, 136, 255));
 		}
 	}
 
@@ -397,5 +425,7 @@ public class Login extends MouseAdapter {
 			}
 		});
 	}
-
+	public static void main(String[] args) {
+		new Login();
+	}
 }
