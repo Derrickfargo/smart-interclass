@@ -377,12 +377,14 @@ public class Login extends MouseAdapter {
 					if (jsonObject.getIntValue("code") == 1) {
 						JOptionPane.showMessageDialog(frame, "用户名或密码错误!");
 						logger.info("用户名或密码错误!");
+						doLogin = true;
 						return;
 						// 增加当教师端未注册或网络连接错误的提示
 					} else if (jsonObject.getIntValue("code") == 2) {
 						JOptionPane.showMessageDialog(frame,
 								"本教室未有效注册或网络连接配置错误!");
 						logger.info("本教室未有效注册或网络连接配置错误!");
+						doLogin = true;
 						return;
 					}
 					String data = jsonObject.getString("data");
