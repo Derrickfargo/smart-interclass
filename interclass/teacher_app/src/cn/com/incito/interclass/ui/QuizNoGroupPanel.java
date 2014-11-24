@@ -1,6 +1,8 @@
 package cn.com.incito.interclass.ui;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -58,6 +60,14 @@ public class QuizNoGroupPanel extends JPanel {
 		if (studentList.size() == 0) {
 			return;
 		}
+		
+		Collections.sort(studentList, new Comparator<Student>() {
+			@Override
+			public int compare(Student o1, Student o2) {
+				return o2.getScore() - o1.getScore();
+			}
+		});
+		
 		for (int i = 0; i < ROW_COUNT; i++) {
 			for (int j = 0; j < COLUMN_COUNT; j++) {
 				Student student = studentList.get(index);
@@ -75,5 +85,4 @@ public class QuizNoGroupPanel extends JPanel {
 			}
 		}
 	}
-
 }

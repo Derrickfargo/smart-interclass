@@ -278,13 +278,18 @@ public class PhotoFrame extends JFrame {
 				if (j == 0) {
 					panel.setSelected(true);
 					quiz = panel.getQuiz();
-					if (quiz != null && quiz.getGroup() != null) {
+					if (quiz == null) {
+						continue;
+					}
+					if (quiz.getGroup() != null) {
 						if (quiz.getGroup().getName() == null) {
 							lblTitle.setText(String.format("未分组[%s]", quiz.getName()));
 						} else {
 							String title = quiz.getGroup().getName() + "[%s]";
 							lblTitle.setText(String.format(title, quiz.getName()));
 						}
+					} else {// 点击学生进来的
+						lblTitle.setText(quiz.getName());
 					}
 				} else {
 					panel.setSelected(false);
@@ -331,13 +336,15 @@ public class PhotoFrame extends JFrame {
 						if (quiz == null) {
 							continue;
 						}
-						if (quiz != null && quiz.getGroup() != null) {
+						if (quiz.getGroup() != null) {
 							if (quiz.getGroup().getName() == null) {
 								lblTitle.setText(String.format("未分组[%s]", quiz.getName()));
 							} else {
 								String title = quiz.getGroup().getName() + "[%s]";
 								lblTitle.setText(String.format(title, quiz.getName()));
 							}
+						} else {// 点击学生进来的
+							lblTitle.setText(quiz.getName());
 						}
 						Image image = new ImageIcon(quiz.getQuizUrl()).getImage();
 						if (image != null) {
