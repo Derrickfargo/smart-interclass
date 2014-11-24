@@ -75,7 +75,6 @@ public class Connection {
 		CoreService coreService=new CoreService();
 		TempStudent student=coreService.getStudentIdByImei(imei);
 		tempGroup.remove(student.getId());
-		Application.getInstance().getClientChannel().remove(imei);
 		List<Group> groupList=new ArrayList<Group>();
 		//遍历临时分组 将还没有分组的小组列表传回给pad端
 		for (Integer key : Application.getInstance().getTempGroup().keySet()) {
@@ -100,6 +99,7 @@ public class Connection {
 		result.put("data", groupList);
 		app.refresh();// 更新UI
 		sendResponse(result.toString());
+		Application.getInstance().getClientChannel().remove(imei);
 		
 	}
 	private void sendResponse(String json) {
