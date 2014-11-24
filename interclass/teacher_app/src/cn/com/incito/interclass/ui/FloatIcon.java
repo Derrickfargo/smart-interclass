@@ -284,7 +284,8 @@ public class FloatIcon extends MouseAdapter {
 			}
 			if (e.getSource() == btnPraise) {
 				showMenu(false);
-				MainFrame.getInstance().showPraise();
+//				MainFrame.getInstance().showPraise();
+				MainFrame.getInstance().showQuiz();//点击表扬菜单时，暂时显示作业界面
 			}
 			if (e.getSource() == btnLock) {
 				showMenu(false);
