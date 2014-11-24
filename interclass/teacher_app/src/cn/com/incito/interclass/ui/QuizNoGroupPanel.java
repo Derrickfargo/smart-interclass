@@ -67,6 +67,8 @@ public class QuizNoGroupPanel extends JPanel {
 				QuizStudent studentQuiz = studentQuizList.get(index);
 				studentQuiz.setStudent(student);
 				studentQuiz.setVisible(true);
+				String score = String.valueOf(student.getScore());
+				studentQuiz.getLblScore().setText(score);
 				if(++index == studentList.size()){
 					return;
 				}

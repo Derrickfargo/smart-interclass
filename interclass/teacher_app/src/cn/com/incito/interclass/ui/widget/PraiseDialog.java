@@ -30,6 +30,7 @@ import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.ui.MainFrame;
 import cn.com.incito.interclass.ui.PraiseFrame;
 import cn.com.incito.interclass.ui.PraiseGroupPanel;
+import cn.com.incito.interclass.ui.QuizStudent;
 import cn.com.incito.server.utils.URLs;
 
 import com.alibaba.fastjson.JSON;
@@ -43,19 +44,19 @@ public class PraiseDialog extends JDialog implements MouseListener {
 	private JLabel lblBackground;
 	private JButton btnClose;
 	private JButton btnPoint1, btnPoint2, btnPoint3;
-	private PraiseGroupPanel frame;
+	private JPanel frame;
 	private int score = 0;
 	private Group group;
 	private Student student;
 
-	public PraiseDialog(PraiseGroupPanel panel, Student student) {
+	public PraiseDialog(JPanel panel, Student student) {
 		super(MainFrame.getInstance().getFrame(), true);
 		this.frame = panel;
 		this.student = student;
 		initFrame();
 	}
 	
-	public PraiseDialog(PraiseGroupPanel panel, Group group) {
+	public PraiseDialog(JPanel panel, Group group) {
 		super(MainFrame.getInstance().getFrame(), true);
 		this.frame = panel;
 		this.group = group;
@@ -328,7 +329,7 @@ public class PraiseDialog extends JDialog implements MouseListener {
 						new PraiseFrame(group.getName(), updateScore);
 						// 设置小组总分
 						if (frame != null) {
-							frame.setScore(String.valueOf(Math.round(scoreResult)));
+							((PraiseGroupPanel)frame).setScore(String.valueOf(Math.round(scoreResult)));
 						}
 					}
 				}
@@ -350,6 +351,11 @@ public class PraiseDialog extends JDialog implements MouseListener {
 		});
 	}
 
+	/**
+	 * 学生单独加分
+	 * @param updateScore
+	 * @param student
+	 */
 	public void changePoint(final int updateScore, final Student student) {
 		AsyncHttpConnection http = AsyncHttpConnection.getInstance();
 		ParamsWrapper params = new ParamsWrapper();
@@ -368,9 +374,9 @@ public class PraiseDialog extends JDialog implements MouseListener {
 					} else {
 						new PraiseFrame(student.getName(), updateScore);//表扬结果界面
 						// 设置新分数
-//						if (frame != null) {
-//							frame.setScore(jsonObject.getString("score"));
-//						}
+						student.setScore(updateScore + student.getScore());
+						((QuizStudent)frame).getLblScore().setText(String.valueOf(student.getScore()));
+						// TODO 更新小组分数
 					}
 				}
 			}

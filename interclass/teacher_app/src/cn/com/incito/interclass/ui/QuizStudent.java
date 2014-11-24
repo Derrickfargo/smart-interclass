@@ -38,7 +38,7 @@ public class QuizStudent extends JPanel implements MouseListener{
 	private Quiz quiz;
 	private Student student;
 	private JPanel imagePanel;
-	private JLabel lblOrder, lblImage, lblName;
+	private JLabel lblOrder, lblScore, lblImage, lblName;
 	private JButton btnPlus, btnMinus, btnMedal;
 	
 	public QuizStudent(){
@@ -63,6 +63,10 @@ public class QuizStudent extends JPanel implements MouseListener{
 //		btnMedal.addMouseListener(this);
 //		add(btnMedal);
 
+		lblScore = getScoreLabel();
+		lblScore.setBounds(108, 121, 26, 19);
+		add(lblScore);
+		
 		imagePanel = createImagePanel(0,0);
 		imagePanel.setBounds(0, 0, imagePanel.getWidth(), imagePanel.getHeight());
 		imagePanel.addMouseListener(this);
@@ -75,6 +79,14 @@ public class QuizStudent extends JPanel implements MouseListener{
 		lblPad.setForeground(new Color(Integer.parseInt("FFFFFF", 16)));
 		lblPad.setOpaque(true);
 		return lblPad;
+	}
+	
+	private JLabel getScoreLabel() {
+		JLabel label = new JLabel("", JLabel.CENTER);
+		label.setForeground(new Color(Integer.parseInt("FFFFFF", 16)));
+		label.setBackground(new Color(Integer.parseInt("FF6600", 16)));
+		label.setOpaque(true);
+		return label;
 	}
 	
 	private JButton createPlusButton(){
@@ -135,6 +147,11 @@ public class QuizStudent extends JPanel implements MouseListener{
 		return imagePanel;
 	}
 	
+	public JLabel getLblScore() {
+		return lblScore;
+	}
+
+
 	@Override
 	public void mousePressed(MouseEvent e) {
 		
@@ -153,7 +170,7 @@ public class QuizStudent extends JPanel implements MouseListener{
 						.getFrame(), "未登录的学生不能加分!");
 				return;
 			}
-			new PraiseDialog(null, student);
+			new PraiseDialog(this, student);
 			
 		}
 		if (e.getSource() == btnMinus) {
@@ -162,7 +179,7 @@ public class QuizStudent extends JPanel implements MouseListener{
 						.getFrame(), "未登录的学生不能扣分!");
 				return;
 			}
-			new PunishDialog(null, student);
+			new PunishDialog(this, student);
 		}
 //		if (e.getSource() == btnMedal) {
 //			new MedalDialog(MainFrame.getInstance().getFrame(), group);

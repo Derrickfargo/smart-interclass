@@ -29,6 +29,7 @@ import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.ui.MainFrame;
 import cn.com.incito.interclass.ui.PraiseGroupPanel;
+import cn.com.incito.interclass.ui.QuizStudent;
 import cn.com.incito.server.utils.URLs;
 
 import com.alibaba.fastjson.JSON;
@@ -41,19 +42,19 @@ public class PunishDialog extends JDialog implements MouseListener {
 	private Point loc, tmp;
 	private JLabel lblBackground;
 	private JButton btnClose, btnPoint1;
-	private PraiseGroupPanel frame;
+	private JPanel frame;
 	
 	private Group group;
 	private Student student;
 	
-	public PunishDialog(PraiseGroupPanel panel, Student student) {
+	public PunishDialog(JPanel panel, Student student) {
 		super(MainFrame.getInstance().getFrame(), true);
 		this.frame = panel;
 		this.student = student;
 		initFrame();
 	}
 	
-	public PunishDialog(PraiseGroupPanel panel, Group group) {
+	public PunishDialog(JPanel panel, Group group) {
 		super(MainFrame.getInstance().getFrame(), true);
 		this.frame = panel;
 		this.group = group;
@@ -269,7 +270,7 @@ public class PunishDialog extends JDialog implements MouseListener {
 						}
 						group.setScore((int) Math.round(scoreResult));
 						if (frame != null) {
-							frame.setScore(String.valueOf(Math.round(scoreResult)));
+							((PraiseGroupPanel)frame).setScore(String.valueOf(Math.round(scoreResult)));
 						}
 					}
 				}
@@ -291,6 +292,11 @@ public class PunishDialog extends JDialog implements MouseListener {
 		});
 	}
 
+	/**
+	 * 学生单独扣分
+	 * @param updateScore
+	 * @param student
+	 */
 	public void changePoint(final int updateScore, final Student student) {
 		AsyncHttpConnection http = AsyncHttpConnection.getInstance();
 		ParamsWrapper params = new ParamsWrapper();
@@ -307,9 +313,10 @@ public class PunishDialog extends JDialog implements MouseListener {
 					if (jsonObject.getIntValue("code") == 1) {
 						return;
 					} else {
-//						if (frame != null) {
-//							frame.setScore(jsonObject.getString("score"));
-//						}
+						// 设置新分数
+						student.setScore(updateScore + student.getScore());
+						((QuizStudent)frame).getLblScore().setText(String.valueOf(student.getScore()));
+						// TODO 更新小组分数
 					}
 				}
 			}
