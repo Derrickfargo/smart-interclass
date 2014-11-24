@@ -24,7 +24,6 @@ public class Constants {
 	private final static String URL_API_HOST = HTTP + HOST + URL_SPLITTER;
 	
 	
-	
 	/**
 	 * 上传日志文件
 	 */

@@ -26,13 +26,15 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
 
     <application
         android:name="cn.com.incito.classroom.base.MyApplication"
-        android:largeHeap="true"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:screenOrientation="landscape"
         android:theme="@style/MyAppTheme" >
         <activity
@@ -40,7 +42,11 @@
             android:screenOrientation="landscape" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
             </intent-filter>
         </activity>
         <activity
@@ -48,6 +54,7 @@
             android:screenOrientation="landscape" >
             <intent-filter>
                 <action android:name="cn.com.classroom.SHOW_DRAWBOX" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -58,16 +65,19 @@
         <activity
             android:name="cn.com.incito.classroom.ui.activity.BindDeskActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".ui.activity.EditGroupInfoActivity"
-            android:launchMode="singleTask">
+        <activity
+            android:name=".ui.activity.EditGroupInfoActivity"
+            android:launchMode="singleTask" >
             <intent-filter>
                 <action android:name="cn.com.classroom.SHOW_EDIT_GROUP" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.ConfirmGroupInfoActivity" >
             <intent-filter>
                 <action android:name="cn.com.classroom.SHOW_CONFIRM_GROUP" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -77,11 +87,13 @@
                 <action android:name="cn.com.incito.classroom.service.SOCKET_SERVICE" />
             </intent-filter>
         </service>
-       <!--  <service android:name="cn.com.incito.classroom.service.LogService" >
+        <!--
+        <service android:name="cn.com.incito.classroom.service.LogService" >
             <intent-filter>
                 <action android:name="cn.com.incito.classroom.service.LOG_SERVICE" />
             </intent-filter>
-        </service> -->
+        </service>
+        -->
     </application>
 
 </manifest>
