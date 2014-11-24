@@ -98,7 +98,7 @@ public class Connection {
 		result.put("code", 0);
 		result.put("data", groupList);
 		app.refresh();// 更新UI
-		sendResponse(result.toString());
+//		sendResponse(result.toString());
 		Application.getInstance().getClientChannel().remove(imei);
 		
 	}
