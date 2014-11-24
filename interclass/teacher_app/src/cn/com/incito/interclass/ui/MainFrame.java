@@ -52,7 +52,7 @@ public class MainFrame extends MouseAdapter {
 	private JFrame frame = new JFrame();
 	private Boolean isDragged;
 	private Point loc, tmp;
-	private JButton btnMin, btnClose, btnPraise;
+	private JButton btnMin, btnClose/*, btnPraise*/;
 	private JLabel lblBackground;
 	private JPanel contentPane;
 	
@@ -161,7 +161,7 @@ public class MainFrame extends MouseAdapter {
         
         btnStatus.setIcon(new ImageIcon("images/main/bg_ready_hover.png"));
         btnQuiz.setIcon(new ImageIcon("images/main/bg_works.png"));
-        btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
+//        btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
 	}
 	
 	public void showQuiz() {
@@ -172,7 +172,7 @@ public class MainFrame extends MouseAdapter {
         
         btnQuiz.setIcon(new ImageIcon("images/main/bg_works_hover.png"));
         btnStatus.setIcon(new ImageIcon("images/main/bg_ready.png"));
-        btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
+//        btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
 	}
 	
 	public void showPraise() {
@@ -183,7 +183,7 @@ public class MainFrame extends MouseAdapter {
                 
 		btnQuiz.setIcon(new ImageIcon("images/main/bg_works.png"));
 		btnStatus.setIcon(new ImageIcon("images/main/bg_ready.png"));
-		btnPraise.setIcon(new ImageIcon("images/main/bg_praise_hover.png"));
+//		btnPraise.setIcon(new ImageIcon("images/main/bg_praise_hover.png"));
 		
 		praisePanel.refresh();
 	}
@@ -274,19 +274,19 @@ public class MainFrame extends MouseAdapter {
         });
 		
 		//表扬菜单
-		Icon iconPraise = new ImageIcon("images/main/bg_praise.png");
-		btnPraise = new JButton();
-		btnPraise.setIcon(iconPraise);
-		btnPraise.setFocusPainted(false);
-		btnPraise.setBorderPainted(false);// 设置边框不可见
-		btnPraise.setContentAreaFilled(false);// 设置透明
-		left.add(btnPraise);
-		btnPraise.setBounds(0, 106, iconQuiz.getIconWidth(), iconQuiz.getIconHeight());
-		btnPraise.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				showPraise();
-			}
-		});
+//		Icon iconPraise = new ImageIcon("images/main/bg_praise.png");
+//		btnPraise = new JButton();
+//		btnPraise.setIcon(iconPraise);
+//		btnPraise.setFocusPainted(false);
+//		btnPraise.setBorderPainted(false);// 设置边框不可见
+//		btnPraise.setContentAreaFilled(false);// 设置透明
+//		left.add(btnPraise);
+//		btnPraise.setBounds(0, 106, iconQuiz.getIconWidth(), iconQuiz.getIconHeight());
+//		btnPraise.addActionListener(new ActionListener(){
+//			public void actionPerformed(ActionEvent e) {
+//				showPraise();
+//			}
+//		});
 		
 		// 用户信息
 		JPanel pnlUser = new JPanel() {

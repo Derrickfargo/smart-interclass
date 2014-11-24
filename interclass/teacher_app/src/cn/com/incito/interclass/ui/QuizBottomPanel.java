@@ -129,10 +129,10 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 					JOptionPane.showMessageDialog(MainFrame.getInstance().getFrame(), "没有学生登录，无法进行随堂练习");
 					return;
 				}
-				if (Application.getInstance().isGrouping()) {
-					JOptionPane.showMessageDialog(getParent().getParent(), "学生正在分组，请等待分组完成!");
-					return;
-				}
+//				if (Application.getInstance().isGrouping()) {
+//					JOptionPane.showMessageDialog(getParent().getParent(), "学生正在分组，请等待分组完成!");
+//					return;
+//				}
 				doSendQuiz();
 			}
         } else {

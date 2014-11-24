@@ -41,7 +41,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 	private static final long serialVersionUID = -9135075807085951600L;
 	private JLabel lblExpected, lblClass, lblClassBackground, lblCourse,
 			lblCourseBackground;
-	private JButton btnBegin, btnGroup;
+	private JButton btnBegin;
 	private Application app = Application.getInstance();
 	Logger logger = Logger.getLogger(PrepareBottomPanel.class.getName());
 
@@ -92,17 +92,17 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 		lblCourseBackground.setBounds(340, -4, iconCourse.getIconWidth(),
 				iconCourse.getIconHeight());
 
-		btnGroup = new JButton();// 创建按钮对象
-		btnGroup.setFocusPainted(false);
-		btnGroup.setBorderPainted(false);// 设置边框不可见
-		btnGroup.setContentAreaFilled(false);// 设置透明
-		ImageIcon iconGroup = new ImageIcon("images/main/btn_group.png");
-		btnGroup.setIcon(iconGroup);// 设置图片
-		add(btnGroup);// 添加按钮
-		btnGroup.setBounds(500, -4, iconGroup.getIconWidth(),
-				iconGroup.getIconHeight());
-		btnGroup.addMouseListener(this);
-		btnGroup.setVisible(false);
+//		btnGroup = new JButton();// 创建按钮对象
+//		btnGroup.setFocusPainted(false);
+//		btnGroup.setBorderPainted(false);// 设置边框不可见
+//		btnGroup.setContentAreaFilled(false);// 设置透明
+//		ImageIcon iconGroup = new ImageIcon("images/main/btn_group.png");
+//		btnGroup.setIcon(iconGroup);// 设置图片
+//		add(btnGroup);// 添加按钮
+//		btnGroup.setBounds(500, -4, iconGroup.getIconWidth(),
+//				iconGroup.getIconHeight());
+//		btnGroup.addMouseListener(this);
+//		btnGroup.setVisible(false);
 
 		btnBegin = new JButton();// 创建按钮对象
 		btnBegin.setFocusPainted(false);
@@ -126,7 +126,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 			lblClassBackground.setVisible(true);
 			lblCourse.setVisible(true);
 			lblCourseBackground.setVisible(true);
-			btnGroup.setVisible(true);
+//			btnGroup.setVisible(true);
 			btnBegin.setVisible(true);
 //		}
 	}
@@ -137,31 +137,31 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 			JOptionPane.showMessageDialog(getParent().getParent(), "当前还没有学生登陆，请先登录后再上课!");
 			return;
 		}
-		if(app.getGroupList().size() == 0){
-			JOptionPane.showMessageDialog(getParent().getParent(), "学生还未分组，请先分组后再上课!");
-			return;
-		}
-		Set<Student> noGroupStudent = getNoGroupStudent();
-		if (noGroupStudent.size() != 0) {
-			String message = "还有以下学生未加入小组：\n%s\n需要全部加入后才能开始上课？";
-			StringBuffer args = new StringBuffer();
-			Iterator<Student> it = noGroupStudent.iterator();
-			while (it.hasNext()) {
-				args.append(it.next().getName());
-				args.append("、");
-			}
-			args.append("\n");
-//			int result = JOptionPane.showConfirmDialog(getParent().getParent(), 
-//					String.format(message, args), "提示", JOptionPane.YES_NO_OPTION);
-//			if (result == JOptionPane.YES_OPTION) {
-//				app.setGrouping(false);
-//			} else {
-//				return;
+//		if(app.getGroupList().size() == 0){
+//			JOptionPane.showMessageDialog(getParent().getParent(), "学生还未分组，请先分组后再上课!");
+//			return;
+//		}
+//		Set<Student> noGroupStudent = getNoGroupStudent();
+//		if (noGroupStudent.size() != 0) {
+//			String message = "还有以下学生未加入小组：\n%s\n需要全部加入后才能开始上课？";
+//			StringBuffer args = new StringBuffer();
+//			Iterator<Student> it = noGroupStudent.iterator();
+//			while (it.hasNext()) {
+//				args.append(it.next().getName());
+//				args.append("、");
 //			}
-			JOptionPane.showMessageDialog(getParent().getParent(), String.format(message, args));
-			return;
-		}
-		app.setGrouping(false);//TODO 新增
+//			args.append("\n");
+////			int result = JOptionPane.showConfirmDialog(getParent().getParent(), 
+////					String.format(message, args), "提示", JOptionPane.YES_NO_OPTION);
+////			if (result == JOptionPane.YES_OPTION) {
+////				app.setGrouping(false);
+////			} else {
+////				return;
+////			}
+//			JOptionPane.showMessageDialog(getParent().getParent(), String.format(message, args));
+//			return;
+//		}
+//		app.setGrouping(false);//TODO 新增
 		MainFrame.getInstance().setVisible(false);
 		setOnClass(true);
 	}
@@ -209,7 +209,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 		app.getTempGroup().clear();
 		app.refresh();
 		// 编辑小组信息
-		app.setGrouping(true);
+//		app.setGrouping(true);
 //		MainFrame.getInstance().showGrouping();
 		app.setState(2);//设置状态为分组中
 		Set<Group> groupList = app.getGroupList();
@@ -305,9 +305,9 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 				doBegin();
 			}
 		}
-		if (e.getSource() == btnGroup) {
-			doEditGroup();
-		}
+//		if (e.getSource() == btnGroup) {
+//			doEditGroup();
+//		}
 	}
 
 	@Override
@@ -330,9 +330,9 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 						"images/main/btn_begin_hover.png"));
 			}
 		}
-		if (e.getSource() == btnGroup) {
-			btnGroup.setIcon(new ImageIcon("images/main/btn_group_hover.png"));
-		}
+//		if (e.getSource() == btnGroup) {
+//			btnGroup.setIcon(new ImageIcon("images/main/btn_group_hover.png"));
+//		}
 	}
 
 	@Override
@@ -344,9 +344,9 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 				btnBegin.setIcon(new ImageIcon("images/main/btn_begin.png"));
 			}
 		}
-		if (e.getSource() == btnGroup) {
-			btnGroup.setIcon(new ImageIcon("images/main/btn_group.png"));
-		}
+//		if (e.getSource() == btnGroup) {
+//			btnGroup.setIcon(new ImageIcon("images/main/btn_group.png"));
+//		}
 	}
 
 }

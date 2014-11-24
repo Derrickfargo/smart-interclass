@@ -270,10 +270,10 @@ public class FloatIcon extends MouseAdapter {
 							JOptionPane.showMessageDialog(dialog, "没有学生登录，无法进行随堂练习");
 							return;
 						}
-						if (Application.getInstance().isGrouping()) {
-							JOptionPane.showMessageDialog(dialog, "学生正在分组，请等待分组完成!");
-							return;
-						}
+//						if (Application.getInstance().isGrouping()) {
+//							JOptionPane.showMessageDialog(dialog, "学生正在分组，请等待分组完成!");
+//							return;
+//						}
 						MainFrame.getInstance().doSendQuiz();
 						btnQuiz.setIcon(new ImageIcon(ICON_HANDIN_NORMAL));
 					} else {

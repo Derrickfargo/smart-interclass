@@ -50,19 +50,19 @@ public class QuizPanel extends JPanel {
             }
         });
 		
-		btnGroup = new JButton("小组");
-		btnGroup.setFocusPainted(false);
-		btnGroup.setBorderPainted(false);// 设置边框不可见
-		btnGroup.setContentAreaFilled(false);// 设置透明
-		btnGroup.setBorder(BorderFactory.createTitledBorder(""));
-		add(btnGroup);
-		btnGroup.setBounds(141, 4, 137, 35);
-		btnGroup.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e) {
-            	centerCardLayout.show(centerCardPanel, CARD_GROUP);
-            	lblCardBackground.setIcon(new ImageIcon("images/prepare/bg_group.png"));
-            }
-        });
+//		btnGroup = new JButton("小组");
+//		btnGroup.setFocusPainted(false);
+//		btnGroup.setBorderPainted(false);// 设置边框不可见
+//		btnGroup.setContentAreaFilled(false);// 设置透明
+//		btnGroup.setBorder(BorderFactory.createTitledBorder(""));
+//		add(btnGroup);
+//		btnGroup.setBounds(141, 4, 137, 35);
+//		btnGroup.addActionListener(new ActionListener(){
+//            public void actionPerformed(ActionEvent e) {
+//            	centerCardLayout.show(centerCardPanel, CARD_GROUP);
+//            	lblCardBackground.setIcon(new ImageIcon("images/prepare/bg_group.png"));
+//            }
+//        });
 		
 		lblCardBackground = new JLabel();
 		lblCardBackground.setIcon(new ImageIcon("images/prepare/bg_nogroup.jpg"));

@@ -32,7 +32,7 @@ public class Application {
 	public boolean isLockScreen;
 	private Font definedFont;
 	private static Application instance;
-	private boolean isGrouping = false;
+//	private boolean isGrouping = false;
 	private FloatIcon floatIcon;
 	private String quizId; // 考试流水号
 	private String lessionid;
@@ -126,13 +126,13 @@ public class Application {
 		this.mac = mac;
 	}
 
-	public boolean isGrouping() {
-		return isGrouping;
-	}
-
-	public void setGrouping(boolean isGrouping) {
-		this.isGrouping = isGrouping;
-	}
+//	public boolean isGrouping() {
+//		return isGrouping;
+//	}
+//
+//	public void setGrouping(boolean isGrouping) {
+//		this.isGrouping = isGrouping;
+//	}
 
 	public List<String> getTempQuizIMEI() {
 		return tempQuizIMEI;
