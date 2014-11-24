@@ -2,8 +2,10 @@ package cn.com.incito.classroom.ui.activity;
 
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -63,6 +65,26 @@ public class EditGroupInfoActivity extends BaseActivity implements
 
 	public void initView() {
 		mGroupName = (EditText) findViewById(R.id.edit_group_name);
+		mGroupName.addTextChangedListener(new TextWatcher() {
+
+			@Override
+			public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+					int arg3) {
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence arg0, int arg1,
+					int arg2, int arg3) {
+				
+			}
+
+			@Override
+			public void afterTextChanged(Editable arg0) {
+				if(arg0.toString().length() >= 8){
+					ToastHelper.showCustomToast(EditGroupInfoActivity.this, "小组名字长度不能超过8");
+				}
+			}
+		});
 		mBtnOk = (ImageButton) findViewById(R.id.btn_ok);
 		mBtnOk.setOnClickListener(this);
 		mListView = (HorizontalListView) findViewById(R.id.horizon_listview);

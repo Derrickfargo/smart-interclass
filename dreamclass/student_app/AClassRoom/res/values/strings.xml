@@ -25,6 +25,7 @@
     <string name="group_name_null">小组名称还没有讨论好吗？</string>
     <string name="group_name_short_notice">小组名称不能少于两个字哦！</string>
     <string name="waiting_other_confirm_tip">稍等一下哦，其他同学还没有确认哦！</string>
+    <string name="toast_choose_sex">请选择性别</string>
     <!-- msg -->
     <string name="msg_dialog_network_nowork">网络异常哦，请检查网络哦</string>
     <!-- button -->
