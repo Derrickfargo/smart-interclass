@@ -81,7 +81,7 @@ public class QuizPanel extends JPanel {
 		noGroupScroll.getVerticalScrollBar().setUnitIncrement(100);
 		noGroupScroll.setBorder(null);
 		noGroupScroll.setBounds(0, 45, 876, 585);
-		noGroupPanel.setPreferredSize(new Dimension(noGroupScroll.getWidth() - 50, (noGroupScroll.getHeight() - 50) * 2));
+		noGroupPanel.setPreferredSize(new Dimension(noGroupScroll.getWidth() - 50, (noGroupScroll.getHeight() - 50) * 5));
 		centerCardPanel.add(noGroupScroll, CARD_NO_GROUP);
 		//分组card
 		groupPanel = new QuizGroupPanel();
