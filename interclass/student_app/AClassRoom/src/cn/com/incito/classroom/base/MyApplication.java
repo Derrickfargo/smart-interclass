@@ -148,6 +148,10 @@ public class MyApplication extends Application {
 		wl = pmManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "My Tag");
 		wl.acquire();
 		mWifiLock.acquire();
+		WifiManager wifiManager = (WifiManager)getSystemService(Context.WIFI_SERVICE);
+        WifiManager.MulticastLock multicastLock = wifiManager.createMulticastLock("multicast");
+        multicastLock.acquire();
+        
 		mInstance = this;
 		mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		initApplication();

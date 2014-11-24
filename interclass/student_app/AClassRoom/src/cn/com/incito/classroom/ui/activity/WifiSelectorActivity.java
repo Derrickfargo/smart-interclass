@@ -588,7 +588,7 @@ public class WifiSelectorActivity extends BaseActivity  {
 				new Thread() {
 					public void run() {
 						try {
-							Thread.sleep(5000);
+							Thread.sleep(15000);
 							SharedPreferences sharedPreferences = getSharedPreferences(
 									"wifi", MODE_APPEND);
 							SharedPreferences.Editor editor = sharedPreferences.edit();

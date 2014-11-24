@@ -28,6 +28,7 @@ import cn.com.incito.server.api.ApiClient;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.CoreService;
 import cn.com.incito.server.core.Message;
+import cn.com.incito.server.core.MultiCastSocket;
 import cn.com.incito.server.exception.AppException;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
@@ -130,6 +131,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 //		}
 	}
 
+	//开始上课
 	private void doBegin() {
 		if (app.getOnlineStudent().size() == 0) {
 			JOptionPane.showMessageDialog(getParent().getParent(), "当前还没有学生登陆，请先登录后再上课!");
@@ -182,27 +184,27 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 	}
 	
 	/**
-	 * 发送分组命令
+	 * 开始分组
 	 */
 	private void doEditGroup() {
-		if (app.getOnlineStudent().size() == 0) {
-			JOptionPane.showMessageDialog(getParent().getParent(),
-					"当前还没有学生登陆，请先登陆后再分组!");
-			return;
-		}
-		if (app.isGrouping()) {
-			JOptionPane.showMessageDialog(getParent().getParent(),
-					"学生正在分组，请等待分组完成!");
-			return;
-		}
-		if (Application.hasQuiz) {// TODO 格式不一致，统一修改重构
-			JOptionPane.showMessageDialog(getParent().getParent(),
-					"学生正在做作业，不能分组!");
-			return;
-		}
-		if(!doDeleteGroup()){//先删除分组
-			
-		}
+//		if (app.getOnlineStudent().size() == 0) {
+//			JOptionPane.showMessageDialog(getParent().getParent(),
+//					"当前还没有学生登陆，请先登陆后再分组!");
+//			return;
+//		}
+//		if (app.isGrouping()) {
+//			JOptionPane.showMessageDialog(getParent().getParent(),
+//					"学生正在分组，请等待分组完成!");
+//			return;
+//		}
+//		if (Application.hasQuiz) {// TODO 格式不一致，统一修改重构
+//			JOptionPane.showMessageDialog(getParent().getParent(),
+//					"学生正在做作业，不能分组!");
+//			return;
+//		}
+//		if(!doDeleteGroup()){//先删除分组
+//			
+//		}
 		app.getGroupList().clear();
 		app.getTempGroup().clear();
 		app.refresh();
@@ -211,21 +213,13 @@ public class PrepareBottomPanel extends JPanel implements MouseListener {
 //		MainFrame.getInstance().showGrouping();
 		app.setState(2);//设置状态为分组中
 		Set<Group> groupList = app.getGroupList();
-//		for (Group group : groupList) {
-			JSONObject json = new JSONObject();
-			json.put("data", groupList);
-			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_CREATE);
-			messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(json.toString()));
-			Map<String, SocketChannel> channels = app.getClientChannel();
-			List<SocketChannel> channelList = new ArrayList<SocketChannel>();
-			Set<Entry<String, SocketChannel>> set = channels.entrySet();
-			for (Iterator<Entry<String, SocketChannel>> iter = set.iterator(); iter.hasNext();) {
-				Map.Entry<String, SocketChannel> entry = (Map.Entry<String, SocketChannel>) iter.next();
-				SocketChannel value = (SocketChannel) entry.getValue();
-				channelList.add(value);
-			}
-			sendMessageToGroup(messagePacking, channelList);
-//		}
+		JSONObject json = new JSONObject();
+		json.put("data", groupList);
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_CREATE);
+		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(json.toString()));
+		logger.info("开始分组:" + json.toJSONString());
+		byte[] data = messagePacking.pack().array();
+		MultiCastSocket.getInstance().sendMessage(json.toJSONString().getBytes());
 	}
 
 	private boolean doDeleteGroup() {

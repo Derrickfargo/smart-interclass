@@ -12,6 +12,11 @@ import java.nio.channels.SocketChannel;
 public class Message implements Serializable {
 
 	 /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6766790580027000582L;
+
+	/**
      * 消息识别码
      */
     public static final int MESSAGE_FAKE_ID = 0xFAFB;

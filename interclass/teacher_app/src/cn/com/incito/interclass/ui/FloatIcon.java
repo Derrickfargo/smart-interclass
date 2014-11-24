@@ -386,13 +386,13 @@ public class FloatIcon extends MouseAdapter {
 	 * 开启作业定时上传任务
 	 */
 	private void startUploadJob() {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				QuartzManager qManager = new QuartzManager();
-				qManager.addJob("paperUpload", JobPaperUpload.class, new Date());
-			}
-		}).start();
+//		new Thread(new Runnable() {
+//			@Override
+//			public void run() {
+//				QuartzManager qManager = new QuartzManager();
+//				qManager.addJob("paperUpload", JobPaperUpload.class, new Date());
+//			}
+//		}).start();
 	}
 
 }
