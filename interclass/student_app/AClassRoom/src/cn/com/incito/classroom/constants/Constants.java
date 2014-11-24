@@ -22,7 +22,6 @@ public class Constants {
 	private static String SERVER_IP;
 	public final static String HOST = SERVER_IP + ":" + SERVER_PORT + "/app";
 	private final static String URL_API_HOST = HTTP + HOST + URL_SPLITTER;
-	int i=111111111;
 	
 	
 	/**
