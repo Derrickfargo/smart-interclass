@@ -112,7 +112,8 @@
 			u.login,
 			u.login_salt AS loginSalt,
 			u. PASSWORD,
-			u.email
+			u.email,
+			v.sid AS schoolId
 		FROM
 			ts_user u
 		INNER JOIN ts_user_verified v ON u.uid = v.uid

@@ -43,6 +43,10 @@ public class URLs {
 	 * 获取分组
 	 */
 	public static String URL_TEACHER_GROUP = URL_API_HOST + "api/teacher/group";
+	/**
+	 * 提交教室名称
+	 */
+	public static String URL_TEACHER_ROOM = URL_API_HOST+"api/teacher/room";
 
 	/**
 	 * 学生注册

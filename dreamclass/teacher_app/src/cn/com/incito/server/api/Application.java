@@ -66,6 +66,7 @@ public class Application {
     private List<Device> deviceList = new ArrayList<Device>();// 本教室所有的Device
     private Set<String> onlineDevice = new HashSet<String>();
     private Set<Student> onlineStudent = new HashSet<Student>();
+    private List<Course> courses = new ArrayList<Course>();//所有的课程
 
     private Map<Integer, List<SocketChannel>> groupChannel;// 保存每组和已登录的socket
     private Map<String, List<Student>> imeiStudent = new HashMap<String, List<Student>>();
@@ -618,6 +619,16 @@ public class Application {
 
 	public List<Student> getStudentByImei(String imei) {
 		return imeiStudent.get(imei);
+	}
+
+
+	public List<Course> getCourses() {
+		return courses;
+	}
+
+
+	public void setCourses(List<Course> courses) {
+		this.courses = courses;
 	}
 
 }

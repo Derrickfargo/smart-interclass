@@ -7,6 +7,7 @@ package cn.com.incito.interclass.ui;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,9 +16,18 @@ import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -34,7 +44,6 @@ import cn.com.incito.http.StringResponseHandler;
 import cn.com.incito.http.support.ParamsWrapper;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.api.result.TeacherLoginResultData;
-import cn.com.incito.server.utils.NetworkUtils;
 import cn.com.incito.server.utils.UIHelper;
 import cn.com.incito.server.utils.URLs;
 
@@ -52,6 +61,7 @@ public class Login extends MouseAdapter {
 	private JLabel lblBackground;
 	private boolean doLogin = true;
 	private Logger logger = Logger.getLogger(Login.class.getName());
+	private JLabel link ;
 
 	// 构造函数、调用方法
 	public Login() {
@@ -169,7 +179,17 @@ public class Login extends MouseAdapter {
 				}
 			}
 		});
-
+		
+	//链接
+		link=new JLabel("了解更多");
+		link.setBounds(350, 223, 80, 40);
+		link.setFont(new Font("宋体",Font.ROMAN_BASELINE, 14));
+		link.setForeground(Color.BLUE);
+		link.setForeground(new Color(0, 80, 153));
+		link.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		link.addMouseListener(this);
+		frame.add(link);
+		
 		setBgimg();// 设置背景
 		frame.setVisible(true);
 	}
@@ -198,7 +218,50 @@ public class Login extends MouseAdapter {
 			}
 		});
 	}
-
+	
+//检查mac
+	private  String checkKey(){
+		File checkingKey = new File("./key/key.dat");
+		if(!checkingKey.exists()){
+			try {
+				File file= new File("./key");
+				file.mkdirs();
+				KeyGenerator key = KeyGenerator.getInstance("HmacMD5");
+				key.init(64);
+				SecretKey secKey = key.generateKey();
+				FileOutputStream fos = new FileOutputStream("./key/key.dat");
+				ObjectOutputStream oos = new ObjectOutputStream(fos);
+				oos.writeObject(secKey);
+				oos.close();
+			} catch (NoSuchAlgorithmException e) {
+				logger.info("没有该算法");
+				e.printStackTrace();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		try {
+			FileInputStream fis = new FileInputStream("./key/key.dat");
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			SecretKey secKey=(SecretKey) ois.readObject();
+			ois.close();
+			StringBuffer key = new StringBuffer();
+			for (int i = 0; i < secKey.getEncoded().length; i++) {
+				key.append(secKey.getEncoded()[i]);
+			}
+			 final String mac = new String(key);
+			 return mac;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	// 设置背景
 	public void setBgimg() {
 		lblBackground = new JLabel();
@@ -209,7 +272,7 @@ public class Login extends MouseAdapter {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-
+		
 	}
 
 	@Override
@@ -223,6 +286,9 @@ public class Login extends MouseAdapter {
 		}
 		if (e.getSource() == btnClose) {
 			btnClose.setIcon(new ImageIcon("images/login/7.png"));
+		}
+		if(e.getSource() == link){
+			link.setForeground(new Color(144, 200, 255));
 		}
 	}
 
@@ -241,7 +307,14 @@ public class Login extends MouseAdapter {
 		if (e.getSource() == btnClose) {
 			btnClose.setIcon(new ImageIcon("images/login/8.png"));
 			System.exit(0);
-
+		}
+		if(e.getSource() == link){
+			link.setForeground(new Color(0, 80, 153));
+			try {
+				Runtime.getRuntime().exec("cmd /c start http://www.baidu.com");
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 
@@ -256,6 +329,9 @@ public class Login extends MouseAdapter {
 		}
 		if (e.getSource() == btnClose) {
 			btnClose.setIcon(new ImageIcon("images/login/8.png"));
+		}
+		if(e.getSource()==link){
+			link.setForeground(new Color(144, 200, 255));
 		}
 	}
 
@@ -273,10 +349,13 @@ public class Login extends MouseAdapter {
 		if (e.getSource() == btnClose) {
 			btnClose.setIcon(new ImageIcon("images/login/7.png"));
 		}
+		if(e.getSource()==link){
+			link.setForeground(new Color(17, 136, 255));
+		}
 	}
 
 	private void doLogin() {
-		final String mac = NetworkUtils.getLocalMac();
+		final String mac = checkKey();
 		Application.getInstance().setMac(mac);
 		logger.info("mac:" + mac);
 		// try {
@@ -309,20 +388,23 @@ public class Login extends MouseAdapter {
 					String data = jsonObject.getString("data");
 					TeacherLoginResultData resultData = JSON.parseObject(data,
 							TeacherLoginResultData.class);
-
+					Application.getInstance().setTeacher(resultData.getTeacher());
+					Application.getInstance().setCourses(resultData.getCourses());
 					// 第一步获取教室、教师数据
 					if (resultData.getRoom() == null) {
-						JOptionPane.showMessageDialog(frame, "本教室未有效注册!");
-						logger.info("本教室未有效注册!");
+//						JOptionPane.showMessageDialog(frame, "本教室未有效注册!");
+//						logger.info("本教室未有效注册!");
+						frame.setVisible(false);
+						Login3 login3 = new Login3();
+						login3.getFrame().setVisible(true);
 						return;
 					} else {
 						frame.setVisible(false);
+						Application.getInstance().setRoom(resultData.getRoom());
+						Login2 login2 = new Login2(resultData.getCourses());
+						login2.getFrame().setVisible(true);
+						logger.info("登陆返回结果：" + content);
 					}
-					Application.getInstance().setRoom(resultData.getRoom());
-					Application.getInstance().setTeacher(resultData.getTeacher());
-					Login2 login2 = new Login2(resultData.getCourses());
-					login2.getFrame().setVisible(true);
-					logger.info("登陆返回结果：" + content);
 				}
 			}
 
@@ -343,5 +425,7 @@ public class Login extends MouseAdapter {
 			}
 		});
 	}
-
+	public static void main(String[] args) {
+		new Login();
+	}
 }
