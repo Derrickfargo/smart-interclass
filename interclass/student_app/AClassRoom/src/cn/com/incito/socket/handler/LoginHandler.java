@@ -28,12 +28,13 @@ public class LoginHandler extends MessageHandler {
 		String server_port = data.getString("server_port");
 		Constants.setSERVER_IP(server_ip);
 		Constants.setSERVER_PORT(server_port);
-		MultiCastSocket.getInstance().start();//建立广播socket
+		
 		//TODO 有可能这台pad没有绑定学生，
 		Student student = data.getObject("student", Student.class);
 		if(student==null){
 			UIHelper.getInstance().getWifiSelectorActivity().showToast();
 		}else{
+			MultiCastSocket.getInstance().start();//建立广播socket
 			MyApplication.getInstance().setStudent(student);
 			
 			//判断学生状态跳转至不同的界面
@@ -102,6 +103,9 @@ public class LoginHandler extends MessageHandler {
 			}
 			if(state == 4){
 				UIHelper.getInstance().showClassingActivity();
+				AppManager.getAppManager().currentActivity().finish();
+			}else{
+				UIHelper.getInstance().showClassReadyActivity();
 				AppManager.getAppManager().currentActivity().finish();
 			}
 			//启动心跳检测
