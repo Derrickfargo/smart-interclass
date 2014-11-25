@@ -31,94 +31,102 @@ import cn.com.incito.server.utils.URLs;
 
 /**
  * 小组表扬Panel
+ * 
  * @author 刘世平
- *
  */
-public class PraiseGroupPanel extends JPanel implements MouseListener,setScoreCallback{
+public class PraiseGroupPanel extends JPanel implements MouseListener, setScoreCallback {
 
 	private static final long serialVersionUID = 882552987989905663L;
+
 	private static final String BTN_PRAISE_NORMAL = "images/praise/ico_praise.png";
+
 	private static final String BTN_PRAISE_HOVER = "images/praise/ico_praise_hover.png";
-	
+
 	private static final String BTN_PUNISH_NORMAL = "images/praise/ico_punish.png";
+
 	private static final String BTN_PUNISH_HOVER = "images/praise/ico_punish_hover.png";
-	
+
 	private static final String BTN_MEDAL_NORMAL = "images/praise/ico_medal.png";
+
 	private static final String BTN_MEDAL_HOVER = "images/praise/ico_medal_hover.png";
-	
+
 	private Group group;
+
 	private JLabel lblLogo, lblScore, lblGroupName, lblTitle;
+
 	private MultilineLabel lblMember;
-	private JButton btnPraise,btnPunish,btnMedal;
-	
+
+	private JButton btnPraise, btnPunish, btnMedal;
+
 	@Override
 	protected void paintComponent(Graphics g) {
 		Image image = new ImageIcon("images/praise/bg.png").getImage();
-		g.drawImage(image, 0, 0, this.getWidth(), this.getHeight(),this);
+		g.drawImage(image, 0, 0, this.getWidth(), this.getHeight(), this);
 	}
-	
-	public PraiseGroupPanel(){
+
+	public PraiseGroupPanel() {
 		setLayout(null);
 		setVisible(false);
-		
+
 		lblLogo = createLogoLabel();
 		add(lblLogo);
-		
+
 		lblScore = createScoreLabel();
 		add(lblScore);
-		
+
 		lblGroupName = createGroupName();
 		add(lblGroupName);
-		
+
 		JPanel pnlTitle = createTitlePanel();
 		pnlTitle.setLayout(null);
 		pnlTitle.setBounds(160, 80, 90, 28);
 		add(pnlTitle);
 		lblTitle = createTitle();
 		pnlTitle.add(lblTitle);
-		
+
 		lblMember = createGroupMember();
 		add(lblMember);
-		
+
 		btnPraise = createPraiseButton();
 		btnPraise.addMouseListener(this);
 		add(btnPraise);
-		
+
 		btnPunish = createPunishButton();
 		btnPunish.addMouseListener(this);
 		add(btnPunish);
-		
+
 		btnMedal = createMedalButton();
 		btnMedal.addMouseListener(this);
 		add(btnMedal);
 	}
-	
-	private JLabel createLogoLabel(){
+
+	private JLabel createLogoLabel() {
 		JLabel lblLogo = new JLabel();
 		final ImageIcon icon = new ImageIcon("images/logo/rainbow.png");
 		lblLogo.setIcon(icon);
 		lblLogo.setBounds(15, 0, 78, 78);
 		return lblLogo;
 	}
-	
-	private JLabel createScoreLabel(){
+
+	private JLabel createScoreLabel() {
 		JLabel lblScore = new JLabel("0", JLabel.CENTER);
-		lblScore.setBounds(165,5, 78, 78);
+		lblScore.setBounds(165, 5, 78, 78);
 		lblScore.setFont(new Font("Impact", Font.PLAIN, 48));
 		lblScore.setForeground(new Color(Integer.parseInt("39a2de", 16)));
 		return lblScore;
 	}
-	
-	private JLabel createGroupName(){
+
+	private JLabel createGroupName() {
 		JLabel lblName = new JLabel();
-		lblName.setBounds(15,82, 100, 24);
+		lblName.setBounds(15, 82, 100, 24);
 		lblName.setFont(new Font("Microsoft YaHei", Font.BOLD, 18));
 		lblName.setForeground(new Color(Integer.parseInt("535353", 16)));
 		return lblName;
 	}
-	
-	private JPanel createTitlePanel(){
-		return new JPanel(){
+
+	private JPanel createTitlePanel() {
+		return new JPanel() {
+
 			private static final long serialVersionUID = 1778895558158714379L;
 
 			@Override
@@ -128,23 +136,41 @@ public class PraiseGroupPanel extends JPanel implements MouseListener,setScoreCa
 			}
 		};
 	}
-	
+
 	private JLabel createTitle(){
-		JLabel lblTitle = new JLabel("地球超人");
+		if(group!=null){
+			if(group.getScore()<=50){
+				 lblTitle = new JLabel("初出茅庐");
+			}else if(group.getScore()<=70&&group.getScore()>51){
+				 lblTitle = new JLabel("懵懵懂懂");
+			}else if(group.getScore()<=101&&group.getScore()>70){
+				 lblTitle = new JLabel("略知一二");
+			}else if(group.getScore()<=150&&group.getScore()>101){
+					 lblTitle = new JLabel("博学多才");
+			}else if(group.getScore()<=210&&group.getScore()>151){
+				 lblTitle = new JLabel("才高八斗");
+			}else if(group.getScore()<=300&&group.getScore()>211){
+				 lblTitle = new JLabel("满腹经纶");
+			}else if(group.getScore()>300){
+				 lblTitle = new JLabel("名满天下");
+			}
+		}else{
+			 lblTitle = new JLabel("初出茅庐");
+		}
 		lblTitle.setBounds(20,0, 65, 26);
 		lblTitle.setFont(new Font("Microsoft YaHei", Font.BOLD, 13));
 		lblTitle.setForeground(new Color(Integer.parseInt("ad7f30", 16)));
 		return lblTitle;
 	}
-	
-	private MultilineLabel createGroupMember(){
+
+	private MultilineLabel createGroupMember() {
 		MultilineLabel lblMember = new MultilineLabel("");
-		lblMember.setBounds(15,115, 240, 35);
+		lblMember.setBounds(15, 115, 240, 35);
 		lblMember.setForeground(new Color(Integer.parseInt("a1a1a1", 16)));
 		return lblMember;
 	}
-	
-	private JButton createPraiseButton(){
+
+	private JButton createPraiseButton() {
 		JButton lblPraise = new JButton();
 		Icon iconPlus = new ImageIcon(BTN_PRAISE_NORMAL);
 		lblPraise = new JButton();
@@ -152,11 +178,11 @@ public class PraiseGroupPanel extends JPanel implements MouseListener,setScoreCa
 		lblPraise.setFocusPainted(false);
 		lblPraise.setBorderPainted(false);// 设置边框不可见
 		lblPraise.setContentAreaFilled(false);// 设置透明
-		lblPraise.setBounds(0,162, iconPlus.getIconWidth(), iconPlus.getIconHeight());
+		lblPraise.setBounds(0, 162, iconPlus.getIconWidth(), iconPlus.getIconHeight());
 		return lblPraise;
 	}
-	
-	private JButton createPunishButton(){
+
+	private JButton createPunishButton() {
 		JButton lblPunish = new JButton();
 		Icon iconMinus = new ImageIcon(BTN_PUNISH_NORMAL);
 		lblPunish = new JButton();
@@ -164,11 +190,11 @@ public class PraiseGroupPanel extends JPanel implements MouseListener,setScoreCa
 		lblPunish.setFocusPainted(false);
 		lblPunish.setBorderPainted(false);// 设置边框不可见
 		lblPunish.setContentAreaFilled(false);// 设置透明
-		lblPunish.setBounds(89,162, iconMinus.getIconWidth(), iconMinus.getIconHeight());
+		lblPunish.setBounds(89, 162, iconMinus.getIconWidth(), iconMinus.getIconHeight());
 		return lblPunish;
 	}
-	
-	private JButton createMedalButton(){
+
+	private JButton createMedalButton() {
 		JButton lblMedal = new JButton();
 		Icon iconMedal = new ImageIcon(BTN_MEDAL_NORMAL);
 		lblMedal = new JButton();
@@ -176,9 +202,10 @@ public class PraiseGroupPanel extends JPanel implements MouseListener,setScoreCa
 		lblMedal.setFocusPainted(false);
 		lblMedal.setBorderPainted(false);// 设置边框不可见
 		lblMedal.setContentAreaFilled(false);// 设置透明
-		lblMedal.setBounds(177,162, iconMedal.getIconWidth(), iconMedal.getIconHeight());
+		lblMedal.setBounds(177, 162, iconMedal.getIconWidth(), iconMedal.getIconHeight());
 		return lblMedal;
 	}
+
 	public Group getGroup() {
 		return group;
 	}
@@ -209,12 +236,12 @@ public class PraiseGroupPanel extends JPanel implements MouseListener,setScoreCa
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		
+
 	}
 
 	@Override
@@ -229,7 +256,7 @@ public class PraiseGroupPanel extends JPanel implements MouseListener,setScoreCa
 			new MedalDialog(MainFrame.getInstance().getFrame(), group);
 		}
 	}
-	
+
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		if (e.getSource() == btnPraise) {
@@ -258,6 +285,22 @@ public class PraiseGroupPanel extends JPanel implements MouseListener,setScoreCa
 
 	@Override
 	public void setScore(String score) {
-			lblScore.setText(score);
+		lblScore.setText(score);
+		int groupScore=Integer.parseInt(score);
+		if(groupScore<=50){
+			 lblTitle.setText("初出茅庐");
+		}else if(groupScore<=70&&groupScore>50){
+			 lblTitle .setText("懵懵懂懂");
+		}else if(groupScore<=100&&groupScore>70){
+			 lblTitle .setText("略知一二");
+		}else if(groupScore<=150&&groupScore>100){
+				 lblTitle .setText("博学多才");
+		}else if(groupScore<=210&&groupScore>151){
+			 lblTitle .setText("才高八斗");
+		}else if(groupScore<=300&&groupScore>210){
+			 lblTitle .setText("满腹经纶");
+		}else if(groupScore>300){
+			 lblTitle .setText("名满天下");
+		}
 	}
 }
