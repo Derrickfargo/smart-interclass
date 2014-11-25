@@ -30,6 +30,7 @@ import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.ui.MainFrame;
 import cn.com.incito.interclass.ui.PraiseGroupPanel;
 import cn.com.incito.interclass.ui.QuizStudent;
+import cn.com.incito.server.api.Application;
 import cn.com.incito.server.utils.URLs;
 
 import com.alibaba.fastjson.JSON;
@@ -271,6 +272,7 @@ public class PunishDialog extends JDialog implements MouseListener {
 						group.setScore((int) Math.round(scoreResult));
 						if (frame != null) {
 							((PraiseGroupPanel)frame).setScore(String.valueOf(Math.round(scoreResult)));
+							Application.getInstance().refresh();
 						}
 					}
 				}
