@@ -7,6 +7,8 @@ import java.awt.Point;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -103,6 +105,24 @@ public class FloatIcon extends MouseAdapter {
 		// x, y为坐标定位
 		dialog.setBounds((int) (d.getWidth() - 300),
 				(int) (d.getHeight() - 300), 270, 270);
+		//下面代码主要是用来点击空白页面关闭菜单
+		dialog.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				new Thread() {
+					@Override
+					public void run() {
+						try {
+							Thread.sleep(150);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						showMenu(false);
+						isShowing = false;
+					}
+				}.start();
+			}
+		});
 		dialog.setVisible(true);
 	}
 
