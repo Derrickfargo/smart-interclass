@@ -67,7 +67,7 @@ public class Application {
     private Set<String> onlineDevice = new HashSet<String>();
     private Set<Student> onlineStudent = new HashSet<Student>();
     private List<Course> courses = new ArrayList<Course>();//所有的课程
-
+    private List<Room> rooms = new ArrayList<Room>();
     private Map<Integer, List<SocketChannel>> groupChannel;// 保存每组和已登录的socket
     private Map<String, List<Student>> imeiStudent = new HashMap<String, List<Student>>();
     private Map<String, SocketChannel> clientChannel;// 保存所有设备登陆的socket，imei和socket
@@ -109,7 +109,6 @@ public class Application {
     private Application() {
     	lock();
         clear();
-        new Login();
     }
     
     private void lock(){
@@ -629,6 +628,16 @@ public class Application {
 
 	public void setCourses(List<Course> courses) {
 		this.courses = courses;
+	}
+
+
+	public List<Room> getRooms() {
+		return rooms;
+	}
+
+
+	public void setRooms(List<Room> rooms) {
+		this.rooms = rooms;
 	}
 
 }

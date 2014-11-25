@@ -179,6 +179,7 @@ public class Login2 extends MouseAdapter {
 		});
 		initData();
 		setBgimg();// 设置背景
+		frame.setVisible(true);
 	}
 
 	private void initData() {
@@ -377,5 +378,4 @@ public class Login2 extends MouseAdapter {
 			}
 		});
 	}
-	
 }

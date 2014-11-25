@@ -79,4 +79,12 @@
 			id
 		LIMIT 0,#{pageNum}
 	</select>
+	<select id="getRoomListBySchoolId" parameterType="java.lang.Integer" resultType="com.incito.interclass.entity.Room">
+		SELECT
+			id,name,school_id AS schoolId ,mac
+		FROM
+			tb_room
+		WHERE 
+			school_id=#{id}
+	</select>
 </mapper>

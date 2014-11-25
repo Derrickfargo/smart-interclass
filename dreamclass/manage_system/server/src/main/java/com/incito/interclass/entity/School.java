@@ -1,8 +1,8 @@
 package com.incito.interclass.entity;
 
-import java.io.Serializable;
+import java.util.Date;
 
-public class School implements Serializable {
+public class School extends User {
 
 	/**
 	 * 
@@ -15,7 +15,7 @@ public class School implements Serializable {
 	private String email;
 	private int schoolType;
 	private String intro;
-	private int ctime;
+	private Date ctime;
 
 	public int getId() {
 		return id;
@@ -65,11 +65,11 @@ public class School implements Serializable {
 		this.intro = intro;
 	}
 
-	public int getCtime() {
+	public Date getCtime() {
 		return ctime;
 	}
 
-	public void setCtime(int ctime) {
+	public void setCtime(Date ctime) {
 		this.ctime = ctime;
 	}
 

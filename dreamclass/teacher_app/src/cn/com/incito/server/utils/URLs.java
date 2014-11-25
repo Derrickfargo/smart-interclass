@@ -24,6 +24,7 @@ public class URLs {
 	public final static String HOST = IP + ":" + PORT + "/app";
 	private final static String URL_API_HOST = HTTP + HOST + URL_SPLITTER;
 	
+	
 	/**
 	 * 分数奖励
 	 */
@@ -38,7 +39,10 @@ public class URLs {
 	 * 老师登陆
 	 */
 	public static String URL_TEACHER_LOGIN = URL_API_HOST + "api/teacher/login";
-
+//	/**
+//	 * 教室更新
+//	 */
+//	public static final String URL_TEACHER_ROOMUPDATE =URL_API_HOST+"api/teacher/roomUpdate";
 	/**
 	 * 获取分组
 	 */
@@ -47,7 +51,11 @@ public class URLs {
 	 * 提交教室名称
 	 */
 	public static String URL_TEACHER_ROOM = URL_API_HOST+"api/teacher/room";
-
+	/**
+	 * 学校校验
+	 */
+	public static String URL_TEACHER_SCHOOLCHECK = URL_API_HOST+"api/teacher/schoolCheck";
+	
 	/**
 	 * 学生注册
 	 */

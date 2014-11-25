@@ -6,28 +6,17 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.URL;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -40,41 +29,37 @@ import org.apache.log4j.Logger;
 import cn.com.incito.http.AsyncHttpConnection;
 import cn.com.incito.http.StringResponseHandler;
 import cn.com.incito.http.support.ParamsWrapper;
+import cn.com.incito.interclass.po.Course;
 import cn.com.incito.interclass.po.Room;
-import cn.com.incito.interclass.po.School;
+import cn.com.incito.interclass.ui.widget.Item;
 import cn.com.incito.server.api.Application;
+import cn.com.incito.server.api.result.SchoolLoginResultData;
 import cn.com.incito.server.utils.UIHelper;
 import cn.com.incito.server.utils.URLs;
-import cn.com.incito.server.api.result.SchoolLoginResultData;
-import cn.com.incito.server.api.result.TeacherLoginResultData;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-/**
- * 登录时验证学校页面
- * @author JHON
- *
- */
-public class Login3 extends MouseAdapter{
+
+public class Login4 extends MouseAdapter{
 
 	private JFrame frame = new JFrame();
 	private Boolean isDragged;
 	private Point loc, tmp;
-	private JLabel lblschoolName;
+	private JLabel lblRoomName;
 	private JButton btnMin, btnClose, btnLogin;
-	private JTextField txtschoolName;
+	private JComboBox<Item> boxRoomName = new JComboBox<Item>();
+	private JTextField txtRoomName=new JTextField();
 	private JLabel lblBackground;
 	private Application app = Application.getInstance();
-//	private Logger logger = Logger.getLogger(Login2.class.getName());
-	private JPasswordField txtschoolPassword;
-	private JLabel lblschoolpassword;
+	private List<Room> roomList;
 
 	public JFrame getFrame() {
 		return frame;
 	}
 
 	// 构造函数、调用方法
-	public Login3() {
+	public Login4() {
+		this.roomList=app.getRooms();
 		showLoginUI();
 		setDragable();
 	}
@@ -116,33 +101,25 @@ public class Login3 extends MouseAdapter{
 		btnClose.setBounds(412, 9, imgMax.getIconWidth(), imgMax.getIconHeight());
 		btnClose.addMouseListener(this);
 		frame.add(top);
-		//学校名称
-		lblschoolName = new JLabel();
-		lblschoolName.setForeground(UIHelper.getDefaultFontColor());
-		lblschoolName.setText("请输入学校名称:");
-		lblschoolName.setBounds(60, 65, 265, 35);
-		frame.add(lblschoolName);
-		txtschoolName = new JTextField();
-		txtschoolName.setBounds(180, 65, 130, 35);
-		frame.add(txtschoolName);
-		txtschoolName.addKeyListener(new KeyAdapter() {//输入校验
-			
-		});
-		//学校密码
-		lblschoolpassword= new JLabel();
-		lblschoolpassword.setForeground(UIHelper.getDefaultFontColor());
-		lblschoolpassword.setText("请输入密码:");
-		lblschoolpassword.setBounds(60, 125, 265, 35);
-		frame.add(lblschoolpassword);
-		txtschoolPassword = new JPasswordField();
-		txtschoolPassword.setBounds(180, 125, 130, 35);
-		frame.add(txtschoolPassword);
-		txtschoolPassword.addKeyListener(new KeyAdapter() {//密码输入校验
-			
-			
-			
-			
-		});
+		//教室名称
+		List<Room> rooms=app.getRooms();
+		lblRoomName = new JLabel();
+		lblRoomName.setForeground(UIHelper.getDefaultFontColor());
+		lblRoomName.setText("请选择教室名称:");
+		lblRoomName.setBounds(60, 65, 265, 35);
+		frame.add(lblRoomName);
+		if(rooms.size()==1){
+			txtRoomName.setText(rooms.get(0).getName());
+			txtRoomName.setForeground(UIHelper.getDefaultFontColor());
+			txtRoomName.setBounds(180, 125, 130, 35);
+			frame.add(txtRoomName);
+		}
+		else{
+			initData();
+			boxRoomName.setForeground(UIHelper.getDefaultFontColor());
+			boxRoomName.setBounds(180, 125, 130, 35);
+			frame.add(boxRoomName);
+		}
 		
 		
 
@@ -163,12 +140,17 @@ public class Login3 extends MouseAdapter{
 				sentRoomMsg();
 			}
 		});
-//		initData();
 		setBgimg();// 设置背景
 		
 		frame.setVisible(true);
 	}
-
+	private void initData() {
+		for (Room room : roomList) {
+			Item item = new Item(room.getId(), room.getName());
+			boxRoomName.addItem(item);
+		}
+//		boxRoomName.setMaximumRowCount(7);
+	}
 
 	// 拖动窗体的方法
 	private void setDragable() {
@@ -271,105 +253,57 @@ public class Login3 extends MouseAdapter{
 	}
 	
 	private void sentRoomMsg(){
-		String schoolName = txtschoolName.getText();
-		System.out.println(schoolName);
-		String schoolPassword = new String(txtschoolPassword.getPassword());
+		
 		AsyncHttpConnection http = AsyncHttpConnection.getInstance();
 		ParamsWrapper param = new ParamsWrapper();
-		param.put("schoolName", schoolName);
-		param.put("schoolPassword", schoolPassword);
-		http.post(URLs.URL_TEACHER_SCHOOLCHECK, param, new StringResponseHandler() {
+		Item RoomNameByBox = (Item) boxRoomName.getSelectedItem();
+		String RoomNameByText = txtRoomName.getText();
+		if(RoomNameByText==null||("").equals(RoomNameByText)){
+			int roomId = RoomNameByBox.getKey();
+			for (Room room : roomList) {
+				if(roomId==room.getId())
+					app.setMac(room.getMac());
+			}
 			
+		}
+		else{
+		param.put("roomName", txtRoomName.getText());
+		param.put("schoolId", roomList.get(0).getSchoolId());
+		param.put("mac", roomList.get(0).getMac());
+		http.post(URLs.URL_TEACHER_ROOM, param, new StringResponseHandler() {	
 			@Override
 			public void onSubmit(URL url, ParamsWrapper params) {
 				
 			}
-			
 			@Override
 			public void onStreamError(IOException exp) {
-				
+
 			}
 			
 			@Override
 			public void onConnectError(IOException exp) {
-				JOptionPane.showMessageDialog(frame, "网络连接错误，请检查网络");
+				exp.printStackTrace();
+				JOptionPane.showMessageDialog(frame, "教室更名失败，请检查网络");
+				
 			}
 			
 			@Override
 			protected void onResponse(String content, URL url) {
+				JSONObject jsonObject = JSON.parseObject(content);
 				if (content != null && !content.equals("")) {
-					JSONObject jsonObject = JSON.parseObject(content);
-					if (jsonObject.getIntValue("code") == 1) {
-						JOptionPane.showMessageDialog(frame, "登录名或者密码错误!");
+					if (jsonObject.getIntValue("code") == 4) {
+						JOptionPane.showMessageDialog(frame, "教室更名失败，请重试");
 						return;
 					}
 					frame.setVisible(false);
-				String data = jsonObject.getString("data");
-				SchoolLoginResultData resultData= JSON.parseObject(data, SchoolLoginResultData.class);
-				final School school = resultData.getSchool();
-				final List<Room>rooms =resultData.getRooms();
-				if(resultData.getRooms()==null||resultData.getRooms().size()==0){
-					generateKey();
-					Room room = new Room();
-					room.setName("未来课堂1");
-					room.setSchoolId(school.getId());
-					room.setMac(app.getMac());
-					rooms.add(room);
-					app.setRoom(room);
-				}
-				app.setRooms(rooms);
-				new Login4();
+					new Login();
 				}
 			}
 		});
-		
-	}
-	private boolean generateKey(){
-		File checkingKey = new File("./key/key.dat");
-		if(!checkingKey.exists()){
-			try {
-				File file= new File("./key");
-				file.mkdirs();
-				KeyGenerator key = KeyGenerator.getInstance("HmacMD5");
-				key.init(64);
-				SecretKey secKey = key.generateKey();
-				FileOutputStream fos = new FileOutputStream("./key/key.dat");
-				ObjectOutputStream oos = new ObjectOutputStream(fos);
-				oos.writeObject(secKey);
-				oos.close();
-			} catch (NoSuchAlgorithmException e) {
-				Logger logger = Logger.getLogger(Login.class.getName());
-				logger.info("没有该算法");
-				e.printStackTrace();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 		}
-		try {
-			FileInputStream fis = new FileInputStream("./key/key.dat");
-			ObjectInputStream ois = new ObjectInputStream(fis);
-			SecretKey secKey=(SecretKey) ois.readObject();
-			ois.close();
-			StringBuffer key = new StringBuffer();
-			for (int i = 0; i < secKey.getEncoded().length; i++) {
-				key.append(secKey.getEncoded()[i]);
-			}
-			 final String mac = new String(key);
-			 app.setMac(mac);
-			 return true;
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return false;
 	}
 
 	public static void main(String[] args) {
-		new Login3();
+		new Login4();
 	}
 }

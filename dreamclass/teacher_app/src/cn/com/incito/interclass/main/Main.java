@@ -25,6 +25,7 @@ import cn.com.incito.http.StringResponseHandler;
 import cn.com.incito.http.support.ParamsWrapper;
 import cn.com.incito.interclass.po.Version;
 import cn.com.incito.interclass.ui.Login;
+import cn.com.incito.interclass.ui.Login3;
 import cn.com.incito.interclass.ui.widget.UpdateDialog;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.exception.AppExceptionHandler;
@@ -74,7 +75,13 @@ public class Main {
 					JSONObject jsonObject = JSON.parseObject(content);
 					if (jsonObject.getIntValue("code") == 1) {//没有升级
 						// 初始化应用程序
-						Application.getInstance();
+						if(checkMac()==null||checkMac()==""){
+							Application.getInstance();
+							new Login3();
+							return;
+						}
+						Application.getInstance().setMac(checkMac());
+						new Login();
 						return;
 					}
 					File file = new File("update.exe");
@@ -129,5 +136,33 @@ public class Main {
 	
 	private static void registerExceptionHandler(){
 		Thread.setDefaultUncaughtExceptionHandler(new AppExceptionHandler());
+	}
+	
+	private static String checkMac(){
+		File checkingKey = new File("./key/key.dat");
+		if(!checkingKey.exists())
+			return null;
+		try {
+			FileInputStream fis = new FileInputStream("./key/key.dat");
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			SecretKey secKey=(SecretKey) ois.readObject();
+			ois.close();
+			StringBuffer key = new StringBuffer();
+			for (int i = 0; i < secKey.getEncoded().length; i++) {
+				key.append(secKey.getEncoded()[i]);
+			}
+			 final String mac = new String(key);
+			 if(mac==null||mac==""){
+				 return null;
+			 }
+			 return mac;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

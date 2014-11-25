@@ -219,49 +219,6 @@ public class Login extends MouseAdapter {
 		});
 	}
 	
-//检查mac
-	private  String checkKey(){
-		File checkingKey = new File("./key/key.dat");
-		if(!checkingKey.exists()){
-			try {
-				File file= new File("./key");
-				file.mkdirs();
-				KeyGenerator key = KeyGenerator.getInstance("HmacMD5");
-				key.init(64);
-				SecretKey secKey = key.generateKey();
-				FileOutputStream fos = new FileOutputStream("./key/key.dat");
-				ObjectOutputStream oos = new ObjectOutputStream(fos);
-				oos.writeObject(secKey);
-				oos.close();
-			} catch (NoSuchAlgorithmException e) {
-				logger.info("没有该算法");
-				e.printStackTrace();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		try {
-			FileInputStream fis = new FileInputStream("./key/key.dat");
-			ObjectInputStream ois = new ObjectInputStream(fis);
-			SecretKey secKey=(SecretKey) ois.readObject();
-			ois.close();
-			StringBuffer key = new StringBuffer();
-			for (int i = 0; i < secKey.getEncoded().length; i++) {
-				key.append(secKey.getEncoded()[i]);
-			}
-			 final String mac = new String(key);
-			 return mac;
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 	// 设置背景
 	public void setBgimg() {
 		lblBackground = new JLabel();
@@ -355,12 +312,9 @@ public class Login extends MouseAdapter {
 	}
 
 	private void doLogin() {
-		final String mac = checkKey();
-		Application.getInstance().setMac(mac);
-		logger.info("mac:" + mac);
-		// try {
 		String uname = txtUserName.getText();
 		String password = new String(txtPassword.getPassword());
+		String mac = Application.getInstance().getMac();
 
 		// 使用Get方法，取得服务端响应流：
 		AsyncHttpConnection http = AsyncHttpConnection.getInstance();
@@ -391,20 +345,13 @@ public class Login extends MouseAdapter {
 					Application.getInstance().setTeacher(resultData.getTeacher());
 					Application.getInstance().setCourses(resultData.getCourses());
 					// 第一步获取教室、教师数据
-					if (resultData.getRoom() == null) {
-//						JOptionPane.showMessageDialog(frame, "本教室未有效注册!");
-//						logger.info("本教室未有效注册!");
-						frame.setVisible(false);
-						Login3 login3 = new Login3();
-						login3.getFrame().setVisible(true);
-						return;
-					} else {
+
 						frame.setVisible(false);
 						Application.getInstance().setRoom(resultData.getRoom());
 						Login2 login2 = new Login2(resultData.getCourses());
 						login2.getFrame().setVisible(true);
 						logger.info("登陆返回结果：" + content);
-					}
+					
 				}
 			}
 
@@ -424,8 +371,5 @@ public class Login extends MouseAdapter {
 				JOptionPane.showMessageDialog(frame, "数据解析错误！");
 			}
 		});
-	}
-	public static void main(String[] args) {
-		new Login();
 	}
 }

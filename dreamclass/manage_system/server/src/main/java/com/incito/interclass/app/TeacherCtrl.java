@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSON;
 import com.incito.base.util.Md5Utils;
 import com.incito.interclass.app.result.ApiResult;
+import com.incito.interclass.app.result.SchoolLoginResultData;
 import com.incito.interclass.app.result.TeacherGroupResultData;
 import com.incito.interclass.app.result.TeacherLoginResultData;
 import com.incito.interclass.business.ClassService;
@@ -24,6 +25,7 @@ import com.incito.interclass.entity.Course;
 import com.incito.interclass.entity.Device;
 import com.incito.interclass.entity.Group;
 import com.incito.interclass.entity.Room;
+import com.incito.interclass.entity.School;
 import com.incito.interclass.entity.Table;
 import com.incito.interclass.entity.Teacher;
 
@@ -96,7 +98,13 @@ public class TeacherCtrl extends BaseCtrl {
 		return  JSON.toJSONString(result);
 	}
 	
-	
+	/**
+	 * 保存新增教室
+	 * @param roomName
+	 * @param mac
+	 * @param schoolId
+	 * @return
+	 */
 	@RequestMapping(value="/room",produces={"application/json;charset=UTF-8"})
 	public String room(String roomName,String mac,int schoolId){
 		Room room = new Room();
@@ -110,6 +118,41 @@ public class TeacherCtrl extends BaseCtrl {
 		
 		ApiResult result = new ApiResult();
 		result.setCode(ApiResult.SUCCESS);
+		return JSON.toJSONString(result);
+	}
+//	@RequestMapping(value="/roomUpdate",produces={"application/json;charset=UTF-8"})
+//	public String roomUpdate(String mac,int schoolId,String roomName,int id){
+//		Room room = new Room();
+//		room.setId(id);
+//		room.setMac(mac);
+//		room.setSchoolId(schoolId);
+//		room.setName(roomName);
+//		boolean flag = roomService.update(room);
+//		if(flag==false){
+//			return renderJSONString(UPDATE_ROOM_ERROR);
+//		}
+//		ApiResult result= new ApiResult();
+//		result.setCode(SUCCESS);
+//		return JSON.toJSONString(result);
+//	}
+	
+	@RequestMapping(value="/schoolCheck",produces={"application/json;charset=UTF-8"})
+	public String schoolCheck(String schoolName,String schoolPassword){
+		School school = userService.getSchoolByLogin(schoolName);
+		if(school==null||school.getId()==0){
+			return renderJSONString(USERNAME_OR_PASSWORD_ERROR);
+		}
+		schoolPassword = Md5Utils.md5(Md5Utils.md5(schoolPassword) + school.getLoginSalt());
+		if(!schoolPassword.equals(school.getPassword())){
+			return renderJSONString(USERNAME_OR_PASSWORD_ERROR);
+		}
+		ApiResult result = new ApiResult();
+		List<Room> rooms = roomService.getRoomListBySchoolId(school.getId());
+		SchoolLoginResultData data = new SchoolLoginResultData();
+		data.setSchool(school);
+		data.setRooms(rooms);
+		result.setData(data);
+		result.setCode(SUCCESS);
 		return JSON.toJSONString(result);
 	}
 	

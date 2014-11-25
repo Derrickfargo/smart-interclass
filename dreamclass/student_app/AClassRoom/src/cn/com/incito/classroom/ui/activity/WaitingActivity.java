@@ -20,6 +20,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.adapter.GroupNumAdapter;
 import cn.com.incito.classroom.base.BaseActivity;
@@ -70,6 +72,8 @@ public class WaitingActivity extends BaseActivity {
 	 * 0只显示增加按钮，1显示姓名2显示姓名、学号、性别
 	 */
 	private int addState = 0;
+	private RelativeLayout join_relative;
+	private TextView join_text_notice;
 
 	@Override
 	protected void onAfterOnCreate(Bundle savedInstanceState) {
@@ -99,6 +103,10 @@ public class WaitingActivity extends BaseActivity {
 		llayout1 = (LinearLayout) findViewById(R.id.llayout1);
 		llayout = (LinearLayout) findViewById(R.id.llayout);
 		et_stname = (EditText) findViewById(R.id.et_stname);
+		join_relative=(RelativeLayout) findViewById(R.id.join_relativelayout);
+		join_text_notice=(TextView)findViewById(R.id.text_notice);
+		join_relative.setPaddingRelative(200, 0, 0, 0);
+		
 	}
 
 	private void initListener() {
@@ -109,6 +117,8 @@ public class WaitingActivity extends BaseActivity {
 					llayout1.setAnimation(AnimationUtils.loadAnimation(
 							WaitingActivity.this, R.anim.push_bottom_in));
 					llayout1.setVisibility(View.VISIBLE);
+					join_text_notice.setVisibility(View.GONE);
+					join_relative.setPaddingRelative(0, 0, 0, 0);
 					addState = 1;
 				} else {
 					if (validate()) {
@@ -127,8 +137,9 @@ public class WaitingActivity extends BaseActivity {
 						mProgressDialog.show();
 						et_stnumber.setText("");
 						et_stname.setText("");
-						male.setChecked(true);
 						llayout1.setVisibility(View.GONE);
+						join_text_notice.setVisibility(View.VISIBLE);
+						join_relative.setPaddingRelative(200, 0, 0, 0);
 					}
 
 				}
@@ -272,6 +283,9 @@ public class WaitingActivity extends BaseActivity {
 	public boolean onTouchEvent(MotionEvent event) {
 		if (addState == 1) {
 			llayout1.setVisibility(View.GONE);
+			join_text_notice.setVisibility(View.VISIBLE);
+			join_relative.setPaddingRelative(200, 0, 0, 0);
+//			join_relative.setLeft(400);
 			addState = 0;
 			imm.hideSoftInputFromWindow(llayout.getWindowToken(), 0);
 			return false;

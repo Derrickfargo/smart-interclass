@@ -22,4 +22,6 @@ public interface RoomMapper {
 	void delete(int id);
 
 	List<School> getRoomListByVagueName(@Param("schoolName") String SchoolName,@Param("pageNum") int pageNum);
+
+	List<Room> getRoomListBySchoolId(int id);
 }
