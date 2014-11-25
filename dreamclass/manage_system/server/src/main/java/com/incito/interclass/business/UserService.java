@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.incito.base.exception.AppException;
 import com.incito.base.util.Md5Utils;
 import com.incito.interclass.entity.Admin;
+import com.incito.interclass.entity.School;
 import com.incito.interclass.entity.Student;
 import com.incito.interclass.entity.Teacher;
 import com.incito.interclass.entity.User;
@@ -121,5 +122,8 @@ public class UserService {
 	public void deleteStudent(int studentId) {
 		userMapper.deleteUser(studentId);
 		userMapper.deleteStudent(studentId);
+	}
+	public School getSchoolByLogin(String schoolName) {
+		return userMapper.getSchoolByLogin(schoolName);
 	}
 }

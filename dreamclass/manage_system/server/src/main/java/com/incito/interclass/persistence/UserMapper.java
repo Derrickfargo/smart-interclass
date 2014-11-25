@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.incito.interclass.entity.Admin;
+import com.incito.interclass.entity.School;
 import com.incito.interclass.entity.Student;
 import com.incito.interclass.entity.Teacher;
 import com.incito.interclass.entity.User;
@@ -44,4 +45,6 @@ public interface UserMapper {
 	Integer updateMedals(@Param("groupId")int groupId,@Param("medals")String medals);
 	
 	Teacher getTeacherByLogin(String login);
+
+	School getSchoolByLogin(String schoolName);
 }
