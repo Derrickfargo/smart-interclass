@@ -7,6 +7,8 @@ import java.awt.Point;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -54,7 +56,7 @@ public class FloatIcon extends MouseAdapter {
 	private boolean isDragged, isShowing;
 	private Point loc, tmp;
 	private JLabel lblIcon, iblTips, lblBackground;
-	private JButton btnQuiz, btnPraise, btnLock, btnExit;
+	private JButton btnQuiz, /*btnPraise, btnLock,*/ btnExit;
 	private TrayIcon trayIcon; // 托盘图标
 	private SystemTray tray; // 托盘的实例
 	MainFrame frame;
@@ -103,6 +105,24 @@ public class FloatIcon extends MouseAdapter {
 		// x, y为坐标定位
 		dialog.setBounds((int) (d.getWidth() - 300),
 				(int) (d.getHeight() - 300), 270, 270);
+		//下面代码主要是用来点击空白页面关闭菜单
+		dialog.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				new Thread() {
+					@Override
+					public void run() {
+						try {
+							Thread.sleep(150);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						showMenu(false);
+						isShowing = false;
+					}
+				}.start();
+			}
+		});
 		dialog.setVisible(true);
 	}
 
@@ -124,29 +144,29 @@ public class FloatIcon extends MouseAdapter {
 		btnQuiz.addMouseListener(this);
 		dialog.add(btnQuiz);
 
-		btnPraise = new JButton();
-		Icon iconPraise = new ImageIcon(ICON_PRAISE_NORMAL);
-		btnPraise.setIcon(iconPraise);
-		btnPraise.setFocusPainted(false);
-		btnPraise.setBorderPainted(false);// 设置边框不可见
-		btnPraise.setContentAreaFilled(false);// 设置透明
-		btnPraise.setBounds(114, 70, iconPraise.getIconWidth(),
-				iconPraise.getIconHeight());
-		btnPraise.setVisible(false);// 默认不显示
-		btnPraise.addMouseListener(this);
-		dialog.add(btnPraise);
-
-		btnLock = new JButton();
-		Icon iconLock = new ImageIcon(ICON_LOCK_NORMAL);
-		btnLock.setIcon(iconLock);
-		btnLock.setFocusPainted(false);
-		btnLock.setBorderPainted(false);// 设置边框不可见
-		btnLock.setContentAreaFilled(false);// 设置透明
-		btnLock.setBounds(17, 174, iconLock.getIconWidth(),
-				iconLock.getIconHeight());
-		btnLock.setVisible(false);// 默认不显示
-		btnLock.addMouseListener(this);
-		dialog.add(btnLock);
+//		btnPraise = new JButton();
+//		Icon iconPraise = new ImageIcon(ICON_PRAISE_NORMAL);
+//		btnPraise.setIcon(iconPraise);
+//		btnPraise.setFocusPainted(false);
+//		btnPraise.setBorderPainted(false);// 设置边框不可见
+//		btnPraise.setContentAreaFilled(false);// 设置透明
+//		btnPraise.setBounds(114, 70, iconPraise.getIconWidth(),
+//				iconPraise.getIconHeight());
+//		btnPraise.setVisible(false);// 默认不显示
+//		btnPraise.addMouseListener(this);
+//		dialog.add(btnPraise);
+//
+//		btnLock = new JButton();
+//		Icon iconLock = new ImageIcon(ICON_LOCK_NORMAL);
+//		btnLock.setIcon(iconLock);
+//		btnLock.setFocusPainted(false);
+//		btnLock.setBorderPainted(false);// 设置边框不可见
+//		btnLock.setContentAreaFilled(false);// 设置透明
+//		btnLock.setBounds(17, 174, iconLock.getIconWidth(),
+//				iconLock.getIconHeight());
+//		btnLock.setVisible(false);// 默认不显示
+//		btnLock.addMouseListener(this);
+//		dialog.add(btnLock);
 
 		btnExit = new JButton();
 		Icon iconExit = new ImageIcon(ICON_EXIT_NORMAL);
@@ -154,7 +174,7 @@ public class FloatIcon extends MouseAdapter {
 		btnExit.setFocusPainted(false);
 		btnExit.setBorderPainted(false);// 设置边框不可见
 		btnExit.setContentAreaFilled(false);// 设置透明
-		btnExit.setBounds(114, 174, iconExit.getIconWidth(),
+		btnExit.setBounds(/*114, 174,*/114, 70, iconExit.getIconWidth(),
 				iconExit.getIconHeight());
 		btnExit.setVisible(false);// 默认不显示
 		btnExit.addMouseListener(this);
@@ -195,7 +215,7 @@ public class FloatIcon extends MouseAdapter {
 	private void setBackground() {
 		lblBackground = new JLabel();
 		lblBackground.setIcon(new ImageIcon(BACKGROUND));
-		lblBackground.setBounds(0, 50, 220, 220);
+		lblBackground.setBounds(0, 50, 220, /*220*/121);
 		lblBackground.setVisible(false);// 默认不显示
 		dialog.add(lblBackground);
 	}
@@ -210,13 +230,13 @@ public class FloatIcon extends MouseAdapter {
 		} else {
 			btnQuiz.setIcon(new ImageIcon(ICON_QUIZ_NORMAL));
 		}
-		btnPraise.setVisible(isShowing);
-		btnLock.setVisible(isShowing);
-		if (Application.getInstance().isLockScreen) {
-			btnLock.setIcon(new ImageIcon(ICON_UNLOCK_NORMAL));
-		} else {
-			btnLock.setIcon(new ImageIcon(ICON_LOCK_NORMAL));
-		}
+//		btnPraise.setVisible(isShowing);
+//		btnLock.setVisible(isShowing);
+//		if (Application.getInstance().isLockScreen) {
+//			btnLock.setIcon(new ImageIcon(ICON_UNLOCK_NORMAL));
+//		} else {
+//			btnLock.setIcon(new ImageIcon(ICON_LOCK_NORMAL));
+//		}
 		btnExit.setVisible(isShowing);
 	}
 
@@ -282,23 +302,23 @@ public class FloatIcon extends MouseAdapter {
 					}
 				}
 			}
-			if (e.getSource() == btnPraise) {
-				showMenu(false);
-//				MainFrame.getInstance().showPraise();
-				MainFrame.getInstance().showQuiz();//点击表扬菜单时，暂时显示作业界面
-			}
-			if (e.getSource() == btnLock) {
-				showMenu(false);
-				if (Application.getInstance().isLockScreen) {//当前是锁屏状态，则执行解锁屏功能
-					btnLock.setIcon(new ImageIcon(ICON_LOCK_NORMAL));
-					UIHelper.sendLockScreenMessage(false);
-					Application.getInstance().setLockScreen(false);
-				} else {//当前是未锁屏状态，则执行锁屏功能
-					btnLock.setIcon(new ImageIcon(ICON_UNLOCK_NORMAL));
-					UIHelper.sendLockScreenMessage(true);
-					Application.getInstance().setLockScreen(true);
-				}
-			}
+//			if (e.getSource() == btnPraise) {
+//				showMenu(false);
+////				MainFrame.getInstance().showPraise();
+//				MainFrame.getInstance().showQuiz();//点击表扬菜单时，暂时显示作业界面
+//			}
+//			if (e.getSource() == btnLock) {
+//				showMenu(false);
+//				if (Application.getInstance().isLockScreen) {//当前是锁屏状态，则执行解锁屏功能
+//					btnLock.setIcon(new ImageIcon(ICON_LOCK_NORMAL));
+//					UIHelper.sendLockScreenMessage(false);
+//					Application.getInstance().setLockScreen(false);
+//				} else {//当前是未锁屏状态，则执行锁屏功能
+//					btnLock.setIcon(new ImageIcon(ICON_UNLOCK_NORMAL));
+//					UIHelper.sendLockScreenMessage(true);
+//					Application.getInstance().setLockScreen(true);
+//				}
+//			}
 			if (e.getSource() == btnExit) {
 				UIHelper.sendClassOverMessage();//
 				System.exit(0);
@@ -342,16 +362,16 @@ public class FloatIcon extends MouseAdapter {
 				btnQuiz.setIcon(new ImageIcon(ICON_QUIZ_HOVER));
 			}
 		}
-		if (e.getSource() == btnPraise) {
-			btnPraise.setIcon(new ImageIcon(ICON_PRAISE_HOVER));
-		}
-		if (e.getSource() == btnLock) {
-			if (Application.getInstance().isLockScreen) {
-				btnLock.setIcon(new ImageIcon(ICON_UNLOCK_HOVER));
-			} else {
-				btnLock.setIcon(new ImageIcon(ICON_LOCK_HOVER));
-			}
-		}
+//		if (e.getSource() == btnPraise) {
+//			btnPraise.setIcon(new ImageIcon(ICON_PRAISE_HOVER));
+//		}
+//		if (e.getSource() == btnLock) {
+//			if (Application.getInstance().isLockScreen) {
+//				btnLock.setIcon(new ImageIcon(ICON_UNLOCK_HOVER));
+//			} else {
+//				btnLock.setIcon(new ImageIcon(ICON_LOCK_HOVER));
+//			}
+//		}
 		if (e.getSource() == btnExit) {
 			btnExit.setIcon(new ImageIcon(ICON_EXIT_HOVER));
 		}
@@ -367,16 +387,16 @@ public class FloatIcon extends MouseAdapter {
 				btnQuiz.setIcon(new ImageIcon(ICON_QUIZ_NORMAL));
 			}
 		}
-		if (e.getSource() == btnPraise) {
-			btnPraise.setIcon(new ImageIcon(ICON_PRAISE_NORMAL));
-		}
-		if (e.getSource() == btnLock) {
-			if (Application.getInstance().isLockScreen) {
-				btnLock.setIcon(new ImageIcon(ICON_UNLOCK_NORMAL));
-			} else {
-				btnLock.setIcon(new ImageIcon(ICON_LOCK_NORMAL));
-			}
-		}
+//		if (e.getSource() == btnPraise) {
+//			btnPraise.setIcon(new ImageIcon(ICON_PRAISE_NORMAL));
+//		}
+//		if (e.getSource() == btnLock) {
+//			if (Application.getInstance().isLockScreen) {
+//				btnLock.setIcon(new ImageIcon(ICON_UNLOCK_NORMAL));
+//			} else {
+//				btnLock.setIcon(new ImageIcon(ICON_LOCK_NORMAL));
+//			}
+//		}
 		if (e.getSource() == btnExit) {
 			btnExit.setIcon(new ImageIcon(ICON_EXIT_NORMAL));
 		}
