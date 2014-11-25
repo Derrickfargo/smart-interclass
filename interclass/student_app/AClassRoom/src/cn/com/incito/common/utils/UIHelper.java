@@ -10,6 +10,7 @@ import cn.com.incito.classroom.ui.activity.ClassReadyActivity;
 import cn.com.incito.classroom.ui.activity.ClassingActivity;
 import cn.com.incito.classroom.ui.activity.DrawBoxActivity;
 import cn.com.incito.classroom.ui.activity.SelectGroupActivity;
+import cn.com.incito.classroom.ui.activity.SelectWifiActivity;
 import cn.com.incito.classroom.ui.activity.WaitForOtherMembersActivity;
 import cn.com.incito.classroom.ui.activity.WifiSelectorActivity;
 
@@ -20,6 +21,7 @@ public class UIHelper {
 	private SelectGroupActivity mSelectGroupActivity;
 	private WaitForOtherMembersActivity waitForOtherMembersActivity;
 	private WifiSelectorActivity wifiSelectorActivity;
+	private SelectWifiActivity selectWifiActivity;
 
 	private UIHelper() {
 		app = MyApplication.getInstance();
@@ -45,7 +47,17 @@ public class UIHelper {
 		
 	}
 
-
+	public SelectWifiActivity getWifiSelectActivity(){
+		return this.selectWifiActivity;
+	}
+	
+	public void setSelectorWifiActivity(SelectWifiActivity selectWifiActivity) {
+		if (this.selectWifiActivity != null) {
+			this.selectWifiActivity.finish();
+			this.selectWifiActivity = null;
+		}
+		this.selectWifiActivity = selectWifiActivity;
+	}
 
 	public WifiSelectorActivity getWifiSelectorActivity(){
 		return this.wifiSelectorActivity;
