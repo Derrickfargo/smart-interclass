@@ -70,38 +70,15 @@ public class Connection {
 	
 	private void doLogout(){
 		Application app = Application.getInstance();
-		Map<Integer, Group> tempGroup = app.getTempGroup();
-		//通过imei获得学生ID
-		CoreService coreService=new CoreService();
-		TempStudent student=coreService.getStudentIdByImei(imei);
-		tempGroup.remove(student.getId());
-		List<Group> groupList=new ArrayList<Group>();
-		//遍历临时分组 将还没有分组的小组列表传回给pad端
-		for (Integer key : Application.getInstance().getTempGroup().keySet()) {
-			groupList.add(Application.getInstance().getTempGroup().get(key));
-		}
-		
-		for (int i = 0; i < groupList.size(); i++) {
-			Group group=groupList.get(i);
-			List<Student> studentList=group.getStudents();
-			Iterator<Student> it = studentList.iterator();
-			while (it.hasNext()) {
-				Student studentTemp=it.next();
-				if (student.getId() == studentTemp.getId()){
-					studentList.remove(studentTemp);
-					break;
-				}
-			}
-		}
-		JSONObject result = new JSONObject();
-		result.put("studentId", student.getId());
-		result.put("code", 0);
-		result.put("data", groupList);
+		Student studnet = app.getStudentByImei(imei);
+		studnet.setLogin(false);
+		app.getOfflineStudent().add(studnet);
+		app.getOnlineStudent().remove(studnet);
 		app.refresh();// 更新UI
-//		sendResponse(result.toString());
 		Application.getInstance().getClientChannel().remove(imei);
 		
 	}
+	
 	private void sendResponse(String json) {
 		MessagePacking messagePacking = new MessagePacking(
 				Message.MESSAGE_GROUP_DELETE);
