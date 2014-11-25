@@ -224,12 +224,10 @@ public class SelectWifiActivity extends BaseActivity {
 
 			connectServerTimer = new Timer();
 			connectServerTimerTask = new TimerTask() {
-
 				@Override
 				public void run() {
 					if (!CoreSocket.getInstance().isConnected()) {
-						Log.i("SelectWifiActivity",
-								"Socket无连接,startMain退出 ");
+						Log.i("SelectWifiActivity","Socket无连接,startMain退出 ");
 						handler.sendEmptyMessage(3);// 重连socket
 					} else {
 						handler.sendEmptyMessage(4);// 开始登录
@@ -237,7 +235,7 @@ public class SelectWifiActivity extends BaseActivity {
 				}
 			};
 
-			connectServerTimer.schedule(connectServerTimerTask, 1 * 1000);
+			connectServerTimer.schedule(connectServerTimerTask, 3 * 1000);
 
 		} else {
 
@@ -268,7 +266,6 @@ public class SelectWifiActivity extends BaseActivity {
 				}
 			}
 		};
-
 		if (wifiAdmin.connectWifi(scanResult.SSID, password,
 				WifiCipherType.WIFICIPHER_WPA)) {
 			progressDialog.show();
@@ -282,7 +279,6 @@ public class SelectWifiActivity extends BaseActivity {
 	private void updateWifi() {
 		updateWifiTimer = new Timer();
 		updateWifiTimerTask = new TimerTask() {
-
 			@Override
 			public void run() {
 				handler.sendEmptyMessage(0);
@@ -310,13 +306,14 @@ public class SelectWifiActivity extends BaseActivity {
 				progressDialog.dismiss();
 				CoreSocket.getInstance().stopConnection();
 				ToastHelper.showCustomToast(getBaseContext(), "教室连接失败请重新连接...");
-//				connectServer();
 				break;
 			case 4:
 				progressDialog.setMessage(R.string.login);
 				startMainAct();
 				break;
 			case 11:
+				progressDialog.dismiss();
+				CoreSocket.getInstance().stopConnection();
 				ToastHelper.showCustomToast(SelectWifiActivity.this,"当前设备没有注册学生,请联系老师注册!");
 				break;
 			default:
@@ -344,6 +341,7 @@ public class SelectWifiActivity extends BaseActivity {
 		android.os.Message message = new android.os.Message();
 		message.what = 11;
 		handler.sendMessage(message);
+		
 	}
 
 	/**
@@ -358,6 +356,14 @@ public class SelectWifiActivity extends BaseActivity {
 				.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 		isConnected = wifiNetInfo.isConnected();
 		return isConnected;
+	}
+	
+	@Override
+	protected void onDestroy() {
+		if(progressDialog != null){
+			progressDialog.dismiss();
+		}
+		super.onDestroy();
 	}
 
 }

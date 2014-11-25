@@ -28,14 +28,13 @@ public class LoginHandler extends MessageHandler {
 		String server_port = data.getString("server_port");
 		Constants.setSERVER_IP(server_ip);
 		Constants.setSERVER_PORT(server_port);
-		MultiCastSocket.getInstance().start();//建立广播socket
 		//TODO 有可能这台pad没有绑定学生，
 		Student student = data.getObject("student", Student.class);
 		if(student==null){
 			UIHelper.getInstance().getWifiSelectActivity().showToast();
 		}else{
 			MyApplication.getInstance().setStudent(student);
-			
+			MultiCastSocket.getInstance().start();//建立广播socket
 			//判断学生状态跳转至不同的界面
 			int state =data.getIntValue("state");
 			
