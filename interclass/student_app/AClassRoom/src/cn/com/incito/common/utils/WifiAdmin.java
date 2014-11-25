@@ -13,17 +13,46 @@ public class WifiAdmin {
 	private WifiManager wifiManager;
 	private List<ScanResult> scanResults;
 	private WifiInfo wifiInfo;
+	private WifiManager.WifiLock wifiLock;
+	private static WifiAdmin wifiAdmin;
 
 	public enum WifiCipherType {
 		WIFICIPHER_WEP, WIFICIPHER_WPA, WIFICIPHER_NOPASS, WIFICIPHER_INVALID
 	}
+	
+	public static WifiAdmin getWifiAdmin(Context context){
+		if(wifiAdmin == null){
+			wifiAdmin = new WifiAdmin(context);
+			return wifiAdmin;
+		}
+		return null;
+	}
 
-	public WifiAdmin(Context context) {
+	private WifiAdmin(Context context) {
 		wifiManager = (WifiManager) context
 				.getSystemService(Context.WIFI_SERVICE);
 		wifiInfo = wifiManager.getConnectionInfo();
+		wifiLock = wifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF,"class");
 	}
-
+	
+	public void acqureWifiLock(){
+		wifiLock.acquire();
+	}
+	
+	public void disconnectWifi(){
+		wifiInfo = wifiManager.getConnectionInfo();
+		if(wifiInfo != null){
+			 wifiManager.disableNetwork(wifiInfo.getNetworkId());  
+			wifiManager.disconnect();  
+		}
+	}
+	
+	public void releasWifiLock(){
+		if(wifiLock.isHeld()){
+			wifiLock.release();
+		}
+	}
+	
 	// 开始连接wifi并且使其他的wifi都失效
 	public boolean connectWifi(String ssid, String passWord,
 			WifiCipherType wifiCipherType) {

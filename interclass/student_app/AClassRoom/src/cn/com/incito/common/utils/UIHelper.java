@@ -178,9 +178,7 @@ public class UIHelper {
 				ClassReadyActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		app.startActivity(intent);
-		
 	}
-
 	/**
 	 * 显示老师正在上课界面
 	 */
