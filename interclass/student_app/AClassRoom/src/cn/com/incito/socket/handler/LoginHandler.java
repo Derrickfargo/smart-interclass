@@ -34,7 +34,7 @@ public class LoginHandler extends MessageHandler {
 		if(student==null){
 			UIHelper.getInstance().getWifiSelectorActivity().showToast();
 		}else{
-			MultiCastSocket.getInstance().start();//建立广播socket
+//			MultiCastSocket.getInstance().start();//建立广播socket
 			MyApplication.getInstance().setStudent(student);
 			
 			//判断学生状态跳转至不同的界面
@@ -43,8 +43,11 @@ public class LoginHandler extends MessageHandler {
 			
 			if(state == 1 ){
 				MyApplication.Logger.debug("返回状态值进入准备上课界面");
-				AppManager.getAppManager().currentActivity().finish();
-				UIHelper.getInstance().showClassReadyActivity();
+				if(!AppManager.getAppManager().currentActivity().getClass().getSimpleName().equals("ClassReadyActivity")){
+					AppManager.getAppManager().currentActivity().finish();
+					UIHelper.getInstance().showClassReadyActivity();
+				}
+				
 			}else if(state == 2){
 				MyApplication.Logger.debug("返回状态值进入分组界面");
 				//判断该学生是在已经提交的组还是未提交的组还是没有分组 
@@ -99,13 +102,19 @@ public class LoginHandler extends MessageHandler {
 				AppManager.getAppManager().currentActivity().finish();
 			}else if(state == 3){
 				MyApplication.Logger.debug("返回状态值进入做作业界面");
-				byte[] imageByte = data.getBytes("quiz");
-				UIHelper.getInstance().showDrawBoxActivity(imageByte);
-				AppManager.getAppManager().currentActivity().finish();
+				if(!AppManager.getAppManager().currentActivity().getClass().getSimpleName().equals("DrawBoxActivity")){
+					byte[] imageByte = data.getBytes("quiz");
+					UIHelper.getInstance().showDrawBoxActivity(imageByte);
+					AppManager.getAppManager().currentActivity().finish();
+				}
+				
 			}else if(state == 4){
 				MyApplication.Logger.debug("返回状态值进入开始上课界面");
-				UIHelper.getInstance().showClassingActivity();
-				AppManager.getAppManager().currentActivity().finish();
+				if(!AppManager.getAppManager().currentActivity().getClass().getSimpleName().equals("ClassingActivity")){
+					UIHelper.getInstance().showClassingActivity();
+					AppManager.getAppManager().currentActivity().finish();
+				}
+				
 			}else{
 				MyApplication.Logger.debug("没有返回值");
 				UIHelper.getInstance().showClassReadyActivity();

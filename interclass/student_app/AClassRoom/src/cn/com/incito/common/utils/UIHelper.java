@@ -22,8 +22,20 @@ public class UIHelper {
 	private WaitForOtherMembersActivity waitForOtherMembersActivity;
 	private WifiSelectorActivity wifiSelectorActivity;
 	private SelectWifiActivity selectWifiActivity;
+	private ClassingActivity classingActivity;
 	
-
+	public void setClassingActivity(ClassingActivity classingActivity){
+		if (this.classingActivity != null) {
+			this.classingActivity.finish();
+			this.classingActivity = null;
+		}
+		this.classingActivity = classingActivity;
+	}
+	
+	public ClassingActivity getClassingActivity(){
+		return this.classingActivity;
+	}
+	
 	private UIHelper() {
 		app = MyApplication.getInstance();
 	}

@@ -29,7 +29,9 @@ public class SavePaperHandler extends MessageHandler {
 				UIHelper.getInstance().getDrawBoxActivity().submitPaper();
 				MyApplication.getInstance().setSubmitPaper(true);
 			}
-			
+			if(UIHelper.getInstance().getClassingActivity() == null){
+				UIHelper.getInstance().showClassingActivity();
+			}
 		}
 	}
 }
