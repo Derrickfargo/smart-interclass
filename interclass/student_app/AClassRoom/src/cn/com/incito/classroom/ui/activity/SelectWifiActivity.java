@@ -9,6 +9,7 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
@@ -54,7 +55,7 @@ public class SelectWifiActivity extends BaseActivity {
 	private ProgressiveDialog progressDialog;
 	private TextView wifiText;
 	private SharedPreferences sharedPreferences;
-	private SharedPreferences.Editor editor;
+	private Editor editor;
 
 	private Timer connectWifiTimer;
 	private TimerTask connectWifiTimerTask;
@@ -233,8 +234,6 @@ public class SelectWifiActivity extends BaseActivity {
 			progressDialog = new ProgressiveDialog(this);
 		}
 		progressDialog.setMessage(R.string.connect_wifi);
-
-		wifiAdmin.releasWifiLock();
 		connectWifiTimer = new Timer();
 		connectWifiTimerTask = new TimerTask() {
 
