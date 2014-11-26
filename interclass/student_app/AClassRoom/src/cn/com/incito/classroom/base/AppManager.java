@@ -101,7 +101,6 @@ public class AppManager {
      */
     public void AppExit(Context context) {
         try {
-        	WifiAdmin.getWifiAdmin(context).releasWifiLock();
         	MyApplication.getInstance().release();
             finishAllActivity();
             CoreSocket.getInstance().stopConnection();
