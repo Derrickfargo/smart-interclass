@@ -89,6 +89,13 @@ public class Application {
 		}
 	}
 
+	public void clearQuiz(){
+		tempQuizIMEI.clear();
+		tempQuiz.clear();
+		quizList.clear();
+		refresh();
+	}
+	
 	public boolean isLockScreen() {
 		return isLockScreen;
 	}
