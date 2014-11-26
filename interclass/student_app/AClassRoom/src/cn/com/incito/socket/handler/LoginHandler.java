@@ -45,8 +45,7 @@ public class LoginHandler extends MessageHandler {
 				MyApplication.Logger.debug("返回状态值进入准备上课界面");
 				UIHelper.getInstance().showClassReadyActivity();
 				AppManager.getAppManager().currentActivity().finish();
-			}
-			if(state == 2){
+			}else if(state == 2){
 				MyApplication.Logger.debug("返回状态值进入分组界面");
 				//判断该学生是在已经提交的组还是未提交的组还是没有分组 
 				List<Group> tempGrou = JSON.parseArray(data.getString("group"), Group.class);
@@ -98,14 +97,12 @@ public class LoginHandler extends MessageHandler {
 				}
 			
 				AppManager.getAppManager().currentActivity().finish();
-			}
-			if(state == 3){
+			}else if(state == 3){
 				MyApplication.Logger.debug("返回状态值进入做作业界面");
 				byte[] imageByte = data.getBytes("quiz");
 				UIHelper.getInstance().showDrawBoxActivity(imageByte);
 				AppManager.getAppManager().currentActivity().finish();
-			}
-			if(state == 4){
+			}else if(state == 4){
 				MyApplication.Logger.debug("返回状态值进入开始上课界面");
 				UIHelper.getInstance().showClassingActivity();
 				AppManager.getAppManager().currentActivity().finish();
