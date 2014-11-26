@@ -57,4 +57,8 @@ public class RoomService {
 		
 		return room;
 	}
+
+	public List<Room> getRoomListBySchoolId(int id) {
+		return roomMapper.getRoomListBySchoolId(id);
+	}
 }

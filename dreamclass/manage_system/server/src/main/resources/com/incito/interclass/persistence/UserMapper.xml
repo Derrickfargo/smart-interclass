@@ -33,7 +33,31 @@
 			AND u.uname = #{uname} 
 			AND u.password = #{password}
 	</select>
-	
+	<select id="loginForSchool" resultType="com.incito.interclass.entity.School" parameterType="com.incito.interclass.entity.School">
+		SELECT
+			u.uid AS id,l.user_group_id AS schoolType
+		FROM
+			ts_user u
+		INNER JOIN ts_user_group_link l on u.uid=l.uid
+		WHERE
+			l.user_group_id=3
+			AND u.uname=#{name}
+			AND u.password=#{password} 
+	</select>
+	<select id="getSchoolByLogin" resultType="com.incito.interclass.entity.School" parameterType="java.lang.String">
+		SELECT
+			u.uid AS id,u.login_salt AS loginSalt,u.password AS password
+		FROM
+			ts_user u
+		INNER JOIN ts_user_group_link l on u.uid = l.uid
+		WHERE
+		    l.user_group_id=3
+		    AND (
+			u.email = #{schoolName}
+			OR u.uname = #{schoolName}
+			OR u.login = #{schoolName}
+		)
+	</select>
 	<select id="getStudentByGroup" resultType="com.incito.interclass.entity.Student" parameterType="java.util.Map">
 		SELECT	
 			tb_user.* ,tb_student.*

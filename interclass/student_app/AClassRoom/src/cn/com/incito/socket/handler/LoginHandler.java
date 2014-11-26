@@ -102,6 +102,9 @@ public class LoginHandler extends MessageHandler {
 			if(state == 4){
 				UIHelper.getInstance().showClassingActivity();
 				AppManager.getAppManager().currentActivity().finish();
+			}else{
+				UIHelper.getInstance().showClassReadyActivity();
+				AppManager.getAppManager().currentActivity().finish();
 			}
 			//启动心跳检测
 			ConnectionManager.getInstance(message.getChannel());

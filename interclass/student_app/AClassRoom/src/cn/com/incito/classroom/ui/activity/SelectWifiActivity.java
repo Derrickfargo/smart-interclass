@@ -30,6 +30,7 @@ import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.adapter.WifiSelectAdapter;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.common.utils.WifiAdmin;
@@ -80,7 +81,7 @@ public class SelectWifiActivity extends BaseActivity {
 	private void initView() {
 		wifi_list = (ListView) findViewById(R.id.wifiselector_main_listview);
 		ib_setting_ip = (ImageButton) findViewById(R.id.ib_setting_ip);
-		wifiAdmin = new WifiAdmin(this);
+		wifiAdmin = WifiAdmin.getWifiAdmin(this);
 		wifiText = new TextView(this);
 		wifiText.setText("正在扫描请稍后...");
 
@@ -91,7 +92,8 @@ public class SelectWifiActivity extends BaseActivity {
 
 		progressDialog = new ProgressiveDialog(this);
 
-		progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+		progressDialog
+				.setOnCancelListener(new DialogInterface.OnCancelListener() {
 
 					@Override
 					public void onCancel(DialogInterface dialog) {
@@ -150,6 +152,7 @@ public class SelectWifiActivity extends BaseActivity {
 						&& wifiInfo.getSSID()
 								.substring(1, wifiInfo.getSSID().length() - 1)
 								.equals(scanResult.SSID)) {
+					wifiAdmin.acqureWifiLock();
 					connectServer();
 				} else {
 					if (sharedPreferences.contains(scanResult.BSSID)) {
@@ -227,18 +230,14 @@ public class SelectWifiActivity extends BaseActivity {
 				@Override
 				public void run() {
 					if (!CoreSocket.getInstance().isConnected()) {
-						Log.i("SelectWifiActivity","Socket无连接,startMain退出 ");
+						Log.i("SelectWifiActivity", "Socket无连接,startMain退出 ");
 						handler.sendEmptyMessage(3);// 重连socket
 					} else {
 						handler.sendEmptyMessage(4);// 开始登录
 					}
 				}
 			};
-
 			connectServerTimer.schedule(connectServerTimerTask, 3 * 1000);
-
-		} else {
-
 		}
 	}
 
@@ -250,6 +249,7 @@ public class SelectWifiActivity extends BaseActivity {
 		}
 		progressDialog.setMessage(R.string.connect_wifi);
 
+		wifiAdmin.releasWifiLock();
 		connectWifiTimer = new Timer();
 		connectWifiTimerTask = new TimerTask() {
 
@@ -266,13 +266,25 @@ public class SelectWifiActivity extends BaseActivity {
 				}
 			}
 		};
-		if (wifiAdmin.connectWifi(scanResult.SSID, password,
-				WifiCipherType.WIFICIPHER_WPA)) {
-			progressDialog.show();
-			connectWifiTimer.schedule(connectWifiTimerTask, 8 * 1000);
-		} else {
-			ToastHelper.showCustomToast(this, "网络错误...");
+
+		if (isWifiNetConnected()) {
+			wifiAdmin.disconnectWifi();
+			if (wifiAdmin.connectWifi(scanResult.SSID, password,WifiCipherType.WIFICIPHER_WPA)) {
+				progressDialog.show();
+				connectWifiTimer.schedule(connectWifiTimerTask, 10 * 1000);
+			} else {
+				ToastHelper.showCustomToast(this, "网络错误...");
+			}
+		}else{
+			if (wifiAdmin.connectWifi(scanResult.SSID, password,WifiCipherType.WIFICIPHER_WPA)) {
+				progressDialog.show();
+				connectWifiTimer.schedule(connectWifiTimerTask, 8 * 1000);
+			} else {
+				ToastHelper.showCustomToast(this, "网络错误...");
+			}
 		}
+		
+
 	}
 
 	// 5s钟刷新一次wifi列表
@@ -296,25 +308,31 @@ public class SelectWifiActivity extends BaseActivity {
 				break;
 			case 1:
 				progressDialog.setMessage(R.string.going_classroom);
+				wifiAdmin.acqureWifiLock();
 				connectServer();
 				break;
 			case 2:
 				progressDialog.dismiss();
-				ToastHelper.showCustomToast(SelectWifiActivity.this,"wifi连接失败...");
+				ToastHelper.showCustomToast(SelectWifiActivity.this,
+						"wifi连接失败...");
 				break;
 			case 3:
 				progressDialog.dismiss();
-				CoreSocket.getInstance().stopConnection();
+				CoreSocket.getInstance().disconnect();
 				ToastHelper.showCustomToast(getBaseContext(), "教室连接失败请重新连接...");
+				// connectServer();
 				break;
 			case 4:
 				progressDialog.setMessage(R.string.login);
+				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()
+						+ "socket建立成功开始进行登录");
 				startMainAct();
 				break;
 			case 11:
 				progressDialog.dismiss();
 				CoreSocket.getInstance().stopConnection();
-				ToastHelper.showCustomToast(SelectWifiActivity.this,"当前设备没有注册学生,请联系老师注册!");
+				ToastHelper.showCustomToast(SelectWifiActivity.this,
+						"当前设备没有注册学生,请联系老师注册!");
 				break;
 			default:
 				break;
@@ -341,7 +359,7 @@ public class SelectWifiActivity extends BaseActivity {
 		android.os.Message message = new android.os.Message();
 		message.what = 11;
 		handler.sendMessage(message);
-		
+
 	}
 
 	/**
@@ -357,13 +375,21 @@ public class SelectWifiActivity extends BaseActivity {
 		isConnected = wifiNetInfo.isConnected();
 		return isConnected;
 	}
-	
+
 	@Override
 	protected void onDestroy() {
-		if(progressDialog != null){
+		if (progressDialog != null) {
 			progressDialog.dismiss();
+		}
+		if(connectServerTimer != null){
+			connectServerTimer.cancel();
+		}
+		if(connectWifiTimer != null){
+			connectWifiTimer.cancel();
+		}
+		if(updateWifiTimer != null){
+			updateWifiTimer.cancel();
 		}
 		super.onDestroy();
 	}
-
 }

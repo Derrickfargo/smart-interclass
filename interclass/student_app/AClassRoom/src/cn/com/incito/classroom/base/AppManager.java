@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import cn.com.incito.classroom.utils.ApiClient;
 import cn.com.incito.common.utils.AndroidUtil;
+import cn.com.incito.common.utils.WifiAdmin;
 import cn.com.incito.socket.core.ConnectionManager;
 import cn.com.incito.socket.core.CoreSocket;
 
@@ -101,6 +102,7 @@ public class AppManager {
      */
     public void AppExit(Context context) {
         try {
+        	WifiAdmin.getWifiAdmin(context).releasWifiLock();
         	MyApplication.getInstance().release();
             finishAllActivity();
             CoreSocket.getInstance().stopConnection();
