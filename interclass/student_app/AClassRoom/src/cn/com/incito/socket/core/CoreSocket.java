@@ -57,7 +57,6 @@ public final class CoreSocket implements Runnable {
 				}
 				channel.register(selector, SelectionKey.OP_READ);// 注册读事件
 			} catch (IOException e) {
-//				ApiClient.uploadErrorLog(e.getMessage());
 				isConnected = false;
 				Log.e("CoreSocket", "", e);
 			}
@@ -84,7 +83,6 @@ public final class CoreSocket implements Runnable {
 						channel.write(buffer);
 					}
 				} catch (IOException e) {
-//					ApiClient.uploadErrorLog(e.getMessage());
 					WLog.e(CoreSocket.class, "" + e.getMessage());
 				}
 			}
@@ -110,7 +108,6 @@ public final class CoreSocket implements Runnable {
 							ConnectionManager.getInstance().close(true);
 						}
 					} catch (IOException e) {
-//						ApiClient.uploadErrorLog(e.getMessage());
 						WLog.e(CoreSocket.class, "" + e.getMessage());
 					}
 				}
@@ -162,7 +159,6 @@ public final class CoreSocket implements Runnable {
 			}
 			WLog.i(CoreSocket.class, "CoreSocket退出!");
 		} catch (IOException e) {
-//			ApiClient.uploadErrorLog(e.getMessage());
 			WLog.e(CoreSocket.class, "" + e.getMessage());
 		}
 	}
