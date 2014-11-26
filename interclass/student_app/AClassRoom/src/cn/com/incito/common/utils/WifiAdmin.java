@@ -29,15 +29,11 @@ public class WifiAdmin {
 	}
 
 	private WifiAdmin(Context context) {
-		wifiManager = (WifiManager) context
-				.getSystemService(Context.WIFI_SERVICE);
+		wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 		wifiInfo = wifiManager.getConnectionInfo();
 		wifiLock = wifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF,"class");
 	}
 	
-	public void acqureWifiLock(){
-		wifiLock.acquire();
-	}
 	
 	public void disconnectWifi(){
 		wifiInfo = wifiManager.getConnectionInfo();

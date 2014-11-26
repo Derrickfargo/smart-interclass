@@ -146,7 +146,6 @@ public class SelectWifiActivity extends BaseActivity {
 				WifiInfo wifiInfo = wifiAdmin.getWifiInfo();
 
 				if (isWifiNetConnected()&& wifiInfo.getSSID().substring(1, wifiInfo.getSSID().length() - 1).equals(scanResult.SSID)) {
-					wifiAdmin.acqureWifiLock();
 					connectServer();
 				} else {
 					if (sharedPreferences.contains(scanResult.BSSID)) {
@@ -294,7 +293,6 @@ public class SelectWifiActivity extends BaseActivity {
 				break;
 			case 1:
 				progressDialog.setMessage(R.string.going_classroom);
-				wifiAdmin.acqureWifiLock();
 				connectServer();
 				break;
 			case 2:
