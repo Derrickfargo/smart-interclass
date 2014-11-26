@@ -32,7 +32,7 @@ public class LoginHandler extends MessageHandler {
 		//TODO 有可能这台pad没有绑定学生，
 		Student student = data.getObject("student", Student.class);
 		if(student==null){
-			UIHelper.getInstance().getWifiSelectorActivity().showToast();
+			UIHelper.getInstance().getSelectWifiActivity().showToast();
 		}else{
 //			MultiCastSocket.getInstance().start();//建立广播socket
 			MyApplication.getInstance().setStudent(student);

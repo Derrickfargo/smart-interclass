@@ -60,6 +60,9 @@ public class UIHelper {
 		
 	}
 
+	public SelectWifiActivity getSelectWifiActivity(){
+		return this.selectWifiActivity;
+	}
 
 
 	public WifiSelectorActivity getWifiSelectorActivity(){
