@@ -150,11 +150,9 @@ public class SelectWifiActivity extends BaseActivity {
 					connectServer();
 				} else {
 					if (sharedPreferences.contains(scanResult.BSSID)) {
-						connecteWifi(scanResult, sharedPreferences.getString(
-								scanResult.BSSID, ""));
+						connecteWifi(scanResult, sharedPreferences.getString(scanResult.BSSID, ""));
 					} else {
-						final EditText passwordEdit = new EditText(
-								SelectWifiActivity.this);
+						final EditText passwordEdit = new EditText(SelectWifiActivity.this);
 
 						passwordEdit.setTransformationMethod(PasswordTransformationMethod.getInstance());
 
