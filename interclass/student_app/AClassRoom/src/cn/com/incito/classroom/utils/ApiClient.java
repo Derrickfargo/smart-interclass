@@ -181,7 +181,6 @@ public class ApiClient {
 				try {
 					parts[i++] = new FilePart(file, files.get(file));
 				} catch (FileNotFoundException e) {
-					ApiClient.uploadErrorLog(e.getMessage());
 					e.printStackTrace();
 				}
 				// System.out.println("post_key_file==> "+file);
@@ -202,13 +201,11 @@ public class ApiClient {
 				// System.out.println("XMLDATA=====>"+responseBody);
 				break;
 			} catch (HttpException e) {
-				ApiClient.uploadErrorLog(e.getMessage());
 				time++;
 				if (time < RETRY_TIME) {
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e1) {
-						ApiClient.uploadErrorLog(e1.getMessage());
 					}
 					continue;
 				}
@@ -222,7 +219,6 @@ public class ApiClient {
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e1) {
-						ApiClient.uploadErrorLog(e1.getMessage());
 					}
 					continue;
 				}
