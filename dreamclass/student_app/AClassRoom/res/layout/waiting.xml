@@ -21,8 +21,8 @@
             android:layout_marginTop="50dp"
             android:layout_weight="1"
             android:cacheColorHint="@android:color/transparent"
-            android:gravity="center"
             android:columnWidth="308dp"
+            android:gravity="center"
             android:horizontalSpacing="10dp"
             android:listSelector="@android:color/transparent"
             android:numColumns="auto_fit"
@@ -94,13 +94,31 @@
             </LinearLayout>
         </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/btn_join"
+        <RelativeLayout
+            android:id="@+id/join_relativelayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@null"
-            android:src="@drawable/btn_join_normal" />
+          >
+
+            <ImageButton
+                android:id="@+id/btn_join"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:src="@drawable/btn_join_normal" />
+
+            <TextView
+                android:layout_alignBottom="@id/btn_join"
+                android:gravity="center_vertical"
+                android:id="@+id/text_notice"
+                android:layout_marginLeft="80dp"
+                android:layout_marginBottom="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_nts_chat"
+                android:text="点击可以加入学生" />
+        </RelativeLayout>
     </LinearLayout>
 
 </LinearLayout>
