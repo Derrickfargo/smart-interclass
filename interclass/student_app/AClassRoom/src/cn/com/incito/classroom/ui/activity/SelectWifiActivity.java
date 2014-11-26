@@ -40,7 +40,6 @@ import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
-import cn.com.incito.wisdom.sdk.log.WLog;
 import cn.com.incito.wisdom.uicomp.widget.dialog.ProgressiveDialog;
 
 import com.alibaba.fastjson.JSONObject;
@@ -73,7 +72,6 @@ public class SelectWifiActivity extends BaseActivity {
 		UIHelper.getInstance().setSelectorWifiActivity(this);
 		sharedPreferences = getPreferences(MODE_PRIVATE);
 		editor = sharedPreferences.edit();
-
 		initView();
 	}
 
@@ -92,8 +90,7 @@ public class SelectWifiActivity extends BaseActivity {
 
 		progressDialog = new ProgressiveDialog(this);
 
-		progressDialog
-				.setOnCancelListener(new DialogInterface.OnCancelListener() {
+		progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
 
 					@Override
 					public void onCancel(DialogInterface dialog) {
@@ -148,10 +145,7 @@ public class SelectWifiActivity extends BaseActivity {
 						.getItem(position);
 				WifiInfo wifiInfo = wifiAdmin.getWifiInfo();
 
-				if (isWifiNetConnected()
-						&& wifiInfo.getSSID()
-								.substring(1, wifiInfo.getSSID().length() - 1)
-								.equals(scanResult.SSID)) {
+				if (isWifiNetConnected()&& wifiInfo.getSSID().substring(1, wifiInfo.getSSID().length() - 1).equals(scanResult.SSID)) {
 					wifiAdmin.acqureWifiLock();
 					connectServer();
 				} else {
@@ -162,9 +156,7 @@ public class SelectWifiActivity extends BaseActivity {
 						final EditText passwordEdit = new EditText(
 								SelectWifiActivity.this);
 
-						passwordEdit
-								.setTransformationMethod(PasswordTransformationMethod
-										.getInstance());
+						passwordEdit.setTransformationMethod(PasswordTransformationMethod.getInstance());
 
 						// 显示输入密码对话框
 						new AlertDialog.Builder(SelectWifiActivity.this)
@@ -174,21 +166,15 @@ public class SelectWifiActivity extends BaseActivity {
 								.setNegativeButton("取消",
 										new DialogInterface.OnClickListener() {
 											@Override
-											public void onClick(
-													DialogInterface dialog,
-													int which) {
+											public void onClick(DialogInterface dialog,int which) {
 												dialog.dismiss();
 											}
 										})
 								.setPositiveButton("确定",
 										new DialogInterface.OnClickListener() {
 											@Override
-											public void onClick(
-													DialogInterface dialog,
-													int which) {
-												connecteWifi(scanResult,
-														passwordEdit.getText()
-																.toString());
+											public void onClick(DialogInterface dialog,int which) {
+												connecteWifi(scanResult,passwordEdit.getText().toString());
 												dialog.dismiss();
 											}
 										}).show();
@@ -313,8 +299,7 @@ public class SelectWifiActivity extends BaseActivity {
 				break;
 			case 2:
 				progressDialog.dismiss();
-				ToastHelper.showCustomToast(SelectWifiActivity.this,
-						"wifi连接失败...");
+				ToastHelper.showCustomToast(SelectWifiActivity.this,"wifi连接失败...");
 				break;
 			case 3:
 				progressDialog.dismiss();
@@ -324,15 +309,13 @@ public class SelectWifiActivity extends BaseActivity {
 				break;
 			case 4:
 				progressDialog.setMessage(R.string.login);
-				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()
-						+ "socket建立成功开始进行登录");
+				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ "socket建立成功开始进行登录");
 				startMainAct();
 				break;
 			case 11:
 				progressDialog.dismiss();
 				CoreSocket.getInstance().stopConnection();
-				ToastHelper.showCustomToast(SelectWifiActivity.this,
-						"当前设备没有注册学生,请联系老师注册!");
+				ToastHelper.showCustomToast(SelectWifiActivity.this,"当前设备没有注册学生,请联系老师注册!");
 				break;
 			default:
 				break;
@@ -346,20 +329,16 @@ public class SelectWifiActivity extends BaseActivity {
 	public void startMainAct() {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("imei", MyApplication.deviceId);
-		MessagePacking messagePacking = new MessagePacking(
-				Message.MESSAGE_STUDENT_LOGIN);
-		messagePacking.putBodyData(DataType.INT,
-				BufferUtils.writeUTFString(jsonObject.toJSONString()));
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
+		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(jsonObject.toJSONString()));
 		CoreSocket.getInstance().sendMessage(messagePacking);
-		WLog.i(WifiSelectorActivity.class, "开始判定设备是否绑定..." + "request:"
-				+ jsonObject.toJSONString());
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":SelectWifiActivity:开始判定设备是否绑定...request：" + jsonObject.toJSONString());
 	}
 
 	public void showToast() {
 		android.os.Message message = new android.os.Message();
 		message.what = 11;
 		handler.sendMessage(message);
-
 	}
 
 	/**
@@ -370,8 +349,7 @@ public class SelectWifiActivity extends BaseActivity {
 	private boolean isWifiNetConnected() {
 		boolean isConnected = false;
 		ConnectivityManager connectMgr = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-		NetworkInfo wifiNetInfo = connectMgr
-				.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+		NetworkInfo wifiNetInfo = connectMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 		isConnected = wifiNetInfo.isConnected();
 		return isConnected;
 	}

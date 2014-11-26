@@ -1,5 +1,10 @@
 package cn.com.incito.classroom.base;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
@@ -65,28 +70,28 @@ public class BaseActivity extends FragmentActivity {
 		AppManager.getAppManager().finishActivity(this);
 	}
 
-//	class NetWorkReceiver extends BroadcastReceiver {
-//
-//		@Override
-//		public void onReceive(Context context, Intent intent) {
-//			if (intent.getAction().equals("android.net.conn.CONNECTIVITY_CHANGE")) {
-//				ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-//				NetworkInfo wifiInfo = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-//				NetworkInfo activeInfo = manager.getActiveNetworkInfo();
-//				if (activeInfo == null || wifiInfo == null) {
-//					if (netWorkDialog == null) {
-//						netWorkDialog = new NetWorkDialog(context);
-//						netWorkDialog.setCancelable(false);
-//						netWorkDialog.show();
-//					} else {
-//						if (!netWorkDialog.isShowing()) {
-//							netWorkDialog.show();
-//						}
-//					}
-//
-//				}
-//			}
-//		}
-//
-//	}
+	class NetWorkReceiver extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (intent.getAction().equals("android.net.conn.CONNECTIVITY_CHANGE")) {
+				ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+				NetworkInfo wifiInfo = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+				NetworkInfo activeInfo = manager.getActiveNetworkInfo();
+				if (activeInfo == null || wifiInfo == null) {
+					if (netWorkDialog == null) {
+						netWorkDialog = new NetWorkDialog(context);
+						netWorkDialog.setCancelable(false);
+						netWorkDialog.show();
+					} else {
+						if (!netWorkDialog.isShowing()) {
+							netWorkDialog.show();
+						}
+					}
+
+				}
+			}
+		}
+
+	}
 }
