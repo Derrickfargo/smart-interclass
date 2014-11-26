@@ -254,6 +254,9 @@ public class QuizStudent extends JPanel implements MouseListener{
 				lblOrder.setBackground(new Color(Integer.parseInt("ADADAD", 16)));
 			}
 			lblOrder.setVisible(true);
+		} else {
+			Icon icon = new ImageIcon("");
+			lblImage.setIcon(icon);
 		}
 	}
 }
