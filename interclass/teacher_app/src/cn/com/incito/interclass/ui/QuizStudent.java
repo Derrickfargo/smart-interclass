@@ -179,6 +179,12 @@ public class QuizStudent extends JPanel implements MouseListener{
 						.getFrame(), "未登录的学生不能扣分!");
 				return;
 			}
+			if(student.getScore() <= 0){
+				String message = "扣分失败,%s的分数已经为0分!";
+				JOptionPane.showMessageDialog(MainFrame.getInstance()
+					.getFrame(), String.format(message, student.getName()));
+				return;
+			}
 			new PunishDialog(this, student);
 		}
 //		if (e.getSource() == btnMedal) {
