@@ -34,7 +34,7 @@ public class LoginHandler extends MessageHandler {
 		if(student==null){
 			UIHelper.getInstance().getWifiSelectorActivity().showToast();
 		}else{
-//			MultiCastSocket.getInstance().start();//建立广播socket
+			MultiCastSocket.getInstance().start();//建立广播socket
 			MyApplication.getInstance().setStudent(student);
 			
 			//判断学生状态跳转至不同的界面
@@ -43,8 +43,8 @@ public class LoginHandler extends MessageHandler {
 			
 			if(state == 1 ){
 				MyApplication.Logger.debug("返回状态值进入准备上课界面");
-				UIHelper.getInstance().showClassReadyActivity();
 				AppManager.getAppManager().currentActivity().finish();
+				UIHelper.getInstance().showClassReadyActivity();
 			}else if(state == 2){
 				MyApplication.Logger.debug("返回状态值进入分组界面");
 				//判断该学生是在已经提交的组还是未提交的组还是没有分组 

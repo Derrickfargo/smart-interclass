@@ -10,5 +10,24 @@ public class ClassingActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_classing);
+		
+	}
+	
+	@Override
+	protected void onResume() {
+		registRecier();
+		super.onResume();
+	}
+	
+	@Override
+	protected void onPause() {
+		unRegistReciver();
+		super.onPause();
+	}
+	
+	@Override
+	protected void onDestroy() {
+		
+		super.onDestroy();
 	}
 }

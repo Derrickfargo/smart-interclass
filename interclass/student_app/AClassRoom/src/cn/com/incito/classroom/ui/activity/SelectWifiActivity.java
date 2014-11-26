@@ -374,10 +374,11 @@ public class SelectWifiActivity extends BaseActivity {
 					Message.MESSAGE_STUDENT_LOGIN);
 			messagePacking.putBodyData(DataType.INT,
 					BufferUtils.writeUTFString(jsonObject.toJSONString()));
-			CoreSocket.getInstance().sendMessage(messagePacking);
 			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()
 					+ ":SelectWifiActivity:开始判定设备是否绑定...request："
 					+ jsonObject.toJSONString());
+			CoreSocket.getInstance().sendMessage(messagePacking);
+			
 		}
 	}
 
