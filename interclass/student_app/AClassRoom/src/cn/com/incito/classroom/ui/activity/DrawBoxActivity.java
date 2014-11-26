@@ -505,6 +505,9 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		MyApplication.getInstance().setSubmitPaper(true);
 		MyApplication.getInstance().lockScreen(true);
 		WLog.i(DistributePaperHandler.class, "提交作业后锁定屏幕" );
+		if(UIHelper.getInstance().getClassingActivity() == null){
+			UIHelper.getInstance().showClassingActivity();
+		}
 		this.finish();
 	}
 	public void initPopwindow(){
