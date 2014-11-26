@@ -240,7 +240,6 @@ public class QuizStudent extends JPanel implements MouseListener{
 			lblImage.setIcon(icon);
 			int order = Application.getInstance().getQuizList().indexOf(quiz) + 1;
 			lblOrder.setText(String.valueOf(order));
-			lblOrder.setVisible(true);
 			switch (order) {
 			case 1:
 				lblOrder.setBackground(new Color(Integer.parseInt("BC3412", 16)));
