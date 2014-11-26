@@ -34,7 +34,7 @@ public class LoginHandler extends MessageHandler {
 		if(student==null){
 			UIHelper.getInstance().getWifiSelectorActivity().showToast();
 		}else{
-			MultiCastSocket.getInstance().start();//建立广播socket
+//			MultiCastSocket.getInstance().start();//建立广播socket
 			MyApplication.getInstance().setStudent(student);
 			
 			//判断学生状态跳转至不同的界面

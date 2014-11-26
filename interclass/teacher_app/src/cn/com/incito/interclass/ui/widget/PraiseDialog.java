@@ -20,6 +20,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import cn.com.incito.http.AsyncHttpConnection;
@@ -342,12 +343,12 @@ public class PraiseDialog extends JDialog implements MouseListener {
 
 			@Override
 			public void onConnectError(IOException exp) {
-				// JOptionPane.showMessageDialog((Component) quizPanel, "连接错误，请检查网络！");
+				JOptionPane.showMessageDialog(frame, "连接错误，请检查网络！");
 			}
 
 			@Override
 			public void onStreamError(IOException exp) {
-				// JOptionPane.showMessageDialog((Component) quizPanel, "数据解析错误！");
+				JOptionPane.showMessageDialog(frame, "数据解析错误！");
 			}
 		});
 	}

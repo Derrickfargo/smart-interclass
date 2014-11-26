@@ -11,6 +11,7 @@ import java.util.Set;
 import android.util.Log;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
+import cn.com.incito.classroom.ui.activity.WifiSelectorActivity;
 //import cn.com.incito.classroom.utils.ApiClient;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
@@ -120,6 +121,12 @@ public final class CoreSocket implements Runnable {
 	public void restartConnection() {
 		disconnect();
 		new Thread(this).start();
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		sendLoginMessage();
 	}
 
 	public void disconnect() {
@@ -157,6 +164,26 @@ public final class CoreSocket implements Runnable {
 		} catch (IOException e) {
 //			ApiClient.uploadErrorLog(e.getMessage());
 			WLog.e(CoreSocket.class, "" + e.getMessage());
+		}
+	}
+	
+	// 发送登陆消息至服务器
+	private void sendLoginMessage() {
+		Log.i("CoreSocket", "发送设备登陆");
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("imei", MyApplication.deviceId);
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
+		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
+		byte[] handSharkData = messagePacking.pack().array();
+		ByteBuffer buffer = ByteBuffer.allocate(handSharkData.length);
+		buffer.put(handSharkData);
+		buffer.flip();
+		try {
+			channel.write(buffer);
+			isConnected = true;
+		} catch (IOException e) {
+			isConnected = false;
+			Log.e("CoreSocket", "重新登陆消息发送失败", e);
 		}
 	}
 
