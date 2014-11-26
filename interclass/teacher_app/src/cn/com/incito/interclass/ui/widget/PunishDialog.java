@@ -272,7 +272,6 @@ public class PunishDialog extends JDialog implements MouseListener {
 						group.setScore((int) Math.round(scoreResult));
 						if (frame != null) {
 							((PraiseGroupPanel)frame).setScore(String.valueOf(Math.round(scoreResult)));
-							Application.getInstance().refresh();
 						}
 					}
 				}
@@ -319,6 +318,7 @@ public class PunishDialog extends JDialog implements MouseListener {
 						student.setScore(updateScore + student.getScore());
 						((QuizStudent)frame).getLblScore().setText(String.valueOf(student.getScore()));
 						// TODO 更新小组分数
+						Application.getInstance().refresh();
 					}
 				}
 			}
