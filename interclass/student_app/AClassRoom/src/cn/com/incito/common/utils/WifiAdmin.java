@@ -13,7 +13,6 @@ public class WifiAdmin {
 	private WifiManager wifiManager;
 	private List<ScanResult> scanResults;
 	private WifiInfo wifiInfo;
-	private WifiManager.WifiLock wifiLock;
 	private static WifiAdmin wifiAdmin;
 
 	public enum WifiCipherType {
@@ -22,43 +21,39 @@ public class WifiAdmin {
 	
 	public static WifiAdmin getWifiAdmin(Context context){
 		if(wifiAdmin == null){
-			wifiAdmin = new WifiAdmin(context);
-			return wifiAdmin;
+			return new WifiAdmin(context);
 		}
-		return null;
+		return wifiAdmin;
 	}
 
 	private WifiAdmin(Context context) {
 		wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 		wifiInfo = wifiManager.getConnectionInfo();
-		wifiLock = wifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF,"class");
 	}
 	
 	
 	public void disconnectWifi(){
 		wifiInfo = wifiManager.getConnectionInfo();
 		if(wifiInfo != null){
-			 wifiManager.disableNetwork(wifiInfo.getNetworkId());  
+			wifiManager.disableNetwork(wifiInfo.getNetworkId());  
 			wifiManager.disconnect();  
 		}
 	}
 	
-	public void releasWifiLock(){
-		if(wifiLock.isHeld()){
-			wifiLock.release();
-		}
-	}
 	
-	// 开始连接wifi并且使其他的wifi都失效
+	/**
+	 * @param ssid
+	 * @param passWord
+	 * @param wifiCipherType
+	 * @return
+	 *  开始连接wifi并且使其他的wifi都失效
+	 */
 	public boolean connectWifi(String ssid, String passWord,
 			WifiCipherType wifiCipherType) {
-
-		WifiConfiguration wifiConfig = this.CreateWifiInfo(ssid, passWord,
-				wifiCipherType);
+		WifiConfiguration wifiConfig = this.CreateWifiInfo(ssid, passWord,wifiCipherType);
 		if (wifiConfig == null) {
 			return false;
 		}
-
 		int netId = wifiManager.addNetwork(wifiConfig);
 		return wifiManager.enableNetwork(netId, true);
 	}
@@ -83,17 +78,14 @@ public class WifiAdmin {
 		wifiConfiguration.allowedKeyManagement.clear();
 		wifiConfiguration.allowedPairwiseCiphers.clear();
 		wifiConfiguration.allowedProtocols.clear();
-
 		wifiConfiguration.SSID = "\"" + ssid + "\"";
-
+		
 		if (wifiCipherType == WifiCipherType.WIFICIPHER_NOPASS) {
 			wifiConfiguration.wepKeys[0] = "";
 			wifiConfiguration.allowedKeyManagement
 					.set(WifiConfiguration.KeyMgmt.NONE);
 			wifiConfiguration.wepTxKeyIndex = 0;
-		}
-
-		if (wifiCipherType == WifiCipherType.WIFICIPHER_WEP) {
+		}else if (wifiCipherType == WifiCipherType.WIFICIPHER_WEP) {
 			wifiConfiguration.hiddenSSID = true;
 			wifiConfiguration.wepKeys[0] = "\"" + passWord + "\"";
 			wifiConfiguration.allowedAuthAlgorithms
@@ -105,9 +97,7 @@ public class WifiAdmin {
 					.set(WifiConfiguration.GroupCipher.WEP104);
 			wifiConfiguration.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
 			wifiConfiguration.wepTxKeyIndex = 0;
-		}
-
-		if (wifiCipherType == WifiCipherType.WIFICIPHER_WPA) {
+		}else if (wifiCipherType == WifiCipherType.WIFICIPHER_WPA) {
 			wifiConfiguration.preSharedKey = "\"" + passWord + "\"";
 			wifiConfiguration.hiddenSSID = true;
 			wifiConfiguration.allowedAuthAlgorithms
@@ -124,7 +114,6 @@ public class WifiAdmin {
 		} else {
 			return null;
 		}
-
 		return wifiConfiguration;
 	}
 
