@@ -496,8 +496,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		messagePacking.putBodyData(DataType.INT, BufferUtils
 				.writeUTFString(MyApplication.getInstance().getDeviceId()));
 		// 图片
-		messagePacking.putBodyData(DataType.INT,
-				bmpToByteArray(getBitMap(), true));
+		messagePacking.putBodyData(DataType.INT,bmpToByteArray(getBitMap(), true));
 		CoreSocket.getInstance().sendMessage(messagePacking);
 		WLog.i(DrawBoxActivity.class, "启动作业提交..."+"request:");
 		MyApplication.getInstance().setSubmitPaper(true);
@@ -525,7 +524,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	     cleanBtn.getLocationOnScreen(location);
 	     mPopupWindow.showAtLocation(cleanBtn, Gravity.NO_GRAVITY, location[0]-160, 570);
 	}
-	public static byte[] bmpToByteArray(final Bitmap bmp,
+	public byte[] bmpToByteArray(final Bitmap bmp,
 			final boolean needRecycle) {
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		bmp.compress(CompressFormat.JPEG, 70, output);
