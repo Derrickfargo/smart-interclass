@@ -5,9 +5,19 @@ import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
 
 public class ClassReadyActivity extends BaseActivity {
+	
 	@Override
 	protected void onAfterOnCreate(Bundle savedInstanceState) {
 		super.onAfterOnCreate(savedInstanceState);
 		setContentView(R.layout.activity_classready);
+		registRecier();
+		
+	}
+	
+	@Override
+	protected void onDestroy() {
+		unRegistReciver();
+		super.onDestroy();
+		
 	}
 }

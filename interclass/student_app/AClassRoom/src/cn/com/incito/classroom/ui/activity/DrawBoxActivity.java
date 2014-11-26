@@ -94,12 +94,14 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		setContentView(R.layout.draw_box);
 		UIHelper.getInstance().setDrawBoxActivity(this);
 		initViews();
+		registRecier();
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
 	}
+	
 
 	@Override
 	protected void onResume() {
@@ -407,6 +409,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 
 	@Override
 	protected void onDestroy() {
+		unRegistReciver();
 		super.onDestroy();
 		m_sketchPad.clearAllStrokes();
 		if (bitmap != null) {
