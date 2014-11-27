@@ -75,6 +75,7 @@ public class Main {
 					JSONObject jsonObject = JSON.parseObject(content);
 					if (jsonObject.getIntValue("code") == 1) {//没有升级
 						// 初始化应用程序
+						System.out.println(checkMac());
 						if(checkMac()==null||checkMac()==""){
 							Application.getInstance();
 							new Login3();
@@ -144,23 +145,17 @@ public class Main {
 			return null;
 		try {
 			FileInputStream fis = new FileInputStream("./key/key.dat");
-			ObjectInputStream ois = new ObjectInputStream(fis);
-			SecretKey secKey=(SecretKey) ois.readObject();
-			ois.close();
-			StringBuffer key = new StringBuffer();
-			for (int i = 0; i < secKey.getEncoded().length; i++) {
-				key.append(secKey.getEncoded()[i]);
+			byte[] bt = new byte[32];
+			int length = fis.read(bt);
+			fis.close();
+			if(length==0){
+				return null;
 			}
-			 final String mac = new String(key);
-			 if(mac==null||mac==""){
-				 return null;
-			 }
+			 final String mac = new String(bt);
 			 return mac;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+		}  catch (IOException e) {
 			e.printStackTrace();
 		}
 		return null;

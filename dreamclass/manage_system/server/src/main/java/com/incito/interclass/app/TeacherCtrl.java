@@ -44,6 +44,8 @@ public class TeacherCtrl extends BaseCtrl {
 	
 	private static final int SAVE_ROOM_ERROR= 3;
 	
+	private static final int UPDATE_ROOM_ERROR=4;
+	
 	@Autowired
 	private UserService userService;
 	
@@ -106,16 +108,24 @@ public class TeacherCtrl extends BaseCtrl {
 	 * @return
 	 */
 	@RequestMapping(value="/room",produces={"application/json;charset=UTF-8"})
-	public String room(String roomName,String mac,int schoolId){
+	public String room(String roomName,String mac,int schoolId,String originName,int id){
+		boolean flag=false;
 		Room room = new Room();
 		room.setMac(mac);
-		room.setName(roomName);
 		room.setSchoolId(schoolId);
-		boolean flag=roomService.saveRoom(room);
-		if(flag==false){
+		room.setName(roomName);
+		if(id==0){
+			flag=roomService.saveRoom(room);
+			while(flag==false){
 			return renderJSONString(SAVE_ROOM_ERROR);
+			}
+		}else if(!roomName.equals(originName)){
+			room.setId(id);
+			flag=roomService.update(room);
+			while(flag==false){
+				return renderJSONString(UPDATE_ROOM_ERROR);
+			}
 		}
-		
 		ApiResult result = new ApiResult();
 		result.setCode(ApiResult.SUCCESS);
 		return JSON.toJSONString(result);
