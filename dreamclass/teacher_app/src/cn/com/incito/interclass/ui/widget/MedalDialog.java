@@ -90,7 +90,7 @@ public class MedalDialog extends JDialog implements MouseListener {
 		
 		JLabel lblLine = getLine();
 		add(lblLine);
-		lblLine.setBounds(0, 31, 392,3);
+		lblLine.setBounds(0, 31, 520,3);
 		
 		JPanel pnlMedal = new JPanel();
 		pnlMedal.setOpaque(false);
@@ -110,7 +110,7 @@ public class MedalDialog extends JDialog implements MouseListener {
 			btnMedal1.setName(UNSELECTED);
 		}
 		btnMedal1.setFocusable(false);
-		btnMedal1.setBounds(10, 16, 100, 130);
+		btnMedal1.setBounds(10, 16, 100, 125);
 		pnlMedal.add(btnMedal1);
 		btnMedal1.addMouseListener(this);
 
@@ -122,7 +122,7 @@ public class MedalDialog extends JDialog implements MouseListener {
 			btnMedal2.setName(UNSELECTED);
 		}
 		btnMedal2.setFocusable(false);
-		btnMedal2.setBounds(110, 16, 100, 130);
+		btnMedal2.setBounds(110, 16, 100, 125);
 		pnlMedal.add(btnMedal2);
 		btnMedal2.addMouseListener(this);
 
@@ -134,7 +134,7 @@ public class MedalDialog extends JDialog implements MouseListener {
 			btnMedal3.setName(UNSELECTED);
 		}
 		btnMedal3.setFocusable(false);
-		btnMedal3.setBounds(210, 16, 100, 130);
+		btnMedal3.setBounds(210, 16, 100, 125);
 		pnlMedal.add(btnMedal3);
 		btnMedal3.addMouseListener(this);
 
@@ -146,7 +146,7 @@ public class MedalDialog extends JDialog implements MouseListener {
 			btnMedal4.setName(UNSELECTED);
 		}
 		btnMedal4.setFocusable(false);
-		btnMedal4.setBounds(310, 16, 100, 130);
+		btnMedal4.setBounds(310, 16, 100, 125);
 		pnlMedal.add(btnMedal4);
 		btnMedal4.addMouseListener(this);
 		
@@ -158,7 +158,7 @@ public class MedalDialog extends JDialog implements MouseListener {
 			btnMedal5.setName(UNSELECTED);
 		}
 		btnMedal5.setFocusable(false);
-		btnMedal5.setBounds(410, 16, 100, 130);
+		btnMedal5.setBounds(410, 16, 100, 125);
 		pnlMedal.add(btnMedal5);
 		btnMedal5.addMouseListener(this);
 		
@@ -208,7 +208,7 @@ public class MedalDialog extends JDialog implements MouseListener {
 	public void setBackground() {
 		lblBackground = new JLabel();
 		lblBackground.setIcon(new ImageIcon("images/dialog/bg_style1.png"));
-		lblBackground.setBounds(0, 0, 520, 220);
+		lblBackground.setBounds(0, 0, 520, 200);
 		add(lblBackground);
 	}
 
