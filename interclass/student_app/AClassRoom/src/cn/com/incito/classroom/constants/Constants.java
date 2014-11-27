@@ -20,11 +20,8 @@ public class Constants {
 	private final static String URL_SPLITTER = "/";
 	private static String SERVER_PORT;
 	private static String SERVER_IP;
-	public final static String HOST = SERVER_IP + ":" + SERVER_PORT + "/app";
-	private final static String URL_API_HOST = HTTP + HOST + URL_SPLITTER;
-	
-	
-	
+	public  static String HOST = SERVER_IP + ":" + SERVER_PORT + "/app";
+	private  static String URL_API_HOST = HTTP + HOST + URL_SPLITTER;
 	/**
 	 * 上传日志文件
 	 */

@@ -58,11 +58,13 @@ public class UpdateManager {
     private Handler mHandler = new Handler(){
     	public void handleMessage(Message msg) {
     		switch (msg.what) {
+    		case 0:
+    			showDownloadDialog();
+    			break;
 			case DOWN_UPDATE:
 				mProgress.setProgress(progress);
 				break;
 			case DOWN_OVER:
-				
 				installApk();
 				break;
 			default:
@@ -73,7 +75,8 @@ public class UpdateManager {
     
 	//外部接口让主Activity调用
 	public void checkUpdateInfo(){
-		showDownloadDialog();			
+		mHandler.sendEmptyMessage(0);
+					
 	}
 	
 	

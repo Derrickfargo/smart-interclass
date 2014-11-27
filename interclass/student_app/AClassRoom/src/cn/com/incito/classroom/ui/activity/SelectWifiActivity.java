@@ -90,7 +90,7 @@ public class SelectWifiActivity extends BaseActivity {
 		try {
 			PackageManager pm = getPackageManager();
 			PackageInfo info = pm.getPackageInfo("cn.com.incito.classroom", 0);
-			code = info.versionCode;
+			MyApplication.getInstance().setCode(info.versionCode);
 		} catch (NameNotFoundException e) {
 			ApiClient.uploadErrorLog(e.getMessage());
 		}
@@ -352,11 +352,7 @@ public class SelectWifiActivity extends BaseActivity {
 				ToastHelper.showCustomToast(SelectWifiActivity.this,
 						"当前设备没有注册学生,请联系老师注册!");
 				break;
-			case 1000:
-				UpdateManager mUpdateManager = new UpdateManager(
-						SelectWifiActivity.this, url);
-				mUpdateManager.checkUpdateInfo();
-				break;
+				
 			default:
 				break;
 			}
@@ -367,7 +363,7 @@ public class SelectWifiActivity extends BaseActivity {
 	 * 发送登陆请求
 	 */
 	public void startMainAct() {
-		if (!isUpdateApk()) {
+		
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("imei", MyApplication.deviceId);
 			MessagePacking messagePacking = new MessagePacking(
@@ -378,8 +374,6 @@ public class SelectWifiActivity extends BaseActivity {
 					+ ":SelectWifiActivity:开始判定设备是否绑定...request："
 					+ jsonObject.toJSONString());
 			CoreSocket.getInstance().sendMessage(messagePacking);
-			
-		}
 	}
 
 	public void showToast() {
@@ -419,33 +413,4 @@ public class SelectWifiActivity extends BaseActivity {
 		super.onDestroy();
 	}
 
-	public boolean isUpdateApk() {
-		// TODO 升级
-		String ip = Constants.getSERVER_IP();
-		String port = Constants.getSERVER_PORT();
-		if (!StringUtils.isEmpty(ip) && !StringUtils.isEmpty(port)) {
-			try {
-				JSONObject updateResult = JSONObject.parseObject(ApiClient
-						.updateApk(code));
-				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()
-						+ "SplashActivity:" + "版本更新返回信息：" + updateResult);
-				Log.i("SplashActivity", "版本更新返回信息：" + updateResult);
-				if (updateResult.getInteger("code") == 0) {
-					Version version = JSON.parseObject(updateResult
-							.getJSONObject("data").toJSONString(),
-							Version.class);
-					url = Constants.HTTP + ip + ":" + port
-							+ Constants.URL_UPDATE_APK + version.getId();
-					MyApplication.Logger.debug(AndroidUtil.getCurrentTime()
-							+ "SplashActivity:" + "更新地址：" + url);
-					handler.sendEmptyMessage(1000);
-					return true;
-				}
-			} catch (AppException e) {
-				ApiClient.uploadErrorLog(e.getMessage());
-				e.printStackTrace();
-			}
-		}
-		return false;
-	}
 }

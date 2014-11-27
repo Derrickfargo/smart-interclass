@@ -63,7 +63,7 @@ public class MyApplication extends Application {
 	
 	private Group group;
 
-	
+	public int code;
 	private static final String TAG = MyApplication.class.getSimpleName();
 
 	private static MyApplication mInstance = null;
@@ -257,6 +257,14 @@ public class MyApplication extends Application {
 
 	public void setQuizID(String quizID) {
 		this.quizID = quizID;
+	}
+
+	public int getCode() {
+		return code;
+	}
+
+	public void setCode(int code) {
+		this.code = code;
 	}
 
 	/**

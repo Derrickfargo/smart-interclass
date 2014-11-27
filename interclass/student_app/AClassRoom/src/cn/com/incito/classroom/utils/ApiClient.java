@@ -247,11 +247,10 @@ public class ApiClient {
 		params.put("type", 2);
 		params.put("code", code);
 		try {
-			return _post(Constants.URL_UPDATE_APK, params, null);
+			return _post("http://"+Constants.getSERVER_IP()+":"+Constants.getSERVER_PORT()+"/app/api/version/check", params, null);
 		} catch (Exception e) {
 			ApiClient.uploadErrorLog(e.getMessage());
-			if (e instanceof AppException)
-				throw (AppException) e;
+			if (e instanceof AppException)throw (AppException) e;
 			throw AppException.network(e);
 		}
 	}
