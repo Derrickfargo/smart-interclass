@@ -552,10 +552,10 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 				messagePacking.putBodyData(DataType.INT,bmpToByteArray(getBitMap(), true));
 				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"开始提交作业");
 				CoreSocket.getInstance().sendMessage(messagePacking);
-				MyApplication.Logger.debug("启动作业提交..."+"request:");
+				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"启动作业提交..."+"request:");
 				MyApplication.getInstance().setSubmitPaper(true);
 				MyApplication.getInstance().lockScreen(true);
-				MyApplication.Logger.debug("提交作业后锁定屏幕" );
+				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"提交作业后锁定屏幕" );
 				if(UIHelper.getInstance().getClassingActivity() == null){
 					UIHelper.getInstance().showClassingActivity();
 				}
