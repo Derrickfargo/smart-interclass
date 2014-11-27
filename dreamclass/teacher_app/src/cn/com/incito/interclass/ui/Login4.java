@@ -2,18 +2,24 @@ package cn.com.incito.interclass.ui;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Iterator;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -21,7 +27,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
@@ -29,11 +34,10 @@ import org.apache.log4j.Logger;
 import cn.com.incito.http.AsyncHttpConnection;
 import cn.com.incito.http.StringResponseHandler;
 import cn.com.incito.http.support.ParamsWrapper;
-import cn.com.incito.interclass.po.Course;
 import cn.com.incito.interclass.po.Room;
 import cn.com.incito.interclass.ui.widget.Item;
 import cn.com.incito.server.api.Application;
-import cn.com.incito.server.api.result.SchoolLoginResultData;
+import cn.com.incito.server.utils.Md5Utils;
 import cn.com.incito.server.utils.UIHelper;
 import cn.com.incito.server.utils.URLs;
 
@@ -52,6 +56,9 @@ public class Login4 extends MouseAdapter{
 	private JLabel lblBackground;
 	private Application app = Application.getInstance();
 	private List<Room> roomList;
+	private JLabel lblNotice;
+	private JLabel tips;
+	private JLabel Sucess;
 
 	public JFrame getFrame() {
 		return frame;
@@ -68,7 +75,7 @@ public class Login4 extends MouseAdapter{
 	private void showLoginUI() {
 		ImageIcon icon = new ImageIcon("images/main/icon.png");
 		frame.setIconImage(icon.getImage());
-		frame.setSize(460, 290);
+		frame.setSize(907, 700);
 		frame.setDefaultCloseOperation(3);
 		frame.setLocationRelativeTo(null);// 设置窗体中间位置
 		frame.setLayout(null);// 绝对布局
@@ -77,7 +84,7 @@ public class Login4 extends MouseAdapter{
 		frame.setBackground(new Color(0, 0, 0, 0));// 窗体透明
 
 		JPanel top = new JPanel();
-		top.setSize(460, 30);
+		top.setSize(907, 30);
 		top.setLayout(null);
 		top.setOpaque(false);
 
@@ -88,7 +95,7 @@ public class Login4 extends MouseAdapter{
 		ImageIcon imgMin = new ImageIcon("images/login/4.png");
 		btnMin.setIcon(imgMin);// 设置图片
 		top.add(btnMin);// 添加按钮
-		btnMin.setBounds(385, 9, imgMin.getIconWidth(), imgMin.getIconHeight());
+		btnMin.setBounds(825, 9, imgMin.getIconWidth(), imgMin.getIconHeight());
 		btnMin.addMouseListener(this);
 
 		// 关闭按钮
@@ -98,26 +105,46 @@ public class Login4 extends MouseAdapter{
 		ImageIcon imgMax = new ImageIcon("images/login/7.png");
 		btnClose.setIcon(imgMax);// 设置图片
 		top.add(btnClose);// 添加按钮
-		btnClose.setBounds(412, 9, imgMax.getIconWidth(), imgMax.getIconHeight());
+		btnClose.setBounds(855, 9, imgMax.getIconWidth(), imgMax.getIconHeight());
 		btnClose.addMouseListener(this);
 		frame.add(top);
+		//注册提示
+		Sucess = new JLabel();
+		Sucess.setText("恭喜你，注册成功！");
+		Sucess.setFont(new Font("Microsoft YaHei", Font.PLAIN, 23));
+		Sucess.setBounds(250, 80, 300, 50);
+		frame.add(Sucess);
+		//注册成功提示图标
+		tips = new JLabel();
+		ImageIcon image= new ImageIcon("images/login/pic_check.png");
+		tips.setIcon(image);
+		tips.setBounds(180, 85, image.getIconWidth(),image.getIconHeight());
+		frame.add(tips);
+		//小提示
+		lblNotice = new JLabel();
+		lblNotice.setText("现在即可享受梦想教室带来的全新体验");
+		lblNotice.setBounds(250, 130, 300, 50);
+		frame.add(lblNotice);
+		
+		
 		//教室名称
-		List<Room> rooms=app.getRooms();
-		lblRoomName = new JLabel();
-		lblRoomName.setForeground(UIHelper.getDefaultFontColor());
-		lblRoomName.setText("请选择教室名称:");
-		lblRoomName.setBounds(60, 65, 265, 35);
+		lblRoomName  = new JLabel();
+		lblRoomName.setBounds(180, 265, 100, 50);
+		lblRoomName.setFont(new Font("Microsoft YaHei",Font.PLAIN,16));
+		lblRoomName.setText("教室名称 :");
 		frame.add(lblRoomName);
+		
+		List<Room> rooms=app.getRooms();		
 		if(rooms.size()==1){
 			txtRoomName.setText(rooms.get(0).getName());
 			txtRoomName.setForeground(UIHelper.getDefaultFontColor());
-			txtRoomName.setBounds(180, 125, 130, 35);
+			txtRoomName.setBounds(300, 270, 250, 35);
 			frame.add(txtRoomName);
 		}
 		else{
 			initData();
 			boxRoomName.setForeground(UIHelper.getDefaultFontColor());
-			boxRoomName.setBounds(180, 125, 130, 35);
+			boxRoomName.setBounds(300, 270, 250, 35);
 			frame.add(boxRoomName);
 		}
 		
@@ -127,10 +154,10 @@ public class Login4 extends MouseAdapter{
 		btnLogin = new JButton();// 创建按钮对象
 		btnLogin.setBorderPainted(false);// 设置边框不可见
 		btnLogin.setContentAreaFilled(false);// 设置透明
-		ImageIcon btnImage = new ImageIcon("images/login/btn_login_normal.png");
+		ImageIcon btnImage = new ImageIcon("images/login/btn_blue_ok.png");
 		btnLogin.setIcon(btnImage);// 设置图片
 		frame.add(btnLogin);// 添加按钮
-		btnLogin.setBounds(125, 220, btnImage.getIconWidth(),
+		btnLogin.setBounds(180, 400, btnImage.getIconWidth(),
 				btnImage.getIconHeight());
 		btnLogin.addMouseListener(this);
 		btnLogin.addActionListener(new ActionListener() {
@@ -180,8 +207,8 @@ public class Login4 extends MouseAdapter{
 	// 设置背景
 	public void setBgimg() {
 		lblBackground = new JLabel();
-		lblBackground.setIcon(new ImageIcon("images/login/login_bg.png"));
-		lblBackground.setBounds(0, 0, 460, 290);
+		lblBackground.setIcon(new ImageIcon("images/login/bg.png"));
+		lblBackground.setBounds(0, 0, 907, 749);
 		frame.add(lblBackground);
 	}
 
@@ -194,7 +221,7 @@ public class Login4 extends MouseAdapter{
 	public void mousePressed(MouseEvent e) {
 		// 按钮按下效果
 		if (e.getSource() == btnLogin) {
-			btnLogin.setIcon(new ImageIcon("images/login/btn_login_pressed.png"));
+			btnLogin.setIcon(new ImageIcon("images/login/btn_pressed.png"));
 		}
 		if (e.getSource() == btnMin) {
 			btnMin.setIcon(new ImageIcon("images/login/6.png"));
@@ -209,7 +236,7 @@ public class Login4 extends MouseAdapter{
 		// 按钮释放效果
 		if (e.getSource() == btnLogin) {
 			ImageIcon btnImage = new ImageIcon(
-					"images/login/btn_login_normal.png");
+					"images/login/btn_blue_ok.png");
 			btnLogin.setIcon(btnImage);
 		}
 		if (e.getSource() == btnMin) {
@@ -226,7 +253,7 @@ public class Login4 extends MouseAdapter{
 	public void mouseEntered(MouseEvent e) {
 		// 鼠标进入效果
 		if (e.getSource() == btnLogin) {
-			btnLogin.setIcon(new ImageIcon("images/login/btn_login_pressed.png"));
+			btnLogin.setIcon(new ImageIcon("images/login/btn_login.png"));
 		}
 		if (e.getSource() == btnMin) {
 			btnMin.setIcon(new ImageIcon("images/login/5.png"));
@@ -241,7 +268,7 @@ public class Login4 extends MouseAdapter{
 		// 鼠标退出效果
 		if (e.getSource() == btnLogin) {
 			ImageIcon btnImage = new ImageIcon(
-					"images/login/btn_login_normal.png");
+					"images/login/btn_blue_ok.png");
 			btnLogin.setIcon(btnImage);
 		}
 		if (e.getSource() == btnMin) {
@@ -263,13 +290,23 @@ public class Login4 extends MouseAdapter{
 			for (Room room : roomList) {
 				if(roomId==room.getId())
 					app.setMac(room.getMac());
+					generateKey(room.getMac());
 			}
 			
 		}
 		else{
+			if(0==roomList.get(0).getId()){
+				generateKey();
+			}else {
+				String mac = roomList.get(0).getMac();
+				app.setMac(mac);
+				generateKey(mac);
+			}
+		param.put("id",roomList.get(0).getId());
+		param.put("originName", roomList.get(0).getName());
 		param.put("roomName", txtRoomName.getText());
 		param.put("schoolId", roomList.get(0).getSchoolId());
-		param.put("mac", roomList.get(0).getMac());
+		param.put("mac", app.getMac());
 		http.post(URLs.URL_TEACHER_ROOM, param, new StringResponseHandler() {	
 			@Override
 			public void onSubmit(URL url, ParamsWrapper params) {
@@ -302,8 +339,60 @@ public class Login4 extends MouseAdapter{
 		});
 		}
 	}
-
-	public static void main(String[] args) {
-		new Login4();
+	private boolean generateKey(String seckey){
+		File file = new File("./key");
+		if(!file.exists()){
+			file.mkdir();
+		}
+		try {
+			FileOutputStream fos = new FileOutputStream("./key/key.dat");
+			fos.write(seckey.getBytes());
+			fos.close();
+			return true;
+		}  catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
+	private boolean generateKey(){
+		File checkingKey = new File("./key/key.dat");
+		if(!checkingKey.exists()){
+			try {
+				File file= new File("./key");
+				file.mkdirs();
+				KeyGenerator key = KeyGenerator.getInstance("HmacMD5");
+				key.init(64);
+				SecretKey secKey = key.generateKey();
+				String secretKey =Md5Utils.md5(new String(secKey.getEncoded()));
+				FileOutputStream fos = new FileOutputStream("./key/key.dat");
+				fos.write(secretKey.getBytes());;
+				fos.close();
+			} catch (NoSuchAlgorithmException e) {
+				Logger logger = Logger.getLogger(Login.class.getName());
+				logger.info("没有该算法");
+				e.printStackTrace();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		try {
+			FileInputStream fis = new FileInputStream("./key/key.dat");
+			byte[] bt = new byte[32];
+			fis.read(bt);
+			String mac=new String(bt);
+			fis.close();
+			 app.setMac(mac);
+			 return true;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
 }
