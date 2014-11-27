@@ -44,7 +44,7 @@ import cn.com.incito.server.utils.URLs;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
-public class Login4 extends MouseAdapter{
+public class RoomLogin2 extends MouseAdapter{
 
 	private JFrame frame = new JFrame();
 	private Boolean isDragged;
@@ -65,7 +65,7 @@ public class Login4 extends MouseAdapter{
 	}
 
 	// 构造函数、调用方法
-	public Login4() {
+	public RoomLogin2() {
 		this.roomList=app.getRooms();
 		showLoginUI();
 		setDragable();

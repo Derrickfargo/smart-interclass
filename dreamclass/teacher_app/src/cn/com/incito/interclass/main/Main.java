@@ -25,7 +25,7 @@ import cn.com.incito.http.StringResponseHandler;
 import cn.com.incito.http.support.ParamsWrapper;
 import cn.com.incito.interclass.po.Version;
 import cn.com.incito.interclass.ui.Login;
-import cn.com.incito.interclass.ui.Login3;
+import cn.com.incito.interclass.ui.RoomLogin1;
 import cn.com.incito.interclass.ui.widget.UpdateDialog;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.exception.AppExceptionHandler;
@@ -78,7 +78,7 @@ public class Main {
 						System.out.println(checkMac());
 						if(checkMac()==null||checkMac()==""){
 							Application.getInstance();
-							new Login3();
+							new RoomLogin1();
 							return;
 						}
 						Application.getInstance().setMac(checkMac());

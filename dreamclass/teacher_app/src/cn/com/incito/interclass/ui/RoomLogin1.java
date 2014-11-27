@@ -41,7 +41,7 @@ import com.alibaba.fastjson.JSONObject;
  * @author JHON
  *
  */
-public class Login3 extends MouseAdapter{
+public class RoomLogin1 extends MouseAdapter{
 
 	private JFrame frame = new JFrame();
 	private Boolean isDragged;
@@ -64,7 +64,7 @@ public class Login3 extends MouseAdapter{
 	}
 
 	// 构造函数、调用方法
-	public Login3() {
+	public RoomLogin1() {
 		showLoginUI();
 		setDragable();
 	}
@@ -353,7 +353,7 @@ public class Login3 extends MouseAdapter{
 				else{
 					app.setRooms(rooms);
 				}
-				new Login4();
+				new RoomLogin2();
 				}
 			}
 		});
