@@ -211,12 +211,6 @@ public class MainFrame extends MouseAdapter {
 				refresh();
 			}
 		});
-		frame.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				refresh();
-			}
-		});
 		// //////////////////////top部分////////////////////////
 		JPanel top = new JPanel();
 		top.setSize(1024, 73);
