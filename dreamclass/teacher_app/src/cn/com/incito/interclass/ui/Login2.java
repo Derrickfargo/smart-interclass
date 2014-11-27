@@ -17,7 +17,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 

@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -148,6 +149,7 @@ public class Login extends MouseAdapter {
 		// 密码框
 		txtPassword = new JPasswordField();
 		txtPassword.setBounds(160, 115, 265, 35);
+		txtPassword.setToolTipText("123");
 		frame.add(txtPassword);
 
 		// 记住用户名和密码
@@ -371,5 +373,8 @@ public class Login extends MouseAdapter {
 				JOptionPane.showMessageDialog(frame, "数据解析错误！");
 			}
 		});
+	}
+	public static void main(String[] args) {
+		new Login();
 	}
 }
