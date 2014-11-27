@@ -9,6 +9,7 @@ import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -30,8 +31,11 @@ import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.utils.BitmapUtil;
+import cn.com.incito.classroom.utils.UpdateManager;
 import cn.com.incito.classroom.widget.canvas.ISketchPadCallback;
 import cn.com.incito.classroom.widget.canvas.SketchPadView;
+import cn.com.incito.common.utils.AndroidUtil;
+import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
@@ -86,6 +90,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	private ImageButton earise_middle;
 	private ImageButton earise_small;
 	private Bitmap bitmap;
+	private int delay;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -475,7 +480,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						dialog.dismiss();
-						submitPaper();
+						submitPaper(delay);
 					}
 				})
 				.setNegativeButton("否", new DialogInterface.OnClickListener() {
@@ -489,26 +494,9 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	/**
 	 * 提交作业
 	 */
-	public void submitPaper() {
-		MessagePacking messagePacking = new MessagePacking(
-				Message.MESSAGE_SAVE_PAPER);
-		// 测试ID
-		messagePacking.putBodyData(DataType.INT, BufferUtils
-				.writeUTFString(MyApplication.getInstance().getQuizID()));
-		// 设备ID
-		messagePacking.putBodyData(DataType.INT, BufferUtils
-				.writeUTFString(MyApplication.getInstance().getDeviceId()));
-		// 图片
-		messagePacking.putBodyData(DataType.INT,bmpToByteArray(getBitMap(), true));
-		CoreSocket.getInstance().sendMessage(messagePacking);
-		WLog.i(DrawBoxActivity.class, "启动作业提交..."+"request:");
-		MyApplication.getInstance().setSubmitPaper(true);
-		MyApplication.getInstance().lockScreen(true);
-		WLog.i(DistributePaperHandler.class, "提交作业后锁定屏幕" );
-		if(UIHelper.getInstance().getClassingActivity() == null){
-			UIHelper.getInstance().showClassingActivity();
-		}
-		this.finish();
+	public void submitPaper(int delay) {
+		this.delay=delay;
+		handler.sendEmptyMessage(0);
 	}
 	public void initPopwindow(){
 		 LayoutInflater layoutInflater = LayoutInflater.from(this); 
@@ -545,4 +533,40 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		}
 		return result;
 	}
+	private Handler handler = new Handler() {
+		public void handleMessage(android.os.Message msg) {
+			switch (msg.what) {
+			case 0:
+				try {
+					MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"延迟"+delay+"秒开始提交作业");
+					Thread.sleep(delay);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				MessagePacking messagePacking = new MessagePacking(
+						Message.MESSAGE_SAVE_PAPER);
+				// 测试ID
+				messagePacking.putBodyData(DataType.INT, BufferUtils
+						.writeUTFString(MyApplication.getInstance().getQuizID()));
+				// 设备ID
+				messagePacking.putBodyData(DataType.INT, BufferUtils
+						.writeUTFString(MyApplication.getInstance().getDeviceId()));
+				// 图片
+				messagePacking.putBodyData(DataType.INT,bmpToByteArray(getBitMap(), true));
+				CoreSocket.getInstance().sendMessage(messagePacking);
+				WLog.i(DrawBoxActivity.class, "启动作业提交..."+"request:");
+				MyApplication.getInstance().setSubmitPaper(true);
+				MyApplication.getInstance().lockScreen(true);
+				WLog.i(DistributePaperHandler.class, "提交作业后锁定屏幕" );
+				if(UIHelper.getInstance().getClassingActivity() == null){
+					UIHelper.getInstance().showClassingActivity();
+				}
+				DrawBoxActivity.this.finish();
+				break;
+			default:
+				break;
+			}
+		};
+	};
+	
 }
