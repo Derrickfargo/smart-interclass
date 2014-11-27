@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import cn.com.incito.classroom.R;
+import cn.com.incito.classroom.base.AppManager;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
@@ -168,6 +169,7 @@ public class UpdateManager {
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setDataAndType(Uri.parse("file://" + apkfile.toString()), "application/vnd.android.package-archive"); 
         mContext.startActivity(i);
+        AppManager.getAppManager().AppExit(mContext);
 	
 	}
 }
