@@ -95,7 +95,7 @@ public class MedalDialog extends JDialog implements MouseListener {
 		JPanel pnlMedal = new JPanel();
 		pnlMedal.setOpaque(false);
 		pnlMedal.setLayout(null);
-		pnlMedal.setBounds(0, 35, 500, 140);
+		pnlMedal.setBounds(0, 35, 520, 140);
 		add(pnlMedal);
 		btnMedal1 = createMedal(1);
 		if (group.getMedals() != null && !"".equals(group.getMedals())) {
