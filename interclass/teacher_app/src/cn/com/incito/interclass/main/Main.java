@@ -31,8 +31,8 @@ import com.alibaba.fastjson.JSONObject;
  * 
  */
 public class Main {
-	public static final int VERSION_CODE = 7;
-	public static final String VERSION_NAME = "V200R001C001B007";
+	public static final int VERSION_CODE = 8;
+	public static final String VERSION_NAME = "V200R001C001B008";
 	private static final long FREE_SIZE = 1024 * 1024 * 100;//100M
 	
 	public static void main(String args[]) {

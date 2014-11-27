@@ -176,7 +176,7 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SAVE_PAPER);
 	        JSONObject json = new JSONObject();
 	        json.put("id", Application.getInstance().getQuizId());
-	        json.put("delay", (delay ++) * 200);
+	        json.put("delay", (delay ++) * 500);//每秒钟收取两个作业
 	        messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(json.toString()));
 	        if (!channel.isConnected()) {
 				it.remove();
