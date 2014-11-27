@@ -159,55 +159,53 @@ public class CoreService {
 	 * @param imei
 	 * @return
 	 */
-	public String SavePaper(String imei, String quizid, String lessionid,
-			byte[] imageByte) {
-		
-		File path = new File(Constants.PAPER_PATH + File.separator + lessionid
-				+ File.separator + imei.replace(":", "-"));
-		path.mkdirs();
+	public void SavePaper(final String imei, final String quizid, final String lessionid,
+			final byte[] imageByte) {
+		new Thread(){
+			public void run() {
+				File path = new File(Constants.PAPER_PATH + File.separator + lessionid
+						+ File.separator + imei.replace(":", "-"));
+				path.mkdirs();
 
-		File file = new File(path, quizid + ".jpg");
-		File thumbnail = new File(path, quizid + "_thumbnail.jpg");
-		try {
-			FileImageOutputStream imageOutput = new FileImageOutputStream(file);
-			imageOutput.write(imageByte, 0, imageByte.length);
-			imageOutput.close();
-			ImageUtil.resize(file, file, 865, 1f);
-			logger.info("大图生成：" + file.getAbsoluteFile());
-			ImageUtil.resize(file, thumbnail, 186, 1f);
-			logger.info("缩略图生成：" + thumbnail.getAbsoluteFile());
-		} catch (IOException e) {
-			logger.error("保存作业图片出现错误:", e);
-		}
+				File file = new File(path, quizid + ".jpg");
+				File thumbnail = new File(path, quizid + "_thumbnail.jpg");
+				try {
+					FileImageOutputStream imageOutput = new FileImageOutputStream(file);
+					imageOutput.write(imageByte, 0, imageByte.length);
+					imageOutput.close();
+					ImageUtil.resize(file, file, 865, 1f);
+					logger.info("大图生成：" + file.getAbsoluteFile());
+					ImageUtil.resize(file, thumbnail, 186, 1f);
+					logger.info("缩略图生成：" + thumbnail.getAbsoluteFile());
+				} catch (IOException e) {
+					logger.error("保存作业图片出现错误:", e);
+				}
 
-		Quiz quiz = new Quiz();
-		quiz.setId(quizid);
-		quiz.setImei(imei);
-		quiz.setLessionid(lessionid);
-		Student students = app.getStudentByImei(imei);
-		if (students.getName().length() != 0) {
-			quiz.setName(students.getName());
-		}
-		quiz.setTime(System.currentTimeMillis());
-		
-//		Group group = getGroupObjectByIMEI(imei);
-//		quiz.setGroupId(group.getId());
-//		quiz.setGroup(group);
-		quiz.setQuizUrl(file.getAbsolutePath());
-		quiz.setThumbnail(thumbnail.getAbsolutePath());
-		app.getTempQuiz().put(imei, quiz);
-		app.getQuizList().add(quiz);
-		app.refresh();
-		if (app.getQuizList().size() == app.getClientChannel().size()) {
-			Application.getInstance().getFloatIcon().showNoQuiz();
-			MainFrame.getInstance().showNoQuiz();
-			Application.getInstance().setLockScreen(true);
-		} else {
-			String message = String.format(Constants.MESSAGE_QUIZ, app
-					.getQuizList().size(), app.getClientChannel().size());
-			Application.getInstance().getFloatIcon().showQuizMessage(message);
-		}
-		return JSONUtils.renderJSONString(0);
+				Quiz quiz = new Quiz();
+				quiz.setId(quizid);
+				quiz.setImei(imei);
+				quiz.setLessionid(lessionid);
+				Student students = app.getStudentByImei(imei);
+				if (students.getName().length() != 0) {
+					quiz.setName(students.getName());
+				}
+				quiz.setTime(System.currentTimeMillis());
+				quiz.setQuizUrl(file.getAbsolutePath());
+				quiz.setThumbnail(thumbnail.getAbsolutePath());
+				app.getTempQuiz().put(imei, quiz);
+				app.getQuizList().add(quiz);
+				app.refresh();
+				if (app.getQuizList().size() == app.getClientChannel().size()) {
+					Application.getInstance().getFloatIcon().showNoQuiz();
+					MainFrame.getInstance().showNoQuiz();
+					Application.getInstance().setLockScreen(true);
+				} else {
+					String message = String.format(Constants.MESSAGE_QUIZ, app
+							.getQuizList().size(), app.getClientChannel().size());
+					Application.getInstance().getFloatIcon().showQuizMessage(message);
+				}
+			}
+		}.start();
 	}
 
 	/**

@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.server.api.Application;
+import cn.com.incito.server.config.AppConfig;
 import cn.com.incito.server.core.CoreSocket;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.message.DataType;
@@ -164,25 +165,27 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 	  /**
      * 老师主动收作业
      */
-    public void collectPaper() {
-    	logger.info("开始收取作业...");
-    	app.setState(4);//锁屏
-    	Application app = Application.getInstance();
-		Map<String,SocketChannel> channels = app.getClientChannel();
+	public void collectPaper() {
+		logger.info("开始收取作业...");
+		app.setState(4);// 锁屏
+		Application app = Application.getInstance();
+		Map<String, SocketChannel> channels = app.getClientChannel();
+		System.out.println(channels.size());
 		Iterator<SocketChannel> it = channels.values().iterator();
 		int delay = 0;
-		while(it.hasNext()){
+		while (it.hasNext()) {
 			SocketChannel channel = it.next();
 			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SAVE_PAPER);
-	        JSONObject json = new JSONObject();
-	        json.put("id", Application.getInstance().getQuizId());
-	        json.put("delay", (delay ++) * 500);//每秒钟收取两个作业
-	        messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(json.toString()));
-	        if (!channel.isConnected()) {
+			JSONObject json = new JSONObject();
+			json.put("id", Application.getInstance().getQuizId());
+			int delayTime = Integer.parseInt(AppConfig.getProperties().get("quiz_delay").toString());
+			json.put("delay", (delay++) * delayTime);
+			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json.toString()));
+			if (!channel.isConnected()) {
 				it.remove();
 				continue;
 			}
-	        byte[] data = messagePacking.pack().array();
+			byte[] data = messagePacking.pack().array();
 			ByteBuffer buffer = ByteBuffer.allocate(data.length);
 			buffer.clear();
 			buffer.put(data);
@@ -193,7 +196,7 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 				logger.error("收取作业命令发送失败...", e);
 			}
 		}
-    }
+	}
     
     /**
      * 分发空白试卷

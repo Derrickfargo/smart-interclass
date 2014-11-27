@@ -116,7 +116,7 @@ public class FloatIcon extends MouseAdapter {
 					@Override
 					public void run() {
 						try {
-							Thread.sleep(150);
+							Thread.sleep(200);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
