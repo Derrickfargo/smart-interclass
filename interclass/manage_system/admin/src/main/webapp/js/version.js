@@ -31,7 +31,7 @@ $(document).ready(function() {
 				flag=false;
 			}
 			//检查上传版本文件
-			if(!new RegExp(/(\.xls)$/).test($("#file").val())){
+			if(!new RegExp(/\.[A|a][P|p][K|k]$/).test($("#file").val())){
 				$("#fileTip").removeClass("hidden");
 				flag=false;
 			}
