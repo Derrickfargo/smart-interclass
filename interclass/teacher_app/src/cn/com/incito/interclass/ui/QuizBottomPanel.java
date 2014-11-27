@@ -170,15 +170,15 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 		app.setState(4);// 锁屏
 		Application app = Application.getInstance();
 		Map<String, SocketChannel> channels = app.getClientChannel();
-		System.out.println(channels.size());
 		Iterator<SocketChannel> it = channels.values().iterator();
 		int delay = 0;
+		int delayTime = Integer.parseInt(AppConfig.getProperties().get("quiz_delay").toString());
+		logger.info("quiz_delay=" + delayTime);
 		while (it.hasNext()) {
 			SocketChannel channel = it.next();
 			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SAVE_PAPER);
 			JSONObject json = new JSONObject();
 			json.put("id", Application.getInstance().getQuizId());
-			int delayTime = Integer.parseInt(AppConfig.getProperties().get("quiz_delay").toString());
 			json.put("delay", (delay++) * delayTime);
 			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json.toString()));
 			if (!channel.isConnected()) {
