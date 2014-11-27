@@ -11,6 +11,7 @@ import cn.com.incito.server.core.MessageHandler;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
+import cn.com.incito.server.utils.JSONUtils;
 
 /**
  * 获取分组消息处理器
@@ -48,8 +49,8 @@ public class SavePaperHandler extends MessageHandler {
 
 	public void handleMessage(byte[] imageByte) {
 		// 需要给组中所以的设备发送
-		String result = service.SavePaper(imei, quizid, Application.getInstance().getLessionid(), imageByte);
-		sendResponse(result);
+		service.SavePaper(imei, quizid, Application.getInstance().getLessionid(), imageByte);
+		sendResponse(JSONUtils.renderJSONString(0));
 	}
 
 	private void sendResponse(String json) {

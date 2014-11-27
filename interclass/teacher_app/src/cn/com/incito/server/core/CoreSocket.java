@@ -35,7 +35,7 @@ public final class CoreSocket extends Thread {
 	private Logger logger = Logger.getLogger(CoreSocket.class.getName());
 	
 	private CoreSocket(){
-		setDefaultUncaughtExceptionHandler(new AppExceptionHandler());
+//		setDefaultUncaughtExceptionHandler(new AppExceptionHandler());
 	}
 	
 	public static CoreSocket getInstance() {
