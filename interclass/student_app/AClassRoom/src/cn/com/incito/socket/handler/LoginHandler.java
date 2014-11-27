@@ -22,7 +22,7 @@ public class LoginHandler extends MessageHandler {
 
 	@Override
 	protected void handleMessage() {
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"LoginHandler.class:收到登陆回复：" + data.toJSONString());
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"LoginHandler.class:收到登陆回复：");
 		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"连接建立成功,开始启动心跳!");
 		String server_ip = data.getString("server_ip");
 		String server_port = data.getString("server_port");
@@ -105,7 +105,11 @@ public class LoginHandler extends MessageHandler {
 				if(!AppManager.getAppManager().currentActivity().getClass().getSimpleName().equals("DrawBoxActivity")){
 					byte[] imageByte = data.getBytes("quiz");
 					UIHelper.getInstance().showDrawBoxActivity(imageByte);
-					AppManager.getAppManager().currentActivity().finish();
+					
+					if(!"ClassingActivity".equals(AppManager.getAppManager().currentActivity().getClass().getSimpleName())){
+						AppManager.getAppManager().currentActivity().finish();
+					}
+					
 				}
 				
 			}else if(state == 4){
