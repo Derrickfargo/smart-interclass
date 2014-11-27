@@ -193,7 +193,6 @@ public class RoomLogin1 extends MouseAdapter{
 		txtschoolPassword.addFocusListener(new FocusListener() {	
 			@Override
 			public void focusLost(FocusEvent e) {
-				// TODO Auto-generated method stub
 				if(txtschoolPassword.getPassword().length==0){
 					txtschoolPassword.setEchoChar((char)0);
 					txtschoolPassword.setText("密码");
@@ -201,7 +200,6 @@ public class RoomLogin1 extends MouseAdapter{
 			}
 			@Override
 			public void focusGained(FocusEvent e) {
-				// TODO Auto-generated method stub
 				if(new String(txtschoolPassword.getPassword()).equals("密码")){
 					txtschoolPassword.setText(null);
 					txtschoolPassword.setEchoChar('*');
