@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -58,7 +60,7 @@ public class RoomLogin2 extends MouseAdapter{
 	private List<Room> roomList;
 	private JLabel lblNotice;
 	private JLabel tips;
-	private JLabel Sucess;
+	private JLabel sucess;
 
 	public JFrame getFrame() {
 		return frame;
@@ -75,7 +77,7 @@ public class RoomLogin2 extends MouseAdapter{
 	private void showLoginUI() {
 		ImageIcon icon = new ImageIcon("images/main/icon.png");
 		frame.setIconImage(icon.getImage());
-		frame.setSize(907, 700);
+		frame.setSize(1014, 759);
 		frame.setDefaultCloseOperation(3);
 		frame.setLocationRelativeTo(null);// 设置窗体中间位置
 		frame.setLayout(null);// 绝对布局
@@ -84,7 +86,7 @@ public class RoomLogin2 extends MouseAdapter{
 		frame.setBackground(new Color(0, 0, 0, 0));// 窗体透明
 
 		JPanel top = new JPanel();
-		top.setSize(907, 30);
+		top.setSize(1014, 30);
 		top.setLayout(null);
 		top.setOpaque(false);
 
@@ -95,7 +97,7 @@ public class RoomLogin2 extends MouseAdapter{
 		ImageIcon imgMin = new ImageIcon("images/login/4.png");
 		btnMin.setIcon(imgMin);// 设置图片
 		top.add(btnMin);// 添加按钮
-		btnMin.setBounds(825, 9, imgMin.getIconWidth(), imgMin.getIconHeight());
+		btnMin.setBounds(943, 4, imgMin.getIconWidth(), imgMin.getIconHeight());
 		btnMin.addMouseListener(this);
 
 		// 关闭按钮
@@ -105,31 +107,32 @@ public class RoomLogin2 extends MouseAdapter{
 		ImageIcon imgMax = new ImageIcon("images/login/7.png");
 		btnClose.setIcon(imgMax);// 设置图片
 		top.add(btnClose);// 添加按钮
-		btnClose.setBounds(855, 9, imgMax.getIconWidth(), imgMax.getIconHeight());
+		btnClose.setBounds(971, 4, imgMax.getIconWidth(), imgMax.getIconHeight());
 		btnClose.addMouseListener(this);
 		frame.add(top);
 		//注册提示
-		Sucess = new JLabel();
-		Sucess.setText("恭喜你，注册成功！");
-		Sucess.setFont(new Font("Microsoft YaHei", Font.PLAIN, 23));
-		Sucess.setBounds(250, 80, 300, 50);
-		frame.add(Sucess);
+		sucess = new JLabel();
+		sucess.setText("请修改教室名称");
+		sucess.setFont(new Font("Microsoft YaHei", Font.PLAIN, 23));
+		sucess.setBounds(180, 80, 300, 50);
+		frame.add(sucess);
 		//注册成功提示图标
 		tips = new JLabel();
-		ImageIcon image= new ImageIcon("images/login/pic_check.png");
+		final ImageIcon image= new ImageIcon("images/login/pic_checked.png");
+		final ImageIcon imag = new ImageIcon("images/login/pic_check.png");
 		tips.setIcon(image);
-		tips.setBounds(180, 85, image.getIconWidth(),image.getIconHeight());
+		tips.setBounds(180, 270, image.getIconWidth(),image.getIconHeight());
 		frame.add(tips);
 		//小提示
 		lblNotice = new JLabel();
-		lblNotice.setText("现在即可享受梦想教室带来的全新体验");
-		lblNotice.setBounds(250, 130, 300, 50);
+//		lblNotice.setText("即将享受梦想教室带来的全新体验");
+		lblNotice.setBounds(180, 130, 300, 50);
 		frame.add(lblNotice);
 		
 		
 		//教室名称
 		lblRoomName  = new JLabel();
-		lblRoomName.setBounds(180, 265, 100, 50);
+		lblRoomName.setBounds(280, 265, 100, 50);
 		lblRoomName.setFont(new Font("Microsoft YaHei",Font.PLAIN,16));
 		lblRoomName.setText("教室名称 :");
 		frame.add(lblRoomName);
@@ -137,14 +140,32 @@ public class RoomLogin2 extends MouseAdapter{
 		List<Room> rooms=app.getRooms();		
 		if(rooms.size()==1){
 			txtRoomName.setText(rooms.get(0).getName());
+			txtRoomName.addKeyListener(new KeyAdapter() {
+				public void keyReleased(KeyEvent e){
+					if(!txtRoomName.getText().equals("未来教室1")){
+						tips.setIcon(imag);
+						return;
+					}
+					else tips.setIcon(image);
+				}
+			});
 			txtRoomName.setForeground(UIHelper.getDefaultFontColor());
-			txtRoomName.setBounds(300, 270, 250, 35);
+			txtRoomName.setBounds(400, 270, 250, 35);
 			frame.add(txtRoomName);
 		}
 		else{
 			initData();
 			boxRoomName.setForeground(UIHelper.getDefaultFontColor());
-			boxRoomName.setBounds(300, 270, 250, 35);
+			boxRoomName.addKeyListener(new KeyAdapter() {
+				public void keyReleased(KeyEvent e){
+					if(!txtRoomName.getText().equals("未来教室1")){
+						tips.setIcon(imag);
+						return;
+					}
+					else tips.setIcon(image);
+				}
+			});
+			boxRoomName.setBounds(400, 270, 250, 35);
 			frame.add(boxRoomName);
 		}
 		
@@ -154,7 +175,7 @@ public class RoomLogin2 extends MouseAdapter{
 		btnLogin = new JButton();// 创建按钮对象
 		btnLogin.setBorderPainted(false);// 设置边框不可见
 		btnLogin.setContentAreaFilled(false);// 设置透明
-		ImageIcon btnImage = new ImageIcon("images/login/btn_blue_ok.png");
+		ImageIcon btnImage = new ImageIcon("images/login/btn_blue_next.png");
 		btnLogin.setIcon(btnImage);// 设置图片
 		frame.add(btnLogin);// 添加按钮
 		btnLogin.setBounds(180, 400, btnImage.getIconWidth(),
@@ -208,7 +229,7 @@ public class RoomLogin2 extends MouseAdapter{
 	public void setBgimg() {
 		lblBackground = new JLabel();
 		lblBackground.setIcon(new ImageIcon("images/login/bg.png"));
-		lblBackground.setBounds(0, 0, 907, 749);
+		lblBackground.setBounds(0, 0, 1014, 759);
 		frame.add(lblBackground);
 	}
 
@@ -221,7 +242,7 @@ public class RoomLogin2 extends MouseAdapter{
 	public void mousePressed(MouseEvent e) {
 		// 按钮按下效果
 		if (e.getSource() == btnLogin) {
-			btnLogin.setIcon(new ImageIcon("images/login/btn_pressed.png"));
+			btnLogin.setIcon(new ImageIcon("images/login/btn_blue_login.png"));
 		}
 		if (e.getSource() == btnMin) {
 			btnMin.setIcon(new ImageIcon("images/login/6.png"));
@@ -236,7 +257,7 @@ public class RoomLogin2 extends MouseAdapter{
 		// 按钮释放效果
 		if (e.getSource() == btnLogin) {
 			ImageIcon btnImage = new ImageIcon(
-					"images/login/btn_blue_ok.png");
+					"images/login/btn_blue_next.png");
 			btnLogin.setIcon(btnImage);
 		}
 		if (e.getSource() == btnMin) {
@@ -253,7 +274,7 @@ public class RoomLogin2 extends MouseAdapter{
 	public void mouseEntered(MouseEvent e) {
 		// 鼠标进入效果
 		if (e.getSource() == btnLogin) {
-			btnLogin.setIcon(new ImageIcon("images/login/btn_login.png"));
+			btnLogin.setIcon(new ImageIcon("images/login/btn_blue_pressed.png"));
 		}
 		if (e.getSource() == btnMin) {
 			btnMin.setIcon(new ImageIcon("images/login/5.png"));
@@ -268,7 +289,7 @@ public class RoomLogin2 extends MouseAdapter{
 		// 鼠标退出效果
 		if (e.getSource() == btnLogin) {
 			ImageIcon btnImage = new ImageIcon(
-					"images/login/btn_blue_ok.png");
+					"images/login/btn_blue_next.png");
 			btnLogin.setIcon(btnImage);
 		}
 		if (e.getSource() == btnMin) {
@@ -333,7 +354,7 @@ public class RoomLogin2 extends MouseAdapter{
 						return;
 					}
 					frame.setVisible(false);
-					new Login();
+					new RoomLogin3();
 				}
 			}
 		});
@@ -394,5 +415,7 @@ public class RoomLogin2 extends MouseAdapter{
 		}
 		return false;
 	}
-
+public static void main(String[] args) {
+	new RoomLogin2();
+}
 }

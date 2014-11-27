@@ -228,7 +228,6 @@ public class Login2 extends MouseAdapter {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-
 	}
 
 	@Override

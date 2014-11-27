@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -73,7 +75,7 @@ public class RoomLogin1 extends MouseAdapter{
 	private void showLoginUI() {
 		ImageIcon icon = new ImageIcon("images/main/icon.png");
 		frame.setIconImage(icon.getImage());
-		frame.setSize(907, 700);
+		frame.setSize(1014, 759);
 		frame.setDefaultCloseOperation(3);
 		frame.setLocationRelativeTo(null);// 设置窗体中间位置
 		frame.setLayout(null);// 绝对布局
@@ -82,7 +84,7 @@ public class RoomLogin1 extends MouseAdapter{
 		frame.setBackground(new Color(0,0,0,0));// 窗体透明
 
 		JPanel top = new JPanel();
-		top.setSize(907, 30);
+		top.setSize(1014, 30);
 		top.setLayout(null);
 		top.setOpaque(false);
 
@@ -93,7 +95,7 @@ public class RoomLogin1 extends MouseAdapter{
 		ImageIcon imgMin = new ImageIcon("images/login/4.png");
 		btnMin.setIcon(imgMin);// 设置图片
 		top.add(btnMin);// 添加按钮
-		btnMin.setBounds(825, 9, imgMin.getIconWidth(), imgMin.getIconHeight());
+		btnMin.setBounds(943, 4, imgMin.getIconWidth(), imgMin.getIconHeight());
 		btnMin.addMouseListener(this);
 
 		// 关闭按钮
@@ -103,7 +105,7 @@ public class RoomLogin1 extends MouseAdapter{
 		ImageIcon imgMax = new ImageIcon("images/login/7.png");
 		btnClose.setIcon(imgMax);// 设置图片
 		top.add(btnClose);// 添加按钮
-		btnClose.setBounds(855, 9, imgMax.getIconWidth(), imgMax.getIconHeight());
+		btnClose.setBounds(971, 4, imgMax.getIconWidth(), imgMax.getIconHeight());
 		btnClose.addMouseListener(this);
 		frame.add(top);
 		//注册提示
@@ -130,12 +132,30 @@ public class RoomLogin1 extends MouseAdapter{
 		lblschoolName = new JLabel();
 		lblschoolName.setForeground(UIHelper.getDefaultFontColor());
 		lblschoolName.setText("请输入学校账号:");
+		
 		lblschoolName.setFont( new Font("Microsoft YaHei", Font.PLAIN, 16));
 		lblschoolName.setBounds(250, 250, 170, 35);
 		frame.add(lblschoolName);
 		
 		txtschoolName = new JTextField();
 		txtschoolName.setBounds(420, 250, 210, 35);
+		txtschoolName.setText("用户名");
+		txtschoolName.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (txtschoolName.getText().equals("")) {
+					txtschoolName.setText("用户名");
+				}
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				if (txtschoolName.getText().equals("用户名")) {
+					txtschoolName.setText("");
+				}
+			}
+		});
 //		ImageIcon imag = new ImageIcon("images/login/bg_text.png");
 //		JLabel label = new JLabel();
 //		label.setBounds(0, 0, imag.getIconWidth(), imag.getIconHeight());
@@ -167,7 +187,28 @@ public class RoomLogin1 extends MouseAdapter{
 		frame.add(lblschoolpassword);
 		txtschoolPassword = new JPasswordField();
 		txtschoolPassword.setBounds(420, 350, 210, 35);
+		txtschoolPassword.setEchoChar((char)0);
+		txtschoolPassword.setText("密码");
 		txtschoolPassword.setForeground(UIHelper.getDefaultFontColor());
+		txtschoolPassword.addFocusListener(new FocusListener() {	
+			@Override
+			public void focusLost(FocusEvent e) {
+				// TODO Auto-generated method stub
+				if(txtschoolPassword.getPassword().length==0){
+					txtschoolPassword.setEchoChar((char)0);
+					txtschoolPassword.setText("密码");
+				}
+			}
+			@Override
+			public void focusGained(FocusEvent e) {
+				// TODO Auto-generated method stub
+				if(new String(txtschoolPassword.getPassword()).equals("密码")){
+					txtschoolPassword.setText(null);
+					txtschoolPassword.setEchoChar('*');
+				}
+				
+			}
+		});
 		frame.add(txtschoolPassword);
 		txtschoolPassword.addKeyListener(new KeyAdapter() {//密码输入校验
 			 public void keyReleased(KeyEvent e) {
@@ -235,7 +276,7 @@ public class RoomLogin1 extends MouseAdapter{
 	public void setBgimg() {
 		lblBackground = new JLabel();
 		lblBackground.setIcon(new ImageIcon("images/login/bg.png"));
-		lblBackground.setBounds(0, 0, 907,749);
+		lblBackground.setBounds(0, 0, 1014,759);
 		frame.add(lblBackground);
 	}
 
@@ -358,5 +399,8 @@ public class RoomLogin1 extends MouseAdapter{
 			}
 		});
 		
+	}
+	public static void main(String[] args) {
+		new RoomLogin1();
 	}
 }

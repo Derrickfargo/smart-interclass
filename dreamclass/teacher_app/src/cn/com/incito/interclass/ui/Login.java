@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Point;
+import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -126,30 +127,51 @@ public class Login extends MouseAdapter {
 		headb.setBounds(20, 60, icmr.getIconWidth(), icmr.getIconHeight());
 		// 用户信息栏
 		txtUserName = new JTextField();// 创建对象
+		txtUserName.setToolTipText("输入您的登录帐号，允许使用:用户名/手机号/邮箱来作为登陆帐号");
 		txtUserName.addFocusListener(new FocusListener() {
 			
 			@Override
 			public void focusLost(FocusEvent e) {
 				if (txtUserName.getText().equals("")) {
-					txtUserName.setText("用户名");
+					txtUserName.setText("用户名/手机号/邮箱");
 				}
 			}
 			
 			@Override
 			public void focusGained(FocusEvent e) {
-				if (txtUserName.getText().equals("用户名")) {
+				if (txtUserName.getText().equals("用户名/手机号/邮箱")) {
 					txtUserName.setText("");
 				}
 			}
 		});
 		txtUserName.setForeground(UIHelper.getDefaultFontColor());
-		txtUserName.setText("用户名");
+		txtUserName.setText("用户名/手机号/邮箱");
 		txtUserName.setBounds(160, 65, 265, 35);// 设定位置
 		frame.add(txtUserName);// 添加到界面
 		// 密码框
-		txtPassword = new JPasswordField();
+		txtPassword = new JPasswordField(10);
+		txtPassword.setEchoChar((char)0);
+		txtPassword.setText("密码");
+		txtPassword.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				if(txtPassword.getPassword().length==0){
+				txtPassword.setEchoChar((char)0);
+				txtPassword.setText("密码");
+				}
+			}		
+			@Override
+			public void focusGained(FocusEvent e) {
+				if(new String(txtPassword.getPassword()).equals("密码")){
+					txtPassword.setText(null);
+					txtPassword.setEchoChar('*');
+				}
+				
+			}
+		});
 		txtPassword.setBounds(160, 115, 265, 35);
-		txtPassword.setToolTipText("123");
+		txtPassword.setToolTipText("输入您的登录密码");
 		frame.add(txtPassword);
 
 		// 记住用户名和密码
@@ -231,7 +253,6 @@ public class Login extends MouseAdapter {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		
 	}
 
 	@Override
@@ -311,6 +332,7 @@ public class Login extends MouseAdapter {
 		if(e.getSource()==link){
 			link.setForeground(new Color(17, 136, 255));
 		}
+
 	}
 
 	private void doLogin() {
