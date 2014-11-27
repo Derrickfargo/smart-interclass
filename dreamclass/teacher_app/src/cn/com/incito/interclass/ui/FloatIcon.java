@@ -387,6 +387,10 @@ public class FloatIcon extends MouseAdapter {
 					frame.setVisible(true);
 					return;
 				} else if(frame.isVisible()){
+					if(frame.getFrame().getExtendedState() != JFrame.NORMAL){
+						frame.getFrame().setExtendedState(JFrame.NORMAL);
+						return;
+					}
 					frame.setVisible(false);
 				}else{
 					frame.getFrame().setExtendedState(JFrame.NORMAL);
