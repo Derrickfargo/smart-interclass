@@ -538,26 +538,24 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 			switch (msg.what) {
 			case 0:
 				try {
-					MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"延迟"+delay+"秒开始提交作业");
+					MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"延迟"+delay+"毫秒开始提交作业");
 					Thread.sleep(delay);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				MessagePacking messagePacking = new MessagePacking(
-						Message.MESSAGE_SAVE_PAPER);
+				MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SAVE_PAPER);
 				// 测试ID
-				messagePacking.putBodyData(DataType.INT, BufferUtils
-						.writeUTFString(MyApplication.getInstance().getQuizID()));
+				messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(MyApplication.getInstance().getQuizID()));
 				// 设备ID
-				messagePacking.putBodyData(DataType.INT, BufferUtils
-						.writeUTFString(MyApplication.getInstance().getDeviceId()));
+				messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(MyApplication.getInstance().getDeviceId()));
 				// 图片
 				messagePacking.putBodyData(DataType.INT,bmpToByteArray(getBitMap(), true));
+				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"开始提交作业");
 				CoreSocket.getInstance().sendMessage(messagePacking);
-				WLog.i(DrawBoxActivity.class, "启动作业提交..."+"request:");
+				MyApplication.Logger.debug("启动作业提交..."+"request:");
 				MyApplication.getInstance().setSubmitPaper(true);
 				MyApplication.getInstance().lockScreen(true);
-				WLog.i(DistributePaperHandler.class, "提交作业后锁定屏幕" );
+				MyApplication.Logger.debug("提交作业后锁定屏幕" );
 				if(UIHelper.getInstance().getClassingActivity() == null){
 					UIHelper.getInstance().showClassingActivity();
 				}
