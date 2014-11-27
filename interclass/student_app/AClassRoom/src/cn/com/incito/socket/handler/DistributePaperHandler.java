@@ -3,6 +3,7 @@ package cn.com.incito.socket.handler;
 import java.nio.ByteBuffer;
 
 import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.core.MessageHandler;
@@ -42,6 +43,7 @@ public class DistributePaperHandler extends MessageHandler {
 	@Override
 	protected void handleMessage() {
 		MyApplication.getInstance().lockScreen(false);
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"收到作业");
 		UIHelper.getInstance().showDrawBoxActivity(imageByte);
 	}
 
