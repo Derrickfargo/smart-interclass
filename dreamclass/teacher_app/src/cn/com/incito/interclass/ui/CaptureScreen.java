@@ -67,7 +67,7 @@ public class CaptureScreen {
 	Logger logger = Logger.getLogger(CaptureScreen.class.getName());
 	public final static String SCREENSHOT_ICON = "images/screenshot/icon.png";
 	public final static int BAR_WIDTH = 267;
-	public final static int BAR_HEIGHT = 50;
+	public final static int BAR_HEIGHT = 55;
 	private JPanel jPanel;
 	private BufferedImage bImage;
 	private Component jFrame;
@@ -254,6 +254,10 @@ public class CaptureScreen {
 						return;
 					}
 				}
+				if(barPanel.contains((new Double(me.getPoint().getX()-barPanel.getX())).intValue(), (new Double(me.getPoint().getY()-barPanel.getY())).intValue())){
+					this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+					return;
+				}
 				this.setCursor(cs);
 				current = States.DEFAULT;
 			}
@@ -379,17 +383,32 @@ public class CaptureScreen {
 			}
 				if (barPanel != null) {
 					if (startX > endX && startY > endY) {
+						if(startY>=height-barPanel.getHeight()){
+							barPanel.setStartPos(startX-BAR_WIDTH, startY-barPanel.getHeight());
+						}else{
 							barPanel.setStartPos(startX - BAR_WIDTH, startY);
+						}
 					} else if (startX > endX && startY < endY) {
+						if(endY>=height-barPanel.getHeight()){
+							barPanel.setStartPos(startX-BAR_WIDTH, startY+Math.abs(endY-startY)-barPanel.getHeight());
+						}else{
 						barPanel.setStartPos(startX - BAR_WIDTH,
 								startY + Math.abs(endY - startY));
-						
+						}
 					} else if (startX < endX && startY > endY) {
+						if(startY>=height-barPanel.getHeight()){
+							barPanel.setStartPos(endX-BAR_WIDTH,endY+Math.abs(startY-endY)-barPanel.getHeight());
+						}else{
 						barPanel.setStartPos(startX + Math.abs(endX - startX)
 								- BAR_WIDTH, startY);
+						}
 					} else if (startX < endX && startY < endY) {
+						if(endY>=height-barPanel.getHeight()){
+							barPanel.setStartPos(endX-BAR_WIDTH,startY+Math.abs(endY-startY)-barPanel.getHeight());
+						}else{
 						barPanel.setStartPos(startX + Math.abs(endX - startX)
 								- BAR_WIDTH, startY + Math.abs(endY - startY));
+						}
 					}
 
 				}
