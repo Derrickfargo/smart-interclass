@@ -193,7 +193,7 @@ public class Login extends MouseAdapter {
 		});
 		
 	//链接
-		link=new JLabel("注册梦想教师");
+		link=new JLabel("成为梦想教师");
 		link.setBounds(350, 223, 130, 40);
 		link.setFont(new Font("宋体",Font.ROMAN_BASELINE, 14));
 		link.setForeground(Color.BLUE);
