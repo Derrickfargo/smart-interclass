@@ -379,10 +379,11 @@ public class CaptureScreen {
 			}
 				if (barPanel != null) {
 					if (startX > endX && startY > endY) {
-						barPanel.setStartPos(startX - BAR_WIDTH, startY);
+							barPanel.setStartPos(startX - BAR_WIDTH, startY);
 					} else if (startX > endX && startY < endY) {
 						barPanel.setStartPos(startX - BAR_WIDTH,
 								startY + Math.abs(endY - startY));
+						
 					} else if (startX < endX && startY > endY) {
 						barPanel.setStartPos(startX + Math.abs(endX - startX)
 								- BAR_WIDTH, startY);
@@ -424,20 +425,36 @@ public class CaptureScreen {
 				isBarShow = true;
 				if (barPanel == null) {
 					if (startX > endX && startY > endY) {
+						if(startY>=height-BAR_HEIGHT){
+							barPanel = new BarPanel(jf, endX+Math.abs(startX-endX)-BAR_WIDTH,Math.abs(startY-BAR_HEIGHT));
+						}else{
 						barPanel = new BarPanel(jf, startX
 								- BAR_WIDTH, startY
 								);
+						}
 					} else if (startX > endX && startY < endY) {
+						if(endY>=height-BAR_HEIGHT){							
+							barPanel= new BarPanel(jf,startX-BAR_WIDTH, endY-BAR_HEIGHT);
+						}else{
 						barPanel = new BarPanel(jf, startX
 								- BAR_WIDTH, startY
 								+ Math.abs(endY - startY));
+						}
 					} else if (startX < endX && startY > endY) {
+						if(startY>=height-BAR_HEIGHT){
+							barPanel = new BarPanel(jf, startX+Math.abs(endX-startX)-BAR_WIDTH, Math.abs(startY-BAR_HEIGHT));
+						}else{
 						barPanel = new BarPanel(jf, startX
 								+ Math.abs(endX - startX) - BAR_WIDTH, startY);
+						}
 					} else if (startX < endX && startY < endY) {
+						if(endY>=height-BAR_HEIGHT){
+							barPanel=new BarPanel(jf,startX+Math.abs(endX-startX)-BAR_WIDTH,startY + Math.abs(endY - startY)-BAR_HEIGHT);
+						}else{
 						barPanel = new BarPanel(jf, startX
 								+ Math.abs(endX - startX) - BAR_WIDTH, startY
 								+ Math.abs(endY - startY));
+						}
 					}
 				}
 				this.add(barPanel);
