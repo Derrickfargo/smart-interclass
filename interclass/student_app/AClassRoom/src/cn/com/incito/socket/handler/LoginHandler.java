@@ -29,6 +29,9 @@ public class LoginHandler extends MessageHandler {
 		Constants.setSERVER_IP(server_ip);
 		Constants.setSERVER_PORT(server_port);
 		
+		String currentActivity = AppManager.getAppManager().currentActivity().getClass().getSimpleName();
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() +":当前activity::" + currentActivity);
+		
 		//TODO 有可能这台pad没有绑定学生，
 		Student student = data.getObject("student", Student.class);
 		if(student==null){
@@ -42,10 +45,11 @@ public class LoginHandler extends MessageHandler {
 			MyApplication.Logger.debug("返回状态值:" + state);
 			
 			if(state == 1 ){
-				MyApplication.Logger.debug("返回状态值进入准备上课界面");
-				if(!AppManager.getAppManager().currentActivity().getClass().getSimpleName().equals("ClassReadyActivity")){
-					AppManager.getAppManager().currentActivity().finish();
+				MyApplication.Logger.debug("返回状态值1进入准备上课界面");
+				if(!"ClassReadyActivity".equals(currentActivity)){
 					UIHelper.getInstance().showClassReadyActivity();
+					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":如果断线重连不是在准备上课界面跳转至准备上课界面成功");
+					AppManager.getAppManager().currentActivity().finish();
 				}
 				
 			}else if(state == 2){
@@ -101,22 +105,25 @@ public class LoginHandler extends MessageHandler {
 			
 				AppManager.getAppManager().currentActivity().finish();
 			}else if(state == 3){
-				MyApplication.Logger.debug("返回状态值进入做作业界面");
-				if(!AppManager.getAppManager().currentActivity().getClass().getSimpleName().equals("DrawBoxActivity")){
+				MyApplication.Logger.debug("返回状态值3进入做作业界面");
+				if(!"DrawBoxActivity".equals(currentActivity)){
 					byte[] imageByte = data.getBytes("quiz");
 					UIHelper.getInstance().showDrawBoxActivity(imageByte);
+					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":如果断线重连不是在做作业界面跳转至做作业界面成功");
 					
-					if(!"ClassingActivity".equals(AppManager.getAppManager().currentActivity().getClass().getSimpleName())){
+					if(!"ClassingActivity".equals(currentActivity)){
 						AppManager.getAppManager().currentActivity().finish();
 					}
 					
 				}
 				
 			}else if(state == 4){
-				MyApplication.Logger.debug("返回状态值进入开始上课界面");
-				if(!AppManager.getAppManager().currentActivity().getClass().getSimpleName().equals("ClassingActivity")){
+				MyApplication.Logger.debug("返回状态值4进入开始上课界面");
+				if(!"ClassingActivity".equals(currentActivity)){
 					UIHelper.getInstance().showClassingActivity();
+					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":如果断线重连不是在正在上课界面跳转至正在上课界面成功");
 					AppManager.getAppManager().currentActivity().finish();
+					
 				}
 				
 			}else{
