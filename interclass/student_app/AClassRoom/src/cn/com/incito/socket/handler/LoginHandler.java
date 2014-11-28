@@ -169,7 +169,7 @@ public class LoginHandler extends MessageHandler {
 				.writeUTFString(MyApplication.getInstance().getDeviceId()));
 		// 图片
 		messagePacking.putBodyData(DataType.INT,
-				bmpToByteArray(fileToBitmap("/sdcard/temp.png",800,1280), true));
+				bmpToByteArray(fileToBitmap("/sdcard/temp.png",1280,800), true));
 		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()
 				+ "开始提交以前未提交的作业");
 		CoreSocket.getInstance().sendMessage(messagePacking);
