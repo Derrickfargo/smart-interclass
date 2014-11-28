@@ -61,7 +61,7 @@ public class ConfirmGroupInfoActivity extends BaseActivity implements
 		mGroupID = json.get("id").toString();
 		mGroupName.setText(json.get("name").toString());
 		String iconName = json.get("logo").toString();
-		TypedArray mGroupIcons = getResources().obtainTypedArray(R.array.groupIcons);
+		mGroupIcons = getResources().obtainTypedArray(R.array.groupIcons);
 		String[] iconsName = getResources().getStringArray(
 				R.array.groupicons_name);
 		Drawable drawable = Utils.getGroupIconByName(mGroupIcons, iconsName,
