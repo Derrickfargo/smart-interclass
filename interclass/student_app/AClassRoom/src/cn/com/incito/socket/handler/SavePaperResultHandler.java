@@ -1,5 +1,7 @@
 package cn.com.incito.socket.handler;
 
+import java.io.File;
+
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.socket.core.MessageHandler;
@@ -16,6 +18,10 @@ public class SavePaperResultHandler extends MessageHandler {
 			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"提交作业成功");
 			MyApplication.getInstance().setSubmitPaper(true);
 			MyApplication.getInstance().lockScreen(true);
+			File f = new File("/sdcard/", "temp.png");
+			if(f.exists()){
+				f.delete();
+			}
 		}
 	}
 

@@ -1,6 +1,10 @@
 package cn.com.incito.classroom.ui.activity;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -94,7 +98,8 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		this.getWindow().setFlags(Constants.FLAG_HOMEKEY_DISPATCHED,Constants.FLAG_HOMEKEY_DISPATCHED);
+		this.getWindow().setFlags(Constants.FLAG_HOMEKEY_DISPATCHED,
+				Constants.FLAG_HOMEKEY_DISPATCHED);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.draw_box);
 		UIHelper.getInstance().setDrawBoxActivity(this);
@@ -106,7 +111,6 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	protected void onPause() {
 		super.onPause();
 	}
-	
 
 	@Override
 	protected void onResume() {
@@ -158,7 +162,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		// saveBtn.setOnClickListener(this);
 		cleanBtn = (ImageView) findViewById(R.id.earise);
 		cleanBtn.setOnClickListener(this);
-		
+
 		line = (FrameLayout) findViewById(R.id.line);
 		// 画笔大小选择
 		mBigRelativeLayout = (RelativeLayout) findViewById(R.id.big);
@@ -174,7 +178,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		mSubmitButton.setOnClickListener(this);
 		m_sketchPad = (SketchPadView) findViewById(R.id.sketchpad);
 		m_sketchPad.setCallback(DrawBoxActivity.this);
-		
+
 		if (getIntent().getExtras() != null) {
 			byte[] paper = getIntent().getExtras().getByteArray("paper");
 			if (paper != null) {
@@ -184,7 +188,8 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 				changeBtn.setClickable(false);
 			}
 		} else {
-			bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bg_class_ready);
+			bitmap = BitmapFactory.decodeResource(getResources(),
+					R.drawable.bg_class_ready);
 			changeBtn.setClickable(true);
 		}
 		initPaint(bitmap);
@@ -338,40 +343,40 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		// 橡皮擦(擦出)
 		case R.id.earise:
 			// view.isDel = true;
-			if(mPopupWindow==null){
+			if (mPopupWindow == null) {
 				initPopwindow();
 				showPopwindow();
-			}else{
-				if(mPopupWindow.isShowing()){
+			} else {
+				if (mPopupWindow.isShowing()) {
 					mPopupWindow.dismiss();
-				}else{
+				} else {
 					showPopwindow();
 				}
 			}
-			
+
 			// 全擦出
 			// view.clean();
 			break;
-			
-	//设置相别擦大小
+
+		// 设置相别擦大小
 		case R.id.earise_big:
-			  m_sketchPad.setStrokeSize(40,SketchPadView.STROKE_ERASER);
-			  m_sketchPad.setStrokeType(SketchPadView.STROKE_ERASER);
-			  cleanBtn.setBackgroundResource(R.drawable.ico_eraser_big);
-			  mPopupWindow.dismiss();
-			  
+			m_sketchPad.setStrokeSize(40, SketchPadView.STROKE_ERASER);
+			m_sketchPad.setStrokeType(SketchPadView.STROKE_ERASER);
+			cleanBtn.setBackgroundResource(R.drawable.ico_eraser_big);
+			mPopupWindow.dismiss();
+
 			break;
 		case R.id.earise_middle:
-			  m_sketchPad.setStrokeSize(20,SketchPadView.STROKE_ERASER);
-			  m_sketchPad.setStrokeType(SketchPadView.STROKE_ERASER);
-			  cleanBtn.setBackgroundResource(R.drawable.ico_eraser_mid);
-			  mPopupWindow.dismiss();
+			m_sketchPad.setStrokeSize(20, SketchPadView.STROKE_ERASER);
+			m_sketchPad.setStrokeType(SketchPadView.STROKE_ERASER);
+			cleanBtn.setBackgroundResource(R.drawable.ico_eraser_mid);
+			mPopupWindow.dismiss();
 			break;
 		case R.id.earise_small:
-			  m_sketchPad.setStrokeSize(10,SketchPadView.STROKE_ERASER);
-			  m_sketchPad.setStrokeType(SketchPadView.STROKE_ERASER);
-			  cleanBtn.setBackgroundResource(R.drawable.ico_eraser_sml);
-			  mPopupWindow.dismiss();
+			m_sketchPad.setStrokeSize(10, SketchPadView.STROKE_ERASER);
+			m_sketchPad.setStrokeType(SketchPadView.STROKE_ERASER);
+			cleanBtn.setBackgroundResource(R.drawable.ico_eraser_sml);
+			mPopupWindow.dismiss();
 			break;
 		case R.id.submit_button:
 			showDialog();
@@ -403,7 +408,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	 * @author hh
 	 */
 	public void initPaint(Bitmap bitmap) {
-		if(m_sketchPad==null){
+		if (m_sketchPad == null) {
 			m_sketchPad = new SketchPadView(DrawBoxActivity.this, null);
 		}
 		m_sketchPad.setCallback(DrawBoxActivity.this);
@@ -466,6 +471,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	private Bitmap getBitMap() {// 老师收作业的时候调用此方法保存图片 然后将图片传到服务器
 		Bitmap bmBitmap = m_sketchPad.getCanvasSnapshot();
 		m_sketchPad.cleanDrawingCache();
+		saveBitmap(bmBitmap);//保存图片到本地
 		return bmBitmap;
 	}
 
@@ -495,31 +501,37 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	 * 提交作业
 	 */
 	public void submitPaper(int delay) {
-		this.delay=delay;
+		this.delay = delay;
 		handler.sendEmptyMessage(0);
 	}
-	public void initPopwindow(){
-		 LayoutInflater layoutInflater = LayoutInflater.from(this); 
-	     View popupWindow = layoutInflater.inflate(R.layout.popup_window, null); 
-	     mPopupWindow = new PopupWindow(popupWindow,LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-	     mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
-	     mPopupWindow.setOutsideTouchable(true);
-	     earise_big=(ImageButton)popupWindow.findViewById(R.id.earise_big);
-	     earise_big.setOnClickListener(this);
-	     earise_middle=(ImageButton)popupWindow.findViewById(R.id.earise_middle);
-	     earise_middle.setOnClickListener(this);
-	     earise_small=(ImageButton)popupWindow.findViewById(R.id.earise_small);
-	     earise_small.setOnClickListener(this);
-	     delAllBtn = (ImageButton)popupWindow.findViewById(R.id.cleanAllBtn); // 清屏按钮
-	     delAllBtn.setOnClickListener(this);
+
+	public void initPopwindow() {
+		LayoutInflater layoutInflater = LayoutInflater.from(this);
+		View popupWindow = layoutInflater.inflate(R.layout.popup_window, null);
+		mPopupWindow = new PopupWindow(popupWindow, LayoutParams.WRAP_CONTENT,
+				LayoutParams.WRAP_CONTENT);
+		mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+		mPopupWindow.setOutsideTouchable(true);
+		earise_big = (ImageButton) popupWindow.findViewById(R.id.earise_big);
+		earise_big.setOnClickListener(this);
+		earise_middle = (ImageButton) popupWindow
+				.findViewById(R.id.earise_middle);
+		earise_middle.setOnClickListener(this);
+		earise_small = (ImageButton) popupWindow
+				.findViewById(R.id.earise_small);
+		earise_small.setOnClickListener(this);
+		delAllBtn = (ImageButton) popupWindow.findViewById(R.id.cleanAllBtn); // 清屏按钮
+		delAllBtn.setOnClickListener(this);
 	}
-	public void showPopwindow(){
-		 int[] location = new int[2];
-	     cleanBtn.getLocationOnScreen(location);
-	     mPopupWindow.showAtLocation(cleanBtn, Gravity.NO_GRAVITY, location[0]-160, 570);
+
+	public void showPopwindow() {
+		int[] location = new int[2];
+		cleanBtn.getLocationOnScreen(location);
+		mPopupWindow.showAtLocation(cleanBtn, Gravity.NO_GRAVITY,
+				location[0] - 160, 570);
 	}
-	public byte[] bmpToByteArray(final Bitmap bmp,
-			final boolean needRecycle) {
+
+	public byte[] bmpToByteArray(final Bitmap bmp, final boolean needRecycle) {
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		bmp.compress(CompressFormat.JPEG, 70, output);
 		if (needRecycle) {
@@ -533,30 +545,37 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		}
 		return result;
 	}
+
 	private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case 0:
 				try {
-					MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"延迟"+delay+"毫秒开始提交作业");
+					MyApplication.Logger.debug(AndroidUtil.getCurrentTime()
+							+ "延迟" + delay + "毫秒开始提交作业");
 					Thread.sleep(delay);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SAVE_PAPER);
+				MessagePacking messagePacking = new MessagePacking(
+						Message.MESSAGE_SAVE_PAPER);
 				// 测试ID
-				messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(MyApplication.getInstance().getQuizID()));
+				messagePacking.putBodyData(DataType.INT,
+						BufferUtils.writeUTFString(MyApplication.getInstance()
+								.getQuizID()));
 				// 设备ID
-				messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(MyApplication.getInstance().getDeviceId()));
+				messagePacking.putBodyData(DataType.INT, BufferUtils
+						.writeUTFString(MyApplication.getInstance()
+								.getDeviceId()));
 				// 图片
 				messagePacking.putBodyData(DataType.INT,bmpToByteArray(getBitMap(), true));
-				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"开始提交作业");
+				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ "开始提交作业");
 				CoreSocket.getInstance().sendMessage(messagePacking);
-				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"启动作业提交..."+"request:");
-				MyApplication.getInstance().setSubmitPaper(true);
+				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ "启动作业提交..." + "request:");
+//				MyApplication.getInstance().setSubmitPaper(true);
 				MyApplication.getInstance().lockScreen(true);
-				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"提交作业后锁定屏幕" );
-				if(UIHelper.getInstance().getClassingActivity() == null){
+				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ "提交作业后锁定屏幕");
+				if (UIHelper.getInstance().getClassingActivity() == null) {
 					UIHelper.getInstance().showClassingActivity();
 				}
 				DrawBoxActivity.this.finish();
@@ -566,5 +585,24 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 			}
 		};
 	};
-	
+
+	public void saveBitmap(Bitmap bitmap) {
+		MyApplication.getInstance().Logger.debug(AndroidUtil.getCurrentTime()+"保存图片到本地");
+		File f = new File("/sdcard/", "temp.PNG");
+		if (f.exists()) {
+			f.delete();
+		}
+		try {
+			FileOutputStream out = new FileOutputStream(f);
+			bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+			out.flush();
+			out.close();
+			MyApplication.getInstance().Logger.debug("图片已经保存");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 }
