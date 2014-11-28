@@ -145,15 +145,17 @@ public class LoginHandler extends MessageHandler {
 				MyApplication.Logger.debug("返回状态值进入开始上课界面");
 				if (!AppManager.getAppManager().currentActivity().getClass()
 						.getSimpleName().equals("ClassingActivity")) {
+					AppManager.getAppManager().currentActivity().finish();
 					UIHelper.getInstance().showClassingActivity();
 					MyApplication.Logger.debug("返回状态值进入开始上课界面成功");
-					AppManager.getAppManager().currentActivity().finish();
+					
 				}
 
 			} else {
 				MyApplication.Logger.debug("没有返回值");
-				UIHelper.getInstance().showClassReadyActivity();
 				AppManager.getAppManager().currentActivity().finish();
+				UIHelper.getInstance().showClassReadyActivity();
+				
 			}
 			// 启动心跳检测
 			ConnectionManager.getInstance(message.getChannel());
@@ -205,7 +207,7 @@ public class LoginHandler extends MessageHandler {
 	}
 	public byte[] bmpToByteArray(final Bitmap bmp, final boolean needRecycle) {
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
-		bmp.compress(CompressFormat.PNG, 100, output);
+		bmp.compress(CompressFormat.PNG, 70, output);
 		if (needRecycle) {
 			bmp.recycle();
 		}
