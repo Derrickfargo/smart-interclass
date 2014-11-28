@@ -76,20 +76,16 @@ public final class CoreSocket implements Runnable {
 				ByteBuffer buffer = ByteBuffer.allocate(message.length);
 				buffer.put(message);
 				buffer.flip();
-				sendMessage(buffer);
+				try {
+					if (channel != null && channel.isConnected()) {
+						channel.write(buffer);
+					}
+				} catch (IOException e) {
+					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":CoreSocket客户端往服务端发消息异常::" + e.getMessage());
+				}
 			}
 		}.start();
 
-	}
-	
-	private synchronized void sendMessage(ByteBuffer buffer){
-		try {
-			if (channel != null && channel.isConnected()) {
-				channel.write(buffer);
-			}
-		} catch (IOException e) {
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":CoreSocket客户端往服务端发消息异常:" + e.getMessage());
-		}
 	}
 
 	public void stopConnection() {
@@ -111,6 +107,7 @@ public final class CoreSocket implements Runnable {
 						}
 					} catch (IOException e) {
 						MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":CoreSocket停止连接异常::" + e.getMessage());
+
 					}
 				}
 			}
