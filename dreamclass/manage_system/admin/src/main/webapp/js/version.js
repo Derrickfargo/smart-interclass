@@ -25,7 +25,11 @@ $(document).ready(function() {
 //				$('#checkVersionVersionTip').removeClass('hidden');
 //				flag = false;
 //			}
-			
+			//检查上传版本文件
+			if(!new RegExp(/\.[a|A][p|P][k|K]$/).test($("#file").val())){
+				$("#fileTip").removeClass("hidden");
+				flag=false;
+			}
 			if (flag) {
 				form.submit();
 			}
