@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.com.incito.classroom"
-    android:versionCode="8"
-    android:versionName="V200R001C001B008" >
+    android:versionCode="9"
+    android:versionName="V200R001C001B009" >
 
     <uses-sdk
         android:minSdkVersion="17"
