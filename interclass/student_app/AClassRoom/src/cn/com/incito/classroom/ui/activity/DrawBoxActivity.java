@@ -27,7 +27,6 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import cn.com.incito.classroom.R;
@@ -35,19 +34,15 @@ import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.utils.BitmapUtil;
-import cn.com.incito.classroom.utils.UpdateManager;
 import cn.com.incito.classroom.widget.canvas.ISketchPadCallback;
 import cn.com.incito.classroom.widget.canvas.SketchPadView;
 import cn.com.incito.common.utils.AndroidUtil;
-import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
-import cn.com.incito.socket.handler.DistributePaperHandler;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
-import cn.com.incito.wisdom.sdk.log.WLog;
 
 /**
  * 绘画板activity Created by liguangming on 2014/7/28.
@@ -180,7 +175,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		m_sketchPad.setCallback(DrawBoxActivity.this);
 
 		if (getIntent().getExtras() != null) {
-			byte[] paper = getIntent().getExtras().getByteArray("paper");
+			 byte[] paper = getIntent().getExtras().getByteArray("paper");
 			if (paper != null) {
 				ByteArrayOutputStream outPut = new ByteArrayOutputStream();
 				bitmap = BitmapFactory.decodeByteArray(paper, 0, paper.length);
@@ -604,5 +599,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 			e.printStackTrace();
 		}
 	}
-
+	public void setBackGround(Bitmap bitmap){
+		m_sketchPad.setBkBitmap(bitmap);
+	}
 }

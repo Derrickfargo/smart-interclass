@@ -53,10 +53,6 @@ public class LoginHandler extends MessageHandler {
 			// 判断学生状态跳转至不同的界面
 			state = data.getIntValue("state");
 			MyApplication.Logger.debug("返回状态值:" + state);
-			File f = new File("/sdcard/", "temp.PNG");
-			if (f.exists()) {
-				sendPaper();
-			}
 			if (state == 1) {
 				MyApplication.Logger.debug("返回状态值进入准备上课界面");
 				if (!AppManager.getAppManager().currentActivity().getClass()
@@ -131,26 +127,36 @@ public class LoginHandler extends MessageHandler {
 				MyApplication.Logger.debug("返回状态值进入做作业界面");
 				if (!AppManager.getAppManager().currentActivity().getClass()
 						.getSimpleName().equals("DrawBoxActivity")) {
-					byte[] imageByte = data.getBytes("quiz");
+					File f = new File("/sdcard/", "temp.PNG");
+					byte[] imageByte;
+					if (f.exists()) {
+						imageByte=bmpToByteArray(fileToBitmap("/sdcard/temp.png",1280,800), true);
+					}else{
+						imageByte = data.getBytes("quiz");
+					}
 					UIHelper.getInstance().showDrawBoxActivity(imageByte);
-
 					if (!"ClassingActivity".equals(AppManager.getAppManager()
 							.currentActivity().getClass().getSimpleName())) {
 						AppManager.getAppManager().currentActivity().finish();
 					}
-
+				}else{
+					UIHelper.getInstance().getDrawBoxActivity().setBackGround(fileToBitmap("/sdcard/temp.png",1280,800));
 				}
 
 			} else if (state == 4) {
-				MyApplication.Logger.debug("返回状态值进入开始上课界面");
-				if (!AppManager.getAppManager().currentActivity().getClass()
-						.getSimpleName().equals("ClassingActivity")) {
-					AppManager.getAppManager().currentActivity().finish();
-					UIHelper.getInstance().showClassingActivity();
-					MyApplication.Logger.debug("返回状态值进入开始上课界面成功");
-					
+				File f = new File("/sdcard/", "temp.png");
+				if(f.exists()){
+					byte[] imageByte=bmpToByteArray(fileToBitmap("/sdcard/temp.png",1280,800), true);
+					UIHelper.getInstance().showDrawBoxActivity(imageByte);
+				}else{
+					MyApplication.Logger.debug("返回状态值进入开始上课界面");
+					if (!AppManager.getAppManager().currentActivity().getClass()
+							.getSimpleName().equals("ClassingActivity")) {
+						AppManager.getAppManager().currentActivity().finish();
+						UIHelper.getInstance().showClassingActivity();
+						MyApplication.Logger.debug("返回状态值进入开始上课界面成功");
+					}
 				}
-
 			} else {
 				MyApplication.Logger.debug("没有返回值");
 				AppManager.getAppManager().currentActivity().finish();
@@ -162,27 +168,27 @@ public class LoginHandler extends MessageHandler {
 		}
 	}
 
-	public void sendPaper() {
-		MessagePacking messagePacking = new MessagePacking(
-				Message.MESSAGE_SAVE_PAPER);
-		// 测试ID
-		messagePacking.putBodyData(DataType.INT, BufferUtils
-				.writeUTFString(MyApplication.getInstance().getQuizID()));
-		// 设备ID
-		messagePacking.putBodyData(DataType.INT, BufferUtils
-				.writeUTFString(MyApplication.getInstance().getDeviceId()));
-		// 图片
-		messagePacking.putBodyData(DataType.INT,
-				bmpToByteArray(fileToBitmap("/sdcard/temp.png",1280,800), true));
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()
-				+ "开始提交以前未提交的作业");
-		CoreSocket.getInstance().sendMessage(messagePacking);
-		state=4;
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "启动作业提交...");
-		
-		// MyApplication.getInstance().setSubmitPaper(true);
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "提交作业后锁定屏幕");
-	}
+//	public void sendPaper() {
+//		MessagePacking messagePacking = new MessagePacking(
+//				Message.MESSAGE_SAVE_PAPER);
+//		// 测试ID
+//		messagePacking.putBodyData(DataType.INT, BufferUtils
+//				.writeUTFString(MyApplication.getInstance().getQuizID()));
+//		// 设备ID
+//		messagePacking.putBodyData(DataType.INT, BufferUtils
+//				.writeUTFString(MyApplication.getInstance().getDeviceId()));
+//		// 图片
+//		messagePacking.putBodyData(DataType.INT,
+//				bmpToByteArray(fileToBitmap("/sdcard/temp.png",1280,800), true));
+//		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()
+//				+ "开始提交以前未提交的作业");
+//		CoreSocket.getInstance().sendMessage(messagePacking);
+//		state=4;
+//		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "启动作业提交...");
+//		
+//		// MyApplication.getInstance().setSubmitPaper(true);
+//		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "提交作业后锁定屏幕");
+//	}
 
 	public Bitmap fileToBitmap(String path,int w,int h) {
 		BitmapFactory.Options opts = new BitmapFactory.Options();
