@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ public class IpSettingDialogFragment extends DialogFragment {
 
 			@Override
 			public void onClick(View v) {
+				
 				if (ipMatch()) {
 					Constants.setIP(editIP.getText().toString());
 					Editor editor = MyApplication.getInstance()
@@ -42,10 +44,16 @@ public class IpSettingDialogFragment extends DialogFragment {
 					editor.apply();
 					dismiss();
 				} else {
-					ToastHelper.showCustomToast(
-							IpSettingDialogFragment.this.getActivity(),
-							"输入的IP不正确哦");
-				}
+					if(TextUtils.isEmpty(editIP.getText().toString())){
+						ToastHelper.showCustomToast(
+								IpSettingDialogFragment.this.getActivity(),
+								"请输入IP地址");
+					}else{
+						ToastHelper.showCustomToast(
+								IpSettingDialogFragment.this.getActivity(),
+								"输入的IP不正确哦");
+					}
+					}
 			}
 		});
 		return view;
