@@ -193,8 +193,8 @@ public class Login extends MouseAdapter {
 		});
 		
 	//链接
-		link=new JLabel("了解更多");
-		link.setBounds(350, 223, 80, 40);
+		link=new JLabel("注册梦想教师");
+		link.setBounds(350, 223, 130, 40);
 		link.setFont(new Font("宋体",Font.ROMAN_BASELINE, 14));
 		link.setForeground(Color.BLUE);
 		link.setForeground(new Color(0, 80, 153));
@@ -279,7 +279,7 @@ public class Login extends MouseAdapter {
 		if(e.getSource() == link){
 			link.setForeground(new Color(0, 80, 153));
 			try {
-				Runtime.getRuntime().exec("cmd /c start http://www.baidu.com");
+				Runtime.getRuntime().exec("cmd /c start http://www.adreambox.net/");
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
