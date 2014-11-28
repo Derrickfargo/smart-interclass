@@ -51,7 +51,7 @@ public class LoginHandler extends MessageHandler {
 			// MultiCastSocket.getInstance().start();//建立广播socket
 			MyApplication.getInstance().setStudent(student);
 			// 判断学生状态跳转至不同的界面
-			 state = data.getIntValue("state");
+			state = data.getIntValue("state");
 			MyApplication.Logger.debug("返回状态值:" + state);
 			File f = new File("/sdcard/", "temp.PNG");
 			if (f.exists()) {
@@ -62,6 +62,7 @@ public class LoginHandler extends MessageHandler {
 				if (!AppManager.getAppManager().currentActivity().getClass()
 						.getSimpleName().equals("ClassReadyActivity")) {
 					AppManager.getAppManager().currentActivity().finish();
+					MyApplication.Logger.debug("返回状态值进入准备上课界面成功");
 					UIHelper.getInstance().showClassReadyActivity();
 				}
 
@@ -145,6 +146,7 @@ public class LoginHandler extends MessageHandler {
 				if (!AppManager.getAppManager().currentActivity().getClass()
 						.getSimpleName().equals("ClassingActivity")) {
 					UIHelper.getInstance().showClassingActivity();
+					MyApplication.Logger.debug("返回状态值进入开始上课界面成功");
 					AppManager.getAppManager().currentActivity().finish();
 				}
 
