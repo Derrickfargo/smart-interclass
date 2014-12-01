@@ -78,6 +78,11 @@ public class Message implements Serializable {
 	 */
 	public static final Byte MESSAGE_LOCK_SCREEN=0x0C;
 	
+	/**
+	 * 发送作业请求
+	 */
+	public static final Byte MESSAGE_SEND_PAPER=0x0D;
+	
 	private byte msgID;
 	private int msgSize;
 	private ByteBuffer bodyBuffer;

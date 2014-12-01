@@ -5,6 +5,7 @@
     <string name="action_settings">Settings</string>
     <string name="load_dialog_default_text">请稍等</string>
     <string name="waiting_access_wifi">正在进入教室...</string>
+    <string name="sendpaper_notice">正在提交作业...</string>
     <!-- toast -->
     <string name="loading_network_disconnect">没能连接成功，联系老师吧~</string>
     <string name="toast_stname_notnull">要填上名字哦~</string>
