@@ -433,6 +433,9 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 			}
 		}
 		BitmapUtil.setFree();
+		if(mProgressDialog != null){
+			mProgressDialog.dismiss();
+		}
 	}
 
 	/**
@@ -562,6 +565,10 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 //				} catch (InterruptedException e) {
 //					e.printStackTrace();
 //				}
+				if(!mProgressDialog.isShowing()){
+					mProgressDialog.show();
+				}
+				
 				MessagePacking messagePacking = new MessagePacking(
 						Message.MESSAGE_SAVE_PAPER);
 				// 测试ID
@@ -581,7 +588,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 				MyApplication.getInstance().lockScreen(true);
 				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ "提交作业后锁定屏幕");
 			
-				DrawBoxActivity.this.finish();
+//				DrawBoxActivity.this.finish();
 				break;
 			case 1:
 				if(timeTimer!=null){
@@ -627,8 +634,8 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	 * 发送作业请求
 	 */
 	public void sendPaperRequest() {
-		beginTime=System.currentTimeMillis();
 		mProgressDialog.show();
+		beginTime=System.currentTimeMillis();
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("imei", MyApplication.deviceId);
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SEND_PAPER);
@@ -650,7 +657,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 				}
 			}
 		};
-		timeTimer.schedule(timeTimerTask,15 * 1000);
+		timeTimer.schedule(timeTimerTask,1 * 1000);
 	}
 	
 	public void closeProgressDialog(){
@@ -663,4 +670,5 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		if(timeTimer!=null)
 			timeTimer.cancel();
 	}
+	
 }
