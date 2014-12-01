@@ -1,0 +1,23 @@
+package cn.com.incito.server.handler;
+
+import org.apache.log4j.Logger;
+
+import cn.com.incito.server.core.MessageHandler;
+import cn.com.incito.server.utils.QuizCollector;
+
+/**
+ * 获取分组消息处理器
+ * 
+ * @author 刘世平
+ * 
+ */
+public class SendPaperHandler extends MessageHandler {
+	private Logger logger = Logger.getLogger(StudentLoginHandler.class.getName());
+
+	@Override
+	public void handleMessage() {
+		logger.info("收到作业提交申请消息:" + data.toJSONString());
+		QuizCollector.getInstance().addQuizQueue(message.getChannel());
+	}
+
+}

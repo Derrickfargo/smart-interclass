@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import cn.com.incito.server.handler.GroupConfirmHandler;
+import cn.com.incito.server.handler.SendPaperHandler;
 import cn.com.incito.server.handler.StudentLoginHandler;
 import cn.com.incito.server.handler.StudentLogoutHandler;
 import cn.com.incito.server.handler.GroupCreatHandler;
@@ -51,6 +52,8 @@ public final class MessageHandlerResource {
 		handlerResources.put(Message.MESSAGE_SAVE_PAPER, SavePaperHandler.class);
 		//设备退出
 		handlerResources.put(Message.MESSAGE_DEVICE_LOGOUT, StudentLogoutHandler.class);
+		//作业提交申请
+		handlerResources.put(Message.MESSAGE_SEND_PAPER, SendPaperHandler.class);
 	}
 	
 	public MessageHandler getMessageHandler(Byte key){
