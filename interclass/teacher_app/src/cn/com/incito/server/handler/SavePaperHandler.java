@@ -12,6 +12,7 @@ import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
 import cn.com.incito.server.utils.JSONUtils;
+import cn.com.incito.server.utils.QuizCollector;
 
 /**
  * 获取分组消息处理器
@@ -51,6 +52,8 @@ public class SavePaperHandler extends MessageHandler {
 		// 需要给组中所以的设备发送
 		service.SavePaper(imei, quizid, Application.getInstance().getLessionid(), imageByte);
 		sendResponse(JSONUtils.renderJSONString(0));
+		//当前作业处理完毕，处理下一作业
+		QuizCollector.getInstance().setIdling();
 	}
 
 	private void sendResponse(String json) {

@@ -77,6 +77,11 @@ public class Message {
 	 */
 	public static final Byte MESSAGE_LOCK_SCREEN=0x0C;
 	
+	/**
+	 * 提交作业申请
+	 */
+	public static final Byte MESSAGE_SEND_PAPER=0x0D;
+	
 	private Logger log = Logger.getLogger(Message.class);
 	
 	private byte msgID;
