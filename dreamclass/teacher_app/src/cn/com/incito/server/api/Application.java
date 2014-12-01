@@ -1,5 +1,6 @@
 package cn.com.incito.server.api;
 
+import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -35,7 +36,8 @@ import com.alibaba.fastjson.JSONObject;
 
 public class Application {
 	public boolean isLockScreen;
-    
+	private Font definedFont;
+	
 	public boolean isLockScreen() {
 		return isLockScreen;
 	}
@@ -638,6 +640,15 @@ public class Application {
 
 	public void setRooms(List<Room> rooms) {
 		this.rooms = rooms;
+	}
+
+
+	public Font getDefinedFont() {
+		return definedFont;
+	}
+
+	public void setDefinedFont(Font definedFont) {
+		this.definedFont = definedFont;
 	}
 
 }

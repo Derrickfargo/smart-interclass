@@ -1,6 +1,7 @@
 package cn.com.incito.interclass.main;
 
 import java.awt.Font;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -70,6 +71,12 @@ public class Main {
 						System.out.println(checkMac());
 						if(checkMac()==null||checkMac()==""){
 							Application.getInstance();
+							new Thread() {
+								public void run() {
+									// 初始化自定义字体
+									initDefinedFont();
+								}
+							}.start();
 							new RoomLogin1();
 							return;
 						}
@@ -82,6 +89,12 @@ public class Main {
 						JOptionPane.showMessageDialog(null, "检测到程序需要更新，但缺少必要的升级程序!");
 						// 初始化应用程序
 						Application.getInstance();
+						new Thread() {
+							public void run() {
+								// 初始化自定义字体
+								initDefinedFont();
+							}
+						}.start();
 						return;
 					}
 					long freeSize = file.getFreeSpace();
@@ -151,5 +164,25 @@ public class Main {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	private static void initDefinedFont() {
+		BufferedInputStream bis = null;
+		try {
+			bis = new BufferedInputStream(new FileInputStream(
+					"font/新蒂小丸子小学版.ttf"));
+			Font font = Font.createFont(Font.TRUETYPE_FONT, bis);
+			Application.getInstance().setDefinedFont(font);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (null != bis) {
+					bis.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
