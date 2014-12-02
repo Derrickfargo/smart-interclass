@@ -25,6 +25,7 @@ public class QuizCollector {
 	private boolean isIdling = false;
 	private final Lock lock = new ReentrantLock();
 	private final Condition isIdle = lock.newCondition();
+//	private final QuizCollectMonitor monitor = new QuizCollectMonitor();
 	private Queue<SocketChannel> quizQueue = new LinkedList<SocketChannel>();
 
 	public static QuizCollector getInstance() {
@@ -38,7 +39,10 @@ public class QuizCollector {
 		initQuizCollector();
 	}
 
-	public void setIdling() {
+	/**
+	 * 收取下一个作业
+	 */
+	public void nextQuiz() {
 		if(quizQueue.size() == 0){
 			isIdling = false;
 			return;
@@ -48,7 +52,10 @@ public class QuizCollector {
 		isIdle.signal();
 		lock.unlock();
 	}
-
+	/**
+	 * 加入作业收取队列
+	 * @param channel
+	 */
 	public void addQuizQueue(SocketChannel channel) {
 		if (channel == null) {
 			return;
@@ -61,7 +68,10 @@ public class QuizCollector {
 			lock.unlock();
 		}
 	}
-
+	
+	/**
+	 * 初始化作业收取队列
+	 */
 	private synchronized void initQuizCollector() {
 		new Thread(new Runnable() {
 			@Override
@@ -105,11 +115,35 @@ public class QuizCollector {
 				try {
 					channel.write(buffer);
 				} catch (Exception e) {
-					setIdling();//收取下一个作业
+					nextQuiz();//收取下一个作业
 					logger.error("收取作业命令发送失败...", e);
 				}
 			}
 			
 		}).start();
 	}
+	
+//	private class QuizCollectMonitor extends Thread{
+//		private volatile boolean isRunning = true;
+//
+//		public void run() {
+//			while (isRunning) {
+//				try {
+//					Thread.sleep(SCAN_CYCLE);
+//				} catch (InterruptedException e) {
+//					e.printStackTrace();
+//				}
+//				long time = System.currentTimeMillis();
+//				if (time - lastActTime > TIMEOUT) {
+//					log.info("30秒内没有检测到心跳，设备退出!");
+//					close();
+//					break;
+//				}
+//			}
+//		}
+//
+//		public void setRunning(boolean isRunning) {
+//			this.isRunning = isRunning;
+//		}
+//	}
 }

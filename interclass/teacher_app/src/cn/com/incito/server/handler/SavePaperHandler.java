@@ -53,7 +53,7 @@ public class SavePaperHandler extends MessageHandler {
 		service.SavePaper(imei, quizid, Application.getInstance().getLessionid(), imageByte);
 		sendResponse(JSONUtils.renderJSONString(0));
 		//当前作业处理完毕，处理下一作业
-		QuizCollector.getInstance().setIdling();
+		QuizCollector.getInstance().nextQuiz();
 	}
 
 	private void sendResponse(String json) {

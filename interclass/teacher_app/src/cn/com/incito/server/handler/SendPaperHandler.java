@@ -6,7 +6,7 @@ import cn.com.incito.server.core.MessageHandler;
 import cn.com.incito.server.utils.QuizCollector;
 
 /**
- * 获取分组消息处理器
+ * 申请提交作业消息处理器
  * 
  * @author 刘世平
  * 
@@ -17,6 +17,7 @@ public class SendPaperHandler extends MessageHandler {
 	@Override
 	public void handleMessage() {
 		logger.info("收到作业提交申请消息:" + data.toJSONString());
+		//将提交作业请求加入队列，等待服务器处理
 		QuizCollector.getInstance().addQuizQueue(message.getChannel());
 	}
 

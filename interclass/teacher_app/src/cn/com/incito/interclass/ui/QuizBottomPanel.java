@@ -175,7 +175,7 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 		while (it.hasNext()) {//加入收取作业队列
 			QuizCollector.getInstance().addQuizQueue(it.next());
 		}
-		QuizCollector.getInstance().setIdling();//处理第一个作业
+		QuizCollector.getInstance().nextQuiz();//处理第一个作业
 	}
     
     /**
