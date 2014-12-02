@@ -2,8 +2,10 @@ package cn.com.incito.server.utils;
 
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -27,6 +29,7 @@ public class QuizCollector {
 	private final Condition isIdle = lock.newCondition();
 //	private final QuizCollectMonitor monitor = new QuizCollectMonitor();
 	private Queue<SocketChannel> quizQueue = new LinkedList<SocketChannel>();
+	private Set<SocketChannel> quizSet = new HashSet<SocketChannel>();
 
 	public static QuizCollector getInstance() {
 		if (instance == null) {
@@ -60,6 +63,7 @@ public class QuizCollector {
 		if (channel == null) {
 			return;
 		}
+		quizSet.add(channel);
 		quizQueue.offer(channel);
 		if (quizQueue.size() == 1) {
 			isIdling = true;
@@ -84,14 +88,14 @@ public class QuizCollector {
 								logger.info("*****正在等待作业提交请求*****");
 							}
 						}
+						isIdling = false;
+						SocketChannel channel = quizQueue.poll();
+						doCollect(channel);
 					} catch (Exception e) {
 						logger.fatal("作业队列中断：", e);
 					} finally {
 						lock.unlock();
 					}
-					isIdling = false;
-					SocketChannel channel = quizQueue.poll();
-					doCollect(channel);
 				}
 			}
 		}).start();
@@ -114,36 +118,43 @@ public class QuizCollector {
 				buffer.flip();
 				try {
 					channel.write(buffer);
+					new QuizCollectMonitor(channel).start();
 				} catch (Exception e) {
+					logger.error("作业收取失败,直接收取下一个作业", e);
+					quizSet.remove(channel);
 					nextQuiz();//收取下一个作业
-					logger.error("收取作业命令发送失败...", e);
 				}
 			}
 			
 		}).start();
 	}
 	
-//	private class QuizCollectMonitor extends Thread{
-//		private volatile boolean isRunning = true;
-//
-//		public void run() {
-//			while (isRunning) {
-//				try {
-//					Thread.sleep(SCAN_CYCLE);
-//				} catch (InterruptedException e) {
-//					e.printStackTrace();
-//				}
-//				long time = System.currentTimeMillis();
-//				if (time - lastActTime > TIMEOUT) {
-//					log.info("30秒内没有检测到心跳，设备退出!");
-//					close();
-//					break;
-//				}
-//			}
-//		}
-//
-//		public void setRunning(boolean isRunning) {
-//			this.isRunning = isRunning;
-//		}
-//	}
+	public void quizComplete(SocketChannel channel) {
+		quizSet.remove(channel);
+	}
+
+	/**
+	 * 单独作业检测
+	 * @author JOHN
+	 *
+	 */
+	private class QuizCollectMonitor extends Thread {
+		private SocketChannel channel;
+		public QuizCollectMonitor(SocketChannel channel) {
+			this.channel = channel;
+		}
+
+		public void run() {
+			try {
+				Thread.sleep(TIMEOUT);// 5秒后检测是否提交完成
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			if (quizSet.contains(channel)) {
+				logger.info("作业在5秒内没有收取成功,自动收取下一个作业.");
+				quizSet.remove(channel);
+				nextQuiz();
+			}
+		}
+	}
 }

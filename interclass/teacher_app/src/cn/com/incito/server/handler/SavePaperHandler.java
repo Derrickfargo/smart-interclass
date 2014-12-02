@@ -50,10 +50,9 @@ public class SavePaperHandler extends MessageHandler {
 
 	public void handleMessage(byte[] imageByte) {
 		// 需要给组中所以的设备发送
-		service.SavePaper(imei, quizid, Application.getInstance().getLessionid(), imageByte);
+		service.SavePaper(imei, quizid, Application.getInstance()
+				.getLessionid(), imageByte, message.getChannel());
 		sendResponse(JSONUtils.renderJSONString(0));
-		//当前作业处理完毕，处理下一作业
-		QuizCollector.getInstance().nextQuiz();
 	}
 
 	private void sendResponse(String json) {

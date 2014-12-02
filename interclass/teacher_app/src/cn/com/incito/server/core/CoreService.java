@@ -25,6 +25,7 @@ import cn.com.incito.server.config.Constants;
 import cn.com.incito.server.exception.AppException;
 import cn.com.incito.server.utils.ImageUtil;
 import cn.com.incito.server.utils.JSONUtils;
+import cn.com.incito.server.utils.QuizCollector;
 import cn.com.incito.server.utils.URLs;
 
 import com.alibaba.fastjson.JSON;
@@ -160,7 +161,7 @@ public class CoreService {
 	 * @return
 	 */
 	public void SavePaper(final String imei, final String quizid, final String lessionid,
-			final byte[] imageByte) {
+			final byte[] imageByte, final SocketChannel channel) {
 		new Thread(){
 			public void run() {
 				File path = new File(Constants.PAPER_PATH + File.separator + lessionid
@@ -204,6 +205,9 @@ public class CoreService {
 							.getQuizList().size(), app.getClientChannel().size());
 					Application.getInstance().getFloatIcon().showQuizMessage(message);
 				}
+				//当前作业处理完毕，处理下一作业
+				QuizCollector.getInstance().quizComplete(channel);
+				QuizCollector.getInstance().nextQuiz();
 			}
 		}.start();
 	}
