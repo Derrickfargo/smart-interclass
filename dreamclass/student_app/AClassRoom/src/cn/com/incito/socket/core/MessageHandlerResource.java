@@ -4,12 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.util.Log;
+import cn.com.incito.classroom.ui.activity.EvaluateHandlerActivity;
 import cn.com.incito.classroom.utils.ApiClient;
 import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.socket.handler.DeviceBindHandler;
 import cn.com.incito.socket.handler.DeviceHasBindHandler;
 import cn.com.incito.socket.handler.DeviceLoginHandler;
 import cn.com.incito.socket.handler.DistributePaperHandler;
+import cn.com.incito.socket.handler.EvaluateHandler;
 import cn.com.incito.socket.handler.GroupEditHandler;
 import cn.com.incito.socket.handler.GroupListHandler;
 import cn.com.incito.socket.handler.GroupSubmitHandler;
@@ -69,6 +71,8 @@ public final class MessageHandlerResource {
         handlerResources.put(Message.MESSAGE_SAVE_PAPER_RESULT, SavePaperResultHandler.class);
         //解锁屏信息
         handlerResources.put(Message.MESSAGE_LOCK_SCREEN, LockScreenHandler.class);
+        //学生互评
+        handlerResources.put(Message.MESSAGE_STUDENT_EVALUATE, EvaluateHandler.class);
     }
 
     public MessageHandler getMessageHandler(Byte key) {
