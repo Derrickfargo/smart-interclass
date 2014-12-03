@@ -116,8 +116,7 @@ public class WaitingActivity extends BaseActivity {
 				if (addState == 0) {
 					llayout1.setAnimation(AnimationUtils.loadAnimation(
 							WaitingActivity.this, R.anim.push_bottom_in));
-					male.setChecked(false);
-					female.setChecked(false);
+					gender_group.clearCheck();
 					llayout1.setVisibility(View.VISIBLE);
 					join_text_notice.setVisibility(View.GONE);
 					join_relative.setPaddingRelative(0, 0, 0, 0);
