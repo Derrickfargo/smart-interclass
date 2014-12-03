@@ -111,7 +111,7 @@ public class CaptureScreen {
 				File dir = new File("temp");
 				dir.mkdirs();
 				File file = new File(dir, "temp.png");
-				ImageIO.write(image, "jpg", file);
+				ImageIO.write(image, "gif", file);
 				ImageUtil.resize(file, file, 1280, 1f);
 				image = ImageIO.read(file);
 			} catch (Exception e) {
@@ -121,7 +121,7 @@ public class CaptureScreen {
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DISTRIBUTE_PAPER);
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		try {
-			ImageIO.write(image, "jpg", os);
+			ImageIO.write(image, "gif", os);
 			logger.info("图片大小:" + os.toByteArray().length);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -166,75 +166,6 @@ public class CaptureScreen {
 			jf.setAlwaysOnTop(true);
 		} catch (Exception exe) {
 			exe.printStackTrace();
-		}
-	}
-
-	public void doSave() {
-		try {
-			JFileChooser jfc = new JFileChooser(".");
-			jfc.addChoosableFileFilter(new JPGfilter());
-			jfc.addChoosableFileFilter(new PNGfilter());
-			int i = jfc.showSaveDialog(jFrame);
-			if (i == JFileChooser.APPROVE_OPTION) {
-				File file = jfc.getSelectedFile();
-				String about = "PNG";
-				String ext = file.toString().toLowerCase();
-				javax.swing.filechooser.FileFilter ff = jfc.getFileFilter();
-				if (ff instanceof JPGfilter) {
-					if (!ext.endsWith(".jpg")) {
-						String ns = ext + ".jpg";
-						file = new File(ns);
-						about = "JPG";
-					}
-				} else if (ff instanceof PNGfilter) {
-					if (!ext.endsWith(".png")) {
-						String ns = ext + ".png";
-						file = new File(ns);
-						about = "PNG";
-					}
-				}
-
-				if (ImageIO.write(bImage, about, file)) {
-					JOptionPane.showMessageDialog(jFrame, "保存成功！");
-				} else
-					JOptionPane.showMessageDialog(jFrame, "保存失败！");
-			}
-		} catch (Exception exe) {
-			exe.printStackTrace();
-		}
-	}
-
-	// 一个文件后缀名选择器
-	private class JPGfilter extends javax.swing.filechooser.FileFilter {
-		public JPGfilter() {
-
-		}
-
-		public boolean accept(File file) {
-			if (file.toString().toLowerCase().endsWith(".jpg")
-					|| file.toString().toLowerCase().endsWith(".jpeg")
-					|| file.isDirectory()) {
-				return true;
-			} else
-				return false;
-		}
-
-		public String getDescription() {
-			return "*.JPG,*.JPEG(JPG,JPEG图像)";
-		}
-	}
-
-	private class PNGfilter extends javax.swing.filechooser.FileFilter {
-		public boolean accept(File file) {
-			if (file.toString().toLowerCase().endsWith(".png")
-					|| file.isDirectory()) {
-				return true;
-			} else
-				return false;
-		}
-
-		public String getDescription() {
-			return "*.PNG(PNG图像)";
 		}
 	}
 
