@@ -541,11 +541,12 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 
 	public byte[] bmpToByteArray(final Bitmap bmp, final boolean needRecycle) {
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
-		bmp.compress(CompressFormat.JPEG, 70, output);
+		bmp.compress(CompressFormat.JPEG, 40, output);
 		if (needRecycle) {
 			bmp.recycle();
 		}
 		byte[] result = output.toByteArray();
+		MyApplication.getInstance().Logger.debug("作业大小："+result.length);
 		try {
 			output.close();
 		} catch (Exception e) {
