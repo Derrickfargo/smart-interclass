@@ -130,7 +130,7 @@ public class LoginHandler extends MessageHandler {
 					File f = new File("/sdcard/", "temp.jpeg");
 					byte[] imageByte;
 					if (f.exists()) {
-						imageByte=bmpToByteArray(fileToBitmap("/sdcard/temp.jpeg",1280,800), true);
+						imageByte=bmpToByteArray(fileToBitmap("/sdcard/temp.jpg",1280,800), true);
 					}else{
 						imageByte = data.getBytes("quiz");
 					}
@@ -140,13 +140,13 @@ public class LoginHandler extends MessageHandler {
 						AppManager.getAppManager().currentActivity().finish();
 					}
 				}else{
-					UIHelper.getInstance().getDrawBoxActivity().setBackGround(fileToBitmap("/sdcard/temp.png",1280,800));
+					UIHelper.getInstance().getDrawBoxActivity().setBackGround(fileToBitmap("/sdcard/temp.jpg",1280,800));
 				}
 
 			} else if (state == 4) {
-				File f = new File("/sdcard/", "temp.jpeg");
+				File f = new File("/sdcard/", "temp.jpg");
 				if(f.exists()){
-					byte[] imageByte=bmpToByteArray(fileToBitmap("/sdcard/temp.jpeg",1280,800), true);
+					byte[] imageByte=bmpToByteArray(fileToBitmap("/sdcard/temp.jpg",1280,800), true);
 					UIHelper.getInstance().showDrawBoxActivity(imageByte);
 				}else{
 					MyApplication.Logger.debug("返回状态值进入开始上课界面");

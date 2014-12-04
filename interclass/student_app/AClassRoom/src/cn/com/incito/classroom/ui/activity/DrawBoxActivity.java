@@ -602,13 +602,13 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 
 	public void saveBitmap(Bitmap bitmap) {
 		MyApplication.getInstance().Logger.debug(AndroidUtil.getCurrentTime()+"保存图片到本地");
-		File f = new File("/sdcard/", "temp.jpeg");
+		File f = new File("/sdcard/", "temp.jpg");
 		if (f.exists()) {
 			f.delete();
 		}
 		try {
 			FileOutputStream out = new FileOutputStream(f);
-			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+			bitmap.compress(Bitmap.CompressFormat.JPEG, 40, out);
 			out.flush();
 			out.close();
 			MyApplication.getInstance().Logger.debug("图片已经保存");

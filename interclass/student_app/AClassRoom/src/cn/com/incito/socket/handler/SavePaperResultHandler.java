@@ -21,7 +21,7 @@ public class SavePaperResultHandler extends MessageHandler {
 			UIHelper.getInstance().getDrawBoxActivity().cancleTask();
 			MyApplication.getInstance().setSubmitPaper(true);
 			MyApplication.getInstance().lockScreen(true);
-			File f = new File("/sdcard/", "temp.png");
+			File f = new File("/sdcard/", "temp.jpg");
 			if(f.exists()){
 				f.delete();
 			}
