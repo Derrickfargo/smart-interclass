@@ -20,7 +20,6 @@ public class SavePaperHandler extends MessageHandler {
 			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"SavePaperHandler.class:"+"作业延迟时间:" + delay);
 			if(UIHelper.getInstance().getDrawBoxActivity()!=null){
 				UIHelper.getInstance().getDrawBoxActivity().submitPaper(delay);
-//				MyApplication.getInstance().setSubmitPaper(true);
 			}
 		}
 	}

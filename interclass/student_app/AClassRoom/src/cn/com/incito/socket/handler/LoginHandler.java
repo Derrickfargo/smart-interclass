@@ -127,10 +127,10 @@ public class LoginHandler extends MessageHandler {
 				MyApplication.Logger.debug("返回状态值进入做作业界面");
 				if (!AppManager.getAppManager().currentActivity().getClass()
 						.getSimpleName().equals("DrawBoxActivity")) {
-					File f = new File("/sdcard/", "temp.PNG");
+					File f = new File("/sdcard/", "temp.jpeg");
 					byte[] imageByte;
 					if (f.exists()) {
-						imageByte=bmpToByteArray(fileToBitmap("/sdcard/temp.png",1280,800), true);
+						imageByte=bmpToByteArray(fileToBitmap("/sdcard/temp.jpeg",1280,800), true);
 					}else{
 						imageByte = data.getBytes("quiz");
 					}
@@ -144,9 +144,9 @@ public class LoginHandler extends MessageHandler {
 				}
 
 			} else if (state == 4) {
-				File f = new File("/sdcard/", "temp.png");
+				File f = new File("/sdcard/", "temp.jpeg");
 				if(f.exists()){
-					byte[] imageByte=bmpToByteArray(fileToBitmap("/sdcard/temp.png",1280,800), true);
+					byte[] imageByte=bmpToByteArray(fileToBitmap("/sdcard/temp.jpeg",1280,800), true);
 					UIHelper.getInstance().showDrawBoxActivity(imageByte);
 				}else{
 					MyApplication.Logger.debug("返回状态值进入开始上课界面");
@@ -168,27 +168,6 @@ public class LoginHandler extends MessageHandler {
 		}
 	}
 
-//	public void sendPaper() {
-//		MessagePacking messagePacking = new MessagePacking(
-//				Message.MESSAGE_SAVE_PAPER);
-//		// 测试ID
-//		messagePacking.putBodyData(DataType.INT, BufferUtils
-//				.writeUTFString(MyApplication.getInstance().getQuizID()));
-//		// 设备ID
-//		messagePacking.putBodyData(DataType.INT, BufferUtils
-//				.writeUTFString(MyApplication.getInstance().getDeviceId()));
-//		// 图片
-//		messagePacking.putBodyData(DataType.INT,
-//				bmpToByteArray(fileToBitmap("/sdcard/temp.png",1280,800), true));
-//		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()
-//				+ "开始提交以前未提交的作业");
-//		CoreSocket.getInstance().sendMessage(messagePacking);
-//		state=4;
-//		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "启动作业提交...");
-//		
-//		// MyApplication.getInstance().setSubmitPaper(true);
-//		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "提交作业后锁定屏幕");
-//	}
 
 	public Bitmap fileToBitmap(String path,int w,int h) {
 		BitmapFactory.Options opts = new BitmapFactory.Options();
@@ -213,7 +192,7 @@ public class LoginHandler extends MessageHandler {
 	}
 	public byte[] bmpToByteArray(final Bitmap bmp, final boolean needRecycle) {
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
-		bmp.compress(CompressFormat.PNG, 70, output);
+		bmp.compress(CompressFormat.JPEG, 40, output);
 		if (needRecycle) {
 			bmp.recycle();
 		}

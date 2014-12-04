@@ -96,7 +96,6 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	private ImageButton earise_middle;
 	private ImageButton earise_small;
 	private Bitmap bitmap;
-	private int delay;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -437,7 +436,6 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 			mProgressDialog.dismiss();
 		}
 	}
-
 	/**
 	 * @param imageView
 	 *            图片动画效果
@@ -476,9 +474,15 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	 * @return 保存图片
 	 */
 	private Bitmap getBitMap() {// 老师收作业的时候调用此方法保存图片 然后将图片传到服务器
-		Bitmap bmBitmap = m_sketchPad.getCanvasSnapshot();
+		final Bitmap bmBitmap = m_sketchPad.getCanvasSnapshot();
 		m_sketchPad.cleanDrawingCache();
-		saveBitmap(bmBitmap);//保存图片到本地
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				saveBitmap(bmBitmap);//保存图片到本地
+			}
+		}).start();
+		
 		return bmBitmap;
 	}
 
@@ -509,7 +513,6 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	 * 提交作业
 	 */
 	public void submitPaper(int delay) {
-		this.delay = delay;
 		handler.sendEmptyMessage(0);
 	}
 
@@ -559,13 +562,6 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case 0:
-//				try {
-//					MyApplication.Logger.debug(AndroidUtil.getCurrentTime()
-//							+ "延迟" + delay + "毫秒开始提交作业");
-//					Thread.sleep(delay);
-//				} catch (InterruptedException e) {
-//					e.printStackTrace();
-//				}
 				if(!mProgressDialog.isShowing()){
 					mProgressDialog.show();
 				}
@@ -585,11 +581,8 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ "开始提交作业");
 				CoreSocket.getInstance().sendMessage(messagePacking);
 				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ "启动作业提交..." + "request:");
-//				MyApplication.getInstance().setSubmitPaper(true);
 				MyApplication.getInstance().lockScreen(true);
 				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ "提交作业后锁定屏幕");
-			
-//				DrawBoxActivity.this.finish();
 				break;
 			case 1:
 				if(timeTimer!=null){
@@ -604,19 +597,18 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		};
 	};
 	private long beginTime;
-	private long endTime;
 	private Timer timeTimer;
 	private TimerTask timeTimerTask;
 
 	public void saveBitmap(Bitmap bitmap) {
 		MyApplication.getInstance().Logger.debug(AndroidUtil.getCurrentTime()+"保存图片到本地");
-		File f = new File("/sdcard/", "temp.PNG");
+		File f = new File("/sdcard/", "temp.jpeg");
 		if (f.exists()) {
 			f.delete();
 		}
 		try {
 			FileOutputStream out = new FileOutputStream(f);
-			bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
 			out.flush();
 			out.close();
 			MyApplication.getInstance().Logger.debug("图片已经保存");
