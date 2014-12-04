@@ -96,6 +96,7 @@ public class ResponderActivity extends BaseActivity {
 				CoreSocket.getInstance().sendMessage(messagePacking);
 				
 				MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "ResponderActivity:发送抢答消息成功");
+				ResponderActivity.this.finish();
 			}
 		});
 		
