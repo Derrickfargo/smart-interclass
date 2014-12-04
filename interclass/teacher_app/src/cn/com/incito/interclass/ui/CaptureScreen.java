@@ -38,7 +38,12 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.UUID;
+import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
@@ -54,6 +59,7 @@ import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 
+import cn.com.incito.interclass.po.Student;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.CoreSocket;
 import cn.com.incito.server.core.Message;
@@ -136,7 +142,7 @@ public class CaptureScreen {
 			Application.getInstance().getTempQuiz().clear();
 			Application.getInstance().getQuizList().clear();
 			Application.getInstance().getTempQuizIMEI().clear();
-			CoreSocket.getInstance().sendMessageToStudents(messagePacking.pack().array());
+			sendMessageToStudents(messagePacking.pack().array());
 			logger.info("截图作业已经发出");
 			app.setState(3);//作业已发送
 			app.setQuiz(os.toByteArray());//设置发送的作业
@@ -146,6 +152,47 @@ public class CaptureScreen {
 		}
 	}
 
+	/**
+	 * 启动线程将消息发往所有客户端
+	 * @param data
+	 */
+	public void sendMessageToStudents(final byte[] data){
+		final Application app = Application.getInstance();
+		Set<Entry<String, SocketChannel>> clients = app.getClientChannel().entrySet();
+		final Iterator<Entry<String, SocketChannel>> it = clients.iterator();
+		new Thread() {
+			@Override
+			public void run() {
+				try {
+					ByteBuffer buffer = ByteBuffer.allocate(data.length);
+					while (it.hasNext()) {
+						Entry<String, SocketChannel> entry = it.next();
+						String imei = entry.getKey();
+						Student students = app.getStudentByImei(imei);
+						//记录有学生登陆的Pad
+						if (students != null) {
+							SocketChannel channel = entry.getValue();
+							if (channel != null && channel.isConnected()) {
+								// 输出到通道
+								buffer.clear();
+								buffer.put(data);
+								buffer.flip();
+								channel.write(buffer);
+								app.addQuizIMEI(imei);//已发送的IMEI
+							}
+						}
+						try {
+							Thread.sleep(50);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				} catch (IOException e) {
+					logger.error("发送消息异常:\n", e);
+				}
+			};
+		}.start();
+	}
 	
 	public void doStart() {
 		try {

@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Properties;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -14,6 +15,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.apache.log4j.Logger;
 
 import cn.com.incito.server.api.Application;
+import cn.com.incito.server.config.AppConfig;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
@@ -24,10 +26,9 @@ public class QuizCollector {
 	private Logger logger = Logger.getLogger(QuizCollector.class.getName());
 	private static final int TIMEOUT = 5000;//消息队列等待时长
 	private static QuizCollector instance;
-	private boolean isIdling = false;
+	private int capacity;
 	private final Lock lock = new ReentrantLock();
 	private final Condition isIdle = lock.newCondition();
-//	private final QuizCollectMonitor monitor = new QuizCollectMonitor();
 	private Queue<SocketChannel> quizQueue = new LinkedList<SocketChannel>();
 	private Set<SocketChannel> quizSet = new HashSet<SocketChannel>();
 
@@ -39,18 +40,26 @@ public class QuizCollector {
 	}
 
 	private QuizCollector() {
+		capacity = 0;
 		initQuizCollector();
 	}
 
+	private int getQuizThreadThreshold(){
+		Properties props = AppConfig.getProperties();
+		String threshold = props.get("quiz_thread_threshold").toString();
+		return Integer.parseInt(threshold);
+	}
+	
 	/**
 	 * 收取下一个作业
 	 */
 	public void nextQuiz() {
 		if(quizQueue.size() == 0){
-			isIdling = false;
 			return;
 		}
-		isIdling = true;
+		if (capacity >= getQuizThreadThreshold()) {
+			return;
+		}
 		lock.lock();
 		isIdle.signal();
 		lock.unlock();
@@ -66,7 +75,6 @@ public class QuizCollector {
 		quizSet.add(channel);
 		quizQueue.offer(channel);
 		if (quizQueue.size() == 1) {
-			isIdling = true;
 			lock.lock();
 			isIdle.signal();
 			lock.unlock();
@@ -83,14 +91,16 @@ public class QuizCollector {
 				while (Boolean.TRUE) {
 					lock.lock();
 					try {
-						while(!isIdling){
+						while (capacity >= getQuizThreadThreshold()) {
 							if (!isIdle.await(TIMEOUT, TimeUnit.MILLISECONDS)) {
 								logger.info("*****正在等待作业提交请求*****");
 							}
 						}
-						isIdling = false;
-						SocketChannel channel = quizQueue.poll();
-						doCollect(channel);
+						while (capacity < getQuizThreadThreshold()) {
+							SocketChannel channel = quizQueue.poll();
+							capacity++;
+							doCollect(channel);// 收集作业
+						}
 					} catch (Exception e) {
 						logger.fatal("作业队列中断：", e);
 					} finally {
@@ -118,18 +128,20 @@ public class QuizCollector {
 				buffer.flip();
 				try {
 					channel.write(buffer);
-					new QuizCollectMonitor(channel).start();
 				} catch (Exception e) {
 					logger.error("作业收取失败,直接收取下一个作业", e);
-					quizSet.remove(channel);
+					quizComplete(channel);
 					nextQuiz();//收取下一个作业
+					return;
 				}
+				new QuizCollectMonitor(channel).start();
 			}
 			
 		}).start();
 	}
 	
 	public void quizComplete(SocketChannel channel) {
+		capacity--;
 		quizSet.remove(channel);
 	}
 
@@ -152,7 +164,7 @@ public class QuizCollector {
 			}
 			if (quizSet.contains(channel)) {
 				logger.info("作业在5秒内没有收取成功,自动收取下一个作业.");
-				quizSet.remove(channel);
+				quizComplete(channel);
 				nextQuiz();
 			}
 		}
