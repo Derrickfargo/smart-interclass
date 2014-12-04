@@ -63,6 +63,7 @@ public class Application {
 
     public static boolean isOnClass;//正在上课
     public static boolean hasQuiz;//是否在作业
+	public static boolean isOnResponder;//是否在抢答中
     private List<Group> groupList = new ArrayList<Group>();// 本堂课的所有分组
     private List<Table> tableList = new ArrayList<Table>();// 本教室所有的桌子
     private List<Device> deviceList = new ArrayList<Device>();// 本教室所有的Device
@@ -81,6 +82,7 @@ public class Application {
     private List<Integer> tempGrouped = new ArrayList<Integer>();//已编辑完成的小组
     private List<Quiz> quizList = new ArrayList<Quiz>();//作业
     private FileLock lock;
+    private List<Student> responderStudents = new ArrayList<Student>();//抢答的学生组
     /**
      * IMEI和设备的对应关系(key:imei,value:Device)，教师登陆完后初始化
      */
@@ -649,6 +651,16 @@ public class Application {
 
 	public void setDefinedFont(Font definedFont) {
 		this.definedFont = definedFont;
+	}
+
+
+	public List<Student> getResponderStudents() {
+		return responderStudents;
+	}
+
+
+	public void setResponderStudents(List<Student> responderStudents) {
+		this.responderStudents = responderStudents;
 	}
 
 }
