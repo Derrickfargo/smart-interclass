@@ -46,7 +46,7 @@ public class QuizCollector {
 
 	private int getQuizThreadThreshold(){
 		Properties props = AppConfig.getProperties();
-		String threshold = props.get("quiz_thread_threshold").toString();
+		String threshold = props.get("quiz_receive_threshold").toString();
 		return Integer.parseInt(threshold);
 	}
 	

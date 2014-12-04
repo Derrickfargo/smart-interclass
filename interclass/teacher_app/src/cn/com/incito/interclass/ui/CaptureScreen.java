@@ -41,6 +41,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
+import java.util.Properties;
 import java.util.Set;
 import java.util.UUID;
 import java.util.Map.Entry;
@@ -61,6 +62,7 @@ import org.apache.log4j.Logger;
 
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.server.api.Application;
+import cn.com.incito.server.config.AppConfig;
 import cn.com.incito.server.core.CoreSocket;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.message.DataType;
@@ -157,6 +159,10 @@ public class CaptureScreen {
 	 * @param data
 	 */
 	public void sendMessageToStudents(final byte[] data){
+		Properties props = AppConfig.getProperties();
+		String threshold = props.get("quiz_send_threshold").toString();
+		final int delay_time = Integer.parseInt(threshold);
+		
 		final Application app = Application.getInstance();
 		Set<Entry<String, SocketChannel>> clients = app.getClientChannel().entrySet();
 		final Iterator<Entry<String, SocketChannel>> it = clients.iterator();
@@ -182,7 +188,7 @@ public class CaptureScreen {
 							}
 						}
 						try {
-							Thread.sleep(50);
+							Thread.sleep(delay_time);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
