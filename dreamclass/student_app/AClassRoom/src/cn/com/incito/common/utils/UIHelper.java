@@ -9,6 +9,7 @@ import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.ui.activity.BindDeskActivity;
 import cn.com.incito.classroom.ui.activity.DrawBoxActivity;
 import cn.com.incito.classroom.ui.activity.ResponderActivity;
+import cn.com.incito.classroom.ui.activity.EvaluateActivity;
 import cn.com.incito.classroom.ui.activity.WaitingActivity;
 
 import com.alibaba.fastjson.JSONObject;
@@ -19,7 +20,8 @@ public class UIHelper {
 	private WaitingActivity waitingActivity;
 	private BindDeskActivity bindDeskActivity;
 	private DrawBoxActivity drawBoxActivity;
-
+	private EvaluateActivity evaluateActivity;
+	
 	private UIHelper() {
 		app = MyApplication.getInstance();
 	}
@@ -164,4 +166,15 @@ public class UIHelper {
 		intent.setAction(Constants.ACTION_SHOW_EDIT_GROUP);
 		app.startActivity(intent);
 	}
+
+	
+	public EvaluateActivity getEvaluateActivity() {
+		return evaluateActivity;
+	}
+
+	
+	public void setEvaluateActivity(EvaluateActivity evaluateActivity) {
+		this.evaluateActivity = evaluateActivity;
+	}
+	
 }

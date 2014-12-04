@@ -85,6 +85,10 @@ public class Message {
 	 * 锁屏
 	 */
 	public static final Byte MESSAGE_LOCK_SCREEN=0x0C;
+	/**
+	 * 抢答
+	 */
+	public static final Byte MESSAGE_STUDENT_RESPONDER=0x0D;
 	
 	private Logger log = Logger.getLogger(Message.class);
 	

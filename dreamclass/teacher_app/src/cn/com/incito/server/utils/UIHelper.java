@@ -42,4 +42,23 @@ public class UIHelper {
 		CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
 		logger.info("下课信息发出");
 	}
+	/**
+	 * 2014.12.03
+	 * 抢答命令
+	 * @param doResponse true为发布抢答命令，false为pad端锁屏，抢答结束
+	 */
+	public static void sendResponderMessage(boolean doResponse) {
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_RESPONDER);
+		if(doResponse){
+			sendLockScreenMessage(false);
+//			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString("true"));//注意，如果使用请考虑else注释内容
+			CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
+			logger.info("抢答命令发出");
+		}
+		else{
+//			messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString("false")); //注意，如果使用请单独添加channel
+			sendLockScreenMessage(true);
+			logger.info("抢答结束命令发出");
+		}
+	}
 }

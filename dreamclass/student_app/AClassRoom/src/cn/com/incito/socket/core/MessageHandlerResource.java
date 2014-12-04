@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.util.Log;
+import cn.com.incito.classroom.ui.activity.EvaluateActivity;
 import cn.com.incito.classroom.utils.ApiClient;
 import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.socket.handler.DeviceBindHandler;
