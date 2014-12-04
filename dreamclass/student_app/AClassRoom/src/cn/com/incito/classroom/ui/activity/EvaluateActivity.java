@@ -17,7 +17,7 @@ import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.common.utils.UIHelper;
 
 
-public class EvaluateHandlerActivity extends BaseActivity{
+public class EvaluateActivity extends BaseActivity{
 	private ArrayList mImageResourceIds=new ArrayList<Drawable>();
 	private Gallery mGallery;
 	private ImageView mImageView;
@@ -25,7 +25,7 @@ public class EvaluateHandlerActivity extends BaseActivity{
 	protected void onAfterOnCreate(Bundle savedInstanceState) {
 		super.onAfterOnCreate(savedInstanceState);
 		setContentView(R.layout.evaluate_activity);
-		UIHelper.getInstance().setEvaluateHandlerActivity(this);
+		UIHelper.getInstance().setEvaluateActivity(this);
 		for (int i = 0; i < 10; i++) {
 			mImageResourceIds.add(getResources().getDrawable(R.drawable.ic_launcher));
 		}
