@@ -263,6 +263,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		if(e.getSource()==btnResponder){
 			if(Application.isOnResponder){
 			UIHelper.sendResponderMessage(true);
+			Application.isOnResponder=false;
 			}
 			else{
 				JOptionPane.showMessageDialog(MainFrame.getInstance().getFrame(), "抢答尚未结束，请稍等！");
