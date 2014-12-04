@@ -15,6 +15,7 @@ import cn.com.incito.socket.handler.GroupListHandler;
 import cn.com.incito.socket.handler.GroupSubmitHandler;
 import cn.com.incito.socket.handler.HeartbeatHandler;
 import cn.com.incito.socket.handler.LockScreenHandler;
+import cn.com.incito.socket.handler.ResponderHandler;
 import cn.com.incito.socket.handler.SavePaperHandler;
 import cn.com.incito.socket.handler.SavePaperResultHandler;
 import cn.com.incito.socket.handler.StudentLoginHandler;
@@ -69,6 +70,8 @@ public final class MessageHandlerResource {
         handlerResources.put(Message.MESSAGE_SAVE_PAPER_RESULT, SavePaperResultHandler.class);
         //解锁屏信息
         handlerResources.put(Message.MESSAGE_LOCK_SCREEN, LockScreenHandler.class);
+        //抢答信息
+        handlerResources.put(Message.MESSAGE_STUDENT_RESPONDER, ResponderHandler.class);
     }
 
     public MessageHandler getMessageHandler(Byte key) {
