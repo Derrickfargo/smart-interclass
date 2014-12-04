@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.MessageHandler;
+import cn.com.incito.server.utils.UIHelper;
 
 public class ResponderHandler extends MessageHandler{
 	private Logger log = Logger.getLogger(ResponderHandler.class.getName());
@@ -23,6 +24,7 @@ public class ResponderHandler extends MessageHandler{
 		}
 		else{
 			app.setResponderStudents(students);
+			UIHelper.sendResponderMessage(false);
 		}
 	}
 
