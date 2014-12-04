@@ -8,6 +8,7 @@ import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.ui.activity.BindDeskActivity;
 import cn.com.incito.classroom.ui.activity.DrawBoxActivity;
+import cn.com.incito.classroom.ui.activity.RandomGroupActivity;
 import cn.com.incito.classroom.ui.activity.ResponderActivity;
 import cn.com.incito.classroom.ui.activity.EvaluateActivity;
 import cn.com.incito.classroom.ui.activity.WaitingActivity;
@@ -21,6 +22,7 @@ public class UIHelper {
 	private BindDeskActivity bindDeskActivity;
 	private DrawBoxActivity drawBoxActivity;
 	private EvaluateActivity evaluateActivity;
+	private RandomGroupActivity randomGroupActivity;
 	
 	private UIHelper() {
 		app = MyApplication.getInstance();
@@ -31,6 +33,18 @@ public class UIHelper {
 			instance = new UIHelper();
 		}
 		return instance;
+	}
+	
+	public RandomGroupActivity getRandomGroupActivity(){
+		return this.randomGroupActivity;
+	}
+	
+	public void setRandomGroupActivity(RandomGroupActivity randomGroupActivity) {
+		if (this.randomGroupActivity != null) {
+			this.randomGroupActivity.finish();
+			this.randomGroupActivity = null;
+		}
+		this.randomGroupActivity = randomGroupActivity;
 	}
 
 	public void setWaitingActivity(WaitingActivity waitingActivity) {
@@ -63,6 +77,18 @@ public class UIHelper {
 			this.drawBoxActivity = null;
 		}
 		this.drawBoxActivity = drawBoxActivity;
+	}
+	
+	/**
+	 * 显示随机分组界面
+	 * @param data   服务器返回的分组数据
+	 */
+	public void showRandomGroupActivity(JSONObject data){
+		
+		//TODO 没有绑定数据
+		Intent intent = new Intent(app,RandomGroupActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		app.startActivity(intent);
 	}
 	
 	/**
