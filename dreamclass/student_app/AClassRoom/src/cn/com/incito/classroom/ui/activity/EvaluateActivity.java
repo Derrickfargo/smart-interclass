@@ -1,87 +1,76 @@
 package cn.com.incito.classroom.ui.activity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
-import android.widget.Gallery;
-import android.widget.ImageView;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.common.utils.UIHelper;
 
 
-public class EvaluateActivity extends BaseActivity{
-	private ArrayList mImageResourceIds=new ArrayList<Drawable>();
-	private Gallery mGallery;
-	private ImageView mImageView;
+public class EvaluateActivity extends BaseActivity implements OnClickListener{
+	private Button button_one;
+	private Button button_two;
+	private Button button_three;
+	private Button pager_up;
+	private Button pager_down;
+	private Button number;
+	private Map<String,Bitmap> picture=new HashMap<String, Bitmap>();//作业，key是作业ID，value是作业图片
+	private ArrayList<Map<String,Bitmap>> paperlist=new ArrayList<Map<String,Bitmap>>();//存在所有作业的list
 	@Override
 	protected void onAfterOnCreate(Bundle savedInstanceState) {
 		super.onAfterOnCreate(savedInstanceState);
 		setContentView(R.layout.evaluate_activity);
 		UIHelper.getInstance().setEvaluateActivity(this);
-		for (int i = 0; i < 10; i++) {
-			mImageResourceIds.add(getResources().getDrawable(R.drawable.ic_launcher));
-		}
 		initView();
-		
 	}
-
 	private void initView() {
-		mGallery=(Gallery)findViewById(R.id.gallery);
-		mGallery.setAdapter(new ImageAdapter(this));
-		mImageView=(ImageView)findViewById(R.id.imageView);
-		mGallery.onFling(null, null, 0, 0);
-		mGallery.setOnItemClickListener(new OnItemClickListener() {
-			     public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-			             mImageView.setBackground((Drawable)mImageResourceIds.get(arg2));
-			        }
-			    });
+		pager_up=(Button)findViewById(R.id.pager_up);
+		pager_up.setOnClickListener(this);
+		pager_down=(Button)findViewById(R.id.pager_down);
+		pager_down.setOnClickListener(this);
+		button_one=(Button)findViewById(R.id.number_one);
+		button_one.setOnClickListener(this);
+		button_two=(Button)findViewById(R.id.number_two);
+		button_two.setOnClickListener(this);
+		button_three=(Button)findViewById(R.id.number_three);
+		button_three.setOnClickListener(this);
+		number=(Button)findViewById(R.id.number);
 	}
-    public class ImageAdapter extends BaseAdapter {
-
-        Context mContext;        //上下文对象
-		
-        public ImageAdapter(Context context) {
-            this.mContext = context;
-        }
-        
-        public int getCount() {
-            return mImageResourceIds.size();
-        }
-
-        //获取图片在库中的位置
-        public Object getItem(int position) {
-            return mImageResourceIds.get(position);
-        }
-
-        //获取图片在库中的位置
-        public long getItemId(int position) {
-            return position;
-        }
-
-        //获取适配器中指定位置的视图对象
-        public View getView(int position, View convertView, ViewGroup parent) {
-//        	View view=null;
-//        	if(convertView==null){
-//        		view
-//        	}else{
-//        		view=convertView;
-//        	}
-        	
-            ImageView imageView = new ImageView(mContext);
-            imageView.setBackground((Drawable)mImageResourceIds.get(position));
-//            imageView.setLayoutParams(new Gallery.LayoutParams(120, 120));
-//            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            return imageView;
-        }
-    }
+	@Override
+	public void onClick(View v) {
+		int viewID=v.getId();
+		switch (viewID) {
+		case R.id.pager_up:
+			break;
+		case R.id.pager_down:
+			break;
+		case R.id.number_one:
+			number.setText("1");
+			break;
+		case R.id.number_two:
+			number.setText("2");
+			break;
+		case R.id.number_three:
+			number.setText("3");
+			break;
+		default:
+			break;
+		}
+	}
 	
+	public Map<String, Bitmap> getPicture() {
+		return picture;
+	}
+	
+	public void setPicture(Map<String, Bitmap> picture) {
+		this.picture = picture;
+	}
 	
 }
