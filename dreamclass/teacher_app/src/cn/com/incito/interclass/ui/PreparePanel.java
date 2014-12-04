@@ -123,7 +123,6 @@ public class PreparePanel extends JPanel{
 			String stuName = stuBuffer.toString();
 			JOptionPane.showMessageDialog(this, "抢答的学生为："+stuName);
 			app.setResponderStudents(new ArrayList<Student>());
-			Application.isOnResponder=true;
 		}
 		repaint();
 		revalidate();

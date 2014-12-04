@@ -158,7 +158,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 			return;
 		}
 		btnResponder.setVisible(true);
-		Application.isOnResponder=true;
+		Application.isOnResponder=false;
 		MainFrame.getInstance().setVisible(false);
 		setOnClass(true); 
 	}
@@ -261,9 +261,9 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 			doEditGroup();
 		}
 		if(e.getSource()==btnResponder){
-			if(Application.isOnResponder){
+			if(!Application.isOnResponder){
 			UIHelper.sendResponderMessage(true);
-			Application.isOnResponder=false;
+			Application.isOnResponder=true;
 			}
 			else{
 				JOptionPane.showMessageDialog(MainFrame.getInstance().getFrame(), "抢答尚未结束，请稍等！");
