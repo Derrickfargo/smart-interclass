@@ -32,7 +32,7 @@ import com.alibaba.fastjson.JSONObject;
 public class PrepareBottomPanel extends JPanel implements MouseListener{
 	private static final long serialVersionUID = -9135075807085951600L;
 	private JLabel lblExpected,lblClass,lblClassBackground,lblCourse,lblCourseBackground;
-	private JButton btnBegin, btnGroup;
+	private JButton btnBegin, btnGroup,btnResponder;
 	private Application app = Application.getInstance();
 	Logger logger =  Logger.getLogger(PrepareBottomPanel.class.getName());
 	public JLabel getLblExpected() {
@@ -103,6 +103,17 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		btnBegin.setBounds(660, -4, btnImage.getIconWidth(), btnImage.getIconHeight());
 		btnBegin.addMouseListener(this);
 		btnBegin.setVisible(false);
+		
+		btnResponder = new JButton("抢答");//创建抢答对象
+		btnResponder.setFocusPainted(false);
+		btnResponder.setBorderPainted(false);
+//		btnResponder.setContentAreaFilled(false);
+//		ImageIcon image = new ImageIcon();
+//		btnResponder.setIcon(image);
+		btnResponder.setBounds(810, -4, 40, 40);
+		add(btnResponder);
+		btnResponder.addMouseListener(this);
+		btnResponder.setVisible(false);
 	}
 	
 	public void refresh(){
@@ -146,7 +157,8 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 					"还未进行小组分组，请先进行分组!");
 			return;
 		}
-
+		btnResponder.setVisible(true);
+		Application.isOnResponder=true;
 		MainFrame.getInstance().setVisible(false);
 		setOnClass(true); 
 	}
@@ -187,11 +199,13 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		UIHelper.sendLockScreenMessage(true);
 		if (isOnClass) { 
 			btnBegin.setIcon(new ImageIcon("images/main/btn_end.png"));// 设置图片
+			btnResponder.setVisible(true);//设置抢答按钮可见
 			Application.isOnClass = true;
 			Application.getInstance().setLessionid(
 					UUID.randomUUID().toString());
 		} else {
 			btnBegin.setIcon(new ImageIcon("images/main/btn_begin.png"));// 设置图片
+			btnResponder.setVisible(false);//设置抢答按钮不可见
 			Application.isOnClass = false;
 		}
 		
@@ -246,6 +260,15 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		if(e.getSource() == btnGroup){
 			doEditGroup();
 		}
+		if(e.getSource()==btnResponder){
+			if(Application.isOnResponder){
+			UIHelper.sendResponderMessage(true);
+			Application.isOnResponder=false;
+			}
+			else{
+				JOptionPane.showMessageDialog(MainFrame.getInstance().getFrame(), "抢答尚未结束，请稍等！");
+			}
+		}
 	}
 
 	@Override
@@ -285,5 +308,4 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 			btnGroup.setIcon(new ImageIcon("images/main/btn_group.png"));
 		}
 	}
-	
 }
