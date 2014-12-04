@@ -70,8 +70,6 @@ public final class MessageHandlerResource {
         handlerResources.put(Message.MESSAGE_SAVE_PAPER_RESULT, SavePaperResultHandler.class);
         //解锁屏信息
         handlerResources.put(Message.MESSAGE_LOCK_SCREEN, LockScreenHandler.class);
-        //抢答信息
-        handlerResources.put(Message.MESSAGE_STUDENT_RESPONDER, ResponderHandler.class);
     }
 
     public MessageHandler getMessageHandler(Byte key) {
