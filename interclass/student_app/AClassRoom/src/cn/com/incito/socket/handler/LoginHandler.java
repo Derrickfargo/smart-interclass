@@ -32,6 +32,7 @@ import com.alibaba.fastjson.JSON;
 public class LoginHandler extends MessageHandler {
 
 	private int state;
+
 	@Override
 	protected void handleMessage() {
 		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()
@@ -125,11 +126,14 @@ public class LoginHandler extends MessageHandler {
 				AppManager.getAppManager().currentActivity().finish();
 			} else if (state == 3) {
 				MyApplication.Logger.debug("返回状态值进入做作业界面");
-				if (!AppManager.getAppManager().currentActivity().getClass().getSimpleName().equals("DrawBoxActivity")) {
+				if (!AppManager.getAppManager().currentActivity().getClass()
+						.getSimpleName().equals("DrawBoxActivity")) {
 					byte[] imageByte;
 					if (isFileExists()) {
-						imageByte=bmpToByteArray(GetLocalOrNetBitmap("file://mnt/sdcard/temp.jpg"), true);
-					}else{
+						imageByte = bmpToByteArray(
+								GetLocalOrNetBitmap("file://mnt/sdcard/temp.jpg"),
+								true);
+					} else {
 						imageByte = data.getBytes("quiz");
 					}
 					UIHelper.getInstance().showDrawBoxActivity(imageByte);
@@ -137,24 +141,30 @@ public class LoginHandler extends MessageHandler {
 							.currentActivity().getClass().getSimpleName())) {
 						AppManager.getAppManager().currentActivity().finish();
 					}
-				}else{
+				} else {
 					byte[] imageByte;
 					if (isFileExists()) {
-						UIHelper.getInstance().getDrawBoxActivity().setBackGround(GetLocalOrNetBitmap("file://mnt/sdcard/temp.jpg"));
-					}else{
-						//在原来界面,不做操作
+						UIHelper.getInstance()
+								.getDrawBoxActivity()
+								.setBackGround(
+										GetLocalOrNetBitmap("file://mnt/sdcard/temp.jpg"));
+					} else {
+						// 在原来界面,不做操作
 					}
-					
+
 				}
 
 			} else if (state == 4) {
-				if(isFileExists()){
-					byte[] imageByte=bmpToByteArray(GetLocalOrNetBitmap("file://mnt/sdcard/temp.jpg"), true);
+				if (isFileExists()) {
+					byte[] imageByte = bmpToByteArray(
+							GetLocalOrNetBitmap("file://mnt/sdcard/temp.jpg"),
+							true);
 					UIHelper.getInstance().showDrawBoxActivity(imageByte);
-				}else{
+				} else {
 					MyApplication.Logger.debug("返回状态值进入开始上课界面");
-					if (!AppManager.getAppManager().currentActivity().getClass()
-							.getSimpleName().equals("ClassingActivity")) {
+					if (!AppManager.getAppManager().currentActivity()
+							.getClass().getSimpleName()
+							.equals("ClassingActivity")) {
 						AppManager.getAppManager().currentActivity().finish();
 						UIHelper.getInstance().showClassingActivity();
 						MyApplication.Logger.debug("返回状态值进入开始上课界面成功");
@@ -164,13 +174,18 @@ public class LoginHandler extends MessageHandler {
 				MyApplication.Logger.debug("没有返回值");
 				AppManager.getAppManager().currentActivity().finish();
 				UIHelper.getInstance().showClassReadyActivity();
-				
+
 			}
 			// 启动心跳检测
 			ConnectionManager.getInstance(message.getChannel());
 		}
 	}
 
+	/**
+	 * @param bmp
+	 * @param needRecycle
+	 * @return bitmap  转byte[]
+	 */
 	public byte[] bmpToByteArray(final Bitmap bmp, final boolean needRecycle) {
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		bmp.compress(CompressFormat.JPEG, 40, output);
@@ -185,6 +200,7 @@ public class LoginHandler extends MessageHandler {
 		}
 		return result;
 	}
+
 	/**
 	 * 得到本地或者网络上的bitmap url - 网络或者本地图片的绝对路径,比如:
 	 * 
@@ -197,13 +213,11 @@ public class LoginHandler extends MessageHandler {
 	 * @param url
 	 * @return
 	 */
-	public  Bitmap GetLocalOrNetBitmap(String url)
-	{
+	public Bitmap GetLocalOrNetBitmap(String url) {
 		Bitmap bitmap = null;
 		InputStream in = null;
 		BufferedOutputStream out = null;
-		try
-		{
+		try {
 			in = new BufferedInputStream(new URL(url).openStream(), 1024);
 			final ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
 			out = new BufferedOutputStream(dataStream, 1024);
@@ -213,24 +227,26 @@ public class LoginHandler extends MessageHandler {
 			bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
 			data = null;
 			return bitmap;
-		}catch (IOException e){
+		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
+
 	private static void copy(InputStream in, OutputStream out)
-            throws IOException {
-        byte[] b = new byte[1024];
-        int read;
-        while ((read = in.read(b)) != -1) {
-            out.write(b, 0, read);
-        }
-    }
-	public boolean isFileExists(){
+			throws IOException {
+		byte[] b = new byte[1024];
+		int read;
+		while ((read = in.read(b)) != -1) {
+			out.write(b, 0, read);
+		}
+	}
+
+	public boolean isFileExists() {
 		File f = new File("/sdcard/", "temp.jpg");
-		if(f.exists()){
+		if (f.exists()) {
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	}
