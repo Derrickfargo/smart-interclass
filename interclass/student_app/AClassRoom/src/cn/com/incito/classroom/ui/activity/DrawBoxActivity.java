@@ -16,7 +16,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -195,6 +194,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		}
 		initPaint(bitmap);
 		mProgressDialog = new ProgressiveDialog(this);
+		mProgressDialog.setCanceledOnTouchOutside(false);
 		mProgressDialog.setMessage(R.string.sendpaper_notice);
 	}
 
@@ -498,7 +498,6 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 					public void onClick(DialogInterface dialog, int which) {
 						dialog.dismiss();
 						sendPaperRequest();
-//						submitPaper(delay);
 					}
 				})
 				.setNegativeButton("否", new DialogInterface.OnClickListener() {
@@ -587,16 +586,16 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 			case 1:
 				if(timeTimer!=null){
 					timeTimer.cancel();
+					mProgressDialog.dismiss();
+					ToastHelper.showCustomToast(DrawBoxActivity.this, "作业提交失败，请重试");
 				}
-				mProgressDialog.dismiss();
-				ToastHelper.showCustomToast(DrawBoxActivity.this, "作业提交失败，请重试");
+				
 				break;
 			default:
 				break;
 			}
 		};
 	};
-	private long beginTime;
 	private Timer timeTimer;
 	private TimerTask timeTimerTask;
 
@@ -628,13 +627,13 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	 */
 	public void sendPaperRequest() {
 		mProgressDialog.show();
-		beginTime=System.currentTimeMillis();
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("imei", MyApplication.deviceId);
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SEND_PAPER);
 		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(jsonObject.toJSONString()));
 		CoreSocket.getInstance().sendMessage(messagePacking);
 		MyApplication.getInstance().Logger.debug("发出提交作业请求..." + "request:" + jsonObject.toJSONString());
+		 startTask();
 	}
 	
 	/**
@@ -645,12 +644,10 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		 timeTimerTask = new TimerTask() {
 			@Override
 			public void run() {
-				if((System.currentTimeMillis()-beginTime)>15000){
 					handler.sendEmptyMessage(1);
-				}
 			}
 		};
-		timeTimer.schedule(timeTimerTask,1 * 1000);
+		timeTimer.schedule(timeTimerTask,10 * 1000);
 	}
 	
 	public void closeProgressDialog(){
