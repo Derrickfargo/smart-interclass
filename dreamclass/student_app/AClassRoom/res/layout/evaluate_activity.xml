@@ -1,23 +1,58 @@
-<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="fill_parent"
+    android:gravity="center_vertical" >
 
-    <ImageView
-        android:layout_gravity="center_horizontal"
-        android:id="@+id/imageView"
+     <Button
+         android:layout_marginTop="100dp"
+        android:id="@+id/number"
+        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"    >
-    </ImageView>
-    
-    <Gallery
-        android:layout_gravity="center_horizontal"
-        android:id="@+id/gallery"
-        android:layout_width="600dp"
         android:layout_height="wrap_content"
-        android:spacing="2dp"
-        android:layout_marginTop="5dp"    >
-    </Gallery>
-    
-</LinearLayout>
+        android:text="名次" />
+    <Button
+        android:id="@+id/pager_up"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:text="上一页" />
+
+    <Button
+        android:id="@+id/pager_down"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="下一页" />
+
+    <LinearLayout
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/number_one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="第1名" />
+
+        <Button
+            android:id="@+id/number_two"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="第2名" />
+
+        <Button
+            android:id="@+id/number_three"
+             android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="第3名" />
+    </LinearLayout>
+
+</RelativeLayout>
