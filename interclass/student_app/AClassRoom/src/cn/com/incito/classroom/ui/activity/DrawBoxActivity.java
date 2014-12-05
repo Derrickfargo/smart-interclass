@@ -548,7 +548,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 			bmp.recycle();
 		}
 		byte[] result = output.toByteArray();
-		MyApplication.getInstance().Logger.debug("作业大小："+result.length);
+		MyApplication.Logger.debug("作业大小："+result.length);
 		try {
 			output.close();
 		} catch (Exception e) {
@@ -583,7 +583,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	private TimerTask timeTimerTask;
 
 	public void saveBitmap(Bitmap bitmap) {
-		MyApplication.getInstance().Logger.debug(AndroidUtil.getCurrentTime()+"保存图片到本地");
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"保存图片到本地");
 		File f = new File("/sdcard/", "temp.jpg");
 		if (f.exists()) {
 			f.delete();
@@ -593,7 +593,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 			bitmap.compress(Bitmap.CompressFormat.JPEG, 40, out);
 			out.flush();
 			out.close();
-			MyApplication.getInstance().Logger.debug("图片已经保存");
+			MyApplication.Logger.debug("图片已经保存");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -615,7 +615,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SEND_PAPER);
 		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(jsonObject.toJSONString()));
 		CoreSocket.getInstance().sendMessage(messagePacking);
-		MyApplication.getInstance().Logger.debug("发出提交作业请求..." + "request:" + jsonObject.toJSONString());
+		MyApplication.Logger.debug("发出提交作业请求..." + "request:" + jsonObject.toJSONString());
 		 startTask();
 	}
 	
