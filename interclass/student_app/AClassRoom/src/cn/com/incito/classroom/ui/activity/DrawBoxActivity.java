@@ -564,24 +564,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 				if(!mProgressDialog.isShowing()){
 					mProgressDialog.show();
 				}
-				
-				MessagePacking messagePacking = new MessagePacking(
-						Message.MESSAGE_SAVE_PAPER);
-				// 测试ID
-				messagePacking.putBodyData(DataType.INT,
-						BufferUtils.writeUTFString(MyApplication.getInstance()
-								.getQuizID()));
-				// 设备ID
-				messagePacking.putBodyData(DataType.INT, BufferUtils
-						.writeUTFString(MyApplication.getInstance()
-								.getDeviceId()));
-				// 图片
-				messagePacking.putBodyData(DataType.INT,bmpToByteArray(getBitMap(), true));
-				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ "开始提交作业");
-				CoreSocket.getInstance().sendMessage(messagePacking);
-				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ "启动作业提交..." + "request:");
-				MyApplication.getInstance().lockScreen(true);
-				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ "提交作业后锁定屏幕");
+				sendPaper();
 				break;
 			case 1:
 				if(timeTimer!=null){
@@ -660,5 +643,22 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		if(timeTimer!=null)
 			timeTimer.cancel();
 	}
-	
+	/**
+	 * 发送作业
+	 */
+	public void sendPaper(){
+		MessagePacking messagePacking = new MessagePacking(
+				Message.MESSAGE_SAVE_PAPER);
+		// 测试ID
+		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(MyApplication.getInstance().getQuizID()));
+		// 设备ID
+		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(MyApplication.getInstance().getDeviceId()));
+		// 图片
+		messagePacking.putBodyData(DataType.INT,bmpToByteArray(getBitMap(), true));
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ "开始提交作业");
+		CoreSocket.getInstance().sendMessage(messagePacking);
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ "启动作业提交...");
+		MyApplication.getInstance().lockScreen(true);
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ "提交作业后锁定屏幕");
+	}
 }
