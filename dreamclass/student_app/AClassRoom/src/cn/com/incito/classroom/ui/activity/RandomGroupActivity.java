@@ -16,6 +16,7 @@ import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.common.utils.UIHelper;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 /**
@@ -80,7 +81,6 @@ public class RandomGroupActivity extends BaseActivity {
 				}
 			}
 		};
-		
 		timer.schedule(timerTask, 3 *1000);
 	}
 	
@@ -89,7 +89,26 @@ public class RandomGroupActivity extends BaseActivity {
 	 * @param data
 	 */
 	public void refreshData(JSONObject data){
+		android.os.Message message = handler.obtainMessage();
 		
+		//解析json数据
+		StringBuilder sb = new StringBuilder();
+		JSONArray jsonArray = JSONArray.parseArray(data.toString());
+		if(jsonArray != null && jsonArray.size() > 0){
+			for(int i = 0; i < jsonArray.size(); i++){
+				JSONObject jsonObject = jsonArray.getJSONObject(i);
+				sb.append(jsonObject.getString("name")  + "\n");
+				sb.append(jsonObject.getString("number"));
+				sb.append("\n");
+			}
+		}
+		
+		Bundle bundle = new Bundle();
+		bundle.putString("student", sb.toString());
+		message.setData(bundle);
+		message.what = 1;
+		
+		handler.sendMessage(message);
 	}
 	
 	@SuppressLint("HandlerLeak")
@@ -99,7 +118,10 @@ public class RandomGroupActivity extends BaseActivity {
 			case 0:
 				text_group.startAnimation(backAnimation);
 				break;
-
+			case 1:
+				Bundle bundle = msg.getData();
+				String student = bundle.getString("student");
+				text_group.setText(student);
 			default:
 				break;
 			}
@@ -113,9 +135,7 @@ public class RandomGroupActivity extends BaseActivity {
 	class myAnimationListener implements AnimationListener{
 
 		@Override
-		public void onAnimationStart(Animation animation) {
-			
-		}
+		public void onAnimationStart(Animation animation) {}
 
 		@Override
 		public void onAnimationEnd(Animation animation) {
@@ -133,10 +153,7 @@ public class RandomGroupActivity extends BaseActivity {
 				startTimer();
 			}
 		}
-
 		@Override
-		public void onAnimationRepeat(Animation animation) {
-			
-		}
+		public void onAnimationRepeat(Animation animation) {}
 	}
 }
