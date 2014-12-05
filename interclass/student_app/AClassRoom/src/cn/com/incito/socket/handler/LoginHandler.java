@@ -1,13 +1,19 @@
 package cn.com.incito.socket.handler;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.ref.WeakReference;
+import java.net.URL;
 import java.util.List;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory;
 import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
@@ -16,13 +22,7 @@ import cn.com.incito.classroom.vo.Student;
 import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.ConnectionManager;
-import cn.com.incito.socket.core.CoreSocket;
-import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.core.MessageHandler;
-import cn.com.incito.socket.core.MultiCastSocket;
-import cn.com.incito.socket.message.DataType;
-import cn.com.incito.socket.message.MessagePacking;
-import cn.com.incito.socket.utils.BufferUtils;
 
 import com.alibaba.fastjson.JSON;
 
@@ -125,12 +125,10 @@ public class LoginHandler extends MessageHandler {
 				AppManager.getAppManager().currentActivity().finish();
 			} else if (state == 3) {
 				MyApplication.Logger.debug("返回状态值进入做作业界面");
-				if (!AppManager.getAppManager().currentActivity().getClass()
-						.getSimpleName().equals("DrawBoxActivity")) {
-					File f = new File("/sdcard/", "temp.jpeg");
+				if (!AppManager.getAppManager().currentActivity().getClass().getSimpleName().equals("DrawBoxActivity")) {
 					byte[] imageByte;
-					if (f.exists()) {
-						imageByte=bmpToByteArray(fileToBitmap("/sdcard/temp.jpg",1280,800), true);
+					if (isFileExists()) {
+						imageByte=bmpToByteArray(GetLocalOrNetBitmap("file://mnt/sdcard/temp.jpg"), true);
 					}else{
 						imageByte = data.getBytes("quiz");
 					}
@@ -140,13 +138,18 @@ public class LoginHandler extends MessageHandler {
 						AppManager.getAppManager().currentActivity().finish();
 					}
 				}else{
-					UIHelper.getInstance().getDrawBoxActivity().setBackGround(fileToBitmap("/sdcard/temp.jpg",1280,800));
+					byte[] imageByte;
+					if (isFileExists()) {
+						UIHelper.getInstance().getDrawBoxActivity().setBackGround(GetLocalOrNetBitmap("file://mnt/sdcard/temp.jpg"));
+					}else{
+						//在原来界面,不做操作
+					}
+					
 				}
 
 			} else if (state == 4) {
-				File f = new File("/sdcard/", "temp.jpg");
-				if(f.exists()){
-					byte[] imageByte=bmpToByteArray(fileToBitmap("/sdcard/temp.jpg",1280,800), true);
+				if(isFileExists()){
+					byte[] imageByte=bmpToByteArray(GetLocalOrNetBitmap("file://mnt/sdcard/temp.jpg"), true);
 					UIHelper.getInstance().showDrawBoxActivity(imageByte);
 				}else{
 					MyApplication.Logger.debug("返回状态值进入开始上课界面");
@@ -168,28 +171,6 @@ public class LoginHandler extends MessageHandler {
 		}
 	}
 
-
-	public Bitmap fileToBitmap(String path,int w,int h) {
-		BitmapFactory.Options opts = new BitmapFactory.Options();
-		// 设置为ture只获取图片大小
-		opts.inJustDecodeBounds = true;
-		opts.inPreferredConfig = Bitmap.Config.ARGB_8888;
-		// 返回为空
-		 BitmapFactory.decodeFile(path, opts);
-		int width = opts.outWidth;
-		int height = opts.outHeight;
-		float scaleWidth = 0.f, scaleHeight = 0.f;
-		if (width > w || height > h) {
-			// 缩放
-			scaleWidth = ((float) width) / w;
-			scaleHeight = ((float) height) / h;
-		}
-		opts.inJustDecodeBounds = false;
-		float scale = Math.max(scaleWidth, scaleHeight);
-		opts.inSampleSize = (int) scale;
-		WeakReference<Bitmap> weak = new WeakReference<Bitmap>(BitmapFactory.decodeFile(path, opts));
-		return Bitmap.createScaledBitmap(weak.get(), w, h, true);
-	}
 	public byte[] bmpToByteArray(final Bitmap bmp, final boolean needRecycle) {
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		bmp.compress(CompressFormat.JPEG, 40, output);
@@ -203,5 +184,54 @@ public class LoginHandler extends MessageHandler {
 			e.printStackTrace();
 		}
 		return result;
+	}
+	/**
+	 * 得到本地或者网络上的bitmap url - 网络或者本地图片的绝对路径,比如:
+	 * 
+	 * A.网络路径: url="http://blog.foreverlove.us/girl2.png" ;
+	 * 
+	 * B.本地路径:url="file://mnt/sdcard/photo/image.png";
+	 * 
+	 * C.支持的图片格式 ,png, jpg,bmp,gif等等
+	 * 
+	 * @param url
+	 * @return
+	 */
+	public  Bitmap GetLocalOrNetBitmap(String url)
+	{
+		Bitmap bitmap = null;
+		InputStream in = null;
+		BufferedOutputStream out = null;
+		try
+		{
+			in = new BufferedInputStream(new URL(url).openStream(), 1024);
+			final ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
+			out = new BufferedOutputStream(dataStream, 1024);
+			copy(in, out);
+			out.flush();
+			byte[] data = dataStream.toByteArray();
+			bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+			data = null;
+			return bitmap;
+		}catch (IOException e){
+			e.printStackTrace();
+			return null;
+		}
+	}
+	private static void copy(InputStream in, OutputStream out)
+            throws IOException {
+        byte[] b = new byte[1024];
+        int read;
+        while ((read = in.read(b)) != -1) {
+            out.write(b, 0, read);
+        }
+    }
+	public boolean isFileExists(){
+		File f = new File("/sdcard/", "temp.jpg");
+		if(f.exists()){
+			return true;
+		}else{
+			return false;
+		}
 	}
 }
