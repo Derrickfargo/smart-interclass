@@ -78,6 +78,11 @@ public class Message {
 	public static final Byte MESSAGE_SAVE_PAPER_RESULT=0x0A;
 	
 	/**
+	 * 提交作业申请
+	 */
+	public static final Byte MESSAGE_SEND_PAPER=0x0D;
+	
+	/**
 	 * 设备退出
 	 */
 	public static final Byte MESSAGE_DEVICE_LOGOUT=0x0B;
