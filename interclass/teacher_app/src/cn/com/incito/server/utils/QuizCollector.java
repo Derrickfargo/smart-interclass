@@ -24,7 +24,7 @@ import com.alibaba.fastjson.JSONObject;
 
 public class QuizCollector {
 	private Logger logger = Logger.getLogger(QuizCollector.class.getName());
-	private static final int TIMEOUT = 5000;//消息队列等待时长
+	private static final int TIMEOUT = 10000;//消息队列等待时长
 	private static QuizCollector instance;
 	private int capacity;
 	private final Lock lock = new ReentrantLock();
@@ -158,12 +158,12 @@ public class QuizCollector {
 
 		public void run() {
 			try {
-				Thread.sleep(TIMEOUT);// 5秒后检测是否提交完成
+				Thread.sleep(TIMEOUT);// 10秒后检测是否提交完成
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 			if (quizSet.contains(channel)) {
-				logger.info("作业在5秒内没有收取成功,自动收取下一个作业.");
+				logger.info("作业在10秒内没有收取成功,自动收取下一个作业.");
 				quizComplete(channel);
 				nextQuiz();
 			}
