@@ -3,7 +3,6 @@ package cn.com.incito.interclass.ui;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.List;
@@ -25,8 +24,8 @@ import cn.com.incito.server.core.Message;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
+import cn.com.incito.server.utils.QuizCollector;
 
-import com.alibaba.fastjson.JSONObject;
 import com.sun.image.codec.jpeg.ImageFormatException;
 
 public class QuizBottomPanel extends JPanel implements MouseListener{
@@ -169,29 +168,33 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
     	Application app = Application.getInstance();
 		Map<String,SocketChannel> channels = app.getClientChannel();
 		Iterator<SocketChannel> it = channels.values().iterator();
-		int delay = 0;
-		while(it.hasNext()){
-			SocketChannel channel = it.next();
-			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SAVE_PAPER);
-	        JSONObject json = new JSONObject();
-	        json.put("id", Application.getInstance().getQuizId());
-	        json.put("delay", (delay ++) * 200);
-	        messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(json.toString()));
-	        if (!channel.isConnected()) {
-				it.remove();
-				continue;
-			}
-	        byte[] data = messagePacking.pack().array();
-			ByteBuffer buffer = ByteBuffer.allocate(data.length);
-			buffer.clear();
-			buffer.put(data);
-			buffer.flip();
-			try {
-				channel.write(buffer);
-			} catch (Exception e) {
-				logger.error("收取作业命令发送失败...", e);
-			}
+		while (it.hasNext()) {//加入收取作业队列
+			QuizCollector.getInstance().addQuizQueue(it.next());
 		}
+		QuizCollector.getInstance().nextQuiz();//处理第一个作业
+//		int delay = 0;
+//		while(it.hasNext()){
+//			SocketChannel channel = it.next();
+//			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SAVE_PAPER);
+//	        JSONObject json = new JSONObject();
+//	        json.put("id", Application.getInstance().getQuizId());
+//	        json.put("delay", (delay ++) * 200);
+//	        messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(json.toString()));
+//	        if (!channel.isConnected()) {
+//				it.remove();
+//				continue;
+//			}
+//	        byte[] data = messagePacking.pack().array();
+//			ByteBuffer buffer = ByteBuffer.allocate(data.length);
+//			buffer.clear();
+//			buffer.put(data);
+//			buffer.flip();
+//			try {
+//				channel.write(buffer);
+//			} catch (Exception e) {
+//				logger.error("收取作业命令发送失败...", e);
+//			}
+//		}
     }
     
     /**
