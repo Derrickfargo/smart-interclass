@@ -35,6 +35,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 	private JButton btnBegin, btnGroup,btnResponder;
 	private Application app = Application.getInstance();
 	Logger logger =  Logger.getLogger(PrepareBottomPanel.class.getName());
+	private JButton btnRdmGroup;
 	public JLabel getLblExpected() {
 		return lblExpected;
 	}
@@ -114,6 +115,14 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		add(btnResponder);
 		btnResponder.addMouseListener(this);
 		btnResponder.setVisible(false);
+		
+		btnRdmGroup = new JButton("随机分组");
+		btnRdmGroup.setFocusable(false);
+		btnRdmGroup.setBorderPainted(false);
+		btnRdmGroup.setBounds(850, -4, 40, 40);
+		add(btnRdmGroup);
+		btnRdmGroup.addMouseListener(this);
+		btnRdmGroup.setVisible(false);
 	}
 	
 	public void refresh(){
@@ -126,6 +135,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 			lblCourseBackground.setVisible(true);
 			btnGroup.setVisible(true);
 			btnBegin.setVisible(true);
+			btnRdmGroup.setVisible(true);
 		}
 	}
 	private void doBegin() {
@@ -269,6 +279,14 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 				JOptionPane.showMessageDialog(MainFrame.getInstance().getFrame(), "抢答尚未结束，请稍等！");
 			}
 		}
+		if(e.getSource()==btnRdmGroup){
+			doRdmGroup();
+		}
+	}
+
+	private void doRdmGroup() {
+
+		
 	}
 
 	@Override

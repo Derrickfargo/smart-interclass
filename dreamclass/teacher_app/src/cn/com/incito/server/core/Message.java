@@ -93,7 +93,11 @@ public class Message {
 	/**
 	 * 抢答
 	 */
-	public static final Byte MESSAGE_STUDENT_RESPONDER=0x0D;
+	public static final Byte MESSAGE_STUDENT_RESPONDER=0x0E;
+	/**
+	 * 随机分组
+	 */
+	public static final Byte MESSAGE_GROUP_RDMGROUP=0x0F;
 	
 	private Logger log = Logger.getLogger(Message.class);
 	
