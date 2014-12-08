@@ -82,6 +82,11 @@ public class Message implements Serializable{
 	public static final Byte MESSAGE_LOCK_SCREEN=0x0C;
 	
 	/**
+	 * 发送作业请求
+	 */
+	public static final Byte MESSAGE_SEND_PAPER=0x0D;
+	
+	/**
 	 * 抢答
 	 */
 	public static final Byte MESSAGE_STUDENT_RESPONDER=0x0D;
