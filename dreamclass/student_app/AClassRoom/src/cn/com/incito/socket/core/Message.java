@@ -89,7 +89,7 @@ public class Message implements Serializable{
 	/**
 	 * 抢答
 	 */
-	public static final Byte MESSAGE_STUDENT_RESPONDER=0x0D;
+	public static final Byte MESSAGE_STUDENT_RESPONDER=0x0E;
 	
 	/**
 	 * 随机分组
