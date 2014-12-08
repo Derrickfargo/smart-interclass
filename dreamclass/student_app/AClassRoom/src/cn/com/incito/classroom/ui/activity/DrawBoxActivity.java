@@ -1,6 +1,10 @@
 package cn.com.incito.classroom.ui.activity;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import com.alibaba.fastjson.JSONObject;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -9,6 +13,7 @@ import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -34,12 +39,14 @@ import cn.com.incito.classroom.utils.BitmapUtil;
 import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.classroom.widget.canvas.ISketchPadCallback;
 import cn.com.incito.classroom.widget.canvas.SketchPadView;
+import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
+import cn.com.incito.wisdom.uicomp.widget.dialog.ProgressiveDialog;
 
 /**
  * 绘画板activity Created by liguangming on 2014/7/28.
@@ -87,7 +94,9 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	private ImageButton earise_middle;
 	private ImageButton earise_small;
 	private Bitmap bitmap;
-
+	private Timer timeTimer;
+	private TimerTask timeTimerTask;
+	private ProgressiveDialog mProgressDialog;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		this.getWindow().setFlags(Constants.FLAG_HOMEKEY_DISPATCHED,
@@ -169,7 +178,9 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		mSubmitButton.setOnClickListener(this);
 		m_sketchPad = (SketchPadView) findViewById(R.id.sketchpad);
 		m_sketchPad.setCallback(DrawBoxActivity.this);
-		
+		mProgressDialog = new ProgressiveDialog(this);
+		mProgressDialog.setCanceledOnTouchOutside(false);
+		mProgressDialog.setMessage(R.string.sendpaper_notice);
 		if (getIntent().getExtras() != null) {
 			byte[] paper = getIntent().getExtras().getByteArray("paper");
 			if (paper != null) {
@@ -475,7 +486,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						dialog.dismiss();
-						submitPaper();
+						sendPaperRequest();
 					}
 				})
 				.setNegativeButton("否", new DialogInterface.OnClickListener() {
@@ -486,6 +497,10 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 				}).show();
 	}
 
+	
+	public void sendPaper(){
+		handler.sendEmptyMessage(0);	
+	}
 	/**
 	 * 提交作业
 	 */
@@ -499,17 +514,10 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		messagePacking.putBodyData(DataType.INT, BufferUtils
 				.writeUTFString(MyApplication.getInstance().getDeviceId()));
 		// 图片
-		Logger.debug(BitmapUtil.bmpToByteArray(getBitMap(), true).length+"------");
-		messagePacking.putBodyData(DataType.INT,
-				BitmapUtil.bmpToByteArray(getBitMap(), true));
-		CoreSocket.getInstance().sendMessage(messagePacking);
 		Logger.debug(Utils.getTime()+TAG+"启动作业提交...");
-		Log.i(TAG, "启动作业提交...");
-		MyApplication.getInstance().lockScreen(true);
-		MyApplication.getInstance().setSubmitPaper(true);
+		messagePacking.putBodyData(DataType.INT,BitmapUtil.bmpToByteArray(getBitMap(), true));
+		CoreSocket.getInstance().sendMessage(messagePacking);
 		Logger.debug(Utils.getTime()+TAG+"提交作业后锁定屏幕");
-		Log.i(TAG, "提交作业后锁定屏幕" );
-		this.finish();
 	}
 	public void initPopwindow(){
 		 line1=(LinearLayout) findViewById(R.id.line1);
@@ -533,4 +541,67 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	     mPopupWindow.showAtLocation(cleanBtn, Gravity.NO_GRAVITY, location[0]-160, 570);
 	   
 	}
+	
+	
+	/**
+	 * 发送作业请求
+	 */
+	public void sendPaperRequest() {
+		mProgressDialog.show();
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("imei", MyApplication.deviceId);
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SEND_PAPER);
+		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(jsonObject.toJSONString()));
+		CoreSocket.getInstance().sendMessage(messagePacking);
+		startTask();
+	}
+	
+	
+	public void closeProgressDialog(){
+		if(mProgressDialog!=null&&mProgressDialog.isShowing()){
+				mProgressDialog.dismiss();
+		}
+	}
+	/**
+	 * 进度条
+	 */
+	public void startTask(){
+		 timeTimer = new Timer();
+		 timeTimerTask = new TimerTask() {
+			@Override
+			public void run() {
+					handler.sendEmptyMessage(1);
+			}
+		};
+		timeTimer.schedule(timeTimerTask,10 * 1000);
+	}
+	public void cancleTask(){
+		if(timeTimer!=null)
+			timeTimer.cancel();
+	}
+	private Handler handler = new Handler() {
+		public void handleMessage(android.os.Message msg) {
+			switch (msg.what) {
+			case 0:
+				if(mProgressDialog!=null){
+					mProgressDialog.show();
+				}else{
+					mProgressDialog = new ProgressiveDialog(DrawBoxActivity.this);
+					mProgressDialog.setMessage(R.string.sendpaper_notice);
+					mProgressDialog.show();
+				}
+				submitPaper();
+				break;
+			case 1:
+				if(timeTimer!=null){
+					timeTimer.cancel();
+					mProgressDialog.dismiss();
+					ToastHelper.showCustomToast(DrawBoxActivity.this, "作业提交失败，请重试");
+				}
+				break;
+			default:
+				break;
+			}
+		};
+	};
 }

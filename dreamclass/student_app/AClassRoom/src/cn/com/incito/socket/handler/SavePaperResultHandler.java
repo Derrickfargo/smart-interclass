@@ -7,6 +7,7 @@ import com.google.code.microlog4android.LoggerFactory;
 
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.utils.Utils;
+import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;
 
 /**
@@ -22,7 +23,9 @@ public class SavePaperResultHandler extends MessageHandler {
 			Log.i(TAG, "paper保存成功");
 			MyApplication.getInstance().lockScreen(true);
 			MyApplication.getInstance().setSubmitPaper(true);
+			UIHelper.getInstance().getDrawBoxActivity().closeProgressDialog();
+			UIHelper.getInstance().getDrawBoxActivity().cancleTask();
+			UIHelper.getInstance().getDrawBoxActivity().finish();
 		}
 	}
-
 }
