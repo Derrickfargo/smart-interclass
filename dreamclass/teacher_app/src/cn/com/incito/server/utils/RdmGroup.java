@@ -1,14 +1,23 @@
 package cn.com.incito.server.utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
 
+import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.server.api.Application;
-
+/**
+ * 
+ * @author caicai
+ *
+ */
 public class RdmGroup {
 	public static Queue<List<Student>>  getStudentQue(){
 		Application app = Application.getInstance();
@@ -37,5 +46,4 @@ public class RdmGroup {
 		}
 		return stuQue;
 	}
-
 }
