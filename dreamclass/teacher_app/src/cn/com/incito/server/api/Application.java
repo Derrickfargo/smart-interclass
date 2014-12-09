@@ -50,7 +50,6 @@ public class Application {
 	private static Application instance;
 	private boolean isGrouping = false;
     private FloatIcon floatIcon;
-    private String quizId;   //考试流水号
     /**
 	 * 课堂id
 	 */
@@ -602,10 +601,6 @@ public class Application {
         MainFrame.getInstance().refreshQuiz();
     }
 
-    public String getQuizId() {
-        return quizId;
-    }
-
     public String getLessionid() {
 		return lessionid;
 	}
@@ -615,10 +610,6 @@ public class Application {
 		this.lessionid = lessionid;
 	}
 
-
-	public void setQuizId(String quizId) {
-        this.quizId = quizId;
-    }
 
 	public List<Student> getStudentByImei(String imei) {
 		return imeiStudent.get(imei);

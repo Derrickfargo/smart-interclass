@@ -2,13 +2,21 @@ package cn.com.incito.interclass.ui;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Queue;
+import java.util.Set;
 import java.util.UUID;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -17,6 +25,8 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
+import cn.com.incito.interclass.po.Quiz;
+import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.CoreSocket;
@@ -24,8 +34,10 @@ import cn.com.incito.server.core.Message;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
+import cn.com.incito.server.utils.PeerFeedbackUtils;
 import cn.com.incito.server.utils.QuizCollector;
 
+import com.alibaba.fastjson.JSONObject;
 import com.sun.image.codec.jpeg.ImageFormatException;
 
 public class QuizBottomPanel extends JPanel implements MouseListener{
@@ -34,10 +46,13 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 	private static final String BTN_SEND_NORMAL = "images/quiz/btn_send_works.png";
 	private static final String BTN_SEND_HOVER = "images/quiz/btn_send_works_hover.png";
 	
+	private static final String BTN_FEEDBACK_NORMAL = "images/quiz/btn_feedback.png";
+	private static final String BTN_FEEDBACK_HOVER = "images/quiz/btn_feedback_hover.png";
+	
 	private static final String BTN_ACCEPT_NORMAL = "images/quiz/btn_accept_works.png";
 	private static final String BTN_ACCEPT_HOVER = "images/quiz/btn_accept_works_hover.png";
 	
-	private JButton btnQuiz;
+	private JButton btnQuiz, btnFeedback;
 	
 	public QuizBottomPanel(){
 		setSize(878, 48);
@@ -54,6 +69,17 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 		btnQuiz.setVisible(false);
 		btnQuiz.setBounds(360, -4, btnImage.getIconWidth(), btnImage.getIconHeight());
 		btnQuiz.addMouseListener(this);
+		
+		btnFeedback = new JButton();
+		btnFeedback.setFocusPainted(false);
+		btnFeedback.setBorderPainted(false);// 设置边框不可见
+		btnFeedback.setContentAreaFilled(false);// 设置透明
+		ImageIcon imgFeedback = new ImageIcon(BTN_FEEDBACK_NORMAL);
+		btnFeedback.setIcon(imgFeedback);// 设置图片
+		add(btnFeedback);// 添加按钮
+		btnFeedback.setVisible(false);
+		btnFeedback.setBounds(530, -4, imgFeedback.getIconWidth(), imgFeedback.getIconHeight());
+		btnFeedback.addMouseListener(this);
 	}
 	
 	public void refresh(){
@@ -61,6 +87,7 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 		List<Table> tables = app.getTableList();
 		if (tables.size() != 0) {
 			btnQuiz.setVisible(true);
+			btnFeedback.setVisible(true);
 		}
 	}
 
@@ -119,24 +146,72 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		
-		if (Application.isOnClass) {
-			if (Application.hasQuiz) {// 有作业，收作业
-				doAcceptQuiz();
-			} else {// 没作业，发作业
-				if (Application.getInstance().getOnlineStudent().size() == 0) {
-					JOptionPane.showMessageDialog(MainFrame.getInstance().getFrame(), "没有学生登录，无法进行随堂练习");
-					return;
-				}
-				if (Application.getInstance().isGrouping()) {
-					JOptionPane.showMessageDialog(getParent().getParent(), "学生正在分组，请等待分组完成!");
-					return;
-				}
-				doSendQuiz();
+		if(e.getSource() == btnQuiz){
+			if (Application.isOnClass) {
+					if (Application.hasQuiz) {// 有作业，收作业
+						doAcceptQuiz();
+					} else {// 没作业，发作业
+						if (Application.getInstance().getOnlineStudent().size() == 0) {
+							JOptionPane.showMessageDialog(MainFrame.getInstance().getFrame(), "没有学生登录，无法进行随堂练习");
+							return;
+						}
+						if (Application.getInstance().isGrouping()) {
+							JOptionPane.showMessageDialog(getParent().getParent(), "学生正在分组，请等待分组完成!");
+							return;
+						}
+						doSendQuiz();
+					}
+	        } else {
+	            JOptionPane.showMessageDialog(this, "请先点击开始上课！");
+	            return;
+	        }
+		} else if (e.getSource() == btnFeedback) {
+			Queue<List<Quiz>> quizQueue = PeerFeedbackUtils.getQuizQueue();
+			if(quizQueue.size() == 0){
+				JOptionPane.showMessageDialog(this, "收取作业后才能进行互评！");
+				return;
 			}
-        } else {
-            JOptionPane.showMessageDialog(this, "请先点击开始上课！");
-        }
+			sendPeerFeedbackMessage(quizQueue);
+		}
+	}
+	
+	private void sendPeerFeedbackMessage(Queue<List<Quiz>> quizQueue) {
+		Application app = Application.getInstance();
+		Set<Entry<String, SocketChannel>> clients = app.getClientChannel().entrySet();
+		final Iterator<Entry<String, SocketChannel>> it = clients.iterator();
+		while (it.hasNext()) {
+			Entry<String, SocketChannel> entry = it.next();
+			String imei = entry.getKey();
+			List<Student> students = app.getStudentByImei(imei);
+			//记录有学生登陆的Pad
+			if (students != null && students.size() > 0) {
+				SocketChannel channel = entry.getValue();
+				if (channel != null && channel.isConnected()) {
+					List<Quiz> quizList = quizQueue.poll();
+					for(Quiz quiz : quizList){
+						MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_QUIZ_FEEDBACK);
+				        try {
+					        BufferedImage image = ImageIO.read(new File(quiz.getQuizUrl()));
+					        ByteArrayOutputStream os = new ByteArrayOutputStream();
+					        ImageIO.write(image, "gif", os);
+					        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(quiz.getId()));
+							messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString("true"));
+							messagePacking.putBodyData(DataType.INT, os.toByteArray());
+							
+					        byte[] data = messagePacking.pack().array();
+							// 输出到通道
+							ByteBuffer buffer = ByteBuffer.allocate(data.length);
+							buffer.clear();
+							buffer.put(data);
+							buffer.flip();
+							channel.write(buffer);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	@Override
@@ -148,6 +223,9 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 				btnQuiz.setIcon(new ImageIcon(BTN_SEND_HOVER));
 			}
 		}
+		if (e.getSource() == btnFeedback) {
+			btnFeedback.setIcon(new ImageIcon(BTN_FEEDBACK_HOVER));
+		}
 	}
 
 	@Override
@@ -158,6 +236,9 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 			} else {
 				btnQuiz.setIcon(new ImageIcon(BTN_SEND_NORMAL));
 			}
+		}
+		if (e.getSource() == btnFeedback) {
+			btnFeedback.setIcon(new ImageIcon(BTN_FEEDBACK_NORMAL));
 		}
 	}
 	  /**
@@ -172,29 +253,6 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 			QuizCollector.getInstance().addQuizQueue(it.next());
 		}
 		QuizCollector.getInstance().nextQuiz();//处理第一个作业
-//		int delay = 0;
-//		while(it.hasNext()){
-//			SocketChannel channel = it.next();
-//			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SAVE_PAPER);
-//	        JSONObject json = new JSONObject();
-//	        json.put("id", Application.getInstance().getQuizId());
-//	        json.put("delay", (delay ++) * 200);
-//	        messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(json.toString()));
-//	        if (!channel.isConnected()) {
-//				it.remove();
-//				continue;
-//			}
-//	        byte[] data = messagePacking.pack().array();
-//			ByteBuffer buffer = ByteBuffer.allocate(data.length);
-//			buffer.clear();
-//			buffer.put(data);
-//			buffer.flip();
-//			try {
-//				channel.write(buffer);
-//			} catch (Exception e) {
-//				logger.error("收取作业命令发送失败...", e);
-//			}
-//		}
     }
     
     /**
@@ -206,7 +264,6 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
     public void distributePaper() {
         MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DISTRIBUTE_PAPER);
         String uuid = UUID.randomUUID().toString();
-        Application.getInstance().setQuizId(uuid);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(uuid));
         messagePacking.putBodyData(DataType.INT,  BufferUtils.writeUTFString("false"));
         CoreSocket.getInstance().sendMessageToStudents(messagePacking.pack().array());
