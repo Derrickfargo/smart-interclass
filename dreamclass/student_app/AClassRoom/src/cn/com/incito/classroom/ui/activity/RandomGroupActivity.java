@@ -1,5 +1,6 @@
 package cn.com.incito.classroom.ui.activity;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -14,9 +15,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
+import cn.com.incito.classroom.vo.Student;
 import cn.com.incito.common.utils.UIHelper;
 
-import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 /**
@@ -41,7 +43,10 @@ public class RandomGroupActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		UIHelper.getInstance().setRandomGroupActivity(this);
 		setContentView(R.layout.random_group_activity);
+		
+		String extraData = getIntent().getExtras().getString("data");
 		text_group = (TextView) findViewById(R.id.text_group);
+		text_group.setText(resolveData(JSON.parseObject(extraData)));
 		
 		backAnimation = AnimationUtils.loadAnimation(this, R.anim.back_scale);
 		frontAnimation = AnimationUtils.loadAnimation(this, R.anim.front_scale);
@@ -49,8 +54,6 @@ public class RandomGroupActivity extends BaseActivity {
 		myAnimationListener = new myAnimationListener();
 		backAnimation.setAnimationListener(myAnimationListener);
 		frontAnimation.setAnimationListener(myAnimationListener);
-		
-		startTimer();
 		
 		text_group.setOnClickListener(new OnClickListener() {
 			
@@ -81,7 +84,7 @@ public class RandomGroupActivity extends BaseActivity {
 				}
 			}
 		};
-		timer.schedule(timerTask, 3 *1000);
+		timer.schedule(timerTask, 5 *1000);
 	}
 	
 	/**
@@ -90,25 +93,30 @@ public class RandomGroupActivity extends BaseActivity {
 	 */
 	public void refreshData(JSONObject data){
 		android.os.Message message = handler.obtainMessage();
-		
-		//解析json数据
-		StringBuilder sb = new StringBuilder();
-		JSONArray jsonArray = JSONArray.parseArray(data.toString());
-		if(jsonArray != null && jsonArray.size() > 0){
-			for(int i = 0; i < jsonArray.size(); i++){
-				JSONObject jsonObject = jsonArray.getJSONObject(i);
-				sb.append(jsonObject.getString("name")  + "\n");
-				sb.append(jsonObject.getString("number"));
-				sb.append("\n");
-			}
-		}
-		
 		Bundle bundle = new Bundle();
-		bundle.putString("student", sb.toString());
+		bundle.putString("student", resolveData(data));
 		message.setData(bundle);
 		message.what = 1;
 		
 		handler.sendMessage(message);
+	}
+
+	/**
+	 * 解析json数据
+	 * @return
+	 */
+	private String resolveData(JSONObject data) {
+		StringBuilder sb = new StringBuilder();
+		
+		List<Student> students = JSON.parseArray(data.getString("students"), Student.class);
+		if(students != null && students.size() > 0){
+			for (Student student : students) {
+				if(student != null){
+					sb.append(student.getName() + "\n");
+				}
+			}
+		}
+		return sb.toString();
 	}
 	
 	@SuppressLint("HandlerLeak")
@@ -141,19 +149,25 @@ public class RandomGroupActivity extends BaseActivity {
 		public void onAnimationEnd(Animation animation) {
 			if(isFront){
 				text_group.setBackgroundResource(R.drawable.bg);
-				text_group.setText("");
 				isFront = false;
 				if(timer != null){
 					timer.cancel();
 				}
 			}else{
 				text_group.setBackgroundResource(R.drawable.bg_badges);
-				text_group.setText("张三");
 				isFront = true;
 				startTimer();
 			}
 		}
 		@Override
 		public void onAnimationRepeat(Animation animation) {}
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if(timer != null){
+			timer.cancel();
+		}
 	}
 }

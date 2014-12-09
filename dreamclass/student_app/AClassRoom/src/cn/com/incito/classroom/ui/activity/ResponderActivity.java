@@ -3,6 +3,7 @@ package cn.com.incito.classroom.ui.activity;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -10,6 +11,9 @@ import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import cn.com.incito.classroom.R;
@@ -21,6 +25,7 @@ import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
+
 import com.alibaba.fastjson.JSONObject;
 
 /**
@@ -34,6 +39,7 @@ public class ResponderActivity extends BaseActivity {
 	private int count = 4;
 	private Timer timer;
 	private TimerTask timerTask;
+	private RotateAnimation rotateAnimation;//旋转动画
 	
 	@SuppressLint("HandlerLeak")
 	private Handler handler = new Handler() {
@@ -71,12 +77,16 @@ public class ResponderActivity extends BaseActivity {
 		timer.schedule(timerTask, 0, 1 * 1000);
 	}
 	
+	/**
+	 * 显示布局与按钮
+	 */
 	private void showImageButton(){
 		RelativeLayout relativeLayout = new RelativeLayout(this);
 		relativeLayout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		relativeLayout.setBackgroundResource(R.drawable.bg_login);
 		
 		imageButton = new ImageButton(this);
-		imageButton.setBackgroundResource(R.drawable.bg_confirm_group_ok);
+		imageButton.setBackgroundResource(R.drawable.responder_select);
 		
 		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		
@@ -102,16 +112,40 @@ public class ResponderActivity extends BaseActivity {
 		
 		relativeLayout.addView(imageButton,layoutParams);
 		setContentView(relativeLayout);
+		
+		//开始旋转动画
+		startAnimation();
 	}
 	
+	/**
+	 * 按钮选中动画
+	 */
+	private void startAnimation() {
+		rotateAnimation = new RotateAnimation(0, 359, Animation.RELATIVE_TO_SELF, 0.5f,  Animation.RELATIVE_TO_SELF, 0.5f);
+		rotateAnimation.setInterpolator(new LinearInterpolator());//匀速旋转
+		rotateAnimation.setRepeatCount(-1);
+		rotateAnimation.setDuration(3000);
+		rotateAnimation.setRepeatMode(Animation.RESTART);
+		
+		imageButton.startAnimation(rotateAnimation);
+	}
+
+	/**
+	 * 随机的x轴坐标
+	 * @return
+	 */
 	private int randomX(){
 		Random random = new Random();
-		return random.nextInt(1001) + 200;
+		return random.nextInt(723) + 278;
 	}
 	
+	/**
+	 * 随机的y坐标
+	 * @return
+	 */
 	private int randomY(){
 		Random random = new Random();
-		return random.nextInt(501) + 100;
+		return random.nextInt(245) + 278;
 	}
 	
 	@Override
@@ -119,6 +153,9 @@ public class ResponderActivity extends BaseActivity {
 		super.onDestroy();
 		if(timer != null){
 			timer.cancel();
+		}
+		if(rotateAnimation != null){
+			rotateAnimation.cancel();
 		}
 	}
 }
