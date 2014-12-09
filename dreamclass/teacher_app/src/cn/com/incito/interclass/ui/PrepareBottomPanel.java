@@ -352,9 +352,9 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 			public void run(){
 				byte[] data=rdmPacking.pack().array();
 				ByteBuffer bytes =ByteBuffer.allocate(data.length);
-				if(clientChannel.isConnected()){
-					return;
-				}
+//				if(clientChannel.isConnected()){
+//					return;
+//				}
 				bytes.clear();
 				bytes.put(data);
 				bytes.flip();
