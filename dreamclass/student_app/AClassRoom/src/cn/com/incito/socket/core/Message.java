@@ -96,6 +96,14 @@ public class Message implements Serializable{
 	 */
 	public static final Byte MESSAGE_RANDOM_GROUP=0x0F;
 	
+	/**
+	 * 学生互评
+	 */
+	public static final Byte MESSAGE_STUDENT_EVALUATE=0x11;
+	
+	
+	
+	
     private byte msgID;
     private int msgSize;
     private ByteBuffer bodyBuffer;
