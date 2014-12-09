@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.Properties;
 import java.util.Queue;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -118,8 +119,7 @@ public class QuizCollector {
 			public void run() {
 				MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SAVE_PAPER);
 		        JSONObject json = new JSONObject();
-		        json.put("id", Application.getInstance().getQuizId());
-		        json.put("delay", 0);
+		        json.put("uuid", UUID.randomUUID().toString());
 		        messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(json.toString()));
 		        byte[] data = messagePacking.pack().array();
 				ByteBuffer buffer = ByteBuffer.allocate(data.length);

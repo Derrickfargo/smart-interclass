@@ -99,6 +99,11 @@ public class Message {
 	 */
 	public static final Byte MESSAGE_GROUP_RDMGROUP=0x0F;
 	
+	/**
+	 * 作业互评
+	 */
+	public static final Byte MESSAGE_QUIZ_FEEDBACK=0x10;
+	
 	private Logger log = Logger.getLogger(Message.class);
 	
 	private byte msgID;

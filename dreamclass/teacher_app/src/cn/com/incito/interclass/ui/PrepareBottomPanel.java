@@ -5,9 +5,11 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.UUID;
 
 import javax.swing.ImageIcon;
@@ -18,15 +20,21 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
+import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
+import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.po.Table;
+import cn.com.incito.server.api.ApiClient;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.Message;
+import cn.com.incito.server.exception.AppException;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
+import cn.com.incito.server.utils.RdmGroup;
 import cn.com.incito.server.utils.UIHelper;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 public class PrepareBottomPanel extends JPanel implements MouseListener{
@@ -116,10 +124,10 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		btnResponder.addMouseListener(this);
 		btnResponder.setVisible(false);
 		
-		btnRdmGroup = new JButton("随机分组");
+		btnRdmGroup = new JButton("随机分组");//创建随机分组按钮
 		btnRdmGroup.setFocusable(false);
 		btnRdmGroup.setBorderPainted(false);
-		btnRdmGroup.setBounds(850, -4, 40, 40);
+		btnRdmGroup.setBounds(810, -4, 70, 40);
 		add(btnRdmGroup);
 		btnRdmGroup.addMouseListener(this);
 		btnRdmGroup.setVisible(false);
@@ -285,7 +293,79 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 	}
 
 	private void doRdmGroup() {
+		if(app.getOnlineStudent().size() == 0){
+			JOptionPane.showMessageDialog(getParent().getParent(), "当前还没有学生登陆，请先登陆后再随机分组!");
+			return;
+		}
+		List<Table> tableList = app.getTableList();
+		if (tableList == null || tableList.size() == 0) {
+			JOptionPane.showMessageDialog(getParent().getParent(), "设备还未绑定课桌，请先绑定课桌!");
+			return;
+		}
+		if (app.isGrouping()) {
+			JOptionPane.showMessageDialog(getParent().getParent(), "学生正在分组，请等待分组完成!");
+			return;
+		}
+		if (Application.hasQuiz) {// 格式不一致，统一修改重构
+			JOptionPane.showMessageDialog(getParent().getParent(), "学生正在做作业，不能分组!");
+			return;
+		}
+		// 发送小组信息
+		app.setGrouping(true);
+		List<Group> groupList = app.getGroupList();//要确定是在线小组，而且contain在线device;
+		Queue<List<Student>> students =  RdmGroup.getStudentQue();
+		
+		for (Group group : groupList) {//遍历小组发送分组消息
+			int i=0;
+			group.setName("梦想小组"+i);
+			group.setLogo("rainbow");
+			app.addGroup(group);
+			List<Device> devices = group.getDevices();
+			for(Device device:devices){
+				Map<String, Object> rdmMsg = new HashMap<String, Object>();
+				rdmMsg.put("group", group);
+				rdmMsg.put("students", students.poll());
+				try {
+					ApiClient.updateGroup(group.getId(), "梦想小组"+i, "rainbow");
+				} catch (AppException e) {
+					logger.info("随机分组失败："+group.getId());
+					e.printStackTrace();
+				}
+				
+				MessagePacking rdmPacking = new MessagePacking(Message.MESSAGE_GROUP_RDMGROUP);
+				rdmPacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(JSON.toJSONString(rdmMsg)));
+				SocketChannel clientChannel = app.getClientChannel().get(device.getImei());
+				sendMsgToClient(rdmPacking,clientChannel);			
+			}
+			++i;
+		}
+		MainFrame.getInstance().showGrouping();//注意这可能是要修改的地方
+		app.refresh();
+		app.setGrouping(false);
+		
+	}
 
+	private void sendMsgToClient(final MessagePacking rdmPacking,
+			final SocketChannel clientChannel) {
+		new Thread(){
+			@Override
+			public void run(){
+				byte[] data=rdmPacking.pack().array();
+				ByteBuffer bytes =ByteBuffer.allocate(data.length);
+//				if(clientChannel.isConnected()){
+//					return;
+//				}
+				bytes.clear();
+				bytes.put(data);
+				bytes.flip();
+				try {
+					clientChannel.write(bytes);
+				} catch (IOException e) {
+					logger.info("随机分组消息发送失败！"+new String(data));
+					e.printStackTrace();
+				}
+			}
+		}.start();;
 		
 	}
 

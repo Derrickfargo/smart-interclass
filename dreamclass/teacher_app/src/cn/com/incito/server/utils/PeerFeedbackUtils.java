@@ -15,6 +15,9 @@ public class PeerFeedbackUtils {
 	public static Queue<List<Quiz>> getQuizQueue() {
 		Application app = Application.getInstance();
 		List<Quiz> quizList = app.getQuizList();
+		if (quizList == null || quizList.size() == 0) {
+			return new LinkedList<List<Quiz>>();
+		}
 		Set<String> onlinePads = app.getOnlineDevice();
 		Queue<List<Quiz>> quizQueue = initQuizQueue(onlinePads);
 

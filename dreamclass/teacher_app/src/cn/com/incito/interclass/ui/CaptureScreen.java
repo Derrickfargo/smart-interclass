@@ -118,7 +118,7 @@ public class CaptureScreen {
 				File dir = new File("temp");
 				dir.mkdirs();
 				File file = new File(dir, "temp.png");
-				ImageIO.write(image, "jpg", file);
+				ImageIO.write(image, "gif", file);
 				ImageUtil.resize(file, file, 1280, 1f);
 				image = ImageIO.read(file);
 			} catch (Exception e) {
@@ -126,25 +126,18 @@ public class CaptureScreen {
 			}
 		}
 //		logger.info("压缩后宽度:" + image.getWidth());
-		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DISTRIBUTE_PAPER);
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		try {
-			ImageIO.write(image, "jpg", os);
+			ImageIO.write(image, "gif", os);
 			logger.info("图片大小:" + os.toByteArray().length);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		if (Application.getInstance().getOnlineStudent().size() > 0) {
-			String uuid = UUID.randomUUID().toString();
-			Application.getInstance().setQuizId(uuid);
-			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(uuid));
-			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString("true"));
-			messagePacking.putBodyData(DataType.INT, os.toByteArray());
-
 			Application.getInstance().getTempQuiz().clear();
 			Application.getInstance().getQuizList().clear();
 			Application.getInstance().getTempQuizIMEI().clear();
-			sendMessageToStudents(messagePacking.pack().array());
+			sendMessageToStudents(os);
 			logger.info("截图作业已经发出");
 			Application.getInstance().setLockScreen(false);
 		} else {
@@ -156,7 +149,7 @@ public class CaptureScreen {
 	 * 启动线程将消息发往所有客户端
 	 * @param data
 	 */
-	public void sendMessageToStudents(final byte[] data){
+	public void sendMessageToStudents(final ByteArrayOutputStream os){
 		Properties props = AppConfig.getProperties();
 		String threshold = props.get("quiz_send_threshold").toString();
 		final int delay_time = Integer.parseInt(threshold);
@@ -168,7 +161,6 @@ public class CaptureScreen {
 			@Override
 			public void run() {
 				try {
-					ByteBuffer buffer = ByteBuffer.allocate(data.length);
 					while (it.hasNext()) {
 						Entry<String, SocketChannel> entry = it.next();
 						String imei = entry.getKey();
@@ -177,7 +169,14 @@ public class CaptureScreen {
 						if (students != null) {
 							SocketChannel channel = entry.getValue();
 							if (channel != null && channel.isConnected()) {
+								MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DISTRIBUTE_PAPER);
+								String uuid = UUID.randomUUID().toString();
+								messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(uuid));
+								messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString("true"));
+								messagePacking.putBodyData(DataType.INT, os.toByteArray());
+								byte[] data = messagePacking.pack().array();
 								// 输出到通道
+								ByteBuffer buffer = ByteBuffer.allocate(data.length);
 								buffer.clear();
 								buffer.put(data);
 								buffer.flip();

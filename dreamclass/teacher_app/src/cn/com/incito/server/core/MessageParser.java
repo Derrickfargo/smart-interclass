@@ -139,8 +139,9 @@ public class MessageParser {
 		int bodySize = message.getMsgSize();
 		ByteBuffer bodyBuffer = BufferUtils.prepareToReadOrPut(bodySize);
 		try {
-			while (bodyBuffer.position() < bodyBuffer.capacity())
-			channel.read(bodyBuffer);
+			while (bodyBuffer.position() < bodyBuffer.capacity()){
+				channel.read(bodyBuffer);
+			}
 			message.setBodyBuffer(bodyBuffer);
 			return true;
 		} catch (Exception e) {
