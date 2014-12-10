@@ -22,10 +22,17 @@ public class RdmGroup {
 	public static Queue<List<Student>>  getStudentQue(){
 		Application app = Application.getInstance();
 		Set<String> onlinePads = app.getOnlineDevice();//在线设备集合
-		Set<Student> onlineStu = app.getOnlineStudent();//在线学生集合
+		List<Student> totalStu = new ArrayList<Student> ();//本班所有学生
+		
+		for(Group group:app.getGroupList()){
+			for(Student student : group.getStudents()){
+				totalStu.add(student);
+			}
+		}
+		
 		Queue< List<Student>> studentQue = getStuQue(onlinePads.size());
 		
-		for(Student student: onlineStu){//将学生遍历进设备队列中
+		for(Student student: totalStu){//将学生遍历进设备队列中
 			List<Student> students = studentQue.poll();
 			students.add(student);
 			studentQue.offer(students);
