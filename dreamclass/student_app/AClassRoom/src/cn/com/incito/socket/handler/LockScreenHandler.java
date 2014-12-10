@@ -36,7 +36,11 @@ public class LockScreenHandler extends MessageHandler {
 	protected void handleMessage() {
 		Logger.debug(Utils.getTime()+TAG+":收到锁屏信息:"+isLock);
 		Log.i(TAG,"收到锁屏信息:"+isLock);
+		String currentActivityName = AppManager.getAppManager().currentActivity().getClass().getSimpleName();
 		if (isLock.equals("true")) {
+				if("ResponderActivity".equals(currentActivityName)){
+					AppManager.getAppManager().currentActivity().finish();
+				}
 				MyApplication.getInstance().setOnClass(true);
 				MyApplication.getInstance().lockScreen(true);
 		} else if(isLock.equals("false")){

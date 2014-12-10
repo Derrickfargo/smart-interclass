@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
@@ -27,7 +28,7 @@ import com.alibaba.fastjson.JSONObject;
  */
 public class RandomGroupActivity extends BaseActivity {
 	
-	private TextView text_group;
+	private LinearLayout linearLayout;
 	
 	private Timer timer;
 	private TimerTask timerTask;
@@ -44,9 +45,7 @@ public class RandomGroupActivity extends BaseActivity {
 		UIHelper.getInstance().setRandomGroupActivity(this);
 		setContentView(R.layout.random_group_activity);
 		
-		String extraData = getIntent().getExtras().getString("data");
-		text_group = (TextView) findViewById(R.id.text_group);
-		text_group.setText(resolveData(JSON.parseObject(extraData)));
+		linearLayout = (LinearLayout) findViewById(R.id.liner_layout);
 		
 		backAnimation = AnimationUtils.loadAnimation(this, R.anim.back_scale);
 		frontAnimation = AnimationUtils.loadAnimation(this, R.anim.front_scale);
@@ -55,13 +54,13 @@ public class RandomGroupActivity extends BaseActivity {
 		backAnimation.setAnimationListener(myAnimationListener);
 		frontAnimation.setAnimationListener(myAnimationListener);
 		
-		text_group.setOnClickListener(new OnClickListener() {
+		linearLayout.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				if(!isFront){
 					//如果是反面则翻转到正面
-					text_group.startAnimation(frontAnimation);
+					linearLayout.startAnimation(frontAnimation);
 				}else{
 					if(timer != null){
 						timer.cancel();
@@ -94,42 +93,23 @@ public class RandomGroupActivity extends BaseActivity {
 	public void refreshData(JSONObject data){
 		android.os.Message message = handler.obtainMessage();
 		Bundle bundle = new Bundle();
-		bundle.putString("student", resolveData(data));
+		bundle.putString("student", data.toJSONString());
 		message.setData(bundle);
 		message.what = 1;
 		
 		handler.sendMessage(message);
 	}
 
-	/**
-	 * 解析json数据
-	 * @return
-	 */
-	private String resolveData(JSONObject data) {
-		StringBuilder sb = new StringBuilder();
-		
-		List<Student> students = JSON.parseArray(data.getString("students"), Student.class);
-		if(students != null && students.size() > 0){
-			for (Student student : students) {
-				if(student != null){
-					sb.append(student.getName() + "\n");
-				}
-			}
-		}
-		return sb.toString();
-	}
-	
 	@SuppressLint("HandlerLeak")
 	private Handler handler = new Handler(){
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case 0:
-				text_group.startAnimation(backAnimation);
+				linearLayout.startAnimation(backAnimation);
 				break;
 			case 1:
 				Bundle bundle = msg.getData();
-				String student = bundle.getString("student");
-				text_group.setText(student);
+				String students = bundle.getString("student");
 			default:
 				break;
 			}
@@ -148,13 +128,13 @@ public class RandomGroupActivity extends BaseActivity {
 		@Override
 		public void onAnimationEnd(Animation animation) {
 			if(isFront){
-				text_group.setBackgroundResource(R.drawable.bg);
+				linearLayout.setBackgroundResource(R.drawable.puke);
 				isFront = false;
 				if(timer != null){
 					timer.cancel();
 				}
 			}else{
-				text_group.setBackgroundResource(R.drawable.bg_badges);
+				linearLayout.setBackgroundResource(R.drawable.puke_hover);
 				isFront = true;
 				startTimer();
 			}

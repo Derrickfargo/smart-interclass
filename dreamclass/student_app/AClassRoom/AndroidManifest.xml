@@ -40,7 +40,7 @@
         <activity
             android:name="cn.com.incito.classroom.ui.activity.SplashActivity"
             android:screenOrientation="landscape" >
-          <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -81,17 +81,22 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
-      
-        <!-- 抢答activity -->
-        <activity android:name="cn.com.incito.classroom.ui.activity.ResponderActivity"
-             android:screenOrientation="landscape">
-            
+
+        <!-- 倒计时activity -->
+        <activity
+            android:name="cn.com.incito.classroom.ui.activity.CountdownActivity"
+            android:screenOrientation="landscape" >
         </activity>
-        
+        <!-- 抢答activity -->
+        <activity
+            android:name="cn.com.incito.classroom.ui.activity.ResponderActivity"
+            android:screenOrientation="landscape" >
+        </activity>
+
         <!-- 随机分组activity -->
-        <activity android:name="cn.com.incito.classroom.ui.activity.RandomGroupActivity"
-             android:screenOrientation="landscape">
+        <activity
+            android:name="cn.com.incito.classroom.ui.activity.RandomGroupActivity"
+            android:screenOrientation="landscape" >
         </activity>
 
         <service android:name="cn.com.incito.classroom.service.SocketService" >

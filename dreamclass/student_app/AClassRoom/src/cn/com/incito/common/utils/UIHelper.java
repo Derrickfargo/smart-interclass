@@ -7,6 +7,7 @@ import android.widget.Toast;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.ui.activity.BindDeskActivity;
+import cn.com.incito.classroom.ui.activity.CountdownActivity;
 import cn.com.incito.classroom.ui.activity.DrawBoxActivity;
 import cn.com.incito.classroom.ui.activity.RandomGroupActivity;
 import cn.com.incito.classroom.ui.activity.ResponderActivity;
@@ -85,9 +86,9 @@ public class UIHelper {
 	 */
 	public void showRandomGroupActivity(JSONObject data){
 		
-		//TODO 没有绑定数据
 		Intent intent = new Intent(app,RandomGroupActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.putExtra("data", data.toJSONString());
 		app.startActivity(intent);
 	}
 	
@@ -95,7 +96,7 @@ public class UIHelper {
 	 * 显示抢答界面
 	 */
 	public void showResponderActivity(){
-		Intent intent = new Intent(app,ResponderActivity.class);
+		Intent intent = new Intent(app,CountdownActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		app.startActivity(intent);
 	}
