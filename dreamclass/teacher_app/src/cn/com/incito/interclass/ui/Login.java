@@ -181,18 +181,8 @@ public class Login extends MouseAdapter {
 		btnLogin.setBounds(112, 220, btnImage.getIconWidth(),
 				btnImage.getIconHeight());
 		btnLogin.addMouseListener(this);
-		btnLogin.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (doLogin) {
-					doLogin = false;
-					doLogin();
-				}
-			}
-		});
 		
-	//链接
+		//链接
 		link=new JLabel("成为梦想教师");
 		link.setBounds(350, 223, 130, 40);
 		link.setFont(new Font("宋体",Font.ROMAN_BASELINE, 14));
@@ -241,6 +231,10 @@ public class Login extends MouseAdapter {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		if (doLogin) {
+			doLogin = false;
+			doLogin();
+		}
 	}
 
 	@Override
@@ -358,11 +352,11 @@ public class Login extends MouseAdapter {
 					Application.getInstance().setCourses(resultData.getCourses());
 					// 第一步获取教室、教师数据
 
-						frame.setVisible(false);
-						Application.getInstance().setRoom(resultData.getRoom());
-						Login2 login2 = new Login2(resultData.getCourses());
-						login2.getFrame().setVisible(true);
-						logger.info("登陆返回结果：" + content);
+					frame.setVisible(false);
+					Application.getInstance().setRoom(resultData.getRoom());
+					Login2 login2 = new Login2(resultData.getCourses());
+					login2.getFrame().setVisible(true);
+					logger.info("登陆返回结果：" + content);
 					
 				}
 			}
