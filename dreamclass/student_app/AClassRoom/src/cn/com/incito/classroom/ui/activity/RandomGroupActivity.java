@@ -1,5 +1,6 @@
 package cn.com.incito.classroom.ui.activity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -13,8 +14,10 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import cn.com.incito.classroom.R;
+import cn.com.incito.classroom.adapter.RandomGroupAdapter;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.vo.Student;
 import cn.com.incito.common.utils.UIHelper;
@@ -29,6 +32,8 @@ import com.alibaba.fastjson.JSONObject;
 public class RandomGroupActivity extends BaseActivity {
 	
 	private LinearLayout linearLayout;
+	private ListView student_list;
+	private RandomGroupAdapter randomGroupAdapter;
 	
 	private Timer timer;
 	private TimerTask timerTask;
@@ -46,6 +51,20 @@ public class RandomGroupActivity extends BaseActivity {
 		setContentView(R.layout.random_group_activity);
 		
 		linearLayout = (LinearLayout) findViewById(R.id.liner_layout);
+		student_list = (ListView) findViewById(R.id.student_list);
+		student_list.setVisibility(View.GONE);
+		
+		//TODO 后台数据回来后这段将删除
+		List<Student> studentList = new ArrayList<Student>();
+		
+		Student s = new Student();
+		for(int i = 0; i < 5; i++){
+			studentList.add(s);
+		}
+		
+		randomGroupAdapter = new RandomGroupAdapter(this, studentList);
+		
+		student_list.setAdapter(randomGroupAdapter);
 		
 		backAnimation = AnimationUtils.loadAnimation(this, R.anim.back_scale);
 		frontAnimation = AnimationUtils.loadAnimation(this, R.anim.front_scale);
@@ -129,12 +148,14 @@ public class RandomGroupActivity extends BaseActivity {
 		public void onAnimationEnd(Animation animation) {
 			if(isFront){
 				linearLayout.setBackgroundResource(R.drawable.puke);
+				student_list.setVisibility(View.GONE);
 				isFront = false;
 				if(timer != null){
 					timer.cancel();
 				}
 			}else{
 				linearLayout.setBackgroundResource(R.drawable.puke_hover);
+				student_list.setVisibility(View.VISIBLE);
 				isFront = true;
 				startTimer();
 			}
