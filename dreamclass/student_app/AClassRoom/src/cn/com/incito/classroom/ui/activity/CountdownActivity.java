@@ -33,6 +33,7 @@ public class CountdownActivity extends BaseActivity {
 			switch (msg.what) {
 			case 3:
 				countdown_image.setImageResource(R.drawable.cuountdown_3);
+				countdown_image.startAnimation(scaleAnimation);
 				backgroundNumber--;
 				break;
 			case 2:
@@ -59,7 +60,7 @@ public class CountdownActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.count_down_dialog);
+		setContentView(R.layout.count_down_activity);
 	
 		countdown_image = (ImageView) findViewById(R.id.countdown_image);
 		
@@ -89,7 +90,7 @@ public class CountdownActivity extends BaseActivity {
 				}
 			}
 		};
-		timer.schedule(timerTask, 0, 2 * 1000);
+		timer.schedule(timerTask, 1 * 1000, 2 * 1000);
 	}
 	
 	@Override
