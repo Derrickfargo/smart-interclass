@@ -1,6 +1,5 @@
 package cn.com.incito.classroom.ui.activity;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -15,7 +14,6 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.adapter.RandomGroupAdapter;
 import cn.com.incito.classroom.base.BaseActivity;
@@ -23,6 +21,7 @@ import cn.com.incito.classroom.vo.Student;
 import cn.com.incito.common.utils.UIHelper;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 /**
@@ -40,9 +39,11 @@ public class RandomGroupActivity extends BaseActivity {
 	
 	private boolean isFront = false;
 	
-	private Animation backAnimation;
-	private Animation frontAnimation;
+	private Animation backAnimation;   //翻转到反面动画
+	private Animation frontAnimation;  //翻转到正面动画
+	
 	private myAnimationListener myAnimationListener;
+	private List<Student> studentList;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,22 +55,20 @@ public class RandomGroupActivity extends BaseActivity {
 		student_list = (ListView) findViewById(R.id.student_list);
 		student_list.setVisibility(View.GONE);
 		
-		//TODO 后台数据回来后这段将删除
-		List<Student> studentList = new ArrayList<Student>();
 		
-		Student s = new Student();
-		for(int i = 0; i < 5; i++){
-			studentList.add(s);
-		}
-		
+		//解析后台传回的数据
+		String students = getIntent().getExtras().getString("data");
+		studentList = JSONArray.parseArray(JSON.parseObject(students).getString("students"), Student.class);
 		randomGroupAdapter = new RandomGroupAdapter(this, studentList);
-		
 		student_list.setAdapter(randomGroupAdapter);
 		
+		//加载动画
 		backAnimation = AnimationUtils.loadAnimation(this, R.anim.back_scale);
 		frontAnimation = AnimationUtils.loadAnimation(this, R.anim.front_scale);
 		
 		myAnimationListener = new myAnimationListener();
+		
+		//为动画运行设置监听器
 		backAnimation.setAnimationListener(myAnimationListener);
 		frontAnimation.setAnimationListener(myAnimationListener);
 		
@@ -102,8 +101,9 @@ public class RandomGroupActivity extends BaseActivity {
 				}
 			}
 		};
-		timer.schedule(timerTask, 5 *1000);
+		timer.schedule(timerTask, 10 *1000);
 	}
+	
 	
 	/**
 	 * 刷新数据
@@ -129,6 +129,8 @@ public class RandomGroupActivity extends BaseActivity {
 			case 1:
 				Bundle bundle = msg.getData();
 				String students = bundle.getString("student");
+				studentList = JSONArray.parseArray(JSON.parseObject(students).getString("students"), Student.class);
+				randomGroupAdapter.setData(studentList);
 			default:
 				break;
 			}
@@ -142,7 +144,8 @@ public class RandomGroupActivity extends BaseActivity {
 	class myAnimationListener implements AnimationListener{
 
 		@Override
-		public void onAnimationStart(Animation animation) {}
+		public void onAnimationStart(Animation animation) {
+		}
 
 		@Override
 		public void onAnimationEnd(Animation animation) {

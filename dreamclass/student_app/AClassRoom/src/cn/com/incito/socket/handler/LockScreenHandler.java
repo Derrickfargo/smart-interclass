@@ -41,6 +41,9 @@ public class LockScreenHandler extends MessageHandler {
 				if("ResponderActivity".equals(currentActivityName)){
 					AppManager.getAppManager().currentActivity().finish();
 				}
+				if("RandomGroupActivity".equals(currentActivityName)){
+					AppManager.getAppManager().currentActivity().finish();
+				}
 				MyApplication.getInstance().setOnClass(true);
 				MyApplication.getInstance().lockScreen(true);
 		} else if(isLock.equals("false")){
