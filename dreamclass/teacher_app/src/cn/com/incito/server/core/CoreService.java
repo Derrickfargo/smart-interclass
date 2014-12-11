@@ -135,7 +135,7 @@ public class CoreService {
 
 				// 第二步获得班级、课程、设备、课桌、分组数据
 				Application.getInstance().initMapping(resultData.getDevices(),
-						resultData.getTables(), app.getGroupList());
+						resultData.getTables(), resultData.getGroups());
 				Application.getInstance().refresh();
 			}
 			logger.info(result);
@@ -424,6 +424,7 @@ public class CoreService {
 				quiz.setQuizUrl(file.getAbsolutePath());
 				quiz.setThumbnail(thumbnail.getAbsolutePath());
 				app.getTempQuiz().put(imei, quiz);
+				app.getQuizMap().put(quizid, quiz);
 				app.getQuizList().add(quiz);
 				app.refresh();
 				if (app.getQuizList().size() == app.getClientChannel().size()) {

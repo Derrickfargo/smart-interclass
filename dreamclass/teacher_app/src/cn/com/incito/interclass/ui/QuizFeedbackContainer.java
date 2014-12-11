@@ -1,21 +1,14 @@
 package cn.com.incito.interclass.ui;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import cn.com.incito.interclass.po.Device;
-import cn.com.incito.interclass.po.Group;
-import cn.com.incito.interclass.po.Quiz;
 import cn.com.incito.interclass.po.QuizFeedback;
-import cn.com.incito.interclass.po.Table;
-import cn.com.incito.server.api.Application;
 
 /**
  * 作业互评列表面板
@@ -29,7 +22,6 @@ public class QuizFeedbackContainer extends JPanel {
      */
 	private static final long serialVersionUID = 6316121486627261595L;
 	
-	private Application app = Application.getInstance();
 	private List<QuizFeedback> feedbackList;
 	private List<QuizFeedbackPanel> feedbackPanelList;
 	
