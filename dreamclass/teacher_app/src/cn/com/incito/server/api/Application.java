@@ -203,6 +203,12 @@ public class Application {
 			imeiStudent.put(imei, studentList);
 		}
     }
+    public void addRdmStudent(String imei,List<Student> students){
+    	List<Student> studentList = imeiStudent.get(imei);
+    	studentList.clear();
+    	studentList.addAll(students);
+    	imeiStudent.put(imei, studentList);
+    }
     //需要移除两个容器
     public void removeLoginStudent(String imei){
     	List<Student> studentList = imeiStudent.get(imei);
