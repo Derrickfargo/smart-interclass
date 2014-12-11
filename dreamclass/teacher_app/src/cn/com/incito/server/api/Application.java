@@ -22,12 +22,12 @@ import cn.com.incito.interclass.po.Course;
 import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Quiz;
+import cn.com.incito.interclass.po.QuizFeedback;
 import cn.com.incito.interclass.po.Room;
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.po.Table;
 import cn.com.incito.interclass.po.Teacher;
 import cn.com.incito.interclass.ui.FloatIcon;
-import cn.com.incito.interclass.ui.Login;
 import cn.com.incito.interclass.ui.MainFrame;
 import cn.com.incito.server.config.Constants;
 import cn.com.incito.server.utils.FileUtils;
@@ -81,6 +81,7 @@ public class Application {
     private List<Integer> tempGrouped = new ArrayList<Integer>();//已编辑完成的小组
     private List<Quiz> quizList = new ArrayList<Quiz>();//作业
     private FileLock lock;
+	private Map<String, QuizFeedback> quizFeedbackMap = new HashMap<String, QuizFeedback>();
     private List<Student> responderStudents = new ArrayList<Student>();//抢答的学生组
     /**
      * IMEI和设备的对应关系(key:imei,value:Device)，教师登陆完后初始化
@@ -652,6 +653,10 @@ public class Application {
 
 	public void setResponderStudents(List<Student> responderStudents) {
 		this.responderStudents = responderStudents;
+	}
+
+	public Map<String, QuizFeedback> getQuizFeedbackMap() {
+		return quizFeedbackMap;
 	}
 
 }

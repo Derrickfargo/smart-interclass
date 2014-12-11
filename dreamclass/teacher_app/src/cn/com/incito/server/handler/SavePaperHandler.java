@@ -22,7 +22,7 @@ import cn.com.incito.server.utils.JSONUtils;
 public class SavePaperHandler extends MessageHandler {
 	private Logger logger = Logger.getLogger(SavePaperHandler.class.getName());
 	private String imei;
-	private String uuid;
+	private String quizid;
 
 	@Override
 	public void handleMessage(Message msg) {
@@ -31,8 +31,8 @@ public class SavePaperHandler extends MessageHandler {
 		ByteBuffer buffer = msg.getBodyBuffer();
 		buffer.flip();
 		// 获取考试id号
-		uuid = getInfo(buffer);
-		logger.info("uuid：" + uuid);
+		quizid = getInfo(buffer);
+		logger.info("quizid：" + quizid);
 		// 获取imei
 		imei = getInfo(buffer);
 		logger.info("imei：" + imei);
@@ -49,7 +49,7 @@ public class SavePaperHandler extends MessageHandler {
 
 	public void handleMessage(byte[] imageByte) {
 		// 需要给组中所以的设备发送
-		service.SavePaper(imei, uuid, Application.getInstance()
+		service.SavePaper(imei, quizid, Application.getInstance()
 				.getLessionid(), imageByte, message.getChannel());
 		sendResponse(JSONUtils.renderJSONString(0));
 	}

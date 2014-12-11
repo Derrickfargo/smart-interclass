@@ -1,5 +1,7 @@
 package cn.com.incito.classroom.ui.activity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -11,12 +13,16 @@ import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import cn.com.incito.classroom.R;
+import cn.com.incito.classroom.adapter.RandomGroupAdapter;
 import cn.com.incito.classroom.base.BaseActivity;
+import cn.com.incito.classroom.vo.Student;
 import cn.com.incito.common.utils.UIHelper;
 
-import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 /**
@@ -25,7 +31,9 @@ import com.alibaba.fastjson.JSONObject;
  */
 public class RandomGroupActivity extends BaseActivity {
 	
-	private TextView text_group;
+	private LinearLayout linearLayout;
+	private ListView student_list;
+	private RandomGroupAdapter randomGroupAdapter;
 	
 	private Timer timer;
 	private TimerTask timerTask;
@@ -41,7 +49,22 @@ public class RandomGroupActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		UIHelper.getInstance().setRandomGroupActivity(this);
 		setContentView(R.layout.random_group_activity);
-		text_group = (TextView) findViewById(R.id.text_group);
+		
+		linearLayout = (LinearLayout) findViewById(R.id.liner_layout);
+		student_list = (ListView) findViewById(R.id.student_list);
+		student_list.setVisibility(View.GONE);
+		
+		//TODO 后台数据回来后这段将删除
+		List<Student> studentList = new ArrayList<Student>();
+		
+		Student s = new Student();
+		for(int i = 0; i < 5; i++){
+			studentList.add(s);
+		}
+		
+		randomGroupAdapter = new RandomGroupAdapter(this, studentList);
+		
+		student_list.setAdapter(randomGroupAdapter);
 		
 		backAnimation = AnimationUtils.loadAnimation(this, R.anim.back_scale);
 		frontAnimation = AnimationUtils.loadAnimation(this, R.anim.front_scale);
@@ -50,15 +73,13 @@ public class RandomGroupActivity extends BaseActivity {
 		backAnimation.setAnimationListener(myAnimationListener);
 		frontAnimation.setAnimationListener(myAnimationListener);
 		
-		startTimer();
-		
-		text_group.setOnClickListener(new OnClickListener() {
+		linearLayout.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				if(!isFront){
 					//如果是反面则翻转到正面
-					text_group.startAnimation(frontAnimation);
+					linearLayout.startAnimation(frontAnimation);
 				}else{
 					if(timer != null){
 						timer.cancel();
@@ -81,7 +102,7 @@ public class RandomGroupActivity extends BaseActivity {
 				}
 			}
 		};
-		timer.schedule(timerTask, 3 *1000);
+		timer.schedule(timerTask, 5 *1000);
 	}
 	
 	/**
@@ -90,38 +111,24 @@ public class RandomGroupActivity extends BaseActivity {
 	 */
 	public void refreshData(JSONObject data){
 		android.os.Message message = handler.obtainMessage();
-		
-		//解析json数据
-		StringBuilder sb = new StringBuilder();
-		JSONArray jsonArray = JSONArray.parseArray(data.toString());
-		if(jsonArray != null && jsonArray.size() > 0){
-			for(int i = 0; i < jsonArray.size(); i++){
-				JSONObject jsonObject = jsonArray.getJSONObject(i);
-				sb.append(jsonObject.getString("name")  + "\n");
-				sb.append(jsonObject.getString("number"));
-				sb.append("\n");
-			}
-		}
-		
 		Bundle bundle = new Bundle();
-		bundle.putString("student", sb.toString());
+		bundle.putString("student", data.toJSONString());
 		message.setData(bundle);
 		message.what = 1;
 		
 		handler.sendMessage(message);
 	}
-	
+
 	@SuppressLint("HandlerLeak")
 	private Handler handler = new Handler(){
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case 0:
-				text_group.startAnimation(backAnimation);
+				linearLayout.startAnimation(backAnimation);
 				break;
 			case 1:
 				Bundle bundle = msg.getData();
-				String student = bundle.getString("student");
-				text_group.setText(student);
+				String students = bundle.getString("student");
 			default:
 				break;
 			}
@@ -140,20 +147,28 @@ public class RandomGroupActivity extends BaseActivity {
 		@Override
 		public void onAnimationEnd(Animation animation) {
 			if(isFront){
-				text_group.setBackgroundResource(R.drawable.bg);
-				text_group.setText("");
+				linearLayout.setBackgroundResource(R.drawable.puke);
+				student_list.setVisibility(View.GONE);
 				isFront = false;
 				if(timer != null){
 					timer.cancel();
 				}
 			}else{
-				text_group.setBackgroundResource(R.drawable.bg_badges);
-				text_group.setText("张三");
+				linearLayout.setBackgroundResource(R.drawable.puke_hover);
+				student_list.setVisibility(View.VISIBLE);
 				isFront = true;
 				startTimer();
 			}
 		}
 		@Override
 		public void onAnimationRepeat(Animation animation) {}
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if(timer != null){
+			timer.cancel();
+		}
 	}
 }

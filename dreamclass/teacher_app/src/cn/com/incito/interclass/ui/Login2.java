@@ -169,13 +169,6 @@ public class Login2 extends MouseAdapter {
 		btnLogin.setBounds(125, 220, btnImage.getIconWidth(),
 				btnImage.getIconHeight());
 		btnLogin.addMouseListener(this);
-		btnLogin.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				doGetGroup();
-			}
-		});
 		initData();
 		setBgimg();// 设置背景
 		frame.setVisible(true);
@@ -228,6 +221,7 @@ public class Login2 extends MouseAdapter {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		doGetGroup();
 	}
 
 	@Override

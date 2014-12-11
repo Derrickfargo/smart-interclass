@@ -379,7 +379,7 @@ public class CoreService {
 	 * @param imei
 	 * @return
 	 */
-	public void SavePaper(final String imei, final String uuid,
+	public void SavePaper(final String imei, final String quizid,
 			final String lessionid, final byte[] imageByte,
 			final SocketChannel channel) {
 		new Thread(){
@@ -388,8 +388,8 @@ public class CoreService {
 						+ File.separator + imei.replace(":", "-"));
 				path.mkdirs();
 		
-				File file = new File(path, uuid + ".jpg");
-				File thumbnail = new File(path, uuid + "_thumbnail.jpg");
+				File file = new File(path, quizid + ".jpg");
+				File thumbnail = new File(path, quizid + "_thumbnail.jpg");
 				try {
 					FileImageOutputStream imageOutput = new FileImageOutputStream(file);
 					imageOutput.write(imageByte, 0, imageByte.length);
@@ -403,7 +403,7 @@ public class CoreService {
 				}
 		
 				Quiz quiz = new Quiz();
-				quiz.setId(uuid);
+				quiz.setId(quizid);
 				quiz.setImei(imei);
 				quiz.setLessionid(lessionid);
 				StringBuffer name = new StringBuffer();

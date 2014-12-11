@@ -100,9 +100,14 @@ public class Message {
 	public static final Byte MESSAGE_GROUP_RDMGROUP=0x0F;
 	
 	/**
-	 * 作业互评
+	 * 作业互评下发
 	 */
-	public static final Byte MESSAGE_QUIZ_FEEDBACK=0x10;
+	public static final Byte MESSAGE_QUIZ_FEEDBACK_SEND=0x10;
+	
+	/**
+	 * 作业互评提交
+	 */
+	public static final Byte MESSAGE_QUIZ_FEEDBACK_SUBMIT=0x11;
 	
 	private Logger log = Logger.getLogger(Message.class);
 	

@@ -166,51 +166,18 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 	            return;
 	        }
 		} else if (e.getSource() == btnFeedback) {
-			Queue<List<Quiz>> quizQueue = PeerFeedbackUtils.getQuizQueue();
-			if(quizQueue.size() == 0){
-				JOptionPane.showMessageDialog(this, "收取作业后才能进行互评！");
-				return;
-			}
-			sendPeerFeedbackMessage(quizQueue);
-		}
-	}
-	
-	private void sendPeerFeedbackMessage(Queue<List<Quiz>> quizQueue) {
-		Application app = Application.getInstance();
-		Set<Entry<String, SocketChannel>> clients = app.getClientChannel().entrySet();
-		final Iterator<Entry<String, SocketChannel>> it = clients.iterator();
-		while (it.hasNext()) {
-			Entry<String, SocketChannel> entry = it.next();
-			String imei = entry.getKey();
-			List<Student> students = app.getStudentByImei(imei);
-			//记录有学生登陆的Pad
-			if (students != null && students.size() > 0) {
-				SocketChannel channel = entry.getValue();
-				if (channel != null && channel.isConnected()) {
-					List<Quiz> quizList = quizQueue.poll();
-					for(Quiz quiz : quizList){
-						MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_QUIZ_FEEDBACK);
-				        try {
-					        BufferedImage image = ImageIO.read(new File(quiz.getQuizUrl()));
-					        ByteArrayOutputStream os = new ByteArrayOutputStream();
-					        ImageIO.write(image, "gif", os);
-					        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(quiz.getId()));
-							messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString("true"));
-							messagePacking.putBodyData(DataType.INT, os.toByteArray());
-							
-					        byte[] data = messagePacking.pack().array();
-							// 输出到通道
-							ByteBuffer buffer = ByteBuffer.allocate(data.length);
-							buffer.clear();
-							buffer.put(data);
-							buffer.flip();
-							channel.write(buffer);
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-					}
+			new Thread(){
+				public void run() {
+					//TODO 暂时屏蔽，测试界面
+//					Queue<List<Quiz>> quizQueue = PeerFeedbackUtils.getQuizQueue();
+//					if(quizQueue.size() == 0){
+//						JOptionPane.showMessageDialog(QuizBottomPanel.this, "收取作业后才能进行互评！");
+//						return;
+//					}
+					new QuizFeedbackFrame();
 				}
-			}
+			}.start();
+			
 		}
 	}
 	
@@ -262,14 +229,48 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
      * @throws ImageFormatException
      */
     public void distributePaper() {
-        MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DISTRIBUTE_PAPER);
-        String uuid = UUID.randomUUID().toString();
-        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(uuid));
-        messagePacking.putBodyData(DataType.INT,  BufferUtils.writeUTFString("false"));
-        CoreSocket.getInstance().sendMessageToStudents(messagePacking.pack().array());
+    	sendMessageToStudents();
         Application.getInstance().getTempQuiz().clear();
 		Application.getInstance().getQuizList().clear();
 		Application.getInstance().getTempQuizIMEI().clear();
 		Application.getInstance().setLockScreen(false);
     }
+    
+    private void sendMessageToStudents(){
+		final Application app = Application.getInstance();
+		Set<Entry<String, SocketChannel>> clients = app.getClientChannel().entrySet();
+		final Iterator<Entry<String, SocketChannel>> it = clients.iterator();
+		new Thread() {
+			@Override
+			public void run() {
+				try {
+					while (it.hasNext()) {
+						MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DISTRIBUTE_PAPER);
+				        String uuid = UUID.randomUUID().toString();
+				        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(uuid));
+				        messagePacking.putBodyData(DataType.INT,  BufferUtils.writeUTFString("false"));
+				        byte[] data = messagePacking.pack().array();
+						ByteBuffer buffer = ByteBuffer.allocate(data.length);
+						Entry<String, SocketChannel> entry = it.next();
+						String imei = entry.getKey();
+						List<Student> students = app.getStudentByImei(imei);
+						//记录有学生登陆的Pad
+						if (students != null && students.size() > 0) {
+							SocketChannel channel = entry.getValue();
+							if (channel != null && channel.isConnected()) {
+								// 输出到通道
+								buffer.clear();
+								buffer.put(data);
+								buffer.flip();
+								channel.write(buffer);
+								app.addQuizIMEI(imei);//已发送的IMEI
+							}
+						}
+					}
+				} catch (IOException e) {
+					logger.error("发送消息异常:\n", e);
+				}
+			};
+		}.start();
+	}
 }
