@@ -1,14 +1,7 @@
 package cn.com.incito.socket.handler;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.ref.WeakReference;
-import java.net.URL;
 import java.util.List;
 
 import android.graphics.Bitmap;
@@ -130,9 +123,7 @@ public class LoginHandler extends MessageHandler {
 						.getSimpleName().equals("DrawBoxActivity")) {
 					byte[] imageByte;
 					if (isFileExists()) {
-						imageByte = bmpToByteArray(
-								GetLocalOrNetBitmap("file://mnt/sdcard/temp.jpg"),
-								true);
+						imageByte = bmpToByteArray(BitmapFactory.decodeFile("/sdcard/temp.jpg"),true);
 					} else {
 						imageByte = data.getBytes("quiz");
 					}
@@ -146,8 +137,7 @@ public class LoginHandler extends MessageHandler {
 					if (isFileExists()) {
 						UIHelper.getInstance()
 								.getDrawBoxActivity()
-								.setBackGround(
-										GetLocalOrNetBitmap("file://mnt/sdcard/temp.jpg"));
+								.setBackGround(BitmapFactory.decodeFile("/sdcard/temp.jpg"));
 					} else {
 						// 在原来界面,不做操作
 					}
@@ -156,9 +146,7 @@ public class LoginHandler extends MessageHandler {
 
 			} else if (state == 4) {
 				if (isFileExists()) {
-					byte[] imageByte = bmpToByteArray(
-							GetLocalOrNetBitmap("file://mnt/sdcard/temp.jpg"),
-							true);
+					byte[] imageByte = bmpToByteArray(BitmapFactory.decodeFile("/sdcard/temp.jpg"),true);
 					UIHelper.getInstance().showDrawBoxActivity(imageByte);
 				} else {
 					MyApplication.Logger.debug("返回状态值进入开始上课界面");
@@ -199,47 +187,6 @@ public class LoginHandler extends MessageHandler {
 			e.printStackTrace();
 		}
 		return result;
-	}
-
-	/**
-	 * 得到本地或者网络上的bitmap url - 网络或者本地图片的绝对路径,比如:
-	 * 
-	 * A.网络路径: url="http://blog.foreverlove.us/girl2.png" ;
-	 * 
-	 * B.本地路径:url="file://mnt/sdcard/photo/image.png";
-	 * 
-	 * C.支持的图片格式 ,png, jpg,bmp,gif等等
-	 * 
-	 * @param url
-	 * @return
-	 */
-	public Bitmap GetLocalOrNetBitmap(String url) {
-		Bitmap bitmap = null;
-		InputStream in = null;
-		BufferedOutputStream out = null;
-		try {
-			in = new BufferedInputStream(new URL(url).openStream(), 1024);
-			final ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
-			out = new BufferedOutputStream(dataStream, 1024);
-			copy(in, out);
-			out.flush();
-			byte[] data = dataStream.toByteArray();
-			bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-			data = null;
-			return bitmap;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	private static void copy(InputStream in, OutputStream out)
-			throws IOException {
-		byte[] b = new byte[1024];
-		int read;
-		while ((read = in.read(b)) != -1) {
-			out.write(b, 0, read);
-		}
 	}
 
 	public boolean isFileExists() {
