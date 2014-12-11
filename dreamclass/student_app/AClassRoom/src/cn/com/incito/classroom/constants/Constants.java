@@ -46,7 +46,8 @@ public class Constants {
 	public static final String ACTION_SHOW_EDIT_GROUP = "cn.com.classroom.SHOW_EDIT_GROUP";
 	public static final String ACTION_SHOW_DRAWBOX = "cn.com.classroom.SHOW_DRAWBOX";
 	public static final String ACTION_SHOW_CONFIRM_GROUP = "cn.com.classroom.SHOW_CONFIRM_GROUP";
-
+	public static final String ACTION_SHOW_EVALUATE = "cn.com.classroom.SHOW_EVALUATE";
+	
 	// 绘画板常量
 	public static ArrayList<String> LIST = null;
 	public static ArrayList<Action> actionList = new ArrayList<Action>();
