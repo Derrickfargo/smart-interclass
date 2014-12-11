@@ -20,6 +20,7 @@ public class SavePaperResultHandler extends MessageHandler {
 			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"提交作业成功");
 			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"提交作业后关闭进度条");
 			UIHelper.getInstance().getDrawBoxActivity().cancleTask();
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"进度条关闭完成");
 			MyApplication.getInstance().setSubmitPaper(true);
 			MyApplication.getInstance().lockScreen(true);
 			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"提交作业后删除本地图片");
