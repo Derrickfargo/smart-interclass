@@ -3,10 +3,16 @@ package cn.com.incito.interclass.po;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 一个pad的互评反馈
+ * @author 刘世平
+ *
+ */
 public class QuizFeedback {
 	private String quizId;
-	private int score;
 	private String name;
+	private int score;
+	private Quiz quiz;
 	private List<String> feedbackList = new ArrayList<String>();
 
 	public String getQuizId() {
@@ -31,6 +37,14 @@ public class QuizFeedback {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Quiz getQuiz() {
+		return quiz;
+	}
+
+	public void setQuiz(Quiz quiz) {
+		this.quiz = quiz;
 	}
 
 	public List<String> getFeedbackList() {

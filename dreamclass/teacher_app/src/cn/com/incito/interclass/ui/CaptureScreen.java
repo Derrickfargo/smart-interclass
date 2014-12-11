@@ -135,6 +135,7 @@ public class CaptureScreen {
 		}
 		if (Application.getInstance().getOnlineStudent().size() > 0) {
 			Application.getInstance().getTempQuiz().clear();
+			Application.getInstance().getQuizMap().clear();
 			Application.getInstance().getQuizList().clear();
 			Application.getInstance().getTempQuizIMEI().clear();
 			sendMessageToStudents(os);
