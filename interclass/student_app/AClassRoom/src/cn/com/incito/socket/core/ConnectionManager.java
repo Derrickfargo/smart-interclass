@@ -174,7 +174,7 @@ public class ConnectionManager {
 				while (Boolean.TRUE) {
 					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "ConnectionManager::Socket开始重连!");
 					CoreSocket.getInstance().restartConnection();
-					sleep(2000);// 等待1秒后检查连接
+					sleep(5000);// 等待1秒后检查连接
 					if (!CoreSocket.getInstance().isConnected()) {
 						MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "ConnectionManager::Socket重连失败!");
 						CoreSocket.getInstance().disconnect();
