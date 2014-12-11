@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import cn.com.incito.interclass.po.Quiz;
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.server.api.Application;
 
@@ -55,7 +56,16 @@ public class QuizNoGroupPanel extends JPanel {
 				studentQuiz.setVisible(false);
 			}
 		}
-		index = 0;
+		Application app = Application.getInstance();
+		if (app.getQuizList().size() != 0) {
+			showQuiz();
+		} else {
+			showStudent();
+		}
+	}
+	
+	private void showStudent(){
+		int index = 0;
 		List<Student> studentList = app.getStudentList();
 		if (studentList.size() == 0) {
 			return;
@@ -80,6 +90,28 @@ public class QuizNoGroupPanel extends JPanel {
 				String score = String.valueOf(student.getScore());
 				studentQuiz.getLblScore().setText(score);
 				if(++index == studentList.size()){
+					return;
+				}
+			}
+		}
+	}
+	private void showQuiz(){
+		int index = 0;
+		Application app = Application.getInstance();
+		List<Quiz> quizList = app.getQuizList();
+		if (quizList.size() == 0) {
+			return;
+		}
+		for (int i = 0; i < ROW_COUNT; i++) {
+			for (int j = 0; j < COLUMN_COUNT; j++) {
+				Quiz quiz = quizList.get(index);
+				QuizStudent studentQuiz = studentQuizList.get(index);
+				Student student = app.getStudentByImei(quiz.getImei());
+				studentQuiz.setStudent(student);
+				studentQuiz.setVisible(true);
+				String score = String.valueOf(student.getScore());
+				studentQuiz.getLblScore().setText(score);
+				if(++index == quizList.size()){
 					return;
 				}
 			}
