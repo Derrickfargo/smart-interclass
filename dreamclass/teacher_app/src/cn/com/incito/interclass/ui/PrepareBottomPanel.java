@@ -332,7 +332,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 				List<Student> student = new ArrayList<Student>();
 				Map<String, Object> rdmMsg = new HashMap<String, Object>();
 				student=students.poll();
-				rdmMsg.put("group", group);
+//				rdmMsg.put("group", group);
 				rdmMsg.put("students", student);
 				try {
 					ApiClient.updateGroup(group.getId(), "梦想小组"+i, "rainbow");
@@ -396,15 +396,13 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 			public void run(){
 				byte[] data=rdmPacking.pack().array();
 				ByteBuffer bytes =ByteBuffer.allocate(data.length);
-//				if(clientChannel.isConnected()){
-//					return;
-//				}
 				bytes.clear();
 				bytes.put(data);
 				bytes.flip();
 				try {
 					clientChannel.write(bytes);
-					logger.info("随机分组信息："+bytes.array());
+				System.out.println(bytes.asCharBuffer());
+					logger.info("随机分组信息："+new String(bytes.array()));
 				} catch (IOException e) {
 					logger.info("随机分组消息发送失败！"+new String(data));
 					e.printStackTrace();
