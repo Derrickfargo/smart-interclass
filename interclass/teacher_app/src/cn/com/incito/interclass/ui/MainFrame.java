@@ -204,7 +204,7 @@ public class MainFrame extends MouseAdapter {
 		frame.setLocationRelativeTo(null);// 设置窗体中间位置
 		frame.setLayout(null);// 绝对布局
 		frame.setUndecorated(true);// 去除窗体
-		frame.setAlwaysOnTop(true); // 设置界面悬浮
+//		frame.setAlwaysOnTop(true); // 设置界面悬浮
 		frame.setBackground(new Color(0,0,0,0));//窗体透明
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowActivated(WindowEvent e) {

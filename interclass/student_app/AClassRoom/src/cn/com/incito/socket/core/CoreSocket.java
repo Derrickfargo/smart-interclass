@@ -51,9 +51,11 @@ public final class CoreSocket implements Runnable {
 			try {
 				if (channel.isConnectionPending()) {
 					channel.finishConnect();
+					isConnected = true;
 				}
 				channel.register(selector, SelectionKey.OP_READ);// 注册读事件
 			} catch (IOException e) {
+				isConnected = false;
 				MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":CoreSocket异常::" + e.getMessage());
 			}
 		} else if (selectionKey.isReadable()) {// 若为可读的事件，则进行消息解析
@@ -178,7 +180,7 @@ public final class CoreSocket implements Runnable {
 			isConnected = true;
 		} catch (IOException e) {
 			isConnected = false;
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":CoreSocket::重新登陆消息发送失败" + e.getMessage());
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":CoreSocket::重新登陆消息发送失败" ,e);
 		}
 	}
 
