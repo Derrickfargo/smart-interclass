@@ -3,13 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
     android:gravity="center_vertical" >
-
-    <Button
-        android:id="@+id/number"
+	
+     <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/number_one" />
-
+        android:layout_gravity="center"
+        android:layout_weight="1.0"
+        android:background="#000000"
+        android:flipInterval="30"
+         />
     <Button
         android:id="@+id/pager_up"
         android:layout_width="wrap_content"

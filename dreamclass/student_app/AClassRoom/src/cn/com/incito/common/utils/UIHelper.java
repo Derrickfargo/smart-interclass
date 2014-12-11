@@ -1,7 +1,12 @@
 package cn.com.incito.common.utils;
 
+import java.io.ByteArrayOutputStream;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Bitmap.CompressFormat;
 import android.os.Bundle;
 import android.widget.Toast;
 import cn.com.incito.classroom.base.MyApplication;
@@ -161,6 +166,35 @@ public class UIHelper {
 		app.startActivity(intent);
 	}
 
+	/**
+	 * 显示学生互评界面
+	 * @param paper
+	 */
+	public void showEvaluateActivity(byte[] paper) {
+		Intent intent = new Intent();
+		MyApplication.getInstance().setSubmitPaper(false);
+		if(UIHelper.getInstance().getEvaluateActivity()!=null){
+			UIHelper.getInstance().getEvaluateActivity().setQuizList(paper);
+		}else{
+			if (paper != null) {
+				Bundle mBundle = new Bundle();
+				mBundle.putByteArray("paper", paper);
+				intent.putExtras(mBundle);
+			}
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			intent.setAction(Constants.ACTION_SHOW_EVALUATE);
+			app.startActivity(intent);
+		}
+		
+			
+	}
+	
+	
+	
+	
+	
+	
+	
 	public void showEditGroupActivity(int groupID) {
 		Intent intent = new Intent();
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
