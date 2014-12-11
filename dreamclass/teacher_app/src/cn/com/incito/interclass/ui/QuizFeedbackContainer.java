@@ -30,8 +30,8 @@ public class QuizFeedbackContainer extends JPanel {
 	private static final long serialVersionUID = 6316121486627261595L;
 	
 	private Application app = Application.getInstance();
-	private List<QuizFeedback> feedbackList = new ArrayList<QuizFeedback>();
-	private List<QuizFeedbackPanel> feedbackPanelList = new ArrayList<QuizFeedbackPanel>();
+	private List<QuizFeedback> feedbackList;
+	private List<QuizFeedbackPanel> feedbackPanelList;
 	
 	public QuizFeedbackContainer() {
 		this.setLayout(null);
@@ -43,6 +43,7 @@ public class QuizFeedbackContainer extends JPanel {
 	}
 
 	private void initView() {
+		feedbackPanelList = new ArrayList<QuizFeedbackPanel>();
 		int i = 0;
 		int y = 10;
 		while (i < 36) {

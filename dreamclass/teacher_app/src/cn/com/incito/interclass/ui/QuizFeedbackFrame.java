@@ -185,7 +185,7 @@ public class QuizFeedbackFrame extends JFrame {
 				if (channel != null && channel.isConnected()) {
 					List<Quiz> quizList = quizQueue.poll();
 					for(Quiz quiz : quizList){
-						MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_QUIZ_FEEDBACK);
+						MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_QUIZ_FEEDBACK_SEND);
 				        try {
 					        BufferedImage image = ImageIO.read(new File(quiz.getQuizUrl()));
 					        ByteArrayOutputStream os = new ByteArrayOutputStream();

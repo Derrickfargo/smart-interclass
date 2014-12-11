@@ -13,6 +13,7 @@ import cn.com.incito.server.handler.GroupListHandler;
 import cn.com.incito.server.handler.GroupSubmitHandler;
 import cn.com.incito.server.handler.GroupVoteHandler;
 import cn.com.incito.server.handler.HeartbeatHandler;
+import cn.com.incito.server.handler.QuizEvaluateSubmitHandler;
 import cn.com.incito.server.handler.ResponderHandler;
 import cn.com.incito.server.handler.SavePaperHandler;
 import cn.com.incito.server.handler.SendPaperHandler;
@@ -61,7 +62,9 @@ public final class MessageHandlerResource {
 		//设备退出
 		handlerResources.put(Message.MESSAGE_DEVICE_LOGOUT, DeviceLogoutHandler.class);
 		//抢答结束
-		handlerResources.put(Message.MESSAGE_STUDENT_RESPONDER,ResponderHandler.class);
+		handlerResources.put(Message.MESSAGE_STUDENT_RESPONDER, ResponderHandler.class);
+		//提交互评
+		handlerResources.put(Message.MESSAGE_QUIZ_FEEDBACK_SUBMIT, QuizEvaluateSubmitHandler.class);
 	}
 	
 	public MessageHandler getMessageHandler(Byte key){
