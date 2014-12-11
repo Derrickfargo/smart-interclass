@@ -51,11 +51,9 @@ public final class CoreSocket implements Runnable {
 			try {
 				if (channel.isConnectionPending()) {
 					channel.finishConnect();
-					isConnected = true;
 				}
 				channel.register(selector, SelectionKey.OP_READ);// 注册读事件
 			} catch (IOException e) {
-				isConnected = false;
 				MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":CoreSocket异常::" + e.getMessage());
 			}
 		} else if (selectionKey.isReadable()) {// 若为可读的事件，则进行消息解析
@@ -127,11 +125,13 @@ public final class CoreSocket implements Runnable {
 
 	public void disconnect() {
 		isRunning = false;
+		isConnected = false;
 	}
 
 	@Override
 	public void run() {
 		try {
+			isConnected = false;
 			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":CoreSocket::CoreSocket开始检查mac地址 ");
 			if (MyApplication.deviceId == null
 					|| MyApplication.deviceId.equals("")) {
@@ -158,7 +158,7 @@ public final class CoreSocket implements Runnable {
 			}
 			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":CoreSocket::CoreSocket退出! ");
 		} catch (IOException e) {
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":CoreSocket异常::" + e.getMessage());
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":CoreSocket异常::" ,e);
 		}
 	}
 	
