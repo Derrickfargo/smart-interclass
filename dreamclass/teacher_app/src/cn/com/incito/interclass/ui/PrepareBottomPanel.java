@@ -5,11 +5,13 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.swing.ImageIcon;
@@ -291,7 +293,11 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 			doRdmGroup();
 		}
 	}
-
+	
+	/**
+	 * 随机分组
+	 * 
+	 */
 	private void doRdmGroup() {
 		if(app.getOnlineStudent().size() == 0){
 			JOptionPane.showMessageDialog(getParent().getParent(), "当前还没有学生登陆，请先登陆后再随机分组!");
@@ -312,24 +318,37 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		}
 		// 发送小组信息
 		app.setGrouping(true);
-		List<Group> groupList = app.getGroupList();//要确定是在线小组，而且contain在线device;
+		List<Group> groupList= getTableGroupList();
 		Queue<List<Student>> students =  RdmGroup.getStudentQue();
+		MainFrame.getInstance().showGrouping();//注意这可能是要修改的地方
 		
+		int i=0;
 		for (Group group : groupList) {//遍历小组发送分组消息
-			int i=0;
 			group.setName("梦想小组"+i);
 			group.setLogo("rainbow");
 			app.addGroup(group);
 			List<Device> devices = group.getDevices();
 			for(Device device:devices){
+				List<Student> student = new ArrayList<Student>();
 				Map<String, Object> rdmMsg = new HashMap<String, Object>();
+				student=students.poll();
 				rdmMsg.put("group", group);
-				rdmMsg.put("students", students.poll());
+				rdmMsg.put("students", student);
 				try {
 					ApiClient.updateGroup(group.getId(), "梦想小组"+i, "rainbow");
 				} catch (AppException e) {
 					logger.info("随机分组失败："+group.getId());
 					e.printStackTrace();
+					return;
+				}
+				for(Student updateStu:student){
+					try {
+						ApiClient.loginForStudent(updateStu.getName(), updateStu.getSex(),updateStu.getNumber(), device.getImei());
+					} catch (AppException e) {
+						logger.info("随机分组更新学生小组失败");
+						e.printStackTrace();
+						return;
+					}
 				}
 				
 				MessagePacking rdmPacking = new MessagePacking(Message.MESSAGE_GROUP_RDMGROUP);
@@ -339,10 +358,35 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 			}
 			++i;
 		}
-		MainFrame.getInstance().showGrouping();//注意这可能是要修改的地方
 		app.refresh();
 		app.setGrouping(false);
 		
+	}
+
+	private List<Group> getTableGroupList() {
+		Set<String> devices = app.getOnlineDevice();
+		List<Group> groupList= new ArrayList<Group>();
+		//遍历divice，得到在线小组
+		for(String device : devices){
+			Device deviced = app.getImeiDevice().get(device);
+			Table table=app.getDeviceTable().get(deviced.getId());
+			Group group = app.getTableGroup().get(table.getId());
+			if(groupList.size()==0){
+				groupList.add(group);
+			}else{
+				boolean flag=true;
+				for(Group grouped: groupList){
+					if(group.getId()==grouped.getId()){
+						flag=false;
+					}
+				}
+				if(flag){
+					groupList.add(group);
+				}
+			}
+		}
+		
+		return groupList;
 	}
 
 	private void sendMsgToClient(final MessagePacking rdmPacking,
@@ -360,6 +404,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 				bytes.flip();
 				try {
 					clientChannel.write(bytes);
+					logger.info("随机分组信息："+bytes.array());
 				} catch (IOException e) {
 					logger.info("随机分组消息发送失败！"+new String(data));
 					e.printStackTrace();
