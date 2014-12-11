@@ -180,7 +180,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		m_sketchPad.setCallback(DrawBoxActivity.this);
 
 		if (getIntent().getExtras() != null) {
-			 byte[] paper = getIntent().getExtras().getByteArray("paper");
+			byte[] paper = getIntent().getExtras().getByteArray("paper");
 			if (paper != null) {
 				ByteArrayOutputStream outPut = new ByteArrayOutputStream();
 				bitmap = BitmapFactory.decodeByteArray(paper, 0, paper.length);
@@ -432,10 +432,11 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 			}
 		}
 		BitmapUtil.setFree();
-		if(mProgressDialog != null){
+		if (mProgressDialog != null) {
 			mProgressDialog.dismiss();
 		}
 	}
+
 	/**
 	 * @param imageView
 	 *            图片动画效果
@@ -473,16 +474,16 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	/**
 	 * @return 保存图片
 	 */
-	private Bitmap getBitMap() {// 老师收作业的时候调用此方法保存图片 然后将图片传到服务器
+	private Bitmap getPaperBitMap() {// 老师收作业的时候调用此方法保存图片 然后将图片传到服务器
 		final Bitmap bmBitmap = m_sketchPad.getCanvasSnapshot();
 		m_sketchPad.cleanDrawingCache();
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				saveBitmap(bmBitmap);//保存图片到本地
+				saveBitmap(bmBitmap);// 保存图片到本地
 			}
 		}).start();
-		
+
 		return bmBitmap;
 	}
 
@@ -548,7 +549,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 			bmp.recycle();
 		}
 		byte[] result = output.toByteArray();
-		MyApplication.Logger.debug("作业大小："+result.length);
+		MyApplication.Logger.debug("作业大小：" + result.length);
 		try {
 			output.close();
 		} catch (Exception e) {
@@ -561,18 +562,24 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case 0:
-				if(!mProgressDialog.isShowing()){
+				if (!mProgressDialog.isShowing()) {
 					mProgressDialog.show();
 				}
-				sendPaper();
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						sendPaper();
+					}
+				}).start();
 				break;
 			case 1:
-				if(timeTimer!=null){
+				if (timeTimer != null) {
 					timeTimer.cancel();
 					mProgressDialog.dismiss();
-					ToastHelper.showCustomToast(DrawBoxActivity.this, "作业提交失败，请重试");
+					ToastHelper.showCustomToast(DrawBoxActivity.this,
+							"作业提交失败，请重试");
 				}
-				
+
 				break;
 			default:
 				break;
@@ -583,7 +590,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	private TimerTask timeTimerTask;
 
 	public void saveBitmap(Bitmap bitmap) {
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"保存图片到本地");
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "保存图片到本地");
 		File f = new File("/sdcard/", "temp.jpg");
 		if (f.exists()) {
 			f.delete();
@@ -600,11 +607,11 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 			e.printStackTrace();
 		}
 	}
-	public void setBackGround(Bitmap bitmap){
+
+	public void setBackGround(Bitmap bitmap) {
 		m_sketchPad.setBkBitmap(bitmap);
 	}
-	
-	
+
 	/**
 	 * 发送作业请求
 	 */
@@ -612,53 +619,61 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		mProgressDialog.show();
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("imei", MyApplication.deviceId);
-		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SEND_PAPER);
-		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(jsonObject.toJSONString()));
+		MessagePacking messagePacking = new MessagePacking(
+				Message.MESSAGE_SEND_PAPER);
+		messagePacking.putBodyData(DataType.INT,
+				BufferUtils.writeUTFString(jsonObject.toJSONString()));
 		CoreSocket.getInstance().sendMessage(messagePacking);
-		MyApplication.Logger.debug("发出提交作业请求..." + "request:" + jsonObject.toJSONString());
-		 startTask();
+		MyApplication.Logger.debug("发出提交作业请求..." + "request:"
+				+ jsonObject.toJSONString());
+		startTask();
 	}
-	
+
 	/**
 	 * 开始时间检测
 	 */
-	public void startTask(){
-		 timeTimer = new Timer();
-		 timeTimerTask = new TimerTask() {
+	public void startTask() {
+		timeTimer = new Timer();
+		timeTimerTask = new TimerTask() {
 			@Override
 			public void run() {
-					handler.sendEmptyMessage(1);
+				handler.sendEmptyMessage(1);
 			}
 		};
-		timeTimer.schedule(timeTimerTask,10 * 1000);
+		timeTimer.schedule(timeTimerTask, 10 * 1000);
 	}
-	
-	public void closeProgressDialog(){
-		if(mProgressDialog!=null&&mProgressDialog.isShowing()){
-				mProgressDialog.dismiss();
+
+	public void closeProgressDialog() {
+		if (mProgressDialog != null && mProgressDialog.isShowing()) {
+			mProgressDialog.dismiss();
 		}
-		
+
 	}
-	public void cancleTask(){
-		if(timeTimer!=null)
+
+	public void cancleTask() {
+		if (timeTimer != null)
 			timeTimer.cancel();
 	}
+
 	/**
 	 * 发送作业
 	 */
-	public void sendPaper(){
+	public void sendPaper() {
 		MessagePacking messagePacking = new MessagePacking(
 				Message.MESSAGE_SAVE_PAPER);
 		// 测试ID
-		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(MyApplication.getInstance().getQuizID()));
+		messagePacking.putBodyData(DataType.INT, BufferUtils
+				.writeUTFString(MyApplication.getInstance().getQuizID()));
 		// 设备ID
-		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(MyApplication.getInstance().getDeviceId()));
+		messagePacking.putBodyData(DataType.INT, BufferUtils
+				.writeUTFString(MyApplication.getInstance().getDeviceId()));
 		// 图片
-		messagePacking.putBodyData(DataType.INT,bmpToByteArray(getBitMap(), true));
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ "开始提交作业");
+		messagePacking.putBodyData(DataType.INT,
+				bmpToByteArray(getPaperBitMap(), true));
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "开始提交作业");
 		CoreSocket.getInstance().sendMessage(messagePacking);
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ "启动作业提交...");
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "启动作业提交...");
 		MyApplication.getInstance().lockScreen(true);
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ "提交作业后锁定屏幕");
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "提交作业后锁定屏幕");
 	}
 }
