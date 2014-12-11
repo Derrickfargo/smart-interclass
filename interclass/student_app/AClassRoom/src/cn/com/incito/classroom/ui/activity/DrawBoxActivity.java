@@ -643,13 +643,6 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		timeTimer.schedule(timeTimerTask, 10 * 1000);
 	}
 
-	public void closeProgressDialog() {
-		if (mProgressDialog != null && mProgressDialog.isShowing()) {
-			mProgressDialog.dismiss();
-		}
-
-	}
-
 	public void cancleTask() {
 		if (timeTimer != null)
 			timeTimer.cancel();
