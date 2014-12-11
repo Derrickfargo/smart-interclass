@@ -19,6 +19,7 @@ import com.google.code.microlog4android.LoggerFactory;
 import android.content.Context;
 import android.util.Log;
 import cn.com.incito.classroom.base.AppManager;
+import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.utils.ApiClient;
 import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.common.utils.AndroidUtil;
@@ -61,9 +62,7 @@ public class AppUncaughtException implements UncaughtExceptionHandler {
 		if (AndroidUtil.isNetworkAvailable(context)) {
 			ApiClient.uploadErrorLog(errorInfo);
 		}
-
-		AppManager.getAppManager().AppExit(context);;
-		android.os.Process.killProcess(android.os.Process.myPid());
+		MyApplication.Logger.debug("AppUncaughtException:"+errorInfo);
 	}
 
 	/**
