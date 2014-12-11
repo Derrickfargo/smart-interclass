@@ -424,6 +424,7 @@ public class CoreService {
 				quiz.setQuizUrl(file.getAbsolutePath());
 				quiz.setThumbnail(thumbnail.getAbsolutePath());
 				app.getTempQuiz().put(imei, quiz);
+				app.getQuizMap().put(quizid, quiz);
 				app.getQuizList().add(quiz);
 				app.refresh();
 				if (app.getQuizList().size() == app.getClientChannel().size()) {
