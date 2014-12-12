@@ -320,7 +320,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		app.setGrouping(true);
 		List<Group> groupList= getTableGroupList();
 		Queue<List<Student>> students =  RdmGroup.getStudentQue();
-		
+		Map<String,List<Student>> imeiStudents = new HashMap<String, List<Student>>();
 		int i=0;
 		for (Group group : groupList) {//遍历小组发送分组消息
 			group.setName("梦想小组"+i);
@@ -350,7 +350,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 						return;
 					}
 				}
-				app.addRdmStudent(device.getImei(), student);
+				imeiStudents.put(device.getImei(), app.addRdmStudent( student));
 				MessagePacking rdmPacking = new MessagePacking(Message.MESSAGE_GROUP_RDMGROUP);
 				rdmPacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(JSON.toJSONString(rdmMsg)));
 				SocketChannel clientChannel = app.getClientChannel().get(device.getImei());
@@ -360,6 +360,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 			app.addGroup(group);
 			++i;
 		}
+		app.refreshIMEI(imeiStudents);
 		app.refresh();
 		app.setGrouping(false);
 	}
