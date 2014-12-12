@@ -612,6 +612,10 @@ public class Application {
     public void refreshQuiz() {
         MainFrame.getInstance().refreshQuiz();
     }
+    
+    public void refreshEvalute(){
+    	MainFrame.getInstance().refreshEvalute();
+    }
 
     public String getLessionid() {
 		return lessionid;
