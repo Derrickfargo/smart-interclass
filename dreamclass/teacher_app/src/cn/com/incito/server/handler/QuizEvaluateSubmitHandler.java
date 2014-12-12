@@ -44,11 +44,13 @@ public class QuizEvaluateSubmitHandler extends MessageHandler {
 				Quiz quiz = app.getQuizMap().get(quizId);
 				feedback.setName(quiz.getName());
 				feedback.setQuiz(quiz);
+				feedback.setScore(getScore(level));
 				feedbackMap.put(quizId, feedback);
 			}
-			feedback.setScore(getScore(level));
+			feedback.setScore(getScore(level) + feedback.getScore());
 			feedback.getFeedbackList().add(name.toString() + "给予了 " + getLevel(level));
 		}
+		app.refreshEvalute();//刷新评比结果
 	}
 	
 	private int getScore(int level) {
