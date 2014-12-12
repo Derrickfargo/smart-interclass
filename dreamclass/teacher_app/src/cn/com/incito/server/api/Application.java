@@ -203,6 +203,25 @@ public class Application {
 			imeiStudent.put(imei, studentList);
 		}
     }
+    public List<Student> addRdmStudent(List<Student> students){
+    	List<Student> onlineStudent = new ArrayList<Student>();
+    	for(Map.Entry<String, List<Student>> entry:imeiStudent.entrySet()){
+    		for(Student student:entry.getValue()){
+    			for(Student stu:students){
+    			if(stu.getName().equals(student.getName())&&
+    					stu.getNumber().equals(student.getNumber())){
+    				onlineStudent.add(stu);
+    			}
+    			}
+    		}
+    	}
+    	return onlineStudent;
+    }
+	public void refreshIMEI(Map<String, List<Student>> imeiStudents) {
+		imeiStudent.clear();
+		imeiStudent.putAll(imeiStudents);
+	} 
+    
     //需要移除两个容器
     public void removeLoginStudent(String imei){
     	List<Student> studentList = imeiStudent.get(imei);
@@ -663,5 +682,8 @@ public class Application {
 	public Map<String, QuizFeedback> getQuizFeedbackMap() {
 		return quizFeedbackMap;
 	}
+
+
+
 
 }
