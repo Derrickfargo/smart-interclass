@@ -95,4 +95,8 @@ public class URLs {
 	 * 下载更新
 	 */
 	public static String URL_DOWNLOAD_UPDATE = URL_API_HOST + "api/version/download?";
+	/**
+	 * 检查mac
+	 */
+	public static String URL_CHECK_MAC=URL_API_HOST+"api/mac/checkMac";
 }
