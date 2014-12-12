@@ -99,7 +99,7 @@ public class Message implements Serializable{
 	/**
 	 * 学生互评
 	 */
-	public static final Byte MESSAGE_STUDENT_EVALUATE=0x11;
+	public static final Byte MESSAGE_STUDENT_EVALUATE=0x10;
 	
 	
 	

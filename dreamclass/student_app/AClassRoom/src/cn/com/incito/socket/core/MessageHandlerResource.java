@@ -11,6 +11,7 @@ import cn.com.incito.socket.handler.DeviceBindHandler;
 import cn.com.incito.socket.handler.DeviceHasBindHandler;
 import cn.com.incito.socket.handler.DeviceLoginHandler;
 import cn.com.incito.socket.handler.DistributePaperHandler;
+import cn.com.incito.socket.handler.EvaluateHandler;
 import cn.com.incito.socket.handler.GroupEditHandler;
 import cn.com.incito.socket.handler.GroupListHandler;
 import cn.com.incito.socket.handler.GroupSubmitHandler;
@@ -76,6 +77,8 @@ public final class MessageHandlerResource {
         handlerResources.put(Message.MESSAGE_STUDENT_RESPONDER, ResponderHandler.class);
         //随机分组消息
         handlerResources.put(Message.MESSAGE_RANDOM_GROUP, RandomGroupHandler.class);
+        //互评
+        handlerResources.put(Message.MESSAGE_STUDENT_EVALUATE, EvaluateHandler.class);
     }
 
     public MessageHandler getMessageHandler(Byte key) {
