@@ -61,4 +61,12 @@ public class RoomService {
 	public List<Room> getRoomListBySchoolId(int id) {
 		return roomMapper.getRoomListBySchoolId(id);
 	}
+
+	public Integer checkMack(String mac) {
+		Room room = roomMapper.checkMac(mac);
+		if(room==null||room.getId()==0){
+			return 0;
+		}
+		return 1;
+	}
 }

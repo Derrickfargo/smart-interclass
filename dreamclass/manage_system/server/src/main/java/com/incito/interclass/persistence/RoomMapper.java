@@ -24,4 +24,6 @@ public interface RoomMapper {
 	List<School> getRoomListByVagueName(@Param("schoolName") String SchoolName,@Param("pageNum") int pageNum);
 
 	List<Room> getRoomListBySchoolId(int id);
+
+	Room checkMac(String mac);
 }
