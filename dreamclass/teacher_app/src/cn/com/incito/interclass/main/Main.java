@@ -68,20 +68,7 @@ public class Main {
 					JSONObject jsonObject = JSON.parseObject(content);
 					if (jsonObject.getIntValue("code") == 1) {//没有升级
 						// 初始化应用程序
-						System.out.println(checkMac());
-						if(checkMac()==null||checkMac()==""){
-							Application.getInstance();
-							new Thread() {
-								public void run() {
-									// 初始化自定义字体
-									initDefinedFont();
-								}
-							}.start();
-							new RoomLogin1();
-							return;
-						}
-						Application.getInstance().setMac(checkMac());
-						new Login();
+						checkMac();
 						return;
 					}
 					File file = new File("update.exe");
@@ -144,26 +131,71 @@ public class Main {
 		Thread.setDefaultUncaughtExceptionHandler(new AppExceptionHandler());
 	}
 	
-	private static String checkMac(){
+	/**
+	 * 密钥检查
+	 */
+	private static void checkMac(){
 		File checkingKey = new File("./key/key.dat");
-		if(!checkingKey.exists())
-			return null;
+		if(!checkingKey.exists()){
+			schoolLogin();
+			return;
+		}
 		try {
 			FileInputStream fis = new FileInputStream("./key/key.dat");
-			byte[] bt = new byte[32];
+			byte[] bt = new byte[32];//只检查前32字节，超过部分忽略
 			int length = fis.read(bt);
 			fis.close();
 			if(length==0){
-				return null;
+				schoolLogin();
+				return;
 			}
 			 final String mac = new String(bt);
-			 return mac;
+			 checkMac(mac);//检查数据库中密钥是否存在
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}  catch (IOException e) {
 			e.printStackTrace();
 		}
-		return null;
+	}
+	private static void schoolLogin(){
+		Application.getInstance();
+		new Thread() {
+			public void run() {
+				// 初始化自定义字体
+				initDefinedFont();
+			}
+		}.start();
+		new RoomLogin1();
+	}
+	private static void checkMac(String mac){
+		 AsyncHttpConnection http = AsyncHttpConnection.getInstance();
+		 ParamsWrapper pram = new ParamsWrapper();
+		 pram.put("mac", mac);
+		 http.post(URLs.URL_CHECK_MAC, pram, new StringResponseHandler() {
+			@Override
+			public void onSubmit(URL url, ParamsWrapper params) {
+			}
+			@Override
+			public void onStreamError(IOException exp) {
+			}
+			@Override
+			public void onConnectError(IOException exp) {
+				JOptionPane.showMessageDialog(null, "检查密钥失败，请检查网络！");
+				System.exit(0);
+			}
+			@Override
+			protected void onResponse(String content, URL url) {
+				 JSONObject result=JSONObject.parseObject(content);
+				 int flag=result.getIntValue("code");
+				 String mac = result.getString("mac");
+				 if(flag==0){
+						schoolLogin();
+						return;
+				 }
+				Application.getInstance().setMac(mac);//密钥验证正确，准许登录
+					new Login();
+			}
+		 });
 	}
 	
 	private static void initDefinedFont() {

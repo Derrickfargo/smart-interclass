@@ -87,4 +87,12 @@
 		WHERE 
 			school_id=#{id}
 	</select>
+	<select id="checkMac" parameterType= "java.lang.String" resultType="com.incito.interclass.entity.Room">
+	    SELECT
+	    	id,name,school_id AS schoolId,mac
+	    FROM
+	    	tb_room
+	    WHERE
+	    	mac=#{mac}
+	</select>
 </mapper>

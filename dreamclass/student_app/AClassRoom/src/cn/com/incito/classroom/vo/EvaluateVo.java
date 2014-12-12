@@ -8,7 +8,6 @@ public class EvaluateVo {
 	public int score;
 	public Drawable paperPic;
 	
-	
 	public String getQuizId() {
 		return id;
 	}

@@ -135,7 +135,7 @@ public class QuizFeedbackFrame extends JFrame {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-//					sendPeerFeedbackMessage();
+					sendPeerFeedbackMessage();
 					System.out.println("sendPeerFeedbackMessage()");
 				}
 			});
