@@ -53,6 +53,7 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 	private static final String BTN_ACCEPT_HOVER = "images/quiz/btn_accept_works_hover.png";
 	
 	private JButton btnQuiz, btnFeedback;
+	private QuizFeedbackFrame quizFeedbackFrame;
 	
 	public QuizBottomPanel(){
 		setSize(878, 48);
@@ -174,11 +175,15 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 //						JOptionPane.showMessageDialog(QuizBottomPanel.this, "收取作业后才能进行互评！");
 //						return;
 //					}
-					new QuizFeedbackFrame();
+					quizFeedbackFrame = new QuizFeedbackFrame();
 				}
 			}.start();
 			
 		}
+	}
+	
+	public void refreshQuizEvaluate() {
+		quizFeedbackFrame.refresh();
 	}
 	
 	@Override

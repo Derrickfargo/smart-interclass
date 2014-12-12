@@ -11,8 +11,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.apache.log4j.Logger;
-
 import cn.com.incito.interclass.po.QuizFeedback;
 import cn.com.incito.server.utils.UIHelper;
 
@@ -22,10 +20,7 @@ import cn.com.incito.server.utils.UIHelper;
  *
  */
 public class QuizFeedbackPanel extends JPanel implements MouseListener{
-	private Logger logger = Logger.getLogger(QuizFeedbackPanel.class.getName());
 	private static final long serialVersionUID = 882552987989905663L;
-	private static final String BTN_SHOW_NORMAL = "images/quiz/ico_add.png";
-	private static final String BTN_SHOW_HOVER = "images/quiz/ico_add_hover.png";
 	
 	private QuizFeedback feedback;
 	private JLabel lblName, lblImage;

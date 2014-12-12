@@ -68,13 +68,19 @@ public class QuizFeedbackFrame extends JFrame {
 		photoDialog.setVisible(true);
 	}
 	
+	public void refresh() {
+		photoDialog.refresh();
+	}
+	
 	public class PhotoDialog extends JDialog implements MouseListener{
 		private static final long serialVersionUID = -2216276219179107707L;
 		private static final String BACKGROUND = "images/quiz/bg_feedback.png";
 		private static final String BTN_CLOSE_NORMAL = "images/quiz/ico_close.png";
 		private static final String BTN_CLOSE_HOVER = "images/quiz/ico_close_hover.png";
+		private static final String BTN_SHOW_NORMAL = "images/quiz/btn_show.png";
+		private static final String BTN_SHOW_HOVER = "images/quiz/btn_show.png";
 		
-		private JButton btnClose;
+		private JButton btnClose, btnShow;
 		private JLabel lblBackground, lblTitle;
 		private QuizFeedbackFrame coverFrame;
 		private QuizFeedbackContainer container;
@@ -103,8 +109,17 @@ public class QuizFeedbackFrame extends JFrame {
 	        
 	        lblTitle = new JLabel("学生互评结果");
 			lblTitle.setForeground(UIHelper.getDefaultFontColor());
-			lblTitle.setBounds(20, 10, 200, 25);
+			lblTitle.setBounds(20, 10, 75, 25);
 			add(lblTitle);
+			
+			btnShow = new JButton();
+			btnShow.setFocusable(false);
+			btnShow.setBorderPainted(false);//设置边框不可见
+			btnShow.setContentAreaFilled(false);//设置透明
+	        btnShow.setIcon(new ImageIcon(BTN_SHOW_NORMAL));//设置图片
+	        btnShow.setBounds(100, 6, 110, 34);
+	        add(btnShow);
+	        btnShow.addMouseListener(this);
 			
 			container = new QuizFeedbackContainer();
 			container.setBackground(Color.WHITE);
@@ -134,6 +149,10 @@ public class QuizFeedbackFrame extends JFrame {
 	        add(lblBackground);
 	    }
 
+	    public void refresh(){
+	    	container.refresh();
+	    }
+	    
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			if (e.getSource() == btnClose) {
@@ -159,6 +178,9 @@ public class QuizFeedbackFrame extends JFrame {
 			if (e.getSource() == btnClose) {
 	            btnClose.setIcon(new ImageIcon(BTN_CLOSE_HOVER));
 	        }
+			if (e.getSource() == btnShow) {
+				btnShow.setIcon(new ImageIcon(BTN_SHOW_HOVER));
+	        }
 		}
 
 		@Override
@@ -166,6 +188,9 @@ public class QuizFeedbackFrame extends JFrame {
 			if (e.getSource() == btnClose) {
 				btnClose.setIcon(new ImageIcon(BTN_CLOSE_NORMAL));
 			}
+			if (e.getSource() == btnShow) {
+				btnShow.setIcon(new ImageIcon(BTN_SHOW_NORMAL));
+	        }
 		}
 	    
 	}
