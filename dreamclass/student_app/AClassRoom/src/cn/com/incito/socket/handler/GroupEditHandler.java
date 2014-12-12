@@ -24,7 +24,7 @@ public class GroupEditHandler extends MessageHandler {
 		Logger.debug(Utils.getTime()+TAG+":收到修改分组...组ID：" + groupID);
 		Log.i("GroupEditHandler", "收到修改分组...组ID：" + groupID);
 		if("RandomGroupActivity".equals(currentActivityName)){
-			AppManager.getAppManager().currentActivity().finish();
+			AppManager.getAppManager().finishActivity();
 		}
 		UIHelper.getInstance().showEditGroupActivity(groupID);
 		MyApplication.getInstance().lockScreen(false);
