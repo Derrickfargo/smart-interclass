@@ -108,6 +108,10 @@ public class Message {
 	 * 作业互评提交
 	 */
 	public static final Byte MESSAGE_QUIZ_FEEDBACK_SUBMIT=0x11;
+	/**
+	 * 结束抢答
+	 */
+	public static final Byte MESSAGE_RESPONDER_END = 0x13;
 	
 	private Logger log = Logger.getLogger(Message.class);
 	

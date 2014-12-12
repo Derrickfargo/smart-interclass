@@ -43,7 +43,7 @@ public class UIHelper {
 		logger.info("下课信息发出");
 	}
 	/**
-	 * 2014.12.03
+	 * 
 	 * 抢答命令
 	 * @param doResponse true为发布抢答命令，false为pad端锁屏，抢答结束
 	 */
@@ -57,7 +57,9 @@ public class UIHelper {
 		}
 		else{
 //			messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString("false")); //注意，如果使用请单独添加channel
-			sendLockScreenMessage(true);
+//			sendLockScreenMessage(true);
+			MessagePacking msg = new MessagePacking(Message.MESSAGE_RESPONDER_END);
+			CoreSocket.getInstance().sendMessage(msg.pack().array());
 			logger.info("抢答结束命令发出");
 		}
 	}
