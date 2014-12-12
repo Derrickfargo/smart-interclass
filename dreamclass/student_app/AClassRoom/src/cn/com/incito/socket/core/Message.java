@@ -102,6 +102,12 @@ public class Message implements Serializable{
 	public static final Byte MESSAGE_STUDENT_EVALUATE=0x10;
 	
 	
+	/**
+	 * 结束抢答
+	 */
+	public static final Byte MESSAGE_RESPONDER_END = 0x13;
+	
+	
 	
 	
     private byte msgID;

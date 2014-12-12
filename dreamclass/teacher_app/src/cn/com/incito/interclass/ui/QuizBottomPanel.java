@@ -169,11 +169,11 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 			new Thread(){
 				public void run() {
 					//TODO 暂时屏蔽，测试界面
-//					Queue<List<Quiz>> quizQueue = PeerFeedbackUtils.getQuizQueue();
-//					if(quizQueue.size() == 0){
-//						JOptionPane.showMessageDialog(QuizBottomPanel.this, "收取作业后才能进行互评！");
-//						return;
-//					}
+					Queue<List<Quiz>> quizQueue = PeerFeedbackUtils.getQuizQueue();
+					if(quizQueue.size() == 0){
+						JOptionPane.showMessageDialog(QuizBottomPanel.this, "收取作业后才能进行互评！");
+						return;
+					}
 					new QuizFeedbackFrame();
 				}
 			}.start();

@@ -21,6 +21,9 @@ public class RandomGroupHandler extends MessageHandler {
 		if("RandomGroupActivity".equals(currentActivityName)){
 			UIHelper.getInstance().getRandomGroupActivity().refreshData(data);
 		}else{	//否则的话显示随机分组界面并且显示数据
+			if(!"WaitingActivity".equals(currentActivityName)){
+				AppManager.getAppManager().finishActivity();
+			}
 			UIHelper.getInstance().showRandomGroupActivity(data);
 		}
 	}
