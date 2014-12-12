@@ -162,11 +162,11 @@ public final class CoreSocket implements Runnable {
 			if (MyApplication.deviceId == null
 					|| MyApplication.deviceId.equals("")) {
 				//没有mac地址,不允许建立连接
-				Logger.debug(Utils.getTime()+"CoreSocket：" +"连接建立失败，没有mac地址");
+				Logger.debug(Utils.getTime()+"CoreSocket：连接建立失败，没有mac地址");
 				Log.i("CoreSocket", "连接建立失败，没有mac地址");
 				return;
 			}
-			Logger.debug(Utils.getTime()+"CoreSocket：" +"CoreSocket开始建立连接");
+			Logger.debug(Utils.getTime()+"CoreSocket：CoreSocket开始建立连接");
 			Log.i("CoreSocket", "有mac地址，CoreSocket开始建立连接 ");
 			isRunning = true;
 			// 客户端向服务器端发起建立连接请求
