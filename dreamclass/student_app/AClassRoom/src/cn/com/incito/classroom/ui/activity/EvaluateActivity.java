@@ -67,6 +67,7 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 	public Button number2;
 
 	ArrayList<EvaluateVo> quizList = new ArrayList<EvaluateVo>();// 收到教师端发送的作业的所有属性都存在里面
+
 	ArrayList<Button> scoreList = new ArrayList<Button>();// 获得的名次按钮
 
 	@Override
@@ -80,12 +81,12 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 	 * 初始化界面
 	 */
 	private void initView() {
-//		byte[] paper = getIntent().getExtras().getByteArray("paper");
-//		getDrawable(paper)
-		 for (int i = 0; i < 5; i++) {
-			 EvaluateVo evaluateVo=new EvaluateVo();
-			 evaluateVo.setPaperPic(getResources().getDrawable(R.drawable.bg_empty));
-			 quizList.add(evaluateVo);
+		// byte[] paper = getIntent().getExtras().getByteArray("paper");
+		// getDrawable(paper)
+		for (int i = 0; i < 5; i++) {
+			EvaluateVo evaluateVo = new EvaluateVo();
+			evaluateVo.setPaperPic(getResources().getDrawable(R.drawable.bg_empty));
+			quizList.add(evaluateVo);
 		}
 		animation = AnimationUtils.loadAnimation(EvaluateActivity.this, R.anim.score_anim);
 		InitViewPager();
@@ -137,23 +138,18 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 			break;
 		case R.id.number_one:
 			setScore("1", mCurrentViewID);
-			changeEvaluateBtnBg(button_one);
 			break;
 		case R.id.number_two:
 			setScore("2", mCurrentViewID);
-			changeEvaluateBtnBg(button_two);
 			break;
 		case R.id.number_three:
 			setScore("3", mCurrentViewID);
-			changeEvaluateBtnBg(button_three);
 			break;
 		case R.id.number_four:
 			setScore("4", mCurrentViewID);
-			changeEvaluateBtnBg(button_four);
 			break;
 		case R.id.number_five:
 			setScore("5", mCurrentViewID);
-			changeEvaluateBtnBg(button_five);
 			break;
 		default:
 			break;
@@ -166,33 +162,14 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 	 *            根据viewpager的当前页 设置名次
 	 */
 	public void setScore(String score, int currentViewPageId) {
-		 for (int i = 0; i < scoreList.size(); i++) {
-		 if (i == currentViewPageId) {// 获得的按钮是当前页面按钮的时候才进行名次显示
-			 scoreList.get(i).setText(score);
-			 scoreList.get(i).setVisibility(View.VISIBLE);
-			 scoreList.get(i).startAnimation(animation);
-		 }
-		 }
-
-//		switch (currentViewPageId) {
-//		case 0:// 匹配的是
-//			number0.setText(score);
-//			number0.setVisibility(View.VISIBLE);
-//			number0.startAnimation(animation);
-//			break;
-//		case 1:
-//			number1.setText(score);
-//			number1.setVisibility(View.VISIBLE);
-//			number1.startAnimation(animation);
-//			break;
-//		case 2:
-//			number2.setText(score);
-//			number2.setVisibility(View.VISIBLE);
-//			number2.startAnimation(animation);
-//			break;
-//		default:
-//			break;
-//		}
+		for (int i = 0; i < scoreList.size(); i++) {
+			if (i == currentViewPageId) {// 获得的按钮是当前页面按钮的时候才进行名次显示
+				scoreList.get(i).setText(score);
+				quizList.get(i).setSelectNumber(Integer.parseInt(score));
+				scoreList.get(i).setVisibility(View.VISIBLE);
+				scoreList.get(i).startAnimation(animation);
+			}
+		}
 	}
 
 	/**
@@ -237,22 +214,8 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 
 		@Override
 		public Object instantiateItem(View arg0, int arg1) {
-//			if (arg1 == 0) {
-//				mListViews.get(arg1).setBackgroundResource(R.drawable.bg_cgbg_white);
-//				number0 = (Button) mListViews.get(arg1).findViewById(R.id.number);
-//			} else if (arg1 == 1) {
-//				mListViews.get(arg1).setBackgroundResource(R.drawable.bg_empty);
-//				number1 = (Button) mListViews.get(arg1).findViewById(R.id.number);
-//			} else if (arg1 == 2) {
-//				mListViews.get(arg1).setBackgroundResource(R.drawable.bg_cgbg_bb);
-//				number2 = (Button) mListViews.get(arg1).findViewById(R.id.number);
-//			}
-			if(!quizList.get(mCurrentViewID).isFirstShow){
-				initEvaluateBtn();
-			}
-			quizList.get(mCurrentViewID).setFirstShow(false);//设置当前页面不是最后第一次显示
-			 mListViews.get(arg1).setBackgroundDrawable(quizList.get(arg1).getPaperPic());
-			 scoreList.add((Button) mListViews.get(arg1).findViewById(R.id.number));
+			mListViews.get(arg1).setBackgroundDrawable(quizList.get(arg1).getPaperPic());
+			scoreList.add((Button) mListViews.get(arg1).findViewById(R.id.number));
 			((ViewPager) arg0).addView(mListViews.get(arg1), 0);
 			return mListViews.get(arg1);
 		}
@@ -318,40 +281,40 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 	/**
 	 * 初始化每个名次按钮的状态
 	 */
-	public void initEvaluateBtn() {
-		button_one.setBackgroundResource(R.drawable.number_1);
-		button_two.setBackgroundResource(R.drawable.number_2);
-		button_three.setBackgroundResource(R.drawable.number_3);
-		button_four.setBackgroundResource(R.drawable.number_4);
-		button_five.setBackgroundResource(R.drawable.number_5);
-	}
+	// public void initEvaluateBtn() {
+	// button_one.setBackgroundResource(R.drawable.number_1);
+	// button_two.setBackgroundResource(R.drawable.number_2);
+	// button_three.setBackgroundResource(R.drawable.number_3);
+	// button_four.setBackgroundResource(R.drawable.number_4);
+	// button_five.setBackgroundResource(R.drawable.number_5);
+	// }
 
 	/**
 	 * @param btn
 	 *            改变被点击的名次按钮颜色为灰色
 	 */
-	public void changeEvaluateBtnBg(Button btn) {
-		initEvaluateBtn();
-		btn.setBackgroundResource(R.drawable.number_1);// 设置点击按钮变灰色
-		switch (btn.getId()) {
-		case R.id.number_one:
-			quizList.get(mCurrentViewID).setSelectNumber(1);
-			break;
-		case R.id.number_two:
-			quizList.get(mCurrentViewID).setSelectNumber(2);
-			break;
-		case R.id.number_three:
-			quizList.get(mCurrentViewID).setSelectNumber(3);
-			break;
-		case R.id.number_four:
-			quizList.get(mCurrentViewID).setSelectNumber(4);
-			break;
-		case R.id.number_five:
-			quizList.get(mCurrentViewID).setSelectNumber(5);
-			break;
-		default:
-			break;
-		}
-	}
+	// public void changeEvaluateBtnBg(Button btn) {
+	// initEvaluateBtn();
+	// btn.setBackgroundResource(R.drawable.number_1);// 设置点击按钮变灰色
+	// switch (btn.getId()) {
+	// case R.id.number_one:
+	// quizList.get(mCurrentViewID).setSelectNumber(1);
+	// break;
+	// case R.id.number_two:
+	// quizList.get(mCurrentViewID).setSelectNumber(2);
+	// break;
+	// case R.id.number_three:
+	// quizList.get(mCurrentViewID).setSelectNumber(3);
+	// break;
+	// case R.id.number_four:
+	// quizList.get(mCurrentViewID).setSelectNumber(4);
+	// break;
+	// case R.id.number_five:
+	// quizList.get(mCurrentViewID).setSelectNumber(5);
+	// break;
+	// default:
+	// break;
+	// }
+	// }
 
 }
