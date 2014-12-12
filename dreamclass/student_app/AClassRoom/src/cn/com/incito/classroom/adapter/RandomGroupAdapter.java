@@ -60,9 +60,18 @@ public class RandomGroupAdapter extends BaseAdapter {
 		}
 		if(student != null){
 			if(1 == student.getSex()){
-				viewHolder.rlayout.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bg_logged_user_m_hover));
+				if(student.isLogin()){
+					viewHolder.rlayout.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bg_logged_user_m_hover));
+				}else{
+					viewHolder.rlayout.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bg_not_logged_user_m_hover));
+				}
 			}else{
-				viewHolder.rlayout.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bg_logged_user_w));
+				if(student.isLogin()){
+					viewHolder.rlayout.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bg_logged_user_w));
+				}else{
+					viewHolder.rlayout.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bg_not_logged_user_w));
+
+				}
 			}
 			viewHolder.stduent_text.setText(student.getName());
 		}
