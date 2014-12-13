@@ -33,10 +33,8 @@ public class EvaluateHandler extends MessageHandler{
 	protected void handleMessage() {
 		MyApplication.Logger.debug("收到互评命令");
 		MyApplication.getInstance().lockScreen(false);
-		if(UIHelper.getInstance().getEvaluateActivity()!=null){
-			UIHelper.getInstance().getEvaluateActivity().setQuizList(imageByte);
-		}
 		UIHelper.getInstance().showEvaluateActivity(imageByte);;
+		
 	}
 
 	/**

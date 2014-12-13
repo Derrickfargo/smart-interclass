@@ -176,6 +176,7 @@ public final class CoreSocket implements Runnable {
 			selector = Selector.open().wakeup();
 			socketChannel.register(selector, SelectionKey.OP_CONNECT);
 			socketChannel.connect(new InetSocketAddress(Constants.IP, Constants.PORT));
+			Logger.debug(Utils.getTime()+"CoreSocket：CoreSocket开始建立连接");
 			while (isRunning) {// 轮询监听客户端上注册事件的发生
 				selector.select(300);
 				Set<SelectionKey> keySet = selector.selectedKeys();
@@ -187,9 +188,8 @@ public final class CoreSocket implements Runnable {
 			Logger.debug(Utils.getTime()+"CoreSocket退出!");
 			Log.i("CoreSocket", "CoreSocket退出!");
 		} catch (IOException e) {
-			ApiClient.uploadErrorLog(e.getMessage());
-			Logger.debug(Utils.getTime()+"异常信息：" + e.getMessage());
-			Log.e("CoreSocket", "" + e.getMessage());
+			Logger.debug(Utils.getTime()+"异常信息：" + e);
+			Log.e("CoreSocket", "" + e.toString());
 		}
 	}
 

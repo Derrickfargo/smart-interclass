@@ -175,6 +175,7 @@ public class UIHelper {
 		Intent intent = new Intent();
 		MyApplication.getInstance().setSubmitPaper(false);
 		if(UIHelper.getInstance().getEvaluateActivity()!=null){
+			if (paper != null)
 			UIHelper.getInstance().getEvaluateActivity().setQuizList(paper);
 		}else{
 			if (paper != null) {

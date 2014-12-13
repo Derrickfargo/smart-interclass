@@ -35,6 +35,8 @@ import com.alibaba.fastjson.JSONObject;
 
 public class EvaluateActivity extends BaseActivity implements OnClickListener {
 
+	LayoutInflater mInflater;
+
 	private int mCurrentViewID = 0; // 当前页卡编号
 
 	private int PAGER_NUM = 5;// 页面总数
@@ -84,15 +86,16 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 	 * 初始化界面
 	 */
 	private void initView() {
-		 byte[] paper = getIntent().getExtras().getByteArray("paper");
-		 EvaluateVo evaluateVo = new EvaluateVo();
-		 evaluateVo.setPaperPic(getDrawable(paper));
-		 quizList.add(evaluateVo);
-//		for (int i = 0; i < 5; i++) {
-//			EvaluateVo evaluateVo = new EvaluateVo();
-//			evaluateVo.setPaperPic(getResources().getDrawable(R.drawable.bg_empty));
-//			quizList.add(evaluateVo);
-//		}
+		mInflater = getLayoutInflater();
+		byte[] paper = getIntent().getExtras().getByteArray("paper");
+		EvaluateVo evaluateVo = new EvaluateVo();
+		evaluateVo.setPaperPic(getDrawable(paper));
+		quizList.add(evaluateVo);
+		// for (int i = 0; i < 5; i++) {
+		// EvaluateVo evaluateVo = new EvaluateVo();
+		// evaluateVo.setPaperPic(getResources().getDrawable(R.drawable.bg_empty));
+		// quizList.add(evaluateVo);
+		// }
 		animation = AnimationUtils.loadAnimation(EvaluateActivity.this, R.anim.score_anim);
 		pager_up = (Button) findViewById(R.id.pager_up);
 		pager_up.setOnClickListener(this);
@@ -116,11 +119,11 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 	private void InitViewPager() {
 		viewPage = (ViewPager) findViewById(R.id.viewPager);
 		listViews = new ArrayList<View>();
-		LayoutInflater mInflater = getLayoutInflater();
-		for (int i = 0; i < 5; i++) {
-			listViews.add(mInflater.inflate(R.layout.evaluate_item, null));
-		}
-		adpt=new MyPagerAdapter(listViews, quizList);
+
+		// for (int i = 0; i < 5; i++) {
+		listViews.add(mInflater.inflate(R.layout.evaluate_item, null));
+		// }
+		adpt = new MyPagerAdapter(listViews, quizList);
 		viewPage.setAdapter(adpt);
 		viewPage.setCurrentItem(0);
 		viewPage.setOnPageChangeListener(new MyOnPageChangeListener());
@@ -173,11 +176,11 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 				scoreList.get(i).setText(score);
 				quizList.get(i).setSelectNumber(Integer.parseInt(score));
 				for (int j = 0; j < quizList.size(); j++) {
-					if(quizList.get(i).getSelectNumber()==quizList.get(j).getSelectNumber()){
-						quizList.get(j).setSelectNumber(Integer.parseInt(score)+1);
-						for (int j2 = 0; j2 < quizList.size(); j2++){
-							if(quizList.get(j).getSelectNumber()==quizList.get(j2).getSelectNumber()){
-								quizList.get(j2).setSelectNumber(quizList.get(j).getSelectNumber()+1);
+					if (quizList.get(i).getSelectNumber() == quizList.get(j).getSelectNumber()) {
+						quizList.get(j).setSelectNumber(Integer.parseInt(score) + 1);
+						for (int j2 = 0; j2 < quizList.size(); j2++) {
+							if (quizList.get(j).getSelectNumber() == quizList.get(j2).getSelectNumber()) {
+								quizList.get(j2).setSelectNumber(quizList.get(j).getSelectNumber() + 1);
 							}
 						}
 					}
@@ -187,6 +190,7 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 			}
 		}
 	}
+
 	/**
 	 * 发送评价结果
 	 */
@@ -207,7 +211,7 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 		public List<View> mListViews;
 
 		public ArrayList<EvaluateVo> paperList;
-		
+
 		public void setPaperList(ArrayList<EvaluateVo> paperList) {
 			this.paperList = paperList;
 			notifyDataSetChanged();
@@ -273,7 +277,7 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 		@Override
 		public void onPageSelected(int arg0) {
 			mCurrentViewID = arg0;
-			if(quizList.get(arg0).getSelectNumber()!=0)
+			if (quizList.get(arg0).getSelectNumber() != 0)
 				scoreList.get(arg0).setText(quizList.get(arg0).getSelectNumber() + " ");
 		}
 
@@ -291,8 +295,9 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 		EvaluateVo evaluateVo = new EvaluateVo();
 		evaluateVo.setPaperPic(getDrawable(paper));
 		quizList.add(evaluateVo);
+		listViews.add(mInflater.inflate(R.layout.evaluate_item, null));
 		adpt.setPaperList(quizList);
-		
+
 	}
 
 	/**
@@ -301,49 +306,11 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 	 */
 	public Drawable getDrawable(byte[] paper) {
 		ByteArrayOutputStream outPut = new ByteArrayOutputStream();
-		Bitmap bitmap = BitmapFactory.decodeByteArray(paper, 0, paper.length);
-		bitmap.compress(CompressFormat.PNG, 100, outPut);
-		BitmapDrawable bd = new BitmapDrawable(bitmap);
+		Bitmap mBitmap = BitmapFactory.decodeByteArray(paper, 0, paper.length);
+		mBitmap.compress(CompressFormat.PNG, 100, outPut);
+		BitmapDrawable bd = new BitmapDrawable(mBitmap);
 		return bd;
 	}
 
-	/**
-	 * 初始化每个名次按钮的状态
-	 */
-	// public void initEvaluateBtn() {
-	// button_one.setBackgroundResource(R.drawable.number_1);
-	// button_two.setBackgroundResource(R.drawable.number_2);
-	// button_three.setBackgroundResource(R.drawable.number_3);
-	// button_four.setBackgroundResource(R.drawable.number_4);
-	// button_five.setBackgroundResource(R.drawable.number_5);
-	// }
-
-	/**
-	 * @param btn
-	 *            改变被点击的名次按钮颜色为灰色
-	 */
-	// public void changeEvaluateBtnBg(Button btn) {
-	// initEvaluateBtn();
-	// btn.setBackgroundResource(R.drawable.number_1);// 设置点击按钮变灰色
-	// switch (btn.getId()) {
-	// case R.id.number_one:
-	// quizList.get(mCurrentViewID).setSelectNumber(1);
-	// break;
-	// case R.id.number_two:
-	// quizList.get(mCurrentViewID).setSelectNumber(2);
-	// break;
-	// case R.id.number_three:
-	// quizList.get(mCurrentViewID).setSelectNumber(3);
-	// break;
-	// case R.id.number_four:
-	// quizList.get(mCurrentViewID).setSelectNumber(4);
-	// break;
-	// case R.id.number_five:
-	// quizList.get(mCurrentViewID).setSelectNumber(5);
-	// break;
-	// default:
-	// break;
-	// }
-	// }
 
 }
