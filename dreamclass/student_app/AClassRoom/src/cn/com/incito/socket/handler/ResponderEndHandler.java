@@ -1,6 +1,9 @@
 package cn.com.incito.socket.handler;
 
 import cn.com.incito.classroom.base.AppManager;
+import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.common.utils.AndroidUtil;
+import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.core.MessageHandler;
 
 /**
@@ -9,9 +12,15 @@ import cn.com.incito.socket.core.MessageHandler;
  *
  */
 public class ResponderEndHandler extends MessageHandler {
+	
+	@Override
+	public void handleMessage(Message msg) {
+		handleMessage();
+	}
 
 	@Override
 	protected void handleMessage() {
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "ResponderEndHandler:收到抢答结束命令" );
 		String currentActiivty = AppManager.getAppManager().currentActivity().getClass().getSimpleName();
 		
 		if("ResponderActivity".equals(currentActiivty)){
