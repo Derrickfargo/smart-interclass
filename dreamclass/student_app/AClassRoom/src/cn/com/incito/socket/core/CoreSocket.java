@@ -106,13 +106,10 @@ public final class CoreSocket implements Runnable {
 				buffer.put(message);
 				buffer.flip();
 				try {
-					if (channel != null && channel.isConnected()) {
-						channel.write(buffer);
-					}
+					channel.write(buffer);
 				} catch (IOException e) {
 					ApiClient.uploadErrorLog(e.getMessage());
 					Logger.debug(Utils.getTime()+"异常信息：" + e.getMessage());
-					Log.e("CoreSocket", "" + e.getMessage());
 				}
 			}
 		}.start();
