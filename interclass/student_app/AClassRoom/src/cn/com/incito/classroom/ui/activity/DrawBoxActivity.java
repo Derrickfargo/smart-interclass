@@ -106,6 +106,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		initViews();
 		registRecier();
 	}
+	
 
 	@Override
 	protected void onPause() {
@@ -562,9 +563,9 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case 0:
-				if (!mProgressDialog.isShowing()) {
+				if (!mProgressDialog.isShowing()&&mProgressDialog!=null) {
 					mProgressDialog.show();
-				}
+				}					
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
