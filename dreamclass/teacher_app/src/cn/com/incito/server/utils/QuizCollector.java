@@ -1,5 +1,6 @@
 package cn.com.incito.server.utils;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.HashSet;
@@ -15,7 +16,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.log4j.Logger;
 
-import cn.com.incito.server.api.Application;
 import cn.com.incito.server.config.AppConfig;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.message.DataType;
@@ -128,10 +128,13 @@ public class QuizCollector {
 				buffer.flip();
 				try {
 					channel.write(buffer);
-				} catch (Exception e) {
+				} catch (IOException e) {
 					logger.error("作业收取失败,直接收取下一个作业", e);
 					quizComplete(channel);
 					nextQuiz();//收取下一个作业
+					return;
+				} catch (Exception e) {
+					logger.error("作业收取出现异常", e);
 					return;
 				}
 				new QuizCollectMonitor(channel).start();

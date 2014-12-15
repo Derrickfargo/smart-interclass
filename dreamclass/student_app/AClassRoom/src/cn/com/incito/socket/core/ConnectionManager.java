@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
-import android.util.Log;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.utils.ApiClient;
 import cn.com.incito.common.utils.UIHelper;
@@ -82,7 +81,7 @@ public class ConnectionManager {
 		}
 		// 非正常退出,重连
 		if (!isNormal) {
-			Log.i("ConnectionManager", "Socket非正常退出!");
+			MyApplication.Logger.debug("ConnectionManager Socket非正常退出!");
 			if (UIHelper.getInstance().getWaitingActivity() != null) {
 				UIHelper.getInstance().getWaitingActivity().clearStudent();
 			}
@@ -138,7 +137,7 @@ public class ConnectionManager {
 				try {
 					Thread.sleep(SCAN_CYCLE);
 					// 发送心跳包
-					Log.i("ConnectionManager", "发送心跳包!");
+					MyApplication.Logger.debug("ConnectionManager 发送心跳包!");
 					sendHeartbeat();
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -172,16 +171,16 @@ public class ConnectionManager {
 		new Thread() {
 			public void run() {
 				while (Boolean.TRUE) {
-					Log.i("ConnectionManager", "Socket开始重连!");
+					MyApplication.Logger.debug("ConnectionManager Socket开始重连!");
 					CoreSocket.getInstance().restartConnection();
 					sleep(2000);// 等待1秒后检查连接
 					if (!CoreSocket.getInstance().isConnected()) {
-						Log.i("ConnectionManager", "Socket重连失败!");
+						MyApplication.Logger.debug("ConnectionManager Socket重连失败!");
 						CoreSocket.getInstance().disconnect();
 						sleep(5000);
 						continue;
 					}
-					Log.i("ConnectionManager", "Socket已连接!");
+					MyApplication.Logger.debug("ConnectionManager Socket已连接!");
 					break;
 				}
 			}

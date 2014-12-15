@@ -518,7 +518,6 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		messagePacking.putBodyData(DataType.INT,BitmapUtil.bmpToByteArray(getBitMap(), true));
 		Logger.debug(Utils.getTime()+TAG+"打包成功");
 		CoreSocket.getInstance().sendMessage(messagePacking);
-		Logger.debug(Utils.getTime()+TAG+"提交作业后锁定屏幕");
 		startTask();
 	}
 	public void initPopwindow(){
