@@ -1,5 +1,6 @@
 package cn.com.incito.server.utils;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.HashSet;
@@ -128,10 +129,14 @@ public class QuizCollector {
 				buffer.flip();
 				try {
 					channel.write(buffer);
-				} catch (Exception e) {
+				} catch (IOException e) {
 					logger.error("作业收取失败,直接收取下一个作业", e);
 					quizComplete(channel);
 					nextQuiz();//收取下一个作业
+					e.printStackTrace();
+					return;
+				} catch (Exception e) {
+					e.printStackTrace();
 					return;
 				}
 				new QuizCollectMonitor(channel).start();
