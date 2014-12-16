@@ -27,7 +27,6 @@ public class SavePaperHandler extends MessageHandler {
 			Logger.debug(Utils.getTime() + TAG + "发送作业开始:");
 			if (UIHelper.getInstance().getDrawBoxActivity() != null && AppManager.getAppManager().currentActivity().getClass().getSimpleName().equals("DrawBoxActivity")) {
 				UIHelper.getInstance().getDrawBoxActivity().sendPaper();
-				;
 			}
 		}
 	}
