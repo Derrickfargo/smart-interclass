@@ -42,7 +42,7 @@ import com.alibaba.fastjson.JSONObject;
 public class PrepareBottomPanel extends JPanel implements MouseListener{
 	private static final long serialVersionUID = -9135075807085951600L;
 	private JLabel lblExpected,lblClass,lblClassBackground,lblCourse,lblCourseBackground;
-	private JButton btnBegin, btnGroup,btnResponder;
+	private JButton btnBegin, btnGroup;
 	private Application app = Application.getInstance();
 	Logger logger =  Logger.getLogger(PrepareBottomPanel.class.getName());
 	private JButton btnRdmGroup;
@@ -115,17 +115,6 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		btnBegin.addMouseListener(this);
 		btnBegin.setVisible(false);
 		
-		btnResponder = new JButton("抢答");//创建抢答对象
-		btnResponder.setFocusPainted(false);
-		btnResponder.setBorderPainted(false);
-//		btnResponder.setContentAreaFilled(false);
-//		ImageIcon image = new ImageIcon();
-//		btnResponder.setIcon(image);
-		btnResponder.setBounds(810, -4, 40, 40);
-		add(btnResponder);
-		btnResponder.addMouseListener(this);
-		btnResponder.setVisible(false);
-		
 		btnRdmGroup = new JButton("随机分组");//创建随机分组按钮
 		btnRdmGroup.setFocusable(false);
 		btnRdmGroup.setBorderPainted(false);
@@ -177,13 +166,15 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 					"还未进行小组分组，请先进行分组!");
 			return;
 		}
-		btnResponder.setVisible(true);
-		Application.isOnResponder=false;
 		MainFrame.getInstance().setVisible(false);
 		setOnClass(true); 
 	}
 
 	private void doEditGroup() {
+		if(Application.isOnResponder){
+			JOptionPane.showMessageDialog(getParent(), "学生正在抢答，不能编辑分组！");
+			return;
+		}
 		if(app.getOnlineStudent().size() == 0){
 			JOptionPane.showMessageDialog(getParent().getParent(), "当前还没有学生登陆，请先登陆后再分组!");
 			return;
@@ -219,13 +210,11 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		UIHelper.sendLockScreenMessage(true);
 		if (isOnClass) { 
 			btnBegin.setIcon(new ImageIcon("images/main/btn_end.png"));// 设置图片
-			btnResponder.setVisible(true);//设置抢答按钮可见
 			Application.isOnClass = true;
 			Application.getInstance().setLessionid(
 					UUID.randomUUID().toString());
 		} else {
 			btnBegin.setIcon(new ImageIcon("images/main/btn_begin.png"));// 设置图片
-			btnResponder.setVisible(false);//设置抢答按钮不可见
 			Application.isOnClass = false;
 		}
 		
@@ -280,15 +269,6 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		if(e.getSource() == btnGroup){
 			doEditGroup();
 		}
-		if(e.getSource()==btnResponder){
-			if(!Application.isOnResponder){
-			UIHelper.sendResponderMessage(true);
-			Application.isOnResponder=true;
-			}
-			else{
-				JOptionPane.showMessageDialog(MainFrame.getInstance().getFrame(), "抢答尚未结束，请稍等！");
-			}
-		}
 		if(e.getSource()==btnRdmGroup){
 			doRdmGroup();
 		}
@@ -299,6 +279,14 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 	 * @author caicai
 	 */
 	private void doRdmGroup() {
+		if(app.isDoRdmGrouping()){
+			JOptionPane.showMessageDialog(getParent().getParent(), "学生正在随机分组，请等待分组完毕！");
+			return;
+		}
+		if(Application.isOnResponder){
+			JOptionPane.showMessageDialog(getParent().getParent(), "学生正在抢答，请等待抢答完毕！");
+			return;
+		}
 		if(app.getOnlineStudent().size() == 0){
 			JOptionPane.showMessageDialog(getParent().getParent(), "当前还没有学生登陆，请先登陆后再随机分组!");
 			return;
@@ -309,15 +297,16 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 			return;
 		}
 		if (app.isGrouping()) {
-			JOptionPane.showMessageDialog(getParent().getParent(), "学生正在分组，请等待分组完成!");
-			return;
+			app.setGrouping(false);
 		}
 		if (Application.hasQuiz) {// 格式不一致，统一修改重构
-			JOptionPane.showMessageDialog(getParent().getParent(), "学生正在做作业，不能分组!");
-			return;
+			Application.hasQuiz=false;
+		}
+		if(Application.isOnClass){//变换上课按钮
+			setOnClass(false);
 		}
 		// 发送小组信息
-		app.setGrouping(true);
+		app.setDoRdmGrouping(true);
 		List<Group> groupList= getTableGroupList();
 		Queue<List<Student>> students =  RdmGroup.getStudentQue();
 		Map<String,List<Student>> imeiStudents = new HashMap<String, List<Student>>();
@@ -326,7 +315,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 			group.setName("梦想小组"+i);
 			group.setLogo("rainbow");
 			List<Student> groupStudent = new ArrayList<Student>();
-			List<Device> devices = group.getDevices();
+			List<Device> devices = group.getOnlineDevice();
 			for(Device device:devices){
 				List<Student> student = new ArrayList<Student>();
 				Map<String, Object> rdmMsg = new HashMap<String, Object>();
@@ -362,7 +351,8 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		}
 		app.refreshIMEI(imeiStudents);
 		app.refresh();
-		app.setGrouping(false);
+		app.setDoRdmGrouping(false);
+		app.refresh();
 	}
 	/**
 	 * 得到在线小组
@@ -377,15 +367,18 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 			Table table=app.getDeviceTable().get(deviced.getId());
 			Group group = app.getTableGroup().get(table.getId());
 			if(groupList.size()==0){
+				group.getOnlineDevice().add(deviced);
 				groupList.add(group);
 			}else{
 				boolean flag=true;
 				for(Group grouped: groupList){
 					if(group.getId()==grouped.getId()){
+						grouped.getOnlineDevice().add(deviced);
 						flag=false;
 					}
 				}
 				if(flag){
+					group.getOnlineDevice().add(deviced);
 					groupList.add(group);
 				}
 			}

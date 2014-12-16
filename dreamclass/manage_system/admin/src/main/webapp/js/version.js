@@ -26,9 +26,17 @@ $(document).ready(function() {
 //				flag = false;
 //			}
 			//检查上传版本文件
-			if(!new RegExp(/\.[a|A][p|P][k|K]$/).test($("#file").val())){
-				$("#fileTip").removeClass("hidden");
-				flag=false;
+			if($("#type").val()==2){
+				if(!new RegExp(/\.[a|A][p|P][k|K]$/).test($("#file").val())){
+					$("#fileTip").removeClass("hidden");
+					flag=false;
+				}
+			}
+			if($("#type").val()==1){
+				if(!new RegExp(/\.[e|E][x|E][e|E]$/).test($("#file").val())){
+					$("#fileTips").removeClass("hidden");
+					flag=false;
+				}
 			}
 			if (flag) {
 				form.submit();
@@ -75,5 +83,10 @@ function mouseOut(obj){
 // 保存学校信息
 function saveVersion() {
 	$("#versionForm").submit();
+}
+
+function showHidden(){
+	$("#fileTip").addClass("hidden");
+	$("#fileTips").addClass("hidden");
 }
 

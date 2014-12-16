@@ -49,6 +49,7 @@ public class Application {
 
 	private static Application instance;
 	private boolean isGrouping = false;
+	private boolean DoRdmGrouping = false;
     private FloatIcon floatIcon;
     /**
 	 * 课堂id
@@ -62,7 +63,7 @@ public class Application {
 
     public static boolean isOnClass;//正在上课
     public static boolean hasQuiz;//是否在作业
-	public static boolean isOnResponder;//是否在抢答中
+	public static boolean isOnResponder = false;//是否在抢答中
     private List<Group> groupList = new ArrayList<Group>();// 本堂课的所有分组
     private List<Table> tableList = new ArrayList<Table>();// 本教室所有的桌子
     private List<Device> deviceList = new ArrayList<Device>();// 本教室所有的Device
@@ -620,6 +621,7 @@ public class Application {
 	public void refresh() {
         MainFrame.getInstance().refreshPrepare();
         MainFrame.getInstance().refreshQuiz();
+        MainFrame.getInstance().refreshResponder();
     }
 
     public void refreshQuiz() {
@@ -685,6 +687,16 @@ public class Application {
 
 	public Map<String, QuizFeedback> getQuizFeedbackMap() {
 		return quizFeedbackMap;
+	}
+
+
+	public boolean isDoRdmGrouping() {
+		return DoRdmGrouping;
+	}
+
+
+	public void setDoRdmGrouping(boolean doRdmGrouping) {
+		DoRdmGrouping = doRdmGrouping;
 	}
 
 

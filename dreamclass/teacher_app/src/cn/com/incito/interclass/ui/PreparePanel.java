@@ -114,16 +114,6 @@ public class PreparePanel extends JPanel{
 				pnlPad.setVisible(true);
 			}
 		}
-		if(app.getResponderStudents().size()!=0){
-			List<Student> students=app.getResponderStudents();
-			app.setResponderStudents(new ArrayList<Student>());
-			StringBuffer stuBuffer= new StringBuffer();
-			for(Student student : students){
-				stuBuffer.append(student.getName()+",");
-			}
-			String stuName = stuBuffer.toString();
-			JOptionPane.showMessageDialog(this, "抢答的学生为："+stuName);
-		}
 		repaint();
 		revalidate();
 	}
