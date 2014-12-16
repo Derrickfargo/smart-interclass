@@ -204,25 +204,25 @@ public class MainFrame extends MouseAdapter {
 		praisePanel.refresh();
 	}
 	
-	protected void showResponder() {
-		setVisible(true);
-		frame.setExtendedState(JFrame.NORMAL);
-		int result=JOptionPane.showConfirmDialog(frame, "确认开始抢答吗？（正在进行中的动作可能取消）","抢答小TIP",JOptionPane.YES_NO_OPTION);
-		if(result==JOptionPane.NO_OPTION){
-			showPrepare();
-			return;
-		}
-		responderPanel.doResponder();
-		centerCardLayout.show(centerCardPanel, CARD_RESPONDER);
-		bottomCardLayout.show(bottomCardPanel, CARD_PRAISE_BOTTOM);
-                
-		btnQuiz.setIcon(new ImageIcon("images/main/bg_works.png"));
-		btnStatus.setIcon(new ImageIcon("images/main/bg_ready.png"));
-		btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
-		btnResponder.setIcon(new ImageIcon("images/main/bg_qa_hover.png"));
-		
-		responderPanel.refresh();
-	}
+//	protected void showResponder() {
+//		setVisible(true);
+//		frame.setExtendedState(JFrame.NORMAL);
+//		int result=JOptionPane.showConfirmDialog(frame, "确认开始抢答吗？（正在进行中的动作可能取消）","抢答小TIP",JOptionPane.YES_NO_OPTION);
+//		if(result==JOptionPane.NO_OPTION){
+//			showPrepare();
+//			return;
+//		}
+//		responderPanel.doResponder();
+//		centerCardLayout.show(centerCardPanel, CARD_RESPONDER);
+//		bottomCardLayout.show(bottomCardPanel, CARD_PRAISE_BOTTOM);
+//                
+//		btnQuiz.setIcon(new ImageIcon("images/main/bg_works.png"));
+//		btnStatus.setIcon(new ImageIcon("images/main/bg_ready.png"));
+//		btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
+//		btnResponder.setIcon(new ImageIcon("images/main/bg_qa_hover.png"));
+//		
+////		responderPanel.refresh();
+//	}
 
 	// 显示登陆界面
 	private void showLoginUI() {
@@ -353,7 +353,7 @@ public class MainFrame extends MouseAdapter {
 		left.setBounds(10, 73, 127, 930);
 		contentPane.add(left);
 		
-//		//抢答
+		//抢答
 //		Icon iconResponder = new ImageIcon("images/main/bg_qa.png");
 //		btnResponder = new JButton();
 //		btnResponder.setIcon(iconResponder);
@@ -406,7 +406,7 @@ public class MainFrame extends MouseAdapter {
         praisePanel.setPreferredSize(new Dimension(praiseScrollPane.getWidth() - 50, (praiseScrollPane.getHeight() - 100) * 2));
 		centerCardPanel.add(praiseScrollPane, CARD_PRAISE);
 		
-//		//抢答card
+		//抢答card
 //		responderPanel = new ResponderPanel();
 //		responderPanel.setBackground(Color.white);
 //		JScrollPane responderScrollPane = new JScrollPane(responderPanel);
@@ -431,7 +431,7 @@ public class MainFrame extends MouseAdapter {
 		bottomCardPanel.add(quizBottomPanel, CARD_QUIZ_BOTTOM);
 		//Praise
 		praiseBottomPanel = new PraiseBottomPanel();
-		bottomCardPanel.add(praiseBottomPanel, CARD_PRAISE_BOTTOM);		
+//		bottomCardPanel.add(praiseBottomPanel, CARD_PRAISE_BOTTOM);		
 				
 		initData();
 		setBackground();// 设置背景

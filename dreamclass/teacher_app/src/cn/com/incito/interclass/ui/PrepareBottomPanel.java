@@ -63,7 +63,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		lblExpected = new JLabel(String.format(msg, total, app
 				.getOnlineStudent().size()), JLabel.CENTER);
 		lblExpected.setForeground(UIHelper.getDefaultFontColor());
-		lblExpected.setBounds(10, 15, 150, 35);
+		lblExpected.setBounds(5, 15, 150, 35);
 		add(lblExpected);
 		lblExpected.setVisible(false);
 		
@@ -73,12 +73,12 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		lblClass.setForeground(UIHelper.getDefaultFontColor());
 		add(lblClass);
 		lblClass.setVisible(false);
-		lblClass.setBounds(180, 0, iconClass.getIconWidth(), iconClass.getIconHeight() - 4);
+		lblClass.setBounds(130, 0, iconClass.getIconWidth(), iconClass.getIconHeight() - 4);
 		lblClassBackground = new JLabel();
 		lblClassBackground.setIcon(iconClass);
 		add(lblClassBackground);
 		lblClassBackground.setVisible(false);
-		lblClassBackground.setBounds(180, -4, iconClass.getIconWidth(), iconClass.getIconHeight());
+		lblClassBackground.setBounds(130, -4, iconClass.getIconWidth(), iconClass.getIconHeight());
 		
 		ImageIcon iconCourse = new ImageIcon("images/main/btn_gray.png");
 		lblCourse = new JLabel("", JLabel.CENTER);
@@ -86,12 +86,12 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		lblCourse.setForeground(UIHelper.getDefaultFontColor());
 		add(lblCourse);
 		lblCourse.setVisible(false);
-		lblCourse.setBounds(340, 0, iconCourse.getIconWidth(), iconCourse.getIconHeight() -4 );
+		lblCourse.setBounds(290, 0, iconCourse.getIconWidth(), iconCourse.getIconHeight() -4 );
 		lblCourseBackground = new JLabel();
 		lblCourseBackground.setIcon(iconCourse);
 		add(lblCourseBackground);
 		lblCourseBackground.setVisible(false);
-		lblCourseBackground.setBounds(340, -4, iconCourse.getIconWidth(), iconCourse.getIconHeight());
+		lblCourseBackground.setBounds(290, -4, iconCourse.getIconWidth(), iconCourse.getIconHeight());
 
 		btnGroup = new JButton();// 创建按钮对象
 		btnGroup.setFocusPainted(false);
@@ -100,7 +100,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		ImageIcon iconGroup = new ImageIcon("images/main/btn_group.png");
 		btnGroup.setIcon(iconGroup);// 设置图片
 		add(btnGroup);// 添加按钮
-		btnGroup.setBounds(500, -4, iconGroup.getIconWidth(), iconGroup.getIconHeight());
+		btnGroup.setBounds(450, -4, iconGroup.getIconWidth(), iconGroup.getIconHeight());
 		btnGroup.addMouseListener(this);
 		btnGroup.setVisible(false);
 		
@@ -111,14 +111,16 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		ImageIcon btnImage = new ImageIcon("images/main/btn_begin.png");
 		btnBegin.setIcon(btnImage);// 设置图片
 		add(btnBegin);// 添加按钮
-		btnBegin.setBounds(660, -4, btnImage.getIconWidth(), btnImage.getIconHeight());
+		btnBegin.setBounds(610, -4, btnImage.getIconWidth(), btnImage.getIconHeight());
 		btnBegin.addMouseListener(this);
 		btnBegin.setVisible(false);
 		
 //		btnRdmGroup = new JButton("随机分组");//创建随机分组按钮
 //		btnRdmGroup.setFocusable(false);
 //		btnRdmGroup.setBorderPainted(false);
-//		btnRdmGroup.setBounds(810, -4, 70, 40);
+//		ImageIcon rdmImage = new ImageIcon("images/main/btn_randomization.png");
+//		btnRdmGroup.setIcon(rdmImage);
+//		btnRdmGroup.setBounds(770, -4, rdmImage.getIconWidth(),rdmImage.getIconHeight());
 //		add(btnRdmGroup);
 //		btnRdmGroup.addMouseListener(this);
 //		btnRdmGroup.setVisible(false);
