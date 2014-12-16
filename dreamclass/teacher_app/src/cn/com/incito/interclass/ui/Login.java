@@ -9,15 +9,16 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -57,8 +58,34 @@ public class Login extends MouseAdapter {
 	public Login() {
 		showLoginUI();
 		setDragable();
+		new Thread() {
+			public void run() {
+				// 初始化自定义字体
+				initDefinedFont();
+			}
+		}.start();
 	}
 
+	private void initDefinedFont() {
+		BufferedInputStream bis = null;
+		try {
+			bis = new BufferedInputStream(new FileInputStream(
+					"font/新蒂小丸子小学版.ttf"));
+			Font font = Font.createFont(Font.TRUETYPE_FONT, bis);
+			Application.getInstance().setDefinedFont(font);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (null != bis) {
+					bis.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public JFrame getFrame() {
 		return frame;
 	}

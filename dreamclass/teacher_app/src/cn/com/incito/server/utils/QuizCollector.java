@@ -25,7 +25,7 @@ import com.alibaba.fastjson.JSONObject;
 
 public class QuizCollector {
 	private Logger logger = Logger.getLogger(QuizCollector.class.getName());
-	private static final int TIMEOUT = 10000;//消息队列等待时长
+	private static final int TIMEOUT = 20000;//消息队列等待时长
 	private static QuizCollector instance;
 	private int capacity;
 	private final Lock lock = new ReentrantLock();
@@ -97,7 +97,8 @@ public class QuizCollector {
 								logger.info("*****正在等待作业提交请求*****");
 							}
 						}
-						while (capacity < getQuizThreadThreshold()) {
+						while (capacity < getQuizThreadThreshold()
+								&& quizQueue.size() != 0) {
 							SocketChannel channel = quizQueue.poll();
 							capacity++;
 							doCollect(channel);// 收集作业
