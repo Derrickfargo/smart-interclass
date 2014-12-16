@@ -2,8 +2,12 @@ package cn.com.incito.classroom.ui.activity;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+
+
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -24,22 +28,20 @@ import android.widget.Button;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.classroom.vo.EvaluateTempVo;
 import cn.com.incito.classroom.vo.EvaluateVo;
+import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
 
-import com.alibaba.fastjson.JSONObject;
-
 public class EvaluateActivity extends BaseActivity implements OnClickListener {
 
 	LayoutInflater mInflater;
 
 	private int mCurrentViewID = 0; // 当前页卡编号
-
-	private int PAGER_NUM = 5;// 页面总数
 
 	private Button button_one;
 
@@ -63,15 +65,11 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 
 	private Animation animation;
 
-	// public Button number0;
-
 	public Button number1;
 
 	public Button number2;
 
 	ArrayList<EvaluateVo> quizList = new ArrayList<EvaluateVo>();// 收到教师端发送的作业的所有属性都存在里面
-
-	ArrayList<Button> scoreList = new ArrayList<Button>();// 获得的名次按钮
 
 	private MyPagerAdapter adpt;
 
@@ -91,11 +89,6 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 		EvaluateVo evaluateVo = new EvaluateVo();
 		evaluateVo.setPaperPic(getDrawable(paper));
 		quizList.add(evaluateVo);
-		// for (int i = 0; i < 5; i++) {
-		// EvaluateVo evaluateVo = new EvaluateVo();
-		// evaluateVo.setPaperPic(getResources().getDrawable(R.drawable.bg_empty));
-		// quizList.add(evaluateVo);
-		// }
 		animation = AnimationUtils.loadAnimation(EvaluateActivity.this, R.anim.score_anim);
 		pager_up = (Button) findViewById(R.id.pager_up);
 		pager_up.setOnClickListener(this);
@@ -119,10 +112,7 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 	private void InitViewPager() {
 		viewPage = (ViewPager) findViewById(R.id.viewPager);
 		listViews = new ArrayList<View>();
-
-		// for (int i = 0; i < 5; i++) {
 		listViews.add(mInflater.inflate(R.layout.evaluate_item, null));
-		// }
 		adpt = new MyPagerAdapter(listViews, quizList);
 		viewPage.setAdapter(adpt);
 		viewPage.setCurrentItem(0);
@@ -140,25 +130,30 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 			}
 			break;
 		case R.id.pager_down:
-			if (mCurrentViewID != PAGER_NUM - 1) {
+			if (mCurrentViewID != quizList.size() - 1&&quizList.size()>0) {
 				mCurrentViewID++;
 				viewPage.setCurrentItem(mCurrentViewID, true);
 			}
 			break;
 		case R.id.number_one:
-			setScore("1", mCurrentViewID);
+			setScore(1, mCurrentViewID);
+			isConfirmBtnVisible();
 			break;
 		case R.id.number_two:
-			setScore("2", mCurrentViewID);
+			setScore(2, mCurrentViewID);
+			isConfirmBtnVisible();
 			break;
 		case R.id.number_three:
-			setScore("3", mCurrentViewID);
+			setScore(3, mCurrentViewID);
+			isConfirmBtnVisible();
 			break;
 		case R.id.number_four:
-			setScore("4", mCurrentViewID);
+			setScore(4, mCurrentViewID);
+			isConfirmBtnVisible();
 			break;
 		case R.id.number_five:
-			setScore("5", mCurrentViewID);
+			setScore(5, mCurrentViewID);
+			isConfirmBtnVisible();
 			break;
 		default:
 			break;
@@ -170,25 +165,26 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 	 * @param ViewId
 	 *            根据viewpager的当前页 设置名次
 	 */
-	public void setScore(String score, int currentViewPageId) {
-		for (int i = 0; i < scoreList.size(); i++) {
-			if (i == currentViewPageId) {// 获得的按钮是当前页面按钮的时候才进行名次显示
-				scoreList.get(i).setText(score);
-				quizList.get(i).setSelectNumber(Integer.parseInt(score));
-				for (int j = 0; j < quizList.size(); j++) {
-					if (quizList.get(i).getSelectNumber() == quizList.get(j).getSelectNumber()) {
-						quizList.get(j).setSelectNumber(Integer.parseInt(score) + 1);
-						for (int j2 = 0; j2 < quizList.size(); j2++) {
-							if (quizList.get(j).getSelectNumber() == quizList.get(j2).getSelectNumber()) {
-								quizList.get(j2).setSelectNumber(quizList.get(j).getSelectNumber() + 1);
-							}
-						}
-					}
+	public void setScore(int score, int currentViewPageId) {
+		// 获得的按钮是当前页面按钮的时候才进行名次显示
+		Button button = (Button) listViews.get(currentViewPageId).findViewById(R.id.number);
+		button.setText(score + "");
+		button.setVisibility(View.VISIBLE);
+		quizList.get(currentViewPageId).setSelectNumber(score);
+		int temp = score;
+		for (int j = 0; j < quizList.size(); j++) {
+			if (temp == quizList.get(j).getSelectNumber() && j != currentViewPageId) {
+				quizList.get(j).setSelectNumber(quizList.get(currentViewPageId).getSelectNumber() + 1);
+				;
+			}
+			for (int k = 0; k < quizList.size(); k++) {
+				if (quizList.get(k).getSelectNumber() == quizList.get(j).getSelectNumber() && k != j) {
+					quizList.get(k).setSelectNumber(quizList.get(j).getSelectNumber() + 1);
+					temp = quizList.get(k).getSelectNumber();
 				}
-				scoreList.get(i).setVisibility(View.VISIBLE);
-				scoreList.get(i).startAnimation(animation);
 			}
 		}
+		button.startAnimation(animation);
 	}
 
 	/**
@@ -197,7 +193,7 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 	public void sendScore() {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("imei", MyApplication.deviceId);
-		jsonObject.put("feedback", "作业部分json id是quizId和score是分数");
+		jsonObject.put("feedback",  getInfo());
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_EVALUATE);
 		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
 		CoreSocket.getInstance().sendMessage(messagePacking);
@@ -240,7 +236,6 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 		public Object instantiateItem(View arg0, int arg1) {
 			mListViews.get(arg1).setBackgroundDrawable(quizList.get(arg1).getPaperPic());
 			Button score = (Button) mListViews.get(arg1).findViewById(R.id.number);// 名次显示按钮
-			scoreList.add(score);
 			if (quizList.get(arg1).getSelectNumber() != 0) {
 				score.setText(quizList.get(arg1).getSelectNumber() + "");
 				score.setVisibility(View.VISIBLE);
@@ -278,7 +273,7 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 		public void onPageSelected(int arg0) {
 			mCurrentViewID = arg0;
 			if (quizList.get(arg0).getSelectNumber() != 0)
-				scoreList.get(arg0).setText(quizList.get(arg0).getSelectNumber() + " ");
+				((Button) listViews.get(arg0).findViewById(R.id.number)).setText(quizList.get(arg0).getSelectNumber() + " ");
 		}
 
 		@Override
@@ -312,5 +307,39 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 		return bd;
 	}
 
-
+	/**
+	 * 获取上传
+	 */
+	public String getInfo() {
+		ArrayList<EvaluateTempVo> tempList = new ArrayList<EvaluateTempVo>();
+		for (int i = 0; i < quizList.size(); i++) {
+			EvaluateTempVo tempVo = new EvaluateTempVo();
+			tempVo.setId(quizList.get(i).getQuizId());
+			tempVo.setScore(quizList.get(i).getSelectNumber());
+			tempList.add(tempVo);
+		}
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"作业评分结果："+JSON.toJSONString(tempList));
+		return JSON.toJSONString(tempList);
+	}
+	/**
+	 * 检测提交按钮是否出现
+	 */
+	public void isConfirmBtnVisible(){
+		int j=0;
+		for (int i = 0; i < quizList.size(); i++) {
+			if(quizList.get(i).getSelectNumber()==1){
+				j++;
+			}else if(quizList.get(i).getSelectNumber()==2){
+				j++;
+			}else if(quizList.get(i).getSelectNumber()==3){
+				j++;
+			}
+		}
+		MyApplication.Logger.debug("已经选择的名次个数"+j);
+		if(j>=3){
+			button_confirm.setVisibility(View.VISIBLE);
+		}else{
+			button_confirm.setVisibility(View.GONE);
+		}
+	}
 }
