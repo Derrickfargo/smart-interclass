@@ -353,20 +353,20 @@ public class MainFrame extends MouseAdapter {
 		left.setBounds(10, 73, 127, 930);
 		contentPane.add(left);
 		
-		//抢答
-		Icon iconResponder = new ImageIcon("images/main/bg_qa.png");
-		btnResponder = new JButton();
-		btnResponder.setIcon(iconResponder);
-		btnResponder.setFocusPainted(false);
-		btnResponder.setBorderPainted(false);// 设置边框不可见
-		btnResponder.setContentAreaFilled(false);// 设置透明
-		left.add(btnResponder);
-		btnResponder.setBounds(0, 154, iconResponder.getIconWidth(), iconResponder.getIconHeight());
-		btnResponder.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				showResponder();
-			}
-		});
+//		//抢答
+//		Icon iconResponder = new ImageIcon("images/main/bg_qa.png");
+//		btnResponder = new JButton();
+//		btnResponder.setIcon(iconResponder);
+//		btnResponder.setFocusPainted(false);
+//		btnResponder.setBorderPainted(false);// 设置边框不可见
+//		btnResponder.setContentAreaFilled(false);// 设置透明
+//		left.add(btnResponder);
+//		btnResponder.setBounds(0, 154, iconResponder.getIconWidth(), iconResponder.getIconHeight());
+//		btnResponder.addActionListener(new ActionListener(){
+//			public void actionPerformed(ActionEvent e) {
+//				showResponder();
+//			}
+//		});
 
 		// ///////////////////center部分////////////////////////
 		centerCardLayout = new CardLayout();
@@ -406,15 +406,15 @@ public class MainFrame extends MouseAdapter {
         praisePanel.setPreferredSize(new Dimension(praiseScrollPane.getWidth() - 50, (praiseScrollPane.getHeight() - 100) * 2));
 		centerCardPanel.add(praiseScrollPane, CARD_PRAISE);
 		
-		//抢答card
-		responderPanel = new ResponderPanel();
-		responderPanel.setBackground(Color.white);
-		JScrollPane responderScrollPane = new JScrollPane(responderPanel);
-		responderScrollPane.getVerticalScrollBar().setUnitIncrement(100);
-		responderScrollPane.setBorder(null);
-		responderScrollPane.setBounds(0, 0, 876, 630);
-        praisePanel.setPreferredSize(new Dimension(responderScrollPane.getWidth() - 50, (responderScrollPane.getHeight() - 100) * 2));
-		centerCardPanel.add(responderScrollPane, CARD_RESPONDER);
+//		//抢答card
+//		responderPanel = new ResponderPanel();
+//		responderPanel.setBackground(Color.white);
+//		JScrollPane responderScrollPane = new JScrollPane(responderPanel);
+//		responderScrollPane.getVerticalScrollBar().setUnitIncrement(100);
+//		responderScrollPane.setBorder(null);
+//		responderScrollPane.setBounds(0, 0, 876, 630);
+//        praisePanel.setPreferredSize(new Dimension(responderScrollPane.getWidth() - 50, (responderScrollPane.getHeight() - 100) * 2));
+//		centerCardPanel.add(responderScrollPane, CARD_RESPONDER);
         
 		// //////////////////////bottom部分////////////////////////
 		bottomCardLayout = new CardLayout();

@@ -115,13 +115,13 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		btnBegin.addMouseListener(this);
 		btnBegin.setVisible(false);
 		
-		btnRdmGroup = new JButton("随机分组");//创建随机分组按钮
-		btnRdmGroup.setFocusable(false);
-		btnRdmGroup.setBorderPainted(false);
-		btnRdmGroup.setBounds(810, -4, 70, 40);
-		add(btnRdmGroup);
-		btnRdmGroup.addMouseListener(this);
-		btnRdmGroup.setVisible(false);
+//		btnRdmGroup = new JButton("随机分组");//创建随机分组按钮
+//		btnRdmGroup.setFocusable(false);
+//		btnRdmGroup.setBorderPainted(false);
+//		btnRdmGroup.setBounds(810, -4, 70, 40);
+//		add(btnRdmGroup);
+//		btnRdmGroup.addMouseListener(this);
+//		btnRdmGroup.setVisible(false);
 	}
 	
 	public void refresh(){
@@ -134,7 +134,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 			lblCourseBackground.setVisible(true);
 			btnGroup.setVisible(true);
 			btnBegin.setVisible(true);
-			btnRdmGroup.setVisible(true);
+//			btnRdmGroup.setVisible(true);
 		}
 	}
 	private void doBegin() {
