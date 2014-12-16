@@ -55,7 +55,7 @@ public class MainFrame extends MouseAdapter {
 	private JFrame frame = new JFrame();
 	private Boolean isDragged;
 	private Point loc, tmp;
-	private JButton btnMin, btnClose, btnPraise,btnResponder;
+	private JButton btnMin, btnClose, btnPraise/*,btnResponder*/;
 	private JLabel lblBackground;
 	private JPanel contentPane;
 	
@@ -175,7 +175,7 @@ public class MainFrame extends MouseAdapter {
         btnStatus.setIcon(new ImageIcon("images/main/bg_ready_hover.png"));
         btnQuiz.setIcon(new ImageIcon("images/main/bg_works.png"));
         btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
-        btnResponder.setIcon(new ImageIcon("images/main/bg_qa.png"));
+//        btnResponder.setIcon(new ImageIcon("images/main/bg_qa.png"));
 	}
 	
 	public void showQuiz() {
@@ -187,7 +187,7 @@ public class MainFrame extends MouseAdapter {
         btnQuiz.setIcon(new ImageIcon("images/main/bg_works_hover.png"));
         btnStatus.setIcon(new ImageIcon("images/main/bg_ready.png"));
         btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
-        btnResponder.setIcon(new ImageIcon("images/main/bg_qa.png"));
+//        btnResponder.setIcon(new ImageIcon("images/main/bg_qa.png"));
 	}
 	
 	public void showPraise() {
@@ -199,7 +199,7 @@ public class MainFrame extends MouseAdapter {
 		btnQuiz.setIcon(new ImageIcon("images/main/bg_works.png"));
 		btnStatus.setIcon(new ImageIcon("images/main/bg_ready.png"));
 		btnPraise.setIcon(new ImageIcon("images/main/bg_praise_hover.png"));
-		btnResponder.setIcon(new ImageIcon("images/main/bg_qa.png"));
+//		btnResponder.setIcon(new ImageIcon("images/main/bg_qa.png"));
 		
 		praisePanel.refresh();
 	}
