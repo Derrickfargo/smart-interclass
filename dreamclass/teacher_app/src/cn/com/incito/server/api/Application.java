@@ -29,6 +29,7 @@ import cn.com.incito.interclass.po.Table;
 import cn.com.incito.interclass.po.Teacher;
 import cn.com.incito.interclass.ui.FloatIcon;
 import cn.com.incito.interclass.ui.MainFrame;
+import cn.com.incito.interclass.ui.QuizFeedbackFrame;
 import cn.com.incito.server.config.Constants;
 import cn.com.incito.server.utils.FileUtils;
 
@@ -51,6 +52,7 @@ public class Application {
 	private boolean isGrouping = false;
 	private boolean DoRdmGrouping = false;
     private FloatIcon floatIcon;
+    private QuizFeedbackFrame quizFeedbackFrame;
     /**
 	 * 课堂id
 	 */
@@ -204,6 +206,11 @@ public class Application {
 			imeiStudent.put(imei, studentList);
 		}
     }
+    /**
+     * 在所有学生中更新imeiStudent
+     * @param students
+     * @return
+     */
     public List<Student> addRdmStudent(List<Student> students){
     	List<Student> onlineStudent = new ArrayList<Student>();
     	for(Map.Entry<String, List<Student>> entry:imeiStudent.entrySet()){
@@ -621,15 +628,20 @@ public class Application {
 	public void refresh() {
         MainFrame.getInstance().refreshPrepare();
         MainFrame.getInstance().refreshQuiz();
-        MainFrame.getInstance().refreshResponder();
     }
 
     public void refreshQuiz() {
         MainFrame.getInstance().refreshQuiz();
     }
     
-    public void refreshEvalute(){
-    	MainFrame.getInstance().refreshEvalute();
+	public void refreshEvalute() {
+		if (quizFeedbackFrame != null) {
+			quizFeedbackFrame.refresh();
+		}
+	}
+
+    public void refreshResponder(){
+    	MainFrame.getInstance().refreshResponder();
     }
 
     public String getLessionid() {
@@ -699,7 +711,11 @@ public class Application {
 		DoRdmGrouping = doRdmGrouping;
 	}
 
+	public void setQuizFeedbackFrame(QuizFeedbackFrame quizFeedbackFrame) {
+		this.quizFeedbackFrame = quizFeedbackFrame;
+	}
 
+	
 
 
 }

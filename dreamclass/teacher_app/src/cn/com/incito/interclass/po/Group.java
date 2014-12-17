@@ -51,8 +51,6 @@ public class Group implements Serializable, Comparable<Group> {
 	private List<Student> students;
 	private List<Quiz> quizs;
 	private String teacherName;
-	private List<Device> onlineDevices = new ArrayList<Device>();
-
 	public int getId() {
 		return id;
 	}
@@ -192,15 +190,4 @@ public class Group implements Serializable, Comparable<Group> {
 		return this.tableNumber-group.tableNumber;
 	}
 
-
-
-	public List<Device> getOnlineDevice() {
-		return onlineDevices;
-	}
-
-
-
-	public void setOnlineDevice(List<Device> onlineDevice) {
-		this.onlineDevices = onlineDevice;
-	}
 }

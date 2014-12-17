@@ -24,7 +24,6 @@ public class PraisePanel extends JPanel {
 	private List<Group> groupList = new ArrayList<Group>();
 
 	private List<PraiseGroupPanel> praiseGroupList = new ArrayList<PraiseGroupPanel>();
-	private double scoreResult;
 
 	public PraisePanel() {
 		this.setLayout(null);
@@ -91,12 +90,12 @@ public class PraisePanel extends JPanel {
 		panel.getLblGroupName().setToolTipText(group.getName());
 		String memberStr = "";
 		int score = 0;
+		double scoreResult = 0;
 		if (group.getStudents() != null) {
 			for (Student student : group.getStudents()) {
 				memberStr += student.getName() + ",";
 				score += student.getScore();
 			}
-			
 		 if(group.getStudents().size() > 0){
 			 scoreResult= score/(float)group.getStudents().size();
 		 }else{

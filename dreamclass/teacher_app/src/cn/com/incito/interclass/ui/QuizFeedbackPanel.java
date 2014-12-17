@@ -100,6 +100,10 @@ public class QuizFeedbackPanel extends JPanel implements MouseListener{
 		this.feedback = feedback;
 	}
 	
+	public JLabel getLblImage() {
+		return lblImage;
+	}
+
 	@Override
 	public void mousePressed(MouseEvent e) {
 		
