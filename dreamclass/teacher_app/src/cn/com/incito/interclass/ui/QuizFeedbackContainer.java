@@ -58,6 +58,7 @@ public class QuizFeedbackContainer extends JPanel {
 	}
 
 	public void refresh() {
+		System.out.println("刷新评比结果");
 		initData();
 		int i = 0;
 		while (i < feedbackList.size()) {
@@ -69,8 +70,6 @@ public class QuizFeedbackContainer extends JPanel {
 			}
 			i++;
 		}
-		repaint();
-		revalidate();
 	}
 
 	private void showQuizGroup(QuizFeedbackPanel panel, QuizFeedback feedback) {
@@ -78,7 +77,7 @@ public class QuizFeedbackContainer extends JPanel {
 		panel.setFeedback(feedback);
 		panel.getLblImage().setIcon(new ImageIcon(feedback.getQuiz().getThumbnail()));
 		panel.getLblName().setText(feedback.getName());
-		
+		panel.getLblName().setVisible(true);
 		List<String> items = feedback.getFeedbackList();
 		for (int i = 0; i < 5; i++) {
 			JLabel lblFeedback = panel.getFeedbackList().get(i);
@@ -107,5 +106,11 @@ public class QuizFeedbackContainer extends JPanel {
 			}
 			
 		});
+		int i = 0;
+		while (i < 36) {
+			QuizFeedbackPanel panel = feedbackPanelList.get(i);
+			panel.setVisible(false);
+			i++;
+		}
 	}
 }

@@ -175,8 +175,8 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 						JOptionPane.showMessageDialog(QuizBottomPanel.this, "收取作业后才能进行互评！");
 						return;
 					}
-					Application.getInstance().clear();//清除之前的评比结果
-					Application.getInstance().setQuizFeedbackFrame(new QuizFeedbackFrame());
+					Application.getInstance().getQuizFeedbackMap().clear();//清除之前的评比结果
+					QuizFeedbackFrame.getInstance().showFrame();
 				}
 			}.start();
 			
