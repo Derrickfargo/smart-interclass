@@ -1,14 +1,17 @@
 package cn.com.incito.interclass.ui;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import cn.com.incito.interclass.po.QuizFeedback;
+import cn.com.incito.server.api.Application;
 
 /**
  * 作业互评列表面板
@@ -73,6 +76,7 @@ public class QuizFeedbackContainer extends JPanel {
 	private void showQuizGroup(QuizFeedbackPanel panel, QuizFeedback feedback) {
 		panel.setVisible(true);
 		panel.setFeedback(feedback);
+		panel.getLblImage().setIcon(new ImageIcon(feedback.getQuiz().getThumbnail()));
 		panel.getLblName().setText(feedback.getName());
 		
 		List<String> items = feedback.getFeedbackList();
@@ -89,7 +93,12 @@ public class QuizFeedbackContainer extends JPanel {
 	}
 
 	private void initData() {
+		Application app = Application.getInstance();
+		Collection<QuizFeedback> feedbacks = app.getQuizFeedbackMap().values();
 		feedbackList = new ArrayList<QuizFeedback>();
+		for (QuizFeedback feedback : feedbacks) {
+			feedbackList.add(feedback);
+		}
 		Collections.sort(feedbackList, new Comparator<QuizFeedback>() {
 
 			@Override

@@ -121,10 +121,6 @@ public class MainFrame extends MouseAdapter {
 	public void refreshQuiz(){
 		quizPanel.refresh();
 	}
-	
-	public void refreshEvalute(){
-		quizBottomPanel.refreshQuizEvaluate();
-	}
 
 	public void refreshPraise(){
 		praisePanel.refresh();
