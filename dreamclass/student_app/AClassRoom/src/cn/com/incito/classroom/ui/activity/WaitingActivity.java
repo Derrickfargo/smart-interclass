@@ -1,6 +1,7 @@
 package cn.com.incito.classroom.ui.activity;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import android.content.Context;
@@ -32,6 +33,7 @@ import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.classroom.vo.LoginReqVo;
 import cn.com.incito.classroom.vo.LoginRes2Vo;
 import cn.com.incito.classroom.vo.LoginResVo;
+import cn.com.incito.classroom.vo.Student;
 import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.CoreSocket;
@@ -42,6 +44,7 @@ import cn.com.incito.socket.utils.BufferUtils;
 import cn.com.incito.wisdom.uicomp.widget.dialog.ProgressiveDialog;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 /**
@@ -53,6 +56,8 @@ public class WaitingActivity extends BaseActivity {
 	public static final int STUDENT_LIST = 1;
 	public static final int STUDENT_LOGIN = 2;
 	public static final int STUDENT_CLEAR = 3;
+	public static final int RANDOM_GROUP = 4;
+	
 	public int itemPosition;
 	EditText et_stname;
 	EditText et_stnumber;
@@ -103,10 +108,10 @@ public class WaitingActivity extends BaseActivity {
 		llayout1 = (LinearLayout) findViewById(R.id.llayout1);
 		llayout = (LinearLayout) findViewById(R.id.llayout);
 		et_stname = (EditText) findViewById(R.id.et_stname);
-		join_relative=(RelativeLayout) findViewById(R.id.join_relativelayout);
-		join_text_notice=(TextView)findViewById(R.id.text_notice);
+		join_relative = (RelativeLayout) findViewById(R.id.join_relativelayout);
+		join_text_notice = (TextView) findViewById(R.id.text_notice);
 		join_relative.setPaddingRelative(200, 0, 0, 0);
-		
+
 	}
 
 	private void initListener() {
@@ -286,7 +291,7 @@ public class WaitingActivity extends BaseActivity {
 			llayout1.setVisibility(View.GONE);
 			join_text_notice.setVisibility(View.VISIBLE);
 			join_relative.setPaddingRelative(200, 0, 0, 0);
-//			join_relative.setLeft(400);
+			// join_relative.setLeft(400);
 			addState = 0;
 			imm.hideSoftInputFromWindow(llayout.getWindowToken(), 0);
 			return false;
@@ -347,14 +352,11 @@ public class WaitingActivity extends BaseActivity {
 					return;
 				} else if (jsonObject.getJSONObject("data") == null) {
 				} else {
-					LoginResVo loginResVo = JSON.parseObject(jsonObject
-							.getJSONObject("data").toJSONString(),
-							LoginResVo.class);
+					LoginResVo loginResVo = JSON.parseObject(jsonObject.getJSONObject("data").toJSONString(),LoginResVo.class);
 					if (loginResVo.getStudents() != null) {
 						loginResList = loginResVo.getStudents();
 					}
-					((MyApplication) getApplication())
-							.setLoginResVo(loginResVo);
+					((MyApplication) getApplication()).setLoginResVo(loginResVo);
 					if (loginResList != null && loginResList.size() > 0) {
 						mAdapter.setDatas(loginResList);
 						gv_group_member.setAdapter(mAdapter);
@@ -371,6 +373,9 @@ public class WaitingActivity extends BaseActivity {
 					mAdapter.setDatas(loginResList);
 				}
 				break;
+			case RANDOM_GROUP:
+				mAdapter.setDatas(MyApplication.getInstance().getLoginResVo().getStudents());
+				gv_group_member.setAdapter(mAdapter);
 			}
 		}
 	};
@@ -382,6 +387,37 @@ public class WaitingActivity extends BaseActivity {
 		data.putSerializable("data", jsonObject);
 		message.setData(data);
 		mHandler.sendMessage(message);
+	}
+
+	public void refreshStudents(JSONObject data) {
+
+		// 马上刷新等待界面数据
+		List<Student> studentList = JSONArray.parseArray(
+				JSON.parseObject(data.toJSONString()).getString("students"),
+				Student.class);
+		List<LoginRes2Vo> loginRes2Vos = new ArrayList<LoginRes2Vo>();
+		if (studentList != null && studentList.size() > 0) {
+			Iterator<Student> it = studentList.iterator();
+			while (it.hasNext()) {
+				Student s = it.next();
+				LoginRes2Vo loginRes2Vo = new LoginRes2Vo();
+				loginRes2Vo.setAvatar(s.getAvatar());
+				loginRes2Vo.setId(s.getId() + "");
+				loginRes2Vo.setLogin(s.isLogin());
+				loginRes2Vo.setName(s.getName());
+				loginRes2Vo.setNumber(s.getNumber());
+				loginRes2Vo.setSex(s.getSex() + "");
+				loginRes2Vos.add(loginRes2Vo);
+			}
+			MyApplication.getInstance().getLoginResVo().getStudents().clear();
+			MyApplication.getInstance().getLoginResVo().setStudents(loginRes2Vos);
+		}else{
+			MyApplication.getInstance().getLoginResVo().getStudents().clear();
+		}
+		
+		mHandler.sendEmptyMessage(RANDOM_GROUP);
+		
+
 	}
 
 	public void clearStudent() {
