@@ -47,9 +47,18 @@ import com.sun.awt.AWTUtilities;
  */
 public class QuizFeedbackFrame extends JFrame {
 	private static final long serialVersionUID = -2216276219179107707L;
+	private static QuizFeedbackFrame instance;
 	private PhotoDialog photoDialog;
 
-	public QuizFeedbackFrame() {
+	
+	public static QuizFeedbackFrame getInstance() {
+		if (instance == null) {
+			instance = new QuizFeedbackFrame();
+		}
+		return instance;
+	}
+
+	private QuizFeedbackFrame() {
 		this.photoDialog = new PhotoDialog(this);
 		setIconImage(new ImageIcon("images/main/icon.png").getImage());
 		setUndecorated(true);// 去除窗体
@@ -62,8 +71,10 @@ public class QuizFeedbackFrame extends JFrame {
 		Insets insets = Toolkit.getDefaultToolkit().getScreenInsets(getGraphicsConfiguration());
 		setSize(screen.width, screen.height - insets.bottom);
 
-//		setVisible(true);TODO 暂时屏蔽
-		
+	}
+	
+	public void showFrame(){
+		setVisible(true);
 		photoDialog.setModal(true);
 		photoDialog.setVisible(true);
 	}
@@ -93,7 +104,7 @@ public class QuizFeedbackFrame extends JFrame {
 			setUndecorated(true);//去除窗体
 			setLocationRelativeTo(null);// 设置窗体中间位置
 			setLayout(null);// 绝对布局
-//			setAlwaysOnTop(true); // 设置界面悬浮
+			setAlwaysOnTop(true); // 设置界面悬浮
 			setBackground(new Color(0,0,0,0));//窗体透明
 			setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 			

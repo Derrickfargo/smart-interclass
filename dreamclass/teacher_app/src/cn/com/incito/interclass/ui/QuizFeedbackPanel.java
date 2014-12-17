@@ -29,7 +29,6 @@ public class QuizFeedbackPanel extends JPanel implements MouseListener{
 	public QuizFeedbackPanel(){
 		setLayout(null);
 		setBackground(new Color(255, 255, 255));
-		setVisible(false);
 		
 		//作业缩略图
 		add(createImagePanel());
