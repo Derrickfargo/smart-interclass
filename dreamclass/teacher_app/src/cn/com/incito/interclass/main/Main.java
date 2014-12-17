@@ -119,7 +119,7 @@ public class Main {
 	}
 	
 	private static void registerExceptionHandler(){
-		Thread.setDefaultUncaughtExceptionHandler(new AppExceptionHandler());
+//		Thread.setDefaultUncaughtExceptionHandler(new AppExceptionHandler());
 	}
 	
 	/**

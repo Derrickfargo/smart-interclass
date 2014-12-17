@@ -21,12 +21,15 @@ public class ResponderHandler extends MessageHandler{
 		List<Student>students = app.getStudentByImei(imei);
 		if(students.size()==0){
 		log.error("抢答获取学生列表失败，无效imei");
+		Application.isOnResponder=false;
+		UIHelper.sendResponderMessage(false);
+		return;
 		}
 		else if(Application.isOnResponder){
 			Application.isOnResponder=false;
 			UIHelper.sendResponderMessage(false);			
 			app.setResponderStudents(students);
-			app.refresh();
+			app.refreshResponder();
 		}
 		else{
 			log.info("抢答已经结束，响应的学生小组为："+students.get(0).getName());

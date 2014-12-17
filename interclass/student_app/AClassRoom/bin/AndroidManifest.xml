@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.com.incito.classroom"
-    android:versionCode="12"
-    android:versionName="V100R001C00" >
+    android:versionCode="4"
+    android:versionName="V200R001C001B004" >
 
     <uses-sdk
         android:minSdkVersion="17"
@@ -27,6 +27,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
 
     <application
         android:name="cn.com.incito.classroom.base.MyApplication"
@@ -51,7 +52,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="cn.com.incito.classroom.ui.activity.WifiSelectorActivity"
+            android:name="cn.com.incito.classroom.ui.activity.SelectWifiActivity"
             android:screenOrientation="landscape" >
              
         </activity>
@@ -88,7 +89,8 @@
         <!-- 选择分组activity -->
         <activity
             android:name="cn.com.incito.classroom.ui.activity.SelectGroupActivity"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="landscape"
+            android:launchMode="singleTask" >
         </activity>
 
         <!-- 新建分组activity -->
@@ -104,7 +106,8 @@
         </activity>
         <!-- 老师开始上课activity -->
         <activity android:name="cn.com.incito.classroom.ui.activity.ClassingActivity"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape"
+            android:launchMode="singleTask"></activity>
         <activity
             android:name="cn.com.incito.classroom.ui.activity.ClassReadyActivity"
             android:screenOrientation="landscape" >
