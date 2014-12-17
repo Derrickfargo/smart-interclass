@@ -166,7 +166,7 @@ public class UIHelper {
 	public void showEvaluateActivity(byte[] paper,String uuid) {
 		Intent intent = new Intent();
 		try {
-			Thread.sleep(2000);
+			Thread.sleep(3000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

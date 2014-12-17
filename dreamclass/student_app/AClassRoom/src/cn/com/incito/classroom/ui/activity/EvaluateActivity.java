@@ -2,7 +2,10 @@ package cn.com.incito.classroom.ui.activity;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
@@ -90,7 +93,10 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 	private void initView() {
 		mInflater = getLayoutInflater();
 		byte[] paper = getIntent().getExtras().getByteArray("paper");
+		String quizId=getIntent().getStringExtra("quizId");
 		EvaluateVo evaluateVo = new EvaluateVo();
+		
+		evaluateVo.setQuizId(quizId);
 		evaluateVo.setPaperPic(getDrawable(paper));
 		quizList.add(evaluateVo);
 		animation = AnimationUtils.loadAnimation(EvaluateActivity.this, R.anim.score_anim);
@@ -209,7 +215,7 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("imei", MyApplication.deviceId);
 		jsonObject.put("feedback",  getInfo());
-		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_EVALUATE);
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_QUIZ_FEEDBACK_SUBMIT);
 		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
 		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"提交的评论结果"+jsonObject.toJSONString());
 		CoreSocket.getInstance().sendMessage(messagePacking);
@@ -323,7 +329,7 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 	/**
 	 * 获取上传
 	 */
-	public String getInfo() {
+	public ArrayList<EvaluateTempVo> getInfo() {
 		ArrayList<EvaluateTempVo> tempList = new ArrayList<EvaluateTempVo>();
 		for (int i = 0; i < quizList.size(); i++) {
 			EvaluateTempVo tempVo = new EvaluateTempVo();
@@ -332,7 +338,7 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 			tempList.add(tempVo);
 		}
 		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"作业评分结果："+JSON.toJSONString(tempList));
-		return JSON.toJSONString(tempList);
+		return tempList;
 	}
 	/**
 	 * 检测提交按钮是否出现
