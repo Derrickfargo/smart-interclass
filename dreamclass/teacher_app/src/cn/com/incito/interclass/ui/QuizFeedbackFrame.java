@@ -135,8 +135,12 @@ public class QuizFeedbackFrame extends JFrame {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					sendPeerFeedbackMessage();
-					System.out.println("sendPeerFeedbackMessage()");
+					new Thread(){
+						public void run() {
+							sendPeerFeedbackMessage();
+							System.out.println("sendPeerFeedbackMessage()");
+						}
+					}.start();
 				}
 			});
 		}
@@ -216,7 +220,6 @@ public class QuizFeedbackFrame extends JFrame {
 					        ByteArrayOutputStream os = new ByteArrayOutputStream();
 					        ImageIO.write(image, "gif", os);
 					        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(quiz.getId()));
-							messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString("true"));
 							messagePacking.putBodyData(DataType.INT, os.toByteArray());
 							
 					        byte[] data = messagePacking.pack().array();
