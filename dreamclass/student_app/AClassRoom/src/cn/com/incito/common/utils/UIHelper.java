@@ -21,6 +21,7 @@ public class UIHelper {
 	private DrawBoxActivity drawBoxActivity;
 	private EvaluateActivity evaluateActivity;
 	private RandomGroupActivity randomGroupActivity;
+	private boolean isFirst=true;
 	
 	private UIHelper() {
 		app = MyApplication.getInstance();
@@ -165,12 +166,16 @@ public class UIHelper {
 	 */
 	public void showEvaluateActivity(byte[] paper,String uuid) {
 		Intent intent = new Intent();
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		
+		if(isFirst){
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 		if(UIHelper.getInstance().getEvaluateActivity()!=null){
+			isFirst=false;
 			MyApplication.Logger.debug("互评界面不为空，传入了新图片大小为");
 			if (paper != null){
 				UIHelper.getInstance().getEvaluateActivity().setQuizList(paper,uuid);

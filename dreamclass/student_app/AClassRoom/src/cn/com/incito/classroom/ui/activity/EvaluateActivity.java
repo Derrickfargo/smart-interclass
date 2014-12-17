@@ -2,13 +2,10 @@ package cn.com.incito.classroom.ui.activity;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
@@ -26,6 +23,8 @@ import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
@@ -38,6 +37,9 @@ import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 public class EvaluateActivity extends BaseActivity implements OnClickListener {
 
@@ -79,6 +81,15 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 
 	private String uuid;
 
+	private Button evalute_right;
+
+	private LinearLayout layout_evalute;
+
+	private boolean isClick;
+
+	private LinearLayout relative_layout;
+	ArrayList<ImageView> imageList = new ArrayList<ImageView>();//存放导航图标
+
 	@Override
 	protected void onAfterOnCreate(Bundle savedInstanceState) {
 		super.onAfterOnCreate(savedInstanceState);
@@ -95,7 +106,6 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 		byte[] paper = getIntent().getExtras().getByteArray("paper");
 		String quizId=getIntent().getStringExtra("quizId");
 		EvaluateVo evaluateVo = new EvaluateVo();
-		
 		evaluateVo.setQuizId(quizId);
 		evaluateVo.setPaperPic(getDrawable(paper));
 		quizList.add(evaluateVo);
@@ -116,6 +126,11 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 		button_five.setOnClickListener(this);
 		button_confirm = (Button) findViewById(R.id.btn_confirm);
 		button_confirm.setOnClickListener(this);
+		evalute_right=(Button)findViewById(R.id.evalute_right);
+		evalute_right.setOnClickListener(this);
+		layout_evalute=(LinearLayout)findViewById(R.id.layout_evalute);
+		layout_evalute.setOnClickListener(this);
+		relative_layout=(LinearLayout)findViewById(R.id.relative_layout);
 		InitViewPager();
 	}
 
@@ -123,6 +138,10 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 		viewPage = (ViewPager) findViewById(R.id.viewPager);
 		listViews = new ArrayList<View>();
 		listViews.add(mInflater.inflate(R.layout.evaluate_item, null));
+		ImageView imageView= new ImageView(this);
+		imageView.setImageResource(R.drawable.circle_foucs);
+		imageList.add(imageView);
+		relative_layout.addView(imageView);
 		adpt = new MyPagerAdapter(listViews, quizList);
 		viewPage.setAdapter(adpt);
 		viewPage.setCurrentItem(0);
@@ -167,6 +186,19 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 			break;
 		case R.id.btn_confirm:
 			sendScore();
+		case R.id.evalute_right:
+			if(!isClick){
+				Animator button_animation = AnimatorInflater.loadAnimator(this, R.animator.button_dismiss_out);
+				button_animation.setTarget(layout_evalute);
+				button_animation.start();
+				isClick=true;
+			}else{
+				Animator button_animation = AnimatorInflater.loadAnimator(this, R.animator.button_dismiss_in);
+				button_animation.setTarget(layout_evalute);
+				button_animation.start();
+				isClick=false;
+			}
+			break;
 		default:
 			break;
 		}
@@ -180,7 +212,17 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 	public void setScore(int score, int currentmViewPageId) {
 		// 获得的按钮是当前页面按钮的时候才进行名次显示
 		Button button = (Button) listViews.get(currentmViewPageId).findViewById(R.id.number);
-		button.setText(score + "");
+		if(score==1){
+			button.setBackgroundResource(R.drawable.number_one);
+		}else if(score==2){
+			button.setBackgroundResource(R.drawable.number_two);
+		}else if(score==3){
+			button.setBackgroundResource(R.drawable.number_three);
+		}else if(score==4){
+			button.setBackgroundResource(R.drawable.number_four);
+		}else if(score==5){
+			button.setBackgroundResource(R.drawable.number_five);
+		}
 		button.setVisibility(View.VISIBLE);
 		quizList.get(currentmViewPageId).setSelectNumber(score);
 		int temp = score;
@@ -198,8 +240,6 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 							pagerID=k;
 						}
 					}
-				
-				
 				}
 			}
 			
@@ -259,9 +299,11 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 			mListViews.get(arg1).setBackgroundDrawable(quizList.get(arg1).getPaperPic());
 			Button score = (Button) mListViews.get(arg1).findViewById(R.id.number);// 名次显示按钮
 			if (quizList.get(arg1).getSelectNumber() != 0) {
-				score.setText(quizList.get(arg1).getSelectNumber() + "");
 				score.setVisibility(View.VISIBLE);
 			}
+			
+			
+			
 			((ViewPager) arg0).addView(mListViews.get(arg1), 0);
 			return mListViews.get(arg1);
 		}
@@ -294,8 +336,13 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 		@Override
 		public void onPageSelected(int arg0) {
 			mCurrentViewID = arg0;
-			if (quizList.get(arg0).getSelectNumber() != 0)
-			((Button) listViews.get(arg0).findViewById(R.id.number)).setText(quizList.get(arg0).getSelectNumber() + " ");
+			for (int i = 0; i < imageList.size(); i++) {
+				if(arg0==i){
+					imageList.get(i).setImageResource(R.drawable.circle_foucs);
+				}else{
+					imageList.get(i).setImageResource(R.drawable.circle_no_foucs);
+				}
+			}
 		}
 
 		@Override
@@ -346,11 +393,7 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 	public void isConfirmBtnVisible(){
 		int j=0;
 		for (int i = 0; i < quizList.size(); i++) {
-			if(quizList.get(i).getSelectNumber()==1){
-				j++;
-			}else if(quizList.get(i).getSelectNumber()==2){
-				j++;
-			}else if(quizList.get(i).getSelectNumber()==3){
+			if(quizList.get(i).getSelectNumber()!=0){
 				j++;
 			}
 		}
@@ -370,6 +413,11 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 				evaluateVo.setPaperPic(getDrawable(paper));
 				evaluateVo.setQuizId(uuid);
 				quizList.add(evaluateVo);
+				ImageView imageView= new ImageView(EvaluateActivity.this);
+				imageView.setImageResource(R.drawable.circle_no_foucs);
+				imageView.setPadding(10, 0, 0, 0);
+				imageList.add(imageView);
+				relative_layout.addView(imageView);
 				listViews.add(mInflater.inflate(R.layout.evaluate_item, null));
 				adpt.setPaperList(quizList);
 				break;
