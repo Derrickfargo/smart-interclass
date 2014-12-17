@@ -1,9 +1,12 @@
 package cn.com.incito.interclass.ui;
 
 import java.awt.Font;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -12,19 +15,19 @@ import cn.com.incito.interclass.po.Student;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.utils.UIHelper;
 
-public class ResponderPanel extends JPanel{
+public class ResponderPanel extends JPanel implements MouseListener{
 	private static final long serialVersionUID = 3263791015780289798L;
 	Application app = Application.getInstance();
 	private List<Student> responderStus;
 	private JLabel stuList;
 	private JLabel stuText;
+	private JLabel responder,stuImg,stuLoading;
 	
 	public ResponderPanel() {
-		// this.setSize(878, 620);
 		this.setLayout(null);
 		this.setOpaque(true);
+		
 		initView();
-		// 加载数据
 		refresh();
 	}
 	
@@ -50,6 +53,7 @@ public class ResponderPanel extends JPanel{
 			return;
 		}
 		if(!Application.isOnResponder){
+			showLodding(true);
 			UIHelper.sendResponderMessage(true);
 			Application.isOnResponder=true;
 			return;
@@ -61,38 +65,105 @@ public class ResponderPanel extends JPanel{
 		initData();
 		if(responderStus==null||responderStus.size()==0){
 			stuList.setText(null);
+			showRes(false);
 			return;
 		}
 		List<Student> students=responderStus;
-		app.setResponderStudents(new ArrayList<Student>());
 		StringBuffer stuBuffer= new StringBuffer();
 		for(Student student : students){
-			stuBuffer.append(student.getNumber()+":"+student.getName()+",");
+			stuBuffer.append(student.getNumber()+": "+student.getName()+" ; ");
 		}
 		String stuName = stuBuffer.toString();
 		stuList.setText(stuName);		
-		stuList.setFont(new Font("宋体", Font.BOLD, 15));
+		stuList.setFont(new Font("微软雅黑", Font.BOLD, 15));
+		showRes(true);
+		showLodding(false);
+		
 		repaint();
 		revalidate();
 	}
 	
 	private void initView(){
 		stuList = new JLabel();
-		stuList.setBounds(400, 200, 400, 200);
+		stuList.setBounds(270, 203, 500, 50);
+		stuList.setVisible(false);
 		this.add(stuList);
 		
+		stuImg = new JLabel();
+		ImageIcon imag = new ImageIcon("images/login/pic_check.png");
+		stuImg.setIcon(imag);
+		stuImg.setBounds(50, 207,imag.getIconWidth(), imag.getIconHeight());
+		stuImg.setVisible(false);
+		this.add(stuImg);
+		
+		stuLoading = new JLabel();
+		ImageIcon img = new ImageIcon("images/main/loading.gif");
+		stuLoading.setIcon(img);
+		stuLoading.setBounds(385, 514, img.getIconWidth(), img.getIconHeight());
+		stuLoading.setVisible(false);
+		this.add(stuLoading);
+		
+		responder  =  new JLabel();
+		ImageIcon imgs = new ImageIcon("images/responder/responder.png");
+		responder.setIcon(imgs);
+		responder.addMouseListener(this);
+		responder.setBounds(320, 430, imgs.getIconWidth(), imgs.getIconHeight());
+		responder.setVisible(true);
+		this.add(responder);
+		
 		stuText = new JLabel();
-		stuText.setBounds(200, 200, 200, 200);
+		stuText.setBounds(100, 200, 200, 50);
 		stuText.setText("抢答的学生为：");
-		stuText.setFont(new Font("宋体", Font.BOLD, 24));
+		stuText.setFont(new Font("微软雅黑", Font.BOLD, 24));
+		stuText.setVisible(false);
 		this.add(stuText);
 	}
 	
 	private void initData(){
 		if(app.getResponderStudents().size()!=0){
 			responderStus=app.getResponderStudents();
+			app.setResponderStudents(new ArrayList<Student>());
 			return;
 		}
 		responderStus = new ArrayList<Student>();
+	}
+	private void showRes(boolean flag){
+		stuList.setVisible(flag);
+		stuText.setVisible(flag);
+		stuImg.setVisible(flag);
+	}
+	private void showLodding(boolean flag){
+		stuLoading.setVisible(flag);
+	}
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if(e.getSource()==responder){
+			showRes(false);
+			doResponder();
+		}
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		if(e.getSource()==responder){
+			responder.setIcon(new ImageIcon("images/responder/responder_hover.png"));
+		}
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		if(e.getSource()==responder){
+			responder.setIcon(new ImageIcon("images/responder/responder.png"));
+		}
 	}
 }

@@ -206,6 +206,11 @@ public class Application {
 			imeiStudent.put(imei, studentList);
 		}
     }
+    /**
+     * 在所有学生中更新imeiStudent
+     * @param students
+     * @return
+     */
     public List<Student> addRdmStudent(List<Student> students){
     	List<Student> onlineStudent = new ArrayList<Student>();
     	for(Map.Entry<String, List<Student>> entry:imeiStudent.entrySet()){
@@ -623,7 +628,6 @@ public class Application {
 	public void refresh() {
         MainFrame.getInstance().refreshPrepare();
         MainFrame.getInstance().refreshQuiz();
-//        MainFrame.getInstance().refreshResponder();
     }
 
     public void refreshQuiz() {
@@ -635,6 +639,10 @@ public class Application {
 			quizFeedbackFrame.refresh();
 		}
 	}
+
+    public void refreshResponder(){
+    	MainFrame.getInstance().refreshResponder();
+    }
 
     public String getLessionid() {
 		return lessionid;
