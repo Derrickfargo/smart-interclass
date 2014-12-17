@@ -138,7 +138,6 @@ public class QuizFeedbackFrame extends JFrame {
 					new Thread(){
 						public void run() {
 							sendPeerFeedbackMessage();
-							System.out.println("sendPeerFeedbackMessage()");
 						}
 					}.start();
 				}

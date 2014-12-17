@@ -2,9 +2,6 @@ package cn.com.incito.interclass.ui;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
@@ -16,7 +13,6 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.UUID;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -29,7 +25,6 @@ import cn.com.incito.interclass.po.Quiz;
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
-import cn.com.incito.server.core.CoreSocket;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
@@ -37,7 +32,6 @@ import cn.com.incito.server.utils.BufferUtils;
 import cn.com.incito.server.utils.PeerFeedbackUtils;
 import cn.com.incito.server.utils.QuizCollector;
 
-import com.alibaba.fastjson.JSONObject;
 import com.sun.image.codec.jpeg.ImageFormatException;
 
 public class QuizBottomPanel extends JPanel implements MouseListener{
@@ -177,12 +171,11 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 		} else if (e.getSource() == btnFeedback) {
 			new Thread(){
 				public void run() {
-					//TODO 暂时屏蔽，测试界面
-//					Queue<List<Quiz>> quizQueue = PeerFeedbackUtils.getQuizQueue();
-//					if(quizQueue.size() == 0){
-//						JOptionPane.showMessageDialog(QuizBottomPanel.this, "收取作业后才能进行互评！");
-//						return;
-//					}
+					Queue<List<Quiz>> quizQueue = PeerFeedbackUtils.getQuizQueue();
+					if(quizQueue.size() == 0){
+						JOptionPane.showMessageDialog(QuizBottomPanel.this, "收取作业后才能进行互评！");
+						return;
+					}
 					quizFeedbackFrame = new QuizFeedbackFrame();
 				}
 			}.start();
