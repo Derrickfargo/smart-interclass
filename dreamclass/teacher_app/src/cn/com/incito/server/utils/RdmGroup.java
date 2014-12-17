@@ -2,16 +2,16 @@ package cn.com.incito.server.utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
 
+import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Student;
+import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
 /**
  * 
@@ -19,8 +19,10 @@ import cn.com.incito.server.api.Application;
  *
  */
 public class RdmGroup {
+	private static Application app = Application.getInstance();
+//	private static Map<Integer,List<Device>> groupDevice;
+	
 	public static Queue<List<Student>>  getStudentQue(){
-		Application app = Application.getInstance();
 		Set<String> onlinePads = app.getOnlineDevice();//在线设备集合
 		List<Student> totalStu = new ArrayList<Student> ();//本班所有学生
 		
@@ -53,4 +55,46 @@ public class RdmGroup {
 		}
 		return stuQue;
 	}
+	
+	public static  Map<String,Object> getTableGroupList() {
+		Set<String> devices = app.getOnlineDevice();
+		List<Group> groupList= new ArrayList<Group>();//group列表
+		Map<Integer,List<Device>> groupDevices = new HashMap<Integer, List<Device>>();//groupDevice表
+		Map<String,Object> rdmGroup=new HashMap<String, Object>();
+		//遍历divice，得到在线小组及包含的设备列表
+		for(String device : devices){
+			Device deviced = app.getImeiDevice().get(device);
+			Table table=app.getDeviceTable().get(deviced.getId());
+			Group group = app.getTableGroup().get(table.getId());
+			
+			if(groupList.size()==0){
+				List<Device>deviceList= new ArrayList<Device>();
+				deviceList.add(deviced);
+				groupList.add(group);
+				groupDevices.put(group.getId(),deviceList);
+			} else {
+				 boolean flag=true;
+				 for(Group grouped: groupList){
+					 if(group.getId()==grouped.getId()){
+						 flag=false;
+						 List<Device> deviceList=groupDevices.get(grouped.getId());
+						 deviceList.add(deviced);
+						 groupDevices.put(grouped.getId(), deviceList);
+						 break;
+					 }
+				 }
+				 if(flag){
+					 groupList.add(group);
+					 List<Device>deviceList =new ArrayList<Device>();
+					 deviceList.add(deviced);
+					 groupDevices.put(group.getId(), deviceList);
+				 }
+			 }
+		}
+		
+		rdmGroup.put("groupList", groupList);
+		rdmGroup.put("groupDevices", groupDevices);
+		return rdmGroup;
+	}
+	
 }
