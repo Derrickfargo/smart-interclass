@@ -1,22 +1,14 @@
 package cn.com.incito.common.utils;
 
-import java.io.ByteArrayOutputStream;
-
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Bitmap.CompressFormat;
 import android.os.Bundle;
-import android.widget.Toast;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.ui.activity.BindDeskActivity;
 import cn.com.incito.classroom.ui.activity.CountdownActivity;
 import cn.com.incito.classroom.ui.activity.DrawBoxActivity;
-import cn.com.incito.classroom.ui.activity.RandomGroupActivity;
-import cn.com.incito.classroom.ui.activity.ResponderActivity;
 import cn.com.incito.classroom.ui.activity.EvaluateActivity;
+import cn.com.incito.classroom.ui.activity.RandomGroupActivity;
 import cn.com.incito.classroom.ui.activity.WaitingActivity;
 
 import com.alibaba.fastjson.JSONObject;
@@ -171,32 +163,32 @@ public class UIHelper {
 	 * 显示学生互评界面
 	 * @param paper
 	 */
-	public void showEvaluateActivity(byte[] paper) {
+	public void showEvaluateActivity(byte[] paper,String uuid) {
 		Intent intent = new Intent();
-		MyApplication.getInstance().setSubmitPaper(false);
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		if(UIHelper.getInstance().getEvaluateActivity()!=null){
-			if (paper != null)
-			UIHelper.getInstance().getEvaluateActivity().setQuizList(paper);
+			MyApplication.Logger.debug("互评界面不为空，传入了新图片大小为");
+			if (paper != null){
+				UIHelper.getInstance().getEvaluateActivity().setQuizList(paper,uuid);
+				MyApplication.Logger.debug("新图片大小为"+paper.length);
+			}
 		}else{
 			if (paper != null) {
+				MyApplication.Logger.debug("收到第一张互评图片");
 				Bundle mBundle = new Bundle();
 				mBundle.putByteArray("paper", paper);
+				mBundle.putString("quizId", uuid);;
 				intent.putExtras(mBundle);
 			}
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			intent.setAction(Constants.ACTION_SHOW_EVALUATE);
 			app.startActivity(intent);
 		}
-		
-			
 	}
-	
-	
-	
-	
-	
-	
-	
 	public void showEditGroupActivity(int groupID) {
 		Intent intent = new Intent();
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -216,11 +208,6 @@ public class UIHelper {
 		app.startActivity(intent);
 
 	}
-
-	public void showToast(Activity mActivity, String mes) {
-		Toast.makeText(mActivity, mes, Toast.LENGTH_SHORT);
-	}
-
 	public void showDrawBoxActivity() {
 		Intent intent = new Intent(app.getApplicationContext(),
 				DrawBoxActivity.class);
@@ -236,6 +223,10 @@ public class UIHelper {
 
 	
 	public void setEvaluateActivity(EvaluateActivity evaluateActivity) {
+		if (this.evaluateActivity != null) {
+			this.evaluateActivity.finish();
+			this.evaluateActivity = null;
+		}
 		this.evaluateActivity = evaluateActivity;
 	}
 	

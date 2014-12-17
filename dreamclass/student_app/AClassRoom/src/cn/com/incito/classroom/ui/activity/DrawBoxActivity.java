@@ -422,6 +422,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		UIHelper.getInstance().setDrawBoxActivity(null);
 		m_sketchPad.clearAllStrokes();
 		if (bitmap != null) {
 			if (!bitmap.isRecycled()) {

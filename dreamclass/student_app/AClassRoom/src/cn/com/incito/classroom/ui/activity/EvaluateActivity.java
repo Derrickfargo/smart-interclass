@@ -3,9 +3,6 @@ package cn.com.incito.classroom.ui.activity;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
@@ -15,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -31,6 +29,7 @@ import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.vo.EvaluateTempVo;
 import cn.com.incito.classroom.vo.EvaluateVo;
 import cn.com.incito.common.utils.AndroidUtil;
+import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
@@ -73,10 +72,15 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 
 	private MyPagerAdapter adpt;
 
+	private byte[] paper;
+
+	private String uuid;
+
 	@Override
 	protected void onAfterOnCreate(Bundle savedInstanceState) {
 		super.onAfterOnCreate(savedInstanceState);
 		setContentView(R.layout.evaluate_activity);
+		UIHelper.getInstance().setEvaluateActivity(this);
 		initView();
 	}
 
@@ -155,6 +159,8 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 			setScore(5, mCurrentViewID);
 			isConfirmBtnVisible();
 			break;
+		case R.id.btn_confirm:
+			sendScore();
 		default:
 			break;
 		}
@@ -165,25 +171,34 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 	 * @param ViewId
 	 *            根据viewpager的当前页 设置名次
 	 */
-	public void setScore(int score, int currentViewPageId) {
+	public void setScore(int score, int currentmViewPageId) {
 		// 获得的按钮是当前页面按钮的时候才进行名次显示
-		Button button = (Button) listViews.get(currentViewPageId).findViewById(R.id.number);
+		Button button = (Button) listViews.get(currentmViewPageId).findViewById(R.id.number);
 		button.setText(score + "");
 		button.setVisibility(View.VISIBLE);
-		quizList.get(currentViewPageId).setSelectNumber(score);
+		quizList.get(currentmViewPageId).setSelectNumber(score);
 		int temp = score;
+		int pagerID=currentmViewPageId;
 		for (int j = 0; j < quizList.size(); j++) {
-			if (temp == quizList.get(j).getSelectNumber() && j != currentViewPageId) {
-				quizList.get(j).setSelectNumber(quizList.get(currentViewPageId).getSelectNumber() + 1);
-				;
-			}
-			for (int k = 0; k < quizList.size(); k++) {
-				if (quizList.get(k).getSelectNumber() == quizList.get(j).getSelectNumber() && k != j) {
-					quizList.get(k).setSelectNumber(quizList.get(j).getSelectNumber() + 1);
-					temp = quizList.get(k).getSelectNumber();
+			if (temp == quizList.get(j).getSelectNumber() && j != pagerID) {
+				if(temp==5){
+					quizList.get(j).setSelectNumber(0);
+				}else{
+					quizList.get(j).setSelectNumber(quizList.get(j).getSelectNumber() + 1);
+					for (int k = 0; k < quizList.size(); k++) {
+						if (quizList.get(k).getSelectNumber() == quizList.get(j).getSelectNumber() && k != j) {
+							quizList.get(k).setSelectNumber(quizList.get(k).getSelectNumber() + 1);
+							temp = quizList.get(k).getSelectNumber();
+							pagerID=k;
+						}
+					}
+				
+				
 				}
 			}
+			
 		}
+		adpt.setPaperList(quizList);
 		button.startAnimation(animation);
 	}
 
@@ -196,9 +211,9 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 		jsonObject.put("feedback",  getInfo());
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_EVALUATE);
 		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"提交的评论结果"+jsonObject.toJSONString());
 		CoreSocket.getInstance().sendMessage(messagePacking);
 	}
-
 	/**
 	 * ViewPager适配器
 	 */
@@ -273,7 +288,7 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 		public void onPageSelected(int arg0) {
 			mCurrentViewID = arg0;
 			if (quizList.get(arg0).getSelectNumber() != 0)
-				((Button) listViews.get(arg0).findViewById(R.id.number)).setText(quizList.get(arg0).getSelectNumber() + " ");
+			((Button) listViews.get(arg0).findViewById(R.id.number)).setText(quizList.get(arg0).getSelectNumber() + " ");
 		}
 
 		@Override
@@ -286,13 +301,10 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 		}
 	}
 
-	public void setQuizList(byte[] paper) {
-		EvaluateVo evaluateVo = new EvaluateVo();
-		evaluateVo.setPaperPic(getDrawable(paper));
-		quizList.add(evaluateVo);
-		listViews.add(mInflater.inflate(R.layout.evaluate_item, null));
-		adpt.setPaperList(quizList);
-
+	public void setQuizList(byte[] paper,String uuid) {
+		handler.sendEmptyMessage(1);
+		this.paper=paper;
+		this.uuid=uuid;
 	}
 
 	/**
@@ -341,5 +353,27 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 		}else{
 			button_confirm.setVisibility(View.GONE);
 		}
+	}
+	
+	private Handler handler = new Handler(){
+		public void handleMessage(android.os.Message msg) {
+			switch (msg.what) {
+			case 1:
+				EvaluateVo evaluateVo = new EvaluateVo();
+				evaluateVo.setPaperPic(getDrawable(paper));
+				evaluateVo.setQuizId(uuid);
+				quizList.add(evaluateVo);
+				listViews.add(mInflater.inflate(R.layout.evaluate_item, null));
+				adpt.setPaperList(quizList);
+				break;
+			default:
+				break;
+			}
+		}
+	};
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		UIHelper.getInstance().setEvaluateActivity(null);
 	}
 }
