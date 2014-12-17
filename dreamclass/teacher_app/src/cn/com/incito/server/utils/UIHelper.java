@@ -98,12 +98,12 @@ public class UIHelper {
 			@Override
 			public void run(){
 				ByteBuffer buf =ByteBuffer.allocate(msg.pack().array().length);
-				buf.clear();
-				buf.put(msg.pack().array());
-				buf.flip();
 				for(SocketChannel socketChannel:clientChannel){
 					if(socketChannel!=null&&socketChannel.isConnected()){
 						try {
+							buf.clear();
+							buf.put(msg.pack().array());
+							buf.flip();
 							socketChannel.write(buf);
 							logger.info("抢答信息发送成功\n");
 						} catch (IOException e) {
