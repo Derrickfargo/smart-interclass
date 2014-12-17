@@ -621,7 +621,7 @@ public class Application {
 	public void refresh() {
         MainFrame.getInstance().refreshPrepare();
         MainFrame.getInstance().refreshQuiz();
-        MainFrame.getInstance().refreshResponder();
+//        MainFrame.getInstance().refreshResponder();
     }
 
     public void refreshQuiz() {

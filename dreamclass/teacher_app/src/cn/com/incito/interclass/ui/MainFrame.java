@@ -55,7 +55,7 @@ public class MainFrame extends MouseAdapter {
 	private JFrame frame = new JFrame();
 	private Boolean isDragged;
 	private Point loc, tmp;
-	private JButton btnMin, btnClose, btnPraise,btnResponder;
+	private JButton btnMin, btnClose, btnPraise/*,btnResponder*/;
 	private JLabel lblBackground;
 	private JPanel contentPane;
 	
@@ -175,7 +175,7 @@ public class MainFrame extends MouseAdapter {
         btnStatus.setIcon(new ImageIcon("images/main/bg_ready_hover.png"));
         btnQuiz.setIcon(new ImageIcon("images/main/bg_works.png"));
         btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
-        btnResponder.setIcon(new ImageIcon("images/main/bg_qa.png"));
+//        btnResponder.setIcon(new ImageIcon("images/main/bg_qa.png"));
 	}
 	
 	public void showQuiz() {
@@ -187,7 +187,7 @@ public class MainFrame extends MouseAdapter {
         btnQuiz.setIcon(new ImageIcon("images/main/bg_works_hover.png"));
         btnStatus.setIcon(new ImageIcon("images/main/bg_ready.png"));
         btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
-        btnResponder.setIcon(new ImageIcon("images/main/bg_qa.png"));
+//        btnResponder.setIcon(new ImageIcon("images/main/bg_qa.png"));
 	}
 	
 	public void showPraise() {
@@ -199,30 +199,30 @@ public class MainFrame extends MouseAdapter {
 		btnQuiz.setIcon(new ImageIcon("images/main/bg_works.png"));
 		btnStatus.setIcon(new ImageIcon("images/main/bg_ready.png"));
 		btnPraise.setIcon(new ImageIcon("images/main/bg_praise_hover.png"));
-		btnResponder.setIcon(new ImageIcon("images/main/bg_qa.png"));
+//		btnResponder.setIcon(new ImageIcon("images/main/bg_qa.png"));
 		
 		praisePanel.refresh();
 	}
 	
-	protected void showResponder() {
-		setVisible(true);
-		frame.setExtendedState(JFrame.NORMAL);
-		int result=JOptionPane.showConfirmDialog(frame, "确认开始抢答吗？（正在进行中的动作可能取消）","抢答小TIP",JOptionPane.YES_NO_OPTION);
-		if(result==JOptionPane.NO_OPTION){
-			showPrepare();
-			return;
-		}
-		responderPanel.doResponder();
-		centerCardLayout.show(centerCardPanel, CARD_RESPONDER);
-		bottomCardLayout.show(bottomCardPanel, CARD_PRAISE_BOTTOM);
-                
-		btnQuiz.setIcon(new ImageIcon("images/main/bg_works.png"));
-		btnStatus.setIcon(new ImageIcon("images/main/bg_ready.png"));
-		btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
-		btnResponder.setIcon(new ImageIcon("images/main/bg_qa_hover.png"));
-		
-		responderPanel.refresh();
-	}
+//	protected void showResponder() {
+//		setVisible(true);
+//		frame.setExtendedState(JFrame.NORMAL);
+//		int result=JOptionPane.showConfirmDialog(frame, "确认开始抢答吗？（正在进行中的动作可能取消）","抢答小TIP",JOptionPane.YES_NO_OPTION);
+//		if(result==JOptionPane.NO_OPTION){
+//			showPrepare();
+//			return;
+//		}
+//		responderPanel.doResponder();
+//		centerCardLayout.show(centerCardPanel, CARD_RESPONDER);
+//		bottomCardLayout.show(bottomCardPanel, CARD_PRAISE_BOTTOM);
+//                
+//		btnQuiz.setIcon(new ImageIcon("images/main/bg_works.png"));
+//		btnStatus.setIcon(new ImageIcon("images/main/bg_ready.png"));
+//		btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
+//		btnResponder.setIcon(new ImageIcon("images/main/bg_qa_hover.png"));
+//		
+////		responderPanel.refresh();
+//	}
 
 	// 显示登陆界面
 	private void showLoginUI() {
@@ -354,19 +354,19 @@ public class MainFrame extends MouseAdapter {
 		contentPane.add(left);
 		
 		//抢答
-		Icon iconResponder = new ImageIcon("images/main/bg_qa.png");
-		btnResponder = new JButton();
-		btnResponder.setIcon(iconResponder);
-		btnResponder.setFocusPainted(false);
-		btnResponder.setBorderPainted(false);// 设置边框不可见
-		btnResponder.setContentAreaFilled(false);// 设置透明
-		left.add(btnResponder);
-		btnResponder.setBounds(0, 154, iconResponder.getIconWidth(), iconResponder.getIconHeight());
-		btnResponder.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				showResponder();
-			}
-		});
+//		Icon iconResponder = new ImageIcon("images/main/bg_qa.png");
+//		btnResponder = new JButton();
+//		btnResponder.setIcon(iconResponder);
+//		btnResponder.setFocusPainted(false);
+//		btnResponder.setBorderPainted(false);// 设置边框不可见
+//		btnResponder.setContentAreaFilled(false);// 设置透明
+//		left.add(btnResponder);
+//		btnResponder.setBounds(0, 154, iconResponder.getIconWidth(), iconResponder.getIconHeight());
+//		btnResponder.addActionListener(new ActionListener(){
+//			public void actionPerformed(ActionEvent e) {
+//				showResponder();
+//			}
+//		});
 
 		// ///////////////////center部分////////////////////////
 		centerCardLayout = new CardLayout();
@@ -407,14 +407,14 @@ public class MainFrame extends MouseAdapter {
 		centerCardPanel.add(praiseScrollPane, CARD_PRAISE);
 		
 		//抢答card
-		responderPanel = new ResponderPanel();
-		responderPanel.setBackground(Color.white);
-		JScrollPane responderScrollPane = new JScrollPane(responderPanel);
-		responderScrollPane.getVerticalScrollBar().setUnitIncrement(100);
-		responderScrollPane.setBorder(null);
-		responderScrollPane.setBounds(0, 0, 876, 630);
-        praisePanel.setPreferredSize(new Dimension(responderScrollPane.getWidth() - 50, (responderScrollPane.getHeight() - 100) * 2));
-		centerCardPanel.add(responderScrollPane, CARD_RESPONDER);
+//		responderPanel = new ResponderPanel();
+//		responderPanel.setBackground(Color.white);
+//		JScrollPane responderScrollPane = new JScrollPane(responderPanel);
+//		responderScrollPane.getVerticalScrollBar().setUnitIncrement(100);
+//		responderScrollPane.setBorder(null);
+//		responderScrollPane.setBounds(0, 0, 876, 630);
+//        praisePanel.setPreferredSize(new Dimension(responderScrollPane.getWidth() - 50, (responderScrollPane.getHeight() - 100) * 2));
+//		centerCardPanel.add(responderScrollPane, CARD_RESPONDER);
         
 		// //////////////////////bottom部分////////////////////////
 		bottomCardLayout = new CardLayout();
@@ -431,7 +431,7 @@ public class MainFrame extends MouseAdapter {
 		bottomCardPanel.add(quizBottomPanel, CARD_QUIZ_BOTTOM);
 		//Praise
 		praiseBottomPanel = new PraiseBottomPanel();
-		bottomCardPanel.add(praiseBottomPanel, CARD_PRAISE_BOTTOM);		
+//		bottomCardPanel.add(praiseBottomPanel, CARD_PRAISE_BOTTOM);		
 				
 		initData();
 		setBackground();// 设置背景
