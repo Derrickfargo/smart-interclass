@@ -46,6 +46,7 @@ public class QuizFeedbackFrame extends JFrame {
 	}
 	
 	public void showFrame(){
+		refresh();
 		setVisible(true);
 		photoDialog.setVisible(true);
 	}
