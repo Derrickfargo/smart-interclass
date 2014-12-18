@@ -167,7 +167,7 @@ public class PhotoFrame extends JFrame {
 	        
 	        lblTitle = new JLabel();
 			lblTitle.setForeground(UIHelper.getDefaultFontColor());
-			lblTitle.setBounds(54, 20, 200, 25);
+			lblTitle.setBounds(54, 20, 800, 25);
 			add(lblTitle);
 			
 	        JPanel pnlImage = new JPanel(){
