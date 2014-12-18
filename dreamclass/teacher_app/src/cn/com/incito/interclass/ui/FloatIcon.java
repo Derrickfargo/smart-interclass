@@ -14,7 +14,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.util.Date;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -24,12 +23,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 
-import cn.com.incito.interclass.task.JobPaperUpload;
-import cn.com.incito.interclass.task.QuartzManager;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.utils.UIHelper;
 
