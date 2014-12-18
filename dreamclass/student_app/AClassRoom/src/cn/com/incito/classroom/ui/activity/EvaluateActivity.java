@@ -249,6 +249,7 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
 		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"提交的评论结果"+jsonObject.toJSONString());
 		CoreSocket.getInstance().sendMessage(messagePacking);
+		MyApplication.getInstance().lockScreen(true);
 		this.finish();
 	}
 	/**
