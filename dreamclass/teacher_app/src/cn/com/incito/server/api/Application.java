@@ -29,6 +29,7 @@ import cn.com.incito.interclass.po.Table;
 import cn.com.incito.interclass.po.Teacher;
 import cn.com.incito.interclass.ui.FloatIcon;
 import cn.com.incito.interclass.ui.MainFrame;
+import cn.com.incito.interclass.ui.QuizFeedbackFrame;
 import cn.com.incito.server.config.Constants;
 import cn.com.incito.server.utils.FileUtils;
 
@@ -51,6 +52,7 @@ public class Application {
 	private boolean isGrouping = false;
 	private boolean DoRdmGrouping = false;
     private FloatIcon floatIcon;
+    private QuizFeedbackFrame quizFeedbackFrame;
     /**
 	 * 课堂id
 	 */
@@ -155,6 +157,18 @@ public class Application {
 	public void setFloatIcon(FloatIcon floatIcon) {
 		this.floatIcon = floatIcon;
 	}
+	
+	public QuizFeedbackFrame getQuizFeedbackFrame() {
+		if (quizFeedbackFrame == null) {
+			quizFeedbackFrame = new QuizFeedbackFrame();
+		}
+		return quizFeedbackFrame;
+	}
+
+	public void setQuizFeedbackFrame(QuizFeedbackFrame quizFeedbackFrame) {
+		this.quizFeedbackFrame = quizFeedbackFrame;
+	}
+
 
 	public String getMac() {
 		return mac;

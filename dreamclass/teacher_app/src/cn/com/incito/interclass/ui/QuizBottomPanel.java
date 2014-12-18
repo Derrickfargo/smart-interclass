@@ -2,6 +2,9 @@ package cn.com.incito.interclass.ui;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
@@ -13,6 +16,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -176,10 +180,50 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 						return;
 					}
 					Application.getInstance().getQuizFeedbackMap().clear();//清除之前的评比结果
-					QuizFeedbackFrame.getInstance().showFrame();
+					sendPeerFeedbackMessage();
+					Application.getInstance().getQuizFeedbackFrame().showFrame();
 				}
 			}.start();
 			
+		}
+	}
+	
+	private void sendPeerFeedbackMessage() {
+		Queue<List<Quiz>> quizQueue = PeerFeedbackUtils.getQuizQueue();
+		Application app = Application.getInstance();
+		Set<Entry<String, SocketChannel>> clients = app.getClientChannel().entrySet();
+		final Iterator<Entry<String, SocketChannel>> it = clients.iterator();
+		while (it.hasNext()) {
+			Entry<String, SocketChannel> entry = it.next();
+			String imei = entry.getKey();
+			List<Student> students = app.getStudentByImei(imei);
+			//记录有学生登陆的Pad
+			if (students != null && students.size() > 0) {
+				SocketChannel channel = entry.getValue();
+				if (channel != null && channel.isConnected()) {
+					List<Quiz> quizList = quizQueue.poll();
+					for(Quiz quiz : quizList){
+						MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_QUIZ_FEEDBACK_SEND);
+				        try {
+					        BufferedImage image = ImageIO.read(new File(quiz.getQuizUrl()));
+					        ByteArrayOutputStream os = new ByteArrayOutputStream();
+					        ImageIO.write(image, "gif", os);
+					        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(quiz.getId()));
+							messagePacking.putBodyData(DataType.INT, os.toByteArray());
+							
+					        byte[] data = messagePacking.pack().array();
+							// 输出到通道
+							ByteBuffer buffer = ByteBuffer.allocate(data.length);
+							buffer.clear();
+							buffer.put(data);
+							buffer.flip();
+							channel.write(buffer);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
 		}
 	}
 	

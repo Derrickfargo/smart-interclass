@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 import cn.com.incito.interclass.po.Quiz;
 import cn.com.incito.interclass.po.QuizFeedback;
 import cn.com.incito.interclass.po.Student;
-import cn.com.incito.interclass.ui.QuizFeedbackFrame;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.MessageHandler;
 
@@ -51,7 +50,7 @@ public class QuizEvaluateSubmitHandler extends MessageHandler {
 			feedback.setScore(getScore(level) + feedback.getScore());
 			feedback.getFeedbackList().add(name.toString() + "给予了 " + getLevel(level));
 		}
-		QuizFeedbackFrame.getInstance().refresh();
+		Application.getInstance().getQuizFeedbackFrame().refresh();
 	}
 	
 	private int getScore(int level) {

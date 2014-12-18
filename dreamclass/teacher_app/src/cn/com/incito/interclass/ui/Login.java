@@ -167,6 +167,7 @@ public class Login extends MouseAdapter {
 		txtPassword = new JPasswordField(10);
 		txtPassword.setEchoChar((char)0);
 		txtPassword.setText("密码");
+		txtPassword.setForeground(UIHelper.getDefaultFontColor());
 		txtPassword.addFocusListener(new FocusListener() {
 			
 			@Override
@@ -212,7 +213,7 @@ public class Login extends MouseAdapter {
 		//链接
 		link=new JLabel("成为梦想教师");
 		link.setBounds(350, 223, 130, 40);
-		link.setFont(new Font("宋体",Font.ROMAN_BASELINE, 14));
+		link.setFont(new Font("微软雅黑",Font.ROMAN_BASELINE, 14));
 		link.setForeground(Color.BLUE);
 		link.setForeground(new Color(0, 80, 153));
 		link.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -258,9 +259,19 @@ public class Login extends MouseAdapter {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (doLogin) {
-			doLogin = false;
-			doLogin();
+		if(e.getSource()==btnLogin){
+			if(txtUserName==null||txtUserName.getText().equals("用户名/手机号/邮箱")){
+				JOptionPane.showMessageDialog(frame, "请输入学校名称!");
+				return;
+			}
+			if(txtPassword==null||txtPassword.getText().equals("密码")){
+				JOptionPane.showMessageDialog(frame, "请输入学校密码！");
+				return;
+			}
+			if (doLogin) {
+				doLogin = false;
+				doLogin();
+			}
 		}
 	}
 
