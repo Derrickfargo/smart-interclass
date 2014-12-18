@@ -22,6 +22,7 @@ import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
 import cn.com.incito.server.utils.UIHelper;
 
+import com.alibaba.fastjson.JSONObject;
 import com.sun.awt.AWTUtilities;
 
 /**
@@ -145,7 +146,9 @@ public class QuizFeedbackFrame extends JFrame {
 					}
 					//结束互评
 					MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_QUIZ_FEEDBACK_COMPLETE);
-					messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString("false"));
+					JSONObject json = new JSONObject();
+					json.put("complete", Boolean.TRUE);
+					messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json.toJSONString()));
 					CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
 				}
 			}
