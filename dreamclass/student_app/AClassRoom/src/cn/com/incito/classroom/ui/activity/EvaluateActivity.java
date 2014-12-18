@@ -212,17 +212,7 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 	public void setScore(int score, int currentmViewPageId) {
 		// 获得的按钮是当前页面按钮的时候才进行名次显示
 		Button button = (Button) listViews.get(currentmViewPageId).findViewById(R.id.number);
-		if(score==1){
-			button.setBackgroundResource(R.drawable.number_one);
-		}else if(score==2){
-			button.setBackgroundResource(R.drawable.number_two);
-		}else if(score==3){
-			button.setBackgroundResource(R.drawable.number_three);
-		}else if(score==4){
-			button.setBackgroundResource(R.drawable.number_four);
-		}else if(score==5){
-			button.setBackgroundResource(R.drawable.number_five);
-		}
+		setSeletNum(score, button);
 		button.setVisibility(View.VISIBLE);
 		quizList.get(currentmViewPageId).setSelectNumber(score);
 		int temp = score;
@@ -297,13 +287,11 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 		@Override
 		public Object instantiateItem(View arg0, int arg1) {
 			mListViews.get(arg1).setBackgroundDrawable(quizList.get(arg1).getPaperPic());
-			Button score = (Button) mListViews.get(arg1).findViewById(R.id.number);// 名次显示按钮
+			Button mButton = (Button) mListViews.get(arg1).findViewById(R.id.number);// 名次显示按钮
+			setSeletNum(quizList.get(arg1).getSelectNumber(), mButton);
 			if (quizList.get(arg1).getSelectNumber() != 0) {
-				score.setVisibility(View.VISIBLE);
+				mButton.setVisibility(View.VISIBLE);
 			}
-			
-			
-			
 			((ViewPager) arg0).addView(mListViews.get(arg1), 0);
 			return mListViews.get(arg1);
 		}
@@ -336,6 +324,8 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 		@Override
 		public void onPageSelected(int arg0) {
 			mCurrentViewID = arg0;
+			Button btn=(Button) listViews.get(arg0).findViewById(R.id.number);
+			setSeletNum(quizList.get(arg0).getSelectNumber(),btn);
 			for (int i = 0; i < imageList.size(); i++) {
 				if(arg0==i){
 					imageList.get(i).setImageResource(R.drawable.circle_foucs);
@@ -430,5 +420,25 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 	protected void onDestroy() {
 		super.onDestroy();
 		UIHelper.getInstance().setEvaluateActivity(null);
+	}
+	/**
+	 * @param score 分数
+	 * @param button 分数按钮
+	 * 设置名次按钮的图片
+	 */
+	public void setSeletNum(int score,Button button){
+		if(score==1){
+			button.setBackgroundResource(R.drawable.number_one);
+		}else if(score==2){
+			button.setBackgroundResource(R.drawable.number_two);
+		}else if(score==3){
+			button.setBackgroundResource(R.drawable.number_three);
+		}else if(score==4){
+			button.setBackgroundResource(R.drawable.number_four);
+		}else if(score==5){
+			button.setBackgroundResource(R.drawable.number_five);
+		}else{
+			button.setVisibility(View.GONE);
+		}
 	}
 }
