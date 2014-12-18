@@ -108,6 +108,12 @@ public class Message {
 	 * 作业互评提交
 	 */
 	public static final Byte MESSAGE_QUIZ_FEEDBACK_SUBMIT=0x11;
+	
+	/**
+	 * 结束作业互评
+	 */
+	public static final Byte MESSAGE_QUIZ_FEEDBACK_COMPLETE=0x12;
+	
 	/**
 	 * 结束抢答
 	 */
