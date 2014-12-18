@@ -28,6 +28,7 @@ import cn.com.incito.classroom.adapter.GroupNumAdapter;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
+import cn.com.incito.classroom.ui.activity.RandomGroupActivity.myAnimationListener;
 import cn.com.incito.classroom.ui.widget.MyAlertDialog;
 import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.classroom.vo.LoginReqVo;
@@ -381,6 +382,7 @@ public class WaitingActivity extends BaseActivity {
 			case RANDOM_GROUP:
 				mAdapter.setDatas(MyApplication.getInstance().getLoginResVo().getStudents());
 				gv_group_member.setAdapter(mAdapter);
+				break;
 			}
 		}
 	};
@@ -398,8 +400,8 @@ public class WaitingActivity extends BaseActivity {
 
 		// 马上刷新等待界面数据
 		List<Student> studentList = JSONArray.parseArray(
-				JSON.parseObject(data.toJSONString()).getString("students"),
-				Student.class);
+				JSON.parseObject(data.toJSONString()).getString("students"),Student.class);
+		MyApplication.Logger.debug("WaitingActivity:随机分组返回的数据:" + studentList.size());
 		List<LoginRes2Vo> loginRes2Vos = new ArrayList<LoginRes2Vo>();
 		if (studentList != null && studentList.size() > 0) {
 			Iterator<Student> it = studentList.iterator();
@@ -419,16 +421,20 @@ public class WaitingActivity extends BaseActivity {
 		}else{
 			MyApplication.getInstance().getLoginResVo().getStudents().clear();
 		}
-		
 		mHandler.sendEmptyMessage(RANDOM_GROUP);
-		
-
 	}
 
 	public void clearStudent() {
+		MyApplication.Logger.debug("WaitingActivity:随机分组返回的数据 clear学生调用");
 		android.os.Message message = new android.os.Message();
 		message.what = STUDENT_CLEAR;
 		mHandler.sendMessage(message);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
 	}
 
 	/**
