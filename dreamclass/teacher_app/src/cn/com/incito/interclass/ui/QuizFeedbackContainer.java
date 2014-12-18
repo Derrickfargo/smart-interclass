@@ -59,7 +59,6 @@ public class QuizFeedbackContainer extends JPanel {
 	}
 
 	public void refresh() {
-		System.out.println("刷新评比结果");
 		initData();
 		int i = 0;
 		while (i < feedbackList.size()) {
