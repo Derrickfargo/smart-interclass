@@ -2,6 +2,7 @@ package cn.com.incito.socket.handler;
 
 import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.classroom.ui.activity.ResponderActivity;
 import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.core.MessageHandler;
@@ -24,7 +25,11 @@ public class ResponderEndHandler extends MessageHandler {
 		String currentActiivty = AppManager.getAppManager().currentActivity().getClass().getSimpleName();
 		
 		if("ResponderActivity".equals(currentActiivty)){
+			ResponderActivity activity = (ResponderActivity) AppManager.getAppManager().currentActivity();
 			AppManager.getAppManager().finishActivity();
+			if(activity.getBeforResponderisLockScreeen()){
+				MyApplication.getInstance().lockScreen(true);
+			}
 		}
 	}
 }

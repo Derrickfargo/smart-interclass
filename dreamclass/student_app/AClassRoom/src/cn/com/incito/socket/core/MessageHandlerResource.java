@@ -11,6 +11,7 @@ import cn.com.incito.socket.handler.DeviceBindHandler;
 import cn.com.incito.socket.handler.DeviceHasBindHandler;
 import cn.com.incito.socket.handler.DeviceLoginHandler;
 import cn.com.incito.socket.handler.DistributePaperHandler;
+import cn.com.incito.socket.handler.EvaluateCompleteHandler;
 import cn.com.incito.socket.handler.EvaluateHandler;
 import cn.com.incito.socket.handler.GroupEditHandler;
 import cn.com.incito.socket.handler.GroupListHandler;
@@ -78,6 +79,9 @@ public final class MessageHandlerResource {
         handlerResources.put(Message.MESSAGE_STUDENT_EVALUATE, EvaluateHandler.class);
         //结束抢答
         handlerResources.put(Message.MESSAGE_RESPONDER_END, ResponderEndHandler.class);
+        //结束作业互评
+        handlerResources.put(Message.MESSAGE_QUIZ_FEEDBACK_COMPLETE, EvaluateCompleteHandler.class);
+        
     }
 
     public MessageHandler getMessageHandler(Byte key) {

@@ -90,12 +90,15 @@ public class UIHelper {
 		app.startActivity(intent);
 	}
 	
+
 	/**
 	 * 显示抢答界面
+	 * @param beforResponderisLockScreeen  在抢答前 PAD是否是锁屏状态
 	 */
-	public void showResponderActivity(){
+	public void showResponderActivity(boolean beforResponderisLockScreeen){
 		Intent intent = new Intent(app,CountdownActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.putExtra("beforResponderisLockScreeen", beforResponderisLockScreeen);
 		app.startActivity(intent);
 	}
 

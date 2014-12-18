@@ -246,7 +246,12 @@ public class WaitingActivity extends BaseActivity {
 			ToastHelper.showCustomToast(getApplicationContext(),
 					R.string.toast_stname_notnull);
 			return false;
-		} else if (stName.length() < 2) {
+		}
+		if(stName.contains(" ")){
+			ToastHelper.showCustomToast(getApplicationContext(),
+					R.string.toast_not_space);
+			return false;
+		}else if (stName.length() < 2) {
 			ToastHelper.showCustomToast(getApplicationContext(),
 					R.string.toast_stname_tooshort);
 			return false;

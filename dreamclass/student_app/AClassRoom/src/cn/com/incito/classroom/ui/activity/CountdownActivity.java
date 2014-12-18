@@ -47,7 +47,9 @@ public class CountdownActivity extends BaseActivity {
 				backgroundNumber--;
 				break;
 			case 0:
+				boolean beforResponderisLockScreeen = getIntent().getExtras().getBoolean("beforResponderisLockScreeen");
 				Intent intent = new Intent(CountdownActivity.this,ResponderActivity.class);
+				intent.putExtra("beforResponderisLockScreeen", beforResponderisLockScreeen);
 				CountdownActivity.this.finish();
 				startActivity(intent);
 			default:
@@ -65,7 +67,7 @@ public class CountdownActivity extends BaseActivity {
 		countdown_image = (ImageView) findViewById(R.id.countdown_image);
 		
 		scaleAnimation = new ScaleAnimation(0.5f, 1, 0.7f, 1, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-		scaleAnimation.setDuration(1000);
+		scaleAnimation.setDuration(500);
 		scaleAnimation.setFillAfter(true);
 		scaleAnimation.setFillBefore(false);
 		scaleAnimation.setInterpolator(new AccelerateInterpolator());
@@ -90,7 +92,7 @@ public class CountdownActivity extends BaseActivity {
 				}
 			}
 		};
-		timer.schedule(timerTask, 1 * 1000, 2 * 1000);
+		timer.schedule(timerTask, 1  * 1000, 1 * 1000);
 	}
 	
 	@Override

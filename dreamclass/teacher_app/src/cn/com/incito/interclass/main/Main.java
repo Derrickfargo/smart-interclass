@@ -20,7 +20,6 @@ import cn.com.incito.interclass.ui.Login;
 import cn.com.incito.interclass.ui.RoomLogin1;
 import cn.com.incito.interclass.ui.widget.UpdateDialog;
 import cn.com.incito.server.api.Application;
-import cn.com.incito.server.exception.AppExceptionHandler;
 import cn.com.incito.server.utils.URLs;
 
 import com.alibaba.fastjson.JSON;
@@ -33,7 +32,7 @@ import com.alibaba.fastjson.JSONObject;
  * 
  */
 public class Main {
-	public static final int VERSION_CODE = 22;
+	public static final int VERSION_CODE = 23;
 	private static final long FREE_SIZE = 1024 * 1024 * 100;//100M
 	
 	public static void main(String args[]) {

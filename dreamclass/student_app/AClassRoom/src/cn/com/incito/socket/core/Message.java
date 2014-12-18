@@ -113,6 +113,11 @@ public class Message implements Serializable{
 	 */
 	public static final Byte MESSAGE_QUIZ_FEEDBACK_SUBMIT=0x11;
 	
+	/**
+	 * 结束作业互评
+	 */
+	public static final Byte MESSAGE_QUIZ_FEEDBACK_COMPLETE=0x12;
+	
     private byte msgID;
     private int msgSize;
     private ByteBuffer bodyBuffer;

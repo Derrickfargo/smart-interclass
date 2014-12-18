@@ -13,7 +13,7 @@ import cn.com.incito.socket.core.MessageHandler;
  *
  */
 public class ResponderHandler extends MessageHandler {
-	
+
 	@Override
 	public void handleMessage(Message msg) {
 		handleMessage();
@@ -21,8 +21,17 @@ public class ResponderHandler extends MessageHandler {
 
 	@Override
 	protected void handleMessage() {
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ "::ResponderHandler::" + "收到抢答消息");
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()
+				+ "::ResponderHandler::" + "收到抢答消息");
+		boolean isLockScreen = MyApplication.getInstance().isLockScreen();
+
+		/**
+		 * 判断当前PAD是否是锁屏 如果是锁屏则解锁 并且向抢答界面传送此时的状态
+		 */
+		if (isLockScreen) {
+			MyApplication.getInstance().lockScreen(false);
+		}
 		// 进入抢答界面
-		UIHelper.getInstance().showResponderActivity();
+		UIHelper.getInstance().showResponderActivity(isLockScreen);
 	}
 }
