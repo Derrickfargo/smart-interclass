@@ -21,8 +21,12 @@ public class UIHelper {
 	private DrawBoxActivity drawBoxActivity;
 	private EvaluateActivity evaluateActivity;
 	private RandomGroupActivity randomGroupActivity;
-	private boolean isFirst=true;
+	private int Num;
 	
+	public void setNum(int num) {
+		Num = num;
+	}
+
 	private UIHelper() {
 		app = MyApplication.getInstance();
 	}
@@ -169,8 +173,11 @@ public class UIHelper {
 	 */
 	public void showEvaluateActivity(byte[] paper,String uuid) {
 		Intent intent = new Intent();
-		
-		if(isFirst){
+		if(MyApplication.getInstance().isLockScreen()){
+			MyApplication.getInstance().lockScreen(false);
+			MyApplication.getInstance().setLockScreen(false);
+		}
+		if(Num == 1){
 			try {
 				Thread.sleep(1500);
 			} catch (InterruptedException e) {
@@ -178,13 +185,14 @@ public class UIHelper {
 			}
 		}
 		if(UIHelper.getInstance().getEvaluateActivity()!=null){
-			isFirst=false;
+			setNum(2);
 			MyApplication.Logger.debug("互评界面不为空，传入了新图片大小为");
 			if (paper != null){
 				UIHelper.getInstance().getEvaluateActivity().setQuizList(paper,uuid);
 				MyApplication.Logger.debug("新图片大小为"+paper.length);
 			}
 		}else{
+			setNum(1);
 			if (paper != null) {
 				MyApplication.Logger.debug("收到第一张互评图片");
 				Bundle mBundle = new Bundle();
@@ -237,5 +245,6 @@ public class UIHelper {
 		}
 		this.evaluateActivity = evaluateActivity;
 	}
+	
 	
 }

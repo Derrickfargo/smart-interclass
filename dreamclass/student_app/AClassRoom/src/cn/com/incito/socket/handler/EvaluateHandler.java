@@ -1,6 +1,8 @@
 package cn.com.incito.socket.handler;
 
 import java.nio.ByteBuffer;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.common.utils.UIHelper;
@@ -33,7 +35,9 @@ public class EvaluateHandler extends MessageHandler{
 	@Override
 	protected void handleMessage() {
 		MyApplication.Logger.debug("收到互评命令");
-		MyApplication.getInstance().lockScreen(false);
+			Queue<byte[]> queue = new LinkedList<byte[]>();  
+	        queue.offer(imageByte);  
+	        System.out.println(queue.size());  
 		UIHelper.getInstance().showEvaluateActivity(imageByte,uuid);;
 		
 	}

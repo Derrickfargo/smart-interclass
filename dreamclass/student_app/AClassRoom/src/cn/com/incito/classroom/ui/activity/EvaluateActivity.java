@@ -420,6 +420,7 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		UIHelper.getInstance().setNum(0);
 		UIHelper.getInstance().setEvaluateActivity(null);
 	}
 	/**
