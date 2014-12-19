@@ -166,8 +166,9 @@ public class UIHelper {
 	 */
 	public void showEvaluateActivity(byte[] paper,String uuid) {
 		Intent intent = new Intent();
-		
 		if(isFirst){
+			MyApplication.getInstance().lockScreen(false);
+			MyApplication.getInstance().setLockScreen(false);
 			try {
 				Thread.sleep(1500);
 			} catch (InterruptedException e) {
