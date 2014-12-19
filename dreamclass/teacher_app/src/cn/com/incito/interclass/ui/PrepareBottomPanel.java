@@ -101,7 +101,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		ImageIcon iconGroup = new ImageIcon("images/main/btn_group.png");
 		btnGroup.setIcon(iconGroup);// 设置图片
 		add(btnGroup);// 添加按钮
-		btnGroup.setBounds(405, -4, iconGroup.getIconWidth(), iconGroup.getIconHeight());
+		btnGroup.setBounds(358, -4, iconGroup.getIconWidth(), iconGroup.getIconHeight());
 		btnGroup.addMouseListener(this);
 		btnGroup.setVisible(false);
 		
@@ -112,17 +112,17 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		ImageIcon btnImage = new ImageIcon("images/main/btn_begin.png");
 		btnBegin.setIcon(btnImage);// 设置图片
 		add(btnBegin);// 添加按钮
-		btnBegin.setBounds(565, -4, btnImage.getIconWidth(), btnImage.getIconHeight());
+		btnBegin.setBounds(515, -4, btnImage.getIconWidth(), btnImage.getIconHeight());
 		btnBegin.addMouseListener(this);
 		btnBegin.setVisible(false);
 		
-		btnRdmGroup = new JButton("随机分组");//创建随机分组按钮
-		btnRdmGroup.setFocusable(false);
+		btnRdmGroup = new JButton("");//创建随机分组按钮
+		btnRdmGroup.setFocusPainted(false);
 		btnRdmGroup.setContentAreaFilled(false);
 		btnRdmGroup.setBorderPainted(false);
 		ImageIcon rdmImage = new ImageIcon("images/main/btn_randomization.png");
 		btnRdmGroup.setIcon(rdmImage);
-		btnRdmGroup.setBounds(250, -4, rdmImage.getIconWidth(),rdmImage.getIconHeight());
+		btnRdmGroup.setBounds(200, -4, rdmImage.getIconWidth(),rdmImage.getIconHeight());
 		add(btnRdmGroup);
 		btnRdmGroup.addMouseListener(this);
 		btnRdmGroup.setVisible(false);

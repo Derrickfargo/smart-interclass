@@ -82,9 +82,6 @@ public class ConnectionManager {
 		// 非正常退出,重连
 		if (!isNormal) {
 			MyApplication.Logger.debug("ConnectionManager Socket非正常退出!");
-			if (UIHelper.getInstance().getWaitingActivity() != null) {
-				UIHelper.getInstance().getWaitingActivity().clearStudent();
-			}
 			MyApplication.getInstance().lockScreen(false);
 			restartConnector();
 		}

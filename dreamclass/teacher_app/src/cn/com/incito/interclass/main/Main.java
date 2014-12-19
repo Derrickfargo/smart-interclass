@@ -32,7 +32,7 @@ import com.alibaba.fastjson.JSONObject;
  * 
  */
 public class Main {
-	public static final int VERSION_CODE = 23;
+	public static final int VERSION_CODE = 24;
 	private static final long FREE_SIZE = 1024 * 1024 * 100;//100M
 	
 	public static void main(String args[]) {
