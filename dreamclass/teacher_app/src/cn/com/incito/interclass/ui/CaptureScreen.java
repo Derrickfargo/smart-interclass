@@ -243,6 +243,11 @@ public class CaptureScreen {
 				public void keyReleased(KeyEvent e) {
 					super.keyReleased(e);
 					if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+						Application.hasQuiz = false;
+						Application.getInstance().getFloatIcon().synQuzingState();
+						MainFrame.getInstance().synQuzingState();
+						MainFrame.getInstance().showNoQuiz();
+						Application.getInstance().getFloatIcon().showNoQuiz();
 						ContentPanel.this.jf.dispose();
 						updates();
 					}
