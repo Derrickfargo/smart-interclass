@@ -433,7 +433,7 @@ public class CoreService {
 					Application.getInstance().setLockScreen(true);
 				} else {
 					String message = String.format(Constants.MESSAGE_QUIZ, app
-							.getQuizList().size(), app.getClientChannel().size());
+							.getQuizList().size(), app.getTempQuizIMEI().size());
 					Application.getInstance().getFloatIcon().showQuizMessage(message);
 				}
 				//当前作业处理完毕，处理下一作业
