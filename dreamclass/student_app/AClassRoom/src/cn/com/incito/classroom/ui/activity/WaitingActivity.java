@@ -380,6 +380,7 @@ public class WaitingActivity extends BaseActivity {
 				}
 				break;
 			case RANDOM_GROUP:
+				loginResList = MyApplication.getInstance().getLoginResVo().getStudents();
 				mAdapter.setDatas(MyApplication.getInstance().getLoginResVo().getStudents());
 				gv_group_member.setAdapter(mAdapter);
 				break;

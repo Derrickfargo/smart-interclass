@@ -6,14 +6,12 @@ import java.util.TimerTask;
 
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
-import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -47,6 +45,7 @@ public class ResponderActivity extends BaseActivity {
 	private Timer timer;
 	private TimerTask timerTask;
 	
+	@SuppressLint("HandlerLeak")
 	private Handler handler = new Handler(){
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
@@ -58,9 +57,7 @@ public class ResponderActivity extends BaseActivity {
 				break;
 			}
 		};
-	};
-	
-
+	}; 
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -86,12 +83,11 @@ public class ResponderActivity extends BaseActivity {
 		int x = randomX();
 		int y = randomY();
 		
+		
 		PropertyValuesHolder xPropertyValuesHolder = PropertyValuesHolder.ofFloat("x", x);
 		PropertyValuesHolder yPropertyValuesHolder = PropertyValuesHolder.ofFloat("y", y);
-		PropertyValuesHolder pointX = PropertyValuesHolder.ofFloat("pointX", x);
-		PropertyValuesHolder pointY = PropertyValuesHolder.ofFloat("pointY", y);
 		PropertyValuesHolder rotation = PropertyValuesHolder.ofFloat("rotation", 0,360);
-		ObjectAnimator.ofPropertyValuesHolder(imageButton, xPropertyValuesHolder,yPropertyValuesHolder,pointX,pointY,rotation)
+		ObjectAnimator.ofPropertyValuesHolder(imageButton, xPropertyValuesHolder,yPropertyValuesHolder,rotation)
 		.setDuration(2*1000)
 		.start();
 	}
@@ -120,9 +116,9 @@ public class ResponderActivity extends BaseActivity {
 			
 			@Override
 			public void onClick(View v) {
-				if(timer != null){
-					timer.cancel();
-				}
+//				if(timer != null){
+//					timer.cancel();
+//				}
 				MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "ResponderActivity:发送抢答消息开始");
 				
 				MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_RESPONDER);
@@ -144,7 +140,7 @@ public class ResponderActivity extends BaseActivity {
 	
 	/**
 	 * 按钮旋转动画
-	 */
+	
 	private void startAnimation() {
 		rotateAnimation = new RotateAnimation(0, 359, Animation.RELATIVE_TO_SELF, 0.5f,  Animation.RELATIVE_TO_SELF, 0.5f);
 		rotateAnimation.setInterpolator(new LinearInterpolator());//匀速旋转
@@ -153,7 +149,7 @@ public class ResponderActivity extends BaseActivity {
 		rotateAnimation.setRepeatMode(Animation.RESTART);
 		
 		imageButton.startAnimation(rotateAnimation);
-	}
+	} */
 
 	/**
 	 * 随机的x轴坐标

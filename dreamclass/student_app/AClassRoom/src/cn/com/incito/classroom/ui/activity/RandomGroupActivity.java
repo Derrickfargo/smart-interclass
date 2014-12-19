@@ -104,7 +104,6 @@ public class RandomGroupActivity extends BaseActivity {
 		timer.schedule(timerTask, 10 *1000);
 	}
 	
-	
 	/**
 	 * 刷新数据
 	 * @param data
