@@ -30,6 +30,7 @@ public class SavePaperResultHandler extends MessageHandler {
 //			}
 			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"提交作业后关闭绘画板");
 			UIHelper.getInstance().getDrawBoxActivity().finish();
+			UIHelper.getInstance().setDrawBoxActivity(null);
 			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"提交作业后显示正在上课界面");
 			if (UIHelper.getInstance().getClassingActivity() == null) {
 				UIHelper.getInstance().showClassingActivity();
