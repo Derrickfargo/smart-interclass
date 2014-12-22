@@ -64,7 +64,7 @@ public class StudentLoginHandler extends MessageHandler {
 		}else if(app.getState()==4){//锁屏
 			data.put("state", 4);
 		}else{
-			data.put("state", 1);
+			data.put("state", 0);
 		}
 		if (student != null) {
 			data.put("student", student);
