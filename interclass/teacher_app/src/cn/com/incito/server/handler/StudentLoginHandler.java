@@ -56,9 +56,11 @@ public class StudentLoginHandler extends MessageHandler {
 			}
 			data.put("group", groupList);
 			data.put("groupConfirm",Application.getInstance().getGroupList());
+			logger.info("回复设备登陆消息:" + data.toJSONString());
 		}else if(app.getState()==3){//做作业
 			data.put("state", 3);
 			data.put("quiz",app.getQuiz());
+			logger.info("回复设备登陆消息:老师端发送的作业大小" + app.getQuiz().length);
 		}else if(app.getState()==4){//锁屏
 			data.put("state", 4);
 		}else{
@@ -67,7 +69,7 @@ public class StudentLoginHandler extends MessageHandler {
 		if (student != null) {
 			data.put("student", student);
 		}
-		logger.info("回复设备登陆消息:" + data.toJSONString());
+		
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
 
 		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(data.toJSONString()));
