@@ -669,5 +669,6 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "启动作业提交...");
 		MyApplication.getInstance().lockScreen(true);
 		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "提交作业后锁定屏幕");
+		startTask();
 	}
 }
