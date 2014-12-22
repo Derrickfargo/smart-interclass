@@ -46,11 +46,14 @@ public class LoginHandler extends MessageHandler {
 			state = data.getIntValue("state");
 			MyApplication.Logger.debug("返回状态值:" + state);
 			if (state == 1) {
-				MyApplication.Logger.debug("返回状态值进入准备上课界面");
 				if (!AppManager.getAppManager().currentActivity().getClass().getSimpleName().equals("ClassReadyActivity")) {
-					AppManager.getAppManager().currentActivity().finish();
-					MyApplication.Logger.debug("返回状态值进入准备上课界面成功");
+					MyApplication.Logger.debug("当前界面不是等待上课界面，进入准备上课界面，");
 					UIHelper.getInstance().showClassReadyActivity();
+//					AppManager.getAppManager().currentActivity().finish();
+					MyApplication.Logger.debug("返回状态值进入准备上课界面成功");
+				}else{
+					MyApplication.Logger.debug("当前界面是等待上课界面，进入准备上课界面，");
+					//正在等待上课界面,不做任何处理
 				}
 			} else if (state == 3) {
 				if (!AppManager.getAppManager().currentActivity().getClass().getSimpleName().equals("DrawBoxActivity")) {
@@ -75,17 +78,19 @@ public class LoginHandler extends MessageHandler {
 //					}
 				}
 			} else if (state == 4) {
-				if (isFileExists()) {
-					byte[] imageByte = bmpToByteArray(BitmapFactory.decodeFile("/sdcard/temp.jpg"),true);
-					UIHelper.getInstance().showDrawBoxActivity(imageByte);
-				} else {
+//				if (isFileExists()) {
+//					byte[] imageByte = bmpToByteArray(BitmapFactory.decodeFile("/sdcard/temp.jpg"),true);
+//					UIHelper.getInstance().showDrawBoxActivity(imageByte);
+//				} else {
 					MyApplication.Logger.debug("返回状态值进入开始上课界面");
 					if (!AppManager.getAppManager().currentActivity().getClass().getSimpleName().equals("ClassingActivity")) {
 						AppManager.getAppManager().currentActivity().finish();
 						UIHelper.getInstance().showClassingActivity();
-						MyApplication.Logger.debug("返回状态值进入开始上课界面成功");
+						MyApplication.Logger.debug("返回状态值4,当前界面不是上课界面 ,进入开始上课界面成功");
+					}else{
+						MyApplication.Logger.debug("返回状态值4,当前界面是上课界面 ，不做任何处理");
 					}
-				}
+//				}
 			} else {
 				MyApplication.Logger.debug("没有返回值");
 				AppManager.getAppManager().currentActivity().finish();
