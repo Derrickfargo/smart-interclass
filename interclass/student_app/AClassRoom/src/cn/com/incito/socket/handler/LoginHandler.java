@@ -88,7 +88,7 @@ public class LoginHandler extends MessageHandler {
 //				} else {
 					MyApplication.Logger.debug("返回状态值进入开始上课界面");
 					if (!AppManager.getAppManager().currentActivity().getClass().getSimpleName().equals("ClassingActivity")) {
-						AppManager.getAppManager().currentActivity().finish();
+//						AppManager.getAppManager().currentActivity().finish();
 						UIHelper.getInstance().showClassingActivity();
 						MyApplication.Logger.debug("返回状态值4,当前界面不是上课界面 ,进入开始上课界面成功");
 					}else{
@@ -97,7 +97,7 @@ public class LoginHandler extends MessageHandler {
 //				}
 			}else{
 				MyApplication.Logger.debug("没有返回值");
-				AppManager.getAppManager().currentActivity().finish();
+//				AppManager.getAppManager().currentActivity().finish();
 				UIHelper.getInstance().showClassReadyActivity();
 			}
 		}
