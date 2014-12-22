@@ -88,6 +88,7 @@ public class UpdateManager {
 		View v = inflater.inflate(R.layout.progress, null);
 		mProgress = (ProgressBar)v.findViewById(R.id.progress);
 		builder.setView(v);
+		builder.setCancelable(false);
 //		builder.setNegativeButton("取消", new OnClickListener() {	
 //			@Override
 //			public void onClick(DialogInterface dialog, int which) {
