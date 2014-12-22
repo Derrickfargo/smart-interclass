@@ -401,6 +401,10 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() == btnBegin) {
 			if (Application.isOnClass) {
+				if(Application.isOnResponder){
+					JOptionPane.showMessageDialog(MainFrame.getInstance().getFrame(), "正在抢答，请等待抢答完毕后再下课！");
+					return;
+				}
 				int result = JOptionPane.showConfirmDialog(MainFrame.getInstance()
 						.getFrame(), "确定要下课吗？", "提示",
 						JOptionPane.YES_NO_OPTION);

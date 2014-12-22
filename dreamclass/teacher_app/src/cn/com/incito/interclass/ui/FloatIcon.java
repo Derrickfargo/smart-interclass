@@ -376,6 +376,10 @@ public class FloatIcon extends MouseAdapter {
 				}
 			}
 			if (e.getSource() == btnExit) {
+				if(Application.isOnResponder){
+					JOptionPane.showMessageDialog(MainFrame.getInstance().getFrame(), "正在抢答，请等待抢答完毕后下课！");
+					return;
+				}
 				UIHelper.sendClassOverMessage();//
 				System.exit(0);
 			}
