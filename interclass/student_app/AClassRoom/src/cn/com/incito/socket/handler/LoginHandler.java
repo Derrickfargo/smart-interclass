@@ -5,7 +5,6 @@ import java.io.File;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
-import android.graphics.BitmapFactory;
 import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
@@ -13,6 +12,7 @@ import cn.com.incito.classroom.vo.Student;
 import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.ConnectionManager;
+import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.MessageHandler;
 
 /**
@@ -24,6 +24,7 @@ public class LoginHandler extends MessageHandler {
 
 	@Override
 	protected void handleMessage() {
+		CoreSocket.getInstance().cancleTask();
 		//1 等待老师上课，2分组中，3做作业，4锁屏
 		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()
 				+ "LoginHandler.class:收到登陆回复：");

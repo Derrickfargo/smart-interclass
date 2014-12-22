@@ -34,12 +34,7 @@ import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.adapter.WifiSelectAdapter;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.classroom.constants.Constants;
-import cn.com.incito.classroom.exception.AppException;
 import cn.com.incito.classroom.utils.ApiClient;
-import cn.com.incito.classroom.utils.UpdateManager;
-import cn.com.incito.classroom.utils.Utils;
-import cn.com.incito.classroom.vo.Version;
 import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.common.utils.UIHelper;
@@ -52,13 +47,9 @@ import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
 import cn.com.incito.wisdom.uicomp.widget.dialog.ProgressiveDialog;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.baidu.navisdk.util.common.StringUtils;
-import com.google.code.microlog4android.Logger;
 
 public class SelectWifiActivity extends BaseActivity {
-
 	private IpSettingDialogFragment ipSettingDialogFragment;
 	private ListView wifi_list;
 	private ImageButton ib_setting_ip;
@@ -77,8 +68,6 @@ public class SelectWifiActivity extends BaseActivity {
 
 	private Timer connectServerTimer;
 	private TimerTask connectServerTimerTask;
-	private int code;
-	private String url;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -352,28 +341,29 @@ public class SelectWifiActivity extends BaseActivity {
 				ToastHelper.showCustomToast(SelectWifiActivity.this,
 						"当前设备没有注册学生,请联系老师注册!");
 				break;
-				
+
 			default:
 				break;
 			}
 		};
 	};
 
+
 	/**
 	 * 发送登陆请求
 	 */
 	public void startMainAct() {
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("imei", MyApplication.deviceId);
+		MessagePacking messagePacking = new MessagePacking(
+				Message.MESSAGE_STUDENT_LOGIN);
+		messagePacking.putBodyData(DataType.INT,
+				BufferUtils.writeUTFString(jsonObject.toJSONString()));
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()
+				+ ":SelectWifiActivity:开始判定设备是否绑定...request："
+				+ jsonObject.toJSONString());
+		CoreSocket.getInstance().sendMessage(messagePacking);
 		
-			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("imei", MyApplication.deviceId);
-			MessagePacking messagePacking = new MessagePacking(
-					Message.MESSAGE_STUDENT_LOGIN);
-			messagePacking.putBodyData(DataType.INT,
-					BufferUtils.writeUTFString(jsonObject.toJSONString()));
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()
-					+ ":SelectWifiActivity:开始判定设备是否绑定...request："
-					+ jsonObject.toJSONString());
-			CoreSocket.getInstance().sendMessage(messagePacking);
 	}
 
 	public void showToast() {
@@ -412,5 +402,6 @@ public class SelectWifiActivity extends BaseActivity {
 		}
 		super.onDestroy();
 	}
+
 
 }

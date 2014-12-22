@@ -12,7 +12,6 @@ import cn.com.incito.classroom.ui.activity.DrawBoxActivity;
 import cn.com.incito.classroom.ui.activity.SelectGroupActivity;
 import cn.com.incito.classroom.ui.activity.SelectWifiActivity;
 import cn.com.incito.classroom.ui.activity.WaitForOtherMembersActivity;
-import cn.com.incito.classroom.ui.activity.WifiSelectorActivity;
 
 public class UIHelper {
 	private static UIHelper instance;
@@ -20,7 +19,6 @@ public class UIHelper {
 	private DrawBoxActivity drawBoxActivity;
 	private SelectGroupActivity mSelectGroupActivity;
 	private WaitForOtherMembersActivity waitForOtherMembersActivity;
-	private WifiSelectorActivity wifiSelectorActivity;
 	private SelectWifiActivity selectWifiActivity;
 	private ClassingActivity classingActivity;
 	
@@ -65,17 +63,6 @@ public class UIHelper {
 	}
 
 
-	public WifiSelectorActivity getWifiSelectorActivity(){
-		return this.wifiSelectorActivity;
-	}
-	
-	public void setWifiSelectorActivity(WifiSelectorActivity wifiSelectorActivity) {
-		if (this.wifiSelectorActivity != null) {
-			this.wifiSelectorActivity.finish();
-			this.wifiSelectorActivity = null;
-		}
-		this.wifiSelectorActivity = wifiSelectorActivity;
-	}
 
 
 
@@ -124,11 +111,6 @@ public class UIHelper {
 		app.startActivity(intent);
 	}
 
-	public void showSelectWifiActivity(){
-		Intent intent = new Intent(app, WifiSelectorActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		app.startActivity(intent);
-	}
 
 	/**
 	 * 显示电子绘画板

@@ -7,6 +7,8 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
@@ -182,10 +184,39 @@ public final class CoreSocket implements Runnable {
 			}else{
 				isConnected = false;
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			isConnected = false;
 			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + Thread.currentThread().getName()+":CoreSocket::重新登陆消息发送失败" ,e);
+			return;
 		}
+		//登录发送一段时间后，如果没收到服务端的回复，将重连
+			startTask();
+	}
+	
+	
+	private Timer timeTimer;
+	private TimerTask timeTimerTask;
+	/**
+	 * 开始检测登录是否有返回结果
+	 */
+	public void startTask() {
+		timeTimer = new Timer();
+		timeTimerTask = new TimerTask() {
+			@Override
+			public void run() {
+				MyApplication.getInstance().Logger.debug("启动二次重连");
+				disconnect();
+				restartConnection();
+			}
+		};
+		timeTimer.schedule(timeTimerTask, 15 * 1000);
 	}
 
+	/**
+	 * 退出检查登录
+	 */
+	public void cancleTask() {
+		if (timeTimer != null)
+			timeTimer.cancel();
+	}
 }
