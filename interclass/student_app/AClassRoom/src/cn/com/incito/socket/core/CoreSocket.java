@@ -77,6 +77,7 @@ public final class CoreSocket implements Runnable {
 				buffer.put(message);
 				buffer.flip();
 				try {
+					MyApplication.getInstance().Logger.debug("channel"+channel);
 					if (channel != null && channel.isConnected()) {
 						channel.write(buffer);
 					}
@@ -106,8 +107,7 @@ public final class CoreSocket implements Runnable {
 							ConnectionManager.getInstance().close(true);
 						}
 					} catch (IOException e) {
-						MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":CoreSocket停止连接异常::" + e.getMessage());
-
+						MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":CoreSocket停止连接异常::", e);
 					}
 				}
 			}
