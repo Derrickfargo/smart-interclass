@@ -478,12 +478,12 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	private Bitmap getPaperBitMap() {// 老师收作业的时候调用此方法保存图片 然后将图片传到服务器
 		final Bitmap bmBitmap = m_sketchPad.getCanvasSnapshot();
 		m_sketchPad.cleanDrawingCache();
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				saveBitmap(bmBitmap);// 保存图片到本地
-			}
-		}).start();
+//		new Thread(new Runnable() {
+//			@Override
+//			public void run() {
+//				saveBitmap(bmBitmap);// 保存图片到本地
+//			}
+//		}).start();
 
 		return bmBitmap;
 	}
@@ -590,24 +590,24 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	private Timer timeTimer;
 	private TimerTask timeTimerTask;
 
-	public void saveBitmap(Bitmap bitmap) {
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "保存图片到本地");
-		File f = new File("/sdcard/", "temp.jpg");
-		if (f.exists()) {
-			f.delete();
-		}
-		try {
-			FileOutputStream out = new FileOutputStream(f);
-			bitmap.compress(Bitmap.CompressFormat.JPEG, 40, out);
-			out.flush();
-			out.close();
-			MyApplication.Logger.debug("图片已经保存");
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+//	public void saveBitmap(Bitmap bitmap) {
+//		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "保存图片到本地");
+//		File f = new File("/sdcard/", "temp.jpg");
+//		if (f.exists()) {
+//			f.delete();
+//		}
+//		try {
+//			FileOutputStream out = new FileOutputStream(f);
+//			bitmap.compress(Bitmap.CompressFormat.JPEG, 40, out);
+//			out.flush();
+//			out.close();
+//			MyApplication.Logger.debug("图片已经保存");
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	public void setBackGround(Bitmap bitmap) {
 		m_sketchPad.setBkBitmap(bitmap);

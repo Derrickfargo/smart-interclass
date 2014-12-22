@@ -2,7 +2,6 @@ package cn.com.incito.socket.handler;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.util.List;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -10,14 +9,11 @@ import android.graphics.BitmapFactory;
 import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
-import cn.com.incito.classroom.vo.Group;
 import cn.com.incito.classroom.vo.Student;
 import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.ConnectionManager;
 import cn.com.incito.socket.core.MessageHandler;
-
-import com.alibaba.fastjson.JSON;
 
 /**
  * 登陆处理hanlder Created by liushiping on 2014/7/28.
@@ -57,25 +53,26 @@ public class LoginHandler extends MessageHandler {
 					UIHelper.getInstance().showClassReadyActivity();
 				}
 			} else if (state == 3) {
-				MyApplication.Logger.debug("返回状态值进入做作业界面");
 				if (!AppManager.getAppManager().currentActivity().getClass().getSimpleName().equals("DrawBoxActivity")) {
-					byte[] imageByte;
-					if (isFileExists()) {
-						imageByte = bmpToByteArray(BitmapFactory.decodeFile("/sdcard/temp.jpg"),true);
-					} else {
-						imageByte = data.getBytes("quiz");
-					}
-					UIHelper.getInstance().showDrawBoxActivity(imageByte);
-					if (!"ClassingActivity".equals(AppManager.getAppManager().currentActivity().getClass().getSimpleName())) {
-						AppManager.getAppManager().currentActivity().finish();
-					}
-				} else {
-					byte[] imageByte;
-					if (isFileExists()) {
-						UIHelper.getInstance().getDrawBoxActivity().setBackGround(BitmapFactory.decodeFile("/sdcard/temp.jpg"));
-					} else {
-						// 在原来界面,不做操作
-					}
+					MyApplication.Logger.debug("返回状态值进入做作业界面,当前界面不是画板界面");
+//					byte[] imageByte;
+//					if (isFileExists()) {
+//						MyApplication.Logger.debug("返回状态值进入做作业界面,当前界面不是画板界面,存在以前的图片");
+//						imageByte = bmpToByteArray(BitmapFactory.decodeFile("/sdcard/temp.jpg"),true);
+//					} else {
+//						imageByte = data.getBytes("quiz");
+//					}
+					UIHelper.getInstance().showDrawBoxActivity(null);
+//					if (!"ClassingActivity".equals(AppManager.getAppManager().currentActivity().getClass().getSimpleName())) {
+//						AppManager.getAppManager().currentActivity().finish();
+//					}
+				}else{
+					MyApplication.Logger.debug("返回状态值进入做作业界面,当前界面是绘画板界面");
+//					if (isFileExists()) {
+//						UIHelper.getInstance().getDrawBoxActivity().setBackGround(BitmapFactory.decodeFile("/sdcard/temp.jpg"));
+//					} else {
+//						//在原来界面,不做操作
+//					}
 				}
 			} else if (state == 4) {
 				if (isFileExists()) {

@@ -41,7 +41,6 @@ public abstract class MessageHandler {
 		buffer.get(jsonByte);
 		String json = BufferUtils.readUTFString(jsonByte);
 		data = JSON.parseObject(json);
-		WLog.d(MessageHandler.class, "消息内容：" + data);
 		handleMessage();
 	}
 
