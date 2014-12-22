@@ -209,6 +209,7 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 					        ByteArrayOutputStream os = new ByteArrayOutputStream();
 					        ImageIO.write(image, "gif", os);
 					        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(quiz.getId()));
+					        logger.info("发送互评消息，quizId=" + quiz.getId());
 							messagePacking.putBodyData(DataType.INT, os.toByteArray());
 							
 					        byte[] data = messagePacking.pack().array();

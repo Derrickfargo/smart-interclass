@@ -40,7 +40,7 @@ public class QuizFeedbackFrame extends JFrame {
 		this.photoDialog = new PhotoDialog(this);
 		setIconImage(new ImageIcon("images/main/icon.png").getImage());
 		setUndecorated(true);// 去除窗体
-		setAlwaysOnTop(true); // 设置界面悬浮
+//		setAlwaysOnTop(true); // 设置界面悬浮
 		getContentPane().setBackground(Color.BLACK);
 		AWTUtilities.setWindowOpacity(this, 0.7f);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,7 +48,7 @@ public class QuizFeedbackFrame extends JFrame {
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 		Insets insets = Toolkit.getDefaultToolkit().getScreenInsets(getGraphicsConfiguration());
 		setSize(screen.width, screen.height - insets.bottom);
-		photoDialog.setModal(true);
+//		photoDialog.setModal(true);
 	}
 	
 	public void showFrame(){
@@ -66,9 +66,10 @@ public class QuizFeedbackFrame extends JFrame {
 		private static final String BACKGROUND = "images/quiz/bg_feedback.png";
 		private static final String BTN_CLOSE_NORMAL = "images/quiz/ico_close.png";
 		private static final String BTN_CLOSE_HOVER = "images/quiz/ico_close_hover.png";
-		private static final String BTN_SHOW_NORMAL = "images/quiz/btn_show.png";
-		private static final String BTN_SHOW_HOVER = "images/quiz/btn_show.png";
+		private static final String BTN_SHOW_NORMAL = "images/quiz/show_statistics.png";
+		private static final String BTN_SHOW_HOVER = "images/quiz/show_statistics_hover.png";
 		
+		private boolean hiding = true;
 		private JButton btnClose, btnShow;
 		private JLabel lblBackground, lblTitle;
 		private QuizFeedbackFrame coverFrame;
@@ -82,7 +83,7 @@ public class QuizFeedbackFrame extends JFrame {
 			setUndecorated(true);//去除窗体
 			setLocationRelativeTo(null);// 设置窗体中间位置
 			setLayout(null);// 绝对布局
-			setAlwaysOnTop(true); // 设置界面悬浮
+//			setAlwaysOnTop(true); // 设置界面悬浮
 			setBackground(new Color(0,0,0,0));//窗体透明
 			setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 			
