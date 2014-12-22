@@ -23,13 +23,13 @@ public class SavePaperResultHandler extends MessageHandler {
 			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"进度条关闭完成");
 			MyApplication.getInstance().setSubmitPaper(true);
 			MyApplication.getInstance().lockScreen(true);
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"提交作业后删除本地图片");
-			File f = new File("/sdcard/", "temp.jpg");
-			if(f.exists()){
-				f.delete();
-			}
+//			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"提交作业后删除本地图片");
+//			File f = new File("/sdcard/", "temp.jpg");
+//			if(f.exists()){
+//				f.delete();
+//			}
 			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"提交作业后关闭绘画板");
-			AppManager.getAppManager().currentActivity().finish();
+			UIHelper.getInstance().getDrawBoxActivity().finish();
 			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"提交作业后显示正在上课界面");
 			if (UIHelper.getInstance().getClassingActivity() == null) {
 				UIHelper.getInstance().showClassingActivity();
