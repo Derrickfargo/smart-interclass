@@ -24,6 +24,7 @@ public class LoginHandler extends MessageHandler {
 
 	@Override
 	protected void handleMessage() {
+		//1 等待老师上课，2分组中，3做作业，4锁屏
 		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()
 				+ "LoginHandler.class:收到登陆回复：");
 		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()
@@ -46,10 +47,12 @@ public class LoginHandler extends MessageHandler {
 			state = data.getIntValue("state");
 			MyApplication.Logger.debug("返回状态值:" + state);
 			if (state == 1) {
+				MyApplication.Logger.debug("返回状态值1");
+//				AppManager.getAppManager().currentActivity().finish();
+//				UIHelper.getInstance().showClassReadyActivity();
 				if (!AppManager.getAppManager().currentActivity().getClass().getSimpleName().equals("ClassReadyActivity")) {
 					MyApplication.Logger.debug("当前界面不是等待上课界面，进入准备上课界面，");
 					UIHelper.getInstance().showClassReadyActivity();
-//					AppManager.getAppManager().currentActivity().finish();
 					MyApplication.Logger.debug("返回状态值进入准备上课界面成功");
 				}else{
 					MyApplication.Logger.debug("当前界面是等待上课界面，进入准备上课界面，");
@@ -91,7 +94,7 @@ public class LoginHandler extends MessageHandler {
 						MyApplication.Logger.debug("返回状态值4,当前界面是上课界面 ，不做任何处理");
 					}
 //				}
-			} else {
+			}else{
 				MyApplication.Logger.debug("没有返回值");
 				AppManager.getAppManager().currentActivity().finish();
 				UIHelper.getInstance().showClassReadyActivity();
