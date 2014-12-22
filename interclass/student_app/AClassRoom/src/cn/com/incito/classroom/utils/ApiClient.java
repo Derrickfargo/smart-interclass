@@ -261,17 +261,17 @@ public class ApiClient {
 	 * @param reason
 	 */
 	public static void uploadErrorLog(String reason) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("type", 1);
-		params.put("mac", MyApplication.deviceId == null ? "" : MyApplication.deviceId);
-		params.put("reason", reason);
-		Map<String, File> files = new HashMap<String, File>();
-		files.put("file", new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "MyApp" + File.separator + "log"));
-		try {
-			_post(Constants.URL_UPLOAD_LOG, params, files);
-		} catch (Exception e) {
-			
-		}
+//		Map<String, Object> params = new HashMap<String, Object>();
+//		params.put("type", 1);
+//		params.put("mac", MyApplication.deviceId == null ? "" : MyApplication.deviceId);
+//		params.put("reason", reason);
+//		Map<String, File> files = new HashMap<String, File>();
+//		files.put("file", new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "MyApp" + File.separator + "log"));
+//		try {
+//			_post(Constants.URL_UPLOAD_LOG, params, files);
+//		} catch (Exception e) {
+//			
+//		}
 	}
 	
 	

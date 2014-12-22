@@ -36,7 +36,9 @@ public class LoginHandler extends MessageHandler {
 		String server_port = data.getString("server_port");
 		Constants.setSERVER_IP(server_ip);
 		Constants.setSERVER_PORT(server_port);
-
+		// 启动心跳检测
+		ConnectionManager.getInstance(message.getChannel());
+					
 		// TODO 有可能这台pad没有绑定学生，
 		Student student = data.getObject("student", Student.class);
 		if (student == null) {
@@ -92,8 +94,6 @@ public class LoginHandler extends MessageHandler {
 				AppManager.getAppManager().currentActivity().finish();
 				UIHelper.getInstance().showClassReadyActivity();
 			}
-			// 启动心跳检测
-			ConnectionManager.getInstance(message.getChannel());
 		}
 	}
 

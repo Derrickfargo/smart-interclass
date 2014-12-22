@@ -56,7 +56,7 @@ public final class CoreSocket implements Runnable {
 				channel.register(selector, SelectionKey.OP_READ);// 注册读事件
 			} catch (IOException e) {
 				isConnected = false;
-				MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":CoreSocket异常::" + e.getMessage());
+				MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + Thread.currentThread().getName()+":CoreSocket异常::" + e.getMessage());
 			}
 		} else if (selectionKey.isReadable()) {// 若为可读的事件，则进行消息解析
 			MessageParser messageParser = new MessageParser();
@@ -82,7 +82,7 @@ public final class CoreSocket implements Runnable {
 						channel.write(buffer);
 					}
 				} catch (IOException e) {
-					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":CoreSocket客户端往服务端发消息异常::" + e.getMessage());
+					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + Thread.currentThread().getName()+":CoreSocket客户端往服务端发消息异常::" + e.getMessage());
 				}
 			}
 		}.start();
@@ -107,7 +107,7 @@ public final class CoreSocket implements Runnable {
 							ConnectionManager.getInstance().close(true);
 						}
 					} catch (IOException e) {
-						MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":CoreSocket停止连接异常::", e);
+						MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + Thread.currentThread().getName()+":CoreSocket停止连接异常::", e);
 					}
 				}
 			}
@@ -134,14 +134,14 @@ public final class CoreSocket implements Runnable {
 	public void run() {
 		try {
 			isConnected = false;
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":CoreSocket::CoreSocket开始检查mac地址 ");
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + Thread.currentThread().getName()+":CoreSocket::CoreSocket开始检查mac地址 ");
 			if (MyApplication.deviceId == null
 					|| MyApplication.deviceId.equals("")) {
 				//没有mac地址,不允许建立连接
-				MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":CoreSocket::连接建立失败，没有mac地址 ");
+				MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + Thread.currentThread().getName()+":CoreSocket::连接建立失败，没有mac地址 ");
 				return;
 			}
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":CoreSocket::有mac地址，CoreSocket开始建立连接 ");
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() +Thread.currentThread().getName()+ ":CoreSocket::有mac地址，CoreSocket开始建立连接 ");
 			isRunning = true;
 			// 客户端向服务器端发起建立连接请求
 			SocketChannel socketChannel = SocketChannel.open();
@@ -158,15 +158,15 @@ public final class CoreSocket implements Runnable {
 				}
 				keySet.clear();
 			}
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":CoreSocket::CoreSocket退出! ");
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + Thread.currentThread().getName()+":CoreSocket::CoreSocket退出! ");
 		} catch (IOException e) {
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":CoreSocket异常::" ,e);
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + Thread.currentThread().getName()+":CoreSocket异常::" ,e);
 		}
 	}
 	
 	// 发送登陆消息至服务器
 	private void sendLoginMessage() {
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":CoreSocket::发送设备登陆");
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + Thread.currentThread().getName()+":CoreSocket::发送设备登陆");
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("imei", MyApplication.deviceId);
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
@@ -176,11 +176,15 @@ public final class CoreSocket implements Runnable {
 		buffer.put(handSharkData);
 		buffer.flip();
 		try {
-			channel.write(buffer);
-			isConnected = true;
+			if(channel.isConnected()){
+				channel.write(buffer);
+				isConnected = true;
+			}else{
+				isConnected = false;
+			}
 		} catch (IOException e) {
 			isConnected = false;
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":CoreSocket::重新登陆消息发送失败" ,e);
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + Thread.currentThread().getName()+":CoreSocket::重新登陆消息发送失败" ,e);
 		}
 	}
 
