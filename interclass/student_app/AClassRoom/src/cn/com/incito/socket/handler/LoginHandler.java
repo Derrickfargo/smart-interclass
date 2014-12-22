@@ -125,6 +125,8 @@ public class LoginHandler extends MessageHandler {
 			return false;
 		}
 	}
+	
+	//以下注释 为分组状态同步
 //	} else if (state == 2) {
 //	MyApplication.Logger.debug("返回状态值进入分组界面");
 //	// 判断该学生是在已经提交的组还是未提交的组还是没有分组
