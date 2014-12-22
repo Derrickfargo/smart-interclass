@@ -82,7 +82,7 @@ public class ConnectionManager {
 		}
 		// 非正常退出,重连
 		if (!isNormal) {
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":ConnectionManager:Socket非正常退出!");
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + Thread.currentThread().getName()+":ConnectionManager:Socket非正常退出!");
 			MyApplication.getInstance().lockScreen(false);
 			restartConnector();
 		}
@@ -136,10 +136,10 @@ public class ConnectionManager {
 				try {
 					Thread.sleep(SCAN_CYCLE);
 					// 发送心跳包
-					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "ConnectionManager::发送心跳包!");
+					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + Thread.currentThread().getName()+":ConnectionManager::发送心跳包!");
 					sendHeartbeat();
 				} catch (Exception e) {
-					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "ConnectionManager::心跳异常:" + e.getMessage());
+					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() +Thread.currentThread().getName()+ ":ConnectionManager::心跳异常:" + e.getMessage());
 					ApiClient.uploadErrorLog(e.getMessage());
 					e.printStackTrace();
 				}
@@ -172,16 +172,16 @@ public class ConnectionManager {
 		new Thread() {
 			public void run() {
 				while (Boolean.TRUE) {
-					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "ConnectionManager::Socket开始重连!");
+					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + Thread.currentThread().getName()+":ConnectionManager::Socket开始重连!");
 					CoreSocket.getInstance().restartConnection();
 					sleep(5000);// 等待1秒后检查连接
 					if (!CoreSocket.getInstance().isConnected()) {
-						MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "ConnectionManager::Socket重连失败!");
+						MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + Thread.currentThread().getName()+":ConnectionManager::Socket重连失败!");
 						CoreSocket.getInstance().disconnect();
 						sleep(5000);
 						continue;
 					}
-					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "ConnectionManager::Socket已重新连接!");
+					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + Thread.currentThread().getName()+":ConnectionManager::Socket已重新连接!");
 					break;
 				}
 			}
@@ -189,7 +189,7 @@ public class ConnectionManager {
 				try {
 					Thread.sleep(seconds);
 				} catch (InterruptedException e) {
-					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "ConnectionManager::线程中断异常" + e.getMessage());
+					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + Thread.currentThread().getName()+":ConnectionManager::线程中断异常" + e.getMessage());
 					e.printStackTrace();
 				}
 			}
