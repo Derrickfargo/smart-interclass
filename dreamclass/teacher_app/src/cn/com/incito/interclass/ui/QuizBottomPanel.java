@@ -44,8 +44,8 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 	private static final String BTN_SEND_NORMAL = "images/quiz/btn_send_works.png";
 	private static final String BTN_SEND_HOVER = "images/quiz/btn_send_works_hover.png";
 	
-	private static final String BTN_FEEDBACK_NORMAL = "images/quiz/btn_feedback.png";
-	private static final String BTN_FEEDBACK_HOVER = "images/quiz/btn_feedback_hover.png";
+	private static final String BTN_FEEDBACK_NORMAL = "images/quiz/btn_feedback_hover.png";
+	private static final String BTN_FEEDBACK_HOVER = "images/quiz/btn_feedback.png";
 	
 	private static final String BTN_ACCEPT_NORMAL = "images/quiz/btn_accept_works.png";
 	private static final String BTN_ACCEPT_HOVER = "images/quiz/btn_accept_works_hover.png";
