@@ -172,6 +172,7 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 		Application app = Application.getInstance();
 		Map<String, SocketChannel> channels = app.getClientChannel();
 		Iterator<SocketChannel> it = channels.values().iterator();
+		logger.info("将要收取的作业份数:" + channels.size());
 		while (it.hasNext()) {//加入收取作业队列
 			QuizCollector.getInstance().addQuizQueue(it.next());
 		}
