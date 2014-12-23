@@ -35,7 +35,7 @@ public class LoginHandler extends MessageHandler {
 		Constants.setSERVER_IP(server_ip);
 		Constants.setSERVER_PORT(server_port);
 		// 启动心跳检测
-//		ConnectionManager.getInstance(message.getChannel());
+		ConnectionManager.getInstance(message.getChannel());
 					
 		// TODO 有可能这台pad没有绑定学生，
 		Student student = data.getObject("student", Student.class);
