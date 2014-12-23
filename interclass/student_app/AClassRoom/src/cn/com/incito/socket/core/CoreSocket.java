@@ -65,7 +65,6 @@ public final class CoreSocket implements Runnable {
 			messageParser.parseMessage(selectionKey);
 		}
 	}
-
 	/**
 	 * 客户端往服务端发送消息
 	 *
@@ -127,6 +126,8 @@ public final class CoreSocket implements Runnable {
 //		sendLoginMessage();
 //	}
 
+	
+	
 	public void disconnect() {
 		isRunning = false;
 		isConnected = false;
@@ -219,4 +220,6 @@ public final class CoreSocket implements Runnable {
 		if (timeTimer != null)
 			timeTimer.cancel();
 	}
+   
+	
 }

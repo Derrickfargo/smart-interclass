@@ -5,7 +5,9 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 
+import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.utils.ApiClient;
+import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.socket.utils.BufferUtils;
 import cn.com.incito.wisdom.sdk.log.WLog;
 
@@ -51,11 +53,11 @@ public class MessageParser {
             }
         } catch (IOException e) {
         	ApiClient.uploadErrorLog(e.getMessage());
-            WLog.e(MessageParser.class, "获取MessageHandler出错:" + e.getMessage());
+           MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"MessageParser.class"+":获取MessageHandler出错:" , e);
             return;
         }
         headerBuffer.flip();
-        WLog.i(MessageParser.class, "开始解析消息...");
+        MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"MessageParser.class"+ "开始解析消息...");
         // 消息头fakeId是否正确
         if (parseFakeId(headerBuffer)) {
             // 获取消息头中有用的信息,msgId,msgSize
@@ -88,17 +90,17 @@ public class MessageParser {
         } catch (NumberFormatException ex) {
         	ApiClient.uploadErrorLog(ex.getMessage());
             ex.printStackTrace();
-            WLog.e(MessageParser.class, "ilegal Number parser");
+            MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"MessageParser.class:"+"ilegal Number parser");
             return false;
         } catch (Exception e) {
         	ApiClient.uploadErrorLog(e.getMessage());
-            WLog.e(MessageParser.class, "unknow fake Id parser failed");
+        	MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"MessageParser.class:"+ "unknow fake Id parser failed");
             return false;
         }
 
         // 如果消息的fakeId与定义的fakeId值不符，则丢弃掉该条消息
         if (Message.MESSAGE_FAKE_ID != fakeId) {
-            WLog.e(MessageParser.class, "unknow fake Id parser failed");
+        	MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"MessageParser.class:"+ "unknow fake Id parser failed");
             return false;
         }
         return true;
@@ -133,7 +135,7 @@ public class MessageParser {
             return true;
         } catch (IOException e) {
         	ApiClient.uploadErrorLog(e.getMessage());
-            WLog.e(MessageParser.class, "failed to fetch message body :", e);
+        	MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"MessageParser.class:"+ "failed to fetch message body :", e);
             return false;
         }
     }

@@ -3,7 +3,9 @@ package cn.com.incito.socket.core;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.utils.ApiClient;
+import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.socket.handler.ClassReadyHandler;
 import cn.com.incito.socket.handler.DeleteGroupHandler;
 import cn.com.incito.socket.handler.DistributePaperHandler;
@@ -69,7 +71,7 @@ public final class MessageHandlerResource {
                 return handlerResources.get(key).newInstance();
             } catch (Exception e) {
             	ApiClient.uploadErrorLog(e.getMessage());
-                WLog.e(MessageHandlerResource.class, "获取MessageHandler出错:" + e.getMessage());
+            	MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"MessageHandlerResource.class:"+"获取MessageHandler出错:" + e.getMessage());
                 return null;
             }
         }
