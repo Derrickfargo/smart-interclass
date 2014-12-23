@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import cn.com.incito.classroom.R;
-import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;

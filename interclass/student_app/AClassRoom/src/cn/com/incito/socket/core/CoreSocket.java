@@ -116,16 +116,16 @@ public final class CoreSocket implements Runnable {
 		}.start();
 	}
 
-	public void restartConnection() {
-		disconnect();
-		new Thread(this).start();
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		sendLoginMessage();
-	}
+//	public void restartConnection() {
+//		disconnect();
+//		new Thread(this).start();
+//		try {
+//			Thread.sleep(2000);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+//		sendLoginMessage();
+//	}
 
 	public void disconnect() {
 		isRunning = false;
@@ -190,7 +190,7 @@ public final class CoreSocket implements Runnable {
 			return;
 		}
 		//登录发送一段时间后，如果没收到服务端的回复，将重连
-			startTask();
+//			startTask();
 	}
 	
 	
@@ -206,7 +206,7 @@ public final class CoreSocket implements Runnable {
 			public void run() {
 				MyApplication.getInstance().Logger.debug("启动二次重连");
 				disconnect();
-				restartConnection();
+//				restartConnection();
 			}
 		};
 		timeTimer.schedule(timeTimerTask, 15 * 1000);

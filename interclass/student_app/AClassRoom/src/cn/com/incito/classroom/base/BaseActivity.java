@@ -91,7 +91,6 @@ public class BaseActivity extends FragmentActivity {
 	}
 
 	class NetWorkReceiver extends BroadcastReceiver {
-
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			

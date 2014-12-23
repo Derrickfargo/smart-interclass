@@ -12,24 +12,23 @@ public class ClassingActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		UIHelper.getInstance().setClassingActivity(this);
 		setContentView(R.layout.activity_classing);
+		registRecier();
 		
 	}
 	
 	@Override
 	protected void onResume() {
-		registRecier();
 		super.onResume();
 	}
 	
 	@Override
 	protected void onPause() {
-		unRegistReciver();
 		super.onPause();
 	}
 	
 	@Override
 	protected void onDestroy() {
-		
+		unRegistReciver();
 		super.onDestroy();
 	}
 }

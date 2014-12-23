@@ -50,11 +50,13 @@ public class AppUncaughtException implements UncaughtExceptionHandler {
 
 	@Override
 	public void uncaughtException(Thread arg0, Throwable arg1) {
-		Log.e("程序挂掉了","");
+		MyApplication.Logger.debug("程序出现了未捕捉到的异常");
 		// 把错误的堆栈信息 获取出来
 		final String errorinfo = getErrorInfo(arg1);
 		if (AndroidUtil.isNetworkAvailable(context)) {
 			ApiClient.uploadErrorLog(errorinfo);
+		}else{
+			MyApplication.Logger.debug("程序出现了未捕捉到的异常，并且网络不可用");
 		}
 		MyApplication.Logger.debug("AppUncaughtException:"+errorinfo);
 	}

@@ -35,7 +35,7 @@ public class LoginHandler extends MessageHandler {
 		Constants.setSERVER_IP(server_ip);
 		Constants.setSERVER_PORT(server_port);
 		// 启动心跳检测
-		ConnectionManager.getInstance(message.getChannel());
+//		ConnectionManager.getInstance(message.getChannel());
 					
 		// TODO 有可能这台pad没有绑定学生，
 		Student student = data.getObject("student", Student.class);
@@ -49,8 +49,8 @@ public class LoginHandler extends MessageHandler {
 			MyApplication.Logger.debug("返回状态值:" + state);
 			if (state == 1) {
 				MyApplication.Logger.debug("返回状态值1");
-//				AppManager.getAppManager().currentActivity().finish();
-//				UIHelper.getInstance().showClassReadyActivity();
+				AppManager.getAppManager().currentActivity().finish();
+				UIHelper.getInstance().showClassReadyActivity();
 				if (!AppManager.getAppManager().currentActivity().getClass().getSimpleName().equals("ClassReadyActivity")) {
 					MyApplication.Logger.debug("当前界面不是等待上课界面，进入准备上课界面，");
 					UIHelper.getInstance().showClassReadyActivity();
@@ -88,7 +88,7 @@ public class LoginHandler extends MessageHandler {
 //				} else {
 					MyApplication.Logger.debug("返回状态值进入开始上课界面");
 					if (!AppManager.getAppManager().currentActivity().getClass().getSimpleName().equals("ClassingActivity")) {
-//						AppManager.getAppManager().currentActivity().finish();
+						AppManager.getAppManager().currentActivity().finish();
 						UIHelper.getInstance().showClassingActivity();
 						MyApplication.Logger.debug("返回状态值4,当前界面不是上课界面 ,进入开始上课界面成功");
 					}else{
@@ -97,7 +97,7 @@ public class LoginHandler extends MessageHandler {
 //				}
 			}else{
 				MyApplication.Logger.debug("没有返回值");
-//				AppManager.getAppManager().currentActivity().finish();
+				AppManager.getAppManager().currentActivity().finish();
 				UIHelper.getInstance().showClassReadyActivity();
 			}
 		}
