@@ -28,6 +28,7 @@ public class QuizCollector {
 	private static final int TIMEOUT = 10000;//消息队列等待时长
 	private static QuizCollector instance;
 	private int capacity;
+	private boolean isRunning = false;
 	private final Lock lock = new ReentrantLock();
 	private final Condition isIdle = lock.newCondition();
 	private Queue<SocketChannel> quizQueue = new LinkedList<SocketChannel>();
@@ -36,12 +37,16 @@ public class QuizCollector {
 	public static QuizCollector getInstance() {
 		if (instance == null) {
 			instance = new QuizCollector();
+		} else if (instance.quizQueue.size() == 0) {
+			instance.isRunning = false;//退出之前队列
+			instance = new QuizCollector();
 		}
 		return instance;
 	}
 
 	private QuizCollector() {
 		capacity = 0;
+		isRunning = true;
 		initQuizCollector();
 	}
 
@@ -58,9 +63,10 @@ public class QuizCollector {
 		if(quizQueue.size() == 0){
 			return;
 		}
-		if (capacity >= getQuizThreadThreshold()) {
-			return;
-		}
+		logger.info("当前处理的作业个数:" + capacity);
+//		if (capacity >= getQuizThreadThreshold()) {
+//			return;
+//		}
 		lock.lock();
 		isIdle.signal();
 		lock.unlock();
@@ -70,6 +76,7 @@ public class QuizCollector {
 	 * @param channel
 	 */
 	public void addQuizQueue(SocketChannel channel) {
+		logger.info("加入作业收取队列:" + channel);
 		if (channel == null) {
 			return;
 		}
@@ -89,15 +96,15 @@ public class QuizCollector {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				while (Boolean.TRUE) {
+				while (isRunning) {
 					lock.lock();
 					try {
-						while (capacity >= getQuizThreadThreshold()) {
+						while (isRunning && capacity >= getQuizThreadThreshold()) {
 							if (!isIdle.await(TIMEOUT, TimeUnit.MILLISECONDS)) {
 								logger.info("*****正在等待作业提交请求*****");
 							}
 						}
-						while (capacity < getQuizThreadThreshold()) {
+						while (isRunning && capacity < getQuizThreadThreshold()) {
 							SocketChannel channel = quizQueue.poll();
 							capacity++;
 							doCollect(channel);// 收集作业
@@ -136,7 +143,7 @@ public class QuizCollector {
 					e.printStackTrace();
 					return;
 				} catch (Exception e) {
-					e.printStackTrace();
+					capacity--;
 					return;
 				}
 				new QuizCollectMonitor(channel).start();
@@ -168,6 +175,7 @@ public class QuizCollector {
 				e.printStackTrace();
 			}
 			if (quizSet.contains(channel)) {
+				logger.info(channel);
 				logger.info("作业在10秒内没有收取成功,自动收取下一个作业.");
 				quizComplete(channel);
 				nextQuiz();

@@ -149,7 +149,7 @@ public final class CoreSocket implements Runnable {
 			// 客户端向服务器端发起建立连接请求
 			SocketChannel socketChannel = SocketChannel.open();
 			socketChannel.configureBlocking(false);
-			socketChannel.socket().setSoTimeout(3000);
+//			socketChannel.socket().setSoTimeout(3000);
 			selector = Selector.open().wakeup();
 			socketChannel.register(selector, SelectionKey.OP_CONNECT);
 			socketChannel.connect(new InetSocketAddress(Constants.IP, Constants.PORT));
