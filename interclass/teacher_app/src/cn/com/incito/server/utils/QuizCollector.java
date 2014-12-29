@@ -101,7 +101,7 @@ public class QuizCollector {
 					try {
 						while (isRunning && capacity >= getQuizThreadThreshold()) {
 							if (!isIdle.await(TIMEOUT, TimeUnit.MILLISECONDS)) {
-								logger.info("*****正在等待作业提交请求*****");
+								System.out.println("*****正在等待作业提交请求*****");
 							}
 						}
 						while (isRunning && capacity < getQuizThreadThreshold()) {

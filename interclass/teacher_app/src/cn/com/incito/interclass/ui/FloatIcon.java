@@ -321,7 +321,6 @@ public class FloatIcon extends MouseAdapter {
 			}
 			if (e.getSource() == btnExit) {
 				UIHelper.sendClassOverMessage();//
-				System.exit(0);
 			}
 		} else if (e.getClickCount() == 2 ) {
 			if (e.getSource() == lblIcon) {

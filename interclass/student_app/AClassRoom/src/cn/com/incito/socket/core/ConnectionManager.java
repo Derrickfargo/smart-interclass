@@ -26,7 +26,7 @@ public class ConnectionManager {
 	private SocketChannel channel;
 	private long lastActTime = 0;
 	private ConnectActiveMonitor monitor;// 用于定时扫描服务端心跳
-	private HeartbeatGenerator generator;// 用于产生心跳
+//	private HeartbeatGenerator generator;// 用于产生心跳
 
 	static ConnectionManager getInstance() {
 		if (instance == null) {
@@ -50,8 +50,8 @@ public class ConnectionManager {
 		lastActTime = System.currentTimeMillis();
 		monitor = new ConnectActiveMonitor();
 		monitor.start();
-		generator = new HeartbeatGenerator();
-		generator.start();
+//		generator = new HeartbeatGenerator();
+//		generator.start();
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class ConnectionManager {
 	public void close(boolean isNormal) {
 		// 停止检测心跳
 		monitor.setRunning(false);
-		generator.setRunning(false);
+//		generator.setRunning(false);
 		CoreSocket.getInstance().disconnect();
 		if (channel != null && channel.isConnected()) {
 			try {
@@ -173,7 +173,7 @@ public class ConnectionManager {
 			public void run() {
 				while (Boolean.TRUE) {
 					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + Thread.currentThread().getName()+":ConnectionManager::Socket开始重连!");
-//					CoreSocket.getInstance().restartConnection();
+					CoreSocket.getInstance().restartConnection();
 					sleep(5000);// 等待1秒后检查连接
 					if (!CoreSocket.getInstance().isConnected()) {
 						MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + Thread.currentThread().getName()+":ConnectionManager::Socket重连失败!");

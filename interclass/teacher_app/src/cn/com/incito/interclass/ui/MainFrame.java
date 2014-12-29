@@ -37,6 +37,7 @@ import cn.com.incito.interclass.ui.widget.IpDialog;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.config.AppConfig;
 import cn.com.incito.server.core.CoreSocket;
+import cn.com.incito.server.core.HeartbeatManager;
 import cn.com.incito.server.core.MultiCastSocket;
 import cn.com.incito.server.utils.NetworkUtils;
 
@@ -125,6 +126,8 @@ public class MainFrame extends MouseAdapter {
 	private MainFrame() {
 		// 启动通讯线程
 		CoreSocket.getInstance().start();
+		//启动服务端心跳检测
+		HeartbeatManager.getInstance().start();
 		MultiCastSocket.getInstance();
 		showLoginUI();
 		setDragable();

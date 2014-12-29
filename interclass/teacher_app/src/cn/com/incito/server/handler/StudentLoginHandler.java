@@ -2,17 +2,13 @@ package cn.com.incito.server.handler;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
-import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.config.AppConfig;
-import cn.com.incito.server.core.ConnectionManager;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
 import cn.com.incito.server.message.DataType;
@@ -35,6 +31,7 @@ public class StudentLoginHandler extends MessageHandler {
 		logger.info("收到设备（学生）登陆消息:" + data.toJSONString());
 		Student student = service.login(imei);
 //		ConnectionManager.notification(imei, message.getChannel());
+		
 		Application app = Application.getInstance();
 		app.addSocketChannel(imei, message.getChannel());
 		//1 等待老师上课，2分组中，3做作业，4锁屏

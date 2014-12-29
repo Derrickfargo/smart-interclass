@@ -115,16 +115,16 @@ public final class CoreSocket implements Runnable {
 		}.start();
 	}
 
-//	public void restartConnection() {
-//		disconnect();
-//		new Thread(this).start();
-//		try {
-//			Thread.sleep(2000);
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
-//		sendLoginMessage();
-//	}
+	public void restartConnection() {
+		disconnect();
+		new Thread(this).start();
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		sendLoginMessage();
+	}
 
 	
 	

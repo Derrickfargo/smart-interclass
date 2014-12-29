@@ -63,7 +63,7 @@ public class MessageManager {
 						Message message = messageQueue.poll();
 						if (message == null) {
 							if (!isEmpty.await(TIMEOUT, TimeUnit.MILLISECONDS)) {
-								logger.info("****正在等待新消息到达****");
+								System.out.println("****正在等待新消息到达****");
 							}
 						} else {
 							handleMessage(message);
