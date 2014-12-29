@@ -14,9 +14,6 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -37,6 +34,7 @@ import cn.com.incito.interclass.ui.widget.IpDialog;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.config.AppConfig;
 import cn.com.incito.server.core.CoreSocket;
+import cn.com.incito.server.core.FtpManager;
 import cn.com.incito.server.core.HeartbeatManager;
 import cn.com.incito.server.core.MultiCastSocket;
 import cn.com.incito.server.utils.NetworkUtils;
@@ -124,11 +122,7 @@ public class MainFrame extends MouseAdapter {
 	}
 
 	private MainFrame() {
-		// 启动通讯线程
-		CoreSocket.getInstance().start();
-		//启动服务端心跳检测
-		HeartbeatManager.getInstance().start();
-		MultiCastSocket.getInstance();
+		startNetworkService();
 		showLoginUI();
 		setDragable();
 		SwingUtilities.invokeLater(new Runnable() {
@@ -467,5 +461,16 @@ public class MainFrame extends MouseAdapter {
 	    
 	public void setState(int state){
 		frame.setState(state);
+	}
+	
+	private void startNetworkService() {
+		// 启动通讯线程
+		CoreSocket.getInstance().start();
+		// 启动服务端心跳检测
+		HeartbeatManager.getInstance().start();
+		// 启动广播监听
+		MultiCastSocket.getInstance();
+		// 启动ftp服务端
+		FtpManager.createFtpServer().start();
 	}
 }
