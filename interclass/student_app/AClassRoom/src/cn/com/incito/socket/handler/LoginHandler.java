@@ -33,7 +33,7 @@ public class LoginHandler extends MessageHandler {
 				+ "连接建立成功,开始启动心跳!");
 		String server_ip = data.getString("server_ip");
 		String server_port = data.getString("server_port");
-		FTPUtils.setFTPUrl(server_ip);
+		FTPUtils.setFTPUrl(Constants.getIP());
 		Constants.setSERVER_IP(server_ip);
 		Constants.setSERVER_PORT(server_port);
 		// 启动心跳检测
