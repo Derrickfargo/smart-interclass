@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.imageio.stream.FileImageOutputStream;
 
@@ -223,8 +224,9 @@ public class CoreService {
 		if(!file.exists()){
 			return;
 		}
-		File thumbnail = new File(file.getParent(), "thumbnail.jpg");
+		File thumbnail = new File(file.getParent(), UUID.randomUUID() + ".jpg");
 		try {
+			thumbnail.delete();
 			ImageUtil.resize(file, thumbnail, 186, 1f);
 			logger.info("缩略图生成：" + thumbnail.getAbsoluteFile());
 		} catch (IOException e) {
