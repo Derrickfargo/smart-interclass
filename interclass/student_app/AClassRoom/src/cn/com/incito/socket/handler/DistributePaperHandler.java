@@ -35,10 +35,8 @@ public class DistributePaperHandler extends MessageHandler {
 		isContainsPic = getInfo(buffer);
 		if ("true".equals(isContainsPic)) {//有图片,利用ftp去下载图片 
 			FTPUtils.getInstance();
-			if(FTPUtils.downLoadFile(Constants.FILE_PATH, Constants.FILE_NAME))	{//下载成功
-		
-			}else{//图片下载失败
-				Dialog dialog=new FtpReconnectDialog((Context)AppManager.getAppManager().currentActivity(),"作业收取失败","重新收取",1);
+			if(!FTPUtils.downLoadFile(Constants.FILE_PATH, Constants.FILE_NAME))	{//下载成功
+				Dialog dialog=new FtpReconnectDialog((Context)AppManager.getAppManager().currentActivity());
 				dialog.show();
 			}
 			

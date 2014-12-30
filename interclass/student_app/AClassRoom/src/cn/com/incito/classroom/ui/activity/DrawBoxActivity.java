@@ -40,6 +40,7 @@ import cn.com.incito.classroom.utils.FTPUtils;
 import cn.com.incito.classroom.widget.canvas.ISketchPadCallback;
 import cn.com.incito.classroom.widget.canvas.SketchPadView;
 import cn.com.incito.common.utils.AndroidUtil;
+import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
@@ -563,8 +564,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 				sendPaper();
 				break;
 			case 2:
-				Dialog dialog=new FtpReconnectDialog(DrawBoxActivity.this,"作业提交失败","重新提交",2);
-				dialog.show();
+				ToastHelper.showCustomToast(DrawBoxActivity.this, "作业提交失败，请重试");
 				mProgressDialog.dismiss();
 				break;
 			default:

@@ -79,6 +79,7 @@ public class FTPUtils {
 	public boolean uploadFile(String FilePath, String FileName) {
 		if (!ftpClient.isConnected()) {
 			if (!initFTPSetting(FTPUrl, FTPPort, UserName, UserPassword)) {
+				
 				return false;
 			}
 		}
@@ -146,8 +147,8 @@ public class FTPUtils {
 	
 	
 	
-	public static void main(String[] args) {
-		FTPUtils.getInstance();
-		downLoadFile("ftp_home","temp.png");
-	}
+//	public static void main(String[] args) {
+//		FTPUtils.getInstance();
+//		downLoadFile("ftp_home","temp.png");
+//	}
 }
