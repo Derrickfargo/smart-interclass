@@ -12,7 +12,6 @@ import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.WindowManager;
 import cn.com.incito.classroom.ui.widget.NetWorkDialog;
-import cn.com.incito.socket.core.MultiCastSocket;
 
 /**
  * activity基类 Created by popoy on 2014/8/5.

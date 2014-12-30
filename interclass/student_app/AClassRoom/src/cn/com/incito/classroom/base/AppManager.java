@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.content.Context;
 import cn.com.incito.classroom.utils.ApiClient;
 import cn.com.incito.common.utils.AndroidUtil;
-import cn.com.incito.common.utils.WifiAdmin;
 import cn.com.incito.socket.core.ConnectionManager;
 import cn.com.incito.socket.core.CoreSocket;
 

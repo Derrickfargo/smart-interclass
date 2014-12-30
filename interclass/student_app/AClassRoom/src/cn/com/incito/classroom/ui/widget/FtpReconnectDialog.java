@@ -1,22 +1,15 @@
 package cn.com.incito.classroom.ui.widget;
 
-import cn.com.incito.classroom.R;
-import cn.com.incito.classroom.base.AppManager;
-import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.classroom.constants.Constants;
-import cn.com.incito.classroom.utils.FTPUtils;
-import cn.com.incito.common.utils.AndroidUtil;
-import cn.com.incito.socket.core.CoreSocket;
-import cn.com.incito.socket.core.Message;
-import cn.com.incito.socket.message.DataType;
-import cn.com.incito.socket.message.MessagePacking;
-import cn.com.incito.socket.utils.BufferUtils;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import cn.com.incito.classroom.R;
+import cn.com.incito.classroom.base.AppManager;
+import cn.com.incito.classroom.constants.Constants;
+import cn.com.incito.classroom.utils.FTPUtils;
 
 public class FtpReconnectDialog extends AlertDialog {
 
