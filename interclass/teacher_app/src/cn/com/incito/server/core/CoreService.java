@@ -154,62 +154,109 @@ public class CoreService {
 		return app.getClientChannelByGroup(groupId);
 	}
 
+//	/**
+//	 * 保存学生作业
+//	 *
+//	 * @param imei
+//	 * @return
+//	 */
+//	public void SavePaper(final String imei, final String quizid, final String lessionid,
+//			final byte[] imageByte, final SocketChannel channel) {
+//		new Thread(){
+//			public void run() {
+//				File path = new File(Constants.PAPER_PATH + File.separator + lessionid
+//						+ File.separator + imei.replace(":", "-"));
+//				path.mkdirs();
+//
+//				File file = new File(path, quizid + ".jpg");
+//				File thumbnail = new File(path, quizid + "_thumbnail.jpg");
+//				try {
+//					FileImageOutputStream imageOutput = new FileImageOutputStream(file);
+//					imageOutput.write(imageByte, 0, imageByte.length);
+//					imageOutput.close();
+//					ImageUtil.resize(file, file, 865, 1f);
+//					logger.info("大图生成：" + file.getAbsoluteFile());
+//					ImageUtil.resize(file, thumbnail, 186, 1f);
+//					logger.info("缩略图生成：" + thumbnail.getAbsoluteFile());
+//				} catch (IOException e) {
+//					logger.error("保存作业图片出现错误:", e);
+//				}
+//
+//				Quiz quiz = new Quiz();
+//				quiz.setId(quizid);
+//				quiz.setImei(imei);
+//				quiz.setLessionid(lessionid);
+//				Student students = app.getStudentByImei(imei);
+//				if (students.getName().length() != 0) {
+//					quiz.setName(students.getName());
+//				}
+//				quiz.setTime(System.currentTimeMillis());
+//				quiz.setQuizUrl(file.getAbsolutePath());
+//				quiz.setThumbnail(thumbnail.getAbsolutePath());
+//				app.getTempQuiz().put(imei, quiz);
+//				app.getQuizList().add(quiz);
+//				app.refresh();
+//				if (app.getQuizList().size() == app.getClientChannel().size()) {
+//					Application.getInstance().getFloatIcon().showNoQuiz();
+//					MainFrame.getInstance().showNoQuiz();
+//					Application.getInstance().setLockScreen(true);
+//				} else {
+//					String message = String.format(Constants.MESSAGE_QUIZ, app
+//							.getQuizList().size(), app.getClientChannel().size());
+//					Application.getInstance().getFloatIcon().showQuizMessage(message);
+//				}
+//				//当前作业处理完毕，处理下一作业
+//				QuizCollector.getInstance().quizComplete(channel);
+//				QuizCollector.getInstance().nextQuiz();
+//			}
+//		}.start();
+//	}
 	/**
 	 * 保存学生作业
 	 *
 	 * @param imei
 	 * @return
 	 */
-	public void SavePaper(final String imei, final String quizid, final String lessionid,
-			final byte[] imageByte, final SocketChannel channel) {
-		new Thread(){
-			public void run() {
-				File path = new File(Constants.PAPER_PATH + File.separator + lessionid
-						+ File.separator + imei.replace(":", "-"));
-				path.mkdirs();
+	public void SavePaper(String imei, String quizid, String path, SocketChannel channel) {
+		File file = new File(path);
+		logger.info("图片是否存在:" + file.exists());
+		if(!file.exists()){
+			return;
+		}
+		File thumbnail = new File(file.getParent(), "thumbnail.jpg");
+		try {
+			ImageUtil.resize(file, thumbnail, 186, 1f);
+			logger.info("缩略图生成：" + thumbnail.getAbsoluteFile());
+		} catch (IOException e) {
+			logger.error("保存作业图片出现错误:", e);
+			return;
+		}
 
-				File file = new File(path, quizid + ".jpg");
-				File thumbnail = new File(path, quizid + "_thumbnail.jpg");
-				try {
-					FileImageOutputStream imageOutput = new FileImageOutputStream(file);
-					imageOutput.write(imageByte, 0, imageByte.length);
-					imageOutput.close();
-					ImageUtil.resize(file, file, 865, 1f);
-					logger.info("大图生成：" + file.getAbsoluteFile());
-					ImageUtil.resize(file, thumbnail, 186, 1f);
-					logger.info("缩略图生成：" + thumbnail.getAbsoluteFile());
-				} catch (IOException e) {
-					logger.error("保存作业图片出现错误:", e);
-				}
-
-				Quiz quiz = new Quiz();
-				quiz.setId(quizid);
-				quiz.setImei(imei);
-				quiz.setLessionid(lessionid);
-				Student students = app.getStudentByImei(imei);
-				if (students.getName().length() != 0) {
-					quiz.setName(students.getName());
-				}
-				quiz.setTime(System.currentTimeMillis());
-				quiz.setQuizUrl(file.getAbsolutePath());
-				quiz.setThumbnail(thumbnail.getAbsolutePath());
-				app.getTempQuiz().put(imei, quiz);
-				app.getQuizList().add(quiz);
-				app.refresh();
-				if (app.getQuizList().size() == app.getClientChannel().size()) {
-					Application.getInstance().getFloatIcon().showNoQuiz();
-					MainFrame.getInstance().showNoQuiz();
-					Application.getInstance().setLockScreen(true);
-				} else {
-					String message = String.format(Constants.MESSAGE_QUIZ, app
-							.getQuizList().size(), app.getClientChannel().size());
-					Application.getInstance().getFloatIcon().showQuizMessage(message);
-				}
-				//当前作业处理完毕，处理下一作业
-				QuizCollector.getInstance().quizComplete(channel);
-				QuizCollector.getInstance().nextQuiz();
-			}
-		}.start();
+		Quiz quiz = new Quiz();
+		quiz.setId(quizid);
+		quiz.setImei(imei);
+		Student students = app.getStudentByImei(imei);
+		if (students.getName().length() != 0) {
+			quiz.setName(students.getName());
+		}
+		quiz.setTime(System.currentTimeMillis());
+		quiz.setQuizUrl(file.getAbsolutePath());
+		quiz.setThumbnail(thumbnail.getAbsolutePath());
+		app.getTempQuiz().put(imei, quiz);
+		app.getQuizList().add(quiz);
+		app.refresh();
+		if (app.getQuizList().size() == app.getClientChannel().size()) {
+			Application.getInstance().getFloatIcon().showNoQuiz();
+			MainFrame.getInstance().showNoQuiz();
+			Application.getInstance().setLockScreen(true);
+		} else {
+			String message = String.format(Constants.MESSAGE_QUIZ, app
+					.getQuizList().size(), app.getClientChannel().size());
+			Application.getInstance().getFloatIcon().showQuizMessage(message);
+		}
+		//当前作业处理完毕，处理下一作业
+		QuizCollector.getInstance().quizComplete(channel);
+		QuizCollector.getInstance().nextQuiz();
 	}
 
 	/**

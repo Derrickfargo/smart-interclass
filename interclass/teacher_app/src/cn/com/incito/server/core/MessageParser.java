@@ -49,13 +49,13 @@ public class MessageParser {
 				return;
 			}
 		} catch (IOException e) {
-			logger.fatal("解析消息失败:", e);
-			ApiClient.uploadErrorLog(e.toString());
-			try {
-				channel.close();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
+//			logger.fatal("解析消息失败:", e);
+//			ApiClient.uploadErrorLog(e.toString());
+//			try {
+//				channel.close();
+//			} catch (IOException e1) {
+//				e1.printStackTrace();
+//			}
 			return;
 		}
 		headerBuffer.flip();

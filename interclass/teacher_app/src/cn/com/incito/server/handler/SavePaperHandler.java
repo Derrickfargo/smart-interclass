@@ -24,6 +24,7 @@ public class SavePaperHandler extends MessageHandler {
 	private Logger logger = Logger.getLogger(SavePaperHandler.class.getName());
 	private String imei;
 	private String quizid;
+	private String file;
 
 	@Override
 	public void handleMessage(Message msg) {
@@ -37,24 +38,31 @@ public class SavePaperHandler extends MessageHandler {
 		// 获取imei
 		imei = getInfo(buffer);
 		logger.info("imei：" + imei);
-		// 获取图片信息
-		byte[] imageSize = new byte[4];// int
-		buffer.get(imageSize);
-		int pictureLength = (int) BufferUtils.decodeIntLittleEndian(imageSize,
-				0, imageSize.length);
-		logger.info("作业图片总大小：" + pictureLength + "字节.");
-		byte[] imageByte = new byte[pictureLength];
-		buffer.get(imageByte);
-		handleMessage(imageByte);
-	}
-
-	public void handleMessage(byte[] imageByte) {
+//		// 获取图片信息
+//		byte[] imageSize = new byte[4];// int
+//		buffer.get(imageSize);
+//		int pictureLength = (int) BufferUtils.decodeIntLittleEndian(imageSize,
+//				0, imageSize.length);
+//		logger.info("作业图片总大小：" + pictureLength + "字节.");
+//		byte[] imageByte = new byte[pictureLength];
+//		buffer.get(imageByte);
+//		handleMessage(imageByte);
+		
+		//获得图片路径
+		file = getInfo(buffer);
+		logger.info("路径：" + file);
+		service.SavePaper(imei, quizid, file, message.getChannel());
 		// 需要给组中所以的设备发送
-		service.SavePaper(imei, quizid, Application.getInstance()
-				.getLessionid(), imageByte, message.getChannel());
 		sendResponse(JSONUtils.renderJSONString(0));
 	}
 
+//	private void handleMessage(byte[] imageByte) {
+//		// 需要给组中所以的设备发送
+//		service.SavePaper(imei, quizid, Application.getInstance()
+//				.getLessionid(), imageByte, message.getChannel());
+//		sendResponse(JSONUtils.renderJSONString(0));
+//	}
+	
 	private void sendResponse(String json) {
 		logger.info("回复作业提交消息：" + json);
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SAVE_PAPER_RESULT);
