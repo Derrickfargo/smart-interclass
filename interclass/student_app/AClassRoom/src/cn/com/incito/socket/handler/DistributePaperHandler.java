@@ -2,8 +2,12 @@ package cn.com.incito.socket.handler;
 
 import java.nio.ByteBuffer;
 
+import android.app.Dialog;
+import android.content.Context;
+import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
+import cn.com.incito.classroom.ui.widget.FtpReconnectDialog;
 import cn.com.incito.classroom.utils.FTPUtils;
 import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.common.utils.UIHelper;
@@ -34,7 +38,8 @@ public class DistributePaperHandler extends MessageHandler {
 			if(FTPUtils.downLoadFile(Constants.FILE_PATH, Constants.FILE_NAME))	{//下载成功
 		
 			}else{//图片下载失败
-				
+				Dialog dialog=new FtpReconnectDialog((Context)AppManager.getAppManager().currentActivity(),"作业收取失败","重新收取",1);
+				dialog.show();
 			}
 			
 			// 获取图片信息
