@@ -5,8 +5,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -36,6 +34,7 @@ import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.utils.BitmapUtil;
+import cn.com.incito.classroom.utils.FTPUtils;
 import cn.com.incito.classroom.widget.canvas.ISketchPadCallback;
 import cn.com.incito.classroom.widget.canvas.SketchPadView;
 import cn.com.incito.common.utils.AndroidUtil;
@@ -179,9 +178,9 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		mSubmitButton.setOnClickListener(this);
 		m_sketchPad = (SketchPadView) findViewById(R.id.sketchpad);
 		m_sketchPad.setCallback(DrawBoxActivity.this);
-
-		if (getIntent().getExtras() != null) {
-			byte[] paper = getIntent().getExtras().getByteArray("paper");
+		File file=new File("/sdcard/"+Constants.FILE_NAME);
+		if (file.exists()) {
+			byte[] paper = AndroidUtil.getBytes(file);
 			if (paper != null) {
 				ByteArrayOutputStream outPut = new ByteArrayOutputStream();
 				bitmap = BitmapFactory.decodeByteArray(paper, 0, paper.length);
@@ -475,17 +474,10 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	/**
 	 * @return 保存图片
 	 */
-	private Bitmap getPaperBitMap() {// 老师收作业的时候调用此方法保存图片 然后将图片传到服务器
+	private File getPaperFile() {// 老师收作业的时候调用此方法保存图片 然后将图片传到服务器
 		final Bitmap bmBitmap = m_sketchPad.getCanvasSnapshot();
 		m_sketchPad.cleanDrawingCache();
-//		new Thread(new Runnable() {
-//			@Override
-//			public void run() {
-//				saveBitmap(bmBitmap);// 保存图片到本地
-//			}
-//		}).start();
-
-		return bmBitmap;
+		return getBitmapFile(bmBitmap);// 保存图片到本地
 	}
 
 	@Override
@@ -566,48 +558,33 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 				if (!mProgressDialog.isShowing()&&mProgressDialog!=null) {
 					mProgressDialog.show();
 				}					
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						sendPaper();
-					}
-				}).start();
-				break;
-			case 1:
-				if (timeTimer != null) {
-					timeTimer.cancel();
-					mProgressDialog.dismiss();
-					ToastHelper.showCustomToast(DrawBoxActivity.this,
-							"作业提交失败，请重试");
-				}
-
+				sendPaper();
 				break;
 			default:
 				break;
 			}
 		};
 	};
-	private Timer timeTimer;
-	private TimerTask timeTimerTask;
 
-//	public void saveBitmap(Bitmap bitmap) {
-//		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "保存图片到本地");
-//		File f = new File("/sdcard/", "temp.jpg");
-//		if (f.exists()) {
-//			f.delete();
-//		}
-//		try {
-//			FileOutputStream out = new FileOutputStream(f);
-//			bitmap.compress(Bitmap.CompressFormat.JPEG, 40, out);
-//			out.flush();
-//			out.close();
-//			MyApplication.Logger.debug("图片已经保存");
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//	}
+	public File getBitmapFile(Bitmap bitmap) {
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "保存图片到本地");
+		File f = new File("/sdcard/", "temp.jpg");
+		if (f.exists()) {
+			f.delete();
+		}
+		try {
+			FileOutputStream out = new FileOutputStream(f);
+			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+			out.flush();
+			out.close();
+			MyApplication.Logger.debug("图片已经保存");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return f;
+	}
 
 	public void setBackGround(Bitmap bitmap) {
 		m_sketchPad.setBkBitmap(bitmap);
@@ -625,50 +602,77 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		messagePacking.putBodyData(DataType.INT,
 				BufferUtils.writeUTFString(jsonObject.toJSONString()));
 		CoreSocket.getInstance().sendMessage(messagePacking);
-		MyApplication.Logger.debug("发出提交作业请求..." + "request:"
-				+ jsonObject.toJSONString());
-		startTask();
+		MyApplication.Logger.debug("发出提交作业请求..." + "request:"+ jsonObject.toJSONString());
 	}
 
-	/**
-	 * 开始时间检测
-	 */
-	public void startTask() {
-		timeTimer = new Timer();
-		timeTimerTask = new TimerTask() {
-			@Override
-			public void run() {
-				handler.sendEmptyMessage(1);
-			}
-		};
-		timeTimer.schedule(timeTimerTask, 10 * 1000);
-	}
-
-	public void cancleTask() {
-		if (timeTimer != null)
-			timeTimer.cancel();
-	}
+//	/**
+//	 * 开始时间检测
+//	 */
+//	public void startTask() {
+//		timeTimer = new Timer();
+//		timeTimerTask = new TimerTask() {
+//			@Override
+//			public void run() {
+//				handler.sendEmptyMessage(1);
+//			}
+//		};
+//		timeTimer.schedule(timeTimerTask, 10 * 1000);
+//	}
+//
+//	public void cancleTask() {
+//		if (timeTimer != null)
+//			timeTimer.cancel();
+//	}
 
 	/**
 	 * 发送作业
 	 */
 	public void sendPaper() {
-		MessagePacking messagePacking = new MessagePacking(
-				Message.MESSAGE_SAVE_PAPER);
-		// 测试ID
-		messagePacking.putBodyData(DataType.INT, BufferUtils
-				.writeUTFString(MyApplication.getInstance().getQuizID()));
-		// 设备ID
-		messagePacking.putBodyData(DataType.INT, BufferUtils
-				.writeUTFString(MyApplication.getInstance().getDeviceId()));
-		// 图片
-		messagePacking.putBodyData(DataType.INT,
-				bmpToByteArray(getPaperBitMap(), true));
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "开始提交作业");
-		CoreSocket.getInstance().sendMessage(messagePacking);
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "启动作业提交...");
-		MyApplication.getInstance().lockScreen(true);
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "提交作业后锁定屏幕");
-		startTask();
+		getPaperFile();
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "开始发送作业");
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				String filePath="/"+MyApplication.getInstance().getDeviceId();
+				String fileName=MyApplication.getInstance().getDeviceId()+".jpg";
+				if(FTPUtils.getInstance().uploadFile(filePath, fileName)){
+					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "作业提交成功");
+					MyApplication.getInstance().lockScreen(true);
+					MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SAVE_PAPER);
+					// 测试ID
+					messagePacking.putBodyData(DataType.INT, BufferUtils
+							.writeUTFString(MyApplication.getInstance().getQuizID()));
+					// 设备ID
+					messagePacking.putBodyData(DataType.INT, BufferUtils
+							.writeUTFString(MyApplication.getInstance().getDeviceId()));
+					messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(Constants.FILE_PATH+filePath+"/"+fileName));
+					CoreSocket.getInstance().sendMessage(messagePacking);
+					mProgressDialog.dismiss();
+					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + " 作业提交成功");
+					
+				}else{
+					mProgressDialog.dismiss();
+					ToastHelper.showCustomToast(DrawBoxActivity.this,
+							"作业提交失败，请重试");
+					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + " 作业提交失败");
+				}
+				
+			}
+		}).start();;
+		
+//		MessagePacking messagePacking = new MessagePacking(
+//				Message.MESSAGE_SAVE_PAPER);
+//		// 测试ID
+//		messagePacking.putBodyData(DataType.INT, BufferUtils
+//				.writeUTFString(MyApplication.getInstance().getQuizID()));
+//		// 设备ID
+//		messagePacking.putBodyData(DataType.INT, BufferUtils
+//				.writeUTFString(MyApplication.getInstance().getDeviceId()));
+//		// 图片
+//		messagePacking.putBodyData(DataType.INT,
+//				bmpToByteArray(getPaperBitMap(), true));
+//		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "开始提交作业");
+//		MyApplication.getInstance().lockScreen(true);
+//		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "提交作业后锁定屏幕");
 	}
 }
