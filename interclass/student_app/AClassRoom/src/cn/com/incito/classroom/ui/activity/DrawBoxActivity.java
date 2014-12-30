@@ -537,7 +537,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 
 	public byte[] bmpToByteArray(final Bitmap bmp, final boolean needRecycle) {
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
-		bmp.compress(CompressFormat.JPEG, 40, output);
+		bmp.compress(CompressFormat.JPEG, 100, output);
 		if (needRecycle) {
 			bmp.recycle();
 		}
@@ -605,25 +605,6 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		MyApplication.Logger.debug("发出提交作业请求..." + "request:"+ jsonObject.toJSONString());
 	}
 
-//	/**
-//	 * 开始时间检测
-//	 */
-//	public void startTask() {
-//		timeTimer = new Timer();
-//		timeTimerTask = new TimerTask() {
-//			@Override
-//			public void run() {
-//				handler.sendEmptyMessage(1);
-//			}
-//		};
-//		timeTimer.schedule(timeTimerTask, 10 * 1000);
-//	}
-//
-//	public void cancleTask() {
-//		if (timeTimer != null)
-//			timeTimer.cancel();
-//	}
-
 	/**
 	 * 发送作业
 	 */
@@ -659,20 +640,5 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 				
 			}
 		}).start();;
-		
-//		MessagePacking messagePacking = new MessagePacking(
-//				Message.MESSAGE_SAVE_PAPER);
-//		// 测试ID
-//		messagePacking.putBodyData(DataType.INT, BufferUtils
-//				.writeUTFString(MyApplication.getInstance().getQuizID()));
-//		// 设备ID
-//		messagePacking.putBodyData(DataType.INT, BufferUtils
-//				.writeUTFString(MyApplication.getInstance().getDeviceId()));
-//		// 图片
-//		messagePacking.putBodyData(DataType.INT,
-//				bmpToByteArray(getPaperBitMap(), true));
-//		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "开始提交作业");
-//		MyApplication.getInstance().lockScreen(true);
-//		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "提交作业后锁定屏幕");
 	}
 }
