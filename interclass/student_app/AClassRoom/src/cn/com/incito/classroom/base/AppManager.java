@@ -1,5 +1,6 @@
 package cn.com.incito.classroom.base;
 
+import java.io.File;
 import java.util.Stack;
 
 import android.app.Activity;
@@ -104,6 +105,10 @@ public class AppManager {
             finishAllActivity();
             CoreSocket.getInstance().stopConnection();
             Thread.sleep(100);//先让socket发送退出消息再完全退出
+            File file=new File("/sdcard/microlog.txt");
+            if(file.exists()){
+            	file.delete();
+            }
             ConnectionManager.getInstance(null).close(true);
             MyApplication.getInstance().stopSocketService();
             android.os.Process.killProcess(android.os.Process.myPid());
