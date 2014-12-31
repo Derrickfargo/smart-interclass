@@ -1,6 +1,7 @@
 package cn.com.incito.socket.handler;
 
 import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.socket.core.ConnectionManager;
 import cn.com.incito.socket.core.MessageHandler;
 
@@ -12,7 +13,7 @@ public class HeartbeatHandler extends MessageHandler {
 	@Override
 	protected void handleMessage() {
 		// 收到心跳回复
-		MyApplication.Logger.debug("HeartbeatHandler:"+"收到服务端心跳包!");
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "HeartbeatHandler:"+"收到服务端心跳包!");
 		ConnectionManager.getInstance(message.getChannel()).heartbeat();
 	}
 

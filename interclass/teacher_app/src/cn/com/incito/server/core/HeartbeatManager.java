@@ -19,7 +19,7 @@ import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
 
 public class HeartbeatManager extends Thread {
-	private final static long ACT_CYCLE = 20000;// 心跳周期
+	private final static long ACT_CYCLE = 60 * 1000;// 产生心跳周期
 	private static HeartbeatManager instance = null;
 	private final static Logger log = Logger.getLogger(HeartbeatManager.class);
 
