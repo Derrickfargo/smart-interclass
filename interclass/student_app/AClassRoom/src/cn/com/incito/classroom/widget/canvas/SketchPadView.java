@@ -380,7 +380,6 @@ public class SketchPadView extends View implements IUndoCommand {
 			}else if(m_bkBitmap.getWidth()<1280&&m_bkBitmap.getHeight()>800){
 				m_bkBitmap=BitmapUtil.zoomImage(m_bkBitmap, m_bkBitmap.getWidth(), zoomHeigh);
 			}
-			MyApplication.Logger.debug("图片高度："+m_bkBitmap.getHeight()+"图片宽度:"+m_bkBitmap.getWidth());
 			canvas.drawBitmap(m_bkBitmap, 0, 0, null);
 		}
 		// Draw background bitmap.
