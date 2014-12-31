@@ -7,10 +7,12 @@ import org.apache.ftpserver.FtpServerFactory;
 import org.apache.ftpserver.ftplet.FtpException;
 import org.apache.ftpserver.listener.ListenerFactory;
 import org.apache.ftpserver.usermanager.PropertiesUserManagerFactory;
+import org.apache.log4j.Logger;
 
 public class FtpManager {
 	private static FtpManager instance = null;
 	public static final String FTP_HOME = "ftp_home";
+	private Logger logger = Logger.getLogger(FtpManager.class.getName());
 	private FtpServer server;
 
 	public static FtpManager createFtpServer() {
@@ -21,13 +23,28 @@ public class FtpManager {
 	}
 
 	private FtpManager() {
+		File ftpHome = new File(FTP_HOME);
+		if(!ftpHome.exists()){
+			if (!ftpHome.mkdirs()) {
+				logger.info("ftp_home目录创建失败");
+			}
+		}
 		FtpServerFactory serverFactory = new FtpServerFactory();
+		
 		ListenerFactory factory = new ListenerFactory();
 		factory.setPort(21);// 监听端口
 		serverFactory.addListener("default", factory.createListener());// 默认监听器
+		
 		PropertiesUserManagerFactory userManagerFactory = new PropertiesUserManagerFactory();
 		userManagerFactory.setFile(new File("users.properties"));
 		serverFactory.setUserManager(userManagerFactory.createUserManager());
+		
+//		ConnectionConfigFactory connectionConfigFactory = new ConnectionConfigFactory();
+//		connectionConfigFactory.setLoginFailureDelay(10);
+//		connectionConfigFactory.setMaxLogins(200);
+//		connectionConfigFactory.setMaxThreads(200);
+//		serverFactory.setConnectionConfig(connectionConfigFactory.createConnectionConfig());
+		
 		server = serverFactory.createServer();
 	}
 

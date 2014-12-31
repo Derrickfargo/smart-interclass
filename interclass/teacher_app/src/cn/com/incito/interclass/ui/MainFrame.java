@@ -466,8 +466,12 @@ public class MainFrame extends MouseAdapter {
 	private void startNetworkService() {
 		// 启动通讯线程
 		CoreSocket.getInstance().start();
-		// 启动服务端心跳检测
-		HeartbeatManager.getInstance().start();
+		Properties props = AppConfig.getProperties();
+		String heartbeat = props.get("heartbeat").toString();
+		if (heartbeat != null && heartbeat.toLowerCase().equals("true")) {
+			// 启动服务端心跳检测
+			HeartbeatManager.getInstance().start();
+		}
 		// 启动广播监听
 		MultiCastSocket.getInstance();
 		// 启动ftp服务端
