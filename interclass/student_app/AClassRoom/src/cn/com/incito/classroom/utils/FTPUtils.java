@@ -42,8 +42,6 @@ public class FTPUtils {
 		if(ftpClient==null){
 			ftpClient = new FTPClient();
 		}
-		
-
 	}
 
 	public static FTPUtils getInstance() {
@@ -75,7 +73,6 @@ public class FTPUtils {
 				ftpClient.disconnect();
 				return false;
 			}
-			// return true;
 		} catch (SocketException e) {
 			e.printStackTrace();
 			return false;
@@ -104,8 +101,7 @@ public class FTPUtils {
 						System.out.println("删除旧文件成功");
 				}
 			}
-			FileInputStream fileInputStream = new FileInputStream(new File(
-					"/sdcard/temp.jpg"));
+			FileInputStream fileInputStream = new FileInputStream(new File("/sdcard/temp.jpg"));
 			ftpClient.storeFile(FileName, fileInputStream); //
 			fileInputStream.close(); //
 			ftpClient.logout();
@@ -115,6 +111,7 @@ public class FTPUtils {
 			return false;
 		}finally{  
             try {  
+            	ftpClient.logout();
                 ftpClient.disconnect();  
             } catch (IOException e) {  
                 e.printStackTrace();  
@@ -140,7 +137,6 @@ public class FTPUtils {
 				return false;
 			}
 		}
-			// ftpClient.changeWorkingDirectory("/data");
 			FTPFile[] files = ftpClient.listFiles();
 			for (FTPFile file : files) {
 				if (file.getName().equals(FileName)) {
@@ -160,6 +156,7 @@ public class FTPUtils {
 			e.printStackTrace();
 		}finally{  
             try {  
+            	ftpClient.logout();
                 ftpClient.disconnect();  
             } catch (IOException e) {  
                 e.printStackTrace();  
