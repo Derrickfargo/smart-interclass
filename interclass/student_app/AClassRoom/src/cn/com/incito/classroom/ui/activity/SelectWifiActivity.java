@@ -81,6 +81,7 @@ public class SelectWifiActivity extends BaseActivity {
 			PackageInfo info = pm.getPackageInfo("cn.com.incito.classroom", 0);
 			MyApplication.getInstance().setCode(info.versionCode);
 		} catch (NameNotFoundException e) {
+			e.printStackTrace();
 			ApiClient.uploadErrorLog(e.getMessage());
 		}
 		initView();

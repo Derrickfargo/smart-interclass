@@ -8,6 +8,7 @@ package cn.com.incito.classroom.exception;
  */
 
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -75,6 +76,11 @@ public class AppUncaughtException implements UncaughtExceptionHandler {
 		arg1.printStackTrace(pw);
 		pw.close();
 		String error = writer.toString();
+		try {
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return error;
 	}
 

@@ -40,8 +40,10 @@ public class FileUtils {
 					out.close();
 				}
 			} catch (FileNotFoundException e) {
+				e.printStackTrace();
 				ApiClient.uploadErrorLog(e.getMessage());
 			} catch (IOException e) {
+				e.printStackTrace();
 				ApiClient.uploadErrorLog(e.getMessage());
 			}
 		}

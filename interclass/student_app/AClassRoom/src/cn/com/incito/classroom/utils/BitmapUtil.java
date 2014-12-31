@@ -183,6 +183,7 @@ public class BitmapUtil {
 						bm = BitmapFactory
 								.decodeByteArray(data, 0, data.length);
 					} catch (RuntimeException e) {
+						e.printStackTrace();
 						ApiClient.uploadErrorLog(e.getMessage());
 						// TODO: handle exception
 						bm = BitmapFactory
@@ -190,6 +191,7 @@ public class BitmapUtil {
 					}
 					bms.put(str, bm);
 				} catch (Exception e) {
+					e.printStackTrace();
 					ApiClient.uploadErrorLog(e.getMessage());
 					// TODO Auto-generated catch block
 				}

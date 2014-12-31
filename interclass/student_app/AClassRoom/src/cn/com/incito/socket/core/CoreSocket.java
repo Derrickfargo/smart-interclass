@@ -186,6 +186,7 @@ public final class CoreSocket implements Runnable {
 				isConnected = false;
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			isConnected = false;
 			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + Thread.currentThread().getName()+":CoreSocket::重新登陆消息发送失败" ,e);
 			return;
@@ -210,7 +211,7 @@ public final class CoreSocket implements Runnable {
 //				restartConnection();
 			}
 		};
-		timeTimer.schedule(timeTimerTask, 15 * 1000);
+		timeTimer.schedule(timeTimerTask, 30 * 1000);
 	}
 
 	/**

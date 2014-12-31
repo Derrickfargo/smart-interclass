@@ -122,6 +122,7 @@ public class ApiClient {
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e1) {
+						e1.printStackTrace();
 						ApiClient.uploadErrorLog(e1.getMessage());
 					}
 					continue;
@@ -136,6 +137,7 @@ public class ApiClient {
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e1) {
+						e1.printStackTrace();
 						ApiClient.uploadErrorLog(e1.getMessage());
 					}
 					continue;

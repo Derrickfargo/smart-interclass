@@ -157,7 +157,7 @@ public class FTPUtils {
 		}finally{  
             try {  
             	ftpClient.logout();
-                ftpClient.disconnect();  
+                ftpClient.disconnect();
             } catch (IOException e) {  
                 e.printStackTrace();  
             }  
