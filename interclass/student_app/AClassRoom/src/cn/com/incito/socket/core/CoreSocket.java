@@ -192,7 +192,7 @@ public final class CoreSocket implements Runnable {
 			return;
 		}
 		//登录发送一段时间后，如果没收到服务端的回复，将重连
-//			startTask();
+			startTask();
 	}
 	
 	
@@ -206,9 +206,8 @@ public final class CoreSocket implements Runnable {
 		timeTimerTask = new TimerTask() {
 			@Override
 			public void run() {
-				MyApplication.getInstance().Logger.debug("启动二次重连");
-				disconnect();
-//				restartConnection();
+				MyApplication.Logger.debug("启动二次重连");
+				restartConnection();
 			}
 		};
 		timeTimer.schedule(timeTimerTask, 30 * 1000);
