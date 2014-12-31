@@ -37,9 +37,10 @@ public class FtpReconnectDialog extends AlertDialog {
 		button_entrue.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-					if (!FTPUtils.downLoadFile(Constants.FILE_PATH,
+					FTPUtils.getInstance();
+					if (FTPUtils.downLoadFile(Constants.FILE_PATH,
 							Constants.FILE_NAME)) {
-						FtpReconnectDialog.this.show();
+						dismiss();
 					}
 			}
 		});
@@ -51,7 +52,6 @@ public class FtpReconnectDialog extends AlertDialog {
 				AppManager.getAppManager().AppExit(null);
 			}
 		});
-
 	}
 
 }

@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
+import cn.com.incito.classroom.utils.FTPUtils;
 import cn.com.incito.common.utils.ToastHelper;
 
 public class IpSettingDialogFragment extends DialogFragment {
@@ -37,6 +38,7 @@ public class IpSettingDialogFragment extends DialogFragment {
 				
 				if (ipMatch()) {
 					Constants.setIP(editIP.getText().toString());
+					FTPUtils.setFTPUrl(editIP.getText().toString());
 					Editor editor = MyApplication.getInstance()
 							.getSharedPreferences().edit();
 					editor.putString(Constants.PREFERENCE_IP, editIP.getText()

@@ -7,7 +7,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -31,10 +30,10 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import cn.com.incito.classroom.R;
+import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
-import cn.com.incito.classroom.ui.widget.FtpReconnectDialog;
 import cn.com.incito.classroom.utils.BitmapUtil;
 import cn.com.incito.classroom.utils.FTPUtils;
 import cn.com.incito.classroom.widget.canvas.ISketchPadCallback;
@@ -56,7 +55,7 @@ import com.alibaba.fastjson.JSONObject;
  */
 public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		ISketchPadCallback {
-	boolean Flag=false;
+	boolean Flag = false;
 	private ProgressiveDialog mProgressDialog;
 	private ImageView cleanBtn;
 	private ImageButton delAllBtn;
@@ -108,7 +107,6 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		initViews();
 		registRecier();
 	}
-	
 
 	@Override
 	protected void onPause() {
@@ -181,7 +179,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		mSubmitButton.setOnClickListener(this);
 		m_sketchPad = (SketchPadView) findViewById(R.id.sketchpad);
 		m_sketchPad.setCallback(DrawBoxActivity.this);
-		File file=new File("/sdcard/"+Constants.FILE_NAME);
+		File file = new File("/sdcard/" + Constants.FILE_NAME);
 		if (file.exists()) {
 			byte[] paper = AndroidUtil.getBytes(file);
 			if (paper != null) {
@@ -558,10 +556,12 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case 0:
-				if (!mProgressDialog.isShowing()&&mProgressDialog!=null) {
-					mProgressDialog.show();
-				}					
-				sendPaper();
+				if (AppManager.getAppManager().currentActivity().getClass().getSimpleName().equals("DrawBoxActivity")) {
+					if (!mProgressDialog.isShowing() && mProgressDialog != null) {
+						mProgressDialog.show();
+					}
+					sendPaper();
+				}
 				break;
 			case 2:
 				ToastHelper.showCustomToast(DrawBoxActivity.this, "作业提交失败，请重试");
@@ -609,7 +609,8 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		messagePacking.putBodyData(DataType.INT,
 				BufferUtils.writeUTFString(jsonObject.toJSONString()));
 		CoreSocket.getInstance().sendMessage(messagePacking);
-		MyApplication.Logger.debug("发出提交作业请求..." + "request:"+ jsonObject.toJSONString());
+		MyApplication.Logger.debug("发出提交作业请求..." + "request:"
+				+ jsonObject.toJSONString());
 	}
 
 	/**
@@ -621,32 +622,39 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				String filePath="/"+MyApplication.getInstance().getDeviceId();
-				String fileName=MyApplication.getInstance().getDeviceId()+".jpg";
-				if(FTPUtils.getInstance().uploadFile(filePath, fileName)){
-					Flag=true;
-				}else{
+				String filePath = "/"
+						+ MyApplication.getInstance().getDeviceId();
+				String fileName = MyApplication.getInstance().getDeviceId()
+						+ ".jpg";
+				if (FTPUtils.getInstance().uploadFile(filePath, fileName)) {
+					MyApplication.Logger.debug(AndroidUtil.getCurrentTime()
+							+ "作业提交成功");
+					MyApplication.getInstance().lockScreen(true);
+					MessagePacking messagePacking = new MessagePacking(
+							Message.MESSAGE_SAVE_PAPER);
+					// 测试ID
+					messagePacking.putBodyData(DataType.INT, BufferUtils
+							.writeUTFString(MyApplication.getInstance()
+									.getQuizID()));
+					// 设备ID
+					messagePacking.putBodyData(DataType.INT, BufferUtils
+							.writeUTFString(MyApplication.getInstance()
+									.getDeviceId()));
+					messagePacking.putBodyData(
+							DataType.INT,
+							BufferUtils.writeUTFString(Constants.FILE_PATH
+									+ filePath + "/" + fileName));
+					CoreSocket.getInstance().sendMessage(messagePacking);
+					mProgressDialog.dismiss();
+				} else {
+					MyApplication.Logger.debug(AndroidUtil.getCurrentTime()
+							+ " 作业提交失败");
 					handler.sendEmptyMessage(2);
-					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + " 作业提交失败");
+
 				}
-				
+
 			}
-		}).start();;
-		if(Flag){//发送作业提交成功
-			String filePath="/"+MyApplication.getInstance().getDeviceId();
-			String fileName=MyApplication.getInstance().getDeviceId()+".jpg";
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "作业提交成功");
-			MyApplication.getInstance().lockScreen(true);
-			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SAVE_PAPER);
-			// 测试ID
-			messagePacking.putBodyData(DataType.INT, BufferUtils
-					.writeUTFString(MyApplication.getInstance().getQuizID()));
-			// 设备ID
-			messagePacking.putBodyData(DataType.INT, BufferUtils
-					.writeUTFString(MyApplication.getInstance().getDeviceId()));
-			messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(Constants.FILE_PATH+filePath+"/"+fileName));
-			CoreSocket.getInstance().sendMessage(messagePacking);
-			mProgressDialog.dismiss();
-		}
+		}).start();
+		;
 	}
 }
