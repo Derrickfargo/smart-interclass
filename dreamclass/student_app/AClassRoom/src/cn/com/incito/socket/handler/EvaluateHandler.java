@@ -1,9 +1,6 @@
 package cn.com.incito.socket.handler;
 
 import java.nio.ByteBuffer;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.zip.GZIPOutputStream;
 
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.utils.CompressUtil;
@@ -37,7 +34,7 @@ public class EvaluateHandler extends MessageHandler{
 	@Override
 	protected void handleMessage() {
 		MyApplication.Logger.debug("收到互评命令");
-		CompressUtil.unzipBytes(imageByte);
+//		CompressUtil.unGZip(imageByte);
 		UIHelper.getInstance().showEvaluateActivity(CompressUtil.unGZip(imageByte),uuid);;
 	}
 
