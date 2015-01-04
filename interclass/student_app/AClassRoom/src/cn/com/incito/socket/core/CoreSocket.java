@@ -78,7 +78,7 @@ public final class CoreSocket implements Runnable {
 				buffer.put(message);
 				buffer.flip();
 				try {
-					MyApplication.getInstance().Logger.debug("channel"+channel);
+					MyApplication.Logger.debug("channel"+channel);
 					if (channel != null && channel.isConnected()) {
 						channel.write(buffer);
 					}
@@ -87,7 +87,6 @@ public final class CoreSocket implements Runnable {
 				}
 			}
 		}.start();
-
 	}
 
 	public void stopConnection() {

@@ -61,7 +61,6 @@ public class FTPUtils {
 			// 2.登陆服务端
 			MyApplication.Logger.debug("FTP服务器初始化连接" + "用户名：" + UserName);
 			ftpClient.login(UserName, UserPassword); //
-			ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 			ftpClient.setBufferSize(1024*4);
 			ftpClient.setControlEncoding("UTF-8");
 			ftpClient.enterLocalPassiveMode();

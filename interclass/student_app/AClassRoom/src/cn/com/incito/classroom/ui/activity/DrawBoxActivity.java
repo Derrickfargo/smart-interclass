@@ -653,6 +653,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 							BufferUtils.writeUTFString(Constants.FILE_PATH
 									+ filePath + "/" + fileName));
 					CoreSocket.getInstance().sendMessage(messagePacking);
+					
 					mProgressDialog.dismiss();
 				} else {
 					MyApplication.Logger.debug(AndroidUtil.getCurrentTime()
