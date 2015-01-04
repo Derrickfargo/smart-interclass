@@ -71,7 +71,7 @@ public class LoginHandler extends MessageHandler {
 //					} else {
 //						imageByte = data.getBytes("quiz");
 //					}
-					UIHelper.getInstance().showDrawBoxActivity();
+					UIHelper.getInstance().showDrawBoxActivity("null");
 //					if (!"ClassingActivity".equals(AppManager.getAppManager().currentActivity().getClass().getSimpleName())) {
 //						AppManager.getAppManager().currentActivity().finish();
 //					}

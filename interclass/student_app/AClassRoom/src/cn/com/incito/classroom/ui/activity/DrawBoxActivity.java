@@ -180,15 +180,23 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		m_sketchPad = (SketchPadView) findViewById(R.id.sketchpad);
 		m_sketchPad.setCallback(DrawBoxActivity.this);
 		File file = new File("/sdcard/" + Constants.FILE_NAME);
-		if (file.exists()) {
-			byte[] paper = AndroidUtil.getBytes(file);
-			if (paper != null) {
-				ByteArrayOutputStream outPut = new ByteArrayOutputStream();
-				bitmap = BitmapFactory.decodeByteArray(paper, 0, paper.length);
-				bitmap.compress(CompressFormat.PNG, 100, outPut);
-				changeBtn.setClickable(false);
+		String flag=getIntent().getStringExtra("flag");
+		if("true".equals(flag)){
+			if (file.exists()) {
+				byte[] paper = AndroidUtil.getBytes(file);
+				if (paper != null) {
+					ByteArrayOutputStream outPut = new ByteArrayOutputStream();
+					bitmap = BitmapFactory.decodeByteArray(paper, 0, paper.length);
+					bitmap.compress(CompressFormat.PNG, 100, outPut);
+					changeBtn.setClickable(false);
+				}
+			}else {
+				bitmap = BitmapFactory.decodeResource(getResources(),
+						R.drawable.bg_class_ready);
+				changeBtn.setClickable(true);
 			}
-		} else {
+			
+		}else {
 			bitmap = BitmapFactory.decodeResource(getResources(),
 					R.drawable.bg_class_ready);
 			changeBtn.setClickable(true);

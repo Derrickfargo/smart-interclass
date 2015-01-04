@@ -65,11 +65,12 @@ public class FTPUtils {
 			ftpClient.setBufferSize(1024*4);
 			ftpClient.setControlEncoding("UTF-8");
 			ftpClient.enterLocalPassiveMode();
-			ftpClient.setDataTimeout(60000);
 			ftpClient.setFileType(FTP.BINARY_FILE_TYPE); // 设置为2进制
 			reply = ftpClient.getReplyCode();
+			MyApplication.Logger.debug("FTP服务器初始化连接,返回数据："+reply);
 			if (!FTPReply.isPositiveCompletion(reply)) { // 连接不成功
 				MyApplication.Logger.debug("FTP服务器初始化连接失败");
+				ftpClient.logout();
 				ftpClient.disconnect();
 				return false;
 			}
@@ -86,11 +87,13 @@ public class FTPUtils {
 	public boolean uploadFile(String FilePath, String FileName) {
 		try {
 			if (!ftpClient.isConnected()) {
+				MyApplication.Logger.debug("FTP服务器未连接");
 				if (!initFTPSetting(FTPUrl, FTPPort, UserName, UserPassword)) {
 					MyApplication.Logger.debug("服务器连接失败");
 					return false;
 				}
 			}
+			MyApplication.Logger.debug("服务器已连接");
 			ftpClient.makeDirectory(FilePath);
 			ftpClient.changeWorkingDirectory(FilePath); // 跳转到服务端目录
 			FTPFile[] files = ftpClient.listFiles();
