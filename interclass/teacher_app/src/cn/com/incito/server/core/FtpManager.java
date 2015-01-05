@@ -2,12 +2,16 @@ package cn.com.incito.server.core;
 
 import java.io.File;
 
+import org.apache.ftpserver.ConnectionConfig;
+import org.apache.ftpserver.ConnectionConfigFactory;
 import org.apache.ftpserver.FtpServer;
 import org.apache.ftpserver.FtpServerFactory;
 import org.apache.ftpserver.ftplet.FtpException;
 import org.apache.ftpserver.listener.ListenerFactory;
 import org.apache.ftpserver.usermanager.PropertiesUserManagerFactory;
 import org.apache.log4j.Logger;
+
+import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
 public class FtpManager {
 	private static FtpManager instance = null;
@@ -34,18 +38,23 @@ public class FtpManager {
 		ListenerFactory factory = new ListenerFactory();
 		factory.setPort(21);// 监听端口
 		serverFactory.addListener("default", factory.createListener());// 默认监听器
-		
 		PropertiesUserManagerFactory userManagerFactory = new PropertiesUserManagerFactory();
 		userManagerFactory.setFile(new File("users.properties"));
 		serverFactory.setUserManager(userManagerFactory.createUserManager());
-		
-//		ConnectionConfigFactory connectionConfigFactory = new ConnectionConfigFactory();
-//		connectionConfigFactory.setLoginFailureDelay(10);
-//		connectionConfigFactory.setMaxLogins(200);
-//		connectionConfigFactory.setMaxThreads(200);
-//		serverFactory.setConnectionConfig(connectionConfigFactory.createConnectionConfig());
-		
+		ConnectionConfigFactory connectionConfigFactory = new ConnectionConfigFactory();
+		connectionConfigFactory.setLoginFailureDelay(10);
+		connectionConfigFactory.setMaxLogins(2000);
+		connectionConfigFactory.setMaxThreads(200);
+		connectionConfigFactory.setMaxLoginFailures(500);
+		serverFactory.setConnectionConfig(connectionConfigFactory.createConnectionConfig());
 		server = serverFactory.createServer();
+		
+		
+//		ConnectionConfig connectionConfigFactory=serverFactory.getConnectionConfig();
+		System.out.println("MaxLogins()"+connectionConfigFactory.getMaxLogins()  );
+		System.out.println("MaxAnonymousLogins()"+connectionConfigFactory.getMaxAnonymousLogins());
+		System.out.println("MaxLoginFailures()"+connectionConfigFactory.getMaxLoginFailures());
+		System.out.println("MaxThreads()"+connectionConfigFactory.getMaxThreads());
 	}
 
 	public void start() {
