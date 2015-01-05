@@ -12,6 +12,7 @@ public class SavePaperHandler extends MessageHandler {
 
 	@Override
 	protected void handleMessage() {
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"收到交作业命令");
 		if(MyApplication.getInstance().isSubmitPaper()){
 			MyApplication.getInstance().setSubmitPaper(false);
 		}else{

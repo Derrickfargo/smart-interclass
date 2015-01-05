@@ -65,6 +65,7 @@ public class FTPUtils {
 			ftpClient.setBufferSize(1024*4);
 			ftpClient.setControlEncoding("UTF-8");
 			ftpClient.enterLocalPassiveMode();
+			ftpClient.setKeepAlive(true);
 			ftpClient.setFileType(FTP.BINARY_FILE_TYPE); // 设置为2进制
 			reply = ftpClient.getReplyCode();
 			MyApplication.Logger.debug("FTP服务器初始化连接,返回数据："+reply);

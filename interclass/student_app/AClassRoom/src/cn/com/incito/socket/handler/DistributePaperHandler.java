@@ -25,6 +25,7 @@ public class DistributePaperHandler extends MessageHandler {
 
 	@Override
 	public void handleMessage(Message msg) {
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"收到PC端发过来的作业作业，开始解析");
 		this.message = msg;
 		ByteBuffer buffer = msg.getBodyBuffer();
 		buffer.flip();
