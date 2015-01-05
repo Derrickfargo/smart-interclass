@@ -78,6 +78,11 @@ public class Message {
 	public static final Byte MESSAGE_SAVE_PAPER_RESULT=0x0A;
 	
 	/**
+	 * 提交作业申请
+	 */
+	public static final Byte MESSAGE_SEND_PAPER=0x0D;
+	
+	/**
 	 * 设备退出
 	 */
 	public static final Byte MESSAGE_DEVICE_LOGOUT=0x0B;
@@ -85,6 +90,34 @@ public class Message {
 	 * 锁屏
 	 */
 	public static final Byte MESSAGE_LOCK_SCREEN=0x0C;
+	/**
+	 * 抢答
+	 */
+	public static final Byte MESSAGE_STUDENT_RESPONDER=0x0E;
+	/**
+	 * 随机分组
+	 */
+	public static final Byte MESSAGE_GROUP_RDMGROUP=0x0F;
+	
+	/**
+	 * 作业互评下发
+	 */
+	public static final Byte MESSAGE_QUIZ_FEEDBACK_SEND=0x10;
+	
+	/**
+	 * 作业互评提交
+	 */
+	public static final Byte MESSAGE_QUIZ_FEEDBACK_SUBMIT=0x11;
+	
+	/**
+	 * 结束作业互评
+	 */
+	public static final Byte MESSAGE_QUIZ_FEEDBACK_COMPLETE=0x12;
+	
+	/**
+	 * 结束抢答
+	 */
+	public static final Byte MESSAGE_RESPONDER_END = 0x13;
 	
 	private Logger log = Logger.getLogger(Message.class);
 	

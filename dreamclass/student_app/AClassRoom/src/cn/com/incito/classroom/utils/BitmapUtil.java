@@ -24,6 +24,9 @@ import java.util.Map;
 
 
 
+
+
+import cn.com.incito.classroom.base.MyApplication;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -608,6 +611,7 @@ public class BitmapUtil {
 			}
 
 			byte[] result = output.toByteArray();
+			MyApplication.Logger.debug(Utils.getTime()+"作业大小："+result.length);
 			try {
 				output.close();
 			} catch (Exception e) {

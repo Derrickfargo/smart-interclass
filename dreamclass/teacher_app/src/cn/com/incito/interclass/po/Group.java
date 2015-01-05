@@ -1,6 +1,7 @@
 package cn.com.incito.interclass.po;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -50,7 +51,6 @@ public class Group implements Serializable, Comparable<Group> {
 	private List<Student> students;
 	private List<Quiz> quizs;
 	private String teacherName;
-
 	public int getId() {
 		return id;
 	}
@@ -189,4 +189,5 @@ public class Group implements Serializable, Comparable<Group> {
 	public int compareTo(Group group) {
 		return this.tableNumber-group.tableNumber;
 	}
+
 }

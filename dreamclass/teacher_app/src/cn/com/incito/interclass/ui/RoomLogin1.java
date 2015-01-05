@@ -235,6 +235,14 @@ public class RoomLogin1 extends MouseAdapter{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if(txtschoolName==null||txtschoolName.getText().equals("用户名")){
+					JOptionPane.showMessageDialog(frame, "请输入学校名称!");
+					return;
+				}
+				if(txtschoolPassword==null||txtschoolPassword.getText().equals("密码")){
+					JOptionPane.showMessageDialog(frame, "请输入学校密码！");
+					return;
+				}
 				sentRoomMsg();
 			}
 		});

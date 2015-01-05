@@ -22,13 +22,14 @@ import cn.com.incito.interclass.po.Course;
 import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Quiz;
+import cn.com.incito.interclass.po.QuizFeedback;
 import cn.com.incito.interclass.po.Room;
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.po.Table;
 import cn.com.incito.interclass.po.Teacher;
 import cn.com.incito.interclass.ui.FloatIcon;
-import cn.com.incito.interclass.ui.Login;
 import cn.com.incito.interclass.ui.MainFrame;
+import cn.com.incito.interclass.ui.QuizFeedbackFrame;
 import cn.com.incito.server.config.Constants;
 import cn.com.incito.server.utils.FileUtils;
 
@@ -49,8 +50,9 @@ public class Application {
 
 	private static Application instance;
 	private boolean isGrouping = false;
+	private boolean DoRdmGrouping = false;
     private FloatIcon floatIcon;
-    private String quizId;   //考试流水号
+    private QuizFeedbackFrame quizFeedbackFrame;
     /**
 	 * 课堂id
 	 */
@@ -63,6 +65,7 @@ public class Application {
 
     public static boolean isOnClass;//正在上课
     public static boolean hasQuiz;//是否在作业
+	public static boolean isOnResponder = false;//是否在抢答中
     private List<Group> groupList = new ArrayList<Group>();// 本堂课的所有分组
     private List<Table> tableList = new ArrayList<Table>();// 本教室所有的桌子
     private List<Device> deviceList = new ArrayList<Device>();// 本教室所有的Device
@@ -77,10 +80,13 @@ public class Application {
     private Map<Integer, JSONObject> tempGroup = new HashMap<Integer, JSONObject>();// 修改的分组信息
     private Map<Integer, List<Integer>> tempVote = new HashMap<Integer, List<Integer>>();// 小组的投票信息
     private List<String> tempQuizIMEI = new ArrayList<String>();
-    private Map<String, Quiz> tempQuiz = new HashMap<String, Quiz>();//随堂联系
+    private Map<String, Quiz> tempQuiz = new HashMap<String, Quiz>();//随堂联系,imei和作业
+    private Map<String, Quiz> quizMap = new HashMap<String, Quiz>();//随堂联系,id和作业
     private List<Integer> tempGrouped = new ArrayList<Integer>();//已编辑完成的小组
     private List<Quiz> quizList = new ArrayList<Quiz>();//作业
     private FileLock lock;
+	private Map<String, QuizFeedback> quizFeedbackMap = new HashMap<String, QuizFeedback>();//作业id和作业评价
+    private List<Student> responderStudents = new ArrayList<Student>();//抢答的学生组
     /**
      * IMEI和设备的对应关系(key:imei,value:Device)，教师登陆完后初始化
      */
@@ -151,6 +157,18 @@ public class Application {
 	public void setFloatIcon(FloatIcon floatIcon) {
 		this.floatIcon = floatIcon;
 	}
+	
+	public QuizFeedbackFrame getQuizFeedbackFrame() {
+		if (quizFeedbackFrame == null) {
+			quizFeedbackFrame = new QuizFeedbackFrame();
+		}
+		return quizFeedbackFrame;
+	}
+
+	public void setQuizFeedbackFrame(QuizFeedbackFrame quizFeedbackFrame) {
+		this.quizFeedbackFrame = quizFeedbackFrame;
+	}
+
 
 	public String getMac() {
 		return mac;
@@ -200,6 +218,30 @@ public class Application {
 			imeiStudent.put(imei, studentList);
 		}
     }
+    /**
+     * 在所有学生中更新imeiStudent
+     * @param students
+     * @return
+     */
+    public List<Student> addRdmStudent(List<Student> students){
+    	List<Student> onlineStudent = new ArrayList<Student>();
+    	for(Map.Entry<String, List<Student>> entry:imeiStudent.entrySet()){
+    		for(Student student:entry.getValue()){
+    			for(Student stu:students){
+    			if(stu.getName().equals(student.getName())&&
+    					stu.getNumber().equals(student.getNumber())){
+    				onlineStudent.add(stu);
+    			}
+    			}
+    		}
+    	}
+    	return onlineStudent;
+    }
+	public void refreshIMEI(Map<String, List<Student>> imeiStudents) {
+		imeiStudent.clear();
+		imeiStudent.putAll(imeiStudents);
+	} 
+    
     //需要移除两个容器
     public void removeLoginStudent(String imei){
     	List<Student> studentList = imeiStudent.get(imei);
@@ -587,6 +629,10 @@ public class Application {
         return tempQuiz;
     }
     
+	public Map<String, Quiz> getQuizMap() {
+		return quizMap;
+	}
+
 	public List<Quiz> getQuizList() {
 		return quizList;
 	}
@@ -599,9 +645,9 @@ public class Application {
     public void refreshQuiz() {
         MainFrame.getInstance().refreshQuiz();
     }
-
-    public String getQuizId() {
-        return quizId;
+    
+    public void refreshResponder(){
+    	MainFrame.getInstance().refreshResponder();
     }
 
     public String getLessionid() {
@@ -613,10 +659,6 @@ public class Application {
 		this.lessionid = lessionid;
 	}
 
-
-	public void setQuizId(String quizId) {
-        this.quizId = quizId;
-    }
 
 	public List<Student> getStudentByImei(String imei) {
 		return imeiStudent.get(imei);
@@ -650,5 +692,30 @@ public class Application {
 	public void setDefinedFont(Font definedFont) {
 		this.definedFont = definedFont;
 	}
+
+
+	public List<Student> getResponderStudents() {
+		return responderStudents;
+	}
+
+
+	public void setResponderStudents(List<Student> responderStudents) {
+		this.responderStudents = responderStudents;
+	}
+
+	public Map<String, QuizFeedback> getQuizFeedbackMap() {
+		return quizFeedbackMap;
+	}
+
+
+	public boolean isDoRdmGrouping() {
+		return DoRdmGrouping;
+	}
+
+
+	public void setDoRdmGrouping(boolean doRdmGrouping) {
+		DoRdmGrouping = doRdmGrouping;
+	}
+
 
 }

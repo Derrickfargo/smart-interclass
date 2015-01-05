@@ -111,7 +111,7 @@ public class Login2 extends MouseAdapter {
 		lblClass = new JLabel();
 		lblClass.setForeground(UIHelper.getDefaultFontColor());
 		lblClass.setText("请选择班级:");
-		lblClass.setBounds(60, 65, 265, 35);
+		lblClass.setBounds(60, 65, 100, 35);
 		frame.add(lblClass);
 		jcbClass = new JComboBox<Item>();
 		jcbClass.setForeground(UIHelper.getDefaultFontColor());
@@ -152,7 +152,7 @@ public class Login2 extends MouseAdapter {
 		lblCourse = new JLabel();
 		lblCourse.setForeground(UIHelper.getDefaultFontColor());
 		lblCourse.setText("请选择课程:");
-		lblCourse.setBounds(60, 115, 265, 35);
+		lblCourse.setBounds(60, 115, 100, 35);
 		frame.add(lblCourse);
 		jcbCourse = new JComboBox<Item>();
 		jcbCourse.setForeground(UIHelper.getDefaultFontColor());
@@ -169,13 +169,6 @@ public class Login2 extends MouseAdapter {
 		btnLogin.setBounds(125, 220, btnImage.getIconWidth(),
 				btnImage.getIconHeight());
 		btnLogin.addMouseListener(this);
-		btnLogin.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				doGetGroup();
-			}
-		});
 		initData();
 		setBgimg();// 设置背景
 		frame.setVisible(true);
@@ -228,6 +221,7 @@ public class Login2 extends MouseAdapter {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		doGetGroup();
 	}
 
 	@Override

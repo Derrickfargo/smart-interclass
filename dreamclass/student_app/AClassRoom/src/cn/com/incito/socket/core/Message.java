@@ -81,6 +81,43 @@ public class Message implements Serializable{
 	 */
 	public static final Byte MESSAGE_LOCK_SCREEN=0x0C;
 	
+	/**
+	 * 发送作业请求
+	 */
+	public static final Byte MESSAGE_SEND_PAPER=0x0D;
+	
+	/**
+	 * 抢答
+	 */
+	public static final Byte MESSAGE_STUDENT_RESPONDER=0x0E;
+	
+	/**
+	 * 随机分组
+	 */
+	public static final Byte MESSAGE_RANDOM_GROUP=0x0F;
+	
+	/**
+	 * 学生互评
+	 */
+	public static final Byte MESSAGE_STUDENT_EVALUATE=0x10;
+	
+	
+	/**
+	 * 结束抢答
+	 */
+	public static final Byte MESSAGE_RESPONDER_END = 0x13;
+	
+	
+	/**
+	 * 作业互评提交
+	 */
+	public static final Byte MESSAGE_QUIZ_FEEDBACK_SUBMIT=0x11;
+	
+	/**
+	 * 结束作业互评
+	 */
+	public static final Byte MESSAGE_QUIZ_FEEDBACK_COMPLETE=0x12;
+	
     private byte msgID;
     private int msgSize;
     private ByteBuffer bodyBuffer;

@@ -9,15 +9,16 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -57,8 +58,34 @@ public class Login extends MouseAdapter {
 	public Login() {
 		showLoginUI();
 		setDragable();
+		new Thread() {
+			public void run() {
+				// 初始化自定义字体
+				initDefinedFont();
+			}
+		}.start();
 	}
 
+	private void initDefinedFont() {
+		BufferedInputStream bis = null;
+		try {
+			bis = new BufferedInputStream(new FileInputStream(
+					"font/新蒂小丸子小学版.ttf"));
+			Font font = Font.createFont(Font.TRUETYPE_FONT, bis);
+			Application.getInstance().setDefinedFont(font);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (null != bis) {
+					bis.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public JFrame getFrame() {
 		return frame;
 	}
@@ -140,6 +167,7 @@ public class Login extends MouseAdapter {
 		txtPassword = new JPasswordField(10);
 		txtPassword.setEchoChar((char)0);
 		txtPassword.setText("密码");
+		txtPassword.setForeground(UIHelper.getDefaultFontColor());
 		txtPassword.addFocusListener(new FocusListener() {
 			
 			@Override
@@ -181,21 +209,11 @@ public class Login extends MouseAdapter {
 		btnLogin.setBounds(112, 220, btnImage.getIconWidth(),
 				btnImage.getIconHeight());
 		btnLogin.addMouseListener(this);
-		btnLogin.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (doLogin) {
-					doLogin = false;
-					doLogin();
-				}
-			}
-		});
 		
-	//链接
+		//链接
 		link=new JLabel("成为梦想教师");
 		link.setBounds(350, 223, 130, 40);
-		link.setFont(new Font("宋体",Font.ROMAN_BASELINE, 14));
+		link.setFont(new Font("微软雅黑",Font.ROMAN_BASELINE, 14));
 		link.setForeground(Color.BLUE);
 		link.setForeground(new Color(0, 80, 153));
 		link.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -241,6 +259,20 @@ public class Login extends MouseAdapter {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		if(e.getSource()==btnLogin){
+			if(txtUserName==null||txtUserName.getText().equals("用户名/手机号/邮箱")){
+				JOptionPane.showMessageDialog(frame, "请输入学校名称!");
+				return;
+			}
+			if(txtPassword==null||txtPassword.getText().equals("密码")){
+				JOptionPane.showMessageDialog(frame, "请输入学校密码！");
+				return;
+			}
+			if (doLogin) {
+				doLogin = false;
+				doLogin();
+			}
+		}
 	}
 
 	@Override
@@ -358,11 +390,11 @@ public class Login extends MouseAdapter {
 					Application.getInstance().setCourses(resultData.getCourses());
 					// 第一步获取教室、教师数据
 
-						frame.setVisible(false);
-						Application.getInstance().setRoom(resultData.getRoom());
-						Login2 login2 = new Login2(resultData.getCourses());
-						login2.getFrame().setVisible(true);
-						logger.info("登陆返回结果：" + content);
+					frame.setVisible(false);
+					Application.getInstance().setRoom(resultData.getRoom());
+					Login2 login2 = new Login2(resultData.getCourses());
+					login2.getFrame().setVisible(true);
+					logger.info("登陆返回结果：" + content);
 					
 				}
 			}

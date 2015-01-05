@@ -38,6 +38,13 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Properties;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.imageio.ImageIO;
@@ -53,7 +60,9 @@ import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 
+import cn.com.incito.interclass.po.Student;
 import cn.com.incito.server.api.Application;
+import cn.com.incito.server.config.AppConfig;
 import cn.com.incito.server.core.CoreSocket;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.message.DataType;
@@ -109,7 +118,7 @@ public class CaptureScreen {
 				File dir = new File("temp");
 				dir.mkdirs();
 				File file = new File(dir, "temp.png");
-				ImageIO.write(image, "jpg", file);
+				ImageIO.write(image, "gif", file);
 				ImageUtil.resize(file, file, 1280, 1f);
 				image = ImageIO.read(file);
 			} catch (Exception e) {
@@ -117,26 +126,19 @@ public class CaptureScreen {
 			}
 		}
 //		logger.info("压缩后宽度:" + image.getWidth());
-		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DISTRIBUTE_PAPER);
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		try {
-			ImageIO.write(image, "jpg", os);
+			ImageIO.write(image, "gif", os);
 			logger.info("图片大小:" + os.toByteArray().length);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		if (Application.getInstance().getOnlineStudent().size() > 0) {
-			String uuid = UUID.randomUUID().toString();
-			Application.getInstance().setQuizId(uuid);
-			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(uuid));
-			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString("true"));
-			messagePacking.putBodyData(DataType.INT, os.toByteArray());
-
 			Application.getInstance().getTempQuiz().clear();
+			Application.getInstance().getQuizMap().clear();
 			Application.getInstance().getQuizList().clear();
 			Application.getInstance().getTempQuizIMEI().clear();
-			
-			CoreSocket.getInstance().sendMessageToStudents(messagePacking.pack().array());
+			sendMessageToStudents(os);
 			logger.info("截图作业已经发出");
 			Application.getInstance().setLockScreen(false);
 		} else {
@@ -144,6 +146,57 @@ public class CaptureScreen {
 		}
 	}
 
+	/**
+	 * 启动线程将消息发往所有客户端
+	 * @param data
+	 */
+	public void sendMessageToStudents(final ByteArrayOutputStream os){
+		Properties props = AppConfig.getProperties();
+		String threshold = props.get("quiz_send_threshold").toString();
+		final int delay_time = Integer.parseInt(threshold);
+		
+		final Application app = Application.getInstance();
+		Set<Entry<String, SocketChannel>> clients = app.getClientChannel().entrySet();
+		final Iterator<Entry<String, SocketChannel>> it = clients.iterator();
+		new Thread() {
+			@Override
+			public void run() {
+				try {
+					while (it.hasNext()) {
+						Entry<String, SocketChannel> entry = it.next();
+						String imei = entry.getKey();
+						List<Student> students = app.getStudentByImei(imei);
+						//记录有学生登陆的Pad
+						if (students != null) {
+							SocketChannel channel = entry.getValue();
+							if (channel != null && channel.isConnected()) {
+								MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DISTRIBUTE_PAPER);
+								String uuid = UUID.randomUUID().toString();
+								messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(uuid));
+								messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString("true"));
+								messagePacking.putBodyData(DataType.INT, os.toByteArray());
+								byte[] data = messagePacking.pack().array();
+								// 输出到通道
+								ByteBuffer buffer = ByteBuffer.allocate(data.length);
+								buffer.clear();
+								buffer.put(data);
+								buffer.flip();
+								channel.write(buffer);
+								app.addQuizIMEI(imei);//已发送的IMEI
+							}
+						}
+						try {
+							Thread.sleep(delay_time);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				} catch (IOException e) {
+					logger.error("发送消息异常:\n", e);
+				}
+			};
+		}.start();
+	}
 	
 	public void doStart() {
 		try {
@@ -190,6 +243,11 @@ public class CaptureScreen {
 				public void keyReleased(KeyEvent e) {
 					super.keyReleased(e);
 					if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+						Application.hasQuiz = false;
+						Application.getInstance().getFloatIcon().synQuzingState();
+						MainFrame.getInstance().synQuzingState();
+						MainFrame.getInstance().showNoQuiz();
+						Application.getInstance().getFloatIcon().showNoQuiz();
 						ContentPanel.this.jf.dispose();
 						updates();
 					}

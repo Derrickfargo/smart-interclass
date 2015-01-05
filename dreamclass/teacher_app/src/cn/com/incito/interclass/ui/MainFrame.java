@@ -26,6 +26,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
@@ -42,17 +43,19 @@ public class MainFrame extends MouseAdapter {
 	private static final String CARD_PREPARE = "PREPARE";
 	private static final String CARD_QUIZ = "QUIZ";
 	private static final String CARD_PRAISE = "PRAISE";
+	private static final String CARD_RESPONDER="RESPONDER";
 	private static final String CARD_PREPARE_BOTTOM = "PREPARE_BOTTOM";
 	private static final String CARD_QUIZ_BOTTOM = "QUIZ_BOTTOM";
 	private static final String CARD_PRAISE_BOTTOM = "PRAISE_BOTTOM";
-	
+	private static final String CARD_RESPONDER_BOTTOM= "RESPONDER_BOTTOM";
+	private static final String CARD_BLANKPANEL	=	"BLANKPANEL";
 	
 	private Application app = Application.getInstance();
 	
 	private JFrame frame = new JFrame();
 	private Boolean isDragged;
 	private Point loc, tmp;
-	private JButton btnMin, btnClose, btnPraise;
+	private JButton btnMin, btnClose, btnPraise,btnResponder;
 	private JLabel lblBackground;
 	private JPanel contentPane;
 	
@@ -65,6 +68,8 @@ public class MainFrame extends MouseAdapter {
 	private PreparePanel preparePanel;
 	private QuizPanel quizPanel;
 	private PraisePanel praisePanel;
+	private ResponderPanel responderPanel;
+	private BlankPanel blankPanel;
 	
 	private CardLayout bottomCardLayout;
 	private JPanel bottomCardPanel;
@@ -167,6 +172,7 @@ public class MainFrame extends MouseAdapter {
         btnStatus.setIcon(new ImageIcon("images/main/bg_ready_hover.png"));
         btnQuiz.setIcon(new ImageIcon("images/main/bg_works.png"));
         btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
+        btnResponder.setIcon(new ImageIcon("images/main/bg_qa.png"));
 	}
 	
 	public void showQuiz() {
@@ -178,6 +184,7 @@ public class MainFrame extends MouseAdapter {
         btnQuiz.setIcon(new ImageIcon("images/main/bg_works_hover.png"));
         btnStatus.setIcon(new ImageIcon("images/main/bg_ready.png"));
         btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
+        btnResponder.setIcon(new ImageIcon("images/main/bg_qa.png"));
 	}
 	
 	public void showPraise() {
@@ -189,6 +196,33 @@ public class MainFrame extends MouseAdapter {
 		btnQuiz.setIcon(new ImageIcon("images/main/bg_works.png"));
 		btnStatus.setIcon(new ImageIcon("images/main/bg_ready.png"));
 		btnPraise.setIcon(new ImageIcon("images/main/bg_praise_hover.png"));
+		btnResponder.setIcon(new ImageIcon("images/main/bg_qa.png"));
+		
+		praisePanel.refresh();
+	}
+	
+	protected void showResponder() {
+		setVisible(true);
+		frame.setExtendedState(JFrame.NORMAL);
+		centerCardLayout.show(centerCardPanel, CARD_RESPONDER);
+		bottomCardLayout.show(bottomCardPanel, CARD_PRAISE_BOTTOM);
+                
+		btnQuiz.setIcon(new ImageIcon("images/main/bg_works.png"));
+		btnStatus.setIcon(new ImageIcon("images/main/bg_ready.png"));
+		btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
+		btnResponder.setIcon(new ImageIcon("images/main/bg_qa_hover.png"));
+		
+		responderPanel.refresh();
+	}
+	public void showBlank(){
+		setVisible(true);
+		frame.setExtendedState(JFrame.NORMAL);
+		centerCardLayout.show(centerCardPanel, CARD_BLANKPANEL);
+                
+		btnQuiz.setIcon(new ImageIcon("images/main/bg_works.png"));
+		btnStatus.setIcon(new ImageIcon("images/main/bg_ready_hover.png"));
+		btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
+		btnResponder.setIcon(new ImageIcon("images/main/bg_qa.png"));
 		
 		praisePanel.refresh();
 	}
@@ -206,7 +240,7 @@ public class MainFrame extends MouseAdapter {
 		frame.setLocationRelativeTo(null);// 设置窗体中间位置
 		frame.setLayout(null);// 绝对布局
 		frame.setUndecorated(true);// 去除窗体
-		frame.setAlwaysOnTop(true); // 设置界面悬浮
+//		frame.setAlwaysOnTop(true); // 设置界面悬浮
 		frame.setBackground(new Color(0,0,0,0));//窗体透明
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowActivated(WindowEvent e) {
@@ -321,6 +355,21 @@ public class MainFrame extends MouseAdapter {
 
 		left.setBounds(10, 73, 127, 930);
 		contentPane.add(left);
+		
+//		抢答
+		Icon iconResponder = new ImageIcon("images/main/bg_qa.png");
+		btnResponder = new JButton();
+		btnResponder.setIcon(iconResponder);
+		btnResponder.setFocusPainted(false);
+		btnResponder.setBorderPainted(false);// 设置边框不可见
+		btnResponder.setContentAreaFilled(false);// 设置透明
+		left.add(btnResponder);
+		btnResponder.setBounds(0, 154, iconResponder.getIconWidth(), iconResponder.getIconHeight());
+		btnResponder.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				showResponder();
+			}
+		});
 
 		// ///////////////////center部分////////////////////////
 		centerCardLayout = new CardLayout();
@@ -359,7 +408,23 @@ public class MainFrame extends MouseAdapter {
         praiseScrollPane.setBounds(0, 0, 876, 630);
         praisePanel.setPreferredSize(new Dimension(praiseScrollPane.getWidth() - 50, (praiseScrollPane.getHeight() - 100) * 2));
 		centerCardPanel.add(praiseScrollPane, CARD_PRAISE);
+		
+//		抢答card
+		responderPanel = new ResponderPanel();
+		responderPanel.setBackground(Color.white);
+		JScrollPane responderScrollPane = new JScrollPane(responderPanel);
+		responderScrollPane.getVerticalScrollBar().setUnitIncrement(100);
+		responderScrollPane.setBorder(null);
+		responderScrollPane.setBounds(0, 0, 876, 630);
+		centerCardPanel.add(responderScrollPane, CARD_RESPONDER);
         
+//		遮挡	
+		blankPanel = new BlankPanel();
+		blankPanel.setBackground(Color.white);
+		blankPanel.setBorder(null);
+		blankPanel.setBounds(0, 0, 876, 630);
+		centerCardPanel.add(blankPanel, CARD_BLANKPANEL);
+		
 		// //////////////////////bottom部分////////////////////////
 		bottomCardLayout = new CardLayout();
 		bottomCardPanel = new JPanel(bottomCardLayout);
@@ -375,7 +440,7 @@ public class MainFrame extends MouseAdapter {
 		bottomCardPanel.add(quizBottomPanel, CARD_QUIZ_BOTTOM);
 		//Praise
 		praiseBottomPanel = new PraiseBottomPanel();
-		bottomCardPanel.add(praiseBottomPanel, CARD_PRAISE_BOTTOM);
+		bottomCardPanel.add(praiseBottomPanel, CARD_PRAISE_BOTTOM);		
 				
 		initData();
 		setBackground();// 设置背景
@@ -479,5 +544,9 @@ public class MainFrame extends MouseAdapter {
 	    
 	public void setState(int state){
 		frame.setState(state);
+	}
+
+	public void refreshResponder() {
+		responderPanel.refresh();
 	}
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.com.incito.classroom"
-    android:versionCode="19"
-    android:versionName="V100R001C004B007" >
+    android:versionCode="24"
+    android:versionName="V100R001C005B005" >
 
     <uses-sdk
         android:minSdkVersion="17"
@@ -49,6 +49,16 @@
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
             </intent-filter>
         </activity>
+         <activity
+            android:name="cn.com.incito.classroom.ui.activity.EvaluateActivity"
+            android:screenOrientation="landscape" >
+              <intent-filter>
+                <action android:name="cn.com.classroom.SHOW_EVALUATE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+             
+         </activity>>
         <activity
             android:name="cn.com.incito.classroom.ui.activity.DrawBoxActivity"
             android:screenOrientation="landscape" >
@@ -80,6 +90,23 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+        </activity>
+
+        <!-- 倒计时activity -->
+        <activity
+            android:name="cn.com.incito.classroom.ui.activity.CountdownActivity"
+            android:screenOrientation="landscape" >
+        </activity>
+        <!-- 抢答activity -->
+        <activity
+            android:name="cn.com.incito.classroom.ui.activity.ResponderActivity"
+            android:screenOrientation="landscape" >
+        </activity>
+
+        <!-- 随机分组activity -->
+        <activity
+            android:name="cn.com.incito.classroom.ui.activity.RandomGroupActivity"
+            android:screenOrientation="landscape" >
         </activity>
 
         <service android:name="cn.com.incito.classroom.service.SocketService" >

@@ -18,8 +18,6 @@ import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
 
 import com.alibaba.fastjson.JSONObject;
-import com.google.code.microlog4android.Logger;
-import com.google.code.microlog4android.LoggerFactory;
 
 /**
  * 客户端Socket
@@ -27,7 +25,6 @@ import com.google.code.microlog4android.LoggerFactory;
  * @author 刘世平
  */
 public final class CoreSocket implements Runnable {
-	public static final Logger Logger = LoggerFactory.getLogger();
 	private static CoreSocket instance = null;
 	private boolean isRunning = false;
 	private boolean isConnected = false;
@@ -63,7 +60,7 @@ public final class CoreSocket implements Runnable {
 			} catch (IOException e) {
 				ApiClient.uploadErrorLog(e.getMessage());
 				isConnected = false;
-				Log.e("CoreSocket", "", e);
+				MyApplication.Logger.debug("CoreSocket", e);
 			}
 		} else if (selectionKey.isReadable()) {// 若为可读的事件，则进行消息解析
 			MessageParser messageParser = new MessageParser();
@@ -73,7 +70,7 @@ public final class CoreSocket implements Runnable {
 
 	// 发送设备登陆消息至服务器
 	private void sendDeviceLoginMessage() {
-		Log.i("CoreSocket", "发送设备登陆");
+		MyApplication.Logger.info("CoreSocket 发送设备登陆");
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_HAND_SHAKE);
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("imei", MyApplication.deviceId);
@@ -88,7 +85,8 @@ public final class CoreSocket implements Runnable {
 			ApiClient.uploadErrorLog(e.getMessage());
 			isConnected = false;
 			disconnect();
-			Log.e("CoreSocket", "设备登陆消息发送失败", e);
+			MyApplication.Logger.debug("CoreSocket 设备登陆消息发送失败", e);
+			MyApplication.Logger.debug(Utils.getTime()+"异常信息：" , e);
 			ConnectionManager.getInstance().close(Boolean.FALSE);
 		}
 	}
@@ -106,13 +104,10 @@ public final class CoreSocket implements Runnable {
 				buffer.put(message);
 				buffer.flip();
 				try {
-					if (channel != null && channel.isConnected()) {
-						channel.write(buffer);
-					}
+					channel.write(buffer);
 				} catch (IOException e) {
 					ApiClient.uploadErrorLog(e.getMessage());
-					Logger.debug(Utils.getTime()+"异常信息：" + e.getMessage());
-					Log.e("CoreSocket", "" + e.getMessage());
+					MyApplication.Logger.debug(Utils.getTime()+"异常信息：" , e);
 				}
 			}
 		}.start();
@@ -132,14 +127,11 @@ public final class CoreSocket implements Runnable {
 					buffer.put(logoutData);
 					buffer.flip();
 					try {
-						if (channel.isConnected()) {
-							channel.write(buffer);
-							ConnectionManager.getInstance().close(true);
-						}
+						channel.write(buffer);
+						ConnectionManager.getInstance().close(true);
 					} catch (IOException e) {
 						ApiClient.uploadErrorLog(e.getMessage());
-						Logger.debug(Utils.getTime()+"异常信息：" + e.getMessage());
-						Log.e("CoreSocket", "" + e.getMessage());
+						MyApplication.Logger.debug(Utils.getTime()+"异常信息：" , e);
 					}
 				}
 			}
@@ -158,15 +150,15 @@ public final class CoreSocket implements Runnable {
 	@Override
 	public void run() {
 		try {
-			Log.i("CoreSocket", "CoreSocket开始检查mac地址 ");
+			MyApplication.Logger.debug("CoreSocket CoreSocket开始检查mac地址 ");
 			if (MyApplication.deviceId == null
 					|| MyApplication.deviceId.equals("")) {
 				//没有mac地址,不允许建立连接
-				Logger.debug(Utils.getTime()+"CoreSocket：" +"连接建立失败，没有mac地址");
+				MyApplication.Logger.debug(Utils.getTime()+"CoreSocket：连接建立失败，没有mac地址");
 				Log.i("CoreSocket", "连接建立失败，没有mac地址");
 				return;
 			}
-			Logger.debug(Utils.getTime()+"CoreSocket：" +"CoreSocket开始建立连接");
+			MyApplication.Logger.debug(Utils.getTime()+"CoreSocket：CoreSocket开始建立连接");
 			Log.i("CoreSocket", "有mac地址，CoreSocket开始建立连接 ");
 			isRunning = true;
 			// 客户端向服务器端发起建立连接请求
@@ -176,6 +168,7 @@ public final class CoreSocket implements Runnable {
 			selector = Selector.open().wakeup();
 			socketChannel.register(selector, SelectionKey.OP_CONNECT);
 			socketChannel.connect(new InetSocketAddress(Constants.IP, Constants.PORT));
+			MyApplication.Logger.debug(Utils.getTime()+"CoreSocket：CoreSocket开始建立连接");
 			while (isRunning) {// 轮询监听客户端上注册事件的发生
 				selector.select(300);
 				Set<SelectionKey> keySet = selector.selectedKeys();
@@ -184,12 +177,10 @@ public final class CoreSocket implements Runnable {
 				}
 				keySet.clear();
 			}
-			Logger.debug(Utils.getTime()+"CoreSocket退出!");
+			MyApplication.Logger.debug(Utils.getTime()+"CoreSocket退出!");
 			Log.i("CoreSocket", "CoreSocket退出!");
 		} catch (IOException e) {
-			ApiClient.uploadErrorLog(e.getMessage());
-			Logger.debug(Utils.getTime()+"异常信息：" + e.getMessage());
-			Log.e("CoreSocket", "" + e.getMessage());
+			MyApplication.Logger.debug(Utils.getTime()+"异常信息：" + e);
 		}
 	}
 

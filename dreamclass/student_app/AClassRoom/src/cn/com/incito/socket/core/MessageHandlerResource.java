@@ -4,24 +4,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.util.Log;
+import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.utils.ApiClient;
 import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.socket.handler.DeviceBindHandler;
 import cn.com.incito.socket.handler.DeviceHasBindHandler;
 import cn.com.incito.socket.handler.DeviceLoginHandler;
 import cn.com.incito.socket.handler.DistributePaperHandler;
+import cn.com.incito.socket.handler.EvaluateCompleteHandler;
+import cn.com.incito.socket.handler.EvaluateHandler;
 import cn.com.incito.socket.handler.GroupEditHandler;
 import cn.com.incito.socket.handler.GroupListHandler;
 import cn.com.incito.socket.handler.GroupSubmitHandler;
 import cn.com.incito.socket.handler.HeartbeatHandler;
 import cn.com.incito.socket.handler.LockScreenHandler;
+import cn.com.incito.socket.handler.RandomGroupHandler;
+import cn.com.incito.socket.handler.ResponderEndHandler;
+import cn.com.incito.socket.handler.ResponderHandler;
 import cn.com.incito.socket.handler.SavePaperHandler;
 import cn.com.incito.socket.handler.SavePaperResultHandler;
 import cn.com.incito.socket.handler.StudentLoginHandler;
 import cn.com.incito.socket.handler.VoteGroupInfoHandler;
-
-import com.google.code.microlog4android.Logger;
-import com.google.code.microlog4android.LoggerFactory;
 
 /**
  * 消息处理器列表
@@ -30,7 +33,6 @@ import com.google.code.microlog4android.LoggerFactory;
  * @author 刘世平
  */
 public final class MessageHandlerResource {
-	public static final Logger Logger = LoggerFactory.getLogger();
     private static MessageHandlerResource resources;
     private Map<Byte, Class<? extends MessageHandler>> handlerResources;
 
@@ -69,6 +71,17 @@ public final class MessageHandlerResource {
         handlerResources.put(Message.MESSAGE_SAVE_PAPER_RESULT, SavePaperResultHandler.class);
         //解锁屏信息
         handlerResources.put(Message.MESSAGE_LOCK_SCREEN, LockScreenHandler.class);
+        //抢答消息
+        handlerResources.put(Message.MESSAGE_STUDENT_RESPONDER, ResponderHandler.class);
+        //随机分组消息
+        handlerResources.put(Message.MESSAGE_RANDOM_GROUP, RandomGroupHandler.class);
+        //互评
+        handlerResources.put(Message.MESSAGE_STUDENT_EVALUATE, EvaluateHandler.class);
+        //结束抢答
+        handlerResources.put(Message.MESSAGE_RESPONDER_END, ResponderEndHandler.class);
+        //结束作业互评
+        handlerResources.put(Message.MESSAGE_QUIZ_FEEDBACK_COMPLETE, EvaluateCompleteHandler.class);
+        
     }
 
     public MessageHandler getMessageHandler(Byte key) {
@@ -79,7 +92,7 @@ public final class MessageHandlerResource {
                 return handlerResources.get(key).newInstance();
             } catch (Exception e) {
             	ApiClient.uploadErrorLog(e.getMessage());
-            	Logger.debug(Utils.getTime()+"MessageHandlerResource+"+"获取MessageHandler出错:" + e.getMessage());
+            	MyApplication.Logger.debug(Utils.getTime()+"MessageHandlerResource+"+"获取MessageHandler出错:" + e.getMessage());
                 Log.e("MessageHandlerResource", "获取MessageHandler出错:" + e.getMessage());
                 return null;
             }

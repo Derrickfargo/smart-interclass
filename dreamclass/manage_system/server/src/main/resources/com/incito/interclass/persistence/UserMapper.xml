@@ -46,10 +46,12 @@
 	</select>
 	<select id="getSchoolByLogin" resultType="com.incito.interclass.entity.School" parameterType="java.lang.String">
 		SELECT
-			u.uid AS id,u.login_salt AS loginSalt,u.password AS password
+			s.id AS id,u.login_salt AS loginSalt,u.password AS password
 		FROM
 			ts_user u
 		INNER JOIN ts_user_group_link l on u.uid = l.uid
+		INNER JOIN ts_user_verified  v on v.uid = u.uid
+		INNER JOIN ts_db_school s on s.id = v.sid 
 		WHERE
 		    l.user_group_id=3
 		    AND (
