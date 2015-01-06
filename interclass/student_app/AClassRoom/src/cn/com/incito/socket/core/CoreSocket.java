@@ -191,7 +191,7 @@ public final class CoreSocket implements Runnable {
 			return;
 		}
 		//登录发送一段时间后，如果没收到服务端的回复，将重连
-			startTask();
+//			startTask();
 	}
 	
 	
