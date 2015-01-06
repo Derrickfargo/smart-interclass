@@ -422,6 +422,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		UIHelper.getInstance().setDrawBoxActivity(null);
 		m_sketchPad.clearAllStrokes();
 		if (bitmap != null) {
 			if (!bitmap.isRecycled()) {
@@ -516,8 +517,9 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener,
 		// 图片
 		Logger.debug(Utils.getTime()+TAG+"启动作业提交...");
 		messagePacking.putBodyData(DataType.INT,BitmapUtil.bmpToByteArray(getBitMap(), true));
+		Logger.debug(Utils.getTime()+TAG+"打包成功");
 		CoreSocket.getInstance().sendMessage(messagePacking);
-		Logger.debug(Utils.getTime()+TAG+"提交作业后锁定屏幕");
+		startTask();
 	}
 	public void initPopwindow(){
 		 line1=(LinearLayout) findViewById(R.id.line1);

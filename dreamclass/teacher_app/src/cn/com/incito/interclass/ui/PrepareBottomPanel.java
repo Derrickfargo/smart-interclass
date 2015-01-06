@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
+import sun.org.mozilla.javascript.internal.ast.ThrowStatement;
 import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Student;
@@ -42,7 +43,7 @@ import com.alibaba.fastjson.JSONObject;
 public class PrepareBottomPanel extends JPanel implements MouseListener{
 	private static final long serialVersionUID = -9135075807085951600L;
 	private JLabel lblExpected,lblClass,lblClassBackground,lblCourse,lblCourseBackground;
-	private JButton btnBegin, btnGroup,btnResponder;
+	private JButton btnBegin, btnGroup;
 	private Application app = Application.getInstance();
 	Logger logger =  Logger.getLogger(PrepareBottomPanel.class.getName());
 	private JButton btnRdmGroup;
@@ -63,7 +64,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		lblExpected = new JLabel(String.format(msg, total, app
 				.getOnlineStudent().size()), JLabel.CENTER);
 		lblExpected.setForeground(UIHelper.getDefaultFontColor());
-		lblExpected.setBounds(10, 15, 150, 35);
+		lblExpected.setBounds(10, 15, 140, 35);
 		add(lblExpected);
 		lblExpected.setVisible(false);
 		
@@ -73,12 +74,12 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		lblClass.setForeground(UIHelper.getDefaultFontColor());
 		add(lblClass);
 		lblClass.setVisible(false);
-		lblClass.setBounds(180, 0, iconClass.getIconWidth(), iconClass.getIconHeight() - 4);
+		lblClass.setBounds(130, 0, iconClass.getIconWidth(), iconClass.getIconHeight() - 4);
 		lblClassBackground = new JLabel();
 		lblClassBackground.setIcon(iconClass);
 		add(lblClassBackground);
 		lblClassBackground.setVisible(false);
-		lblClassBackground.setBounds(180, -4, iconClass.getIconWidth(), iconClass.getIconHeight());
+		lblClassBackground.setBounds(130, -4, iconClass.getIconWidth(), iconClass.getIconHeight());
 		
 		ImageIcon iconCourse = new ImageIcon("images/main/btn_gray.png");
 		lblCourse = new JLabel("", JLabel.CENTER);
@@ -86,12 +87,12 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		lblCourse.setForeground(UIHelper.getDefaultFontColor());
 		add(lblCourse);
 		lblCourse.setVisible(false);
-		lblCourse.setBounds(340, 0, iconCourse.getIconWidth(), iconCourse.getIconHeight() -4 );
+		lblCourse.setBounds(290, 0, iconCourse.getIconWidth(), iconCourse.getIconHeight() -4 );
 		lblCourseBackground = new JLabel();
 		lblCourseBackground.setIcon(iconCourse);
 		add(lblCourseBackground);
 		lblCourseBackground.setVisible(false);
-		lblCourseBackground.setBounds(340, -4, iconCourse.getIconWidth(), iconCourse.getIconHeight());
+		lblCourseBackground.setBounds(290, -4, iconCourse.getIconWidth(), iconCourse.getIconHeight());
 
 		btnGroup = new JButton();// 创建按钮对象
 		btnGroup.setFocusPainted(false);
@@ -100,7 +101,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		ImageIcon iconGroup = new ImageIcon("images/main/btn_group.png");
 		btnGroup.setIcon(iconGroup);// 设置图片
 		add(btnGroup);// 添加按钮
-		btnGroup.setBounds(500, -4, iconGroup.getIconWidth(), iconGroup.getIconHeight());
+		btnGroup.setBounds(358, -4, iconGroup.getIconWidth(), iconGroup.getIconHeight());
 		btnGroup.addMouseListener(this);
 		btnGroup.setVisible(false);
 		
@@ -111,25 +112,17 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		ImageIcon btnImage = new ImageIcon("images/main/btn_begin.png");
 		btnBegin.setIcon(btnImage);// 设置图片
 		add(btnBegin);// 添加按钮
-		btnBegin.setBounds(660, -4, btnImage.getIconWidth(), btnImage.getIconHeight());
+		btnBegin.setBounds(515, -4, btnImage.getIconWidth(), btnImage.getIconHeight());
 		btnBegin.addMouseListener(this);
 		btnBegin.setVisible(false);
 		
-		btnResponder = new JButton("抢答");//创建抢答对象
-		btnResponder.setFocusPainted(false);
-		btnResponder.setBorderPainted(false);
-//		btnResponder.setContentAreaFilled(false);
-//		ImageIcon image = new ImageIcon();
-//		btnResponder.setIcon(image);
-		btnResponder.setBounds(810, -4, 40, 40);
-		add(btnResponder);
-		btnResponder.addMouseListener(this);
-		btnResponder.setVisible(false);
-		
-		btnRdmGroup = new JButton("随机分组");//创建随机分组按钮
-		btnRdmGroup.setFocusable(false);
+		btnRdmGroup = new JButton("");//创建随机分组按钮
+		btnRdmGroup.setFocusPainted(false);
+		btnRdmGroup.setContentAreaFilled(false);
 		btnRdmGroup.setBorderPainted(false);
-		btnRdmGroup.setBounds(810, -4, 70, 40);
+		ImageIcon rdmImage = new ImageIcon("images/main/btn_randomization.png");
+		btnRdmGroup.setIcon(rdmImage);
+		btnRdmGroup.setBounds(200, -4, rdmImage.getIconWidth(),rdmImage.getIconHeight());
 		add(btnRdmGroup);
 		btnRdmGroup.addMouseListener(this);
 		btnRdmGroup.setVisible(false);
@@ -139,16 +132,21 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		List<Table> tables = app.getTableList();
 		if (tables.size() != 0) {
 			lblExpected.setVisible(true);
-			lblClass.setVisible(true);
-			lblClassBackground.setVisible(true);
-			lblCourse.setVisible(true);
-			lblCourseBackground.setVisible(true);
+			lblClass.setVisible(false);
+			lblClassBackground.setVisible(false);
+			lblCourse.setVisible(false);
+			lblCourseBackground.setVisible(false);
 			btnGroup.setVisible(true);
 			btnBegin.setVisible(true);
 			btnRdmGroup.setVisible(true);
 		}
 	}
 	private void doBegin() {
+		if(app.isDoRdmGrouping()){
+			JOptionPane.showMessageDialog(getParent().getParent(),
+					"学生正在随机分组！");
+			return;
+		}
 		if (app.isGrouping()) {
 			int result = JOptionPane.showConfirmDialog(getParent().getParent(),
 					"学生正在分组，是否立即结束分组开始上课？", "提示", JOptionPane.YES_NO_OPTION);
@@ -177,13 +175,18 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 					"还未进行小组分组，请先进行分组!");
 			return;
 		}
-		btnResponder.setVisible(true);
-		Application.isOnResponder=false;
 		MainFrame.getInstance().setVisible(false);
 		setOnClass(true); 
 	}
 
 	private void doEditGroup() {
+		if(app.isDoRdmGrouping()){
+			JOptionPane.showMessageDialog(getParent().getParent(), "学生正在随机分组!");
+		}
+		if(Application.isOnResponder){
+			JOptionPane.showMessageDialog(getParent().getParent(), "学生正在抢答，不能编辑分组！");
+			return;
+		}
 		if(app.getOnlineStudent().size() == 0){
 			JOptionPane.showMessageDialog(getParent().getParent(), "当前还没有学生登陆，请先登陆后再分组!");
 			return;
@@ -216,16 +219,15 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 	}
 
 	public void setOnClass(boolean isOnClass) {
-		UIHelper.sendLockScreenMessage(true);
 		if (isOnClass) { 
+			UIHelper.sendLockScreenMessage(true);
 			btnBegin.setIcon(new ImageIcon("images/main/btn_end.png"));// 设置图片
-			btnResponder.setVisible(true);//设置抢答按钮可见
 			Application.isOnClass = true;
 			Application.getInstance().setLessionid(
 					UUID.randomUUID().toString());
 		} else {
+			UIHelper.sendLockScreenMessage(false);
 			btnBegin.setIcon(new ImageIcon("images/main/btn_begin.png"));// 设置图片
-			btnResponder.setVisible(false);//设置抢答按钮不可见
 			Application.isOnClass = false;
 		}
 		
@@ -261,10 +263,148 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		}.start();
 	}
 
+	/**
+	 * 随机分组
+	 * @author caicai
+	 */
+	private void doRdmGroup() {
+		if(app.isDoRdmGrouping()){
+			JOptionPane.showMessageDialog(getParent().getParent(), "学生正在随机分组，请等待分组完毕！");
+			return;
+		}
+		if(Application.isOnResponder){
+			JOptionPane.showMessageDialog(getParent().getParent(), "学生正在抢答，请等待抢答完毕！");
+			return;
+		}
+		if(app.getOnlineStudent().size() == 0){
+			JOptionPane.showMessageDialog(getParent().getParent(), "当前还没有学生登陆，请先登陆后再随机分组!");
+			return;
+		}
+		List<Table> tableList = app.getTableList();
+		if (tableList == null || tableList.size() == 0) {
+			JOptionPane.showMessageDialog(getParent().getParent(), "设备还未绑定课桌，请先绑定课桌!");
+			return;
+		}
+		if (app.isGrouping()) {
+			int result = JOptionPane.showConfirmDialog(getParent().getParent(), "学生正在编辑分组，是否立即结束并进行随机分组？",
+					"随机分组确认", JOptionPane.YES_NO_OPTION);
+			if(result==JOptionPane.NO_OPTION){
+				return;
+			}
+			app.setGrouping(false);
+		}
+		if (Application.hasQuiz) {// 格式不一致，统一修改重构
+			int result = JOptionPane.showConfirmDialog(getParent().getParent(), "学生正在作业，是否立即结束并进行分组？",
+					"随机分组确认", JOptionPane.YES_NO_OPTION);
+			if(result==JOptionPane.NO_OPTION){
+				return;
+			}
+			Application.hasQuiz=false;
+			Application.getInstance().getFloatIcon().showNoQuiz();
+			MainFrame.getInstance().showNoQuiz();
+		}
+		if(Application.isOnClass){//变换上课状态
+			setOnClass(false);
+		}
+//		new CoverPanel();
+		MainFrame.getInstance().showBlank();
+		// 发送小组信息
+		app.setDoRdmGrouping(true);
+		Queue<List<Student>> students =  RdmGroup.getStudentQue();
+		Map<String,Object> rdmGroup=RdmGroup.getTableGroupList();
+		List<Group> groupList= (List<Group>) rdmGroup.get("groupList");
+		Map<Integer,List<Device>> groupDevice = (Map<Integer, List<Device>>) rdmGroup.get("groupDevices");
+		Map<String,List<Student>> imeiStudents = new HashMap<String, List<Student>>();
+		clearGroupList();
+		int i=0;
+		for (Group group : groupList) {//遍历小组发送分组消息
+			group.setName("梦想小组"+i);
+			group.setLogo("rainbow");
+			List<Student> groupStudent = new ArrayList<Student>();
+			List<Device> devices =groupDevice.get(group.getId());
+			try {
+				ApiClient.updateGroup(group.getId(), "梦想小组"+i, "rainbow");
+			} catch (AppException e) {
+				logger.info("随机分组失败："+group.getId()+e);
+				app.setDoRdmGrouping(false);
+				app.refresh();
+				JOptionPane.showMessageDialog(MainFrame.getInstance().getFrame(), "小组信息更新失败，随机分组退出！");
+				return;
+			}
+			for(Device device:devices){
+				List<Student> student = new ArrayList<Student>();
+				Map<String, Object> rdmMsg = new HashMap<String, Object>();
+				student=students.poll();
+				groupStudent.addAll(student);
+//				rdmMsg.put("group", group);发送小组信息，暂禁止
+				rdmMsg.put("students", student);
+				for(Student updateStu:student){				
+					try {
+						ApiClient.loginForStudent(updateStu.getName(), updateStu.getSex(),updateStu.getNumber(), device.getImei());
+					} catch (AppException e) {
+						logger.info("随机分组更新学生小组失败"+group.getId()+e);
+						app.setDoRdmGrouping(false);
+						app.refresh();
+						JOptionPane.showMessageDialog(MainFrame.getInstance().getFrame(), "学生信息更新失败，随机分组退出！");
+						return;
+					}
+				}
+				
+				imeiStudents.put(device.getImei(), app.addRdmStudent( student));
+				MessagePacking rdmPacking = new MessagePacking(Message.MESSAGE_GROUP_RDMGROUP);
+				rdmPacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(JSON.toJSONString(rdmMsg)));
+				SocketChannel clientChannel = app.getClientChannel().get(device.getImei());
+				sendMsgToClient(rdmPacking,clientChannel);			
+			}
+			group.setStudents(groupStudent);//更新小组学生映射
+			app.addGroup(group);
+			++i;
+		}
+		app.refreshIMEI(imeiStudents);//更新设备学生映射
+		app.setDoRdmGrouping(false);
+		app.refresh();
+	}
+	/**
+	 * 清除小组成员
+	 */
+	private void clearGroupList() {
+		List<Group> groupList = app.getGroupList();
+		for(Group group: groupList){
+			group.getStudents().clear();
+		}
+		app.setGroupList(groupList);
+	}
+	/**
+	 * 发送随机
+	 * 分组信息
+	 * @param rdmPacking
+	 * @param clientChannel
+	 */
+	private void sendMsgToClient(final MessagePacking rdmPacking,
+			final SocketChannel clientChannel) {	
+		byte[] data=rdmPacking.pack().array();
+				ByteBuffer bytes =ByteBuffer.allocate(data.length);
+				bytes.clear();
+				bytes.put(data);
+				bytes.flip();
+				try {
+					clientChannel.write(bytes);
+					logger.info("随机分组信息发送失败！"+new String(data));
+				} catch (IOException e) {
+					app.setDoRdmGrouping(false);
+					logger.info("随机分组消息发送失败(IO)！"+new String(data)+e);
+					JOptionPane.showMessageDialog(MainFrame.getInstance().getFrame(), "随机分组消息发送失败，请检查网络并重新分组！");
+				}
+	}
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() == btnBegin) {
 			if (Application.isOnClass) {
+				if(Application.isOnResponder){
+					JOptionPane.showMessageDialog(MainFrame.getInstance().getFrame(), "正在抢答，请等待抢答完毕后再下课！");
+					return;
+				}
 				int result = JOptionPane.showConfirmDialog(MainFrame.getInstance()
 						.getFrame(), "确定要下课吗？", "提示",
 						JOptionPane.YES_NO_OPTION);
@@ -280,148 +420,11 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		if(e.getSource() == btnGroup){
 			doEditGroup();
 		}
-		if(e.getSource()==btnResponder){
-			if(!Application.isOnResponder){
-			UIHelper.sendResponderMessage(true);
-			Application.isOnResponder=true;
-			}
-			else{
-				JOptionPane.showMessageDialog(MainFrame.getInstance().getFrame(), "抢答尚未结束，请稍等！");
-			}
-		}
 		if(e.getSource()==btnRdmGroup){
 			doRdmGroup();
 		}
 	}
 	
-	/**
-	 * 随机分组
-	 * @author caicai
-	 */
-	private void doRdmGroup() {
-		if(app.getOnlineStudent().size() == 0){
-			JOptionPane.showMessageDialog(getParent().getParent(), "当前还没有学生登陆，请先登陆后再随机分组!");
-			return;
-		}
-		List<Table> tableList = app.getTableList();
-		if (tableList == null || tableList.size() == 0) {
-			JOptionPane.showMessageDialog(getParent().getParent(), "设备还未绑定课桌，请先绑定课桌!");
-			return;
-		}
-		if (app.isGrouping()) {
-			JOptionPane.showMessageDialog(getParent().getParent(), "学生正在分组，请等待分组完成!");
-			return;
-		}
-		if (Application.hasQuiz) {// 格式不一致，统一修改重构
-			JOptionPane.showMessageDialog(getParent().getParent(), "学生正在做作业，不能分组!");
-			return;
-		}
-		// 发送小组信息
-		app.setGrouping(true);
-		List<Group> groupList= getTableGroupList();
-		Queue<List<Student>> students =  RdmGroup.getStudentQue();
-		Map<String,List<Student>> imeiStudents = new HashMap<String, List<Student>>();
-		int i=0;
-		for (Group group : groupList) {//遍历小组发送分组消息
-			group.setName("梦想小组"+i);
-			group.setLogo("rainbow");
-			List<Student> groupStudent = new ArrayList<Student>();
-			List<Device> devices = group.getDevices();
-			for(Device device:devices){
-				List<Student> student = new ArrayList<Student>();
-				Map<String, Object> rdmMsg = new HashMap<String, Object>();
-				student=students.poll();
-				groupStudent.addAll(student);
-//				rdmMsg.put("group", group);发送小组信息，暂禁止
-				rdmMsg.put("students", student);
-				try {
-					ApiClient.updateGroup(group.getId(), "梦想小组"+i, "rainbow");
-				} catch (AppException e) {
-					logger.info("随机分组失败："+group.getId());
-					e.printStackTrace();
-					return;
-				}
-				for(Student updateStu:student){
-					try {
-						ApiClient.loginForStudent(updateStu.getName(), updateStu.getSex(),updateStu.getNumber(), device.getImei());
-					} catch (AppException e) {
-						logger.info("随机分组更新学生小组失败");
-						e.printStackTrace();
-						return;
-					}
-				}
-				imeiStudents.put(device.getImei(), app.addRdmStudent( student));
-				MessagePacking rdmPacking = new MessagePacking(Message.MESSAGE_GROUP_RDMGROUP);
-				rdmPacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(JSON.toJSONString(rdmMsg)));
-				SocketChannel clientChannel = app.getClientChannel().get(device.getImei());
-				sendMsgToClient(rdmPacking,clientChannel);			
-			}
-			group.setStudents(groupStudent);
-			app.addGroup(group);
-			++i;
-		}
-		app.refreshIMEI(imeiStudents);
-		app.refresh();
-		app.setGrouping(false);
-	}
-	/**
-	 * 得到在线小组
-	 * @return 在线小组
-	 */
-	private List<Group> getTableGroupList() {
-		Set<String> devices = app.getOnlineDevice();
-		List<Group> groupList= new ArrayList<Group>();
-		//遍历divice，得到在线小组
-		for(String device : devices){
-			Device deviced = app.getImeiDevice().get(device);
-			Table table=app.getDeviceTable().get(deviced.getId());
-			Group group = app.getTableGroup().get(table.getId());
-			if(groupList.size()==0){
-				groupList.add(group);
-			}else{
-				boolean flag=true;
-				for(Group grouped: groupList){
-					if(group.getId()==grouped.getId()){
-						flag=false;
-					}
-				}
-				if(flag){
-					groupList.add(group);
-				}
-			}
-		}
-		
-		return groupList;
-	}
-
-	/**
-	 * 每个pad启动一个线程发送随机
-	 * 分组信息
-	 * @param rdmPacking
-	 * @param clientChannel
-	 */
-	private void sendMsgToClient(final MessagePacking rdmPacking,
-			final SocketChannel clientChannel) {
-		new Thread(){
-			@Override
-			public void run(){
-				byte[] data=rdmPacking.pack().array();
-				ByteBuffer bytes =ByteBuffer.allocate(data.length);
-				bytes.clear();
-				bytes.put(data);
-				bytes.flip();
-				try {
-					clientChannel.write(bytes);
-					logger.info("随机分组信息："+new String(bytes.array()));
-				} catch (IOException e) {
-					logger.info("随机分组消息发送失败！"+new String(data));
-					e.printStackTrace();
-				}
-			}
-		}.start();;
-		
-	}
-
 	@Override
 	public void mousePressed(MouseEvent e) {
 		
@@ -444,6 +447,9 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		if (e.getSource() == btnGroup) {
 			btnGroup.setIcon(new ImageIcon("images/main/btn_group_hover.png"));
 		}
+		if(e.getSource()==btnRdmGroup){
+			btnRdmGroup.setIcon(new ImageIcon("images/main/btn_randomization_hover.png"));
+		}
 	}
 
 	@Override
@@ -457,6 +463,9 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		}
 		if (e.getSource() == btnGroup) {
 			btnGroup.setIcon(new ImageIcon("images/main/btn_group.png"));
+		}
+		if(e.getSource()==btnRdmGroup){
+			btnRdmGroup.setIcon(new ImageIcon("images/main/btn_randomization.png"));
 		}
 	}
 }

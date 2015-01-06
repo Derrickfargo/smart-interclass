@@ -17,6 +17,13 @@ public class RandomGroupHandler extends MessageHandler {
 		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "::RandomGroupHandler::收到随机分组消息" + data.toJSONString());
 		
 		String currentActivityName = AppManager.getAppManager().currentActivity().getClass().getSimpleName();
+		
+		boolean isLockScreen = MyApplication.getInstance().isLockScreen();
+		
+		if(isLockScreen){
+			MyApplication.getInstance().lockScreen(false);
+		}
+		
 		//判断当前是否是随机分组界面如果是随机分组界面则只刷新界面数据
 		if("RandomGroupActivity".equals(currentActivityName)){
 			UIHelper.getInstance().getRandomGroupActivity().refreshData(data);
@@ -26,5 +33,6 @@ public class RandomGroupHandler extends MessageHandler {
 			}
 			UIHelper.getInstance().showRandomGroupActivity(data);
 		}
+		UIHelper.getInstance().getWaitingActivity().refreshStudents(data);
 	}
 }

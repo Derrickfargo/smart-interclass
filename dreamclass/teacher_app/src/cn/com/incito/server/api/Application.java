@@ -29,6 +29,7 @@ import cn.com.incito.interclass.po.Table;
 import cn.com.incito.interclass.po.Teacher;
 import cn.com.incito.interclass.ui.FloatIcon;
 import cn.com.incito.interclass.ui.MainFrame;
+import cn.com.incito.interclass.ui.QuizFeedbackFrame;
 import cn.com.incito.server.config.Constants;
 import cn.com.incito.server.utils.FileUtils;
 
@@ -49,7 +50,9 @@ public class Application {
 
 	private static Application instance;
 	private boolean isGrouping = false;
+	private boolean DoRdmGrouping = false;
     private FloatIcon floatIcon;
+    private QuizFeedbackFrame quizFeedbackFrame;
     /**
 	 * 课堂id
 	 */
@@ -62,7 +65,7 @@ public class Application {
 
     public static boolean isOnClass;//正在上课
     public static boolean hasQuiz;//是否在作业
-	public static boolean isOnResponder;//是否在抢答中
+	public static boolean isOnResponder = false;//是否在抢答中
     private List<Group> groupList = new ArrayList<Group>();// 本堂课的所有分组
     private List<Table> tableList = new ArrayList<Table>();// 本教室所有的桌子
     private List<Device> deviceList = new ArrayList<Device>();// 本教室所有的Device
@@ -154,6 +157,18 @@ public class Application {
 	public void setFloatIcon(FloatIcon floatIcon) {
 		this.floatIcon = floatIcon;
 	}
+	
+	public QuizFeedbackFrame getQuizFeedbackFrame() {
+		if (quizFeedbackFrame == null) {
+			quizFeedbackFrame = new QuizFeedbackFrame();
+		}
+		return quizFeedbackFrame;
+	}
+
+	public void setQuizFeedbackFrame(QuizFeedbackFrame quizFeedbackFrame) {
+		this.quizFeedbackFrame = quizFeedbackFrame;
+	}
+
 
 	public String getMac() {
 		return mac;
@@ -203,6 +218,11 @@ public class Application {
 			imeiStudent.put(imei, studentList);
 		}
     }
+    /**
+     * 在所有学生中更新imeiStudent
+     * @param students
+     * @return
+     */
     public List<Student> addRdmStudent(List<Student> students){
     	List<Student> onlineStudent = new ArrayList<Student>();
     	for(Map.Entry<String, List<Student>> entry:imeiStudent.entrySet()){
@@ -626,8 +646,8 @@ public class Application {
         MainFrame.getInstance().refreshQuiz();
     }
     
-    public void refreshEvalute(){
-    	MainFrame.getInstance().refreshEvalute();
+    public void refreshResponder(){
+    	MainFrame.getInstance().refreshResponder();
     }
 
     public String getLessionid() {
@@ -688,6 +708,14 @@ public class Application {
 	}
 
 
+	public boolean isDoRdmGrouping() {
+		return DoRdmGrouping;
+	}
+
+
+	public void setDoRdmGrouping(boolean doRdmGrouping) {
+		DoRdmGrouping = doRdmGrouping;
+	}
 
 
 }

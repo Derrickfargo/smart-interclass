@@ -6,37 +6,23 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.channels.SocketChannel;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Queue;
-import java.util.Set;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
 
-import cn.com.incito.interclass.po.Quiz;
-import cn.com.incito.interclass.po.Student;
-import cn.com.incito.server.api.Application;
+import cn.com.incito.server.core.CoreSocket;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
-import cn.com.incito.server.utils.PeerFeedbackUtils;
 import cn.com.incito.server.utils.UIHelper;
 
+import com.alibaba.fastjson.JSONObject;
 import com.sun.awt.AWTUtilities;
 
 /**
@@ -49,11 +35,12 @@ public class QuizFeedbackFrame extends JFrame {
 	private static final long serialVersionUID = -2216276219179107707L;
 	private PhotoDialog photoDialog;
 
+	
 	public QuizFeedbackFrame() {
 		this.photoDialog = new PhotoDialog(this);
 		setIconImage(new ImageIcon("images/main/icon.png").getImage());
 		setUndecorated(true);// 去除窗体
-		setAlwaysOnTop(true); // 设置界面悬浮
+//		setAlwaysOnTop(true); // 设置界面悬浮
 		getContentPane().setBackground(Color.BLACK);
 		AWTUtilities.setWindowOpacity(this, 0.7f);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -61,10 +48,12 @@ public class QuizFeedbackFrame extends JFrame {
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 		Insets insets = Toolkit.getDefaultToolkit().getScreenInsets(getGraphicsConfiguration());
 		setSize(screen.width, screen.height - insets.bottom);
-
-		setVisible(true);
-		
-		photoDialog.setModal(true);
+//		photoDialog.setModal(true);
+	}
+	
+	public void showFrame(){
+		refresh();
+//		setVisible(true);
 		photoDialog.setVisible(true);
 	}
 	
@@ -77,9 +66,10 @@ public class QuizFeedbackFrame extends JFrame {
 		private static final String BACKGROUND = "images/quiz/bg_feedback.png";
 		private static final String BTN_CLOSE_NORMAL = "images/quiz/ico_close.png";
 		private static final String BTN_CLOSE_HOVER = "images/quiz/ico_close_hover.png";
-		private static final String BTN_SHOW_NORMAL = "images/quiz/btn_show.png";
-		private static final String BTN_SHOW_HOVER = "images/quiz/btn_show.png";
+		private static final String BTN_SHOW_NORMAL = "images/quiz/show_statistics.png";
+		private static final String BTN_SHOW_HOVER = "images/quiz/show_statistics_hover.png";
 		
+		private boolean hiding = true;
 		private JButton btnClose, btnShow;
 		private JLabel lblBackground, lblTitle;
 		private QuizFeedbackFrame coverFrame;
@@ -93,7 +83,7 @@ public class QuizFeedbackFrame extends JFrame {
 			setUndecorated(true);//去除窗体
 			setLocationRelativeTo(null);// 设置窗体中间位置
 			setLayout(null);// 绝对布局
-			setAlwaysOnTop(true); // 设置界面悬浮
+//			setAlwaysOnTop(true); // 设置界面悬浮
 			setBackground(new Color(0,0,0,0));//窗体透明
 			setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 			
@@ -131,14 +121,6 @@ public class QuizFeedbackFrame extends JFrame {
 	        add(quizScrollPane);
 	        
 	        setBackground();
-			
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					sendPeerFeedbackMessage();
-					System.out.println("sendPeerFeedbackMessage()");
-				}
-			});
 		}
 		
 		//设置背景
@@ -156,9 +138,19 @@ public class QuizFeedbackFrame extends JFrame {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			if (e.getSource() == btnClose) {
-				dispose();
-				if(coverFrame != null){
-					coverFrame.dispose();
+				int retval = JOptionPane.showConfirmDialog(this, "确实要退出互评吗？",
+						"互动课堂", JOptionPane.YES_NO_OPTION);
+				if (retval == JOptionPane.YES_OPTION) {
+					setVisible(false);
+					if(coverFrame != null){
+						coverFrame.setVisible(false);
+					}
+					//结束互评
+					MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_QUIZ_FEEDBACK_COMPLETE);
+					JSONObject json = new JSONObject();
+					json.put("complete", Boolean.TRUE);
+					messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json.toJSONString()));
+					CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
 				}
 			}
 		}
@@ -195,43 +187,4 @@ public class QuizFeedbackFrame extends JFrame {
 	    
 	}
 	
-	private void sendPeerFeedbackMessage() {
-		Queue<List<Quiz>> quizQueue = PeerFeedbackUtils.getQuizQueue();
-		Application app = Application.getInstance();
-		Set<Entry<String, SocketChannel>> clients = app.getClientChannel().entrySet();
-		final Iterator<Entry<String, SocketChannel>> it = clients.iterator();
-		while (it.hasNext()) {
-			Entry<String, SocketChannel> entry = it.next();
-			String imei = entry.getKey();
-			List<Student> students = app.getStudentByImei(imei);
-			//记录有学生登陆的Pad
-			if (students != null && students.size() > 0) {
-				SocketChannel channel = entry.getValue();
-				if (channel != null && channel.isConnected()) {
-					List<Quiz> quizList = quizQueue.poll();
-					for(Quiz quiz : quizList){
-						MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_QUIZ_FEEDBACK_SEND);
-				        try {
-					        BufferedImage image = ImageIO.read(new File(quiz.getQuizUrl()));
-					        ByteArrayOutputStream os = new ByteArrayOutputStream();
-					        ImageIO.write(image, "gif", os);
-					        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(quiz.getId()));
-							messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString("true"));
-							messagePacking.putBodyData(DataType.INT, os.toByteArray());
-							
-					        byte[] data = messagePacking.pack().array();
-							// 输出到通道
-							ByteBuffer buffer = ByteBuffer.allocate(data.length);
-							buffer.clear();
-							buffer.put(data);
-							buffer.flip();
-							channel.write(buffer);
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-					}
-				}
-			}
-		}
-	}
 }

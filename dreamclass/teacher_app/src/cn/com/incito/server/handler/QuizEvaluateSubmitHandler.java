@@ -50,7 +50,7 @@ public class QuizEvaluateSubmitHandler extends MessageHandler {
 			feedback.setScore(getScore(level) + feedback.getScore());
 			feedback.getFeedbackList().add(name.toString() + "给予了 " + getLevel(level));
 		}
-		app.refreshEvalute();//刷新评比结果
+		Application.getInstance().getQuizFeedbackFrame().refresh();
 	}
 	
 	private int getScore(int level) {

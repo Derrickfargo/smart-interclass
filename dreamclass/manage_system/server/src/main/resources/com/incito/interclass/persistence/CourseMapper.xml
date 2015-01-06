@@ -7,7 +7,9 @@
 		SELECT	
 			id,sum,class_name AS name,class_intro AS intro,create_time AS ctime
 		FROM 
-			ts_db_course
+			ts_db_course c
+		WHERE
+			c.is_close = 0 AND c.is_del = 0
 		ORDER BY
 			id
 	</select>
@@ -16,10 +18,11 @@
 		SELECT	
 			id,sum,class_name AS name,class_intro AS intro,create_time AS ctime
 		FROM 
-			ts_db_course
+			ts_db_course c
 		<where>
+		   	 c.is_close = 0 AND c.is_del = 0
 			<if test="name != null and name != ''">
-				class_name LIKE '%' #{name} '%'
+				AND class_name LIKE '%' #{name} '%'
 			</if>
 		</where>
 		ORDER BY

@@ -3,16 +3,29 @@
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
     android:gravity="center_vertical" >
-	
-     <android.support.v4.view.ViewPager
+    <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="1.0"
         android:background="#000000"
-        android:flipInterval="30"
-         />
+        android:flipInterval="30" />
+
+    <LinearLayout
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:gravity="center_vertical"
+        android:minWidth="30dp"
+        android:minHeight="45dp"
+        android:layout_marginTop="50dp"
+        android:id="@+id/relative_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/bg_foucs"
+        android:orientation="horizontal" >
+
+    </LinearLayout>
     <Button
         android:id="@+id/pager_up"
         android:layout_width="wrap_content"
@@ -32,52 +45,66 @@
         android:background="@drawable/pager_down" />
 
     <LinearLayout
-        android:layout_marginLeft="30dp"
+        android:id="@+id/layout_evalute"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/score_background"
+        android:layout_marginStart="40dp"
         android:orientation="horizontal" >
 
-        <Button
-            android:id="@+id/number_one"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="250dp"
-            android:background="@drawable/number_1" />
+            android:background="@drawable/evaluate_left"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/number_one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="25dp"
+                android:background="@drawable/number_1" />
+
+            <Button
+                android:id="@+id/number_two"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/number_2" />
+
+            <Button
+                android:id="@+id/number_three"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/number_3" />
+
+            <Button
+                android:id="@+id/number_four"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/number_4" />
+
+            <Button
+                android:id="@+id/number_five"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/number_5" />
+        </LinearLayout>
 
         <Button
-            android:id="@+id/number_two"
+            android:id="@+id/evalute_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="20dp"
-            android:background="@drawable/number_2" />
-
-        <Button
-            android:id="@+id/number_three"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="20dp"
-            android:background="@drawable/number_3" />
-
-        <Button
-            android:id="@+id/number_four"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="20dp"
-            android:background="@drawable/number_4" />
-
-        <Button
-            android:id="@+id/number_five"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="20dp"
-            android:background="@drawable/number_5" />
+            android:background="@drawable/evaluate_left_show" />
     </LinearLayout>
 
     <Button
@@ -86,8 +113,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginLeft="20dp"
-         android:layout_marginBottom="20dp"
-        android:background="@drawable/btn_confirm_group_ok" />
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="20dp"
+        android:background="@drawable/btn_confirm_group_ok"
+        android:visibility="gone" />
 
 </RelativeLayout>

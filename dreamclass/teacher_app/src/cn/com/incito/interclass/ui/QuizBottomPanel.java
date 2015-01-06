@@ -29,15 +29,14 @@ import cn.com.incito.interclass.po.Quiz;
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
-import cn.com.incito.server.core.CoreSocket;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
+import cn.com.incito.server.utils.CompressUtil;
 import cn.com.incito.server.utils.PeerFeedbackUtils;
 import cn.com.incito.server.utils.QuizCollector;
 
-import com.alibaba.fastjson.JSONObject;
 import com.sun.image.codec.jpeg.ImageFormatException;
 
 public class QuizBottomPanel extends JPanel implements MouseListener{
@@ -46,14 +45,13 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 	private static final String BTN_SEND_NORMAL = "images/quiz/btn_send_works.png";
 	private static final String BTN_SEND_HOVER = "images/quiz/btn_send_works_hover.png";
 	
-	private static final String BTN_FEEDBACK_NORMAL = "images/quiz/btn_feedback.png";
-	private static final String BTN_FEEDBACK_HOVER = "images/quiz/btn_feedback_hover.png";
+	private static final String BTN_FEEDBACK_NORMAL = "images/quiz/btn_feedback_hover.png";
+	private static final String BTN_FEEDBACK_HOVER = "images/quiz/btn_feedback.png";
 	
 	private static final String BTN_ACCEPT_NORMAL = "images/quiz/btn_accept_works.png";
 	private static final String BTN_ACCEPT_HOVER = "images/quiz/btn_accept_works_hover.png";
 	
 	private JButton btnQuiz, btnFeedback;
-	private QuizFeedbackFrame quizFeedbackFrame;
 	
 	public QuizBottomPanel(){
 		setSize(878, 48);
@@ -68,7 +66,7 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 		btnQuiz.setIcon(btnImage);// 设置图片
 		add(btnQuiz);// 添加按钮
 		btnQuiz.setVisible(false);
-		btnQuiz.setBounds(360, -4, btnImage.getIconWidth(), btnImage.getIconHeight());
+		btnQuiz.setBounds(280, -4, btnImage.getIconWidth(), btnImage.getIconHeight());
 		btnQuiz.addMouseListener(this);
 		
 		btnFeedback = new JButton();
@@ -79,7 +77,7 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 		btnFeedback.setIcon(imgFeedback);// 设置图片
 		add(btnFeedback);// 添加按钮
 		btnFeedback.setVisible(false);
-		btnFeedback.setBounds(530, -4, imgFeedback.getIconWidth(), imgFeedback.getIconHeight());
+		btnFeedback.setBounds(440, -4, imgFeedback.getIconWidth(), imgFeedback.getIconHeight());
 		btnFeedback.addMouseListener(this);
 	}
 	
@@ -156,8 +154,16 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 							JOptionPane.showMessageDialog(MainFrame.getInstance().getFrame(), "没有学生登录，无法进行随堂练习");
 							return;
 						}
+						if(Application.getInstance().isDoRdmGrouping()){
+							JOptionPane.showMessageDialog(getParent().getParent(), "学生正在随机分组，请等待随机分组完毕！");
+							return;
+						}
+						if(Application.isOnResponder){
+							JOptionPane.showMessageDialog(getParent().getParent(), "学生正在抢答，请等待抢答完毕!");
+							return;
+						}
 						if (Application.getInstance().isGrouping()) {
-							JOptionPane.showMessageDialog(getParent().getParent(), "学生正在分组，请等待分组完成!");
+							JOptionPane.showMessageDialog(getParent().getParent(), "学生正在编辑分组，请等待分组完成!");
 							return;
 						}
 						doSendQuiz();
@@ -169,21 +175,61 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 		} else if (e.getSource() == btnFeedback) {
 			new Thread(){
 				public void run() {
-					//TODO 暂时屏蔽，测试界面
-//					Queue<List<Quiz>> quizQueue = PeerFeedbackUtils.getQuizQueue();
-//					if(quizQueue.size() == 0){
-//						JOptionPane.showMessageDialog(QuizBottomPanel.this, "收取作业后才能进行互评！");
-//						return;
-//					}
-					quizFeedbackFrame = new QuizFeedbackFrame();
+					Queue<List<Quiz>> quizQueue = PeerFeedbackUtils.getQuizQueue();
+					if(quizQueue.size() == 0){
+						JOptionPane.showMessageDialog(QuizBottomPanel.this, "收取作业后才能进行互评！");
+						return;
+					}
+					Application.getInstance().getQuizFeedbackMap().clear();//清除之前的评比结果
+					sendPeerFeedbackMessage();
+					
+					
+					Application.getInstance().getQuizFeedbackFrame().showFrame();
 				}
 			}.start();
 			
 		}
 	}
 	
-	public void refreshQuizEvaluate() {
-		quizFeedbackFrame.refresh();
+	private void sendPeerFeedbackMessage() {
+		Queue<List<Quiz>> quizQueue = PeerFeedbackUtils.getQuizQueue();
+		Application app = Application.getInstance();
+		Set<Entry<String, SocketChannel>> clients = app.getClientChannel().entrySet();
+		final Iterator<Entry<String, SocketChannel>> it = clients.iterator();
+		while (it.hasNext()) {
+			Entry<String, SocketChannel> entry = it.next();
+			String imei = entry.getKey();
+			List<Student> students = app.getStudentByImei(imei);
+			//记录有学生登陆的Pad
+			if (students != null && students.size() > 0) {
+				SocketChannel channel = entry.getValue();
+				if (channel != null && channel.isConnected()) {
+					List<Quiz> quizList = quizQueue.poll();
+					for(Quiz quiz : quizList){
+						MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_QUIZ_FEEDBACK_SEND);
+				        try {
+					        BufferedImage image = ImageIO.read(new File(quiz.getQuizUrl()));
+					        ByteArrayOutputStream os = new ByteArrayOutputStream();
+					        ImageIO.write(image, "gif", os);
+					        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(quiz.getId()));
+					        logger.info("发送互评消息，quizId=" + quiz.getId());
+					        System.out.println("压缩前的大小"+os.toByteArray().length);
+							messagePacking.putBodyData(DataType.INT, CompressUtil.gZip(os.toByteArray()));
+							System.out.println("压缩后的大小"+ CompressUtil.gZip(os.toByteArray()).length);
+							byte[] data = messagePacking.pack().array();
+							// 输出到通道
+							ByteBuffer buffer = ByteBuffer.allocate(data.length);
+							buffer.clear();
+							buffer.put(data);
+							buffer.flip();
+							channel.write(buffer);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	@Override

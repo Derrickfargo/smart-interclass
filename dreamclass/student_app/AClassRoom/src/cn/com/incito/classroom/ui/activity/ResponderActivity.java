@@ -1,13 +1,17 @@
 package cn.com.incito.classroom.ui.activity;
 
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -28,16 +32,66 @@ import com.alibaba.fastjson.JSONObject;
  * @author hm
  */
 public class ResponderActivity extends BaseActivity {
+	
+	private static final int RANDOM_BUTTEON_POSITION = 1;
 
 	private ImageButton imageButton;
 	private RotateAnimation rotateAnimation;//旋转动画
+	
+	private boolean beforResponderisLockScreeen;
+	
+	private RelativeLayout.LayoutParams layoutParams;//按钮的布局属性
+	
+	private Timer timer;
+	private TimerTask timerTask;
+	
+	@SuppressLint("HandlerLeak")
+	private Handler handler = new Handler(){
+		public void handleMessage(android.os.Message msg) {
+			switch (msg.what) {
+			case RANDOM_BUTTEON_POSITION:
+				RandomButton();
+				break;
 
+			default:
+				break;
+			}
+		};
+	}; 
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		 showImageButton();
+		this.beforResponderisLockScreeen = getIntent().getExtras().getBoolean("beforResponderisLockScreeen");
+		timer = new Timer();
+		timerTask = new TimerTask() {
+			
+			@Override
+			public void run() {
+				handler.sendEmptyMessage(RANDOM_BUTTEON_POSITION);
+			}
+		};
+		showImageButton();
+		timer.schedule(timerTask, 0, 2*1000);
 	}
+	
+	/**
+	 * 随机改变按钮的位置
+	 */
+	private void RandomButton(){
+		
+		int x = randomX();
+		int y = randomY();
+		
+		
+		PropertyValuesHolder xPropertyValuesHolder = PropertyValuesHolder.ofFloat("x", x);
+		PropertyValuesHolder yPropertyValuesHolder = PropertyValuesHolder.ofFloat("y", y);
+		PropertyValuesHolder rotation = PropertyValuesHolder.ofFloat("rotation", 0,360);
+		ObjectAnimator.ofPropertyValuesHolder(imageButton, xPropertyValuesHolder,yPropertyValuesHolder,rotation)
+		.setDuration(2*1000)
+		.start();
+	}
+	
 	
 	/**
 	 * 显示布局与按钮
@@ -49,16 +103,22 @@ public class ResponderActivity extends BaseActivity {
 		
 		imageButton = new ImageButton(this);
 		imageButton.setBackgroundResource(R.drawable.responder_select);
-		
-		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		
-		layoutParams.leftMargin = randomX();
-		layoutParams.topMargin = randomY();
-		
+		imageButton.setX(randomX());
+		imageButton.setY(randomY());
+		imageButton.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+
+		layoutParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+//		
+//		layoutParams.leftMargin = randomX();
+//		layoutParams.topMargin = randomY();
+//		
 		imageButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
+//				if(timer != null){
+//					timer.cancel();
+//				}
 				MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "ResponderActivity:发送抢答消息开始");
 				
 				MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_RESPONDER);
@@ -68,7 +128,6 @@ public class ResponderActivity extends BaseActivity {
 				CoreSocket.getInstance().sendMessage(messagePacking);
 				
 				MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "ResponderActivity:发送抢答消息成功");
-				
 			}
 		});
 		
@@ -76,12 +135,12 @@ public class ResponderActivity extends BaseActivity {
 		setContentView(relativeLayout);
 		
 		//开始旋转动画
-		startAnimation();
+//		startAnimation();
 	}
 	
 	/**
-	 * 按钮选中动画
-	 */
+	 * 按钮旋转动画
+	
 	private void startAnimation() {
 		rotateAnimation = new RotateAnimation(0, 359, Animation.RELATIVE_TO_SELF, 0.5f,  Animation.RELATIVE_TO_SELF, 0.5f);
 		rotateAnimation.setInterpolator(new LinearInterpolator());//匀速旋转
@@ -90,7 +149,7 @@ public class ResponderActivity extends BaseActivity {
 		rotateAnimation.setRepeatMode(Animation.RESTART);
 		
 		imageButton.startAnimation(rotateAnimation);
-	}
+	} */
 
 	/**
 	 * 随机的x轴坐标
@@ -98,7 +157,7 @@ public class ResponderActivity extends BaseActivity {
 	 */
 	private int randomX(){
 		Random random = new Random();
-		return random.nextInt(723) + 278;
+		return random.nextInt(723);
 	}
 	
 	/**
@@ -107,7 +166,7 @@ public class ResponderActivity extends BaseActivity {
 	 */
 	private int randomY(){
 		Random random = new Random();
-		return random.nextInt(245) + 278;
+		return random.nextInt(520);
 	}
 	
 	@Override
@@ -116,5 +175,16 @@ public class ResponderActivity extends BaseActivity {
 		if(rotateAnimation != null){
 			rotateAnimation.cancel();
 		}
+		if(timer != null){
+			timer.cancel();
+		}
+	}
+	
+	/**
+	 * 获取在抢答前PAD是否是锁屏状态
+	 * @return true 是锁屏  flase 没有锁屏
+	 */
+	public boolean getBeforResponderisLockScreeen(){
+		return beforResponderisLockScreeen;
 	}
 }

@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import cn.com.incito.classroom.ui.widget.NetWorkDialog;
+import cn.com.incito.common.utils.UIHelper;
 
 import com.google.code.microlog4android.Logger;
 import com.google.code.microlog4android.LoggerFactory;

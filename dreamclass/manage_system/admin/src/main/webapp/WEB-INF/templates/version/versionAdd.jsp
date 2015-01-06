@@ -58,8 +58,9 @@
 												</div>
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>版本文件：</label>
 												<div class="col-xs-4">
-													<input type="file" id="file" name="file" class="form-control borderRadiusIE8 required" onkeyup="$('#fileTip').addClass('hidden')"/>
+													<input type="file" id="file" name="file" class="form-control borderRadiusIE8 required" onkeyup="showHidden()"/>
 													<p id="fileTip" class="help-block hidden"><font color="red"><b>请选择要导入的apk文件</b></font></p>
+													<p id = "fileTips" class = "help_block hidden"><font color = "red"><b>请选择要导入的exe文件</b></font></p>
 												</div>
 											</div>
 											<div class="form-group">

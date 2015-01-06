@@ -1,7 +1,6 @@
 package cn.com.incito.interclass.main;
 
 import java.awt.Font;
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -21,7 +20,6 @@ import cn.com.incito.interclass.ui.Login;
 import cn.com.incito.interclass.ui.RoomLogin1;
 import cn.com.incito.interclass.ui.widget.UpdateDialog;
 import cn.com.incito.server.api.Application;
-import cn.com.incito.server.exception.AppExceptionHandler;
 import cn.com.incito.server.utils.URLs;
 
 import com.alibaba.fastjson.JSON;
@@ -34,7 +32,7 @@ import com.alibaba.fastjson.JSONObject;
  * 
  */
 public class Main {
-	public static final int VERSION_CODE = 20;
+	public static final int VERSION_CODE = 25;
 	private static final long FREE_SIZE = 1024 * 1024 * 100;//100M
 	
 	public static void main(String args[]) {
@@ -74,14 +72,6 @@ public class Main {
 					File file = new File("update.exe");
 					if(!file.exists()){
 						JOptionPane.showMessageDialog(null, "检测到程序需要更新，但缺少必要的升级程序!");
-						// 初始化应用程序
-						Application.getInstance();
-						new Thread() {
-							public void run() {
-								// 初始化自定义字体
-								initDefinedFont();
-							}
-						}.start();
 						return;
 					}
 					long freeSize = file.getFreeSpace();
@@ -128,7 +118,7 @@ public class Main {
 	}
 	
 	private static void registerExceptionHandler(){
-		Thread.setDefaultUncaughtExceptionHandler(new AppExceptionHandler());
+//		Thread.setDefaultUncaughtExceptionHandler(new AppExceptionHandler());
 	}
 	
 	/**
@@ -159,12 +149,6 @@ public class Main {
 	}
 	private static void schoolLogin(){
 		Application.getInstance();
-		new Thread() {
-			public void run() {
-				// 初始化自定义字体
-				initDefinedFont();
-			}
-		}.start();
 		new RoomLogin1();
 	}
 	private static void checkMac(String mac){
@@ -198,23 +182,4 @@ public class Main {
 		 });
 	}
 	
-	private static void initDefinedFont() {
-		BufferedInputStream bis = null;
-		try {
-			bis = new BufferedInputStream(new FileInputStream(
-					"font/新蒂小丸子小学版.ttf"));
-			Font font = Font.createFont(Font.TRUETYPE_FONT, bis);
-			Application.getInstance().setDefinedFont(font);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (null != bis) {
-					bis.close();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
 }

@@ -4,13 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.util.Log;
-import cn.com.incito.classroom.ui.activity.EvaluateActivity;
+import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.utils.ApiClient;
 import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.socket.handler.DeviceBindHandler;
 import cn.com.incito.socket.handler.DeviceHasBindHandler;
 import cn.com.incito.socket.handler.DeviceLoginHandler;
 import cn.com.incito.socket.handler.DistributePaperHandler;
+import cn.com.incito.socket.handler.EvaluateCompleteHandler;
 import cn.com.incito.socket.handler.EvaluateHandler;
 import cn.com.incito.socket.handler.GroupEditHandler;
 import cn.com.incito.socket.handler.GroupListHandler;
@@ -25,9 +26,6 @@ import cn.com.incito.socket.handler.SavePaperResultHandler;
 import cn.com.incito.socket.handler.StudentLoginHandler;
 import cn.com.incito.socket.handler.VoteGroupInfoHandler;
 
-import com.google.code.microlog4android.Logger;
-import com.google.code.microlog4android.LoggerFactory;
-
 /**
  * 消息处理器列表
  * 该类用来维护消息和消息处理器的关系
@@ -35,7 +33,6 @@ import com.google.code.microlog4android.LoggerFactory;
  * @author 刘世平
  */
 public final class MessageHandlerResource {
-	public static final Logger Logger = LoggerFactory.getLogger();
     private static MessageHandlerResource resources;
     private Map<Byte, Class<? extends MessageHandler>> handlerResources;
 
@@ -82,6 +79,9 @@ public final class MessageHandlerResource {
         handlerResources.put(Message.MESSAGE_STUDENT_EVALUATE, EvaluateHandler.class);
         //结束抢答
         handlerResources.put(Message.MESSAGE_RESPONDER_END, ResponderEndHandler.class);
+        //结束作业互评
+        handlerResources.put(Message.MESSAGE_QUIZ_FEEDBACK_COMPLETE, EvaluateCompleteHandler.class);
+        
     }
 
     public MessageHandler getMessageHandler(Byte key) {
@@ -92,7 +92,7 @@ public final class MessageHandlerResource {
                 return handlerResources.get(key).newInstance();
             } catch (Exception e) {
             	ApiClient.uploadErrorLog(e.getMessage());
-            	Logger.debug(Utils.getTime()+"MessageHandlerResource+"+"获取MessageHandler出错:" + e.getMessage());
+            	MyApplication.Logger.debug(Utils.getTime()+"MessageHandlerResource+"+"获取MessageHandler出错:" + e.getMessage());
                 Log.e("MessageHandlerResource", "获取MessageHandler出错:" + e.getMessage());
                 return null;
             }

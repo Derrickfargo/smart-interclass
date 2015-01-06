@@ -3,6 +3,7 @@ package cn.com.incito.socket.handler;
 import java.nio.ByteBuffer;
 
 import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.classroom.utils.CompressUtil;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.core.MessageHandler;
@@ -12,6 +13,7 @@ import cn.com.incito.socket.utils.BufferUtils;
 public class EvaluateHandler extends MessageHandler{
 
 	private byte[] imageByte;
+	private String uuid;
 
 	@Override
 	public void handleMessage(Message msg) {
@@ -19,7 +21,7 @@ public class EvaluateHandler extends MessageHandler{
 		ByteBuffer buffer = msg.getBodyBuffer();
 		buffer.flip();
 		// 获取id数据
-		String uuid = getInfo(buffer);
+		 uuid = getInfo(buffer);
 		// 获取图片信息
 		byte[] imageSize = new byte[4];// int
 		buffer.get(imageSize);
@@ -32,9 +34,8 @@ public class EvaluateHandler extends MessageHandler{
 	@Override
 	protected void handleMessage() {
 		MyApplication.Logger.debug("收到互评命令");
-		MyApplication.getInstance().lockScreen(false);
-		UIHelper.getInstance().showEvaluateActivity(imageByte);;
-		
+//		CompressUtil.unGZip(imageByte);
+		UIHelper.getInstance().showEvaluateActivity(CompressUtil.unGZip(imageByte),uuid);;
 	}
 
 	/**

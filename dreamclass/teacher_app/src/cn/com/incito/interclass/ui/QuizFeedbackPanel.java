@@ -23,13 +23,14 @@ public class QuizFeedbackPanel extends JPanel implements MouseListener{
 	private static final long serialVersionUID = 882552987989905663L;
 	
 	private QuizFeedback feedback;
-	private JLabel lblName, lblImage;
+	private JLabel lblOrder, lblName, lblImage;
 	private List<JLabel> feedBackList = new ArrayList<JLabel>();
 	
 	public QuizFeedbackPanel(){
 		setLayout(null);
 		setBackground(new Color(255, 255, 255));
-		setVisible(false);
+		//作业名次
+		add(createOrderLabel());
 		
 		//作业缩略图
 		add(createImagePanel());
@@ -46,6 +47,15 @@ public class QuizFeedbackPanel extends JPanel implements MouseListener{
 			feedBackList.add(lblFeedback);
 			y += 17;
 		}
+	}
+	
+	private JLabel createOrderLabel() {
+		lblOrder = new JLabel("", JLabel.CENTER);
+		lblOrder.setForeground(new Color(Integer.parseInt("FFFFFF", 16)));
+		lblOrder.setOpaque(true);
+		lblOrder.setVisible(false);
+		lblOrder.setBounds(1, 1, 15, 15);
+		return lblOrder;
 	}
 	
 	private JLabel createName(){
@@ -82,7 +92,9 @@ public class QuizFeedbackPanel extends JPanel implements MouseListener{
 		return imagePanel;
 	}
 	
-	
+	public JLabel getLblOrder() {
+		return lblOrder;
+	}
 
 	public JLabel getLblName() {
 		return lblName;
@@ -100,6 +112,10 @@ public class QuizFeedbackPanel extends JPanel implements MouseListener{
 		this.feedback = feedback;
 	}
 	
+	public JLabel getLblImage() {
+		return lblImage;
+	}
+
 	@Override
 	public void mousePressed(MouseEvent e) {
 		

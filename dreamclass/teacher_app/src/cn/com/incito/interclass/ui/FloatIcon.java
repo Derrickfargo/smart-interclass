@@ -14,7 +14,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.util.Date;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -24,12 +23,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 
-import cn.com.incito.interclass.task.JobPaperUpload;
-import cn.com.incito.interclass.task.QuartzManager;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.utils.UIHelper;
 
@@ -364,6 +360,10 @@ public class FloatIcon extends MouseAdapter {
 				MainFrame.getInstance().showPraise();
 			}
 			if (e.getSource() == btnLock) {
+				if(Application.getInstance().getOnlineStudent()==null||Application.getInstance().getOnlineStudent().size()==0){
+					JOptionPane.showMessageDialog(null, "当前没有学生登录，不能解锁屏！");;
+					return;
+				}
 				showMenu(false);
 				if (Application.getInstance().isLockScreen) {//当前是锁屏状态，则执行解锁屏功能
 					btnLock.setIcon(new ImageIcon(ICON_LOCK_NORMAL));
@@ -376,6 +376,10 @@ public class FloatIcon extends MouseAdapter {
 				}
 			}
 			if (e.getSource() == btnExit) {
+				if(Application.isOnResponder){
+					JOptionPane.showMessageDialog(MainFrame.getInstance().getFrame(), "正在抢答，请等待抢答完毕后下课！");
+					return;
+				}
 				UIHelper.sendClassOverMessage();//
 				System.exit(0);
 			}
