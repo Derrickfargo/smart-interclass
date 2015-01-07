@@ -33,6 +33,7 @@ import cn.com.incito.server.core.Message;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
+import cn.com.incito.server.utils.CompressUtil;
 import cn.com.incito.server.utils.PeerFeedbackUtils;
 import cn.com.incito.server.utils.QuizCollector;
 
@@ -181,6 +182,8 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 					}
 					Application.getInstance().getQuizFeedbackMap().clear();//清除之前的评比结果
 					sendPeerFeedbackMessage();
+					
+					
 					Application.getInstance().getQuizFeedbackFrame().showFrame();
 				}
 			}.start();
@@ -210,9 +213,10 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 					        ImageIO.write(image, "gif", os);
 					        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(quiz.getId()));
 					        logger.info("发送互评消息，quizId=" + quiz.getId());
-							messagePacking.putBodyData(DataType.INT, os.toByteArray());
-							
-					        byte[] data = messagePacking.pack().array();
+					        System.out.println("压缩前的大小"+os.toByteArray().length);
+							messagePacking.putBodyData(DataType.INT, CompressUtil.gZip(os.toByteArray()));
+							System.out.println("压缩后的大小"+ CompressUtil.gZip(os.toByteArray()).length);
+							byte[] data = messagePacking.pack().array();
 							// 输出到通道
 							ByteBuffer buffer = ByteBuffer.allocate(data.length);
 							buffer.clear();

@@ -31,7 +31,6 @@ import cn.com.incito.common.utils.AndroidUtil;
  * Version : 1.0
  */
 public class AppUncaughtException implements UncaughtExceptionHandler {
-	public static final Logger Logger = LoggerFactory.getLogger();
 	private static AppUncaughtException appException;
 
 	private Context context;
@@ -56,7 +55,7 @@ public class AppUncaughtException implements UncaughtExceptionHandler {
 	public void uncaughtException(Thread arg0, Throwable arg1) {
 		Log.e("程序挂掉了","");
 		// 把错误的堆栈信息 获取出来
-		Logger.debug(Utils.getTime()+"AppUncaughtException:"+getErrorInfo(arg1));
+		MyApplication.Logger.debug(Utils.getTime()+"AppUncaughtException:"+getErrorInfo(arg1));
 		String errorInfo=arg1.getMessage();
 		// 打印到控制台上异常信息
 		if (AndroidUtil.isNetworkAvailable(context)) {
