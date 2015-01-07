@@ -1,12 +1,9 @@
 package cn.com.incito.socket.handler;
 
-import android.content.Intent;
 import android.util.Log;
-import cn.com.incito.classroom.ui.activity.DrawBoxActivity;
 import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;
-import cn.com.incito.wisdom.sdk.log.WLog;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.code.microlog4android.Logger;

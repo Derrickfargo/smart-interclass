@@ -24,7 +24,7 @@ import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 
-import com.baidu.navisdk.util.common.StringUtils;
+import com.google.code.microlog4android.format.command.util.StringUtil;
 
 import android.os.Environment;
 import cn.com.incito.classroom.base.MyApplication;
@@ -283,7 +283,7 @@ public class ApiClient {
 			 String SERVER_IP=MyApplication.getInstance().getSharedPreferences().getString("server_ip", "");
 			 String SERVER_PORT=MyApplication.getInstance().getSharedPreferences().getString("server_port", "");
 			 String server_url=SERVER_IP+":" + SERVER_PORT;
-			if(!StringUtils.isEmpty(SERVER_IP)&&!StringUtils.isEmpty(SERVER_PORT))
+			if(!Utils.isEmpty(SERVER_IP)&&!Utils.isEmpty(SERVER_PORT))
 			_post(Constants.HTTP+server_url+Constants.URL_UPLOAD_LOG, params, files);
 		} catch (Exception e) {
 			e.printStackTrace();

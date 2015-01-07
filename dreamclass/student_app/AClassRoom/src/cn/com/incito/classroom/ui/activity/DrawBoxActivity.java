@@ -4,8 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.alibaba.fastjson.JSONObject;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
@@ -14,7 +12,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -35,6 +32,7 @@ import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
+import cn.com.incito.classroom.ui.widget.ProgressiveDialog;
 import cn.com.incito.classroom.utils.BitmapUtil;
 import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.classroom.widget.canvas.ISketchPadCallback;
@@ -46,7 +44,8 @@ import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
-import cn.com.incito.wisdom.uicomp.widget.dialog.ProgressiveDialog;
+
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * 绘画板activity Created by liguangming on 2014/7/28.
