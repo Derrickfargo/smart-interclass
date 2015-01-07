@@ -403,6 +403,7 @@ public class WaitingActivity extends BaseActivity {
 		List<Student> studentList = JSONArray.parseArray(
 				JSON.parseObject(data.toJSONString()).getString("students"),Student.class);
 		MyApplication.Logger.debug("WaitingActivity:随机分组返回的数据:" + studentList.size());
+		
 		List<LoginRes2Vo> loginRes2Vos = new ArrayList<LoginRes2Vo>();
 		if (studentList != null && studentList.size() > 0) {
 			Iterator<Student> it = studentList.iterator();
