@@ -3,6 +3,10 @@ package cn.com.incito.server.core;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.SocketOption;
+import java.net.SocketOptions;
+import java.net.StandardSocketOptions;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
@@ -40,6 +44,7 @@ public final class CoreSocket extends Thread {
 	public static CoreSocket getInstance() {
 		if (instance == null) {
 			instance = new CoreSocket();
+			
 		}
 		return instance;
 	}
@@ -79,6 +84,7 @@ public final class CoreSocket extends Thread {
 		serverSocketChannel.configureBlocking(false);
 		ServerSocket serverSocket = serverSocketChannel.socket();
 //		serverSocket.setSoTimeout(15000);//超时时长为15秒
+		serverSocket.setSoTimeout(11);
 		serverSocket.bind(new InetSocketAddress(BAND_PORT));
 		selector = Selector.open();
 		serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
@@ -166,6 +172,7 @@ public final class CoreSocket extends Thread {
 							buffer.clear();
 							buffer.put(data);
 							buffer.flip();
+							channel.setOption(StandardSocketOptions.IP_TOS, 16);//设置优先级，最高
 							channel.write(buffer);
 						}
 					}

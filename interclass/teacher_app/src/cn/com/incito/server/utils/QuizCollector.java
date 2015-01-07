@@ -143,7 +143,8 @@ public class QuizCollector {
 					e.printStackTrace();
 					return;
 				} catch (Exception e) {
-					capacity--;
+					logger.error("作业收取失败，容量直接减一，不做处理", e);
+//					capacity--;
 					return;
 				}
 				new QuizCollectMonitor(channel).start();

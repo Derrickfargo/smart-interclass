@@ -39,7 +39,7 @@ public class FtpManager {
 		factory.setPort(21);// 监听端口
 		serverFactory.addListener("default", factory.createListener());// 默认监听器
 		PropertiesUserManagerFactory userManagerFactory = new PropertiesUserManagerFactory();
-		userManagerFactory.setFile(new File("users.properties"));
+		userManagerFactory.setFile(new File("./config/users.properties"));
 		serverFactory.setUserManager(userManagerFactory.createUserManager());
 		ConnectionConfigFactory connectionConfigFactory = new ConnectionConfigFactory();
 		connectionConfigFactory.setLoginFailureDelay(10);

@@ -62,8 +62,8 @@ public class UIHelper {
 							buffer.flip();
 							channel.write(buffer);
 						}
-						System.exit(0);
 					}
+					System.exit(0);
 				} catch (IOException e) {
 					logger.fatal("发送消息异常:\n" + e.getMessage());
 				}
