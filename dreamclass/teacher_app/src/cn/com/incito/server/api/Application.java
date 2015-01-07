@@ -88,7 +88,7 @@ public class Application {
 
 	private Map<Integer, List<SocketChannel>> groupChannel;// 保存每组和已登录的socket
 
-	private Map<String, List<Student>> imeiStudent = new HashMap<String, List<Student>>();
+	private Map<String, List<Student>> imeiStudent = new HashMap<String, List<Student>>();//key 为imei
 
 	private Map<String, SocketChannel> clientChannel;// 保存所有设备登陆的socket，imei和socket
 
@@ -314,7 +314,7 @@ public class Application {
 	}
 
 	/**
-	 * TODO 界面有更改，现需要遍历所有的在线学生
+	 *界面有更改，现需要遍历所有的在线学生
 	 * 
 	 * @param imei
 	 * @param student
@@ -362,7 +362,7 @@ public class Application {
 	}
 
 	/**
-	 * TODO 界面有更改，现需要遍历所有的在线学生
+	 * 界面有更改，现需要遍历所有的在线学生
 	 * 
 	 * @param imei
 	 * @param student
