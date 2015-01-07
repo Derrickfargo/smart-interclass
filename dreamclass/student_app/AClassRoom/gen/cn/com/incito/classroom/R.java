@@ -15,10 +15,475 @@ public final class R {
         public static final int push_bottom_out=0x7f040003;
         public static final int score_anim=0x7f040004;
     }
-    public static final class animator {
-        public static final int button_dismiss_in=0x7f050000;
-        public static final int button_dismiss_out=0x7f050001;
+
+    public static final class array {
+        /** <array name="entries">
+<item>@drawable/ic_classroom</item>
+<item>@drawable/ic_classroom</item>
+<item>@drawable/ic_classroom</item>
+<item>@drawable/ic_classroom</item>
+<item>@drawable/ic_classroom</item>
+<item>@drawable/ic_classroom</item>
+</array>
+         */
+        public static final int groupIcons=0x7f060000;
+        public static final int groupicons_name=0x7f060001;
+        public static final int names=0x7f060002;
     }
+    public static final class attr {
+        /** <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int childMargin=0x7f010000;
+        /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int dict=0x7f010001;
+    }
+    public static final class color {
+        public static final int bg_grey=0x7f070022;
+        public static final int black=0x7f070002;
+        public static final int blue=0x7f070010;
+        public static final int canary_yellow=0x7f070011;
+        public static final int carmine_red=0x7f070016;
+        public static final int chocolate=0x7f070020;
+        public static final int crop_background=0x7f07000d;
+        public static final int dark_green=0x7f07001d;
+        public static final int dark_purple=0x7f07001c;
+        public static final int gray=0x7f070003;
+        public static final int gray_black=0x7f070006;
+        public static final int gray_light=0x7f070005;
+        public static final int gray_white=0x7f070004;
+        public static final int green=0x7f07000f;
+        public static final int grey=0x7f070021;
+        public static final int hot_ink=0x7f070017;
+        public static final int lemon_yellow=0x7f070012;
+        public static final int list_divider=0x7f07000a;
+        public static final int magenta=0x7f070018;
+        public static final int mineral_orange=0x7f070015;
+        public static final int moss_green=0x7f07001e;
+        public static final int none=0x7f07000e;
+        public static final int orange=0x7f070009;
+        public static final int parrot_green=0x7f07001f;
+        public static final int peacpck_blue=0x7f07001b;
+        public static final int pink=0x7f070008;
+        public static final int powder_blue=0x7f070019;
+        public static final int red=0x7f070000;
+        public static final int salmon_orange=0x7f070013;
+        public static final int spanish_orange=0x7f070014;
+        public static final int text_color=0x7f070023;
+        public static final int transparent=0x7f07000b;
+        public static final int turquoise=0x7f07001a;
+        public static final int white=0x7f070001;
+        public static final int window_bg=0x7f07000c;
+        public static final int yellow=0x7f070007;
+    }
+    public static final class dimen {
+        /**  Default screen margins, per the Android Design guidelines. 
+         */
+        public static final int activity_horizontal_margin=0x7f080000;
+        public static final int activity_vertical_margin=0x7f080001;
+        public static final int edit_group_bg_width=0x7f080004;
+        public static final int thumnail_default_height=0x7f080003;
+        public static final int thumnail_default_width=0x7f080002;
+    }
+    public static final class drawable {
+        public static final int badges_diamond=0x7f020000;
+        public static final int badges_paper_plane=0x7f020001;
+        public static final int badges_pen=0x7f020002;
+        public static final int badges_rainbow=0x7f020003;
+        public static final int badges_support=0x7f020004;
+        public static final int bg=0x7f020005;
+        public static final int bg_badges=0x7f020006;
+        public static final int bg_badges2=0x7f020007;
+        public static final int bg_btn=0x7f020008;
+        public static final int bg_cgbg_bb=0x7f020009;
+        public static final int bg_cgbg_white=0x7f02000a;
+        public static final int bg_common_toast=0x7f02000b;
+        public static final int bg_confirm_group_info=0x7f02000c;
+        public static final int bg_confirm_group_info_mid=0x7f02000d;
+        public static final int bg_confirm_group_ok=0x7f02000e;
+        public static final int bg_confirm_group_ok_hover=0x7f02000f;
+        public static final int bg_desk_num=0x7f020010;
+        public static final int bg_desk_num_hover=0x7f020011;
+        public static final int bg_desk_num_nomal=0x7f020012;
+        public static final int bg_edit_group=0x7f020013;
+        public static final int bg_edit_group_ok=0x7f020014;
+        public static final int bg_empty=0x7f020015;
+        public static final int bg_eraser=0x7f020016;
+        public static final int bg_foucs=0x7f020017;
+        public static final int bg_groupname=0x7f020018;
+        public static final int bg_input=0x7f020019;
+        public static final int bg_input_hover=0x7f02001a;
+        public static final int bg_input_hover_normal=0x7f02001b;
+        public static final int bg_line=0x7f02001c;
+        public static final int bg_logged_user_m=0x7f02001d;
+        public static final int bg_logged_user_m_hover=0x7f02001e;
+        public static final int bg_logged_user_w=0x7f02001f;
+        public static final int bg_login=0x7f020020;
+        public static final int bg_not_logged_user_m=0x7f020021;
+        public static final int bg_not_logged_user_m_hover=0x7f020022;
+        public static final int bg_not_logged_user_w=0x7f020023;
+        public static final int bg_nts_chat=0x7f020024;
+        public static final int bg_pop2=0x7f020025;
+        public static final int bg_pop2_btn1=0x7f020026;
+        public static final int bg_pop2_btn1_hover=0x7f020027;
+        public static final int bg_pop2_btn2=0x7f020028;
+        public static final int bg_pop2_btn2_hover=0x7f020029;
+        public static final int bg_randomgroup_activity=0x7f02002a;
+        public static final int bg_sel_desk=0x7f02002b;
+        public static final int bg_start=0x7f02002c;
+        public static final int bg_white=0x7f02002d;
+        public static final int btn_bind_desk=0x7f02002e;
+        public static final int btn_bind_desk_ok=0x7f02002f;
+        public static final int btn_bind_desk_ok_hover=0x7f020030;
+        public static final int btn_confirm_group_cancel=0x7f020031;
+        public static final int btn_confirm_group_cancel_hover=0x7f020032;
+        public static final int btn_confirm_group_ok=0x7f020033;
+        public static final int btn_erasure=0x7f020034;
+        public static final int btn_erasure_pressed=0x7f020035;
+        public static final int btn_gender_female=0x7f020036;
+        public static final int btn_gender_male=0x7f020037;
+        public static final int btn_join=0x7f020038;
+        public static final int btn_join_hover=0x7f020039;
+        public static final int btn_join_normal=0x7f02003a;
+        public static final int btn_ok=0x7f02003b;
+        public static final int btn_ok_hover=0x7f02003c;
+        public static final int circle_foucs=0x7f02003d;
+        public static final int circle_no_foucs=0x7f02003e;
+        public static final int clock_dial=0x7f02003f;
+        public static final int clock_hour=0x7f020040;
+        public static final int clock_minute=0x7f020041;
+        public static final int clock_second=0x7f020042;
+        public static final int clock_wall=0x7f020043;
+        public static final int cloud=0x7f020044;
+        public static final int cuountdown_1=0x7f020045;
+        public static final int cuountdown_2=0x7f020046;
+        public static final int cuountdown_3=0x7f020047;
+        public static final int dialog_bg=0x7f020048;
+        public static final int edit_default=0x7f020049;
+        public static final int edit_ip_bg=0x7f02004a;
+        public static final int evaluate_left=0x7f02004b;
+        public static final int evaluate_left_show=0x7f02004c;
+        public static final int ic_classroom=0x7f02004d;
+        public static final int ic_launcher=0x7f02004e;
+        public static final int ic_send=0x7f02004f;
+        public static final int ic_send_btn=0x7f020050;
+        public static final int ic_send_hover=0x7f020051;
+        public static final int ic_user_female=0x7f020052;
+        public static final int ic_user_male=0x7f020053;
+        public static final int ico_big=0x7f020054;
+        public static final int ico_black=0x7f020055;
+        public static final int ico_canary_yellow=0x7f020056;
+        public static final int ico_carmine_red=0x7f020057;
+        public static final int ico_checked=0x7f020058;
+        public static final int ico_chocolate=0x7f020059;
+        public static final int ico_dark_green=0x7f02005a;
+        public static final int ico_dark_purple=0x7f02005b;
+        public static final int ico_eraser=0x7f02005c;
+        public static final int ico_eraser_big=0x7f02005d;
+        public static final int ico_eraser_empty=0x7f02005e;
+        public static final int ico_eraser_mid=0x7f02005f;
+        public static final int ico_eraser_sml=0x7f020060;
+        public static final int ico_grey=0x7f020061;
+        public static final int ico_hot_ink=0x7f020062;
+        public static final int ico_lemon_yellow=0x7f020063;
+        public static final int ico_magenta=0x7f020064;
+        public static final int ico_marine_green=0x7f020065;
+        public static final int ico_mid=0x7f020066;
+        public static final int ico_mineral_orange=0x7f020067;
+        public static final int ico_moss_green=0x7f020068;
+        public static final int ico_parrot_green=0x7f020069;
+        public static final int ico_peacpck_blue=0x7f02006a;
+        public static final int ico_powder_blue=0x7f02006b;
+        public static final int ico_salmon_orange=0x7f02006c;
+        public static final int ico_sml=0x7f02006d;
+        public static final int ico_spanish_orange=0x7f02006e;
+        public static final int ico_turquoise=0x7f02006f;
+        public static final int ico_user_f_hover=0x7f020070;
+        public static final int ico_user_m_hover=0x7f020071;
+        public static final int ico_white=0x7f020072;
+        public static final int icon_checked=0x7f020073;
+        public static final int no_bg=0x7f020074;
+        public static final int number_1=0x7f020075;
+        public static final int number_1_hold=0x7f020076;
+        public static final int number_1_press=0x7f020077;
+        public static final int number_2=0x7f020078;
+        public static final int number_2_hold=0x7f020079;
+        public static final int number_2_press=0x7f02007a;
+        public static final int number_3=0x7f02007b;
+        public static final int number_3_hold=0x7f02007c;
+        public static final int number_3_press=0x7f02007d;
+        public static final int number_4=0x7f02007e;
+        public static final int number_4_hold=0x7f02007f;
+        public static final int number_4_press=0x7f020080;
+        public static final int number_5=0x7f020081;
+        public static final int number_5_hold=0x7f020082;
+        public static final int number_5_press=0x7f020083;
+        public static final int number_five=0x7f020084;
+        public static final int number_four=0x7f020085;
+        public static final int number_one=0x7f020086;
+        public static final int number_three=0x7f020087;
+        public static final int number_two=0x7f020088;
+        public static final int pager_down=0x7f020089;
+        public static final int pager_up=0x7f02008a;
+        public static final int paper_down_hold=0x7f02008b;
+        public static final int paper_up_hold=0x7f02008c;
+        public static final int paper_up_press=0x7f02008d;
+        public static final int press_down_press=0x7f02008e;
+        public static final int puke=0x7f02008f;
+        public static final int puke_hover=0x7f020090;
+        public static final int ready=0x7f020091;
+        public static final int responder=0x7f020092;
+        public static final int responder_hover=0x7f020093;
+        public static final int responder_select=0x7f020094;
+        public static final int score_background=0x7f020095;
+        public static final int selector_groupnumber=0x7f020096;
+        public static final int setting_ip=0x7f020097;
+        public static final int yes_bg=0x7f020098;
+    }
+    public static final class id {
+        public static final int action_settings=0x7f09005c;
+        public static final int bg_select_btn=0x7f09000d;
+        public static final int big=0x7f090027;
+        public static final int btn_agree=0x7f09000b;
+        public static final int btn_bind=0x7f090005;
+        public static final int btn_confirm=0x7f090042;
+        public static final int btn_disagree=0x7f09000a;
+        public static final int btn_join=0x7f09005a;
+        public static final int btn_ok=0x7f090035;
+        public static final int cleanAllBtn=0x7f09004a;
+        public static final int color_canary_yellow=0x7f090015;
+        public static final int color_white=0x7f09000e;
+        public static final int countdown_image=0x7f090011;
+        public static final int dismiss=0x7f090014;
+        public static final int earise=0x7f090030;
+        public static final int earise_big=0x7f090047;
+        public static final int earise_middle=0x7f090048;
+        public static final int earise_small=0x7f090049;
+        public static final int edit_group_name=0x7f090032;
+        public static final int edit_ip_name=0x7f090036;
+        public static final int entrue=0x7f090013;
+        public static final int et_stname=0x7f090053;
+        public static final int et_stnumber=0x7f090055;
+        public static final int evalute_right=0x7f090041;
+        public static final int female=0x7f090058;
+        public static final int gender_group=0x7f090056;
+        public static final int group_icon=0x7f090007;
+        public static final int group_name=0x7f090008;
+        /** bindingdesk
+         */
+        public static final int gv_desk_number=0x7f090004;
+        public static final int gv_group_member=0x7f090050;
+        public static final int horizon_listview=0x7f090034;
+        public static final int ib_setting_ip=0x7f09004f;
+        public static final int ico_big_checked=0x7f090029;
+        public static final int ico_black=0x7f090025;
+        public static final int ico_carmine_red=0x7f09001a;
+        public static final int ico_chocolate=0x7f090024;
+        public static final int ico_dark_green=0x7f090021;
+        public static final int ico_dark_purple=0x7f090020;
+        public static final int ico_grey=0x7f090026;
+        public static final int ico_hot_ink=0x7f09001b;
+        public static final int ico_lemon_yellow=0x7f090016;
+        public static final int ico_magenta=0x7f09001c;
+        public static final int ico_middle_checked=0x7f09002c;
+        public static final int ico_mineral_orange=0x7f090019;
+        public static final int ico_moss_green=0x7f090022;
+        public static final int ico_parrot_green=0x7f090023;
+        public static final int ico_peacpck_blue=0x7f09001f;
+        public static final int ico_powder_blue=0x7f09001d;
+        public static final int ico_salmon_orange=0x7f090017;
+        public static final int ico_small_checked=0x7f09002f;
+        public static final int ico_spanish_orange=0x7f090018;
+        public static final int ico_turquoise=0x7f09001e;
+        public static final int image_preview=0x7f090033;
+        public static final int img_list_item=0x7f090044;
+        public static final int iv_num_bg=0x7f090045;
+        public static final int join_relativelayout=0x7f090059;
+        public static final int layout_evalute=0x7f09003b;
+        public static final int line=0x7f090002;
+        public static final int line1=0x7f090003;
+        public static final int liner_layout=0x7f09004c;
+        public static final int ll_add_partner=0x7f090051;
+        /** comfirm group 
+         */
+        public static final int ll_groupinfo=0x7f090006;
+        /** common
+         */
+        public static final int llayout=0x7f090000;
+        public static final int llayout1=0x7f090052;
+        public static final int llayout2=0x7f090054;
+        public static final int male=0x7f090057;
+        public static final int middle=0x7f09002a;
+        public static final int number=0x7f090043;
+        public static final int number_five=0x7f090040;
+        public static final int number_four=0x7f09003f;
+        public static final int number_one=0x7f09003c;
+        public static final int number_three=0x7f09003e;
+        public static final int number_two=0x7f09003d;
+        public static final int pager_down=0x7f09003a;
+        public static final int pager_up=0x7f090039;
+        public static final int pencile_big=0x7f090028;
+        public static final int pencile_middle=0x7f09002b;
+        public static final int pencile_small=0x7f09002e;
+        public static final int progress=0x7f09004b;
+        public static final int relative_layout=0x7f090038;
+        public static final int rlayout=0x7f090001;
+        /** draw box 
+         */
+        public static final int sketchpad=0x7f09000c;
+        public static final int small=0x7f09002d;
+        public static final int student_list=0x7f09004d;
+        public static final int submit_button=0x7f090031;
+        public static final int sys_exit=0x7f09005d;
+        public static final int text_notice=0x7f09005b;
+        public static final int title=0x7f090012;
+        public static final int toast_text=0x7f090010;
+        public static final int tv_loading_msg=0x7f09004e;
+        public static final int tv_num_name=0x7f090046;
+        public static final int viewPager=0x7f090037;
+        public static final int waiting_other_student=0x7f090009;
+        public static final int webview=0x7f09000f;
+    }
+    public static final class layout {
+        public static final int binddesk=0x7f030000;
+        public static final int canvas2=0x7f030001;
+        public static final int common_toast=0x7f030002;
+        public static final int confirm_group_info=0x7f030003;
+        public static final int count_down_activity=0x7f030004;
+        public static final int dialog=0x7f030005;
+        public static final int draw_box=0x7f030006;
+        public static final int edit_group_info=0x7f030007;
+        public static final int edit_ip_info=0x7f030008;
+        public static final int evaluate_activity=0x7f030009;
+        public static final int evaluate_item=0x7f03000a;
+        public static final int horizontal_list_item=0x7f03000b;
+        public static final int item_desk_number=0x7f03000c;
+        public static final int item_group_mem=0x7f03000d;
+        public static final int item_random_group=0x7f03000e;
+        public static final int network_dialog=0x7f03000f;
+        public static final int popup_window=0x7f030010;
+        public static final int progress=0x7f030011;
+        public static final int random_group_activity=0x7f030012;
+        public static final int splash=0x7f030013;
+        public static final int waiting=0x7f030014;
+    }
+    public static final class menu {
+        public static final int main=0x7f0c0000;
+        public static final int main_menu=0x7f0c0001;
+    }
+    public static final class string {
+        public static final int action_settings=0x7f0a0001;
+        public static final int app_name=0x7f0a0000;
+        /**  button 
+         */
+        public static final int btn_retry=0x7f0a001a;
+        public static final int btn_setting=0x7f0a001b;
+        public static final int group_name_null=0x7f0a0014;
+        public static final int group_name_short_notice=0x7f0a0015;
+        public static final int hello_world=0x7f0a0002;
+        public static final int input_group_name_hint=0x7f0a0012;
+        public static final int input_ip_hint=0x7f0a0013;
+        public static final int load_dialog_default_text=0x7f0a0003;
+        public static final int loading_complete_msg=0x7f0a0011;
+        public static final int loading_msg=0x7f0a0010;
+        /** toast
+         */
+        public static final int loading_network_disconnect=0x7f0a0006;
+        /**  msg 
+         */
+        public static final int msg_dialog_network_nowork=0x7f0a0019;
+        public static final int sendpaper_notice=0x7f0a0005;
+        public static final int toast_choose_atleast_one_desk=0x7f0a000c;
+        public static final int toast_choose_sex=0x7f0a0017;
+        public static final int toast_group_isfull=0x7f0a000d;
+        public static final int toast_not_space=0x7f0a0018;
+        public static final int toast_quit_app=0x7f0a000e;
+        public static final int toast_stname_blank=0x7f0a0009;
+        public static final int toast_stname_notnull=0x7f0a0007;
+        public static final int toast_stname_repeat=0x7f0a000b;
+        public static final int toast_stname_tooshort=0x7f0a0008;
+        public static final int toast_stnumber_notnull=0x7f0a000a;
+        public static final int tost_name_is_not_english_chinese=0x7f0a000f;
+        public static final int waiting_access_wifi=0x7f0a0004;
+        public static final int waiting_other_confirm_tip=0x7f0a0016;
+    }
+    public static final class style {
+        /**  All customizations that are NOT specific to a particular API-level can go here. 
+         */
+        public static final int AnimBottom=0x7f0b0002;
+        public static final int ConfirmDialog=0x7f0b0005;
+        /** 
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    
+
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        
+         */
+        public static final int MyAppBaseTheme=0x7f0b0000;
+        /**  Application theme. 
+         */
+        public static final int MyAppTheme=0x7f0b0001;
+        public static final int confirm_group=0x7f0b0004;
+        public static final int loading_dialog=0x7f0b0003;
+    }
+    public static final class styleable {
+        /** Attributes that can be used with a customAttribute.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #customAttribute_childMargin cn.com.incito.classroom:childMargin}</code></td><td></td></tr>
+           <tr><td><code>{@link #customAttribute_dict cn.com.incito.classroom:dict}</code></td><td></td></tr>
+           </table>
+           @see #customAttribute_childMargin
+           @see #customAttribute_dict
+         */
+        public static final int[] customAttribute = {
+            0x7f010000, 0x7f010001
+        };
+        /**
+          <p>This symbol is the offset where the {@link cn.com.incito.classroom.R.attr#childMargin}
+          attribute's value can be found in the {@link #customAttribute} array.
+
+
+          <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name cn.com.incito.classroom:childMargin
+        */
+        public static final int customAttribute_childMargin = 0;
+        /**
+          <p>This symbol is the offset where the {@link cn.com.incito.classroom.R.attr#dict}
+          attribute's value can be found in the {@link #customAttribute} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name cn.com.incito.classroom:dict
+        */
+        public static final int customAttribute_dict = 1;
+=======
     public static final class array {
         /** <array name="entries">
 <item>@drawable/ic_classroom</item>
@@ -487,5 +952,5172 @@ containing a value of this type.
           @attr name cn.com.incito.classroom:dict
         */
         public static final int customAttribute_dict = 1;
+=======
+        public static final int image_progress=0x7f040002;
+        public static final int push_bottom_in=0x7f040003;
+        public static final int push_bottom_out=0x7f040004;
+        public static final int refreshable_widget_slide_in_from_bottom=0x7f040005;
+        public static final int refreshable_widget_slide_in_from_top=0x7f040006;
+        public static final int refreshable_widget_slide_out_to_bottom=0x7f040007;
+        public static final int refreshable_widget_slide_out_to_top=0x7f040008;
+        public static final int score_anim=0x7f040009;
+    }
+    public static final class array {
+        public static final int abei_city_item=0x7f09011f;
+        public static final int akesu_city_item=0x7f09016e;
+        public static final int alaer_city_item=0x7f090176;
+        public static final int alashanmeng_city_item=0x7f090046;
+        public static final int aleitai_city_item=0x7f090174;
+        public static final int ali_city_item=0x7f090140;
+        public static final int anhui_province_item=0x7f09000c;
+        public static final int anhui_suzhou_city_item=0x7f09008f;
+        public static final int ankang_city_item=0x7f09014a;
+        public static final int anqing_city_item=0x7f09008b;
+        public static final int anshan_city_item=0x7f090049;
+        public static final int anshun_city_item=0x7f090125;
+        public static final int anyang_city_item=0x7f0900be;
+        public static final int aomen_city_item=0x7f09017a;
+        public static final int aomen_province_item=0x7f090021;
+        public static final int baicheng_city_item=0x7f09005c;
+        public static final int baise_city_item=0x7f090105;
+        public static final int baishan_city_item=0x7f09005a;
+        public static final int baiyin_city_item=0x7f09014f;
+        public static final int baoding_city_item=0x7f09002a;
+        public static final int baoji_city_item=0x7f090144;
+        public static final int baoshan_city_item=0x7f09012e;
+        public static final int baotou_city_item=0x7f09003c;
+        public static final int bayannaoer_city_item=0x7f090042;
+        public static final int bayinguolen_city_item=0x7f09016d;
+        public static final int bazhong_city_item=0x7f09011d;
+        public static final int beihai_city_item=0x7f090100;
+        /**  2000多个县 
+         */
+        public static final int beijin_city_item=0x7f090023;
+        /**  个地级市 
+         */
+        public static final int beijin_province_item=0x7f090001;
+        public static final int bengbu_city_item=0x7f090086;
+        public static final int benxi_city_item=0x7f09004b;
+        public static final int biji_city_item=0x7f090128;
+        public static final int boertala_city_item=0x7f09016c;
+        public static final int buyang_city_item=0x7f0900c2;
+        public static final int cangzhou_city_item=0x7f09002d;
+        public static final int changchun_city_item=0x7f090055;
+        public static final int changde_city_item=0x7f0900df;
+        public static final int changdu_city_item=0x7f09013c;
+        public static final int changji_city_item=0x7f09016b;
+        public static final int changsha_city_item=0x7f0900d9;
+        public static final int changzhi_city_item=0x7f090033;
+        public static final int changzhou_city_item=0x7f09006f;
+        public static final int chaohu_city_item=0x7f090090;
+        public static final int chaozhou_city_item=0x7f0900f9;
+        public static final int chengde_city_item=0x7f09002c;
+        public static final int chengdu_city_item=0x7f09010d;
+        public static final int chifeng_city_item=0x7f09003e;
+        public static final int chizhou_city_item=0x7f090093;
+        public static final int chongqing_city_item=0x7f09010c;
+        public static final int chongqing_province_item=0x7f090016;
+        public static final int chuangzuo_city_item=0x7f090109;
+        public static final int chuxiong_city_item=0x7f090133;
+        public static final int chuzhou_city_item=0x7f09008d;
+        public static final int dali_city_item=0x7f090137;
+        public static final int dalian_city_item=0x7f090048;
+        public static final int dandong_city_item=0x7f09004c;
+        public static final int daqing_city_item=0x7f090063;
+        public static final int datong_city_item=0x7f090031;
+        public static final int daxinganling_city_item=0x7f09006a;
+        public static final int dazhou_city_item=0x7f09011b;
+        public static final int dehuang_city_item=0x7f090138;
+        public static final int deyang_city_item=0x7f090111;
+        public static final int dezhou_city_item=0x7f0900b6;
+        public static final int dingxi_city_item=0x7f090156;
+        public static final int diqing_city_item=0x7f09013a;
+        public static final int dongguan_city_item=0x7f0900f7;
+        public static final int dongying_city_item=0x7f0900ad;
+        public static final int eerduosi_city_item=0x7f090040;
+        public static final int enshi_city_item=0x7f0900d7;
+        public static final int erzhou_city_item=0x7f0900d0;
+        public static final int fangchenggang_city_item=0x7f090101;
+        public static final int foshan_city_item=0x7f0900ec;
+        public static final int fujian_province_item=0x7f09000d;
+        public static final int fuxin_city_item=0x7f09004f;
+        public static final int fuyang_city_item=0x7f09008e;
+        public static final int ganmu_city_item=0x7f090120;
+        public static final int gannan_city_item=0x7f090159;
+        public static final int gansu_province_item=0x7f09001c;
+        public static final int ganzhou_city_item=0x7f0900a4;
+        public static final int geshen_city_item=0x7f090170;
+        /** <array name="entries">
+<item>@drawable/ic_classroom</item>
+<item>@drawable/ic_classroom</item>
+<item>@drawable/ic_classroom</item>
+<item>@drawable/ic_classroom</item>
+<item>@drawable/ic_classroom</item>
+<item>@drawable/ic_classroom</item>
+</array>
+         */
+        public static final int groupIcons=0x7f09017c;
+        public static final int groupicons_name=0x7f09017d;
+        public static final int guangan_city_item=0x7f09011a;
+        public static final int guangdong_province_item=0x7f090013;
+        public static final int guangxi_province_item=0x7f090014;
+        public static final int guangxi_wuzhou_city_item=0x7f0900ff;
+        public static final int guangyuan_city_item=0x7f090113;
+        public static final int guangzhou_city_item=0x7f0900e7;
+        public static final int guigang_city_item=0x7f090103;
+        public static final int guilin_city_item=0x7f0900fe;
+        public static final int guiyang_city_item=0x7f090122;
+        public static final int guizhou_province_item=0x7f090018;
+        public static final int guluo_city_item=0x7f09015f;
+        public static final int guyuan_city_item=0x7f090165;
+        public static final int haerbing_city_item=0x7f09005e;
+        public static final int haibai_city_item=0x7f09015c;
+        public static final int haidong_city_item=0x7f09015b;
+        public static final int haikou_city_item=0x7f09010a;
+        public static final int hainan_city_item=0x7f09015e;
+        public static final int hainan_province_item=0x7f090015;
+        public static final int haixi_city_item=0x7f090161;
+        public static final int hami_city_item=0x7f09016a;
+        public static final int handan_city_item=0x7f090028;
+        public static final int hangzhou_city_item=0x7f090079;
+        public static final int hanzhong_city_item=0x7f090148;
+        public static final int haozhou_city_item=0x7f090092;
+        public static final int hebi_city_item=0x7f0900bf;
+        public static final int hechi_city_item=0x7f090107;
+        public static final int hefei_city_item=0x7f090084;
+        public static final int hegang_city_item=0x7f090061;
+        public static final int heibei_province_item=0x7f090003;
+        public static final int heihe_city_item=0x7f090068;
+        public static final int heilongjiang_province_item=0x7f090008;
+        public static final int heilongjiang_yichun_city_item=0x7f090064;
+        public static final int henan_province_item=0x7f090010;
+        public static final int hengshui_city_item=0x7f09002f;
+        public static final int hengyang_city_item=0x7f0900dc;
+        public static final int hetian_city_item=0x7f090171;
+        public static final int heyuan_city_item=0x7f0900f4;
+        public static final int heze_city_item=0x7f0900b9;
+        public static final int hezhou_city_item=0x7f090106;
+        public static final int honghe_city_item=0x7f090134;
+        public static final int hongkong_city_item=0x7f090179;
+        public static final int hongkong_province_item=0x7f090020;
+        public static final int huaian_city_item=0x7f090073;
+        public static final int huaibei_city_item=0x7f090089;
+        public static final int huaihua_city_item=0x7f0900e4;
+        public static final int huainan_city_item=0x7f090087;
+        public static final int huanggang_city_item=0x7f0900d4;
+        public static final int huangnan_city_item=0x7f09015d;
+        public static final int huangshan_city_item=0x7f09008c;
+        public static final int huangshi_city_item=0x7f0900cc;
+        public static final int hubei_jinzhou_city_item=0x7f0900d3;
+        public static final int hubei_province_item=0x7f090011;
+        public static final int huhehaote_city_item=0x7f09003b;
+        public static final int huizhou_city_item=0x7f0900f1;
+        public static final int huludao_city_item=0x7f090054;
+        public static final int hulunbeier_city_item=0x7f090041;
+        public static final int hunan_bingzhou_city_item=0x7f0900e2;
+        public static final int hunan_province_item=0x7f090012;
+        public static final int huzhou_city_item=0x7f090095;
+        public static final int jiamusi_city_item=0x7f090065;
+        public static final int jian_city_item=0x7f0900a5;
+        public static final int jiangmen_city_item=0x7f0900ed;
+        public static final int jiangsu_province_item=0x7f09000a;
+        public static final int jiangsu_taizhou_city_item=0x7f090077;
+        public static final int jiangxi_province_item=0x7f09000e;
+        public static final int jiangxi_wuzhou_city_item=0x7f0900a7;
+        public static final int jiangxi_yichun_city_item=0x7f0900a6;
+        public static final int jiaozuo_city_item=0x7f0900c1;
+        public static final int jiaxing_city_item=0x7f09007c;
+        public static final int jiayuguan_city_item=0x7f09014d;
+        public static final int jilin_city_item=0x7f090056;
+        public static final int jilin_province_item=0x7f090007;
+        public static final int jinan_city_item=0x7f0900a9;
+        public static final int jinchang_city_item=0x7f09014e;
+        public static final int jincheng_city_item=0x7f090034;
+        public static final int jingdezhen_city_item=0x7f09009f;
+        public static final int jinhua_city_item=0x7f09007f;
+        public static final int jining_city_item=0x7f0900b0;
+        public static final int jinmen_city_item=0x7f0900d1;
+        public static final int jinzhong_city_item=0x7f090036;
+        public static final int jiujiang_city_item=0x7f0900a1;
+        public static final int jiuquan_city_item=0x7f090154;
+        public static final int jixi_city_item=0x7f090060;
+        public static final int jiyang_city_item=0x7f0900fa;
+        public static final int kaifang_city_item=0x7f0900bb;
+        public static final int kaipingshan_city_item=0x7f0900bd;
+        public static final int kelamayi_city_item=0x7f090168;
+        public static final int kemuleisu_city_item=0x7f09016f;
+        public static final int kunming_city_item=0x7f09012b;
+        public static final int laibing_city_item=0x7f090108;
+        public static final int laiwu_city_item=0x7f0900b4;
+        public static final int langfang_city_item=0x7f09002e;
+        public static final int lanzhou_city_item=0x7f09014c;
+        public static final int lasa_city_item=0x7f09013b;
+        public static final int leihe_city_item=0x7f0900c4;
+        public static final int leshan_city_item=0x7f090116;
+        public static final int liangshan_city_item=0x7f090121;
+        public static final int lianyungang_city_item=0x7f090072;
+        public static final int liaocheng_city_item=0x7f0900b7;
+        public static final int liaoning_jinzhou_city_item=0x7f09004d;
+        public static final int liaoning_province_item=0x7f090006;
+        public static final int liaoyang_city_item=0x7f090050;
+        public static final int liaoyuan_city_item=0x7f090058;
+        public static final int lijiang_city_item=0x7f090130;
+        public static final int linfen_city_item=0x7f090039;
+        public static final int lingcang_city_item=0x7f090132;
+        public static final int linxi_city_item=0x7f0900b5;
+        public static final int linxia_city_item=0x7f090158;
+        public static final int linxia_province_item=0x7f09001e;
+        public static final int linzhi_city_item=0x7f090141;
+        public static final int lishui_city_item=0x7f090083;
+        public static final int liuzhou_city_item=0x7f0900fd;
+        public static final int longnan_city_item=0x7f090157;
+        public static final int longyan_city_item=0x7f09009c;
+        public static final int loudi_city_item=0x7f0900e5;
+        public static final int luan_city_item=0x7f090091;
+        public static final int luoyang_city_item=0x7f0900bc;
+        public static final int lupanshui_city_item=0x7f090123;
+        public static final int luzhou_city_item=0x7f090110;
+        public static final int lvliang_city_item=0x7f09003a;
+        public static final int maanshan_city_item=0x7f090088;
+        public static final int maoming_city_item=0x7f0900ef;
+        public static final int meishan_city_item=0x7f090118;
+        public static final int meizhou_city_item=0x7f0900f2;
+        public static final int mianyang_city_item=0x7f090112;
+        public static final int mudanjiang_city_item=0x7f090067;
+        public static final int names=0x7f09017e;
+        public static final int nanchang_city_item=0x7f09009e;
+        public static final int nanchong_city_item=0x7f090117;
+        public static final int nanjing_city_item=0x7f09006c;
+        public static final int nanjing_suzhou_city_item=0x7f090070;
+        public static final int nanning_city_item=0x7f0900fc;
+        public static final int nanp_city_item=0x7f09009b;
+        public static final int nantong_city_item=0x7f090071;
+        public static final int nanyang_city_item=0x7f0900c6;
+        public static final int naqu_city_item=0x7f09013f;
+        public static final int neijiang_city_item=0x7f090115;
+        public static final int neimenggu_province_item=0x7f090005;
+        public static final int ningbo_city_item=0x7f09007a;
+        public static final int ningde_city_item=0x7f09009d;
+        public static final int nujiang_city_item=0x7f090139;
+        public static final int panjin_city_item=0x7f090051;
+        public static final int panzhihua_city_item=0x7f09010f;
+        public static final int pingliang_city_item=0x7f090153;
+        public static final int pingxiang_city_item=0x7f0900a0;
+        /**  含个省、自治区、直辖市、特别行政区 
+         */
+        public static final int province_item=0x7f090000;
+        public static final int putian_city_item=0x7f090097;
+        public static final int qingdao_city_item=0x7f0900aa;
+        public static final int qingdongnan_city_item=0x7f090129;
+        public static final int qinghai_province_item=0x7f09001d;
+        public static final int qinghuangdao_city_item=0x7f090027;
+        public static final int qingnan_city_item=0x7f09012a;
+        public static final int qingxinan_city_item=0x7f090127;
+        public static final int qingyang_city_item=0x7f090155;
+        public static final int qingyuan_city_item=0x7f0900f6;
+        public static final int qinzhou_city_item=0x7f090102;
+        public static final int qiqihaer_city_item=0x7f09005f;
+        public static final int qitaihe_city_item=0x7f090066;
+        public static final int quanzhou_city_item=0x7f090099;
+        public static final int qujing_city_item=0x7f09012c;
+        public static final int quzhou_city_item=0x7f090080;
+        public static final int rgeze_city_item=0x7f09013e;
+        public static final int rizhao_city_item=0x7f0900b3;
+        public static final int sanmenxia_city_item=0x7f0900c5;
+        public static final int sanming_city_item=0x7f090098;
+        public static final int sanya_city_item=0x7f09010b;
+        public static final int shandong_bingzhou_city_item=0x7f0900b8;
+        public static final int shandong_province_item=0x7f09000f;
+        public static final int shanghai_city_item=0x7f09006b;
+        public static final int shanghai_province_item=0x7f090009;
+        public static final int shangluo_city_item=0x7f09014b;
+        public static final int shangqiu_city_item=0x7f0900c7;
+        public static final int shangrao_city_item=0x7f0900a8;
+        public static final int shannan_city_item=0x7f09013d;
+        public static final int shantou_city_item=0x7f0900eb;
+        public static final int shanwei_city_item=0x7f0900f3;
+        public static final int shanxi1_province_item=0x7f090004;
+        public static final int shanxi2_province_item=0x7f09001b;
+        public static final int shaoguan_city_item=0x7f0900e8;
+        public static final int shaoxing_city_item=0x7f09007e;
+        public static final int shaoyang_city_item=0x7f0900dd;
+        public static final int shenglongjia_city_item=0x7f0900d8;
+        public static final int shenyang_city_item=0x7f090047;
+        public static final int shenzhen_city_item=0x7f0900e9;
+        public static final int shihezi_city_item=0x7f090175;
+        public static final int shijiazhuang_city_item=0x7f090025;
+        public static final int shiyan_city_item=0x7f0900cd;
+        public static final int shizuishan_city_item=0x7f090163;
+        public static final int shuangyashan_city_item=0x7f090062;
+        public static final int shuozhou_city_item=0x7f090035;
+        public static final int sichuan_province_item=0x7f090017;
+        public static final int simao_city_item=0x7f090131;
+        public static final int siping_city_item=0x7f090057;
+        public static final int songyuan_city_item=0x7f09005b;
+        public static final int suihua_city_item=0x7f090069;
+        public static final int suining_city_item=0x7f090114;
+        public static final int suizhou_city_item=0x7f0900d6;
+        public static final int suqian_city_item=0x7f090078;
+        public static final int tacheng_city_item=0x7f090173;
+        public static final int taian_city_item=0x7f0900b1;
+        public static final int taiwan_city_item=0x7f09017b;
+        public static final int taiwan_province_item=0x7f090022;
+        public static final int taiyuan_city_item=0x7f090030;
+        public static final int tangshan_city_item=0x7f090026;
+        public static final int tianjin_city_item=0x7f090024;
+        public static final int tianjin_province_item=0x7f090002;
+        public static final int tianshui_city_item=0x7f090150;
+        public static final int tieling_city_item=0x7f090052;
+        public static final int tongchuan_city_item=0x7f090143;
+        public static final int tonghua_city_item=0x7f090059;
+        public static final int tongliao_city_item=0x7f09003f;
+        public static final int tongling_city_item=0x7f09008a;
+        public static final int tongren_city_item=0x7f090126;
+        public static final int tulyfan_city_item=0x7f090169;
+        public static final int tumushihe_city_item=0x7f090177;
+        public static final int weifang_city_item=0x7f0900af;
+        public static final int weihai_city_item=0x7f0900b2;
+        public static final int weinan_city_item=0x7f090146;
+        public static final int wenshan_city_item=0x7f090135;
+        public static final int wenzhou_city_item=0x7f09007b;
+        public static final int wuhai_city_item=0x7f09003d;
+        public static final int wuhan_city_item=0x7f0900cb;
+        public static final int wuhu_city_item=0x7f090085;
+        public static final int wujiaqu_city_item=0x7f090178;
+        public static final int wulanchabu_city_item=0x7f090043;
+        public static final int wulumuqi_city_item=0x7f090167;
+        public static final int wushun_city_item=0x7f09004a;
+        public static final int wuwei_city_item=0x7f090151;
+        public static final int wuxi_city_item=0x7f09006d;
+        public static final int wuzhong_city_item=0x7f090164;
+        public static final int xiamen_city_item=0x7f090096;
+        public static final int xian_city_item=0x7f090142;
+        public static final int xiangpan_city_item=0x7f0900cf;
+        public static final int xiangtan_city_item=0x7f0900db;
+        public static final int xiangxi_city_item=0x7f0900e6;
+        public static final int xianning_city_item=0x7f0900d5;
+        public static final int xianyang_city_item=0x7f090145;
+        public static final int xiaogan_city_item=0x7f0900d2;
+        public static final int xilinguolemeng_city_item=0x7f090045;
+        public static final int xinganmeng_city_item=0x7f090044;
+        public static final int xingtai_city_item=0x7f090029;
+        public static final int xining_city_item=0x7f09015a;
+        public static final int xinjiang_province_item=0x7f09001f;
+        public static final int xinxiang_city_item=0x7f0900c0;
+        public static final int xinyang_city_item=0x7f0900c8;
+        public static final int xinyu_city_item=0x7f0900a2;
+        public static final int xinzhou_city_item=0x7f090038;
+        public static final int xishuangbanna_city_item=0x7f090136;
+        public static final int xizang_province_item=0x7f09001a;
+        public static final int xuancheng_city_item=0x7f090094;
+        public static final int xuchang_city_item=0x7f0900c3;
+        public static final int xuzhou_city_item=0x7f09006e;
+        public static final int yaan_city_item=0x7f09011c;
+        public static final int yanan_city_item=0x7f090147;
+        public static final int yanbian_city_item=0x7f09005d;
+        public static final int yancheng_city_item=0x7f090074;
+        public static final int yangjiang_city_item=0x7f0900f5;
+        public static final int yangquan_city_item=0x7f090032;
+        public static final int yangzhou_city_item=0x7f090075;
+        public static final int yantai_city_item=0x7f0900ae;
+        public static final int yibing_city_item=0x7f090119;
+        public static final int yichang_city_item=0x7f0900ce;
+        public static final int yili_city_item=0x7f090172;
+        public static final int yinchuan_city_item=0x7f090162;
+        public static final int yingkou_city_item=0x7f09004e;
+        public static final int yingtan_city_item=0x7f0900a3;
+        public static final int yiyang_city_item=0x7f0900e1;
+        public static final int yongzhou_city_item=0x7f0900e3;
+        public static final int yuelin_city_item=0x7f090104;
+        public static final int yuexi_city_item=0x7f09012d;
+        public static final int yueyang_city_item=0x7f0900de;
+        public static final int yulin_city_item=0x7f090149;
+        public static final int yuncheng_city_item=0x7f090037;
+        public static final int yunfu_city_item=0x7f0900fb;
+        public static final int yunnan_province_item=0x7f090019;
+        public static final int yushu_city_item=0x7f090160;
+        public static final int zaobo_city_item=0x7f0900ab;
+        public static final int zaozhuang_city_item=0x7f0900ac;
+        public static final int zejiang_huzhou_city_item=0x7f09007d;
+        public static final int zejiang_taizhou_city_item=0x7f090082;
+        public static final int zhangjiajie_city_item=0x7f0900e0;
+        public static final int zhangjiakou_city_item=0x7f09002b;
+        public static final int zhangjiang_city_item=0x7f0900ee;
+        public static final int zhangyue_city_item=0x7f090152;
+        public static final int zhangzhou_city_item=0x7f09009a;
+        public static final int zhaoqing_city_item=0x7f0900f0;
+        public static final int zhaotong_city_item=0x7f09012f;
+        public static final int zhaoyang_city_item=0x7f090053;
+        public static final int zhejiang_province_item=0x7f09000b;
+        public static final int zhenjiang_city_item=0x7f090076;
+        public static final int zhenshou_city_item=0x7f0900ba;
+        public static final int zhongshan_city_item=0x7f0900f8;
+        public static final int zhongwei_city_item=0x7f090166;
+        public static final int zhoukou_city_item=0x7f0900c9;
+        public static final int zhoushan_city_item=0x7f090081;
+        public static final int zhuhai_city_item=0x7f0900ea;
+        public static final int zhumadian_city_item=0x7f0900ca;
+        public static final int zhunyi_city_item=0x7f090124;
+        public static final int zhuzhou_city_item=0x7f0900da;
+        public static final int zigong_city_item=0x7f09010e;
+        public static final int ziyang_city_item=0x7f09011e;
+    }
+    public static final class attr {
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int absListViewStyle=0x7f01000f;
+        /**  @hide Controls whether this view can take accessibility focus. 
+         <p>May be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+<p>May be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>auto</code></td><td>0</td><td>
+                 The system determines whether the view can take accessibility focus - default
+                 (recommended).
+                 <p>
+                 Such a view is consideted by the focus search if it is:
+                 <ul>
+                 <li>
+                 Important for accessibility and actionable (clickable, long clickable, focusable)
+                 </li>
+                 <li>
+                 Important for accessibility, not actionable (clickable, long clickable, focusable),
+                 and does not have an actionable predecessor.
+                 </li>
+                 </ul>
+                 An accessibility srvice can request putting accessibility focus on such a view.
+                 </p>
+            </td></tr>
+<tr><td><code>yes</code></td><td>1</td><td>
+                 The view can take accessibility focus.
+                 <p>
+                 A view that can take accessibility focus is always considered during focus
+                 search and an accessibility service can request putting accessibility focus
+                 on it.
+                 </p>
+            </td></tr>
+<tr><td><code>no</code></td><td>2</td><td>
+                 The view can not take accessibility focus.
+                 <p>
+                 A view that can not take accessibility focus is never considered during focus
+                 search and an accessibility service can not request putting accessibility focus
+                 on it.
+                 </p>
+            </td></tr>
+</table>
+         */
+        public static final int accessibilityFocusable=0x7f010059;
+        /** 
+             Sets whether this ViewGroup's drawable states also include
+             its children's drawable states.  This is used, for example, to
+             make a group appear to be focused when its child EditText or button
+             is focused.
+        
+         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int addStatesFromChildren=0x7f010061;
+        /** 
+             alpha property of the view, as a value between 0 (completely transparent) and 1
+             (completely opaque).
+        
+         <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int alpha=0x7f010049;
+        /** 
+             Defines whether the ViewGroup should always draw its children using their
+             drawing cache or not. The default value is true.
+        
+         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int alwaysDrawnWithCache=0x7f010060;
+        /** 
+             Defines whether changes in layout (caused by adding and removing items) should
+             cause a LayoutTransition to run. When this flag is set to true, a default
+             LayoutTransition object will be set on the ViewGroup container and default
+             animations will run when these layout changes occur.
+        
+         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int animateLayoutChanges=0x7f01005a;
+        /** 
+             Defines whether layout animations should create a drawing cache for their
+             children. Enabling the animation cache consumes more memory and requires
+             a longer initialization but provides better performance. The animation
+             cache is enabled by default.
+        
+         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int animationCache=0x7f01005e;
+        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int border_color=0x7f01000e;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int border_thickness=0x7f01000d;
+        /** 
+             Indicates that this list will always be drawn on top of solid, single-color
+             opaque background. This allows the list to optimize drawing.
+        
+         <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int cacheColorHint=0x7f01006a;
+        /** <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int childMargin=0x7f010074;
+        /** 
+             Defines the choice behavior for the view. By default, lists do not have
+             any choice behavior. By setting the choiceMode to singleChoice, the list
+             allows up to one item to be in a chosen state. By setting the choiceMode to
+             multipleChoice, the list allows any number of items to be chosen.
+             Finally, by setting the choiceMode to multipleChoiceModal the list allows
+             any number of items to be chosen in a special selection mode.
+             The application will supply a
+             {@link android.widget.AbsListView.MultiChoiceModeListener} using
+             {@link android.widget.AbsListView#setMultiChoiceModeListener} to control the
+             selection mode. This uses the {@link android.view.ActionMode} API.
+        
+         <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>none</code></td><td>0</td><td> Normal list that does not indicate choices. </td></tr>
+<tr><td><code>singleChoice</code></td><td>1</td><td> The list allows up to one choice. </td></tr>
+<tr><td><code>multipleChoice</code></td><td>2</td><td> The list allows multiple choices. </td></tr>
+<tr><td><code>multipleChoiceModal</code></td><td>3</td><td> The list allows multiple choices in a custom selection mode. </td></tr>
+</table>
+         */
+        public static final int choiceMode=0x7f01006d;
+        /**  Defines whether this view reacts to click events. 
+         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int clickable=0x7f01003b;
+        /** 
+             Defines whether a child is limited to draw inside of its bounds or not.
+             This is useful with animations that scale the size of the children to more
+             than 100% for instance. In such a case, this property should be set to false
+             to allow the children to draw outside of their bounds. The default value of
+             this property is true.
+        
+         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int clipChildren=0x7f01005b;
+        /** 
+             Defines whether the ViewGroup will clip its drawing surface so as to exclude
+             the padding area. This property is set to true by default.
+        
+         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int clipToPadding=0x7f01005c;
+        /** 
+             Defines text that briefly describes content of the view. This property is used
+             primarily for accessibility. Since some views do not have textual
+             representation this attribute can be used for providing such.
+        
+         <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int contentDescription=0x7f010046;
+        /** 
+             Defines the relationship between the ViewGroup and its descendants
+             when looking for a View to take focus.
+        
+         <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>beforeDescendants</code></td><td>0</td><td> The ViewGroup will get focus before any of its descendants. </td></tr>
+<tr><td><code>afterDescendants</code></td><td>1</td><td> The ViewGroup will get focus only if none of its descendants want it. </td></tr>
+<tr><td><code>blocksDescendants</code></td><td>2</td><td> The ViewGroup will block its descendants from receiving focus. </td></tr>
+</table>
+         */
+        public static final int descendantFocusability=0x7f010062;
+        /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int dict=0x7f010075;
+        /**  Drawable or color to draw between list items. 
+ <attr name="divider" format="reference|color" /> 
+
+             Height of the divider. Will use the intrinsic height of the divider if this
+             is not specified.
+        
+         <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int dividerHeight=0x7f01006f;
+        /** 
+             When set to true, the selector will be drawn over the selected item.
+             Otherwise the selector is drawn behind the selected item. The default
+             value is false.
+        
+         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int drawSelectorOnTop=0x7f010065;
+        /** 
+             Defines the quality of translucent drawing caches. This property is used
+             only when the drawing cache is enabled and translucent. The default value is auto.
+        
+         <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>auto</code></td><td>0</td><td>
+                 Lets the framework decide what quality level should be used
+                 for the drawing cache.
+            </td></tr>
+<tr><td><code>low</code></td><td>1</td><td>
+                 Low quality. When set to low quality, the drawing cache uses a lower color
+                 depth, thus losing precision in rendering gradients, but uses less memory.
+            </td></tr>
+<tr><td><code>high</code></td><td>2</td><td>
+                 High quality. When set to high quality, the drawing cache uses a higher
+                 color depth but uses more memory.
+            </td></tr>
+</table>
+         */
+        public static final int drawingCacheQuality=0x7f01003f;
+        /** 
+             When this attribute is set to true, the view gets its drawable state
+             (focused, pressed, etc.) from its direct parent rather than from itself.
+        
+         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int duplicateParentState=0x7f010041;
+        /**  Defines whether to fade out scrollbars when they are not in use. 
+         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int fadeScrollbars=0x7f010029;
+        /** 
+             This attribute is deprecated and will be ignored as of
+             API level 14 ({@link android.os.Build.VERSION_CODES#ICE_CREAM_SANDWICH}).
+             Using fading edges may introduce noticeable performance
+             degradations and should be used only when required by the application's
+             visual design. To request fading edges with API level 14 and above,
+             use the <code>android:requiresFadingEdge</code> attribute instead.
+        
+         <p>Must be one or more (separated by '|') of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>none</code></td><td>0x00000000</td><td> No edge is faded. </td></tr>
+<tr><td><code>horizontal</code></td><td>0x00001000</td><td> Fades horizontal edges only. </td></tr>
+<tr><td><code>vertical</code></td><td>0x00002000</td><td> Fades vertical edges only. </td></tr>
+</table>
+         */
+        public static final int fadingEdge=0x7f010033;
+        /**  Defines the length of the fading edges. 
+         <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int fadingEdgeLength=0x7f010035;
+        /** 
+             When set to true, the list will always show the fast scroll interface.
+             This setting implies fastScrollEnabled.
+        
+         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int fastScrollAlwaysVisible=0x7f01006e;
+        /** 
+             Enables the fast scroll thumb that can be dragged to quickly scroll through
+             the list.
+        
+         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int fastScrollEnabled=0x7f01006b;
+        /** 
+             Specifies whether to filter touches when the view's window is obscured by
+             another visible window.  When set to true, the view will not receive touches
+             whenever a toast, dialog or other window appears above the view's window.
+             Refer to the {@link android.view.View} security documentation for more details.
+        
+         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int filterTouchesWhenObscured=0x7f01003e;
+        /** 
+             Boolean internal attribute to adjust view layout based on
+             system windows such as the status bar.
+             If true, adjusts the padding of this view to leave space for the system windows.
+             Will only take effect if this view is in a non-embedded activity.
+        
+         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int fitsSystemWindows=0x7f010025;
+        /** 
+             Boolean that controls whether a view can take focus.  By default the user can not
+             move focus to a view; by setting this attribute to true the view is
+             allowed to take focus.  This value does not impact the behavior of
+             directly calling {@link android.view.View#requestFocus}, which will
+             always request focus regardless of this view.  It only impacts where
+             focus navigation will try to move focus.
+        
+         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int focusable=0x7f010022;
+        /** 
+             Boolean that controls whether a view can take focus while in touch mode.
+             If this is true for a view, that view can gain focus when clicked on, and can keep
+             focus if another view is clicked on that doesn't have this attribute set to true.
+        
+         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int focusableInTouchMode=0x7f010023;
+        /** 
+             When set to false, the ListView will not draw the divider before each footer view.
+             The default value is true.
+        
+         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int footerDividersEnabled=0x7f010071;
+        /** 
+             Boolean that controls whether a view should have haptic feedback
+             enabled for events such as long presses.
+        
+         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int hapticFeedbackEnabled=0x7f010045;
+        /** 
+             When set to false, the ListView will not draw the divider after each header view.
+             The default value is true.
+        
+         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int headerDividersEnabled=0x7f010070;
+        /** 
+             Supply an identifier name for this view, to later retrieve it
+             with {@link android.view.View#findViewById View.findViewById()} or
+             {@link android.app.Activity#findViewById Activity.findViewById()}.
+             This must be a
+             resource reference; typically you set this using the
+             <code>@+</code> syntax to create a new ID resources.
+             For example: <code>android:id="@+id/my_id"</code> which
+             allows you to later retrieve the view
+             with <code>findViewById(R.id.my_id)</code>.
+        
+         <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int id=0x7f010017;
+        /** 
+             Controls how this View is important for accessibility which is if it fires
+             accessibility events and if it is reported to accessibility services that
+             query the screen. Note: While not recommended, an accessibility service may
+             decide to ignore this attribute and operate on all views in the view tree.
+        
+         <p>May be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+<p>May be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>auto</code></td><td>0</td><td>
+                 The system determines whether the view is important for accessibility - default
+                 (recommended).
+            </td></tr>
+<tr><td><code>yes</code></td><td>1</td><td> The view is important for accessibility. </td></tr>
+<tr><td><code>no</code></td><td>2</td><td> The view is not important for accessibility. </td></tr>
+</table>
+         */
+        public static final int importantForAccessibility=0x7f010058;
+        /** 
+             Set this if the view will serve as a scrolling container, meaing
+             that it can be resized to shrink its overall window so that there
+             will be space for an input method.  If not set, the default
+             value will be true if "scrollbars" has the vertical scrollbar
+             set, else it will be false.
+        
+         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int isScrollContainer=0x7f010028;
+        /** 
+             Controls whether the view's window should keep the screen on
+             while visible.
+        
+         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int keepScreenOn=0x7f010040;
+        /** 
+             Specifies the type of layer backing this view. The default value is none.
+             Refer to {@link android.view.View#setLayerType(int, android.graphics.Paint)}
+             for more information.
+        
+         <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>none</code></td><td>0</td><td> Don't use a layer. </td></tr>
+<tr><td><code>software</code></td><td>1</td><td>
+                 Use a software layer. Refer to
+                 {@link android.view.View#setLayerType(int, android.graphics.Paint) for
+                 more information.
+            </td></tr>
+<tr><td><code>hardware</code></td><td>2</td><td>
+                 Use a hardware layer. Refer to
+                 {@link android.view.View#setLayerType(int, android.graphics.Paint) for
+                 more information.
+            </td></tr>
+</table>
+         */
+        public static final int layerType=0x7f010054;
+        /** 
+             Defines the layout animation to use the first time the ViewGroup is laid out.
+             Layout animations can also be started manually after the first layout.
+        
+         <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int layoutAnimation=0x7f01005d;
+        /** 
+             Defines the direction of layout drawing. This typically is associated with writing
+             direction of the language script used. The possible values are "ltr" for Left-to-Right,
+             "rtl" for Right-to-Left, "locale" and "inherit" from parent view. If there is nothing
+             to inherit, "locale" is used. "locale" falls back to "en-US". "ltr" is the direction
+             used in "en-US". The default for this attribute is "inherit".
+        
+         <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>ltr</code></td><td>0</td><td> Left-to-Right </td></tr>
+<tr><td><code>rtl</code></td><td>1</td><td> Right-to-Left </td></tr>
+<tr><td><code>inherit</code></td><td>2</td><td> Inherit from parent </td></tr>
+<tr><td><code>locale</code></td><td>3</td><td> Locale </td></tr>
+</table>
+         */
+        public static final int layoutDirection=0x7f010055;
+        /**  Drawable used to indicate the currently selected item in the list. 
+         <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int listSelector=0x7f010064;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int listViewStyle=0x7f010010;
+        /**  Defines whether this view reacts to long click events. 
+         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int longClickable=0x7f01003c;
+        /** 
+             Defines the minimum height of the view. It is not guaranteed
+             the view will be able to achieve this minimum height (for example,
+             if its parent layout constrains it with less available height).
+        
+         <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int minHeight=0x7f010042;
+        /** 
+             Defines the minimum width of the view. It is not guaranteed
+             the view will be able to achieve this minimum width (for example,
+             if its parent layout constrains it with less available width).
+        
+         <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int minWidth=0x7f010043;
+        /** 
+             Defines the next view to give focus to when the next focus is
+             {@link android.view.View#FOCUS_DOWN}
+
+             If the reference refers to a view that does not exist or is part
+             of a hierarchy that is invisible, a {@link java.lang.RuntimeException}
+             will result when the reference is accessed.
+        
+         <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int nextFocusDown=0x7f010039;
+        /** 
+             Defines the next view to give focus to when the next focus is
+             {@link android.view.View#FOCUS_FORWARD}
+
+             If the reference refers to a view that does not exist or is part
+             of a hierarchy that is invisible, a {@link java.lang.RuntimeException}
+             will result when the reference is accessed.
+        
+         <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int nextFocusForward=0x7f01003a;
+        /** 
+             Defines the next view to give focus to when the next focus is
+             {@link android.view.View#FOCUS_LEFT}.
+
+             If the reference refers to a view that does not exist or is part
+             of a hierarchy that is invisible, a {@link java.lang.RuntimeException}
+             will result when the reference is accessed.
+        
+         <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int nextFocusLeft=0x7f010036;
+        /** 
+             Defines the next view to give focus to when the next focus is
+             {@link android.view.View#FOCUS_RIGHT}
+
+             If the reference refers to a view that does not exist or is part
+             of a hierarchy that is invisible, a {@link java.lang.RuntimeException}
+             will result when the reference is accessed.
+        
+         <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int nextFocusRight=0x7f010037;
+        /** 
+             Defines the next view to give focus to when the next focus is
+             {@link android.view.View#FOCUS_UP}
+
+             If the reference refers to a view that does not exist or is part
+             of a hierarchy that is invisible, a {@link java.lang.RuntimeException}
+             will result when the reference is accessed.
+        
+         <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int nextFocusUp=0x7f010038;
+        /** 
+             Name of the method in this View's context to invoke when the view is
+             clicked. This name must correspond to a public method that takes
+             exactly one parameter of type View. For instance, if you specify
+             <code>android:onClick="sayHello"</code>, you must declare a
+             <code>public void sayHello(View v)</code> method of your context
+             (typically, your Activity).
+        
+         <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int onClick=0x7f010047;
+        /**  Drawable to draw below list content. 
+         <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int overScrollFooter=0x7f010073;
+        /**  Drawable to draw above list content. 
+         <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int overScrollHeader=0x7f010072;
+        /** 
+             Defines over-scrolling behavior. This property is used only if the
+             View is scrollable. Over-scrolling is the ability for the user to
+             receive feedback when attempting to scroll beyond meaningful content.
+        
+         <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>always</code></td><td>0</td><td>
+                 Always show over-scroll effects, even if the content fits entirely
+                 within the available space.
+            </td></tr>
+<tr><td><code>ifContentScrolls</code></td><td>1</td><td>
+                 Only show over-scroll effects if the content is large
+                 enough to meaningfully scroll.
+            </td></tr>
+<tr><td><code>never</code></td><td>2</td><td> Never show over-scroll effects. </td></tr>
+</table>
+         */
+        public static final int overScrollMode=0x7f010048;
+        /** 
+             A drawable to use as the background.  This can be either a reference
+             to a full drawable resource (such as a PNG image, 9-patch,
+             XML state list description, etc), or a solid color such as "#ff000000"
+            (black).
+        
+ <attr name="background" format="reference|color" /> 
+
+             Sets the padding, in pixels, of all four edges.  Padding is defined as
+             space between the edges of the view and the view's content. A views size
+             will include it's padding.  If a {@link android.R.attr#background}
+             is provided, the padding will initially be set to that (0 if the
+             drawable does not have padding).  Explicitly setting a padding value
+             will override the corresponding padding found in the background.
+        
+         <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int padding=0x7f01001b;
+        /**  Sets the padding, in pixels, of the bottom edge; see {@link android.R.attr#padding}. 
+         <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int paddingBottom=0x7f01001f;
+        /**  Sets the padding, in pixels, of the end edge; see {@link android.R.attr#padding}. 
+         <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int paddingEnd=0x7f010021;
+        /**  Sets the padding, in pixels, of the left edge; see {@link android.R.attr#padding}. 
+         <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int paddingLeft=0x7f01001c;
+        /**  Sets the padding, in pixels, of the right edge; see {@link android.R.attr#padding}. 
+         <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int paddingRight=0x7f01001e;
+        /**  Sets the padding, in pixels, of the start edge; see {@link android.R.attr#padding}. 
+         <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int paddingStart=0x7f010020;
+        /**  Sets the padding, in pixels, of the top edge; see {@link android.R.attr#padding}. 
+         <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int paddingTop=0x7f01001d;
+        /** 
+             Defines the persistence of the drawing cache. The drawing cache might be
+             enabled by a ViewGroup for all its children in specific situations (for
+             instance during a scrolling.) This property lets you persist the cache
+             in memory after its initial usage. Persisting the cache consumes more
+             memory but may prevent frequent garbage collection is the cache is created
+             over and over again. By default the persistence is set to scrolling.
+        
+         <p>Must be one or more (separated by '|') of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>none</code></td><td>0x0</td><td> The drawing cache is not persisted after use. </td></tr>
+<tr><td><code>animation</code></td><td>0x1</td><td> The drawing cache is persisted after a layout animation. </td></tr>
+<tr><td><code>scrolling</code></td><td>0x2</td><td> The drawing cache is persisted after a scroll. </td></tr>
+<tr><td><code>all</code></td><td>0x3</td><td> The drawing cache is always persisted. </td></tr>
+</table>
+         */
+        public static final int persistentDrawingCache=0x7f01005f;
+        /** <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int plaColumnNumber=0x7f010011;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int plaColumnPaddingLeft=0x7f010013;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int plaColumnPaddingRight=0x7f010014;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int plaHorizontalSpacing=0x7f010016;
+        /** <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int plaLandscapeColumnNumber=0x7f010012;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int plaVerticalSpacing=0x7f010015;
+        /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int ptrAdapterViewBackground=0x7f010000;
+        /** <p>Must be one or more (separated by '|') of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>rotate</code></td><td>0x0</td><td></td></tr>
+<tr><td><code>flip</code></td><td>0x1</td><td></td></tr>
+</table>
+         */
+        public static final int ptrAnimationStyle=0x7f01000c;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ptrDrawable=0x7f010006;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ptrDrawableBottom=0x7f010008;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ptrDrawableTop=0x7f010007;
+        /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int ptrHeaderBackground=0x7f010001;
+        /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int ptrHeaderSubTextColor=0x7f010003;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ptrHeaderTextAppearance=0x7f01000a;
+        /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int ptrHeaderTextColor=0x7f010002;
+        /** <p>Must be one or more (separated by '|') of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>disabled</code></td><td>0x0</td><td></td></tr>
+<tr><td><code>pullDownFromTop</code></td><td>0x1</td><td></td></tr>
+<tr><td><code>pullUpFromBottom</code></td><td>0x2</td><td></td></tr>
+<tr><td><code>both</code></td><td>0x3</td><td></td></tr>
+</table>
+         */
+        public static final int ptrMode=0x7f010004;
+        /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a boolean value, either "<code>true</code>" or "<code>false</code>".
+         */
+        public static final int ptrOverScroll=0x7f010009;
+        /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a boolean value, either "<code>true</code>" or "<code>false</code>".
+         */
+        public static final int ptrShowIndicator=0x7f010005;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ptrSubHeaderTextAppearance=0x7f01000b;
+        /**  Defines which edges should be faded on scrolling. 
+         <p>Must be one or more (separated by '|') of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>none</code></td><td>0x00000000</td><td> No edge is faded. </td></tr>
+<tr><td><code>horizontal</code></td><td>0x00001000</td><td> Fades horizontal edges only. </td></tr>
+<tr><td><code>vertical</code></td><td>0x00002000</td><td> Fades vertical edges only. </td></tr>
+</table>
+         */
+        public static final int requiresFadingEdge=0x7f010034;
+        /**  rotation of the view, in degrees. 
+         <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int rotation=0x7f01004e;
+        /**  rotation of the view around the x axis, in degrees. 
+         <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int rotationX=0x7f01004f;
+        /**  rotation of the view around the y axis, in degrees. 
+         <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int rotationY=0x7f010050;
+        /** 
+             If unset, no state will be saved for this view when it is being
+             frozen. The default is true, allowing the view to be saved
+             (however it also must have an ID assigned to it for its
+             state to be saved).  Setting this to false only disables the
+             state for this view, not for its children which may still
+             be saved.
+        
+         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int saveEnabled=0x7f01003d;
+        /**  scale of the view in the x direction. 
+         <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int scaleX=0x7f010051;
+        /**  scale of the view in the y direction. 
+         <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int scaleY=0x7f010052;
+        /**  The initial horizontal scroll offset, in pixels. 
+         <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int scrollX=0x7f010019;
+        /**  The initial vertical scroll offset, in pixels. 
+         <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int scrollY=0x7f01001a;
+        /**  Defines whether the horizontal scrollbar track should always be drawn. 
+         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int scrollbarAlwaysDrawHorizontalTrack=0x7f010031;
+        /**  Defines whether the vertical scrollbar track should always be drawn. 
+         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int scrollbarAlwaysDrawVerticalTrack=0x7f010032;
+        /**  Defines the delay in milliseconds that a scrollbar waits before fade out. 
+         <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int scrollbarDefaultDelayBeforeFade=0x7f01002b;
+        /**  Defines the delay in milliseconds that a scrollbar takes to fade out. 
+         <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int scrollbarFadeDuration=0x7f01002a;
+        /**  Sets the width of vertical scrollbars and height of horizontal scrollbars. 
+         <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int scrollbarSize=0x7f01002c;
+        /** 
+             Controls the scrollbar style and position. The scrollbars can be overlaid or
+             inset. When inset, they add to the padding of the view. And the
+             scrollbars can be drawn inside the padding area or on the edge of
+             the view. For example, if a view has a background drawable and you
+             want to draw the scrollbars inside the padding specified by the
+             drawable, you can use insideOverlay or insideInset. If you want them
+             to appear at the edge of the view, ignoring the padding, then you can
+             use outsideOverlay or outsideInset.
+        
+         <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>insideOverlay</code></td><td>0x0</td><td> Inside the padding and overlaid </td></tr>
+<tr><td><code>insideInset</code></td><td>0x01000000</td><td> Inside the padding and inset </td></tr>
+<tr><td><code>outsideOverlay</code></td><td>0x02000000</td><td> Edge of the view and overlaid </td></tr>
+<tr><td><code>outsideInset</code></td><td>0x03000000</td><td> Edge of the view and inset </td></tr>
+</table>
+         */
+        public static final int scrollbarStyle=0x7f010027;
+        /**  Defines the horizontal scrollbar thumb drawable. 
+         <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int scrollbarThumbHorizontal=0x7f01002d;
+        /**  Defines the vertical scrollbar thumb drawable. 
+         <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int scrollbarThumbVertical=0x7f01002e;
+        /**  Defines the horizontal scrollbar track drawable. 
+         <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int scrollbarTrackHorizontal=0x7f01002f;
+        /**  Defines the vertical scrollbar track drawable. 
+         <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int scrollbarTrackVertical=0x7f010030;
+        /**  Defines which scrollbars should be displayed on scrolling or not. 
+         <p>Must be one or more (separated by '|') of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>none</code></td><td>0x00000000</td><td> No scrollbar is displayed. </td></tr>
+<tr><td><code>horizontal</code></td><td>0x00000100</td><td> Displays horizontal scrollbar only. </td></tr>
+<tr><td><code>vertical</code></td><td>0x00000200</td><td> Displays vertical scrollbar only. </td></tr>
+</table>
+         */
+        public static final int scrollbars=0x7f010026;
+        /** 
+             When set to true, the list uses a drawing cache during scrolling.
+             This makes the rendering faster but uses more memory. The default
+             value is true.
+        
+         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int scrollingCache=0x7f010067;
+        /** 
+             When set to true, the list will use a more refined calculation
+             method based on the pixels height of the items visible on screen. This
+             property is set to true by default but should be set to false if your adapter
+             will display items of varying heights. When this property is set to true and
+             your adapter displays items of varying heights, the scrollbar thumb will
+             change size as the user scrolls through the list. When set to fale, the list
+             will use only the number of items in the adapter and the number of items visible
+             on screen to determine the scrollbar's properties.
+        
+         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int smoothScrollbar=0x7f01006c;
+        /** 
+             Boolean that controls whether a view should have sound effects
+             enabled for events such as clicking and touching.
+        
+         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int soundEffectsEnabled=0x7f010044;
+        /** 
+             Sets whether this ViewGroup should split MotionEvents
+             to separate child views during touch event dispatch.
+             If false (default), touch events will be dispatched to
+             the child view where the first pointer went down until
+             the last pointer goes up.
+             If true, touch events may be dispatched to multiple children.
+             MotionEvents for each pointer will be dispatched to the child
+             view where the initial ACTION_DOWN event happened.
+             See {@link android.view.ViewGroup#setMotionEventSplittingEnabled(boolean)}
+             for more information.
+        
+         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int splitMotionEvents=0x7f010063;
+        /**  Used by ListView and GridView to stack their content from the bottom. 
+         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int stackFromBottom=0x7f010066;
+        /** 
+             Supply a tag for this view containing a String, to be retrieved
+             later with {@link android.view.View#getTag View.getTag()} or
+             searched for with {@link android.view.View#findViewWithTag
+             View.findViewWithTag()}.  It is generally preferable to use
+             IDs (through the android:id attribute) instead of tags because
+             they are faster and allow for compile-time type checking.
+        
+         <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int tag=0x7f010018;
+        /** 
+             Alignment of the text. A heuristic is used to determine the resolved
+            text alignment.
+        
+         <p>May be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+<p>May be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>inherit</code></td><td>0</td><td> Default </td></tr>
+<tr><td><code>gravity</code></td><td>1</td><td>
+                 Default for the root view. The gravity determines the alignment, ALIGN_NORMAL,
+                ALIGN_CENTER, or ALIGN_OPPOSITE, which are relative to each paragraph’s
+                text direction
+            </td></tr>
+<tr><td><code>textStart</code></td><td>2</td><td> Align to the start of the paragraph, e.g. ALIGN_NORMAL. </td></tr>
+<tr><td><code>textEnd</code></td><td>3</td><td> Align to the end of the paragraph, e.g. ALIGN_OPPOSITE. </td></tr>
+<tr><td><code>center</code></td><td>4</td><td> Center the paragraph, e.g. ALIGN_CENTER. </td></tr>
+<tr><td><code>viewStart</code></td><td>5</td><td>
+                 Align to the start of the view, which is ALIGN_LEFT if the view’s resolved
+                layoutDirection is LTR, and ALIGN_RIGHT otherwise.
+            </td></tr>
+<tr><td><code>viewEnd</code></td><td>6</td><td>
+                 Align to the end of the view, which is ALIGN_RIGHT if the view’s resolved
+                layoutDirection is LTR, and ALIGN_LEFT otherwise
+            </td></tr>
+</table>
+         */
+        public static final int textAlignment=0x7f010057;
+        /** 
+             Direction of the text. A heuristic is used to determine the resolved text direction
+             of paragraphs.
+        
+         <p>May be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+<p>May be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>inherit</code></td><td>0</td><td> Default </td></tr>
+<tr><td><code>firstStrong</code></td><td>1</td><td>
+                 Default for the root view. The first strong directional character determines the
+                 paragraph direction.  If there is no strong directional character, the paragraph
+                 direction is the view’s resolved layout direction.
+            </td></tr>
+<tr><td><code>anyRtl</code></td><td>2</td><td>
+                 The paragraph direction is RTL if it contains any strong RTL character, otherwise
+                 it is LTR if it contains any strong LTR characters.  If there are neither, the
+                 paragraph direction is the view’s resolved layout direction.
+            </td></tr>
+<tr><td><code>ltr</code></td><td>3</td><td> The paragraph direction is left to right. </td></tr>
+<tr><td><code>rtl</code></td><td>4</td><td> The paragraph direction is right to left. </td></tr>
+<tr><td><code>locale</code></td><td>5</td><td> The paragraph direction is coming from the system Locale. </td></tr>
+</table>
+         */
+        public static final int textDirection=0x7f010056;
+        /** 
+             When set to true, the list will filter results as the user types. The
+             List's adapter must support the Filterable interface for this to work.
+        
+         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int textFilterEnabled=0x7f010068;
+        /** 
+             Sets the transcript mode for the list. In transcript mode, the list
+             scrolls to the bottom to make new items visible when they are added.
+        
+         <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>disabled</code></td><td>0</td><td> Disables transcript mode. This is the default value. </td></tr>
+<tr><td><code>normal</code></td><td>1</td><td>
+                 The list will automatically scroll to the bottom when
+                 a data set change notification is received and only if the last item is
+                 already visible on screen.
+            </td></tr>
+<tr><td><code>alwaysScroll</code></td><td>2</td><td>
+                 The list will automatically scroll to the bottom, no matter what items
+                 are currently visible.
+            </td></tr>
+</table>
+         */
+        public static final int transcriptMode=0x7f010069;
+        /** 
+             x location of the pivot point around which the view will rotate and scale.
+             This xml attribute sets the pivotX property of the View.
+        
+         <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int transformPivotX=0x7f01004c;
+        /** 
+             y location of the pivot point around which the view will rotate and scale.
+             This xml attribute sets the pivotY property of the View.
+        
+         <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int transformPivotY=0x7f01004d;
+        /** 
+             translation in x of the view. This value is added post-layout to the left
+             property of the view, which is set by its layout.
+        
+         <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int translationX=0x7f01004a;
+        /** 
+             translation in y of the view. This value is added post-layout to the left
+             property of the view, which is set by its layout.
+        
+         <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int translationY=0x7f01004b;
+        /**  Determines which side the vertical scroll bar should be placed on. 
+         <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>defaultPosition</code></td><td>0</td><td> Place the scroll bar wherever the system default determines. </td></tr>
+<tr><td><code>left</code></td><td>1</td><td> Place the scroll bar on the left. </td></tr>
+<tr><td><code>right</code></td><td>2</td><td> Place the scroll bar on the right. </td></tr>
+</table>
+         */
+        public static final int verticalScrollbarPosition=0x7f010053;
+        /**  Controls the initial visibility of the view. 
+         <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>visible</code></td><td>0</td><td> Visible on screen; the default value. </td></tr>
+<tr><td><code>invisible</code></td><td>1</td><td> Not displayed, but taken into account during layout (space is left for it). </td></tr>
+<tr><td><code>gone</code></td><td>2</td><td> Completely hidden, as if the view had not been added. </td></tr>
+</table>
+         */
+        public static final int visibility=0x7f010024;
+    }
+    public static final class color {
+        public static final int bg_grey=0x7f0a0022;
+        public static final int black=0x7f0a0002;
+        public static final int blue=0x7f0a0010;
+        public static final int canary_yellow=0x7f0a0011;
+        public static final int carmine_red=0x7f0a0016;
+        public static final int chocolate=0x7f0a0020;
+        public static final int crop_background=0x7f0a000d;
+        public static final int dark_green=0x7f0a001d;
+        public static final int dark_purple=0x7f0a001c;
+        public static final int gray=0x7f0a0003;
+        public static final int gray_black=0x7f0a0006;
+        public static final int gray_light=0x7f0a0005;
+        public static final int gray_white=0x7f0a0004;
+        public static final int green=0x7f0a000f;
+        public static final int grey=0x7f0a0021;
+        public static final int hot_ink=0x7f0a0017;
+        public static final int lemon_yellow=0x7f0a0012;
+        public static final int list_divider=0x7f0a000a;
+        public static final int magenta=0x7f0a0018;
+        public static final int mineral_orange=0x7f0a0015;
+        public static final int moss_green=0x7f0a001e;
+        public static final int none=0x7f0a000e;
+        public static final int orange=0x7f0a0009;
+        public static final int parrot_green=0x7f0a001f;
+        public static final int peacpck_blue=0x7f0a001b;
+        public static final int pink=0x7f0a0008;
+        public static final int powder_blue=0x7f0a0019;
+        public static final int red=0x7f0a0000;
+        public static final int salmon_orange=0x7f0a0013;
+        public static final int spanish_orange=0x7f0a0014;
+        public static final int text_color=0x7f0a0023;
+        public static final int transparent=0x7f0a000b;
+        public static final int turquoise=0x7f0a001a;
+        public static final int white=0x7f0a0001;
+        public static final int window_bg=0x7f0a000c;
+        public static final int yellow=0x7f0a0007;
+    }
+    public static final class dimen {
+        /** 
+         Customize dimensions originally defined in res/values/dimens.xml (such as
+         screen margins) for sw720dp devices (e.g. 10" tablets) in landscape here.
+    
+ Default screen margins, per the Android Design guidelines. 
+         */
+        public static final int activity_horizontal_margin=0x7f08000a;
+        public static final int activity_vertical_margin=0x7f08000b;
+        public static final int customprogressbar_widget_default_size=0x7f080009;
+        public static final int edit_group_bg_width=0x7f08000e;
+        public static final int iconcompoundText_widget_default_drawable_padding=0x7f080008;
+        public static final int iconcompoundbutton_widget_default_drawable_padding=0x7f080007;
+        public static final int progressive_dialog_radius=0x7f080006;
+        public static final int refreshable_widget_header_footer_internal_padding=0x7f080005;
+        public static final int refreshable_widget_header_footer_left_right_padding=0x7f080003;
+        public static final int refreshable_widget_header_footer_top_bottom_padding=0x7f080004;
+        public static final int refreshable_widget_indicator_corner_radius=0x7f080001;
+        public static final int refreshable_widget_indicator_internal_padding=0x7f080002;
+        public static final int refreshable_widget_indicator_right_padding=0x7f080000;
+        public static final int thumnail_default_height=0x7f08000d;
+        public static final int thumnail_default_width=0x7f08000c;
+    }
+    public static final class drawable {
+        public static final int badges_diamond=0x7f020000;
+        public static final int badges_paper_plane=0x7f020001;
+        public static final int badges_pen=0x7f020002;
+        public static final int badges_rainbow=0x7f020003;
+        public static final int badges_support=0x7f020004;
+        public static final int bg=0x7f020005;
+        public static final int bg_badges=0x7f020006;
+        public static final int bg_badges2=0x7f020007;
+        public static final int bg_btn=0x7f020008;
+        public static final int bg_cgbg_bb=0x7f020009;
+        public static final int bg_cgbg_white=0x7f02000a;
+        public static final int bg_common_toast=0x7f02000b;
+        public static final int bg_confirm_group_info=0x7f02000c;
+        public static final int bg_confirm_group_info_mid=0x7f02000d;
+        public static final int bg_confirm_group_ok=0x7f02000e;
+        public static final int bg_confirm_group_ok_hover=0x7f02000f;
+        public static final int bg_desk_num=0x7f020010;
+        public static final int bg_desk_num_hover=0x7f020011;
+        public static final int bg_desk_num_nomal=0x7f020012;
+        public static final int bg_edit_group=0x7f020013;
+        public static final int bg_edit_group_ok=0x7f020014;
+        public static final int bg_empty=0x7f020015;
+        public static final int bg_eraser=0x7f020016;
+        public static final int bg_groupname=0x7f020017;
+        public static final int bg_input=0x7f020018;
+        public static final int bg_input_hover=0x7f020019;
+        public static final int bg_input_hover_normal=0x7f02001a;
+        public static final int bg_line=0x7f02001b;
+        public static final int bg_logged_user_m=0x7f02001c;
+        public static final int bg_logged_user_m_hover=0x7f02001d;
+        public static final int bg_logged_user_w=0x7f02001e;
+        public static final int bg_login=0x7f02001f;
+        public static final int bg_not_logged_user_m=0x7f020020;
+        public static final int bg_not_logged_user_m_hover=0x7f020021;
+        public static final int bg_not_logged_user_w=0x7f020022;
+        public static final int bg_nts_chat=0x7f020023;
+        public static final int bg_pop2=0x7f020024;
+        public static final int bg_pop2_btn1=0x7f020025;
+        public static final int bg_pop2_btn1_hover=0x7f020026;
+        public static final int bg_pop2_btn2=0x7f020027;
+        public static final int bg_pop2_btn2_hover=0x7f020028;
+        public static final int bg_randomgroup_activity=0x7f020029;
+        public static final int bg_sel_desk=0x7f02002a;
+        public static final int bg_start=0x7f02002b;
+        public static final int bg_white=0x7f02002c;
+        public static final int btn_bind_desk=0x7f02002d;
+        public static final int btn_bind_desk_ok=0x7f02002e;
+        public static final int btn_bind_desk_ok_hover=0x7f02002f;
+        public static final int btn_confirm_group_cancel=0x7f020030;
+        public static final int btn_confirm_group_cancel_hover=0x7f020031;
+        public static final int btn_confirm_group_ok=0x7f020032;
+        public static final int btn_erasure=0x7f020033;
+        public static final int btn_erasure_pressed=0x7f020034;
+        public static final int btn_gender_female=0x7f020035;
+        public static final int btn_gender_male=0x7f020036;
+        public static final int btn_join=0x7f020037;
+        public static final int btn_join_hover=0x7f020038;
+        public static final int btn_join_normal=0x7f020039;
+        public static final int btn_ok=0x7f02003a;
+        public static final int btn_ok_hover=0x7f02003b;
+        public static final int clock_bg=0x7f02003c;
+        public static final int clock_dial=0x7f02003d;
+        public static final int clock_hour=0x7f02003e;
+        public static final int clock_minute=0x7f02003f;
+        public static final int clock_second=0x7f020040;
+        public static final int clock_wall=0x7f020041;
+        public static final int cloud=0x7f020042;
+        public static final int cuountdown_1=0x7f020043;
+        public static final int cuountdown_2=0x7f020044;
+        public static final int cuountdown_3=0x7f020045;
+        public static final int custom_progressive_dialog_bg=0x7f020046;
+        public static final int dialog_bg=0x7f020047;
+        public static final int edit_default=0x7f020048;
+        public static final int edit_ip_bg=0x7f020049;
+        public static final int ic_classroom=0x7f02004a;
+        public static final int ic_launcher=0x7f02004b;
+        public static final int ic_send=0x7f02004c;
+        public static final int ic_send_btn=0x7f02004d;
+        public static final int ic_send_hover=0x7f02004e;
+        public static final int ic_user_female=0x7f02004f;
+        public static final int ic_user_male=0x7f020050;
+        public static final int ico_big=0x7f020051;
+        public static final int ico_black=0x7f020052;
+        public static final int ico_canary_yellow=0x7f020053;
+        public static final int ico_carmine_red=0x7f020054;
+        public static final int ico_checked=0x7f020055;
+        public static final int ico_chocolate=0x7f020056;
+        public static final int ico_dark_green=0x7f020057;
+        public static final int ico_dark_purple=0x7f020058;
+        public static final int ico_eraser=0x7f020059;
+        public static final int ico_eraser_big=0x7f02005a;
+        public static final int ico_eraser_empty=0x7f02005b;
+        public static final int ico_eraser_mid=0x7f02005c;
+        public static final int ico_eraser_sml=0x7f02005d;
+        public static final int ico_grey=0x7f02005e;
+        public static final int ico_hot_ink=0x7f02005f;
+        public static final int ico_lemon_yellow=0x7f020060;
+        public static final int ico_magenta=0x7f020061;
+        public static final int ico_marine_green=0x7f020062;
+        public static final int ico_mid=0x7f020063;
+        public static final int ico_mineral_orange=0x7f020064;
+        public static final int ico_moss_green=0x7f020065;
+        public static final int ico_parrot_green=0x7f020066;
+        public static final int ico_peacpck_blue=0x7f020067;
+        public static final int ico_powder_blue=0x7f020068;
+        public static final int ico_salmon_orange=0x7f020069;
+        public static final int ico_sml=0x7f02006a;
+        public static final int ico_spanish_orange=0x7f02006b;
+        public static final int ico_turquoise=0x7f02006c;
+        public static final int ico_user_f_hover=0x7f02006d;
+        public static final int ico_user_m_hover=0x7f02006e;
+        public static final int ico_white=0x7f02006f;
+        public static final int icon_checked=0x7f020070;
+        public static final int layout_bg=0x7f020071;
+        public static final int no_bg=0x7f020072;
+        public static final int number_1=0x7f020073;
+        public static final int number_1_hold=0x7f020074;
+        public static final int number_1_press=0x7f020075;
+        public static final int number_2=0x7f020076;
+        public static final int number_2_hold=0x7f020077;
+        public static final int number_2_press=0x7f020078;
+        public static final int number_3=0x7f020079;
+        public static final int number_3_hold=0x7f02007a;
+        public static final int number_3_press=0x7f02007b;
+        public static final int number_4=0x7f02007c;
+        public static final int number_4_hold=0x7f02007d;
+        public static final int number_4_press=0x7f02007e;
+        public static final int number_5=0x7f02007f;
+        public static final int number_5_hold=0x7f020080;
+        public static final int number_5_press=0x7f020081;
+        public static final int number_one=0x7f020082;
+        public static final int pager_down=0x7f020083;
+        public static final int pager_up=0x7f020084;
+        public static final int paper_down_hold=0x7f020085;
+        public static final int paper_up_hold=0x7f020086;
+        public static final int paper_up_press=0x7f020087;
+        public static final int press_down_press=0x7f020088;
+        public static final int progress_bg=0x7f020089;
+        public static final int puke=0x7f02008a;
+        public static final int puke_hover=0x7f02008b;
+        public static final int ready=0x7f02008c;
+        public static final int refreshable_widget_arrow_down=0x7f02008d;
+        public static final int refreshable_widget_arrow_up=0x7f02008e;
+        public static final int refreshable_widget_default_flip_bottom=0x7f02008f;
+        public static final int refreshable_widget_default_flip_top=0x7f020090;
+        public static final int refreshable_widget_default_rotate=0x7f020091;
+        public static final int refreshable_widget_indicator_bg_bottom=0x7f020092;
+        public static final int refreshable_widget_indicator_bg_top=0x7f020093;
+        public static final int responder=0x7f020094;
+        public static final int responder_hover=0x7f020095;
+        public static final int responder_select=0x7f020096;
+        public static final int score_background=0x7f020097;
+        public static final int selector_groupnumber=0x7f020098;
+        public static final int setting_ip=0x7f020099;
+        public static final int wheel_bg=0x7f02009a;
+        public static final int wheel_val=0x7f02009b;
+        public static final int yes_bg=0x7f02009c;
+    }
+    public static final class id {
+        public static final int action_settings=0x7f0700a1;
+        public static final int afterDescendants=0x7f070036;
+        public static final int all=0x7f070034;
+        public static final int always=0x7f07001c;
+        public static final int alwaysScroll=0x7f070039;
+        public static final int animation=0x7f070032;
+        public static final int anyRtl=0x7f070029;
+        public static final int auto=0x7f070019;
+        public static final int beforeDescendants=0x7f070035;
+        public static final int bg_select_btn=0x7f07004a;
+        public static final int big=0x7f07006a;
+        public static final int blocksDescendants=0x7f070037;
+        public static final int both=0x7f070003;
+        public static final int btn_agree=0x7f070048;
+        public static final int btn_bind=0x7f070042;
+        public static final int btn_confirm=0x7f070082;
+        public static final int btn_disagree=0x7f070047;
+        public static final int btn_join=0x7f07009f;
+        public static final int btn_ok=0x7f070078;
+        public static final int calendar=0x7f070050;
+        public static final int center=0x7f07002d;
+        public static final int city=0x7f07004e;
+        public static final int cleanAllBtn=0x7f07008a;
+        public static final int color_canary_yellow=0x7f070058;
+        public static final int color_white=0x7f07004b;
+        public static final int countdown_image=0x7f070054;
+        public static final int country=0x7f07004f;
+        public static final int defaultPosition=0x7f07001f;
+        public static final int disabled=0x7f070000;
+        public static final int dismiss=0x7f070057;
+        public static final int earise=0x7f070073;
+        public static final int earise_big=0x7f070087;
+        public static final int earise_middle=0x7f070088;
+        public static final int earise_small=0x7f070089;
+        public static final int edit_group_name=0x7f070075;
+        public static final int edit_ip_name=0x7f070079;
+        public static final int entrue=0x7f070056;
+        public static final int et_stname=0x7f070098;
+        public static final int et_stnumber=0x7f07009a;
+        public static final int expandable=0x7f07000b;
+        public static final int expandable_icon=0x7f07000c;
+        public static final int expandable_icon_collapse=0x7f07000e;
+        public static final int expandable_icon_expand=0x7f07000d;
+        public static final int expandable_toggle_button=0x7f07000a;
+        public static final int female=0x7f07009d;
+        public static final int firstStrong=0x7f070028;
+        public static final int flip=0x7f070005;
+        public static final int gender_group=0x7f07009b;
+        public static final int gone=0x7f070011;
+        public static final int gravity=0x7f07002a;
+        public static final int group_icon=0x7f070044;
+        public static final int group_name=0x7f070045;
+        /** bindingdesk
+         */
+        public static final int gv_desk_number=0x7f070041;
+        public static final int gv_group_member=0x7f070095;
+        public static final int hardware=0x7f070023;
+        public static final int high=0x7f07001b;
+        public static final int horizon_listview=0x7f070077;
+        public static final int horizontal=0x7f070013;
+        public static final int hour=0x7f070051;
+        public static final int ib_setting_ip=0x7f070094;
+        public static final int ico_big_checked=0x7f07006c;
+        public static final int ico_black=0x7f070068;
+        public static final int ico_carmine_red=0x7f07005d;
+        public static final int ico_chocolate=0x7f070067;
+        public static final int ico_dark_green=0x7f070064;
+        public static final int ico_dark_purple=0x7f070063;
+        public static final int ico_grey=0x7f070069;
+        public static final int ico_hot_ink=0x7f07005e;
+        public static final int ico_lemon_yellow=0x7f070059;
+        public static final int ico_magenta=0x7f07005f;
+        public static final int ico_middle_checked=0x7f07006f;
+        public static final int ico_mineral_orange=0x7f07005c;
+        public static final int ico_moss_green=0x7f070065;
+        public static final int ico_parrot_green=0x7f070066;
+        public static final int ico_peacpck_blue=0x7f070062;
+        public static final int ico_powder_blue=0x7f070060;
+        public static final int ico_salmon_orange=0x7f07005a;
+        public static final int ico_small_checked=0x7f070072;
+        public static final int ico_spanish_orange=0x7f07005b;
+        public static final int ico_turquoise=0x7f070061;
+        public static final int ifContentScrolls=0x7f07001d;
+        public static final int image_preview=0x7f070076;
+        public static final int img_list_item=0x7f070084;
+        public static final int inherit=0x7f070026;
+        public static final int insideInset=0x7f070016;
+        public static final int insideOverlay=0x7f070015;
+        public static final int invisible=0x7f070010;
+        public static final int iv_num_bg=0x7f070085;
+        public static final int join_relativelayout=0x7f07009e;
+        public static final int left=0x7f070020;
+        public static final int line=0x7f07003f;
+        public static final int line1=0x7f070040;
+        public static final int liner_layout=0x7f07008c;
+        public static final int ll_add_partner=0x7f070096;
+        /** comfirm group 
+         */
+        public static final int ll_groupinfo=0x7f070043;
+        /** common
+         */
+        public static final int llayout=0x7f07003d;
+        public static final int llayout1=0x7f070097;
+        public static final int llayout2=0x7f070099;
+        public static final int locale=0x7f070027;
+        public static final int low=0x7f07001a;
+        public static final int ltr=0x7f070024;
+        public static final int male=0x7f07009c;
+        public static final int middle=0x7f07006d;
+        public static final int mm=0x7f070052;
+        public static final int multipleChoice=0x7f07003b;
+        public static final int multipleChoiceModal=0x7f07003c;
+        public static final int never=0x7f07001e;
+        public static final int no=0x7f070031;
+        public static final int none=0x7f070012;
+        public static final int normal=0x7f070038;
+        public static final int number=0x7f070083;
+        public static final int number_five=0x7f070081;
+        public static final int number_four=0x7f070080;
+        public static final int number_one=0x7f07007d;
+        public static final int number_three=0x7f07007f;
+        public static final int number_two=0x7f07007e;
+        public static final int outsideInset=0x7f070018;
+        public static final int outsideOverlay=0x7f070017;
+        public static final int pager_down=0x7f07007c;
+        public static final int pager_up=0x7f07007b;
+        public static final int pencile_big=0x7f07006b;
+        public static final int pencile_middle=0x7f07006e;
+        public static final int pencile_small=0x7f070071;
+        public static final int progress=0x7f07008b;
+        public static final int province=0x7f07004d;
+        public static final int pullDownFromTop=0x7f070001;
+        public static final int pullUpFromBottom=0x7f070002;
+        public static final int refresh_header=0x7f07008e;
+        public static final int refresh_image=0x7f07008f;
+        public static final int refresh_progress=0x7f070090;
+        public static final int refresh_sub_text=0x7f070092;
+        public static final int refresh_text=0x7f070091;
+        public static final int refreshable_widget_gridview=0x7f070007;
+        public static final int refreshable_widget_scrollview=0x7f070009;
+        public static final int refreshable_widget_webview=0x7f070008;
+        public static final int right=0x7f070021;
+        public static final int rlayout=0x7f07003e;
+        public static final int rotate=0x7f070004;
+        public static final int rtl=0x7f070025;
+        public static final int scrolling=0x7f070033;
+        public static final int singleChoice=0x7f07003a;
+        /** draw box 
+         */
+        public static final int sketchpad=0x7f070049;
+        public static final int sliding_menu_selected_view=0x7f070006;
+        public static final int small=0x7f070070;
+        public static final int software=0x7f070022;
+        public static final int student_list=0x7f07008d;
+        public static final int submit_button=0x7f070074;
+        public static final int sys_exit=0x7f0700a2;
+        public static final int textEnd=0x7f07002c;
+        public static final int textStart=0x7f07002b;
+        public static final int text_notice=0x7f0700a0;
+        public static final int title=0x7f070055;
+        public static final int toast_text=0x7f070053;
+        public static final int tv_loading_msg=0x7f070093;
+        public static final int tv_num_name=0x7f070086;
+        public static final int vertical=0x7f070014;
+        public static final int viewEnd=0x7f07002f;
+        public static final int viewPager=0x7f07007a;
+        public static final int viewStart=0x7f07002e;
+        public static final int visible=0x7f07000f;
+        public static final int waiting_other_student=0x7f070046;
+        public static final int webview=0x7f07004c;
+        public static final int yes=0x7f070030;
+    }
+    public static final class layout {
+        public static final int binddesk=0x7f030000;
+        public static final int canvas2=0x7f030001;
+        public static final int cities_layout=0x7f030002;
+        public static final int clock_view=0x7f030003;
+        public static final int common_toast=0x7f030004;
+        public static final int confirm_group_info=0x7f030005;
+        public static final int count_down_activity=0x7f030006;
+        public static final int count_down_dialog=0x7f030007;
+        public static final int dialog=0x7f030008;
+        public static final int draw_box=0x7f030009;
+        public static final int edit_group_info=0x7f03000a;
+        public static final int edit_ip_info=0x7f03000b;
+        public static final int evaluate_activity=0x7f03000c;
+        public static final int evaluate_item=0x7f03000d;
+        public static final int horizontal_list_item=0x7f03000e;
+        public static final int item_desk_number=0x7f03000f;
+        public static final int item_group_mem=0x7f030010;
+        public static final int network_dialog=0x7f030011;
+        public static final int popup_window=0x7f030012;
+        public static final int progress=0x7f030013;
+        public static final int progress_view=0x7f030014;
+        public static final int random_group_activity=0x7f030015;
+        public static final int refreshable_header=0x7f030016;
+        public static final int splash=0x7f030017;
+        public static final int waiting=0x7f030018;
+    }
+    public static final class menu {
+        public static final int main=0x7f0b0000;
+        public static final int main_menu=0x7f0b0001;
+    }
+    public static final class string {
+        public static final int action_settings=0x7f050007;
+        public static final int app_name=0x7f050000;
+        /**  button 
+         */
+        public static final int btn_retry=0x7f050021;
+        public static final int btn_setting=0x7f050022;
+        public static final int group_name_null=0x7f05001c;
+        public static final int group_name_short_notice=0x7f05001d;
+        public static final int hello_world=0x7f050008;
+        public static final int image_description=0x7f050009;
+        public static final int input_group_name_hint=0x7f05001a;
+        public static final int input_ip_hint=0x7f05001b;
+        public static final int load_dialog_default_text=0x7f05000b;
+        public static final int loading=0x7f05000a;
+        public static final int loading_complete_msg=0x7f050019;
+        public static final int loading_msg=0x7f050018;
+        /** toast
+         */
+        public static final int loading_network_disconnect=0x7f05000e;
+        /**  msg 
+         */
+        public static final int msg_dialog_network_nowork=0x7f050020;
+        /**  Just use standard Pull Down String when pulling up. These can be set for languages which require it 
+         */
+        public static final int pull_to_refresh_from_bottom_pull_label=0x7f050004;
+        public static final int pull_to_refresh_from_bottom_refreshing_label=0x7f050006;
+        public static final int pull_to_refresh_from_bottom_release_label=0x7f050005;
+        /**  
+    <string name="pull_to_refresh_pull_label">Pull to refresh&#8230;</string>
+    <string name="pull_to_refresh_release_label">Release to refresh&#8230;</string>
+    <string name="pull_to_refresh_refreshing_label">Loading&#8230;</string>
+ 
+         */
+        public static final int pull_to_refresh_pull_label=0x7f050001;
+        public static final int pull_to_refresh_refreshing_label=0x7f050003;
+        public static final int pull_to_refresh_release_label=0x7f050002;
+        public static final int sendpaper_notice=0x7f05000d;
+        public static final int toast_choose_atleast_one_desk=0x7f050014;
+        public static final int toast_choose_sex=0x7f05001f;
+        public static final int toast_group_isfull=0x7f050015;
+        public static final int toast_quit_app=0x7f050016;
+        public static final int toast_stname_blank=0x7f050011;
+        public static final int toast_stname_notnull=0x7f05000f;
+        public static final int toast_stname_repeat=0x7f050013;
+        public static final int toast_stname_tooshort=0x7f050010;
+        public static final int toast_stnumber_notnull=0x7f050012;
+        public static final int tost_name_is_not_english_chinese=0x7f050017;
+        public static final int waiting_access_wifi=0x7f05000c;
+        public static final int waiting_other_confirm_tip=0x7f05001e;
+    }
+    public static final class style {
+        /**  All customizations that are NOT specific to a particular API-level can go here. 
+         */
+        public static final int AnimBottom=0x7f060005;
+        /** 
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    
+
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        
+
+        Base application theme for API 11+. This theme completely replaces
+        AppBaseTheme from res/values/styles.xml on API 11+ devices.
+    
+ API 11 theme customizations can go here. 
+
+        Base application theme for API 14+. This theme completely replaces
+        AppBaseTheme from BOTH res/values/styles.xml and
+        res/values-v11/styles.xml on API 14+ devices.
+    
+ API 14 theme customizations can go here. 
+
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+
+    
+
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+
+        
+
+        Base application theme for API 11+. This theme completely replaces
+        AppBaseTheme from res/values/styles.xml on API 11+ devices.
+    
+ API 11 theme customizations can go here. 
+
+        Base application theme for API 14+. This theme completely replaces
+        AppBaseTheme from BOTH res/values/styles.xml and
+        res/values-v11/styles.xml on API 14+ devices.
+    
+ API 14 theme customizations can go here. 
+         */
+        public static final int AppBaseTheme=0x7f060000;
+        /**  Application theme. 
+ All customizations that are NOT specific to a particular API-level can go here. 
+ Application theme. 
+ All customizations that are NOT specific to a particular API-level can go here. 
+         */
+        public static final int AppTheme=0x7f060001;
+        public static final int ConfirmDialog=0x7f060008;
+        /** 
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    
+
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        
+         */
+        public static final int MyAppBaseTheme=0x7f060003;
+        /**  Application theme. 
+         */
+        public static final int MyAppTheme=0x7f060004;
+        public static final int ProgressiveDialog=0x7f060002;
+        public static final int confirm_group=0x7f060007;
+        public static final int loading_dialog=0x7f060006;
+    }
+    public static final class styleable {
+        /** Attributes that can be used with a AbsListView.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #AbsListView_cacheColorHint cn.com.incito.classroom:cacheColorHint}</code></td><td>
+             Indicates that this list will always be drawn on top of solid, single-color
+             opaque background.</td></tr>
+           <tr><td><code>{@link #AbsListView_choiceMode cn.com.incito.classroom:choiceMode}</code></td><td>
+             Defines the choice behavior for the view.</td></tr>
+           <tr><td><code>{@link #AbsListView_drawSelectorOnTop cn.com.incito.classroom:drawSelectorOnTop}</code></td><td>
+             When set to true, the selector will be drawn over the selected item.</td></tr>
+           <tr><td><code>{@link #AbsListView_fastScrollAlwaysVisible cn.com.incito.classroom:fastScrollAlwaysVisible}</code></td><td>
+             When set to true, the list will always show the fast scroll interface.</td></tr>
+           <tr><td><code>{@link #AbsListView_fastScrollEnabled cn.com.incito.classroom:fastScrollEnabled}</code></td><td>
+             Enables the fast scroll thumb that can be dragged to quickly scroll through
+             the list.</td></tr>
+           <tr><td><code>{@link #AbsListView_listSelector cn.com.incito.classroom:listSelector}</code></td><td> Drawable used to indicate the currently selected item in the list.</td></tr>
+           <tr><td><code>{@link #AbsListView_scrollingCache cn.com.incito.classroom:scrollingCache}</code></td><td>
+             When set to true, the list uses a drawing cache during scrolling.</td></tr>
+           <tr><td><code>{@link #AbsListView_smoothScrollbar cn.com.incito.classroom:smoothScrollbar}</code></td><td>
+             When set to true, the list will use a more refined calculation
+             method based on the pixels height of the items visible on screen.</td></tr>
+           <tr><td><code>{@link #AbsListView_stackFromBottom cn.com.incito.classroom:stackFromBottom}</code></td><td> Used by ListView and GridView to stack their content from the bottom.</td></tr>
+           <tr><td><code>{@link #AbsListView_textFilterEnabled cn.com.incito.classroom:textFilterEnabled}</code></td><td>
+             When set to true, the list will filter results as the user types.</td></tr>
+           <tr><td><code>{@link #AbsListView_transcriptMode cn.com.incito.classroom:transcriptMode}</code></td><td>
+             Sets the transcript mode for the list.</td></tr>
+           </table>
+           @see #AbsListView_cacheColorHint
+           @see #AbsListView_choiceMode
+           @see #AbsListView_drawSelectorOnTop
+           @see #AbsListView_fastScrollAlwaysVisible
+           @see #AbsListView_fastScrollEnabled
+           @see #AbsListView_listSelector
+           @see #AbsListView_scrollingCache
+           @see #AbsListView_smoothScrollbar
+           @see #AbsListView_stackFromBottom
+           @see #AbsListView_textFilterEnabled
+           @see #AbsListView_transcriptMode
+         */
+        public static final int[] AbsListView = {
+            0x7f010064, 0x7f010065, 0x7f010066, 0x7f010067,
+            0x7f010068, 0x7f010069, 0x7f01006a, 0x7f01006b,
+            0x7f01006c, 0x7f01006d, 0x7f01006e
+        };
+        /**
+          <p>
+          @attr description
+          
+             Indicates that this list will always be drawn on top of solid, single-color
+             opaque background. This allows the list to optimize drawing.
+        
+
+
+          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:cacheColorHint
+        */
+        public static final int AbsListView_cacheColorHint = 6;
+        /**
+          <p>
+          @attr description
+          
+             Defines the choice behavior for the view. By default, lists do not have
+             any choice behavior. By setting the choiceMode to singleChoice, the list
+             allows up to one item to be in a chosen state. By setting the choiceMode to
+             multipleChoice, the list allows any number of items to be chosen.
+             Finally, by setting the choiceMode to multipleChoiceModal the list allows
+             any number of items to be chosen in a special selection mode.
+             The application will supply a
+             {@link android.widget.AbsListView.MultiChoiceModeListener} using
+             {@link android.widget.AbsListView#setMultiChoiceModeListener} to control the
+             selection mode. This uses the {@link android.view.ActionMode} API.
+        
+
+
+          <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>none</code></td><td>0</td><td> Normal list that does not indicate choices. </td></tr>
+<tr><td><code>singleChoice</code></td><td>1</td><td> The list allows up to one choice. </td></tr>
+<tr><td><code>multipleChoice</code></td><td>2</td><td> The list allows multiple choices. </td></tr>
+<tr><td><code>multipleChoiceModal</code></td><td>3</td><td> The list allows multiple choices in a custom selection mode. </td></tr>
+</table>
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:choiceMode
+        */
+        public static final int AbsListView_choiceMode = 9;
+        /**
+          <p>
+          @attr description
+          
+             When set to true, the selector will be drawn over the selected item.
+             Otherwise the selector is drawn behind the selected item. The default
+             value is false.
+        
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:drawSelectorOnTop
+        */
+        public static final int AbsListView_drawSelectorOnTop = 1;
+        /**
+          <p>
+          @attr description
+          
+             When set to true, the list will always show the fast scroll interface.
+             This setting implies fastScrollEnabled.
+        
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:fastScrollAlwaysVisible
+        */
+        public static final int AbsListView_fastScrollAlwaysVisible = 10;
+        /**
+          <p>
+          @attr description
+          
+             Enables the fast scroll thumb that can be dragged to quickly scroll through
+             the list.
+        
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:fastScrollEnabled
+        */
+        public static final int AbsListView_fastScrollEnabled = 7;
+        /**
+          <p>
+          @attr description
+           Drawable used to indicate the currently selected item in the list. 
+
+
+          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:listSelector
+        */
+        public static final int AbsListView_listSelector = 0;
+        /**
+          <p>
+          @attr description
+          
+             When set to true, the list uses a drawing cache during scrolling.
+             This makes the rendering faster but uses more memory. The default
+             value is true.
+        
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:scrollingCache
+        */
+        public static final int AbsListView_scrollingCache = 3;
+        /**
+          <p>
+          @attr description
+          
+             When set to true, the list will use a more refined calculation
+             method based on the pixels height of the items visible on screen. This
+             property is set to true by default but should be set to false if your adapter
+             will display items of varying heights. When this property is set to true and
+             your adapter displays items of varying heights, the scrollbar thumb will
+             change size as the user scrolls through the list. When set to fale, the list
+             will use only the number of items in the adapter and the number of items visible
+             on screen to determine the scrollbar's properties.
+        
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:smoothScrollbar
+        */
+        public static final int AbsListView_smoothScrollbar = 8;
+        /**
+          <p>
+          @attr description
+           Used by ListView and GridView to stack their content from the bottom. 
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:stackFromBottom
+        */
+        public static final int AbsListView_stackFromBottom = 2;
+        /**
+          <p>
+          @attr description
+          
+             When set to true, the list will filter results as the user types. The
+             List's adapter must support the Filterable interface for this to work.
+        
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:textFilterEnabled
+        */
+        public static final int AbsListView_textFilterEnabled = 4;
+        /**
+          <p>
+          @attr description
+          
+             Sets the transcript mode for the list. In transcript mode, the list
+             scrolls to the bottom to make new items visible when they are added.
+        
+
+
+          <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>disabled</code></td><td>0</td><td> Disables transcript mode. This is the default value. </td></tr>
+<tr><td><code>normal</code></td><td>1</td><td>
+                 The list will automatically scroll to the bottom when
+                 a data set change notification is received and only if the last item is
+                 already visible on screen.
+            </td></tr>
+<tr><td><code>alwaysScroll</code></td><td>2</td><td>
+                 The list will automatically scroll to the bottom, no matter what items
+                 are currently visible.
+            </td></tr>
+</table>
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:transcriptMode
+        */
+        public static final int AbsListView_transcriptMode = 5;
+        /** Attributes that can be used with a ListView.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #ListView_dividerHeight cn.com.incito.classroom:dividerHeight}</code></td><td> Drawable or color to draw between list items.</td></tr>
+           <tr><td><code>{@link #ListView_footerDividersEnabled cn.com.incito.classroom:footerDividersEnabled}</code></td><td>
+             When set to false, the ListView will not draw the divider before each footer view.</td></tr>
+           <tr><td><code>{@link #ListView_headerDividersEnabled cn.com.incito.classroom:headerDividersEnabled}</code></td><td>
+             When set to false, the ListView will not draw the divider after each header view.</td></tr>
+           <tr><td><code>{@link #ListView_overScrollFooter cn.com.incito.classroom:overScrollFooter}</code></td><td> Drawable to draw below list content.</td></tr>
+           <tr><td><code>{@link #ListView_overScrollHeader cn.com.incito.classroom:overScrollHeader}</code></td><td> Drawable to draw above list content.</td></tr>
+           </table>
+           @see #ListView_dividerHeight
+           @see #ListView_footerDividersEnabled
+           @see #ListView_headerDividersEnabled
+           @see #ListView_overScrollFooter
+           @see #ListView_overScrollHeader
+         */
+        public static final int[] ListView = {
+            0x7f01006f, 0x7f010070, 0x7f010071, 0x7f010072,
+            0x7f010073
+        };
+        /**
+          <p>
+          @attr description
+           Drawable or color to draw between list items. 
+ <attr name="divider" format="reference|color" /> 
+
+             Height of the divider. Will use the intrinsic height of the divider if this
+             is not specified.
+        
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:dividerHeight
+        */
+        public static final int ListView_dividerHeight = 0;
+        /**
+          <p>
+          @attr description
+          
+             When set to false, the ListView will not draw the divider before each footer view.
+             The default value is true.
+        
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:footerDividersEnabled
+        */
+        public static final int ListView_footerDividersEnabled = 2;
+        /**
+          <p>
+          @attr description
+          
+             When set to false, the ListView will not draw the divider after each header view.
+             The default value is true.
+        
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:headerDividersEnabled
+        */
+        public static final int ListView_headerDividersEnabled = 1;
+        /**
+          <p>
+          @attr description
+           Drawable to draw below list content. 
+
+
+          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:overScrollFooter
+        */
+        public static final int ListView_overScrollFooter = 4;
+        /**
+          <p>
+          @attr description
+           Drawable to draw above list content. 
+
+
+          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:overScrollHeader
+        */
+        public static final int ListView_overScrollHeader = 3;
+        /** Attributes that can be used with a PinterestLikeAdapterView.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #PinterestLikeAdapterView_plaColumnNumber cn.com.incito.classroom:plaColumnNumber}</code></td><td></td></tr>
+           <tr><td><code>{@link #PinterestLikeAdapterView_plaColumnPaddingLeft cn.com.incito.classroom:plaColumnPaddingLeft}</code></td><td></td></tr>
+           <tr><td><code>{@link #PinterestLikeAdapterView_plaColumnPaddingRight cn.com.incito.classroom:plaColumnPaddingRight}</code></td><td></td></tr>
+           <tr><td><code>{@link #PinterestLikeAdapterView_plaHorizontalSpacing cn.com.incito.classroom:plaHorizontalSpacing}</code></td><td></td></tr>
+           <tr><td><code>{@link #PinterestLikeAdapterView_plaLandscapeColumnNumber cn.com.incito.classroom:plaLandscapeColumnNumber}</code></td><td></td></tr>
+           <tr><td><code>{@link #PinterestLikeAdapterView_plaVerticalSpacing cn.com.incito.classroom:plaVerticalSpacing}</code></td><td></td></tr>
+           </table>
+           @see #PinterestLikeAdapterView_plaColumnNumber
+           @see #PinterestLikeAdapterView_plaColumnPaddingLeft
+           @see #PinterestLikeAdapterView_plaColumnPaddingRight
+           @see #PinterestLikeAdapterView_plaHorizontalSpacing
+           @see #PinterestLikeAdapterView_plaLandscapeColumnNumber
+           @see #PinterestLikeAdapterView_plaVerticalSpacing
+         */
+        public static final int[] PinterestLikeAdapterView = {
+            0x7f010011, 0x7f010012, 0x7f010013, 0x7f010014,
+            0x7f010015, 0x7f010016
+        };
+        /**
+          <p>This symbol is the offset where the {@link cn.com.incito.classroom.R.attr#plaColumnNumber}
+          attribute's value can be found in the {@link #PinterestLikeAdapterView} array.
+
+
+          <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name cn.com.incito.classroom:plaColumnNumber
+        */
+        public static final int PinterestLikeAdapterView_plaColumnNumber = 0;
+        /**
+          <p>This symbol is the offset where the {@link cn.com.incito.classroom.R.attr#plaColumnPaddingLeft}
+          attribute's value can be found in the {@link #PinterestLikeAdapterView} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name cn.com.incito.classroom:plaColumnPaddingLeft
+        */
+        public static final int PinterestLikeAdapterView_plaColumnPaddingLeft = 2;
+        /**
+          <p>This symbol is the offset where the {@link cn.com.incito.classroom.R.attr#plaColumnPaddingRight}
+          attribute's value can be found in the {@link #PinterestLikeAdapterView} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name cn.com.incito.classroom:plaColumnPaddingRight
+        */
+        public static final int PinterestLikeAdapterView_plaColumnPaddingRight = 3;
+        /**
+          <p>This symbol is the offset where the {@link cn.com.incito.classroom.R.attr#plaHorizontalSpacing}
+          attribute's value can be found in the {@link #PinterestLikeAdapterView} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name cn.com.incito.classroom:plaHorizontalSpacing
+        */
+        public static final int PinterestLikeAdapterView_plaHorizontalSpacing = 5;
+        /**
+          <p>This symbol is the offset where the {@link cn.com.incito.classroom.R.attr#plaLandscapeColumnNumber}
+          attribute's value can be found in the {@link #PinterestLikeAdapterView} array.
+
+
+          <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name cn.com.incito.classroom:plaLandscapeColumnNumber
+        */
+        public static final int PinterestLikeAdapterView_plaLandscapeColumnNumber = 1;
+        /**
+          <p>This symbol is the offset where the {@link cn.com.incito.classroom.R.attr#plaVerticalSpacing}
+          attribute's value can be found in the {@link #PinterestLikeAdapterView} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name cn.com.incito.classroom:plaVerticalSpacing
+        */
+        public static final int PinterestLikeAdapterView_plaVerticalSpacing = 4;
+        /** Attributes that can be used with a PullToRefresh.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #PullToRefresh_ptrAdapterViewBackground cn.com.incito.classroom:ptrAdapterViewBackground}</code></td><td></td></tr>
+           <tr><td><code>{@link #PullToRefresh_ptrAnimationStyle cn.com.incito.classroom:ptrAnimationStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #PullToRefresh_ptrDrawable cn.com.incito.classroom:ptrDrawable}</code></td><td></td></tr>
+           <tr><td><code>{@link #PullToRefresh_ptrDrawableBottom cn.com.incito.classroom:ptrDrawableBottom}</code></td><td></td></tr>
+           <tr><td><code>{@link #PullToRefresh_ptrDrawableTop cn.com.incito.classroom:ptrDrawableTop}</code></td><td></td></tr>
+           <tr><td><code>{@link #PullToRefresh_ptrHeaderBackground cn.com.incito.classroom:ptrHeaderBackground}</code></td><td></td></tr>
+           <tr><td><code>{@link #PullToRefresh_ptrHeaderSubTextColor cn.com.incito.classroom:ptrHeaderSubTextColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #PullToRefresh_ptrHeaderTextAppearance cn.com.incito.classroom:ptrHeaderTextAppearance}</code></td><td></td></tr>
+           <tr><td><code>{@link #PullToRefresh_ptrHeaderTextColor cn.com.incito.classroom:ptrHeaderTextColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #PullToRefresh_ptrMode cn.com.incito.classroom:ptrMode}</code></td><td></td></tr>
+           <tr><td><code>{@link #PullToRefresh_ptrOverScroll cn.com.incito.classroom:ptrOverScroll}</code></td><td></td></tr>
+           <tr><td><code>{@link #PullToRefresh_ptrShowIndicator cn.com.incito.classroom:ptrShowIndicator}</code></td><td></td></tr>
+           <tr><td><code>{@link #PullToRefresh_ptrSubHeaderTextAppearance cn.com.incito.classroom:ptrSubHeaderTextAppearance}</code></td><td></td></tr>
+           </table>
+           @see #PullToRefresh_ptrAdapterViewBackground
+           @see #PullToRefresh_ptrAnimationStyle
+           @see #PullToRefresh_ptrDrawable
+           @see #PullToRefresh_ptrDrawableBottom
+           @see #PullToRefresh_ptrDrawableTop
+           @see #PullToRefresh_ptrHeaderBackground
+           @see #PullToRefresh_ptrHeaderSubTextColor
+           @see #PullToRefresh_ptrHeaderTextAppearance
+           @see #PullToRefresh_ptrHeaderTextColor
+           @see #PullToRefresh_ptrMode
+           @see #PullToRefresh_ptrOverScroll
+           @see #PullToRefresh_ptrShowIndicator
+           @see #PullToRefresh_ptrSubHeaderTextAppearance
+         */
+        public static final int[] PullToRefresh = {
+            0x7f010000, 0x7f010001, 0x7f010002, 0x7f010003,
+            0x7f010004, 0x7f010005, 0x7f010006, 0x7f010007,
+            0x7f010008, 0x7f010009, 0x7f01000a, 0x7f01000b,
+            0x7f01000c
+        };
+        /**
+          <p>This symbol is the offset where the {@link cn.com.incito.classroom.R.attr#ptrAdapterViewBackground}
+          attribute's value can be found in the {@link #PullToRefresh} array.
+
+
+          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+          @attr name cn.com.incito.classroom:ptrAdapterViewBackground
+        */
+        public static final int PullToRefresh_ptrAdapterViewBackground = 0;
+        /**
+          <p>This symbol is the offset where the {@link cn.com.incito.classroom.R.attr#ptrAnimationStyle}
+          attribute's value can be found in the {@link #PullToRefresh} array.
+
+
+          <p>Must be one or more (separated by '|') of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>rotate</code></td><td>0x0</td><td></td></tr>
+<tr><td><code>flip</code></td><td>0x1</td><td></td></tr>
+</table>
+          @attr name cn.com.incito.classroom:ptrAnimationStyle
+        */
+        public static final int PullToRefresh_ptrAnimationStyle = 12;
+        /**
+          <p>This symbol is the offset where the {@link cn.com.incito.classroom.R.attr#ptrDrawable}
+          attribute's value can be found in the {@link #PullToRefresh} array.
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          @attr name cn.com.incito.classroom:ptrDrawable
+        */
+        public static final int PullToRefresh_ptrDrawable = 6;
+        /**
+          <p>This symbol is the offset where the {@link cn.com.incito.classroom.R.attr#ptrDrawableBottom}
+          attribute's value can be found in the {@link #PullToRefresh} array.
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          @attr name cn.com.incito.classroom:ptrDrawableBottom
+        */
+        public static final int PullToRefresh_ptrDrawableBottom = 8;
+        /**
+          <p>This symbol is the offset where the {@link cn.com.incito.classroom.R.attr#ptrDrawableTop}
+          attribute's value can be found in the {@link #PullToRefresh} array.
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          @attr name cn.com.incito.classroom:ptrDrawableTop
+        */
+        public static final int PullToRefresh_ptrDrawableTop = 7;
+        /**
+          <p>This symbol is the offset where the {@link cn.com.incito.classroom.R.attr#ptrHeaderBackground}
+          attribute's value can be found in the {@link #PullToRefresh} array.
+
+
+          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+          @attr name cn.com.incito.classroom:ptrHeaderBackground
+        */
+        public static final int PullToRefresh_ptrHeaderBackground = 1;
+        /**
+          <p>This symbol is the offset where the {@link cn.com.incito.classroom.R.attr#ptrHeaderSubTextColor}
+          attribute's value can be found in the {@link #PullToRefresh} array.
+
+
+          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+          @attr name cn.com.incito.classroom:ptrHeaderSubTextColor
+        */
+        public static final int PullToRefresh_ptrHeaderSubTextColor = 3;
+        /**
+          <p>This symbol is the offset where the {@link cn.com.incito.classroom.R.attr#ptrHeaderTextAppearance}
+          attribute's value can be found in the {@link #PullToRefresh} array.
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          @attr name cn.com.incito.classroom:ptrHeaderTextAppearance
+        */
+        public static final int PullToRefresh_ptrHeaderTextAppearance = 10;
+        /**
+          <p>This symbol is the offset where the {@link cn.com.incito.classroom.R.attr#ptrHeaderTextColor}
+          attribute's value can be found in the {@link #PullToRefresh} array.
+
+
+          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+          @attr name cn.com.incito.classroom:ptrHeaderTextColor
+        */
+        public static final int PullToRefresh_ptrHeaderTextColor = 2;
+        /**
+          <p>This symbol is the offset where the {@link cn.com.incito.classroom.R.attr#ptrMode}
+          attribute's value can be found in the {@link #PullToRefresh} array.
+
+
+          <p>Must be one or more (separated by '|') of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>disabled</code></td><td>0x0</td><td></td></tr>
+<tr><td><code>pullDownFromTop</code></td><td>0x1</td><td></td></tr>
+<tr><td><code>pullUpFromBottom</code></td><td>0x2</td><td></td></tr>
+<tr><td><code>both</code></td><td>0x3</td><td></td></tr>
+</table>
+          @attr name cn.com.incito.classroom:ptrMode
+        */
+        public static final int PullToRefresh_ptrMode = 4;
+        /**
+          <p>This symbol is the offset where the {@link cn.com.incito.classroom.R.attr#ptrOverScroll}
+          attribute's value can be found in the {@link #PullToRefresh} array.
+
+
+          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a boolean value, either "<code>true</code>" or "<code>false</code>".
+          @attr name cn.com.incito.classroom:ptrOverScroll
+        */
+        public static final int PullToRefresh_ptrOverScroll = 9;
+        /**
+          <p>This symbol is the offset where the {@link cn.com.incito.classroom.R.attr#ptrShowIndicator}
+          attribute's value can be found in the {@link #PullToRefresh} array.
+
+
+          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a boolean value, either "<code>true</code>" or "<code>false</code>".
+          @attr name cn.com.incito.classroom:ptrShowIndicator
+        */
+        public static final int PullToRefresh_ptrShowIndicator = 5;
+        /**
+          <p>This symbol is the offset where the {@link cn.com.incito.classroom.R.attr#ptrSubHeaderTextAppearance}
+          attribute's value can be found in the {@link #PullToRefresh} array.
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          @attr name cn.com.incito.classroom:ptrSubHeaderTextAppearance
+        */
+        public static final int PullToRefresh_ptrSubHeaderTextAppearance = 11;
+        /** Attributes that can be used with a View.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #View_accessibilityFocusable cn.com.incito.classroom:accessibilityFocusable}</code></td><td> @hide Controls whether this view can take accessibility focus.</td></tr>
+           <tr><td><code>{@link #View_alpha cn.com.incito.classroom:alpha}</code></td><td>
+             alpha property of the view, as a value between 0 (completely transparent) and 1
+             (completely opaque).</td></tr>
+           <tr><td><code>{@link #View_clickable cn.com.incito.classroom:clickable}</code></td><td> Defines whether this view reacts to click events.</td></tr>
+           <tr><td><code>{@link #View_contentDescription cn.com.incito.classroom:contentDescription}</code></td><td>
+             Defines text that briefly describes content of the view.</td></tr>
+           <tr><td><code>{@link #View_drawingCacheQuality cn.com.incito.classroom:drawingCacheQuality}</code></td><td>
+             Defines the quality of translucent drawing caches.</td></tr>
+           <tr><td><code>{@link #View_duplicateParentState cn.com.incito.classroom:duplicateParentState}</code></td><td>
+             When this attribute is set to true, the view gets its drawable state
+             (focused, pressed, etc.</td></tr>
+           <tr><td><code>{@link #View_fadeScrollbars cn.com.incito.classroom:fadeScrollbars}</code></td><td> Defines whether to fade out scrollbars when they are not in use.</td></tr>
+           <tr><td><code>{@link #View_fadingEdge cn.com.incito.classroom:fadingEdge}</code></td><td>
+             This attribute is deprecated and will be ignored as of
+             API level 14 ({@link android.os.Build.VERSION_CODES#ICE_CREAM_SANDWICH}).</td></tr>
+           <tr><td><code>{@link #View_fadingEdgeLength cn.com.incito.classroom:fadingEdgeLength}</code></td><td> Defines the length of the fading edges.</td></tr>
+           <tr><td><code>{@link #View_filterTouchesWhenObscured cn.com.incito.classroom:filterTouchesWhenObscured}</code></td><td>
+             Specifies whether to filter touches when the view's window is obscured by
+             another visible window.</td></tr>
+           <tr><td><code>{@link #View_fitsSystemWindows cn.com.incito.classroom:fitsSystemWindows}</code></td><td>
+             Boolean internal attribute to adjust view layout based on
+             system windows such as the status bar.</td></tr>
+           <tr><td><code>{@link #View_focusable cn.com.incito.classroom:focusable}</code></td><td>
+             Boolean that controls whether a view can take focus.</td></tr>
+           <tr><td><code>{@link #View_focusableInTouchMode cn.com.incito.classroom:focusableInTouchMode}</code></td><td>
+             Boolean that controls whether a view can take focus while in touch mode.</td></tr>
+           <tr><td><code>{@link #View_hapticFeedbackEnabled cn.com.incito.classroom:hapticFeedbackEnabled}</code></td><td>
+             Boolean that controls whether a view should have haptic feedback
+             enabled for events such as long presses.</td></tr>
+           <tr><td><code>{@link #View_id cn.com.incito.classroom:id}</code></td><td>
+             Supply an identifier name for this view, to later retrieve it
+             with {@link android.view.View#findViewById View.findViewById()} or
+             {@link android.app.Activity#findViewById Activity.findViewById()}.</td></tr>
+           <tr><td><code>{@link #View_importantForAccessibility cn.com.incito.classroom:importantForAccessibility}</code></td><td>
+             Controls how this View is important for accessibility which is if it fires
+             accessibility events and if it is reported to accessibility services that
+             query the screen.</td></tr>
+           <tr><td><code>{@link #View_isScrollContainer cn.com.incito.classroom:isScrollContainer}</code></td><td>
+             Set this if the view will serve as a scrolling container, meaing
+             that it can be resized to shrink its overall window so that there
+             will be space for an input method.</td></tr>
+           <tr><td><code>{@link #View_keepScreenOn cn.com.incito.classroom:keepScreenOn}</code></td><td>
+             Controls whether the view's window should keep the screen on
+             while visible.</td></tr>
+           <tr><td><code>{@link #View_layerType cn.com.incito.classroom:layerType}</code></td><td>
+             Specifies the type of layer backing this view.</td></tr>
+           <tr><td><code>{@link #View_layoutDirection cn.com.incito.classroom:layoutDirection}</code></td><td>
+             Defines the direction of layout drawing.</td></tr>
+           <tr><td><code>{@link #View_longClickable cn.com.incito.classroom:longClickable}</code></td><td> Defines whether this view reacts to long click events.</td></tr>
+           <tr><td><code>{@link #View_minHeight cn.com.incito.classroom:minHeight}</code></td><td>
+             Defines the minimum height of the view.</td></tr>
+           <tr><td><code>{@link #View_minWidth cn.com.incito.classroom:minWidth}</code></td><td>
+             Defines the minimum width of the view.</td></tr>
+           <tr><td><code>{@link #View_nextFocusDown cn.com.incito.classroom:nextFocusDown}</code></td><td>
+             Defines the next view to give focus to when the next focus is
+             {@link android.view.View#FOCUS_DOWN}
+
+             If the reference refers to a view that does not exist or is part
+             of a hierarchy that is invisible, a {@link java.lang.RuntimeException}
+             will result when the reference is accessed.</td></tr>
+           <tr><td><code>{@link #View_nextFocusForward cn.com.incito.classroom:nextFocusForward}</code></td><td>
+             Defines the next view to give focus to when the next focus is
+             {@link android.view.View#FOCUS_FORWARD}
+
+             If the reference refers to a view that does not exist or is part
+             of a hierarchy that is invisible, a {@link java.lang.RuntimeException}
+             will result when the reference is accessed.</td></tr>
+           <tr><td><code>{@link #View_nextFocusLeft cn.com.incito.classroom:nextFocusLeft}</code></td><td>
+             Defines the next view to give focus to when the next focus is
+             {@link android.view.View#FOCUS_LEFT}.</td></tr>
+           <tr><td><code>{@link #View_nextFocusRight cn.com.incito.classroom:nextFocusRight}</code></td><td>
+             Defines the next view to give focus to when the next focus is
+             {@link android.view.View#FOCUS_RIGHT}
+
+             If the reference refers to a view that does not exist or is part
+             of a hierarchy that is invisible, a {@link java.lang.RuntimeException}
+             will result when the reference is accessed.</td></tr>
+           <tr><td><code>{@link #View_nextFocusUp cn.com.incito.classroom:nextFocusUp}</code></td><td>
+             Defines the next view to give focus to when the next focus is
+             {@link android.view.View#FOCUS_UP}
+
+             If the reference refers to a view that does not exist or is part
+             of a hierarchy that is invisible, a {@link java.lang.RuntimeException}
+             will result when the reference is accessed.</td></tr>
+           <tr><td><code>{@link #View_onClick cn.com.incito.classroom:onClick}</code></td><td>
+             Name of the method in this View's context to invoke when the view is
+             clicked.</td></tr>
+           <tr><td><code>{@link #View_overScrollMode cn.com.incito.classroom:overScrollMode}</code></td><td>
+             Defines over-scrolling behavior.</td></tr>
+           <tr><td><code>{@link #View_padding cn.com.incito.classroom:padding}</code></td><td>
+             A drawable to use as the background.</td></tr>
+           <tr><td><code>{@link #View_paddingBottom cn.com.incito.classroom:paddingBottom}</code></td><td> Sets the padding, in pixels, of the bottom edge; see {@link android.R.attr#padding}.</td></tr>
+           <tr><td><code>{@link #View_paddingEnd cn.com.incito.classroom:paddingEnd}</code></td><td> Sets the padding, in pixels, of the end edge; see {@link android.R.attr#padding}.</td></tr>
+           <tr><td><code>{@link #View_paddingLeft cn.com.incito.classroom:paddingLeft}</code></td><td> Sets the padding, in pixels, of the left edge; see {@link android.R.attr#padding}.</td></tr>
+           <tr><td><code>{@link #View_paddingRight cn.com.incito.classroom:paddingRight}</code></td><td> Sets the padding, in pixels, of the right edge; see {@link android.R.attr#padding}.</td></tr>
+           <tr><td><code>{@link #View_paddingStart cn.com.incito.classroom:paddingStart}</code></td><td> Sets the padding, in pixels, of the start edge; see {@link android.R.attr#padding}.</td></tr>
+           <tr><td><code>{@link #View_paddingTop cn.com.incito.classroom:paddingTop}</code></td><td> Sets the padding, in pixels, of the top edge; see {@link android.R.attr#padding}.</td></tr>
+           <tr><td><code>{@link #View_requiresFadingEdge cn.com.incito.classroom:requiresFadingEdge}</code></td><td> Defines which edges should be faded on scrolling.</td></tr>
+           <tr><td><code>{@link #View_rotation cn.com.incito.classroom:rotation}</code></td><td> rotation of the view, in degrees.</td></tr>
+           <tr><td><code>{@link #View_rotationX cn.com.incito.classroom:rotationX}</code></td><td> rotation of the view around the x axis, in degrees.</td></tr>
+           <tr><td><code>{@link #View_rotationY cn.com.incito.classroom:rotationY}</code></td><td> rotation of the view around the y axis, in degrees.</td></tr>
+           <tr><td><code>{@link #View_saveEnabled cn.com.incito.classroom:saveEnabled}</code></td><td>
+             If unset, no state will be saved for this view when it is being
+             frozen.</td></tr>
+           <tr><td><code>{@link #View_scaleX cn.com.incito.classroom:scaleX}</code></td><td> scale of the view in the x direction.</td></tr>
+           <tr><td><code>{@link #View_scaleY cn.com.incito.classroom:scaleY}</code></td><td> scale of the view in the y direction.</td></tr>
+           <tr><td><code>{@link #View_scrollX cn.com.incito.classroom:scrollX}</code></td><td> The initial horizontal scroll offset, in pixels.</td></tr>
+           <tr><td><code>{@link #View_scrollY cn.com.incito.classroom:scrollY}</code></td><td> The initial vertical scroll offset, in pixels.</td></tr>
+           <tr><td><code>{@link #View_scrollbarAlwaysDrawHorizontalTrack cn.com.incito.classroom:scrollbarAlwaysDrawHorizontalTrack}</code></td><td> Defines whether the horizontal scrollbar track should always be drawn.</td></tr>
+           <tr><td><code>{@link #View_scrollbarAlwaysDrawVerticalTrack cn.com.incito.classroom:scrollbarAlwaysDrawVerticalTrack}</code></td><td> Defines whether the vertical scrollbar track should always be drawn.</td></tr>
+           <tr><td><code>{@link #View_scrollbarDefaultDelayBeforeFade cn.com.incito.classroom:scrollbarDefaultDelayBeforeFade}</code></td><td> Defines the delay in milliseconds that a scrollbar waits before fade out.</td></tr>
+           <tr><td><code>{@link #View_scrollbarFadeDuration cn.com.incito.classroom:scrollbarFadeDuration}</code></td><td> Defines the delay in milliseconds that a scrollbar takes to fade out.</td></tr>
+           <tr><td><code>{@link #View_scrollbarSize cn.com.incito.classroom:scrollbarSize}</code></td><td> Sets the width of vertical scrollbars and height of horizontal scrollbars.</td></tr>
+           <tr><td><code>{@link #View_scrollbarStyle cn.com.incito.classroom:scrollbarStyle}</code></td><td>
+             Controls the scrollbar style and position.</td></tr>
+           <tr><td><code>{@link #View_scrollbarThumbHorizontal cn.com.incito.classroom:scrollbarThumbHorizontal}</code></td><td> Defines the horizontal scrollbar thumb drawable.</td></tr>
+           <tr><td><code>{@link #View_scrollbarThumbVertical cn.com.incito.classroom:scrollbarThumbVertical}</code></td><td> Defines the vertical scrollbar thumb drawable.</td></tr>
+           <tr><td><code>{@link #View_scrollbarTrackHorizontal cn.com.incito.classroom:scrollbarTrackHorizontal}</code></td><td> Defines the horizontal scrollbar track drawable.</td></tr>
+           <tr><td><code>{@link #View_scrollbarTrackVertical cn.com.incito.classroom:scrollbarTrackVertical}</code></td><td> Defines the vertical scrollbar track drawable.</td></tr>
+           <tr><td><code>{@link #View_scrollbars cn.com.incito.classroom:scrollbars}</code></td><td> Defines which scrollbars should be displayed on scrolling or not.</td></tr>
+           <tr><td><code>{@link #View_soundEffectsEnabled cn.com.incito.classroom:soundEffectsEnabled}</code></td><td>
+             Boolean that controls whether a view should have sound effects
+             enabled for events such as clicking and touching.</td></tr>
+           <tr><td><code>{@link #View_tag cn.com.incito.classroom:tag}</code></td><td>
+             Supply a tag for this view containing a String, to be retrieved
+             later with {@link android.view.View#getTag View.getTag()} or
+             searched for with {@link android.view.View#findViewWithTag
+             View.findViewWithTag()}.</td></tr>
+           <tr><td><code>{@link #View_textAlignment cn.com.incito.classroom:textAlignment}</code></td><td>
+             Alignment of the text.</td></tr>
+           <tr><td><code>{@link #View_textDirection cn.com.incito.classroom:textDirection}</code></td><td>
+             Direction of the text.</td></tr>
+           <tr><td><code>{@link #View_transformPivotX cn.com.incito.classroom:transformPivotX}</code></td><td>
+             x location of the pivot point around which the view will rotate and scale.</td></tr>
+           <tr><td><code>{@link #View_transformPivotY cn.com.incito.classroom:transformPivotY}</code></td><td>
+             y location of the pivot point around which the view will rotate and scale.</td></tr>
+           <tr><td><code>{@link #View_translationX cn.com.incito.classroom:translationX}</code></td><td>
+             translation in x of the view.</td></tr>
+           <tr><td><code>{@link #View_translationY cn.com.incito.classroom:translationY}</code></td><td>
+             translation in y of the view.</td></tr>
+           <tr><td><code>{@link #View_verticalScrollbarPosition cn.com.incito.classroom:verticalScrollbarPosition}</code></td><td> Determines which side the vertical scroll bar should be placed on.</td></tr>
+           <tr><td><code>{@link #View_visibility cn.com.incito.classroom:visibility}</code></td><td> Controls the initial visibility of the view.</td></tr>
+           </table>
+           @see #View_accessibilityFocusable
+           @see #View_alpha
+           @see #View_clickable
+           @see #View_contentDescription
+           @see #View_drawingCacheQuality
+           @see #View_duplicateParentState
+           @see #View_fadeScrollbars
+           @see #View_fadingEdge
+           @see #View_fadingEdgeLength
+           @see #View_filterTouchesWhenObscured
+           @see #View_fitsSystemWindows
+           @see #View_focusable
+           @see #View_focusableInTouchMode
+           @see #View_hapticFeedbackEnabled
+           @see #View_id
+           @see #View_importantForAccessibility
+           @see #View_isScrollContainer
+           @see #View_keepScreenOn
+           @see #View_layerType
+           @see #View_layoutDirection
+           @see #View_longClickable
+           @see #View_minHeight
+           @see #View_minWidth
+           @see #View_nextFocusDown
+           @see #View_nextFocusForward
+           @see #View_nextFocusLeft
+           @see #View_nextFocusRight
+           @see #View_nextFocusUp
+           @see #View_onClick
+           @see #View_overScrollMode
+           @see #View_padding
+           @see #View_paddingBottom
+           @see #View_paddingEnd
+           @see #View_paddingLeft
+           @see #View_paddingRight
+           @see #View_paddingStart
+           @see #View_paddingTop
+           @see #View_requiresFadingEdge
+           @see #View_rotation
+           @see #View_rotationX
+           @see #View_rotationY
+           @see #View_saveEnabled
+           @see #View_scaleX
+           @see #View_scaleY
+           @see #View_scrollX
+           @see #View_scrollY
+           @see #View_scrollbarAlwaysDrawHorizontalTrack
+           @see #View_scrollbarAlwaysDrawVerticalTrack
+           @see #View_scrollbarDefaultDelayBeforeFade
+           @see #View_scrollbarFadeDuration
+           @see #View_scrollbarSize
+           @see #View_scrollbarStyle
+           @see #View_scrollbarThumbHorizontal
+           @see #View_scrollbarThumbVertical
+           @see #View_scrollbarTrackHorizontal
+           @see #View_scrollbarTrackVertical
+           @see #View_scrollbars
+           @see #View_soundEffectsEnabled
+           @see #View_tag
+           @see #View_textAlignment
+           @see #View_textDirection
+           @see #View_transformPivotX
+           @see #View_transformPivotY
+           @see #View_translationX
+           @see #View_translationY
+           @see #View_verticalScrollbarPosition
+           @see #View_visibility
+         */
+        public static final int[] View = {
+            0x7f010017, 0x7f010018, 0x7f010019, 0x7f01001a,
+            0x7f01001b, 0x7f01001c, 0x7f01001d, 0x7f01001e,
+            0x7f01001f, 0x7f010020, 0x7f010021, 0x7f010022,
+            0x7f010023, 0x7f010024, 0x7f010025, 0x7f010026,
+            0x7f010027, 0x7f010028, 0x7f010029, 0x7f01002a,
+            0x7f01002b, 0x7f01002c, 0x7f01002d, 0x7f01002e,
+            0x7f01002f, 0x7f010030, 0x7f010031, 0x7f010032,
+            0x7f010033, 0x7f010034, 0x7f010035, 0x7f010036,
+            0x7f010037, 0x7f010038, 0x7f010039, 0x7f01003a,
+            0x7f01003b, 0x7f01003c, 0x7f01003d, 0x7f01003e,
+            0x7f01003f, 0x7f010040, 0x7f010041, 0x7f010042,
+            0x7f010043, 0x7f010044, 0x7f010045, 0x7f010046,
+            0x7f010047, 0x7f010048, 0x7f010049, 0x7f01004a,
+            0x7f01004b, 0x7f01004c, 0x7f01004d, 0x7f01004e,
+            0x7f01004f, 0x7f010050, 0x7f010051, 0x7f010052,
+            0x7f010053, 0x7f010054, 0x7f010055, 0x7f010056,
+            0x7f010057, 0x7f010058, 0x7f010059
+        };
+        /**
+          <p>
+          @attr description
+           @hide Controls whether this view can take accessibility focus. 
+
+
+          <p>May be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+<p>May be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>auto</code></td><td>0</td><td>
+                 The system determines whether the view can take accessibility focus - default
+                 (recommended).
+                 <p>
+                 Such a view is consideted by the focus search if it is:
+                 <ul>
+                 <li>
+                 Important for accessibility and actionable (clickable, long clickable, focusable)
+                 </li>
+                 <li>
+                 Important for accessibility, not actionable (clickable, long clickable, focusable),
+                 and does not have an actionable predecessor.
+                 </li>
+                 </ul>
+                 An accessibility srvice can request putting accessibility focus on such a view.
+                 </p>
+            </td></tr>
+<tr><td><code>yes</code></td><td>1</td><td>
+                 The view can take accessibility focus.
+                 <p>
+                 A view that can take accessibility focus is always considered during focus
+                 search and an accessibility service can request putting accessibility focus
+                 on it.
+                 </p>
+            </td></tr>
+<tr><td><code>no</code></td><td>2</td><td>
+                 The view can not take accessibility focus.
+                 <p>
+                 A view that can not take accessibility focus is never considered during focus
+                 search and an accessibility service can not request putting accessibility focus
+                 on it.
+                 </p>
+            </td></tr>
+</table>
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:accessibilityFocusable
+        */
+        public static final int View_accessibilityFocusable = 66;
+        /**
+          <p>
+          @attr description
+          
+             alpha property of the view, as a value between 0 (completely transparent) and 1
+             (completely opaque).
+        
+
+
+          <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:alpha
+        */
+        public static final int View_alpha = 50;
+        /**
+          <p>
+          @attr description
+           Defines whether this view reacts to click events. 
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:clickable
+        */
+        public static final int View_clickable = 36;
+        /**
+          <p>
+          @attr description
+          
+             Defines text that briefly describes content of the view. This property is used
+             primarily for accessibility. Since some views do not have textual
+             representation this attribute can be used for providing such.
+        
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:contentDescription
+        */
+        public static final int View_contentDescription = 47;
+        /**
+          <p>
+          @attr description
+          
+             Defines the quality of translucent drawing caches. This property is used
+             only when the drawing cache is enabled and translucent. The default value is auto.
+        
+
+
+          <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>auto</code></td><td>0</td><td>
+                 Lets the framework decide what quality level should be used
+                 for the drawing cache.
+            </td></tr>
+<tr><td><code>low</code></td><td>1</td><td>
+                 Low quality. When set to low quality, the drawing cache uses a lower color
+                 depth, thus losing precision in rendering gradients, but uses less memory.
+            </td></tr>
+<tr><td><code>high</code></td><td>2</td><td>
+                 High quality. When set to high quality, the drawing cache uses a higher
+                 color depth but uses more memory.
+            </td></tr>
+</table>
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:drawingCacheQuality
+        */
+        public static final int View_drawingCacheQuality = 40;
+        /**
+          <p>
+          @attr description
+          
+             When this attribute is set to true, the view gets its drawable state
+             (focused, pressed, etc.) from its direct parent rather than from itself.
+        
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:duplicateParentState
+        */
+        public static final int View_duplicateParentState = 42;
+        /**
+          <p>
+          @attr description
+           Defines whether to fade out scrollbars when they are not in use. 
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:fadeScrollbars
+        */
+        public static final int View_fadeScrollbars = 18;
+        /**
+          <p>
+          @attr description
+          
+             This attribute is deprecated and will be ignored as of
+             API level 14 ({@link android.os.Build.VERSION_CODES#ICE_CREAM_SANDWICH}).
+             Using fading edges may introduce noticeable performance
+             degradations and should be used only when required by the application's
+             visual design. To request fading edges with API level 14 and above,
+             use the <code>android:requiresFadingEdge</code> attribute instead.
+        
+
+
+          <p>Must be one or more (separated by '|') of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>none</code></td><td>0x00000000</td><td> No edge is faded. </td></tr>
+<tr><td><code>horizontal</code></td><td>0x00001000</td><td> Fades horizontal edges only. </td></tr>
+<tr><td><code>vertical</code></td><td>0x00002000</td><td> Fades vertical edges only. </td></tr>
+</table>
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:fadingEdge
+        */
+        public static final int View_fadingEdge = 28;
+        /**
+          <p>
+          @attr description
+           Defines the length of the fading edges. 
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:fadingEdgeLength
+        */
+        public static final int View_fadingEdgeLength = 30;
+        /**
+          <p>
+          @attr description
+          
+             Specifies whether to filter touches when the view's window is obscured by
+             another visible window.  When set to true, the view will not receive touches
+             whenever a toast, dialog or other window appears above the view's window.
+             Refer to the {@link android.view.View} security documentation for more details.
+        
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:filterTouchesWhenObscured
+        */
+        public static final int View_filterTouchesWhenObscured = 39;
+        /**
+          <p>
+          @attr description
+          
+             Boolean internal attribute to adjust view layout based on
+             system windows such as the status bar.
+             If true, adjusts the padding of this view to leave space for the system windows.
+             Will only take effect if this view is in a non-embedded activity.
+        
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:fitsSystemWindows
+        */
+        public static final int View_fitsSystemWindows = 14;
+        /**
+          <p>
+          @attr description
+          
+             Boolean that controls whether a view can take focus.  By default the user can not
+             move focus to a view; by setting this attribute to true the view is
+             allowed to take focus.  This value does not impact the behavior of
+             directly calling {@link android.view.View#requestFocus}, which will
+             always request focus regardless of this view.  It only impacts where
+             focus navigation will try to move focus.
+        
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:focusable
+        */
+        public static final int View_focusable = 11;
+        /**
+          <p>
+          @attr description
+          
+             Boolean that controls whether a view can take focus while in touch mode.
+             If this is true for a view, that view can gain focus when clicked on, and can keep
+             focus if another view is clicked on that doesn't have this attribute set to true.
+        
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:focusableInTouchMode
+        */
+        public static final int View_focusableInTouchMode = 12;
+        /**
+          <p>
+          @attr description
+          
+             Boolean that controls whether a view should have haptic feedback
+             enabled for events such as long presses.
+        
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:hapticFeedbackEnabled
+        */
+        public static final int View_hapticFeedbackEnabled = 46;
+        /**
+          <p>
+          @attr description
+          
+             Supply an identifier name for this view, to later retrieve it
+             with {@link android.view.View#findViewById View.findViewById()} or
+             {@link android.app.Activity#findViewById Activity.findViewById()}.
+             This must be a
+             resource reference; typically you set this using the
+             <code>@+</code> syntax to create a new ID resources.
+             For example: <code>android:id="@+id/my_id"</code> which
+             allows you to later retrieve the view
+             with <code>findViewById(R.id.my_id)</code>.
+        
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:id
+        */
+        public static final int View_id = 0;
+        /**
+          <p>
+          @attr description
+          
+             Controls how this View is important for accessibility which is if it fires
+             accessibility events and if it is reported to accessibility services that
+             query the screen. Note: While not recommended, an accessibility service may
+             decide to ignore this attribute and operate on all views in the view tree.
+        
+
+
+          <p>May be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+<p>May be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>auto</code></td><td>0</td><td>
+                 The system determines whether the view is important for accessibility - default
+                 (recommended).
+            </td></tr>
+<tr><td><code>yes</code></td><td>1</td><td> The view is important for accessibility. </td></tr>
+<tr><td><code>no</code></td><td>2</td><td> The view is not important for accessibility. </td></tr>
+</table>
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:importantForAccessibility
+        */
+        public static final int View_importantForAccessibility = 65;
+        /**
+          <p>
+          @attr description
+          
+             Set this if the view will serve as a scrolling container, meaing
+             that it can be resized to shrink its overall window so that there
+             will be space for an input method.  If not set, the default
+             value will be true if "scrollbars" has the vertical scrollbar
+             set, else it will be false.
+        
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:isScrollContainer
+        */
+        public static final int View_isScrollContainer = 17;
+        /**
+          <p>
+          @attr description
+          
+             Controls whether the view's window should keep the screen on
+             while visible.
+        
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:keepScreenOn
+        */
+        public static final int View_keepScreenOn = 41;
+        /**
+          <p>
+          @attr description
+          
+             Specifies the type of layer backing this view. The default value is none.
+             Refer to {@link android.view.View#setLayerType(int, android.graphics.Paint)}
+             for more information.
+        
+
+
+          <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>none</code></td><td>0</td><td> Don't use a layer. </td></tr>
+<tr><td><code>software</code></td><td>1</td><td>
+                 Use a software layer. Refer to
+                 {@link android.view.View#setLayerType(int, android.graphics.Paint) for
+                 more information.
+            </td></tr>
+<tr><td><code>hardware</code></td><td>2</td><td>
+                 Use a hardware layer. Refer to
+                 {@link android.view.View#setLayerType(int, android.graphics.Paint) for
+                 more information.
+            </td></tr>
+</table>
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:layerType
+        */
+        public static final int View_layerType = 61;
+        /**
+          <p>
+          @attr description
+          
+             Defines the direction of layout drawing. This typically is associated with writing
+             direction of the language script used. The possible values are "ltr" for Left-to-Right,
+             "rtl" for Right-to-Left, "locale" and "inherit" from parent view. If there is nothing
+             to inherit, "locale" is used. "locale" falls back to "en-US". "ltr" is the direction
+             used in "en-US". The default for this attribute is "inherit".
+        
+
+
+          <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>ltr</code></td><td>0</td><td> Left-to-Right </td></tr>
+<tr><td><code>rtl</code></td><td>1</td><td> Right-to-Left </td></tr>
+<tr><td><code>inherit</code></td><td>2</td><td> Inherit from parent </td></tr>
+<tr><td><code>locale</code></td><td>3</td><td> Locale </td></tr>
+</table>
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:layoutDirection
+        */
+        public static final int View_layoutDirection = 62;
+        /**
+          <p>
+          @attr description
+           Defines whether this view reacts to long click events. 
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:longClickable
+        */
+        public static final int View_longClickable = 37;
+        /**
+          <p>
+          @attr description
+          
+             Defines the minimum height of the view. It is not guaranteed
+             the view will be able to achieve this minimum height (for example,
+             if its parent layout constrains it with less available height).
+        
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:minHeight
+        */
+        public static final int View_minHeight = 43;
+        /**
+          <p>
+          @attr description
+          
+             Defines the minimum width of the view. It is not guaranteed
+             the view will be able to achieve this minimum width (for example,
+             if its parent layout constrains it with less available width).
+        
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:minWidth
+        */
+        public static final int View_minWidth = 44;
+        /**
+          <p>
+          @attr description
+          
+             Defines the next view to give focus to when the next focus is
+             {@link android.view.View#FOCUS_DOWN}
+
+             If the reference refers to a view that does not exist or is part
+             of a hierarchy that is invisible, a {@link java.lang.RuntimeException}
+             will result when the reference is accessed.
+        
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:nextFocusDown
+        */
+        public static final int View_nextFocusDown = 34;
+        /**
+          <p>
+          @attr description
+          
+             Defines the next view to give focus to when the next focus is
+             {@link android.view.View#FOCUS_FORWARD}
+
+             If the reference refers to a view that does not exist or is part
+             of a hierarchy that is invisible, a {@link java.lang.RuntimeException}
+             will result when the reference is accessed.
+        
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:nextFocusForward
+        */
+        public static final int View_nextFocusForward = 35;
+        /**
+          <p>
+          @attr description
+          
+             Defines the next view to give focus to when the next focus is
+             {@link android.view.View#FOCUS_LEFT}.
+
+             If the reference refers to a view that does not exist or is part
+             of a hierarchy that is invisible, a {@link java.lang.RuntimeException}
+             will result when the reference is accessed.
+        
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:nextFocusLeft
+        */
+        public static final int View_nextFocusLeft = 31;
+        /**
+          <p>
+          @attr description
+          
+             Defines the next view to give focus to when the next focus is
+             {@link android.view.View#FOCUS_RIGHT}
+
+             If the reference refers to a view that does not exist or is part
+             of a hierarchy that is invisible, a {@link java.lang.RuntimeException}
+             will result when the reference is accessed.
+        
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:nextFocusRight
+        */
+        public static final int View_nextFocusRight = 32;
+        /**
+          <p>
+          @attr description
+          
+             Defines the next view to give focus to when the next focus is
+             {@link android.view.View#FOCUS_UP}
+
+             If the reference refers to a view that does not exist or is part
+             of a hierarchy that is invisible, a {@link java.lang.RuntimeException}
+             will result when the reference is accessed.
+        
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:nextFocusUp
+        */
+        public static final int View_nextFocusUp = 33;
+        /**
+          <p>
+          @attr description
+          
+             Name of the method in this View's context to invoke when the view is
+             clicked. This name must correspond to a public method that takes
+             exactly one parameter of type View. For instance, if you specify
+             <code>android:onClick="sayHello"</code>, you must declare a
+             <code>public void sayHello(View v)</code> method of your context
+             (typically, your Activity).
+        
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:onClick
+        */
+        public static final int View_onClick = 48;
+        /**
+          <p>
+          @attr description
+          
+             Defines over-scrolling behavior. This property is used only if the
+             View is scrollable. Over-scrolling is the ability for the user to
+             receive feedback when attempting to scroll beyond meaningful content.
+        
+
+
+          <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>always</code></td><td>0</td><td>
+                 Always show over-scroll effects, even if the content fits entirely
+                 within the available space.
+            </td></tr>
+<tr><td><code>ifContentScrolls</code></td><td>1</td><td>
+                 Only show over-scroll effects if the content is large
+                 enough to meaningfully scroll.
+            </td></tr>
+<tr><td><code>never</code></td><td>2</td><td> Never show over-scroll effects. </td></tr>
+</table>
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:overScrollMode
+        */
+        public static final int View_overScrollMode = 49;
+        /**
+          <p>
+          @attr description
+          
+             A drawable to use as the background.  This can be either a reference
+             to a full drawable resource (such as a PNG image, 9-patch,
+             XML state list description, etc), or a solid color such as "#ff000000"
+            (black).
+        
+ <attr name="background" format="reference|color" /> 
+
+             Sets the padding, in pixels, of all four edges.  Padding is defined as
+             space between the edges of the view and the view's content. A views size
+             will include it's padding.  If a {@link android.R.attr#background}
+             is provided, the padding will initially be set to that (0 if the
+             drawable does not have padding).  Explicitly setting a padding value
+             will override the corresponding padding found in the background.
+        
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:padding
+        */
+        public static final int View_padding = 4;
+        /**
+          <p>
+          @attr description
+           Sets the padding, in pixels, of the bottom edge; see {@link android.R.attr#padding}. 
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:paddingBottom
+        */
+        public static final int View_paddingBottom = 8;
+        /**
+          <p>
+          @attr description
+           Sets the padding, in pixels, of the end edge; see {@link android.R.attr#padding}. 
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:paddingEnd
+        */
+        public static final int View_paddingEnd = 10;
+        /**
+          <p>
+          @attr description
+           Sets the padding, in pixels, of the left edge; see {@link android.R.attr#padding}. 
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:paddingLeft
+        */
+        public static final int View_paddingLeft = 5;
+        /**
+          <p>
+          @attr description
+           Sets the padding, in pixels, of the right edge; see {@link android.R.attr#padding}. 
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:paddingRight
+        */
+        public static final int View_paddingRight = 7;
+        /**
+          <p>
+          @attr description
+           Sets the padding, in pixels, of the start edge; see {@link android.R.attr#padding}. 
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:paddingStart
+        */
+        public static final int View_paddingStart = 9;
+        /**
+          <p>
+          @attr description
+           Sets the padding, in pixels, of the top edge; see {@link android.R.attr#padding}. 
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:paddingTop
+        */
+        public static final int View_paddingTop = 6;
+        /**
+          <p>
+          @attr description
+           Defines which edges should be faded on scrolling. 
+
+
+          <p>Must be one or more (separated by '|') of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>none</code></td><td>0x00000000</td><td> No edge is faded. </td></tr>
+<tr><td><code>horizontal</code></td><td>0x00001000</td><td> Fades horizontal edges only. </td></tr>
+<tr><td><code>vertical</code></td><td>0x00002000</td><td> Fades vertical edges only. </td></tr>
+</table>
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:requiresFadingEdge
+        */
+        public static final int View_requiresFadingEdge = 29;
+        /**
+          <p>
+          @attr description
+           rotation of the view, in degrees. 
+
+
+          <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:rotation
+        */
+        public static final int View_rotation = 55;
+        /**
+          <p>
+          @attr description
+           rotation of the view around the x axis, in degrees. 
+
+
+          <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:rotationX
+        */
+        public static final int View_rotationX = 56;
+        /**
+          <p>
+          @attr description
+           rotation of the view around the y axis, in degrees. 
+
+
+          <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:rotationY
+        */
+        public static final int View_rotationY = 57;
+        /**
+          <p>
+          @attr description
+          
+             If unset, no state will be saved for this view when it is being
+             frozen. The default is true, allowing the view to be saved
+             (however it also must have an ID assigned to it for its
+             state to be saved).  Setting this to false only disables the
+             state for this view, not for its children which may still
+             be saved.
+        
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:saveEnabled
+        */
+        public static final int View_saveEnabled = 38;
+        /**
+          <p>
+          @attr description
+           scale of the view in the x direction. 
+
+
+          <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:scaleX
+        */
+        public static final int View_scaleX = 58;
+        /**
+          <p>
+          @attr description
+           scale of the view in the y direction. 
+
+
+          <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:scaleY
+        */
+        public static final int View_scaleY = 59;
+        /**
+          <p>
+          @attr description
+           The initial horizontal scroll offset, in pixels. 
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:scrollX
+        */
+        public static final int View_scrollX = 2;
+        /**
+          <p>
+          @attr description
+           The initial vertical scroll offset, in pixels. 
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:scrollY
+        */
+        public static final int View_scrollY = 3;
+        /**
+          <p>
+          @attr description
+           Defines whether the horizontal scrollbar track should always be drawn. 
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:scrollbarAlwaysDrawHorizontalTrack
+        */
+        public static final int View_scrollbarAlwaysDrawHorizontalTrack = 26;
+        /**
+          <p>
+          @attr description
+           Defines whether the vertical scrollbar track should always be drawn. 
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:scrollbarAlwaysDrawVerticalTrack
+        */
+        public static final int View_scrollbarAlwaysDrawVerticalTrack = 27;
+        /**
+          <p>
+          @attr description
+           Defines the delay in milliseconds that a scrollbar waits before fade out. 
+
+
+          <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:scrollbarDefaultDelayBeforeFade
+        */
+        public static final int View_scrollbarDefaultDelayBeforeFade = 20;
+        /**
+          <p>
+          @attr description
+           Defines the delay in milliseconds that a scrollbar takes to fade out. 
+
+
+          <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:scrollbarFadeDuration
+        */
+        public static final int View_scrollbarFadeDuration = 19;
+        /**
+          <p>
+          @attr description
+           Sets the width of vertical scrollbars and height of horizontal scrollbars. 
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:scrollbarSize
+        */
+        public static final int View_scrollbarSize = 21;
+        /**
+          <p>
+          @attr description
+          
+             Controls the scrollbar style and position. The scrollbars can be overlaid or
+             inset. When inset, they add to the padding of the view. And the
+             scrollbars can be drawn inside the padding area or on the edge of
+             the view. For example, if a view has a background drawable and you
+             want to draw the scrollbars inside the padding specified by the
+             drawable, you can use insideOverlay or insideInset. If you want them
+             to appear at the edge of the view, ignoring the padding, then you can
+             use outsideOverlay or outsideInset.
+        
+
+
+          <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>insideOverlay</code></td><td>0x0</td><td> Inside the padding and overlaid </td></tr>
+<tr><td><code>insideInset</code></td><td>0x01000000</td><td> Inside the padding and inset </td></tr>
+<tr><td><code>outsideOverlay</code></td><td>0x02000000</td><td> Edge of the view and overlaid </td></tr>
+<tr><td><code>outsideInset</code></td><td>0x03000000</td><td> Edge of the view and inset </td></tr>
+</table>
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:scrollbarStyle
+        */
+        public static final int View_scrollbarStyle = 16;
+        /**
+          <p>
+          @attr description
+           Defines the horizontal scrollbar thumb drawable. 
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:scrollbarThumbHorizontal
+        */
+        public static final int View_scrollbarThumbHorizontal = 22;
+        /**
+          <p>
+          @attr description
+           Defines the vertical scrollbar thumb drawable. 
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:scrollbarThumbVertical
+        */
+        public static final int View_scrollbarThumbVertical = 23;
+        /**
+          <p>
+          @attr description
+           Defines the horizontal scrollbar track drawable. 
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:scrollbarTrackHorizontal
+        */
+        public static final int View_scrollbarTrackHorizontal = 24;
+        /**
+          <p>
+          @attr description
+           Defines the vertical scrollbar track drawable. 
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:scrollbarTrackVertical
+        */
+        public static final int View_scrollbarTrackVertical = 25;
+        /**
+          <p>
+          @attr description
+           Defines which scrollbars should be displayed on scrolling or not. 
+
+
+          <p>Must be one or more (separated by '|') of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>none</code></td><td>0x00000000</td><td> No scrollbar is displayed. </td></tr>
+<tr><td><code>horizontal</code></td><td>0x00000100</td><td> Displays horizontal scrollbar only. </td></tr>
+<tr><td><code>vertical</code></td><td>0x00000200</td><td> Displays vertical scrollbar only. </td></tr>
+</table>
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:scrollbars
+        */
+        public static final int View_scrollbars = 15;
+        /**
+          <p>
+          @attr description
+          
+             Boolean that controls whether a view should have sound effects
+             enabled for events such as clicking and touching.
+        
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:soundEffectsEnabled
+        */
+        public static final int View_soundEffectsEnabled = 45;
+        /**
+          <p>
+          @attr description
+          
+             Supply a tag for this view containing a String, to be retrieved
+             later with {@link android.view.View#getTag View.getTag()} or
+             searched for with {@link android.view.View#findViewWithTag
+             View.findViewWithTag()}.  It is generally preferable to use
+             IDs (through the android:id attribute) instead of tags because
+             they are faster and allow for compile-time type checking.
+        
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:tag
+        */
+        public static final int View_tag = 1;
+        /**
+          <p>
+          @attr description
+          
+             Alignment of the text. A heuristic is used to determine the resolved
+            text alignment.
+        
+
+
+          <p>May be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+<p>May be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>inherit</code></td><td>0</td><td> Default </td></tr>
+<tr><td><code>gravity</code></td><td>1</td><td>
+                 Default for the root view. The gravity determines the alignment, ALIGN_NORMAL,
+                ALIGN_CENTER, or ALIGN_OPPOSITE, which are relative to each paragraph’s
+                text direction
+            </td></tr>
+<tr><td><code>textStart</code></td><td>2</td><td> Align to the start of the paragraph, e.g. ALIGN_NORMAL. </td></tr>
+<tr><td><code>textEnd</code></td><td>3</td><td> Align to the end of the paragraph, e.g. ALIGN_OPPOSITE. </td></tr>
+<tr><td><code>center</code></td><td>4</td><td> Center the paragraph, e.g. ALIGN_CENTER. </td></tr>
+<tr><td><code>viewStart</code></td><td>5</td><td>
+                 Align to the start of the view, which is ALIGN_LEFT if the view’s resolved
+                layoutDirection is LTR, and ALIGN_RIGHT otherwise.
+            </td></tr>
+<tr><td><code>viewEnd</code></td><td>6</td><td>
+                 Align to the end of the view, which is ALIGN_RIGHT if the view’s resolved
+                layoutDirection is LTR, and ALIGN_LEFT otherwise
+            </td></tr>
+</table>
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:textAlignment
+        */
+        public static final int View_textAlignment = 64;
+        /**
+          <p>
+          @attr description
+          
+             Direction of the text. A heuristic is used to determine the resolved text direction
+             of paragraphs.
+        
+
+
+          <p>May be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+<p>May be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>inherit</code></td><td>0</td><td> Default </td></tr>
+<tr><td><code>firstStrong</code></td><td>1</td><td>
+                 Default for the root view. The first strong directional character determines the
+                 paragraph direction.  If there is no strong directional character, the paragraph
+                 direction is the view’s resolved layout direction.
+            </td></tr>
+<tr><td><code>anyRtl</code></td><td>2</td><td>
+                 The paragraph direction is RTL if it contains any strong RTL character, otherwise
+                 it is LTR if it contains any strong LTR characters.  If there are neither, the
+                 paragraph direction is the view’s resolved layout direction.
+            </td></tr>
+<tr><td><code>ltr</code></td><td>3</td><td> The paragraph direction is left to right. </td></tr>
+<tr><td><code>rtl</code></td><td>4</td><td> The paragraph direction is right to left. </td></tr>
+<tr><td><code>locale</code></td><td>5</td><td> The paragraph direction is coming from the system Locale. </td></tr>
+</table>
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:textDirection
+        */
+        public static final int View_textDirection = 63;
+        /**
+          <p>
+          @attr description
+          
+             x location of the pivot point around which the view will rotate and scale.
+             This xml attribute sets the pivotX property of the View.
+        
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:transformPivotX
+        */
+        public static final int View_transformPivotX = 53;
+        /**
+          <p>
+          @attr description
+          
+             y location of the pivot point around which the view will rotate and scale.
+             This xml attribute sets the pivotY property of the View.
+        
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:transformPivotY
+        */
+        public static final int View_transformPivotY = 54;
+        /**
+          <p>
+          @attr description
+          
+             translation in x of the view. This value is added post-layout to the left
+             property of the view, which is set by its layout.
+        
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:translationX
+        */
+        public static final int View_translationX = 51;
+        /**
+          <p>
+          @attr description
+          
+             translation in y of the view. This value is added post-layout to the left
+             property of the view, which is set by its layout.
+        
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:translationY
+        */
+        public static final int View_translationY = 52;
+        /**
+          <p>
+          @attr description
+           Determines which side the vertical scroll bar should be placed on. 
+
+
+          <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>defaultPosition</code></td><td>0</td><td> Place the scroll bar wherever the system default determines. </td></tr>
+<tr><td><code>left</code></td><td>1</td><td> Place the scroll bar on the left. </td></tr>
+<tr><td><code>right</code></td><td>2</td><td> Place the scroll bar on the right. </td></tr>
+</table>
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:verticalScrollbarPosition
+        */
+        public static final int View_verticalScrollbarPosition = 60;
+        /**
+          <p>
+          @attr description
+           Controls the initial visibility of the view. 
+
+
+          <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>visible</code></td><td>0</td><td> Visible on screen; the default value. </td></tr>
+<tr><td><code>invisible</code></td><td>1</td><td> Not displayed, but taken into account during layout (space is left for it). </td></tr>
+<tr><td><code>gone</code></td><td>2</td><td> Completely hidden, as if the view had not been added. </td></tr>
+</table>
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:visibility
+        */
+        public static final int View_visibility = 13;
+        /** 
+         Attributes that can be used with a {@link android.view.ViewGroup} or any
+         of its subclasses.  Also see {@link #ViewGroup_Layout} for
+         attributes that this class processes in its children.
+    
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #ViewGroup_addStatesFromChildren cn.com.incito.classroom:addStatesFromChildren}</code></td><td>
+             Sets whether this ViewGroup's drawable states also include
+             its children's drawable states.</td></tr>
+           <tr><td><code>{@link #ViewGroup_alwaysDrawnWithCache cn.com.incito.classroom:alwaysDrawnWithCache}</code></td><td>
+             Defines whether the ViewGroup should always draw its children using their
+             drawing cache or not.</td></tr>
+           <tr><td><code>{@link #ViewGroup_animateLayoutChanges cn.com.incito.classroom:animateLayoutChanges}</code></td><td>
+             Defines whether changes in layout (caused by adding and removing items) should
+             cause a LayoutTransition to run.</td></tr>
+           <tr><td><code>{@link #ViewGroup_animationCache cn.com.incito.classroom:animationCache}</code></td><td>
+             Defines whether layout animations should create a drawing cache for their
+             children.</td></tr>
+           <tr><td><code>{@link #ViewGroup_clipChildren cn.com.incito.classroom:clipChildren}</code></td><td>
+             Defines whether a child is limited to draw inside of its bounds or not.</td></tr>
+           <tr><td><code>{@link #ViewGroup_clipToPadding cn.com.incito.classroom:clipToPadding}</code></td><td>
+             Defines whether the ViewGroup will clip its drawing surface so as to exclude
+             the padding area.</td></tr>
+           <tr><td><code>{@link #ViewGroup_descendantFocusability cn.com.incito.classroom:descendantFocusability}</code></td><td>
+             Defines the relationship between the ViewGroup and its descendants
+             when looking for a View to take focus.</td></tr>
+           <tr><td><code>{@link #ViewGroup_layoutAnimation cn.com.incito.classroom:layoutAnimation}</code></td><td>
+             Defines the layout animation to use the first time the ViewGroup is laid out.</td></tr>
+           <tr><td><code>{@link #ViewGroup_persistentDrawingCache cn.com.incito.classroom:persistentDrawingCache}</code></td><td>
+             Defines the persistence of the drawing cache.</td></tr>
+           <tr><td><code>{@link #ViewGroup_splitMotionEvents cn.com.incito.classroom:splitMotionEvents}</code></td><td>
+             Sets whether this ViewGroup should split MotionEvents
+             to separate child views during touch event dispatch.</td></tr>
+           </table>
+           @see #ViewGroup_addStatesFromChildren
+           @see #ViewGroup_alwaysDrawnWithCache
+           @see #ViewGroup_animateLayoutChanges
+           @see #ViewGroup_animationCache
+           @see #ViewGroup_clipChildren
+           @see #ViewGroup_clipToPadding
+           @see #ViewGroup_descendantFocusability
+           @see #ViewGroup_layoutAnimation
+           @see #ViewGroup_persistentDrawingCache
+           @see #ViewGroup_splitMotionEvents
+         */
+        public static final int[] ViewGroup = {
+            0x7f01005a, 0x7f01005b, 0x7f01005c, 0x7f01005d,
+            0x7f01005e, 0x7f01005f, 0x7f010060, 0x7f010061,
+            0x7f010062, 0x7f010063
+        };
+        /**
+          <p>
+          @attr description
+          
+             Sets whether this ViewGroup's drawable states also include
+             its children's drawable states.  This is used, for example, to
+             make a group appear to be focused when its child EditText or button
+             is focused.
+        
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:addStatesFromChildren
+        */
+        public static final int ViewGroup_addStatesFromChildren = 7;
+        /**
+          <p>
+          @attr description
+          
+             Defines whether the ViewGroup should always draw its children using their
+             drawing cache or not. The default value is true.
+        
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:alwaysDrawnWithCache
+        */
+        public static final int ViewGroup_alwaysDrawnWithCache = 6;
+        /**
+          <p>
+          @attr description
+          
+             Defines whether changes in layout (caused by adding and removing items) should
+             cause a LayoutTransition to run. When this flag is set to true, a default
+             LayoutTransition object will be set on the ViewGroup container and default
+             animations will run when these layout changes occur.
+        
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:animateLayoutChanges
+        */
+        public static final int ViewGroup_animateLayoutChanges = 0;
+        /**
+          <p>
+          @attr description
+          
+             Defines whether layout animations should create a drawing cache for their
+             children. Enabling the animation cache consumes more memory and requires
+             a longer initialization but provides better performance. The animation
+             cache is enabled by default.
+        
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:animationCache
+        */
+        public static final int ViewGroup_animationCache = 4;
+        /**
+          <p>
+          @attr description
+          
+             Defines whether a child is limited to draw inside of its bounds or not.
+             This is useful with animations that scale the size of the children to more
+             than 100% for instance. In such a case, this property should be set to false
+             to allow the children to draw outside of their bounds. The default value of
+             this property is true.
+        
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:clipChildren
+        */
+        public static final int ViewGroup_clipChildren = 1;
+        /**
+          <p>
+          @attr description
+          
+             Defines whether the ViewGroup will clip its drawing surface so as to exclude
+             the padding area. This property is set to true by default.
+        
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:clipToPadding
+        */
+        public static final int ViewGroup_clipToPadding = 2;
+        /**
+          <p>
+          @attr description
+          
+             Defines the relationship between the ViewGroup and its descendants
+             when looking for a View to take focus.
+        
+
+
+          <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>beforeDescendants</code></td><td>0</td><td> The ViewGroup will get focus before any of its descendants. </td></tr>
+<tr><td><code>afterDescendants</code></td><td>1</td><td> The ViewGroup will get focus only if none of its descendants want it. </td></tr>
+<tr><td><code>blocksDescendants</code></td><td>2</td><td> The ViewGroup will block its descendants from receiving focus. </td></tr>
+</table>
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:descendantFocusability
+        */
+        public static final int ViewGroup_descendantFocusability = 8;
+        /**
+          <p>
+          @attr description
+          
+             Defines the layout animation to use the first time the ViewGroup is laid out.
+             Layout animations can also be started manually after the first layout.
+        
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:layoutAnimation
+        */
+        public static final int ViewGroup_layoutAnimation = 3;
+        /**
+          <p>
+          @attr description
+          
+             Defines the persistence of the drawing cache. The drawing cache might be
+             enabled by a ViewGroup for all its children in specific situations (for
+             instance during a scrolling.) This property lets you persist the cache
+             in memory after its initial usage. Persisting the cache consumes more
+             memory but may prevent frequent garbage collection is the cache is created
+             over and over again. By default the persistence is set to scrolling.
+        
+
+
+          <p>Must be one or more (separated by '|') of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>none</code></td><td>0x0</td><td> The drawing cache is not persisted after use. </td></tr>
+<tr><td><code>animation</code></td><td>0x1</td><td> The drawing cache is persisted after a layout animation. </td></tr>
+<tr><td><code>scrolling</code></td><td>0x2</td><td> The drawing cache is persisted after a scroll. </td></tr>
+<tr><td><code>all</code></td><td>0x3</td><td> The drawing cache is always persisted. </td></tr>
+</table>
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:persistentDrawingCache
+        */
+        public static final int ViewGroup_persistentDrawingCache = 5;
+        /**
+          <p>
+          @attr description
+          
+             Sets whether this ViewGroup should split MotionEvents
+             to separate child views during touch event dispatch.
+             If false (default), touch events will be dispatched to
+             the child view where the first pointer went down until
+             the last pointer goes up.
+             If true, touch events may be dispatched to multiple children.
+             MotionEvents for each pointer will be dispatched to the child
+             view where the initial ACTION_DOWN event happened.
+             See {@link android.view.ViewGroup#setMotionEventSplittingEnabled(boolean)}
+             for more information.
+        
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name cn.com.incito.classroom:splitMotionEvents
+        */
+        public static final int ViewGroup_splitMotionEvents = 9;
+        /** Attributes that can be used with a customAttribute.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #customAttribute_childMargin cn.com.incito.classroom:childMargin}</code></td><td></td></tr>
+           <tr><td><code>{@link #customAttribute_dict cn.com.incito.classroom:dict}</code></td><td></td></tr>
+           </table>
+           @see #customAttribute_childMargin
+           @see #customAttribute_dict
+         */
+        public static final int[] customAttribute = {
+            0x7f010074, 0x7f010075
+        };
+        /**
+          <p>This symbol is the offset where the {@link cn.com.incito.classroom.R.attr#childMargin}
+          attribute's value can be found in the {@link #customAttribute} array.
+
+
+          <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name cn.com.incito.classroom:childMargin
+        */
+        public static final int customAttribute_childMargin = 0;
+        /**
+          <p>This symbol is the offset where the {@link cn.com.incito.classroom.R.attr#dict}
+          attribute's value can be found in the {@link #customAttribute} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name cn.com.incito.classroom:dict
+        */
+        public static final int customAttribute_dict = 1;
+        /** Attributes that can be used with a roundedimageview.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #roundedimageview_border_color cn.com.incito.classroom:border_color}</code></td><td></td></tr>
+           <tr><td><code>{@link #roundedimageview_border_thickness cn.com.incito.classroom:border_thickness}</code></td><td></td></tr>
+           </table>
+           @see #roundedimageview_border_color
+           @see #roundedimageview_border_thickness
+         */
+        public static final int[] roundedimageview = {
+            0x7f01000d, 0x7f01000e
+        };
+        /**
+          <p>This symbol is the offset where the {@link cn.com.incito.classroom.R.attr#border_color}
+          attribute's value can be found in the {@link #roundedimageview} array.
+
+
+          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name cn.com.incito.classroom:border_color
+        */
+        public static final int roundedimageview_border_color = 1;
+        /**
+          <p>This symbol is the offset where the {@link cn.com.incito.classroom.R.attr#border_thickness}
+          attribute's value can be found in the {@link #roundedimageview} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name cn.com.incito.classroom:border_thickness
+        */
+        public static final int roundedimageview_border_thickness = 0;
+
     };
 }

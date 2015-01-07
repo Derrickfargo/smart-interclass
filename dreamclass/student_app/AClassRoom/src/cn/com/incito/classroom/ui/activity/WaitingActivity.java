@@ -405,10 +405,12 @@ public class WaitingActivity extends BaseActivity {
 		MyApplication.Logger.debug("WaitingActivity:随机分组返回的数据:" + studentList.size());
 		
 		List<LoginRes2Vo> loginRes2Vos = new ArrayList<LoginRes2Vo>();
+		
 		if (studentList != null && studentList.size() > 0) {
 			Iterator<Student> it = studentList.iterator();
 			while (it.hasNext()) {
 				Student s = it.next();
+				
 				LoginRes2Vo loginRes2Vo = new LoginRes2Vo();
 				loginRes2Vo.setAvatar(s.getAvatar());
 				loginRes2Vo.setId(s.getId() + "");
@@ -416,6 +418,7 @@ public class WaitingActivity extends BaseActivity {
 				loginRes2Vo.setName(s.getName());
 				loginRes2Vo.setNumber(s.getNumber());
 				loginRes2Vo.setSex(s.getSex() + "");
+				
 				loginRes2Vos.add(loginRes2Vo);
 			}
 			MyApplication.getInstance().getLoginResVo().getStudents().clear();
