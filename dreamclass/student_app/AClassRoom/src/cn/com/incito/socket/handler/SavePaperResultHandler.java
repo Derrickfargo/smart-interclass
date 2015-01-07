@@ -1,5 +1,7 @@
 package cn.com.incito.socket.handler;
 
+import java.io.File;
+
 import android.util.Log;
 
 import com.google.code.microlog4android.Logger;
@@ -19,6 +21,10 @@ public class SavePaperResultHandler extends MessageHandler {
 	@Override
 	protected void handleMessage() {
 		if (data.getIntValue("code") == 0) {
+			File f = new File("/sdcard/", "temp.jpg");
+			if(f.exists()){
+				f.delete();
+			}
 			Logger.debug(Utils.getTime()+TAG+":收到服务器发送的作业保存成功信息");
 			Log.i(TAG, "paper保存成功");
 			MyApplication.getInstance().lockScreen(true);

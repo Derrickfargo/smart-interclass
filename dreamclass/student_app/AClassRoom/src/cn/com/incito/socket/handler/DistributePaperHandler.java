@@ -2,7 +2,14 @@ package cn.com.incito.socket.handler;
 
 import java.nio.ByteBuffer;
 
+import android.app.Dialog;
+import android.content.Context;
+import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.classroom.constants.Constants;
+import cn.com.incito.classroom.ui.widget.FtpReconnectDialog;
+import cn.com.incito.classroom.utils.FTPUtils;
+import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.core.MessageHandler;
@@ -29,23 +36,22 @@ public class DistributePaperHandler extends MessageHandler {
 		MyApplication.getInstance().setQuizID(uuid);
 		// 获取是否还有图片
 		isContainsPic = getInfo(buffer);
-		if ("true".equals(isContainsPic)) {
-			// 获取图片信息
-			byte[] imageSize = new byte[4];// int
-			buffer.get(imageSize);
-			int pictureLength = (int) BufferUtils.decodeIntLittleEndian(imageSize, 0, imageSize.length);
-			imageByte = new byte[pictureLength];
-			buffer.get(imageByte);
+		if ("true".equals(isContainsPic)) {//有图片,利用ftp去下载图片 
+			FTPUtils.getInstance();
+			if(!FTPUtils.downLoadFile(Constants.FILE_PATH, Constants.FILE_NAME)){//下载不成功
+				Dialog dialog=new FtpReconnectDialog((Context)AppManager.getAppManager().currentActivity());
+				dialog.show();
+			};
 		}
-		;
 		handleMessage();
 	}
 
-	@Override
-	protected void handleMessage() {
-		MyApplication.getInstance().lockScreen(false);
-		UIHelper.getInstance().showDrawBoxActivity(imageByte);
-	}
+		@Override
+		protected void handleMessage() {
+			MyApplication.getInstance().lockScreen(false);
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"收到作业");
+			UIHelper.getInstance().showDrawBoxActivity(isContainsPic);
+		}
 
 	/**
 	 * @param buffer
