@@ -37,10 +37,11 @@ public class QuizCollector {
 	public static QuizCollector getInstance() {
 		if (instance == null) {
 			instance = new QuizCollector();
-		} else if (instance.quizQueue.size() == 0) {
-			instance.isRunning = false;//退出之前队列
-			instance = new QuizCollector();
-		}
+		} 
+//		else if (instance.quizQueue.size() == 0) {
+//			instance.isRunning = false;//退出之前队列
+//			instance = new QuizCollector();
+//		}
 		return instance;
 	}
 
@@ -135,7 +136,12 @@ public class QuizCollector {
 				buffer.put(data);
 				buffer.flip();
 				try {
+//					if(channel==null){
+//						logger.error("", t);
+//						return;
+//					}
 					channel.write(buffer);
+					System.out.println("当前容量capacity:  " + capacity  );
 				} catch (IOException e) {
 					logger.error("作业收取失败,直接收取下一个作业", e);
 					quizComplete(channel);
@@ -144,7 +150,7 @@ public class QuizCollector {
 					return;
 				} catch (Exception e) {
 					logger.error("作业收取失败，容量直接减一，不做处理", e);
-//					capacity--;
+					capacity--;
 					return;
 				}
 				new QuizCollectMonitor(channel).start();
@@ -178,6 +184,7 @@ public class QuizCollector {
 			if (quizSet.contains(channel)) {
 				logger.info(channel);
 				logger.info("作业在10秒内没有收取成功,自动收取下一个作业.");
+				System.out.println("当前容量capacity:  " + capacity  );
 				quizComplete(channel);
 				nextQuiz();
 			}
