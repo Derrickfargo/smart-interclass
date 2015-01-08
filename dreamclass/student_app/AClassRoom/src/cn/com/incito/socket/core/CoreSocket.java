@@ -107,7 +107,7 @@ public final class CoreSocket implements Runnable {
 					channel.write(buffer);
 				} catch (IOException e) {
 					ApiClient.uploadErrorLog(e.getMessage());
-					MyApplication.Logger.debug(Utils.getTime()+"异常信息：" , e);
+					MyApplication.Logger.debug(Utils.getTime()+"客户端往服务端发送消息异常信息：" , e);
 				}
 			}
 		}.start();
@@ -164,7 +164,7 @@ public final class CoreSocket implements Runnable {
 			// 客户端向服务器端发起建立连接请求
 			SocketChannel socketChannel = SocketChannel.open();
 			socketChannel.configureBlocking(false);
-			socketChannel.socket().setSoTimeout(3000);
+			socketChannel.socket().setSoTimeout(10000);
 			selector = Selector.open().wakeup();
 			socketChannel.register(selector, SelectionKey.OP_CONNECT);
 			socketChannel.connect(new InetSocketAddress(Constants.IP, Constants.PORT));

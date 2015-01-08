@@ -241,12 +241,12 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 					changeBtn.setClickable(false);
 				}
 			} else {
-				bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bg);
+				bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bg_white);
 				changeBtn.setClickable(true);
 			}
 
 		} else {
-			bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bg);
+			bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bg_white);
 			changeBtn.setClickable(true);
 		}
 		initPaint(bitmap);
@@ -431,7 +431,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 				changeBtn.setBackgroundResource(R.drawable.bg_cgbg_bb);
 				isBlack = false;
 			} else {
-				m_sketchPad.setBkBitmap(((BitmapDrawable) (getResources().getDrawable(R.drawable.bg))).getBitmap());
+				m_sketchPad.setBkBitmap(((BitmapDrawable) (getResources().getDrawable(R.drawable.bg_white))).getBitmap());
 				changeBtn.setBackgroundResource(R.drawable.bg_cgbg_white);
 				isBlack = true;
 			}
@@ -536,25 +536,6 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 		handler.sendEmptyMessage(0);
 	}
 
-	// /**
-	// * 提交作业
-	// */
-	// public void submitPaper() {
-	// MessagePacking messagePacking = new MessagePacking(
-	// Message.MESSAGE_SAVE_PAPER);
-	// // 测试ID
-	// messagePacking.putBodyData(DataType.INT, BufferUtils
-	// .writeUTFString(MyApplication.getInstance().getQuizID()));
-	// // 设备ID
-	// messagePacking.putBodyData(DataType.INT, BufferUtils
-	// .writeUTFString(MyApplication.getInstance().getDeviceId()));
-	// // 图片
-	// Logger.debug(Utils.getTime()+TAG+"启动作业提交...");
-	// messagePacking.putBodyData(DataType.INT,BitmapUtil.bmpToByteArray(getBitMap(), true));
-	// Logger.debug(Utils.getTime()+TAG+"打包成功");
-	// CoreSocket.getInstance().sendMessage(messagePacking);
-	// startTask();
-	// }
 	public void initPopwindow() {
 		line1 = (LinearLayout) findViewById(R.id.line1);
 		LayoutInflater layoutInflater = LayoutInflater.from(this);
@@ -610,7 +591,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 				handler.sendEmptyMessage(1);
 			}
 		};
-		timeTimer.schedule(timeTimerTask, 10 * 1000);
+		timeTimer.schedule(timeTimerTask, 30 * 1000);
 	}
 
 	public void cancleTask() {

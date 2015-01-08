@@ -6,7 +6,6 @@ import java.nio.channels.SocketChannel;
 
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.utils.ApiClient;
-import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
@@ -20,8 +19,8 @@ import com.alibaba.fastjson.JSONObject;
  * 
  */
 public class ConnectionManager {
-	private final static long TIMEOUT = 30000;// 超时时间
-	private final static long SCAN_CYCLE = 20000;// 心跳扫描周期20s
+	private final static long TIMEOUT = 60000;// 超时时间
+	private final static long SCAN_CYCLE = 30000;// 心跳扫描周期20s
 	private static ConnectionManager instance;
 	private SocketChannel channel;
 	private long lastActTime = 0;
@@ -36,12 +35,13 @@ public class ConnectionManager {
 	}
 
 	public static ConnectionManager getInstance(SocketChannel channel) {
-		if (instance == null) {
-			instance = new ConnectionManager(channel);
-		} else if (instance.getChannel() == null
-				|| !instance.getChannel().isOpen()) {
+		if (instance == null||!instance.getChannel().isOpen()) {
 			instance = new ConnectionManager(channel);
 		}
+//		else if (instance.getChannel() == null
+//				|| !instance.getChannel().isOpen()) {
+//			instance = new ConnectionManager(channel);
+//		}
 		return instance;
 	}
 
