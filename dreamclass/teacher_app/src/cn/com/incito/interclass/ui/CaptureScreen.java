@@ -1,3 +1,4 @@
+package cn.com.incito.interclass.ui;
 /*
  * CaptureScreen.java
  * Created on 2006年9月7日, 上午10:59
@@ -5,7 +6,6 @@
  * and open the template in the editor.
  */
 
-package cn.com.incito.interclass.ui;
 
 /**
  * @author popoy
@@ -84,7 +84,9 @@ public class CaptureScreen {
 	private BufferedImage bImage;
 
 	private Component jFrame;
-
+	
+	private int startXBar, startYBar;
+	
 	private boolean isBarShow = false;
 
 	private int startX, startY, endX, endY, tempX, tempY;
@@ -243,7 +245,7 @@ public class CaptureScreen {
 			Rectangle rec = new Rectangle(0, 0, di.width, di.height);
 			BufferedImage bi = ro.createScreenCapture(rec);
 			JFrame jf = new JFrame();
-			// jf.getContentPane().setLayout(null);
+//			jf.getContentPane().setLayout(null);
 			jf.getContentPane().add(new ContentPanel(jf, bi, di.width, di.height));
 			jf.setUndecorated(true);
 			jf.setSize(di);
@@ -256,6 +258,11 @@ public class CaptureScreen {
 
 	// 一个暂时类，用于显示当前的屏幕图像
 	private class ContentPanel extends JPanel implements MouseListener, MouseMotionListener {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		private BufferedImage bi;
 
@@ -279,7 +286,7 @@ public class CaptureScreen {
 			this.width = width;
 			this.height = height;
 
-			this.setLayout(null);
+//			this.setLayout(null);
 			this.addMouseListener(this);
 			this.addMouseMotionListener(this);
 			ContentPanel.this.jf.addKeyListener(new KeyAdapter() {
