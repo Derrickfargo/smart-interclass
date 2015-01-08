@@ -8,8 +8,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-import javax.imageio.stream.FileImageOutputStream;
-
 import org.apache.log4j.Logger;
 
 import cn.com.incito.interclass.po.Device;

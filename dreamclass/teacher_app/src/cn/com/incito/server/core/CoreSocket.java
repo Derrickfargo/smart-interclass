@@ -80,7 +80,7 @@ public final class CoreSocket extends Thread {
 		ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
 		serverSocketChannel.configureBlocking(false);
 		ServerSocket serverSocket = serverSocketChannel.socket();
-		serverSocket.setSoTimeout(15000);//超时时长为15秒
+//		serverSocket.setSoTimeout(15000);//超时时长为15秒
 		serverSocket.bind(new InetSocketAddress(BAND_PORT));
 		selector = Selector.open();
 		serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);

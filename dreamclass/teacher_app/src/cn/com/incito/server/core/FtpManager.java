@@ -2,7 +2,6 @@ package cn.com.incito.server.core;
 
 import java.io.File;
 
-import org.apache.ftpserver.ConnectionConfig;
 import org.apache.ftpserver.ConnectionConfigFactory;
 import org.apache.ftpserver.FtpServer;
 import org.apache.ftpserver.FtpServerFactory;
@@ -10,8 +9,6 @@ import org.apache.ftpserver.ftplet.FtpException;
 import org.apache.ftpserver.listener.ListenerFactory;
 import org.apache.ftpserver.usermanager.PropertiesUserManagerFactory;
 import org.apache.log4j.Logger;
-
-import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
 public class FtpManager {
 	private static FtpManager instance = null;
