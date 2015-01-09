@@ -84,7 +84,7 @@ public class SocketServiceCore {
 				.childOption(ChannelOption.SO_KEEPALIVE, true)
 				.childOption(ChannelOption.TCP_NODELAY, true);
 				try {
-					ChannelFuture f = serverBootstrap.bind(9002).sync();
+					ChannelFuture f = serverBootstrap.bind(9001).sync();
 					f.channel().closeFuture().sync();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
