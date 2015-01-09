@@ -16,7 +16,6 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.CharsetUtil;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Properties;
 import java.util.concurrent.Executors;
