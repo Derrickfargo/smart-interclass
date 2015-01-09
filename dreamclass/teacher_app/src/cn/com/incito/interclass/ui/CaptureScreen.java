@@ -124,38 +124,6 @@ public class CaptureScreen {
 	 * @throws ImageFormatException
 	 */
 	public void distributePaper(BufferedImage image) {
-		logger.info("作业图像宽度:" + image.getWidth());
-		// if (image.getWidth() > 1280) {
-		// try {
-		// File dir = new File("temp");
-		// dir.mkdirs();
-		// File file = new File(dir, "temp.png");
-		// ImageIO.write(image, "gif", file);
-		// ImageUtil.resize(file, file, 1280, 1f);
-		// image = ImageIO.read(file);
-		// } catch (Exception e) {
-		// logger.error("图像压缩失败!", e);
-		// }
-		// }
-		// logger.info("压缩后宽度:" + image.getWidth());
-		// ByteArrayOutputStream os = new ByteArrayOutputStream();
-		// try {
-		// ImageIO.write(image, "gif", os);
-		// logger.info("图片大小:" + os.toByteArray().length);
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// }
-		// if (Application.getInstance().getOnlineStudent().size() > 0) {
-		// Application.getInstance().getTempQuiz().clear();
-		// Application.getInstance().getQuizMap().clear();
-		// Application.getInstance().getQuizList().clear();
-		// Application.getInstance().getTempQuizIMEI().clear();
-		// sendMessageToStudents(os);
-		// logger.info("截图作业已经发出");
-		// Application.getInstance().setLockScreen(false);
-		// } else {
-		// JOptionPane.showMessageDialog(jFrame, "没有学生登录，无法进行随堂练习");
-		// }
 		File dir = new File(FtpManager.FTP_HOME);
 		dir.mkdirs();
 		File file = new File(dir, "quiz.jpg");
@@ -172,17 +140,11 @@ public class CaptureScreen {
 			Application.getInstance().setQuizId(uuid);
 			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(uuid));
 			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString("true"));
-			// messagePacking.putBodyData(DataType.INT,
-			// BufferUtils.writeUTFString(FtpManager.FTP_HOME));
-			// messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString("quiz.png"));
-
 			Application.getInstance().getTempQuiz().clear();
 			Application.getInstance().getQuizList().clear();
 			Application.getInstance().getTempQuizIMEI().clear();
 			sendMessageToStudents(messagePacking.pack().array());
 			logger.info("截图作业已经发出");
-			app.setState(3);// 作业已发送
-			// app.setQuiz(os.toByteArray());//设置发送的作业
 			Application.getInstance().setLockScreen(false);
 		} else {
 			JOptionPane.showMessageDialog(jFrame, "没有学生登录，无法进行随堂练习");
@@ -209,7 +171,6 @@ public class CaptureScreen {
 					while (it.hasNext()) {
 						Entry<String, SocketChannel> entry = it.next();
 						String imei = entry.getKey();
-						// Student students = app.getStudentByImei(imei);
 						List<Student> studentsList = app.getStudentByImei(imei);
 						// 记录有学生登陆的Pad
 						if (studentsList.size() > 0) {
@@ -286,7 +247,7 @@ public class CaptureScreen {
 			this.width = width;
 			this.height = height;
 
-//			this.setLayout(null);
+			this.setLayout(null);
 			this.addMouseListener(this);
 			this.addMouseMotionListener(this);
 			ContentPanel.this.jf.addKeyListener(new KeyAdapter() {
