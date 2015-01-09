@@ -1,5 +1,7 @@
 package cn.com.incito.interclass.ui;
 
+import io.netty.channel.ChannelHandlerContext;
+
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -194,16 +196,16 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 	private void sendPeerFeedbackMessage() {
 		Queue<List<Quiz>> quizQueue = PeerFeedbackUtils.getQuizQueue();
 		Application app = Application.getInstance();
-		Set<Entry<String, SocketChannel>> clients = app.getClientChannel().entrySet();
-		final Iterator<Entry<String, SocketChannel>> it = clients.iterator();
+		Set<Entry<String, ChannelHandlerContext>> clients = app.getClientChannel().entrySet();
+		final Iterator<Entry<String, ChannelHandlerContext>> it = clients.iterator();
 		while (it.hasNext()) {
-			Entry<String, SocketChannel> entry = it.next();
+			Entry<String, ChannelHandlerContext> entry = it.next();
 			String imei = entry.getKey();
 			List<Student> students = app.getStudentByImei(imei);
 			//记录有学生登陆的Pad
 			if (students != null && students.size() > 0) {
-				SocketChannel channel = entry.getValue();
-				if (channel != null && channel.isConnected()) {
+				ChannelHandlerContext channel = entry.getValue();
+				if (channel != null && channel.channel().isActive()) {
 					List<Quiz> quizList = quizQueue.poll();
 					for(Quiz quiz : quizList){
 						MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_QUIZ_FEEDBACK_SEND);
@@ -222,7 +224,7 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 							buffer.clear();
 							buffer.put(data);
 							buffer.flip();
-							channel.write(buffer);
+							channel.writeAndFlush(buffer);
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
@@ -265,8 +267,8 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
     public void collectPaper() {
     	logger.info("开始收取作业...");
     	Application app = Application.getInstance();
-		Map<String,SocketChannel> channels = app.getClientChannel();
-		Iterator<SocketChannel> it = channels.values().iterator();
+		Map<String,ChannelHandlerContext> channels = app.getClientChannel();
+		Iterator<ChannelHandlerContext> it = channels.values().iterator();
 		while (it.hasNext()) {//加入收取作业队列
 			QuizCollector.getInstance().addQuizQueue(it.next());
 		}
@@ -290,37 +292,33 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
     
     private void sendMessageToStudents(){
 		final Application app = Application.getInstance();
-		Set<Entry<String, SocketChannel>> clients = app.getClientChannel().entrySet();
-		final Iterator<Entry<String, SocketChannel>> it = clients.iterator();
+		Set<Entry<String, ChannelHandlerContext>> clients = app.getClientChannel().entrySet();
+		final Iterator<Entry<String, ChannelHandlerContext>> it = clients.iterator();
 		new Thread() {
 			@Override
 			public void run() {
-				try {
-					while (it.hasNext()) {
-						MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DISTRIBUTE_PAPER);
-				        String uuid = UUID.randomUUID().toString();
-				        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(uuid));
-				        messagePacking.putBodyData(DataType.INT,  BufferUtils.writeUTFString("false"));
-				        byte[] data = messagePacking.pack().array();
-						ByteBuffer buffer = ByteBuffer.allocate(data.length);
-						Entry<String, SocketChannel> entry = it.next();
-						String imei = entry.getKey();
-						List<Student> students = app.getStudentByImei(imei);
-						//记录有学生登陆的Pad
-						if (students != null && students.size() > 0) {
-							SocketChannel channel = entry.getValue();
-							if (channel != null && channel.isConnected()) {
-								// 输出到通道
-								buffer.clear();
-								buffer.put(data);
-								buffer.flip();
-								channel.write(buffer);
-								app.addQuizIMEI(imei);//已发送的IMEI
-							}
+				while (it.hasNext()) {
+					MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DISTRIBUTE_PAPER);
+				    String uuid = UUID.randomUUID().toString();
+				    messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(uuid));
+				    messagePacking.putBodyData(DataType.INT,  BufferUtils.writeUTFString("false"));
+				    byte[] data = messagePacking.pack().array();
+					ByteBuffer buffer = ByteBuffer.allocate(data.length);
+					Entry<String, ChannelHandlerContext> entry = it.next();
+					String imei = entry.getKey();
+					List<Student> students = app.getStudentByImei(imei);
+					//记录有学生登陆的Pad
+					if (students != null && students.size() > 0) {
+						ChannelHandlerContext channel = entry.getValue();
+						if (channel != null && channel.channel().isActive()) {
+							// 输出到通道
+							buffer.clear();
+							buffer.put(data);
+							buffer.flip();
+							channel.writeAndFlush(buffer);
+							app.addQuizIMEI(imei);//已发送的IMEI
 						}
 					}
-				} catch (IOException e) {
-					logger.error("发送消息异常:\n", e);
 				}
 			};
 		}.start();

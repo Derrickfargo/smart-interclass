@@ -1,5 +1,7 @@
 package cn.com.incito.server.handler;
 
+import io.netty.channel.ChannelHandlerContext;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
@@ -16,6 +18,7 @@ import cn.com.incito.server.api.ApiClient;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
+import cn.com.incito.server.core.SocketServiceCore;
 import cn.com.incito.server.exception.AppException;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
@@ -37,7 +40,7 @@ public class GroupVoteHandler extends MessageHandler {
 		Integer id = data.getInteger("id");
 		Integer vote = data.getInteger("vote");
 		Application app = Application.getInstance();
-		List<SocketChannel> channels = service.getGroupSocketChannelByGroupId(id);
+		List<ChannelHandlerContext> channels = service.getGroupSocketChannelByGroupId(id);
 		List<Integer> voteList = app.getTempVote().get(id);
 		if(voteList == null){
 			voteList = new ArrayList<Integer>();
@@ -104,20 +107,17 @@ public class GroupVoteHandler extends MessageHandler {
 		}
 	}
 
-	private void sendResponse(String json, List<SocketChannel> channels) {
+	private void sendResponse(String json, List<ChannelHandlerContext> channels) {
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_VOTE);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
-        byte[] messageData = messagePacking.pack().array();
-        ByteBuffer buffer = ByteBuffer.allocate(messageData.length);
-        for(SocketChannel channel: channels){
-			buffer.clear();
-			buffer.put(messageData);
-			buffer.flip();
-			try {
-				channel.write(buffer);
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
+//        byte[] messageData = messagePacking.pack().array();
+//        ByteBuffer buffer = ByteBuffer.allocate(messageData.length);
+        for(ChannelHandlerContext channel: channels){
+//			buffer.clear();
+//			buffer.put(messageData);
+//			buffer.flip();
+//			channel.writeAndFlush(buffer);
+			SocketServiceCore.getInstance().sendMsg(messagePacking, channel);
 		}
 	}
 }

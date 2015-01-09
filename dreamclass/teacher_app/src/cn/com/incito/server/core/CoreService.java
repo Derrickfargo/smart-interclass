@@ -1,12 +1,13 @@
 package cn.com.incito.server.core;
 
+import io.netty.channel.ChannelHandlerContext;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
 
 import javax.imageio.stream.FileImageOutputStream;
 
@@ -317,20 +318,16 @@ public class CoreService {
 		return null;
 	}
 	
-	private void sendResponse(String json,List<SocketChannel> channels) {
-		for (SocketChannel channel : channels) {
+	private void sendResponse(String json,List<ChannelHandlerContext> channels) {
+		for (ChannelHandlerContext channel : channels) {
 			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
 	        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
 	        byte[] messageData = messagePacking.pack().array();
 	        ByteBuffer buffer = ByteBuffer.allocate(messageData.length);
 	        buffer.put(messageData);
 	        buffer.flip();
-			try {
-				if (channel.isConnected()) { 
-					channel.write(buffer);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
+			if (channel.channel().isActive()) { 
+				channel.writeAndFlush(buffer);
 			}
 		}
 	}
@@ -370,7 +367,7 @@ public class CoreService {
 		return app.getTableGroup().get(table.getId());
 	}
 
-	public List<SocketChannel> getGroupSocketChannelByGroupId(int groupId) {
+	public List<ChannelHandlerContext> getGroupSocketChannelByGroupId(int groupId) {
 		return app.getClientChannelByGroup(groupId);
 	}
 
@@ -380,127 +377,68 @@ public class CoreService {
 	 * @param imei
 	 * @return
 	 */
-//	public void SavePaper(final String imei, final String quizid,
-//			final String lessionid, final byte[] imageByte,
-//			final SocketChannel channel) {
-//		new Thread(){
-//			public void run() {
-//				File path = new File(Constants.PAPER_PATH + File.separator + lessionid
-//						+ File.separator + imei.replace(":", "-"));
-//				path.mkdirs();
-//		
-//				File file = new File(path, quizid + ".jpg");
-//				File thumbnail = new File(path, quizid + "_thumbnail.jpg");
-//				try {
-//					FileImageOutputStream imageOutput = new FileImageOutputStream(file);
-//					imageOutput.write(imageByte, 0, imageByte.length);
-//					imageOutput.close();
-//					ImageUtil.resize(file, file, 865, 1f);
-//					logger.error("大图生成：" + file.getAbsoluteFile());
-//					ImageUtil.resize(file, thumbnail, 186, 1f);
-//					logger.error("缩略图生成：" + thumbnail.getAbsoluteFile());
-//				} catch (IOException e) {
-//					logger.error("保存作业图片出现错误:", e);
-//				}
-//		
-//				Quiz quiz = new Quiz();
-//				quiz.setId(quizid);
-//				quiz.setImei(imei);
-//				quiz.setLessionid(lessionid);
-//				StringBuffer name = new StringBuffer();
-//				List<Student> students = app.getStudentByImei(imei);
-//				if (students != null) {
-//					for (Student student : students) {
-//						name.append(student.getName());
-//						name.append(",");
-//					}
-//				}
-//				if (name.length() != 0) {
-//					quiz.setName(name.deleteCharAt(name.length() - 1).toString());
-//				}
-//				quiz.setTime(System.currentTimeMillis());
-//				Group group = getGroupObjectByIMEI(imei);
-//				quiz.setGroupId(group.getId());
-//				quiz.setGroup(group);
-//				quiz.setQuizUrl(file.getAbsolutePath());
-//				quiz.setThumbnail(thumbnail.getAbsolutePath());
-//				app.getTempQuiz().put(imei, quiz);
-//				app.getQuizMap().put(quizid, quiz);
-//				app.getQuizList().add(quiz);
-//				app.refresh();
-//				if (app.getQuizList().size() == app.getClientChannel().size()) {
-//					Application.getInstance().getFloatIcon().showNoQuiz();
-//					MainFrame.getInstance().showNoQuiz();
-//					Application.getInstance().setLockScreen(true);
-//				} else {
-//					String message = String.format(Constants.MESSAGE_QUIZ, app
-//							.getQuizList().size(), app.getTempQuizIMEI().size());
-//					Application.getInstance().getFloatIcon().showQuizMessage(message);
-//				}
-//				//当前作业处理完毕，处理下一作业
-//				QuizCollector.getInstance().quizComplete(channel);
-//				QuizCollector.getInstance().nextQuiz();
-//			}
-//		}.start();
-//	}
-	/**
-	 * 保存学生作业
-	 *
-	 * @param imei
-	 * @return
-	 */
-	public void SavePaper(String imei, String quizid, String path, SocketChannel channel) {
-		File file = new File(path);
-		logger.info("图片是否存在:" + file.exists());
-		if(!file.exists()){
-			return;
-		}
-		File thumbnail = new File(file.getParent(), UUID.randomUUID() + ".jpg");
-		try {
-			thumbnail.delete();
-			ImageUtil.resize(file, thumbnail, 186, 1f);
-			logger.info("缩略图生成：" + thumbnail.getAbsoluteFile());
-		} catch (IOException e) {
-			logger.error("保存作业图片出现错误:", e);
-			return;
-		}
-
-		Quiz quiz = new Quiz();
-		quiz.setId(quizid);
-		quiz.setImei(imei);
-//		Student students = app.getStudentByImei(imei);
-//		if (students.getName().length() != 0) {
-//			quiz.setName(students.getName());
-//		}
+	public void SavePaper(final String imei, final String quizid,
+			final String lessionid, final byte[] imageByte,
+			final ChannelHandlerContext channel) {
+		new Thread(){
+			public void run() {
+				File path = new File(Constants.PAPER_PATH + File.separator + lessionid
+						+ File.separator + imei.replace(":", "-"));
+				path.mkdirs();
 		
-		List<Student> studentsList=app.getStudentByImei(imei);
-		StringBuffer str=new StringBuffer();
-		if(studentsList.size()>0){
-			for (int i = 0; i < studentsList.size(); i++) {
-				str.append(studentsList.get(i).getName()+";");
+				File file = new File(path, quizid + ".jpg");
+				File thumbnail = new File(path, quizid + "_thumbnail.jpg");
+				try {
+					FileImageOutputStream imageOutput = new FileImageOutputStream(file);
+					imageOutput.write(imageByte, 0, imageByte.length);
+					imageOutput.close();
+					ImageUtil.resize(file, file, 865, 1f);
+					logger.error("大图生成：" + file.getAbsoluteFile());
+					ImageUtil.resize(file, thumbnail, 186, 1f);
+					logger.error("缩略图生成：" + thumbnail.getAbsoluteFile());
+				} catch (IOException e) {
+					logger.error("保存作业图片出现错误:", e);
+				}
+		
+				Quiz quiz = new Quiz();
+				quiz.setId(quizid);
+				quiz.setImei(imei);
+				quiz.setLessionid(lessionid);
+				StringBuffer name = new StringBuffer();
+				List<Student> students = app.getStudentByImei(imei);
+				if (students != null) {
+					for (Student student : students) {
+						name.append(student.getName());
+						name.append(",");
+					}
+				}
+				if (name.length() != 0) {
+					quiz.setName(name.deleteCharAt(name.length() - 1).toString());
+				}
+				quiz.setTime(System.currentTimeMillis());
+				Group group = getGroupObjectByIMEI(imei);
+				quiz.setGroupId(group.getId());
+				quiz.setGroup(group);
+				quiz.setQuizUrl(file.getAbsolutePath());
+				quiz.setThumbnail(thumbnail.getAbsolutePath());
+				app.getTempQuiz().put(imei, quiz);
+				app.getQuizMap().put(quizid, quiz);
+				app.getQuizList().add(quiz);
+				app.refresh();
+				if (app.getQuizList().size() == app.getClientChannel().size()) {
+					Application.getInstance().getFloatIcon().showNoQuiz();
+					MainFrame.getInstance().showNoQuiz();
+					Application.getInstance().setLockScreen(true);
+				} else {
+					String message = String.format(Constants.MESSAGE_QUIZ, app
+							.getQuizList().size(), app.getTempQuizIMEI().size());
+					Application.getInstance().getFloatIcon().showQuizMessage(message);
+				}
+				//当前作业处理完毕，处理下一作业
+				QuizCollector.getInstance().quizComplete(channel);
+				QuizCollector.getInstance().nextQuiz();
 			}
-			quiz.setName(str.toString());
-		}
-		
-		
-		quiz.setTime(System.currentTimeMillis());
-		quiz.setQuizUrl(file.getAbsolutePath());
-		quiz.setThumbnail(thumbnail.getAbsolutePath());
-		app.getTempQuiz().put(imei, quiz);
-		app.getQuizList().add(quiz);
-		app.refresh();
-		if (app.getQuizList().size() == app.getClientChannel().size()) {
-			Application.getInstance().getFloatIcon().showNoQuiz();
-			MainFrame.getInstance().showNoQuiz();
-			Application.getInstance().setLockScreen(true);
-		} else {
-			String message = String.format(Constants.MESSAGE_QUIZ, app
-					.getQuizList().size(), app.getClientChannel().size());
-			Application.getInstance().getFloatIcon().showQuizMessage(message);
-		}
-		//当前作业处理完毕，处理下一作业
-		QuizCollector.getInstance().quizComplete(channel);
-		QuizCollector.getInstance().nextQuiz();
+		}.start();
 	}
 
 }

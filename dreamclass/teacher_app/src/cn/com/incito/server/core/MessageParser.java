@@ -37,49 +37,49 @@ public class MessageParser {
 	 * @param key
 	 *            注册了acceptable的相应通道的key，可由此key得到通道
 	 */
-	public void parseMessage(SelectionKey key) {
-		// 创建一个headerBuffer用来接收消息头前6个字节
-		ByteBuffer headerBuffer = BufferUtils.prepareToReadOrPut(HEADER_LENGTH);
-		channel = (SocketChannel) key.channel();
-		try {
-			// 从通道中读取消息头,如果该通道已到达流的末尾，则返回 -1
-			if (channel.read(headerBuffer) == -1) {
-				// 关闭通道
-				channel.close();
-				return;
-			}
-		} catch (IOException e) {
-			logger.fatal("解析消息失败:", e);
-			ApiClient.uploadErrorLog(e.toString());
-			try {
-				channel.close();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-			return;
-		}
-		headerBuffer.flip();
-		logger.info("开始解析消息..");
-		// 消息头fakeId是否正确
-		if (!parseFakeId(headerBuffer)) {
-			return;
-		}
-		// 获取消息头中有用的信息,msgId,msgSize
-		parseMessageHeader(headerBuffer);
-		// 解析消息体和命令
-		if (!parseMessageBody()) {
-			return;
-		}
-		message.setChannel(channel);
-		if(message.getMsgID() == Message.MESSAGE_HEART_BEAT){
-			//如果为心跳消息，优先级最高，不经过队列，直接处理
-			message.handleMessage();
-			return;
-		}
-		// 把消息压入消息队列
-		logger.info("消息解析成功，开始压入消息队列，MSG_ID=" + message.getMsgID());
-		MessageManager.getInstance().addQueue(message);
-	}
+//	public void parseMessage(SelectionKey key) {
+//		// 创建一个headerBuffer用来接收消息头前6个字节
+//		ByteBuffer headerBuffer = BufferUtils.prepareToReadOrPut(HEADER_LENGTH);
+//		channel = (SocketChannel) key.channel();
+//		try {
+//			// 从通道中读取消息头,如果该通道已到达流的末尾，则返回 -1
+//			if (channel.read(headerBuffer) == -1) {
+//				// 关闭通道
+//				channel.close();
+//				return;
+//			}
+//		} catch (IOException e) {
+//			logger.fatal("解析消息失败:", e);
+//			ApiClient.uploadErrorLog(e.toString());
+//			try {
+//				channel.close();
+//			} catch (IOException e1) {
+//				e1.printStackTrace();
+//			}
+//			return;
+//		}
+//		headerBuffer.flip();
+//		logger.info("开始解析消息..");
+//		// 消息头fakeId是否正确
+//		if (!parseFakeId(headerBuffer)) {
+//			return;
+//		}
+//		// 获取消息头中有用的信息,msgId,msgSize
+//		parseMessageHeader(headerBuffer);
+//		// 解析消息体和命令
+//		if (!parseMessageBody()) {
+//			return;
+//		}
+//		message.setChannel(channel);
+//		if(message.getMsgID() == Message.MESSAGE_HEART_BEAT){
+//			//如果为心跳消息，优先级最高，不经过队列，直接处理
+//			message.handleMessage();
+//			return;
+//		}
+//		// 把消息压入消息队列
+//		logger.info("消息解析成功，开始压入消息队列，MSG_ID=" + message.getMsgID());
+//		MessageManager.getInstance().addQueue(message);
+//	}
 
 	
 	/**

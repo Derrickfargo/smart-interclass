@@ -49,56 +49,56 @@ public class Connection {
 		lastActTime = System.currentTimeMillis();
 	}
 	
-	public synchronized void close() {
-		//停止检测心跳
-		monitor.setRunning(false);
-		ConnectionManager.removeConnection(imei);
-		Application.getInstance().getClientChannel().remove(imei);
-		if (channel != null && channel.isConnected()) {
-			try {
-				channel.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		//刷新界面
-		doLogout();
-	}
-	
-	private void doLogout(){
-		Application app = Application.getInstance();
-		Device device = app.getImeiDevice().get(imei);
-		if (device == null) {
-			return;
-		}
-		Table table = app.getDeviceTable().get(device.getId());
-		if (table == null) {
-			return;
-		}
-		Group group = app.getTableGroup().get(table.getId());
-		List<Student> students = app.getStudentByImei(imei);
-		if (students != null) {
-			for (Student student : students) {
-				for (Student aStudent : group.getStudents()) {
-					if (student.getName().equals(aStudent.getName())
-							&& student.getNumber().equals(aStudent.getNumber())) {
-						aStudent.setLogin(false);
-					}
-				}
-			}
-		}
-		app.removeLoginStudent(imei);
-		app.getOnlineDevice().remove(imei);
-		Application.getInstance().getClientChannel().remove(imei);
-		app.refresh();// 更新UI
-		
-		//向其他设备发送退出通知
-		List<SocketChannel> channels = Application.getInstance().getClientChannelByGroup(group.getId());
-		JSONObject json = new JSONObject();
-		json.put("code", JSONUtils.SUCCESS);
-		json.put("data", group);
-		sendResponse(json.toJSONString(), channels);
-	}
+//	public synchronized void close() {
+//		//停止检测心跳
+//		monitor.setRunning(false);
+//		ConnectionManager.removeConnection(imei);
+//		Application.getInstance().getClientChannel().remove(imei);
+//		if (channel != null && channel.isConnected()) {
+//			try {
+//				channel.close();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		//刷新界面
+////		doLogout();
+//	}
+//	
+//	private void doLogout(){
+//		Application app = Application.getInstance();
+//		Device device = app.getImeiDevice().get(imei);
+//		if (device == null) {
+//			return;
+//		}
+//		Table table = app.getDeviceTable().get(device.getId());
+//		if (table == null) {
+//			return;
+//		}
+//		Group group = app.getTableGroup().get(table.getId());
+//		List<Student> students = app.getStudentByImei(imei);
+//		if (students != null) {
+//			for (Student student : students) {
+//				for (Student aStudent : group.getStudents()) {
+//					if (student.getName().equals(aStudent.getName())
+//							&& student.getNumber().equals(aStudent.getNumber())) {
+//						aStudent.setLogin(false);
+//					}
+//				}
+//			}
+//		}
+//		app.removeLoginStudent(imei);
+//		app.getOnlineDevice().remove(imei);
+//		Application.getInstance().getClientChannel().remove(imei);
+//		app.refresh();// 更新UI
+//		
+//		//向其他设备发送退出通知
+//		List<SocketChannel> channels = Application.getInstance().getClientChannelByGroup(group.getId());
+//		JSONObject json = new JSONObject();
+//		json.put("code", JSONUtils.SUCCESS);
+//		json.put("data", group);
+//		sendResponse(json.toJSONString(), channels);
+//	}
 	
 	private void sendResponse(String json,List<SocketChannel> channels) {
 		for (SocketChannel channel : channels) {
@@ -129,21 +129,21 @@ public class Connection {
 	class ConnectActiveMonitor extends Thread {
 		private volatile boolean isRunning = true;
 
-		public void run() {
-			while (isRunning) {
-				try {
-					Thread.sleep(SCAN_CYCLE);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				long time = System.currentTimeMillis();
-				if (time - lastActTime > TIMEOUT) {
-					log.info("30秒内没有检测到心跳，设备退出!");
-					close();
-					break;
-				}
-			}
-		}
+//		public void run() {
+//			while (isRunning) {
+//				try {
+//					Thread.sleep(SCAN_CYCLE);
+//				} catch (InterruptedException e) {
+//					e.printStackTrace();
+//				}
+//				long time = System.currentTimeMillis();
+//				if (time - lastActTime > TIMEOUT) {
+//					log.info("30秒内没有检测到心跳，设备退出!");
+//					close();
+//					break;
+//				}
+//			}
+//		}
 
 		public void setRunning(boolean isRunning) {
 			this.isRunning = isRunning;

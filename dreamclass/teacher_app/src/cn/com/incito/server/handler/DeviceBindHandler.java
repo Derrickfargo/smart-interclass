@@ -11,6 +11,7 @@ import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
+import cn.com.incito.server.core.SocketServiceCore;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
@@ -44,7 +45,7 @@ public class DeviceBindHandler extends MessageHandler {
 		String result = service.deviceBind(imei, number);
 		int groupId = getGroupId(result);
 		if (groupId > 0) {
-			Application.getInstance().addSocketChannel(groupId, message.getChannel());
+			Application.getInstance().addSocketChannel(groupId, ctx);
 		}
 		service.refreshGroupList();
 		sendResponse(JSONUtils.renderJSONString(JSONUtils.SUCCESS));
@@ -64,14 +65,11 @@ public class DeviceBindHandler extends MessageHandler {
 		logger.info("回复设备绑定消息:" + json);
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_BIND);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
-        byte[] messageData = messagePacking.pack().array();
-        ByteBuffer buffer = ByteBuffer.allocate(messageData.length);
-        buffer.put(messageData);
-        buffer.flip();
-        try {
-        	message.getChannel().write(buffer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        byte[] messageData = messagePacking.pack().array();
+//        ByteBuffer buffer = ByteBuffer.allocate(messageData.length);
+//        buffer.put(messageData);
+//        buffer.flip();
+//        ctx.channel().writeAndFlush(buffer);
+        SocketServiceCore.getInstance().sendMsg(messagePacking, ctx);
 	}
 }

@@ -18,7 +18,7 @@ public class SendPaperHandler extends MessageHandler {
 	public void handleMessage() {
 		logger.info("收到作业提交申请消息:" + data.toJSONString());
 		//将提交作业请求加入队列，等待服务器处理
-		QuizCollector.getInstance().addQuizQueue(message.getChannel());
+		QuizCollector.getInstance().addQuizQueue(ctx);
 	}
 
 }

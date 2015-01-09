@@ -17,6 +17,7 @@ import javax.swing.JScrollPane;
 
 import cn.com.incito.server.core.CoreSocket;
 import cn.com.incito.server.core.Message;
+import cn.com.incito.server.core.SocketServiceCore;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
@@ -150,7 +151,8 @@ public class QuizFeedbackFrame extends JFrame {
 					JSONObject json = new JSONObject();
 					json.put("complete", Boolean.TRUE);
 					messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json.toJSONString()));
-					CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
+//					CoreSocket.getInstance().sendMessage(messagePacking.pack().array());
+					SocketServiceCore.getInstance().sendMsg(messagePacking);
 				}
 			}
 		}

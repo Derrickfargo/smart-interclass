@@ -1,5 +1,7 @@
 package cn.com.incito.interclass.ui;
 
+import io.netty.channel.ChannelHandlerContext;
+
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
@@ -213,7 +215,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 			json.put("id", group.getId());
 			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_EDIT);
 			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json.toString()));
-			final List<SocketChannel> channels = app.getClientChannelByGroup(group.getId());
+			final List<ChannelHandlerContext> channels = app.getClientChannelByGroup(group.getId());
 			sendMessageToGroup(messagePacking, channels);
 		}
 	}
@@ -234,7 +236,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 	}
 
 	private void sendMessageToGroup(final MessagePacking messagePacking,
-			final List<SocketChannel> channels) {
+			final List<ChannelHandlerContext> channels) {
 		if (channels == null) {
 			return;
 		}
@@ -243,21 +245,17 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 			public void run() {
 				byte[] data = messagePacking.pack().array();
 				ByteBuffer buffer = ByteBuffer.allocate(data.length);
-				Iterator<SocketChannel> it = channels.iterator();
+				Iterator<ChannelHandlerContext> it = channels.iterator();
 				while (it.hasNext()) {
-					SocketChannel channel = it.next();
-					if (!channel.isConnected()) {
+					ChannelHandlerContext channel = it.next();
+					if (!channel.channel().isActive()) {
 						it.remove();
 						continue;
 					}
 					buffer.clear();
 					buffer.put(data);
 					buffer.flip();
-					try {
-						channel.write(buffer);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+					channel.writeAndFlush(buffer);
 				}
 			};
 		}.start();
@@ -353,7 +351,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 				imeiStudents.put(device.getImei(), app.addRdmStudent( student));
 				MessagePacking rdmPacking = new MessagePacking(Message.MESSAGE_GROUP_RDMGROUP);
 				rdmPacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(JSON.toJSONString(rdmMsg)));
-				SocketChannel clientChannel = app.getClientChannel().get(device.getImei());
+				ChannelHandlerContext clientChannel = app.getClientChannel().get(device.getImei());
 				sendMsgToClient(rdmPacking,clientChannel);			
 			}
 			group.setStudents(groupStudent);//更新小组学生映射
@@ -381,20 +379,14 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 	 * @param clientChannel
 	 */
 	private void sendMsgToClient(final MessagePacking rdmPacking,
-			final SocketChannel clientChannel) {	
+			final ChannelHandlerContext clientChannel) {	
 		byte[] data=rdmPacking.pack().array();
 				ByteBuffer bytes =ByteBuffer.allocate(data.length);
 				bytes.clear();
 				bytes.put(data);
 				bytes.flip();
-				try {
-					clientChannel.write(bytes);
-					logger.info("随机分组信息发送失败！"+new String(data));
-				} catch (IOException e) {
-					app.setDoRdmGrouping(false);
-					logger.info("随机分组消息发送失败(IO)！"+new String(data)+e);
-					JOptionPane.showMessageDialog(MainFrame.getInstance().getFrame(), "随机分组消息发送失败，请检查网络并重新分组！");
-				}
+				clientChannel.writeAndFlush(bytes);
+				logger.info("随机分组信息发送失败！"+new String(data));
 	}
 
 	@Override

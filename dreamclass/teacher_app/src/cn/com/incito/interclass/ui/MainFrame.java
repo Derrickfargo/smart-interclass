@@ -36,7 +36,6 @@ import cn.com.incito.interclass.ui.widget.IpDialog;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.config.AppConfig;
 import cn.com.incito.server.core.CoreSocket;
-import cn.com.incito.server.core.FtpManager;
 import cn.com.incito.server.utils.NetworkUtils;
 
 public class MainFrame extends MouseAdapter {
@@ -79,7 +78,6 @@ public class MainFrame extends MouseAdapter {
 	private PraiseBottomPanel praiseBottomPanel;
 	
 	public static MainFrame getInstance() {
-		
 		if (instance == null) {
 			instance = new MainFrame();
 		}
@@ -134,7 +132,6 @@ public class MainFrame extends MouseAdapter {
 
 	private MainFrame() {
 		// 启动通讯线程
-		startNetworkService();
 		CoreSocket.getInstance().start();
 		showLoginUI();
 		setDragable();
@@ -551,19 +548,5 @@ public class MainFrame extends MouseAdapter {
 
 	public void refreshResponder() {
 		responderPanel.refresh();
-	}
-	private static void startNetworkService() {
-		// 启动通讯线程
-//		CoreSocket.getInstance().start();
-//		Properties props = AppConfig.getProperties();
-//		String heartbeat = props.get("heartbeat").toString();
-//		if (heartbeat != null && heartbeat.toLowerCase().equals("true")) {
-//			// 启动服务端心跳检测
-//			HeartbeatManager.getInstance().start();
-//		}
-//		// 启动广播监听
-//		MultiCastSocket.getInstance();
-		// 启动ftp服务端
-		FtpManager.createFtpServer().start();
 	}
 }

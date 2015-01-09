@@ -12,8 +12,10 @@ import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.config.AppConfig;
 import cn.com.incito.server.core.ConnectionManager;
+import cn.com.incito.server.core.DeviceConnectionManager;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
+import cn.com.incito.server.core.SocketServiceCore;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
@@ -33,9 +35,9 @@ public class DeviceLoginHandler extends MessageHandler {
 		imei = data.getString("imei");
 		logger.info("收到设备登陆消息:" + data.toJSONString());
 		service.deviceLogin(imei);
-		ConnectionManager.notification(imei, message.getChannel());
+		DeviceConnectionManager.notificate(imei, ctx);
 		Application app = Application.getInstance();
-		app.addSocketChannel(imei, message.getChannel());
+		app.addSocketChannel(imei, ctx);
 		Device device = app.getImeiDevice().get(imei);
         if (device != null) {
             // 系统中无此设备
@@ -43,7 +45,7 @@ public class DeviceLoginHandler extends MessageHandler {
         	if (table != null) {
         		Group group = app.getTableGroup().get(table.getId());
 				if (group != null) {
-        			app.addSocketChannel(group.getId(), message.getChannel());
+        			app.addSocketChannel(group.getId(), ctx);
         		}
         	}
         }
@@ -57,15 +59,12 @@ public class DeviceLoginHandler extends MessageHandler {
         logger.info("回复设备登陆消息:" + data.toJSONString());
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_HAND_SHAKE);
 		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(data.toJSONString()));
-		byte[] handShakResponse = messagePacking.pack().array();
-        ByteBuffer buffer = ByteBuffer.allocate(handShakResponse.length);
-        buffer.put(handShakResponse);
-        buffer.flip();
-        try {
-			message.getChannel().write(buffer);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		byte[] handShakResponse = messagePacking.pack().array();
+//        ByteBuffer buffer = ByteBuffer.allocate(handShakResponse.length);
+//        buffer.put(handShakResponse);
+//        buffer.flip();
+//        ctx.channel().writeAndFlush(buffer);
+        SocketServiceCore.getInstance().sendMsg(messagePacking, ctx);
 	}
 
 }

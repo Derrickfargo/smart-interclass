@@ -1,5 +1,7 @@
 package cn.com.incito.server.core;
 
+import io.netty.channel.ChannelHandlerContext;
+
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
@@ -125,7 +127,7 @@ public class Message {
 	private int msgSize;
 	private ByteBuffer bodyBuffer;
 	private MessageHandler handler;
-	private SocketChannel channel;
+	private ChannelHandlerContext channel;
 
 	public byte getMsgID() {
 		return msgID;
@@ -153,11 +155,11 @@ public class Message {
 		this.bodyBuffer = bodyBuffer;
 	}
 
-	public SocketChannel getChannel() {
+	public ChannelHandlerContext getChannel() {
 		return channel;
 	}
 
-	public void setChannel(SocketChannel channel) {
+	public void setChannel(ChannelHandlerContext channel) {
 		this.channel = channel;
 	}
 
@@ -166,6 +168,6 @@ public class Message {
 			log.error("执行命令出错：没有找到想应的Handler!");
 			throw new NoHandlerException();
 		}
-		handler.handleMessage(this);
+//		handler.handleMessage(this); 消除错误
 	}
 }

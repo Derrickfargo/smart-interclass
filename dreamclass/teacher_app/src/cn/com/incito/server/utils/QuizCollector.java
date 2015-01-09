@@ -1,5 +1,7 @@
 package cn.com.incito.server.utils;
 
+import io.netty.channel.ChannelHandlerContext;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
@@ -30,8 +32,8 @@ public class QuizCollector {
 	private int capacity;
 	private final Lock lock = new ReentrantLock();
 	private final Condition isIdle = lock.newCondition();
-	private Queue<SocketChannel> quizQueue = new LinkedList<SocketChannel>();
-	private Set<SocketChannel> quizSet = new HashSet<SocketChannel>();
+	private Queue<ChannelHandlerContext> quizQueue = new LinkedList<ChannelHandlerContext>();
+	private Set<ChannelHandlerContext> quizSet = new HashSet<ChannelHandlerContext>();
 
 	public static QuizCollector getInstance() {
 		if (instance == null) {
@@ -69,7 +71,7 @@ public class QuizCollector {
 	 * 加入作业收取队列
 	 * @param channel
 	 */
-	public void addQuizQueue(SocketChannel channel) {
+	public void addQuizQueue(ChannelHandlerContext channel) {
 		if (channel == null) {
 			return;
 		}
@@ -99,7 +101,7 @@ public class QuizCollector {
 						}
 						while (capacity < getQuizThreadThreshold()
 								&& quizQueue.size() != 0) {
-							SocketChannel channel = quizQueue.poll();
+							ChannelHandlerContext channel = quizQueue.poll();
 							capacity++;
 							doCollect(channel);// 收集作业
 						}
@@ -113,7 +115,7 @@ public class QuizCollector {
 		}).start();
 	}
 	
-	private void doCollect(final SocketChannel channel){
+	private void doCollect(final ChannelHandlerContext channel){
 		new Thread(new Runnable() {
 			
 			@Override
@@ -128,12 +130,13 @@ public class QuizCollector {
 				buffer.put(data);
 				buffer.flip();
 				try {
-					channel.write(buffer);
-				} catch (IOException e) {
-					logger.error("作业收取失败,直接收取下一个作业", e);
-					quizComplete(channel);
-					nextQuiz();//收取下一个作业
-					return;
+					channel.writeAndFlush(buffer);
+//					有问题，考虑在这里处理或者在netty encode 中改
+//				} catch (IOException e) { 
+//					logger.error("作业收取失败,直接收取下一个作业", e);
+//					quizComplete(channel);
+//					nextQuiz();//收取下一个作业
+//					return;
 				} catch (Exception e) {
 					logger.error("作业收取出现异常", e);
 					return;
@@ -144,7 +147,7 @@ public class QuizCollector {
 		}).start();
 	}
 	
-	public void quizComplete(SocketChannel channel) {
+	public void quizComplete(ChannelHandlerContext channel) {
 		capacity--;
 		quizSet.remove(channel);
 	}
@@ -155,8 +158,8 @@ public class QuizCollector {
 	 *
 	 */
 	private class QuizCollectMonitor extends Thread {
-		private SocketChannel channel;
-		public QuizCollectMonitor(SocketChannel channel) {
+		private ChannelHandlerContext channel;
+		public QuizCollectMonitor(ChannelHandlerContext channel) {
 			this.channel = channel;
 		}
 
