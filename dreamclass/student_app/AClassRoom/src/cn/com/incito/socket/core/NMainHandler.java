@@ -36,15 +36,15 @@ public class NMainHandler extends ChannelInboundHandlerAdapter {
 		MyApplication.getInstance().setChannelHandlerContext(ctx);
 		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":NMainHandler:连接上服务器");
 		
-		NCoreSocket.getInstance().stopConnection();
-		//停顿3s后进行重连连接
-		Thread.sleep(3000);
-		NCoreSocket.getInstance().startConnection(Constants.IP, Constants.PORT);
 		
 	}
 
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 		MyApplication.getInstance().setChannelHandlerContext(null);
+		NCoreSocket.getInstance().stopConnection();
+		//停顿3s后进行重连连接
+		Thread.sleep(3000);
+		NCoreSocket.getInstance().startConnection(Constants.IP, Constants.PORT);
 		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NMainHandler:断开连接");
 	}
 
