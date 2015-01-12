@@ -1,20 +1,16 @@
 package cn.com.incito.socket.handler;
 
-import android.util.Log;
-import cn.com.incito.classroom.utils.Utils;
+import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;
 
 import com.alibaba.fastjson.JSONObject;
-import com.google.code.microlog4android.Logger;
-import com.google.code.microlog4android.LoggerFactory;
 /**
  * 判定设备是否绑定hanlder
  * Created by liushiping on 2014/7/28.
  */
 public class DeviceHasBindHandler extends MessageHandler {
-	private static final String TAG=DeviceHasBindHandler.class.getSimpleName();
-	public static final Logger Logger = LoggerFactory.getLogger();
 	@Override
 	protected void handleMessage() {
 		if (data.getIntValue("code") != 0) {
@@ -25,13 +21,11 @@ public class DeviceHasBindHandler extends MessageHandler {
 
 		if (jsonObject.getBoolean("isbind")) {
 			uiHelper.showWaitingActivity();
-			Logger.debug(Utils.getTime()+TAG+":已绑定设备，进入等待界面..."+"response:"+jsonObject.toJSONString());
-			Log.i(TAG, "已绑定设备，进入等待界面..."+"response:"+jsonObject.toJSONString());
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":DeviceHasBindHandler已绑定设备,进入等待界面..."+"response:"+jsonObject.toJSONString());
 			
 		} else {
 			uiHelper.showBindDeskActivity();
-			Logger.debug(Utils.getTime()+TAG+":已绑定设备，进入等待界面..."+"response:"+jsonObject.toJSONString());
-			Log.i(TAG, "未绑定设备，进入绑定界面..."+"response:"+jsonObject.toJSONString());
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":DeviceHasBindHandler未绑定设备,进入绑定界面..."+"response:"+jsonObject.toJSONString());
 		}
 	}
 

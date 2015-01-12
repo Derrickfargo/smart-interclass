@@ -21,8 +21,7 @@ public class ResponderHandler extends MessageHandler {
 
 	@Override
 	protected void handleMessage() {
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()
-				+ "::ResponderHandler::" + "收到抢答消息");
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ "::ResponderHandler::" + "收到抢答消息");
 		boolean isLockScreen = MyApplication.getInstance().isLockScreen();
 
 		/**

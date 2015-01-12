@@ -1,5 +1,6 @@
 package cn.com.incito.classroom.ui.activity;
 
+import java.lang.ref.WeakReference;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -7,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
@@ -16,6 +18,7 @@ import cn.com.incito.classroom.base.BaseActivity;
 
 /**
  * 倒计时activity
+ * 
  * @author hm
  *
  */
@@ -27,46 +30,67 @@ public class CountdownActivity extends BaseActivity {
 	private TimerTask timerTask;
 	private int backgroundNumber = 3;
 	private ScaleAnimation scaleAnimation;
+	private Handler handler;
 
-	private Handler handler = new Handler() {
-		public void handleMessage(android.os.Message msg) {
+	private static class CountdownHandler extends Handler {
+		private WeakReference<CountdownActivity> weakReference;
+
+		public CountdownHandler(CountdownActivity activity) {
+			weakReference = new WeakReference<CountdownActivity>(activity);
+		}
+
+		@Override
+		public void handleMessage(Message msg) {
+			CountdownActivity activity = weakReference.get();
+
 			switch (msg.what) {
 			case 3:
-				countdown_image.setImageResource(R.drawable.cuountdown_3);
-				countdown_image.startAnimation(scaleAnimation);
-				backgroundNumber--;
+				activity.countdown_image
+						.setImageResource(R.drawable.cuountdown_3);
+				activity.countdown_image
+						.startAnimation(activity.scaleAnimation);
+				activity.backgroundNumber--;
 				break;
 			case 2:
-				countdown_image.setImageResource(R.drawable.cuountdown_2);
-				countdown_image.startAnimation(scaleAnimation);
-				backgroundNumber--;
+				activity.countdown_image
+						.setImageResource(R.drawable.cuountdown_2);
+				activity.countdown_image
+						.startAnimation(activity.scaleAnimation);
+				activity.backgroundNumber--;
 				break;
 			case 1:
-				countdown_image.setImageResource(R.drawable.cuountdown_1);
-				countdown_image.startAnimation(scaleAnimation);
-				backgroundNumber--;
+				activity.countdown_image
+						.setImageResource(R.drawable.cuountdown_1);
+				activity.countdown_image
+						.startAnimation(activity.scaleAnimation);
+				activity.backgroundNumber--;
 				break;
 			case 0:
-				boolean beforResponderisLockScreeen = getIntent().getExtras().getBoolean("beforResponderisLockScreeen");
-				Intent intent = new Intent(CountdownActivity.this,ResponderActivity.class);
-				intent.putExtra("beforResponderisLockScreeen", beforResponderisLockScreeen);
-				CountdownActivity.this.finish();
-				startActivity(intent);
+				boolean beforResponderisLockScreeen = activity.getIntent()
+						.getExtras().getBoolean("beforResponderisLockScreeen");
+				Intent intent = new Intent(activity, ResponderActivity.class);
+				intent.putExtra("beforResponderisLockScreeen",
+						beforResponderisLockScreeen);
+				activity.finish();
+				activity.startActivity(intent);
 			default:
 				break;
 			}
-		};
-	};
+		}
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.count_down_activity);
-	
+		handler = new CountdownHandler(this);
+
 		countdown_image = (ImageView) findViewById(R.id.countdown_image);
-		
-		scaleAnimation = new ScaleAnimation(0.5f, 1, 0.7f, 1, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+
+		scaleAnimation = new ScaleAnimation(0.5f, 1, 0.7f, 1,
+				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+				0.5f);
 		scaleAnimation.setDuration(500);
 		scaleAnimation.setFillAfter(true);
 		scaleAnimation.setFillBefore(false);
@@ -80,7 +104,7 @@ public class CountdownActivity extends BaseActivity {
 			public void run() {
 				if (backgroundNumber == 3) {
 					handler.sendEmptyMessage(3);
-				}else if (backgroundNumber == 2) {
+				} else if (backgroundNumber == 2) {
 					handler.sendEmptyMessage(2);
 				} else if (backgroundNumber == 1) {
 					handler.sendEmptyMessage(1);
@@ -92,16 +116,16 @@ public class CountdownActivity extends BaseActivity {
 				}
 			}
 		};
-		timer.schedule(timerTask, 1  * 1000, 1 * 1000);
+		timer.schedule(timerTask, 1 * 1000, 1 * 1000);
 	}
-	
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		if(timer != null){
+		if (timer != null) {
 			timer.cancel();
 		}
-		if(scaleAnimation != null){
+		if (scaleAnimation != null) {
 			scaleAnimation.cancel();
 		}
 	}

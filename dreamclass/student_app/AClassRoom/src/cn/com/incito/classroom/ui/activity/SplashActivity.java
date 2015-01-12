@@ -67,10 +67,10 @@ public class SplashActivity extends BaseActivity {
 		final View view = View.inflate(this, R.layout.splash, null);
 		setContentView(view);
 		showSetting();
-		if(!isAddShortCut()){
+		if (!isAddShortCut()) {
 			addShortCut();
 		}
-		
+
 		try {
 			PackageManager pm = getPackageManager();
 			PackageInfo info = pm.getPackageInfo("cn.com.incito.classroom", 0);
@@ -101,12 +101,10 @@ public class SplashActivity extends BaseActivity {
 
 			@Override
 			public void onAnimationRepeat(Animation animation) {
-
 			}
 
 			@Override
 			public void onAnimationStart(Animation animation) {
-
 			}
 		});
 	}
@@ -116,38 +114,39 @@ public class SplashActivity extends BaseActivity {
 	 */
 
 	private void startMain() {
-//		startMainAct();
 		tv_loading_msg.setText(R.string.loading_msg);
-					Log.i("SplashActivity", "检查WiFi是否连接 ");
-					if (checkWifi()) {
-						android.os.Message message = new android.os.Message();
-						message.what = 2;
-						mHandler.sendMessage(message);
-						MyApplication app = MyApplication.getInstance();
-						WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-						WifiInfo info = wifi.getConnectionInfo();
-						app.setDeviceId(info.getMacAddress().replace(":", "-"));
-						Logger.debug(Utils.getTime() + "SplashActivity:"+ "WiFi已连接，检查Socket是否连接 ");
-						
-						while(MyApplication.getInstance().getChannelHandlerContext() == null){
-							MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "SplashActivity:socket没有连接,请等候2s");
-							
-							NCoreSocket.getInstance().stopConnection();
-							SplashActivity.this.sleep(5000);
-							NCoreSocket.getInstance().startConnection(Constants.IP, Constants.PORT);
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":SplashActivity:检查WiFi是否连接 ");
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				if (checkWifi()) {
+					android.os.Message message = new android.os.Message();
+					message.what = 2;
+					mHandler.sendMessage(message);
+					MyApplication app = MyApplication.getInstance();
+					WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+					WifiInfo info = wifi.getConnectionInfo();
+					app.setDeviceId(info.getMacAddress().replace(":", "-"));
+					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "SplashActivity:"+ "WiFi已连接，检查Socket是否连接 ");
+					while (MyApplication.getInstance().getChannelHandlerContext() == null) {
+						MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ "SplashActivity:socket没有连接,请等候5s");
+						try {
+							Thread.sleep(5000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
 						}
-						startMainAct();
-					}else{
-						Logger.debug(Utils.getTime() + "SplashActivity:"+ "WiFi未连接");
-						Log.i("SplashActivity", "WiFi未连接 ");
-						android.os.Message message1 = new android.os.Message();
-						message1.what = 1;
-						mHandler.sendMessage(message1);
-						SplashActivity.this.sleep(3000);
 					}
-				
-//			}
-
+					startMainAct();
+				} else {
+					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":SplashActivity:wifi没有连接");
+					android.os.Message message1 = new android.os.Message();
+					message1.what = 1;
+					mHandler.sendMessage(message1);
+					SplashActivity.this.sleep(3000);
+				}
+			}
+		}).start();
 	}
 
 	private Handler mHandler = new Handler() {
@@ -178,7 +177,6 @@ public class SplashActivity extends BaseActivity {
 			default:
 				break;
 			}
-
 		}
 	};
 
@@ -203,50 +201,18 @@ public class SplashActivity extends BaseActivity {
 	 * 发送连接请求
 	 */
 	public void startMainAct() {
-//		if (!isUpdateApk()) {
-			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("imei", MyApplication.deviceId);
-			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_HAS_BIND);
-			messagePacking.putBodyData(DataType.INT,
-					BufferUtils.writeUTFString(jsonObject.toJSONString()));
-			CoreSocket.getInstance().sendMessage(messagePacking);
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":splashActivity登录");
-//		}
+		// if (!isUpdateApk()) {
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("imei", MyApplication.deviceId);
+		MessagePacking messagePacking = new MessagePacking(
+				Message.MESSAGE_DEVICE_HAS_BIND);
+		messagePacking.putBodyData(DataType.INT,
+				BufferUtils.writeUTFString(jsonObject.toJSONString()));
+		CoreSocket.getInstance().sendMessage(messagePacking);
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":splashActivity登录");
+		// }
 	}
-
-	/**
-	 * 重新建立连接
-	 */
-//	public void restartConnector() {
-//		new Thread() {
-//			public void run() {
-//				while (Boolean.TRUE) {
-//					SplashActivity.this.sleep(3000);
-//					Logger.debug(Utils.getTime() + "SplashActivity:"
-//							+ "Socket开始重连 ");
-//					Log.i("SplashActivity", "Socket开始重连 ");
-//					CoreSocket.getInstance().restartConnection();
-//					SplashActivity.this.sleep(1000);// 等待1秒后检查连接
-//					if (!CoreSocket.getInstance().isConnected()) {
-//						Logger.debug(Utils.getTime() + "SplashActivity:"
-//								+ "Socket未连接 ");
-//						Log.i("SplashActivity", "Socket未连接 ");
-//						CoreSocket.getInstance().disconnect();
-//						continue;
-//					}
-//					Logger.debug(Utils.getTime() + "SplashActivity:"
-//							+ "Socket已连接 ");
-//					Log.i("SplashActivity", "Socket已连接 ");
-//					if (dialog != null) {
-//						dialog.dismiss();
-//					}
-//					startMainAct();
-//					break;
-//				}
-//			}
-//		}.start();
-//	}
-
+	
 	public void sleep(int seconds) {
 		try {
 			Thread.sleep(seconds);
@@ -273,26 +239,17 @@ public class SplashActivity extends BaseActivity {
 	}
 
 	public boolean isUpdateApk() {
-		// TODO 升级
-		String ip = MyApplication.getInstance().getSharedPreferences()
-				.getString("server_ip", "");
-		String port = MyApplication.getInstance().getSharedPreferences()
-				.getString("server_port", "");
+		String ip = MyApplication.getInstance().getSharedPreferences().getString("server_ip", "");
+		String port = MyApplication.getInstance().getSharedPreferences().getString("server_port", "");
 		if (!Utils.isEmpty(ip) && !Utils.isEmpty(port)) {
 			try {
-				JSONObject updateResult = JSONObject.parseObject(ApiClient
-						.updateApk(code));
-				Logger.debug(Utils.getTime() + "SplashActivity:" + "版本更新返回信息："
+				JSONObject updateResult = JSONObject.parseObject(ApiClient.updateApk(code));
+				MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":SplashActivity:" + "版本更新返回信息："
 						+ updateResult);
-				Log.i("SplashActivity", "版本更新返回信息：" + updateResult);
 				if (updateResult.getInteger("code") == 0) {
-					Version version = JSON.parseObject(updateResult
-							.getJSONObject("data").toJSONString(),
-							Version.class);
-					url = Constants.HTTP + ip + ":" + port
-							+ Constants.URL_DOWNLOAD_APK + version.getId();
-					Logger.debug(Utils.getTime() + "SplashActivity:" + "更新地址："
-							+ url);
+					Version version = JSON.parseObject(updateResult.getJSONObject("data").toJSONString(),Version.class);
+					url = Constants.HTTP + ip + ":" + port+ Constants.URL_DOWNLOAD_APK + version.getId();
+					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "SplashActivity:" + "更新地址："+ url);
 					mHandler.sendEmptyMessage(1000);
 					return true;
 				}
@@ -341,8 +298,7 @@ public class SplashActivity extends BaseActivity {
 		shortcut.putExtra("duplicate", false);
 
 		// 设置桌面快捷方式的图标
-		Parcelable icon = Intent.ShortcutIconResource.fromContext(this,
-				R.drawable.ic_launcher);
+		Parcelable icon = Intent.ShortcutIconResource.fromContext(this,R.drawable.ic_launcher);
 		shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, icon);
 
 		// 点击快捷方式的操作
