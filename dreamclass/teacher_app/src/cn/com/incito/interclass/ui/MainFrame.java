@@ -36,6 +36,7 @@ import cn.com.incito.server.api.Application;
 import cn.com.incito.server.config.AppConfig;
 import cn.com.incito.server.core.CoreSocket;
 import cn.com.incito.server.core.FtpManager;
+import cn.com.incito.server.core.SocketServiceCore;
 import cn.com.incito.server.utils.NetworkUtils;
 
 public class MainFrame extends MouseAdapter {
@@ -134,7 +135,7 @@ public class MainFrame extends MouseAdapter {
 	private MainFrame() {
 		// 启动通讯线程
 		startNetworkService();
-		CoreSocket.getInstance().start();
+		SocketServiceCore.getInstance().startAccept();
 		showLoginUI();
 		setDragable();
 		SwingUtilities.invokeLater(new Runnable() {

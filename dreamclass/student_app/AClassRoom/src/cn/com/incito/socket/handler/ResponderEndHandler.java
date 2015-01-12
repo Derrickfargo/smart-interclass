@@ -1,5 +1,7 @@
 package cn.com.incito.socket.handler;
 
+import com.alibaba.fastjson.JSONObject;
+
 import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.ui.activity.ResponderActivity;
@@ -16,6 +18,11 @@ public class ResponderEndHandler extends MessageHandler {
 	
 	@Override
 	public void handleMessage(Message msg) {
+		handleMessage();
+	}
+	
+	@Override
+	public void handleMessage(JSONObject jsonObject) {
 		handleMessage();
 	}
 

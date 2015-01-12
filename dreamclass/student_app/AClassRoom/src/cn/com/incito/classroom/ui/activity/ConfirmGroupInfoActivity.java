@@ -15,6 +15,7 @@ import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.utils.Utils;
+import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
@@ -84,8 +85,7 @@ public class ConfirmGroupInfoActivity extends BaseActivity implements
 		messagePacking.putBodyData(DataType.INT,
 				BufferUtils.writeUTFString(json.toJSONString()));
 		CoreSocket.getInstance().sendMessage(messagePacking);
-		Logger.debug(Utils.getTime()+TAG+":启动分组确认..." + "request:" + json.toJSONString());
-		Log.i(TAG,"启动分组确认..." + "request:" + json.toJSONString());
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":ConfirmGroupInfoActivity启动分组确认..." + "request:" + json.toJSONString());
 		if (id == R.id.btn_agree) {
 			mWaitingStudentTip.setText(R.string.waiting_other_confirm_tip);
 		}

@@ -1,7 +1,6 @@
 package cn.com.incito.classroom.base;
 
-import java.io.File;
-
+import io.netty.channel.ChannelHandlerContext;
 import android.app.Application;
 import android.app.ExecRootCmd;
 import android.app.KeyguardManager;
@@ -10,13 +9,11 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiManager.WifiLock;
-import android.os.Build;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.preference.PreferenceManager;
@@ -24,8 +21,9 @@ import android.provider.Settings;
 import android.util.Log;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.exception.AppUncaughtException;
-import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.classroom.vo.LoginResVo;
+import cn.com.incito.common.utils.AndroidUtil;
+import cn.com.incito.socket.core.NCoreSocket;
 
 import com.google.code.microlog4android.Logger;
 import com.google.code.microlog4android.LoggerFactory;
@@ -37,6 +35,16 @@ import com.google.code.microlog4android.config.PropertyConfigurator;
 public class MyApplication extends Application {
 	public static final Logger Logger = LoggerFactory.getLogger();
 	public boolean isOnClass;// 是否在上课
+	
+	private ChannelHandlerContext channelHandlerContext;
+
+	public synchronized ChannelHandlerContext getChannelHandlerContext() {
+		return channelHandlerContext;
+	}
+
+	public synchronized void setChannelHandlerContext(ChannelHandlerContext channelHandlerContext) {
+		this.channelHandlerContext = channelHandlerContext;
+	}
 
 	public boolean isOnClass() {
 		return isOnClass;
@@ -72,8 +80,7 @@ public class MyApplication extends Application {
 
 	public void closeSysScreenLock() {
 		mContentResolver = getContentResolver();
-		android.provider.Settings.System.putInt(mContentResolver,
-				android.provider.Settings.System.LOCK_PATTERN_ENABLED, 0);
+		android.provider.Settings.System.putInt(mContentResolver,android.provider.Settings.System.LOCK_PATTERN_ENABLED, 0);
 	}
 
 	public boolean isSubmitPaper() {
@@ -116,9 +123,9 @@ public class MyApplication extends Application {
 		mWifiLock.acquire();
 		
 		mInstance = this;
-		mPrefs = PreferenceManager
-				.getDefaultSharedPreferences(getApplicationContext());
+		mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		initApplication();
+		
 //		MobclickAgent.openActivityDurationTrack(false);// 禁止友盟的自动统计功能
 //
 //		OpenUDIDManager.sync(this);
@@ -165,11 +172,14 @@ public class MyApplication extends Application {
 		//初始化本机mac地址
 		initMacAddress();
 		
+		//启动连接
+		NCoreSocket.getInstance().startConnection(Constants.IP, Constants.PORT);
+		
 		//启动socket和日志服务
-		Intent service = new Intent("cn.com.incito.classroom.service.SOCKET_SERVICE");
-		startService(service);
-		Logger.debug(Utils.getTime()+"MyApplication:"+"socket service started");
-		Log.i("MyApplication", "socket service started");
+//		Intent service = new Intent("cn.com.incito.classroom.service.SOCKET_SERVICE");
+//		startService(service);
+//		Logger.debug(Utils.getTime()+"MyApplication:"+"socket service started");
+//		Log.i("MyApplication", "socket service started");
 
 	}
 
@@ -229,11 +239,9 @@ public class MyApplication extends Application {
 		boolean screenOn = pm.isScreenOn();
 		
 		if (Constants.OPEN_LOCK_SCREEN) {
-			Logger.debug(Utils.getTime()+"LockScreenHandler:"+"是否收到解锁屏信息：" + isLock);
-			Log.i("LockScreenHandler", "是否收到解锁屏信息：" + isLock);
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":MyApplication:"+"是否收到解锁屏信息：" + isLock);
 
-			ContentResolver mContentResolver = this.getApplicationContext()
-					.getContentResolver();
+			ContentResolver mContentResolver = this.getApplicationContext().getContentResolver();
 			ExecRootCmd execRootCmd = new ExecRootCmd();
 			if (isLock) {
 				MyApplication.getInstance().setLockScreen(isLock);

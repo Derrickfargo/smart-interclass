@@ -8,7 +8,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -35,10 +34,11 @@ import cn.com.incito.classroom.vo.LoginReqVo;
 import cn.com.incito.classroom.vo.LoginRes2Vo;
 import cn.com.incito.classroom.vo.LoginResVo;
 import cn.com.incito.classroom.vo.Student;
+import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.common.utils.UIHelper;
-import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
+import cn.com.incito.socket.core.NCoreSocket;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
@@ -52,7 +52,6 @@ import com.alibaba.fastjson.JSONObject;
  */
 
 public class WaitingActivity extends BaseActivity {
-	private static final String TAG = WaitingActivity.class.getSimpleName();
 	public static final int STUDENT_LIST = 1;
 	public static final int STUDENT_LOGIN = 2;
 	public static final int STUDENT_CLEAR = 3;
@@ -207,9 +206,8 @@ public class WaitingActivity extends BaseActivity {
 				Message.MESSAGE_STUDENT_LOGIN);
 		messagePacking.putBodyData(DataType.INT,
 				BufferUtils.writeUTFString(json));
-		CoreSocket.getInstance().sendMessage(messagePacking);
-		Logger.debug(Utils.getTime() + TAG + ":启动登录..." + "request:" + json);
-		Log.i(TAG, "启动登录..." + "request:" + json);
+		NCoreSocket.getInstance().sendMessage(messagePacking);
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":WaitingActivity启动登录..." + "request:");
 	}
 
 	/**
@@ -227,13 +225,10 @@ public class WaitingActivity extends BaseActivity {
 		loginReqVo.setSex(sex);
 		loginReqVo.setType("1");
 		String json = JSON.toJSONString(loginReqVo);
-		MessagePacking messagePacking = new MessagePacking(
-				Message.MESSAGE_STUDENT_LOGIN);
-		messagePacking.putBodyData(DataType.INT,
-				BufferUtils.writeUTFString(json));
-		CoreSocket.getInstance().sendMessage(messagePacking);
-		Logger.debug(Utils.getTime() + TAG + ":启动取消登录...");
-		Log.i(TAG, "启动取消登录...");
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
+		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(json));
+		NCoreSocket.getInstance().sendMessage(messagePacking);
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() +":WaitingActivity启动取消登录...");
 	}
 
 	/**
@@ -312,17 +307,14 @@ public class WaitingActivity extends BaseActivity {
 			switch (msg.what) {
 			// 登陆
 			case STUDENT_LOGIN: {
-
 				mProgressDialog.hide();
 				JSONObject jsonObject = (JSONObject) msg.getData()
 						.getSerializable("data");
-				Logger.debug(Utils.getTime() + TAG + ":获取登录信息..." + jsonObject);
-				Log.i(TAG, "获取登录信息..." + jsonObject);
+				MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":WaitingActivity获取登录信息..." + jsonObject);
 				if (!"0".equals(jsonObject.getString("code"))) {
 					if ("-2".equals(jsonObject.getString("code"))) {
 						String number = jsonObject.getString("data");
-						ToastHelper.showCustomToast(WaitingActivity.this, "学号"
-								+ number + "已注册");
+						ToastHelper.showCustomToast(WaitingActivity.this, "学号"+ number + "已注册");
 					}
 					return;
 				} else if (jsonObject.getJSONObject("data") == null) {
@@ -348,11 +340,8 @@ public class WaitingActivity extends BaseActivity {
 			// 获取分组
 			case STUDENT_LIST: {
 				mProgressDialog.hide();
-				JSONObject jsonObject = (JSONObject) msg.getData()
-						.getSerializable("data");
-				Logger.debug(Utils.getTime() + TAG + ":得到分组学生信息..."
-						+ jsonObject.toString());
-				Log.i(TAG, "得到分组学生信息..." + jsonObject.toString());
+				JSONObject jsonObject = (JSONObject) msg.getData().getSerializable("data");
+				MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":WaitingActivity得到分组学生信息..."+ jsonObject.toString());
 				if (!"0".equals(jsonObject.getString("code"))) {
 					return;
 				} else if (jsonObject.getJSONObject("data") == null) {
@@ -399,8 +388,7 @@ public class WaitingActivity extends BaseActivity {
 	public void refreshStudents(JSONObject data) {
 
 		// 马上刷新等待界面数据
-		List<Student> studentList = JSONArray.parseArray(
-				JSON.parseObject(data.toJSONString()).getString("students"),Student.class);
+		List<Student> studentList = JSONArray.parseArray(JSON.parseObject(data.toJSONString()).getString("students"),Student.class);
 		MyApplication.Logger.debug("WaitingActivity:随机分组返回的数据:" + studentList.size());
 		
 		List<LoginRes2Vo> loginRes2Vos = new ArrayList<LoginRes2Vo>();
@@ -438,7 +426,6 @@ public class WaitingActivity extends BaseActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
 	}
 
 	/**
@@ -453,13 +440,10 @@ public class WaitingActivity extends BaseActivity {
 		loginReqVo.setType("2");
 		String json = JSON.toJSONString(loginReqVo);
 
-		MessagePacking messagePacking = new MessagePacking(
-				Message.MESSAGE_STUDENT_LOGIN);
-		messagePacking.putBodyData(DataType.INT,
-				BufferUtils.writeUTFString(json));
-		CoreSocket.getInstance().sendMessage(messagePacking);
-		Logger.debug(Utils.getTime() + TAG + ":启动注册学生...:" + json);
-		Log.i(TAG, "启动注册学生...:" + json);
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
+		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(json));
+		NCoreSocket.getInstance().sendMessage(messagePacking);
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":WaitingActivity启动注册学生...:" + json);
 	}
 
 	/**
@@ -468,14 +452,9 @@ public class WaitingActivity extends BaseActivity {
 	private void getGroupUserList() {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("imei", MyApplication.deviceId);
-		MessagePacking messagePacking = new MessagePacking(
-				Message.MESSAGE_GROUP_LIST);
-		messagePacking.putBodyData(DataType.INT,
-				BufferUtils.writeUTFString(jsonObject.toJSONString()));
-		CoreSocket.getInstance().sendMessage(messagePacking);
-		Logger.debug(Utils.getTime() + TAG + ":启动获取组成员列表..."
-				+ jsonObject.toJSONString());
-		Log.i(TAG, "启动获取组成员列表..." + jsonObject.toJSONString());
-
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_LIST);
+		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(jsonObject.toJSONString()));
+		NCoreSocket.getInstance().sendMessage(messagePacking);
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":WaitingActivity启动获取组成员列表..."+ jsonObject.toJSONString());
 	}
 }

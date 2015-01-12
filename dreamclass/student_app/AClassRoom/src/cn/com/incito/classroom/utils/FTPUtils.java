@@ -9,7 +9,6 @@ import java.net.SocketException;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPClientConfig;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 
@@ -115,7 +114,7 @@ public class FTPUtils {
 			return false;
 		}finally{  
             try {  
-            	ftpClient.logout();
+//            	ftpClient.logout();
                 ftpClient.disconnect();  
             } catch (IOException e) {  
                 e.printStackTrace();  
@@ -160,7 +159,7 @@ public class FTPUtils {
 			e.printStackTrace();
 		}finally{  
             try {  
-            	ftpClient.logout();
+//            	ftpClient.logout();
                 ftpClient.disconnect();
             } catch (IOException e) {  
                 e.printStackTrace();  

@@ -11,11 +11,9 @@ import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import cn.com.incito.classroom.ui.widget.NetWorkDialog;
-import cn.com.incito.common.utils.UIHelper;
 
 import com.google.code.microlog4android.Logger;
 import com.google.code.microlog4android.LoggerFactory;
-import com.google.code.microlog4android.appender.FileAppender;
 import com.google.code.microlog4android.config.PropertyConfigurator;
 
 /**
@@ -40,8 +38,6 @@ public class BaseActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		// 初始化log日志
 		PropertyConfigurator.getConfigurator(this).configure();
-//		 final FileAppender fa = (FileAppender) Logger.getAppender(1);
-//		 fa.setAppend(true);
 		AppManager.getAppManager().addActivity(this);
 		onAfterOnCreate(savedInstanceState);
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -97,7 +93,10 @@ public class BaseActivity extends FragmentActivity {
 							netWorkDialog.show();
 						}
 					}
-
+				}else{
+					if(netWorkDialog != null){
+						netWorkDialog.dismiss();
+					}
 				}
 			}
 		}

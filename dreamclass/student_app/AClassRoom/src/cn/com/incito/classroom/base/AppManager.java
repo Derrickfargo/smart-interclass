@@ -7,8 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import cn.com.incito.classroom.utils.ApiClient;
 import cn.com.incito.classroom.utils.Utils;
-import cn.com.incito.socket.core.ConnectionManager;
-import cn.com.incito.socket.core.CoreSocket;
+import cn.com.incito.socket.core.NCoreSocket;
 
 import com.google.code.microlog4android.Logger;
 import com.google.code.microlog4android.LoggerFactory;
@@ -108,14 +107,11 @@ public class AppManager {
 		try {
 			MyApplication.getInstance().sendBroadcast(new Intent("android.intent.action.SHOW_NAVIGATION_BAR"));
 			MyApplication.getInstance().release();
+			NCoreSocket.getInstance().stopConnection();
 			finishAllActivity();
-			CoreSocket.getInstance().stopConnection();
-			Thread.sleep(100);// 先让socket发送退出消息再完全退出
-			ConnectionManager.getInstance(null).close(true);
 			MyApplication.getInstance().stopSocketService();
-			Logger.debug(Utils.getTime() + "AppManager" + "程序退出");
+			MyApplication.Logger.debug(Utils.getTime() + "AppManager" + "程序退出");
 			android.os.Process.killProcess(android.os.Process.myPid());
-			
 		} catch (Exception e) {
 			ApiClient.uploadErrorLog(e.getMessage());
 			e.printStackTrace();
