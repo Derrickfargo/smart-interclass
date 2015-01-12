@@ -20,6 +20,7 @@ import cn.com.incito.interclass.ui.Login;
 import cn.com.incito.interclass.ui.RoomLogin1;
 import cn.com.incito.interclass.ui.widget.UpdateDialog;
 import cn.com.incito.server.api.Application;
+import cn.com.incito.server.exception.AppExceptionHandler;
 import cn.com.incito.server.utils.URLs;
 
 import com.alibaba.fastjson.JSON;
