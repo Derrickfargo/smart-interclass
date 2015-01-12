@@ -66,7 +66,7 @@ public class SplashActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		final View view = View.inflate(this, R.layout.splash, null);
 		setContentView(view);
-		
+		showSetting();
 		if(!isAddShortCut()){
 			addShortCut();
 		}
@@ -131,21 +131,22 @@ public class SplashActivity extends BaseActivity {
 						
 						while(MyApplication.getInstance().getChannelHandlerContext() == null){
 							MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "SplashActivity:socket没有连接,请等候2s");
-							showSetting();
+							
 							NCoreSocket.getInstance().stopConnection();
 							SplashActivity.this.sleep(5000);
 							NCoreSocket.getInstance().startConnection(Constants.IP, Constants.PORT);
 						}
 						startMainAct();
+					}else{
+						Logger.debug(Utils.getTime() + "SplashActivity:"+ "WiFi未连接");
+						Log.i("SplashActivity", "WiFi未连接 ");
+						android.os.Message message1 = new android.os.Message();
+						message1.what = 1;
+						mHandler.sendMessage(message1);
+						SplashActivity.this.sleep(3000);
 					}
-					Logger.debug(Utils.getTime() + "SplashActivity:"+ "WiFi未连接");
-					Log.i("SplashActivity", "WiFi未连接 ");
-					android.os.Message message1 = new android.os.Message();
-					message1.what = 1;
-					mHandler.sendMessage(message1);
-					SplashActivity.this.sleep(3000);
+				
 //			}
-//		}.start();
 
 	}
 

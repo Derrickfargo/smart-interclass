@@ -41,7 +41,7 @@ public class NCoreSocket implements ICoreSocket {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				EventLoopGroup workGroup = new NioEventLoopGroup();
+				workGroup = new NioEventLoopGroup();
 				Bootstrap bootstrap = new Bootstrap();
 				ChannelFuture channelFuture;
 
@@ -55,8 +55,7 @@ public class NCoreSocket implements ICoreSocket {
 						ByteBuf delimiter = Unpooled.copiedBuffer("$_".getBytes());
 						ChannelPipeline pipeline = ch.pipeline();
 						pipeline.addLast(new IdleStateHandler(30, 0, 10));
-						pipeline.addLast(new DelimiterBasedFrameDecoder(
-								5 * 1024 * 1024, delimiter));
+						pipeline.addLast(new DelimiterBasedFrameDecoder(5 * 1024 * 1024, delimiter));
 						pipeline.addLast(new StringDecoder(CharsetUtil.UTF_8));
 						pipeline.addLast(new StringEncoder(CharsetUtil.UTF_8));
 						pipeline.addLast(new NMainHandler());
@@ -76,7 +75,10 @@ public class NCoreSocket implements ICoreSocket {
 
 	@Override
 	public void stopConnection() {
-		workGroup.shutdownGracefully();
+		if(workGroup != null){
+			workGroup.shutdownGracefully();
+		}
+		
 	}
 
 	@Override
