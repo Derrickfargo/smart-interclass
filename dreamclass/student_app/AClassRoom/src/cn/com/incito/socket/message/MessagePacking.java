@@ -1,10 +1,16 @@
 package cn.com.incito.socket.message;
 
+import io.netty.channel.MessageSizeEstimator.Handle;
+
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alibaba.fastjson.JSONObject;
+
 import cn.com.incito.socket.core.Message;
+import cn.com.incito.socket.core.MessageHandler;
+import cn.com.incito.socket.core.MessageHandlerResource;
 import cn.com.incito.socket.utils.BufferUtils;
 
 /**
@@ -27,9 +33,15 @@ public class MessagePacking {
 	public byte msgId;
 	private int bodySize = 0;
 	private List<byte[]> bodyDataList = new ArrayList<byte[]>();
+	
+	private JSONObject jsonObject;
 
 	public MessagePacking(byte msgId) {
 		this.msgId = msgId;
+	}
+	
+	public MessagePacking(){
+		
 	}
 	
 	/**
@@ -37,34 +49,45 @@ public class MessagePacking {
 	 * @param value 值
 	 */
 	public void putBodyData(DataType key, byte[] value) {
-		switch (key) {
-		case BYTE:
-			byte[] bytes = new byte[1];
-			BufferUtils.encodeIntLittleEndian(bytes, value.length, 0, 1);
-			bodyDataList.add(bytes);
-			bodySize += 1;
-			break;
-		case SHORT:
-			byte[] shortBytes = new byte[2];
-			BufferUtils.encodeIntLittleEndian(shortBytes, value.length, 0, 2);
-			bodyDataList.add(shortBytes);
-			bodySize += 2;
-			break;
-		case INT:
-			byte[] intBytes = new byte[4];
-			BufferUtils.encodeIntLittleEndian(intBytes, value.length, 0, 4);
-			bodyDataList.add(intBytes);
-			bodySize += 4;
-			break;
-		case LONG:
-			byte[] longBytes = new byte[8];
-			BufferUtils.encodeIntLittleEndian(longBytes, value.length, 0, 8);
-			bodyDataList.add(longBytes);
-			bodySize += 8;
-			break;
-		}
-		bodyDataList.add(value);
-		bodySize += value.length;
+		
+		this.jsonObject = JSONObject.parseObject(BufferUtils.readUTFString(value));
+		
+//		switch (key) {
+//		case BYTE:
+//			byte[] bytes = new byte[1];
+//			BufferUtils.encodeIntLittleEndian(bytes, value.length, 0, 1);
+//			bodyDataList.add(bytes);
+//			bodySize += 1;
+//			break;
+//		case SHORT:
+//			byte[] shortBytes = new byte[2];
+//			BufferUtils.encodeIntLittleEndian(shortBytes, value.length, 0, 2);
+//			bodyDataList.add(shortBytes);
+//			bodySize += 2;
+//			break;
+//		case INT:
+//			byte[] intBytes = new byte[4];
+//			BufferUtils.encodeIntLittleEndian(intBytes, value.length, 0, 4);
+//			bodyDataList.add(intBytes);
+//			bodySize += 4;
+//			break;
+//		case LONG:
+//			byte[] longBytes = new byte[8];
+//			BufferUtils.encodeIntLittleEndian(longBytes, value.length, 0, 8);
+//			bodyDataList.add(longBytes);
+//			bodySize += 8;
+//			break;
+//		}
+//		bodyDataList.add(value);
+//		bodySize += value.length;
+	}
+
+	public JSONObject getJsonObject() {
+		return jsonObject;
+	}
+
+	public void setJsonObject(JSONObject jsonObject) {
+		this.jsonObject = jsonObject;
 	}
 
 	public ByteBuffer pack() {
@@ -87,5 +110,9 @@ public class MessagePacking {
 			messageBuffer.put(data);
 		}
 		return messageBuffer;
+	}
+	
+	public MessageHandler getHandler(){
+		return MessageHandlerResource.getHandlerResources().getMessageHandler(msgId);
 	}
 }

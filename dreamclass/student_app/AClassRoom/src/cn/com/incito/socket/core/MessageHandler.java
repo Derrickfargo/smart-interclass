@@ -41,6 +41,16 @@ public abstract class MessageHandler {
 		data = JSON.parseObject(json);
 		handleMessage();
 	}
+	
+	/**
+	 * 直接传入jsonObject进行处理
+	 * @param jsonObject
+	 * @author hm
+	 */
+	public void handleMessage(JSONObject jsonObject){
+		data = jsonObject;
+		handleMessage();
+	}
 
 	protected abstract void handleMessage();
 }

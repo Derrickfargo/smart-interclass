@@ -10,8 +10,6 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -35,6 +33,7 @@ import cn.com.incito.classroom.utils.ApiClient;
 import cn.com.incito.classroom.utils.UpdateManager;
 import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.classroom.vo.Version;
+import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
@@ -114,52 +113,35 @@ public class SplashActivity extends BaseActivity {
 	 */
 
 	private void startMain() {
-		tv_loading_msg.setText(R.string.loading_msg);
-		Log.i("SplashActivity", "startMain");
-		new Thread() {
-
-			public void run() {
-				while (true) {
-					Log.i("SplashActivity", "检查WiFi是否连接 ");
-					if (checkWifi()) {
-						android.os.Message message = new android.os.Message();
-						message.what = 2;
-						mHandler.sendMessage(message);
-						MyApplication app = MyApplication.getInstance();
-						WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-						WifiInfo info = wifi.getConnectionInfo();
-						app.setDeviceId(info.getMacAddress().replace(":", "-"));
-						Logger.debug(Utils.getTime() + "SplashActivity:"
-								+ "WiFi已连接，检查Socket是否连接 ");
-						Log.i("SplashActivity", "WiFi已连接，检查Socket是否连接 ");
-						if (!CoreSocket.getInstance().isConnected()) {
-							Logger.debug("SplashActivity:"
-									+ "Socket无连接，开始Socket重连，startMain退出");
-							Log.i("SplashActivity",
-									"Socket无连接，开始Socket重连，startMain退出 ");
-							CoreSocket.getInstance().disconnect();
-							showSetting();
-							restartConnector();
-							break;
-						} else {
-							Logger.debug(Utils.getTime() + "SplashActivity:"
-									+ "Socket已连接，开始登陆，startMain退出");
-							Log.i("SplashActivity",
-									"Socket已连接，开始登陆，startMain退出 ");
-							startMainAct();
-						}
-						break;
-					}
-					Logger.debug(Utils.getTime() + "SplashActivity:"
-							+ "WiFi未连接");
-					Log.i("SplashActivity", "WiFi未连接 ");
-					android.os.Message message1 = new android.os.Message();
-					message1.what = 1;
-					mHandler.sendMessage(message1);
-					SplashActivity.this.sleep(3000);
-				}
-			}
-		}.start();
+		startMainAct();
+//		tv_loading_msg.setText(R.string.loading_msg);
+//					Log.i("SplashActivity", "检查WiFi是否连接 ");
+//					if (checkWifi()) {
+//						android.os.Message message = new android.os.Message();
+//						message.what = 2;
+//						mHandler.sendMessage(message);
+//						MyApplication app = MyApplication.getInstance();
+//						WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+//						WifiInfo info = wifi.getConnectionInfo();
+//						app.setDeviceId(info.getMacAddress().replace(":", "-"));
+//						Logger.debug(Utils.getTime() + "SplashActivity:"+ "WiFi已连接，检查Socket是否连接 ");
+//						
+//						while(MyApplication.getInstance().getChannelHandlerContext() == null){
+//							MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "SplashActivity:socket没有连接,请等候2s");
+//							showSetting();
+//							SplashActivity.this.sleep(5000);
+//							NCoreSocket.getInstance().startConnection(Constants.IP, Constants.PORT);
+//						}
+//						startMainAct();
+//					}
+//					Logger.debug(Utils.getTime() + "SplashActivity:"+ "WiFi未连接");
+//					Log.i("SplashActivity", "WiFi未连接 ");
+//					android.os.Message message1 = new android.os.Message();
+//					message1.what = 1;
+//					mHandler.sendMessage(message1);
+//					SplashActivity.this.sleep(3000);
+////			}
+//		}.start();
 
 	}
 
@@ -185,8 +167,7 @@ public class SplashActivity extends BaseActivity {
 				ib_setting_ip.setVisibility(View.VISIBLE);
 				break;
 			case 1000:
-				UpdateManager mUpdateManager = new UpdateManager(
-						SplashActivity.this, url);
+				UpdateManager mUpdateManager = new UpdateManager(SplashActivity.this, url);
 				mUpdateManager.checkUpdateInfo();
 				break;
 			default:
@@ -217,53 +198,49 @@ public class SplashActivity extends BaseActivity {
 	 * 发送连接请求
 	 */
 	public void startMainAct() {
-		if (!isUpdateApk()) {
+//		if (!isUpdateApk()) {
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("imei", MyApplication.deviceId);
-			MessagePacking messagePacking = new MessagePacking(
-					Message.MESSAGE_DEVICE_HAS_BIND);
+			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_HAS_BIND);
 			messagePacking.putBodyData(DataType.INT,
 					BufferUtils.writeUTFString(jsonObject.toJSONString()));
 			CoreSocket.getInstance().sendMessage(messagePacking);
-			Logger.debug(Utils.getTime() + "SplashActivity:" + "开始判定设备是否绑定..."
-					+ "request:" + jsonObject.toJSONString());
-			Log.i("SplashActivity",
-					"开始判定设备是否绑定..." + "request:" + jsonObject.toJSONString());
-		}
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":splashActivity登录");
+//		}
 	}
 
 	/**
 	 * 重新建立连接
 	 */
-	public void restartConnector() {
-		new Thread() {
-			public void run() {
-				while (Boolean.TRUE) {
-					SplashActivity.this.sleep(3000);
-					Logger.debug(Utils.getTime() + "SplashActivity:"
-							+ "Socket开始重连 ");
-					Log.i("SplashActivity", "Socket开始重连 ");
-					CoreSocket.getInstance().restartConnection();
-					SplashActivity.this.sleep(1000);// 等待1秒后检查连接
-					if (!CoreSocket.getInstance().isConnected()) {
-						Logger.debug(Utils.getTime() + "SplashActivity:"
-								+ "Socket未连接 ");
-						Log.i("SplashActivity", "Socket未连接 ");
-						CoreSocket.getInstance().disconnect();
-						continue;
-					}
-					Logger.debug(Utils.getTime() + "SplashActivity:"
-							+ "Socket已连接 ");
-					Log.i("SplashActivity", "Socket已连接 ");
-					if (dialog != null) {
-						dialog.dismiss();
-					}
-					startMainAct();
-					break;
-				}
-			}
-		}.start();
-	}
+//	public void restartConnector() {
+//		new Thread() {
+//			public void run() {
+//				while (Boolean.TRUE) {
+//					SplashActivity.this.sleep(3000);
+//					Logger.debug(Utils.getTime() + "SplashActivity:"
+//							+ "Socket开始重连 ");
+//					Log.i("SplashActivity", "Socket开始重连 ");
+//					CoreSocket.getInstance().restartConnection();
+//					SplashActivity.this.sleep(1000);// 等待1秒后检查连接
+//					if (!CoreSocket.getInstance().isConnected()) {
+//						Logger.debug(Utils.getTime() + "SplashActivity:"
+//								+ "Socket未连接 ");
+//						Log.i("SplashActivity", "Socket未连接 ");
+//						CoreSocket.getInstance().disconnect();
+//						continue;
+//					}
+//					Logger.debug(Utils.getTime() + "SplashActivity:"
+//							+ "Socket已连接 ");
+//					Log.i("SplashActivity", "Socket已连接 ");
+//					if (dialog != null) {
+//						dialog.dismiss();
+//					}
+//					startMainAct();
+//					break;
+//				}
+//			}
+//		}.start();
+//	}
 
 	public void sleep(int seconds) {
 		try {

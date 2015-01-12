@@ -7,7 +7,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
-import cn.com.incito.socket.core.CoreSocket;
 
 import com.google.code.microlog4android.Logger;
 import com.google.code.microlog4android.LoggerFactory;
@@ -29,7 +28,7 @@ public class SocketService extends Service {
 	public void onCreate() {
 		super.onCreate();
 		exec = Executors.newCachedThreadPool();
-		exec.execute(CoreSocket.getInstance());
+//		exec.execute(CoreSocket.getInstance());
 		Logger.debug("socket started");
 		Log.i("SocketService", "socket started");
 	}

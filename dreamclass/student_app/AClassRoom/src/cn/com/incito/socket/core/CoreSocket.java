@@ -95,22 +95,25 @@ public final class CoreSocket implements Runnable {
 	 * 客户端往服务端发送消息
 	 *
 	 * @param packing
+	 * 
+	 * 修改的地方直接调用NCoreSocket的发送消息的方法
 	 */
 	public void sendMessage(final MessagePacking packing) {
-		new Thread() {
-			public void run() {
-				byte[] message = packing.pack().array();
-				ByteBuffer buffer = ByteBuffer.allocate(message.length);
-				buffer.put(message);
-				buffer.flip();
-				try {
-					channel.write(buffer);
-				} catch (IOException e) {
-					ApiClient.uploadErrorLog(e.getMessage());
-					MyApplication.Logger.debug(Utils.getTime()+"异常信息：" , e);
-				}
-			}
-		}.start();
+		NCoreSocket.getInstance().sendMessage(packing);
+//		new Thread() {
+//			public void run() {
+//				byte[] message = packing.pack().array();
+//				ByteBuffer buffer = ByteBuffer.allocate(message.length);
+//				buffer.put(message);
+//				buffer.flip();
+//				try {
+//					channel.write(buffer);
+//				} catch (IOException e) {
+//					ApiClient.uploadErrorLog(e.getMessage());
+//					MyApplication.Logger.debug(Utils.getTime()+"异常信息：" , e);
+//				}
+//			}
+//		}.start();
 
 	}
 
