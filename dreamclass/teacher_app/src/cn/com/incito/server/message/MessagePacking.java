@@ -40,6 +40,10 @@ public class MessagePacking {
 		this.msgId = msgId;
 	}
 	
+	public MessagePacking(){
+		
+	}
+	
 	/**
 	 * @param key 值的长度的数据类型
 	 * @param value 值

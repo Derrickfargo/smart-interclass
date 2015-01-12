@@ -7,12 +7,14 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
+import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.CharsetUtil;
 
@@ -20,6 +22,8 @@ import java.util.Collection;
 import java.util.Properties;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+
+import org.apache.log4j.Logger;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -34,6 +38,7 @@ public class SocketServiceCore {
 	
 	private ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 	
+	Logger logger = Logger.getLogger(SocketServiceCore.class.getName());
 	private final ServerBootstrap serverBootstrap = new ServerBootstrap();
 	private final EventLoopGroup bossGroup = new NioEventLoopGroup();
 	private final EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -71,12 +76,13 @@ public class SocketServiceCore {
 						
 						readIdle = Integer.parseInt(properties.getProperty("readidle"));
 						idle = Integer.parseInt(properties.getProperty("idle"));
-						
-						channel.pipeline().addLast(new IdleStateHandler(readIdle,0,idle),// 心跳控制
-								new DelimiterBasedFrameDecoder(5*1024*1024, delimiter),
-								new StringDecoder(CharsetUtil.UTF_8),
-								new SocketIdleHandle(),
-								new ServiceHandle());
+						ChannelPipeline pipeline = channel.pipeline();
+						pipeline.addLast(new IdleStateHandler(readIdle,0,idle));
+						pipeline.addLast(new DelimiterBasedFrameDecoder(5*1024*1024, delimiter));
+						pipeline.addLast(new StringDecoder(CharsetUtil.UTF_8));
+						pipeline.addLast(new StringEncoder(CharsetUtil.UTF_8));
+						pipeline.addLast(new SocketIdleHandle());
+						pipeline.addLast(new ServiceHandle());
 					}
 				})
 				.option(ChannelOption.SO_KEEPALIVE, true)
@@ -85,6 +91,7 @@ public class SocketServiceCore {
 				.childOption(ChannelOption.TCP_NODELAY, true);
 				try {
 					ChannelFuture f = serverBootstrap.bind(9001).sync();
+					logger.info("服务端通讯线程启动");
 					f.channel().closeFuture().sync();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -96,7 +103,7 @@ public class SocketServiceCore {
 		});	
 	}
 	/**
-	 * 发送信息
+	 * 发送信息至指定通道
 	 * @param messagePacking
 	 * @param ctx
 	 * @return
@@ -105,14 +112,17 @@ public class SocketServiceCore {
 		boolean flag = false;
 		JSONObject json = new JSONObject();
 		json.put("messagePacking", messagePacking);
+		ByteBuf buf = Unpooled.copiedBuffer((json.toString()+"$_").getBytes());
 		if(ctx!=null&&ctx.channel().isActive()){
-			ctx.writeAndFlush(json);
+			ctx.writeAndFlush(buf);
 			flag = true;
 		}
 		return flag;
 	}
+
 	/**
-	 *启动线程发往所有的 客户端 
+	 * 启动线程发往所有客户端
+	 * @param messagePacking
 	 */
 	public void sendMsg(final MessagePacking messagePacking){
 		Application app = Application.getInstance();
