@@ -27,6 +27,7 @@ import com.alibaba.fastjson.JSONObject;
 public class NCoreSocket implements ICoreSocket {
 
 	private static NCoreSocket ncoreSokcet;
+	private EventLoopGroup workGroup;
 
 	public static NCoreSocket getInstance() {
 		if (ncoreSokcet == null) {
@@ -75,7 +76,7 @@ public class NCoreSocket implements ICoreSocket {
 
 	@Override
 	public void stopConnection() {
-
+		workGroup.shutdownGracefully();
 	}
 
 	@Override

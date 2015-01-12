@@ -10,6 +10,8 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -36,6 +38,7 @@ import cn.com.incito.classroom.vo.Version;
 import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
+import cn.com.incito.socket.core.NCoreSocket;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
@@ -113,34 +116,35 @@ public class SplashActivity extends BaseActivity {
 	 */
 
 	private void startMain() {
-		startMainAct();
-//		tv_loading_msg.setText(R.string.loading_msg);
-//					Log.i("SplashActivity", "检查WiFi是否连接 ");
-//					if (checkWifi()) {
-//						android.os.Message message = new android.os.Message();
-//						message.what = 2;
-//						mHandler.sendMessage(message);
-//						MyApplication app = MyApplication.getInstance();
-//						WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-//						WifiInfo info = wifi.getConnectionInfo();
-//						app.setDeviceId(info.getMacAddress().replace(":", "-"));
-//						Logger.debug(Utils.getTime() + "SplashActivity:"+ "WiFi已连接，检查Socket是否连接 ");
-//						
-//						while(MyApplication.getInstance().getChannelHandlerContext() == null){
-//							MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "SplashActivity:socket没有连接,请等候2s");
-//							showSetting();
-//							SplashActivity.this.sleep(5000);
-//							NCoreSocket.getInstance().startConnection(Constants.IP, Constants.PORT);
-//						}
-//						startMainAct();
-//					}
-//					Logger.debug(Utils.getTime() + "SplashActivity:"+ "WiFi未连接");
-//					Log.i("SplashActivity", "WiFi未连接 ");
-//					android.os.Message message1 = new android.os.Message();
-//					message1.what = 1;
-//					mHandler.sendMessage(message1);
-//					SplashActivity.this.sleep(3000);
-////			}
+//		startMainAct();
+		tv_loading_msg.setText(R.string.loading_msg);
+					Log.i("SplashActivity", "检查WiFi是否连接 ");
+					if (checkWifi()) {
+						android.os.Message message = new android.os.Message();
+						message.what = 2;
+						mHandler.sendMessage(message);
+						MyApplication app = MyApplication.getInstance();
+						WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+						WifiInfo info = wifi.getConnectionInfo();
+						app.setDeviceId(info.getMacAddress().replace(":", "-"));
+						Logger.debug(Utils.getTime() + "SplashActivity:"+ "WiFi已连接，检查Socket是否连接 ");
+						
+						while(MyApplication.getInstance().getChannelHandlerContext() == null){
+							MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "SplashActivity:socket没有连接,请等候2s");
+							showSetting();
+							NCoreSocket.getInstance().stopConnection();
+							SplashActivity.this.sleep(5000);
+							NCoreSocket.getInstance().startConnection(Constants.IP, Constants.PORT);
+						}
+						startMainAct();
+					}
+					Logger.debug(Utils.getTime() + "SplashActivity:"+ "WiFi未连接");
+					Log.i("SplashActivity", "WiFi未连接 ");
+					android.os.Message message1 = new android.os.Message();
+					message1.what = 1;
+					mHandler.sendMessage(message1);
+					SplashActivity.this.sleep(3000);
+//			}
 //		}.start();
 
 	}

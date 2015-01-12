@@ -39,6 +39,7 @@ import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
+import cn.com.incito.socket.core.NCoreSocket;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
@@ -207,7 +208,7 @@ public class WaitingActivity extends BaseActivity {
 				Message.MESSAGE_STUDENT_LOGIN);
 		messagePacking.putBodyData(DataType.INT,
 				BufferUtils.writeUTFString(json));
-		CoreSocket.getInstance().sendMessage(messagePacking);
+		NCoreSocket.getInstance().sendMessage(messagePacking);
 		Logger.debug(Utils.getTime() + TAG + ":启动登录..." + "request:" + json);
 		Log.i(TAG, "启动登录..." + "request:" + json);
 	}
@@ -231,7 +232,7 @@ public class WaitingActivity extends BaseActivity {
 				Message.MESSAGE_STUDENT_LOGIN);
 		messagePacking.putBodyData(DataType.INT,
 				BufferUtils.writeUTFString(json));
-		CoreSocket.getInstance().sendMessage(messagePacking);
+		NCoreSocket.getInstance().sendMessage(messagePacking);
 		Logger.debug(Utils.getTime() + TAG + ":启动取消登录...");
 		Log.i(TAG, "启动取消登录...");
 	}
@@ -457,7 +458,7 @@ public class WaitingActivity extends BaseActivity {
 				Message.MESSAGE_STUDENT_LOGIN);
 		messagePacking.putBodyData(DataType.INT,
 				BufferUtils.writeUTFString(json));
-		CoreSocket.getInstance().sendMessage(messagePacking);
+		NCoreSocket.getInstance().sendMessage(messagePacking);
 		Logger.debug(Utils.getTime() + TAG + ":启动注册学生...:" + json);
 		Log.i(TAG, "启动注册学生...:" + json);
 	}
@@ -472,7 +473,7 @@ public class WaitingActivity extends BaseActivity {
 				Message.MESSAGE_GROUP_LIST);
 		messagePacking.putBodyData(DataType.INT,
 				BufferUtils.writeUTFString(jsonObject.toJSONString()));
-		CoreSocket.getInstance().sendMessage(messagePacking);
+		NCoreSocket.getInstance().sendMessage(messagePacking);
 		Logger.debug(Utils.getTime() + TAG + ":启动获取组成员列表..."
 				+ jsonObject.toJSONString());
 		Log.i(TAG, "启动获取组成员列表..." + jsonObject.toJSONString());
