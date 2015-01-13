@@ -71,7 +71,6 @@ public class SocketIdleHandle extends ChannelInboundHandlerAdapter{
             	ByteBuf buf = Unpooled.copiedBuffer((jsonObject.toJSONString()+"\n").getBytes());
                 ctx.writeAndFlush(buf);
                 logger.info("心跳包发送："+ctx.channel().remoteAddress());
-                ctx.writeAndFlush(buf);
             }
         }
 	}
