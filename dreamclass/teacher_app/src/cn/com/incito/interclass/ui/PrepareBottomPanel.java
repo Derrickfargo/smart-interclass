@@ -402,8 +402,6 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 						JOptionPane.YES_NO_OPTION);
 				if (result == JOptionPane.YES_OPTION) {
 					UIHelper.sendClassOverMessage();
-					logger.info("下课信息发出");
-					System.exit(0);
 				}
 			} else {
 				doBegin();
