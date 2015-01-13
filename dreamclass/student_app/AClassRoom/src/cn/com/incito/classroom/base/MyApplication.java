@@ -26,23 +26,10 @@ import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.exception.AppUncaughtException;
 import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.classroom.vo.LoginResVo;
-import cn.com.incito.wisdom.sdk.cache.disk.impl.TotalSizeLimitedDiscCache;
-import cn.com.incito.wisdom.sdk.cache.disk.naming.Md5FileNameGenerator;
-import cn.com.incito.wisdom.sdk.cache.mem.AbstractMemoryCache;
-import cn.com.incito.wisdom.sdk.image.loader.ImageLoader;
-import cn.com.incito.wisdom.sdk.image.loader.ImageLoaderConfiguration;
-import cn.com.incito.wisdom.sdk.image.loader.assist.LRULimitedMemoryCacheBitmapCache;
-import cn.com.incito.wisdom.sdk.image.loader.assist.LRUMemoryCacheBitmapCache;
-import cn.com.incito.wisdom.sdk.image.loader.assist.QueueProcessingType;
-import cn.com.incito.wisdom.sdk.net.download.BaseImageDownloader;
-import cn.com.incito.wisdom.sdk.net.download.SlowNetworkImageDownloader;
-import cn.com.incito.wisdom.sdk.openudid.OpenUDIDManager;
-import cn.com.incito.wisdom.sdk.utils.StorageUtils;
 
 import com.google.code.microlog4android.Logger;
 import com.google.code.microlog4android.LoggerFactory;
 import com.google.code.microlog4android.config.PropertyConfigurator;
-import com.umeng.analytics.MobclickAgent;
 
 /**
  * 应用 appication（缓存各类数据） Created by popoy on 2014/7/28.
@@ -132,32 +119,31 @@ public class MyApplication extends Application {
 		mPrefs = PreferenceManager
 				.getDefaultSharedPreferences(getApplicationContext());
 		initApplication();
-		MobclickAgent.openActivityDurationTrack(false);// 禁止友盟的自动统计功能
-
-		OpenUDIDManager.sync(this);
-		File cacheDir = StorageUtils.getOwnCacheDirectory(
-				getApplicationContext(),
-				Constants.WISDOMCITY_IAMGE_CACHE_SDCARD_PATH);
-		int memoryCacheSize = (int) (Runtime.getRuntime().maxMemory() / 8);
-		AbstractMemoryCache<String, Bitmap> memoryCache;
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-			memoryCache = new LRUMemoryCacheBitmapCache(memoryCacheSize);
-		} else {
-			memoryCache = new LRULimitedMemoryCacheBitmapCache(memoryCacheSize);
-		}
-		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-				this)
-				.threadPriority(Thread.NORM_PRIORITY - 2)
-				.memoryCache(memoryCache)
-				.denyCacheImageMultipleSizesInMemory()
-				.discCache(
-						new TotalSizeLimitedDiscCache(cacheDir,
-								new Md5FileNameGenerator(), 10 * 1024 * 1024))
-				.imageDownloader(
-						new SlowNetworkImageDownloader(new BaseImageDownloader(
-								this)))
-				.tasksProcessingOrder(QueueProcessingType.LIFO).build();
-		ImageLoader.getInstance().init(config);
+//		MobclickAgent.openActivityDurationTrack(false);// 禁止友盟的自动统计功能
+//
+//		OpenUDIDManager.sync(this);
+//		File cacheDir = StorageUtils.getOwnCacheDirectory(
+//				getApplicationContext(),
+//				Constants.WISDOMCITY_IAMGE_CACHE_SDCARD_PATH);
+//		int memoryCacheSize = (int) (Runtime.getRuntime().maxMemory() / 8);
+//		AbstractMemoryCache<String, Bitmap> memoryCache;
+//		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+//			memoryCache = new LRUMemoryCacheBitmapCache(memoryCacheSize);
+//		} else {
+//			memoryCache = new LRULimitedMemoryCacheBitmapCache(memoryCacheSize);
+//		}
+//		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+//				this).threadPriority(Thread.NORM_PRIORITY - 2)
+//				.memoryCache(memoryCache)
+//				.denyCacheImageMultipleSizesInMemory()
+//				.discCache(
+//						new TotalSizeLimitedDiscCache(cacheDir,
+//								new Md5FileNameGenerator(), 10 * 1024 * 1024))
+//				.imageDownloader(
+//						new SlowNetworkImageDownloader(new BaseImageDownloader(
+//								this)))
+//				.tasksProcessingOrder(QueueProcessingType.LIFO).build();
+//		ImageLoader.getInstance().init(config);
 
 	}
 

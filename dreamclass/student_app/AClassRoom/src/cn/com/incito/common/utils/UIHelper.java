@@ -154,18 +154,15 @@ public class UIHelper {
 	/**
 	 * 显示电子绘画板
 	 */
-	public void showDrawBoxActivity(byte[] paper) {
+	public void showDrawBoxActivity(String hasPic) {
 		Intent intent = new Intent();
 		MyApplication.getInstance().setSubmitPaper(false);
-		if (paper != null) {
-			Bundle mBundle = new Bundle();
-			mBundle.putByteArray("paper", paper);
-			intent.putExtras(mBundle);
-		}
+			intent.putExtra("flag", hasPic);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			intent.setAction(Constants.ACTION_SHOW_DRAWBOX);
-		app.startActivity(intent);
+			app.startActivity(intent);
 	}
+
 
 	/**
 	 * 显示学生互评界面
@@ -224,13 +221,13 @@ public class UIHelper {
 		app.startActivity(intent);
 
 	}
-	public void showDrawBoxActivity() {
-		Intent intent = new Intent(app.getApplicationContext(),
-				DrawBoxActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		intent.setAction(Constants.ACTION_SHOW_EDIT_GROUP);
-		app.startActivity(intent);
-	}
+//	public void showDrawBoxActivity() {
+//		Intent intent = new Intent(app.getApplicationContext(),
+//				DrawBoxActivity.class);
+//		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//		intent.setAction(Constants.ACTION_SHOW_EDIT_GROUP);
+//		app.startActivity(intent);
+//	}
 
 	
 	public EvaluateActivity getEvaluateActivity() {

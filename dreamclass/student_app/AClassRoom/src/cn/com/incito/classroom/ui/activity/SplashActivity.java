@@ -43,7 +43,6 @@ import cn.com.incito.socket.utils.BufferUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.baidu.navisdk.util.common.StringUtils;
 
 /**
  * 用户其启动界面时候的一个启动页面完成一些初始化工作 Created by popoy on 2014/7/28.
@@ -297,7 +296,7 @@ public class SplashActivity extends BaseActivity {
 				.getString("server_ip", "");
 		String port = MyApplication.getInstance().getSharedPreferences()
 				.getString("server_port", "");
-		if (!StringUtils.isEmpty(ip) && !StringUtils.isEmpty(port)) {
+		if (!Utils.isEmpty(ip) && !Utils.isEmpty(port)) {
 			try {
 				JSONObject updateResult = JSONObject.parseObject(ApiClient
 						.updateApk(code));

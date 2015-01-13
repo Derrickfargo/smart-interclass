@@ -1,16 +1,13 @@
+package cn.com.incito.interclass.ui;
 /*
  * CaptureScreen.java
- *
  * Created on 2006年9月7日, 上午10:59
- *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
 
-package cn.com.incito.interclass.ui;
 
 /**
- *
  * @author popoy
  */
 
@@ -35,7 +32,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -63,29 +59,45 @@ import org.apache.log4j.Logger;
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.config.AppConfig;
-import cn.com.incito.server.core.CoreSocket;
+import cn.com.incito.server.core.FtpManager;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
-import cn.com.incito.server.utils.ImageUtil;
 
 import com.sun.image.codec.jpeg.ImageFormatException;
 
 public class CaptureScreen {
+
+	private Application app = Application.getInstance();
+
 	Logger logger = Logger.getLogger(CaptureScreen.class.getName());
+
 	public final static String SCREENSHOT_ICON = "images/screenshot/icon.png";
+
 	public final static int BAR_WIDTH = 267;
+
 	public final static int BAR_HEIGHT = 55;
+
 	private JPanel jPanel;
+
 	private BufferedImage bImage;
+
 	private Component jFrame;
-	private boolean isBarShow = false;
-	private int startX, startY, endX, endY, tempX, tempY;
+	
 	private int startXBar, startYBar;
+	
+	private boolean isBarShow = false;
+
+	private int startX, startY, endX, endY, tempX, tempY;
+
+
 	public final static String SCREEN_SHOT_CONFIRM = "images/screenshot/bg_btn.png";
+
 	public final static String SCREEN_SHOT_CONFIRM_HOVER = "images/screenshot/bg_btn_HOVER.png";
+
 	public final static String SCREEN_SHOT_QUIT = "images/screenshot/bg_btn2.png";
+
 	public final static String SCREEN_SHOT_QUIT_HOVER = "images/screenshot/bg_btn2_HOVER.png";
 
 	/**
@@ -112,33 +124,26 @@ public class CaptureScreen {
 	 * @throws ImageFormatException
 	 */
 	public void distributePaper(BufferedImage image) {
-		logger.info("作业图像宽度:" + image.getWidth());
-		if (image.getWidth() > 1280) {
-			try {
-				File dir = new File("temp");
-				dir.mkdirs();
-				File file = new File(dir, "temp.png");
-				ImageIO.write(image, "gif", file);
-				ImageUtil.resize(file, file, 1280, 1f);
-				image = ImageIO.read(file);
-			} catch (Exception e) {
-				logger.error("图像压缩失败!", e);
-			}
-		}
-//		logger.info("压缩后宽度:" + image.getWidth());
-		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		File dir = new File(FtpManager.FTP_HOME);
+		dir.mkdirs();
+		File file = new File(dir, "quiz.jpg");
 		try {
-			ImageIO.write(image, "gif", os);
-			logger.info("图片大小:" + os.toByteArray().length);
-		} catch (IOException e) {
-			e.printStackTrace();
+			file.delete();
+			ImageIO.write(image, "jpg", file);
+		} catch (Exception e) {
+			logger.error("图像压缩失败!", e);
+			return;
 		}
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DISTRIBUTE_PAPER);
 		if (Application.getInstance().getOnlineStudent().size() > 0) {
+			String uuid = UUID.randomUUID().toString();
+			Application.getInstance().setQuizId(uuid);
+			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(uuid));
+			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString("true"));
 			Application.getInstance().getTempQuiz().clear();
-			Application.getInstance().getQuizMap().clear();
 			Application.getInstance().getQuizList().clear();
 			Application.getInstance().getTempQuizIMEI().clear();
-			sendMessageToStudents(os);
+			sendMessageToStudents(messagePacking.pack().array());
 			logger.info("截图作业已经发出");
 			Application.getInstance().setLockScreen(false);
 		} else {
@@ -148,41 +153,35 @@ public class CaptureScreen {
 
 	/**
 	 * 启动线程将消息发往所有客户端
+	 * 
 	 * @param data
 	 */
-	public void sendMessageToStudents(final ByteArrayOutputStream os){
+	public void sendMessageToStudents(final byte[] data) {
 		Properties props = AppConfig.getProperties();
 		String threshold = props.get("quiz_send_threshold").toString();
 		final int delay_time = Integer.parseInt(threshold);
-		
-		final Application app = Application.getInstance();
 		Set<Entry<String, SocketChannel>> clients = app.getClientChannel().entrySet();
 		final Iterator<Entry<String, SocketChannel>> it = clients.iterator();
 		new Thread() {
+
 			@Override
 			public void run() {
 				try {
+					ByteBuffer buffer = ByteBuffer.allocate(data.length);
 					while (it.hasNext()) {
 						Entry<String, SocketChannel> entry = it.next();
 						String imei = entry.getKey();
-						List<Student> students = app.getStudentByImei(imei);
-						//记录有学生登陆的Pad
-						if (students != null) {
+						List<Student> studentsList = app.getStudentByImei(imei);
+						// 记录有学生登陆的Pad
+						if (studentsList.size() > 0) {
 							SocketChannel channel = entry.getValue();
 							if (channel != null && channel.isConnected()) {
-								MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DISTRIBUTE_PAPER);
-								String uuid = UUID.randomUUID().toString();
-								messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(uuid));
-								messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString("true"));
-								messagePacking.putBodyData(DataType.INT, os.toByteArray());
-								byte[] data = messagePacking.pack().array();
 								// 输出到通道
-								ByteBuffer buffer = ByteBuffer.allocate(data.length);
 								buffer.clear();
 								buffer.put(data);
 								buffer.flip();
 								channel.write(buffer);
-								app.addQuizIMEI(imei);//已发送的IMEI
+								app.addQuizIMEI(imei);// 已发送的IMEI
 							}
 						}
 						try {
@@ -197,7 +196,7 @@ public class CaptureScreen {
 			};
 		}.start();
 	}
-	
+
 	public void doStart() {
 		try {
 			Thread.sleep(300);
@@ -207,6 +206,7 @@ public class CaptureScreen {
 			Rectangle rec = new Rectangle(0, 0, di.width, di.height);
 			BufferedImage bi = ro.createScreenCapture(rec);
 			JFrame jf = new JFrame();
+//			jf.getContentPane().setLayout(null);
 			jf.getContentPane().add(new ContentPanel(jf, bi, di.width, di.height));
 			jf.setUndecorated(true);
 			jf.setSize(di);
@@ -218,15 +218,27 @@ public class CaptureScreen {
 	}
 
 	// 一个暂时类，用于显示当前的屏幕图像
-	private class ContentPanel extends JPanel implements MouseListener,
-			MouseMotionListener {
+	private class ContentPanel extends JPanel implements MouseListener, MouseMotionListener {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		private BufferedImage bi;
+
 		private int width, height;
+
 		private JFrame jf;
+
 		private Rectangle select = new Rectangle(0, 0, 0, 0);// 表示选中的区域
+
 		private Cursor cs;// 表示一般情况下的鼠标状态
+
 		private States current = States.DEFAULT;// 表示当前的编辑状态
+
 		private Rectangle[] rec;// 表示八个编辑点的区域
+
 		BarPanel barPanel;
 
 		public ContentPanel(JFrame jf, BufferedImage bi, int width, int height) {
@@ -239,6 +251,7 @@ public class CaptureScreen {
 			this.addMouseListener(this);
 			this.addMouseMotionListener(this);
 			ContentPanel.this.jf.addKeyListener(new KeyAdapter() {
+
 				@Override
 				public void keyReleased(KeyEvent e) {
 					super.keyReleased(e);
@@ -253,10 +266,8 @@ public class CaptureScreen {
 					}
 				}
 			});
-			Image icon = Toolkit.getDefaultToolkit().createImage(
-					SCREENSHOT_ICON);
-			cs = Toolkit.getDefaultToolkit().createCustomCursor(icon,
-					new Point(0, 0), "icon");
+			Image icon = Toolkit.getDefaultToolkit().createImage(SCREENSHOT_ICON);
+			cs = Toolkit.getDefaultToolkit().createCustomCursor(icon, new Point(0, 0), "icon");
 			this.setCursor(cs);
 			initRecs();
 
@@ -312,7 +323,7 @@ public class CaptureScreen {
 						return;
 					}
 				}
-				if(barPanel.contains((new Double(me.getPoint().getX()-barPanel.getX())).intValue(), (new Double(me.getPoint().getY()-barPanel.getY())).intValue())){
+				if (barPanel.contains((new Double(me.getPoint().getX() - barPanel.getX())).intValue(), (new Double(me.getPoint().getY() - barPanel.getY())).intValue())) {
 					this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 					return;
 				}
@@ -439,37 +450,34 @@ public class CaptureScreen {
 				endX = me.getX();
 				endY = me.getY();
 			}
-				if (barPanel != null) {
-					if (startX > endX && startY > endY) {
-						if(startY>=height-barPanel.getHeight()){
-							barPanel.setStartPos(startX-BAR_WIDTH, startY-barPanel.getHeight());
-						}else{
-							barPanel.setStartPos(startX - BAR_WIDTH, startY);
-						}
-					} else if (startX > endX && startY < endY) {
-						if(endY>=height-barPanel.getHeight()){
-							barPanel.setStartPos(startX-BAR_WIDTH, startY+Math.abs(endY-startY)-barPanel.getHeight());
-						}else{
-						barPanel.setStartPos(startX - BAR_WIDTH,
-								startY + Math.abs(endY - startY));
-						}
-					} else if (startX < endX && startY > endY) {
-						if(startY>=height-barPanel.getHeight()){
-							barPanel.setStartPos(endX-BAR_WIDTH,endY+Math.abs(startY-endY)-barPanel.getHeight());
-						}else{
-						barPanel.setStartPos(startX + Math.abs(endX - startX)
-								- BAR_WIDTH, startY);
-						}
-					} else if (startX < endX && startY < endY) {
-						if(endY>=height-barPanel.getHeight()){
-							barPanel.setStartPos(endX-BAR_WIDTH,startY+Math.abs(endY-startY)-barPanel.getHeight());
-						}else{
-						barPanel.setStartPos(startX + Math.abs(endX - startX)
-								- BAR_WIDTH, startY + Math.abs(endY - startY));
-						}
+			if (barPanel != null) {
+				if (startX > endX && startY > endY) {
+					if (startY >= height - barPanel.getHeight()) {
+						barPanel.setStartPos(startX - BAR_WIDTH, startY - barPanel.getHeight());
+					} else {
+						barPanel.setStartPos(startX - BAR_WIDTH, startY);
 					}
-
+				} else if (startX > endX && startY < endY) {
+					if (endY >= height - barPanel.getHeight()) {
+						barPanel.setStartPos(startX - BAR_WIDTH, startY + Math.abs(endY - startY) - barPanel.getHeight());
+					} else {
+						barPanel.setStartPos(startX - BAR_WIDTH, startY + Math.abs(endY - startY));
+					}
+				} else if (startX < endX && startY > endY) {
+					if (startY >= height - barPanel.getHeight()) {
+						barPanel.setStartPos(endX - BAR_WIDTH, endY + Math.abs(startY - endY) - barPanel.getHeight());
+					} else {
+						barPanel.setStartPos(startX + Math.abs(endX - startX) - BAR_WIDTH, startY);
+					}
+				} else if (startX < endX && startY < endY) {
+					if (endY >= height - barPanel.getHeight()) {
+						barPanel.setStartPos(endX - BAR_WIDTH, startY + Math.abs(endY - startY) - barPanel.getHeight());
+					} else {
+						barPanel.setStartPos(startX + Math.abs(endX - startX) - BAR_WIDTH, startY + Math.abs(endY - startY));
+					}
 				}
+
+			}
 
 			this.repaint();
 		}
@@ -502,35 +510,28 @@ public class CaptureScreen {
 				isBarShow = true;
 				if (barPanel == null) {
 					if (startX > endX && startY > endY) {
-						if(startY>=height-BAR_HEIGHT){
-							barPanel = new BarPanel(jf, endX+Math.abs(startX-endX)-BAR_WIDTH,Math.abs(startY-BAR_HEIGHT));
-						}else{
-						barPanel = new BarPanel(jf, startX
-								- BAR_WIDTH, startY
-								);
+						if (startY >= height - BAR_HEIGHT) {
+							barPanel = new BarPanel(jf, endX + Math.abs(startX - endX) - BAR_WIDTH, Math.abs(startY - BAR_HEIGHT));
+						} else {
+							barPanel = new BarPanel(jf, startX - BAR_WIDTH, startY);
 						}
 					} else if (startX > endX && startY < endY) {
-						if(endY>=height-BAR_HEIGHT){							
-							barPanel= new BarPanel(jf,startX-BAR_WIDTH, endY-BAR_HEIGHT);
-						}else{
-						barPanel = new BarPanel(jf, startX
-								- BAR_WIDTH, startY
-								+ Math.abs(endY - startY));
+						if (endY >= height - BAR_HEIGHT) {
+							barPanel = new BarPanel(jf, startX - BAR_WIDTH, endY - BAR_HEIGHT);
+						} else {
+							barPanel = new BarPanel(jf, startX - BAR_WIDTH, startY + Math.abs(endY - startY));
 						}
 					} else if (startX < endX && startY > endY) {
-						if(startY>=height-BAR_HEIGHT){
-							barPanel = new BarPanel(jf, startX+Math.abs(endX-startX)-BAR_WIDTH, Math.abs(startY-BAR_HEIGHT));
-						}else{
-						barPanel = new BarPanel(jf, startX
-								+ Math.abs(endX - startX) - BAR_WIDTH, startY);
+						if (startY >= height - BAR_HEIGHT) {
+							barPanel = new BarPanel(jf, startX + Math.abs(endX - startX) - BAR_WIDTH, Math.abs(startY - BAR_HEIGHT));
+						} else {
+							barPanel = new BarPanel(jf, startX + Math.abs(endX - startX) - BAR_WIDTH, startY);
 						}
 					} else if (startX < endX && startY < endY) {
-						if(endY>=height-BAR_HEIGHT){
-							barPanel=new BarPanel(jf,startX+Math.abs(endX-startX)-BAR_WIDTH,startY + Math.abs(endY - startY)-BAR_HEIGHT);
-						}else{
-						barPanel = new BarPanel(jf, startX
-								+ Math.abs(endX - startX) - BAR_WIDTH, startY
-								+ Math.abs(endY - startY));
+						if (endY >= height - BAR_HEIGHT) {
+							barPanel = new BarPanel(jf, startX + Math.abs(endX - startX) - BAR_WIDTH, startY + Math.abs(endY - startY) - BAR_HEIGHT);
+						} else {
+							barPanel = new BarPanel(jf, startX + Math.abs(endX - startX) - BAR_WIDTH, startY + Math.abs(endY - startY));
 						}
 					}
 				}
@@ -546,10 +547,8 @@ public class CaptureScreen {
 		}
 
 		private void sendPaper() {
-			if (select.x + select.width < this.getWidth()
-					&& select.y + select.height < this.getHeight()) {
-				bImage = bi.getSubimage(select.x, select.y, select.width,
-						select.height);
+			if (select.x + select.width < this.getWidth() && select.y + select.height < this.getHeight()) {
+				bImage = bi.getSubimage(select.x, select.y, select.width, select.height);
 				jf.dispose();
 
 			} else {
@@ -567,8 +566,11 @@ public class CaptureScreen {
 		}
 
 		public class BarPanel extends JPanel {
+
 			JButton buttonOK;
+
 			FlowLayout flowLayout;
+
 			JButton buttonQuit;
 
 			public BarPanel(JFrame context, int startX, int startY) {
@@ -585,8 +587,7 @@ public class CaptureScreen {
 				buttonOK.setBorderPainted(false);// 设置边框不可见
 				buttonOK.setContentAreaFilled(false);// 设置透明
 				buttonOK.setPressedIcon(new ImageIcon(SCREEN_SHOT_CONFIRM_HOVER));
-				buttonOK.setSize(iconComfirm.getIconWidth(),
-						iconComfirm.getIconHeight());
+				buttonOK.setSize(iconComfirm.getIconWidth(), iconComfirm.getIconHeight());
 				add(buttonOK);
 				buttonOK.addActionListener(new ActionListener() {
 
@@ -601,12 +602,10 @@ public class CaptureScreen {
 				add(buttonQuit);
 				Icon iconQuit = new ImageIcon(SCREEN_SHOT_QUIT);
 				buttonQuit.setIcon(iconQuit);
-				buttonQuit.setSize(iconQuit.getIconWidth(),
-						iconQuit.getIconHeight());
+				buttonQuit.setSize(iconQuit.getIconWidth(), iconQuit.getIconHeight());
 				buttonQuit.setBorderPainted(false);// 设置边框不可见
 				buttonQuit.setContentAreaFilled(false);// 设置透明
-				buttonQuit
-						.setPressedIcon(new ImageIcon(SCREEN_SHOT_QUIT_HOVER));
+				buttonQuit.setPressedIcon(new ImageIcon(SCREEN_SHOT_QUIT_HOVER));
 				buttonQuit.addActionListener(new ActionListener() {
 
 					@Override
@@ -636,13 +635,9 @@ public class CaptureScreen {
 
 enum States {
 	NORTH_WEST(new Cursor(Cursor.NW_RESIZE_CURSOR)), // 表示西北角
-	NORTH(new Cursor(Cursor.N_RESIZE_CURSOR)), NORTH_EAST(new Cursor(
-			Cursor.NE_RESIZE_CURSOR)), EAST(new Cursor(Cursor.E_RESIZE_CURSOR)), SOUTH_EAST(
-			new Cursor(Cursor.SE_RESIZE_CURSOR)), SOUTH(new Cursor(
-			Cursor.S_RESIZE_CURSOR)), SOUTH_WEST(new Cursor(
-			Cursor.SW_RESIZE_CURSOR)), WEST(new Cursor(Cursor.W_RESIZE_CURSOR)), MOVE(
-			new Cursor(Cursor.MOVE_CURSOR)), DEFAULT(new Cursor(
-			Cursor.DEFAULT_CURSOR));
+	NORTH(new Cursor(Cursor.N_RESIZE_CURSOR)), NORTH_EAST(new Cursor(Cursor.NE_RESIZE_CURSOR)), EAST(new Cursor(Cursor.E_RESIZE_CURSOR)), SOUTH_EAST(new Cursor(Cursor.SE_RESIZE_CURSOR)), SOUTH(new Cursor(Cursor.S_RESIZE_CURSOR)), SOUTH_WEST(new Cursor(Cursor.SW_RESIZE_CURSOR)), WEST(new Cursor(Cursor.W_RESIZE_CURSOR)), MOVE(new Cursor(Cursor.MOVE_CURSOR)), DEFAULT(
+			new Cursor(Cursor.DEFAULT_CURSOR));
+
 	private Cursor cs;
 
 	States(Cursor cs) {

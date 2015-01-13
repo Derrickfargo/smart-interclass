@@ -150,4 +150,12 @@ public class Utils {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
        return  sdf.format(d)+"---";  
 	}
+	
+	/**
+	 * @param str
+	 * @return 判断字符串是否为空
+	 */
+	public static boolean isEmpty(String str){
+		 return str == null || str.trim().length() == 0;
+	}
 }

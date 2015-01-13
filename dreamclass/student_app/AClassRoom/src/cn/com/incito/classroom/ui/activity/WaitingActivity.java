@@ -28,8 +28,8 @@ import cn.com.incito.classroom.adapter.GroupNumAdapter;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
-import cn.com.incito.classroom.ui.activity.RandomGroupActivity.myAnimationListener;
 import cn.com.incito.classroom.ui.widget.MyAlertDialog;
+import cn.com.incito.classroom.ui.widget.ProgressiveDialog;
 import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.classroom.vo.LoginReqVo;
 import cn.com.incito.classroom.vo.LoginRes2Vo;
@@ -42,7 +42,6 @@ import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
-import cn.com.incito.wisdom.uicomp.widget.dialog.ProgressiveDialog;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -403,11 +402,14 @@ public class WaitingActivity extends BaseActivity {
 		List<Student> studentList = JSONArray.parseArray(
 				JSON.parseObject(data.toJSONString()).getString("students"),Student.class);
 		MyApplication.Logger.debug("WaitingActivity:随机分组返回的数据:" + studentList.size());
+		
 		List<LoginRes2Vo> loginRes2Vos = new ArrayList<LoginRes2Vo>();
+		
 		if (studentList != null && studentList.size() > 0) {
 			Iterator<Student> it = studentList.iterator();
 			while (it.hasNext()) {
 				Student s = it.next();
+				
 				LoginRes2Vo loginRes2Vo = new LoginRes2Vo();
 				loginRes2Vo.setAvatar(s.getAvatar());
 				loginRes2Vo.setId(s.getId() + "");
@@ -415,6 +417,7 @@ public class WaitingActivity extends BaseActivity {
 				loginRes2Vo.setName(s.getName());
 				loginRes2Vo.setNumber(s.getNumber());
 				loginRes2Vo.setSex(s.getSex() + "");
+				
 				loginRes2Vos.add(loginRes2Vo);
 			}
 			MyApplication.getInstance().getLoginResVo().getStudents().clear();

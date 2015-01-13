@@ -107,7 +107,7 @@ public class ResponderPanel extends JPanel implements MouseListener{
 		ImageIcon imgs = new ImageIcon("images/responder/responder.png");
 		responder.setIcon(imgs);
 		responder.addMouseListener(this);
-		responder.setBounds(320, 430, imgs.getIconWidth(), imgs.getIconHeight());
+		responder.setBounds(320, 265, imgs.getIconWidth(), imgs.getIconHeight());
 		responder.setVisible(true);
 		this.add(responder);
 		

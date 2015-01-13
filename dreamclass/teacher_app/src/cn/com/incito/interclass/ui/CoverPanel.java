@@ -140,4 +140,7 @@ public class CoverPanel extends JFrame{
 		}
 		
 	}
+	public static void main(String[] args) {
+		new CoverPanel();
+	}
 }

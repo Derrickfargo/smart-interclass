@@ -3,13 +3,19 @@
  */
 package cn.com.incito.common.utils;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -18,7 +24,6 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import cn.com.incito.classroom.utils.ApiClient;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.ActivityNotFoundException;
@@ -40,11 +45,72 @@ import android.provider.Settings.System;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import cn.com.incito.classroom.utils.ApiClient;
 /**
  * @author john
  *android 工具类
  */
 public class AndroidUtil {
+	
+	 /** 
+     * 获得指定文件的byte数组 
+     */  
+    public static byte[] getBytes(File file){  
+        byte[] buffer = null;  
+        try {  
+            FileInputStream fis = new FileInputStream(file);  
+            ByteArrayOutputStream bos = new ByteArrayOutputStream(1000);  
+            byte[] b = new byte[1000];  
+            int n;  
+            while ((n = fis.read(b)) != -1) {  
+                bos.write(b, 0, n);  
+            }  
+            fis.close();  
+            bos.close();  
+            buffer = bos.toByteArray();  
+        } catch (FileNotFoundException e) {  
+            e.printStackTrace();  
+        } catch (IOException e) {  
+            e.printStackTrace();  
+        }  
+        return buffer;  
+    }  
+  
+    /** 
+     * 根据byte数组，生成文件 
+     */  
+    public static void getFile(byte[] bfile, String filePath,String fileName) {  
+        BufferedOutputStream bos = null;  
+        FileOutputStream fos = null;  
+        File file = null;  
+        try {  
+            File dir = new File(filePath);  
+            if(!dir.exists()&&dir.isDirectory()){//判断文件目录是否存在  
+                dir.mkdirs();  
+            }  
+            file = new File(filePath+"\\"+fileName);  
+            fos = new FileOutputStream(file);  
+            bos = new BufferedOutputStream(fos);  
+            bos.write(bfile);  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+        } finally {  
+            if (bos != null) {  
+                try {  
+                    bos.close();  
+                } catch (IOException e1) {  
+                    e1.printStackTrace();  
+                }  
+            }  
+            if (fos != null) {  
+                try {  
+                    fos.close();  
+                } catch (IOException e1) {  
+                    e1.printStackTrace();  
+                }  
+            }  
+        }  
+    }  
 
 	/**
 	 * sdcard是否可用
@@ -392,7 +458,7 @@ public class AndroidUtil {
 	 * @return
 	 */
 	public static String getCurrentTime() {
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 		return df.format(new Date());
 	}
 
@@ -452,5 +518,33 @@ public class AndroidUtil {
 		}
 		return false;
 	}
-
+	
+	/**
+	 * 判断字符串有多个汉字
+	 * @param str
+	 * @return
+	 */
+	public static int TextNumber(String str){
+		int count=0;
+		String regEx = "[\\u4e00-\\u9fa5]";
+		Pattern p = Pattern.compile(regEx);
+		for(int i = 0; i < str.length(); i++){
+			Matcher m = p.matcher(str.charAt(i)+"");
+			if(m.matches()){
+				count++;
+			}
+		}
+		
+		
+		return count;
+	}
+	
+	/**
+	 * 非汉字的个数
+	 * @param str
+	 * @return
+	 */
+	public static int notTextNumber(String str){
+		return str.length() - TextNumber(str);
+	}
 }

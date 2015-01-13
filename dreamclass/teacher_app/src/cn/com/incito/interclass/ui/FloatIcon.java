@@ -361,7 +361,7 @@ public class FloatIcon extends MouseAdapter {
 			}
 			if (e.getSource() == btnLock) {
 				if(Application.getInstance().getOnlineStudent()==null||Application.getInstance().getOnlineStudent().size()==0){
-					JOptionPane.showConfirmDialog(null, "没有学生登录，不能解锁屏！");
+					JOptionPane.showMessageDialog(null, "当前没有学生登录，不能解锁屏！");;
 					return;
 				}
 				showMenu(false);
