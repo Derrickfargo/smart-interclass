@@ -1,5 +1,8 @@
 package cn.com.incito.classroom.base;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import android.app.Application;
 import android.app.ExecRootCmd;
 import android.app.KeyguardManager;
@@ -23,6 +26,7 @@ import cn.com.incito.classroom.exception.AppUncaughtException;
 import cn.com.incito.classroom.vo.LoginResVo;
 import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.socket.core.NCoreSocket;
+import cn.com.incito.socket.message.MessagePacking;
 
 import com.google.code.microlog4android.Logger;
 import com.google.code.microlog4android.LoggerFactory;
@@ -35,6 +39,16 @@ public class MyApplication extends Application {
 	public static final Logger Logger = LoggerFactory.getLogger();
 	public boolean isOnClass;// 是否在上课
 	private boolean isFirstConnection = true;
+	
+	private Map<String,MessagePacking> paperLastMessagePackingMap = new HashMap<String, MessagePacking>();
+
+	public Map<String,MessagePacking> getPaperLastMessagePacking() {
+		return paperLastMessagePackingMap;
+	}
+
+	public void setPaperLastMessagePacking(MessagePacking paperLastMessagePacking) {
+		paperLastMessagePackingMap.put("last", paperLastMessagePacking);
+	}
 
 	public synchronized boolean isFirstConnection() {
 		return isFirstConnection;

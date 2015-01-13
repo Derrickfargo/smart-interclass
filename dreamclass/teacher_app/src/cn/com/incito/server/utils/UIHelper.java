@@ -1,10 +1,13 @@
 package cn.com.incito.server.utils;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.awt.Color;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -46,18 +49,35 @@ public class UIHelper {
 		SocketServiceCore.getInstance().sendMsg(messagePacking);
 		logger.info("锁屏信息发出");
 	}
-	/**
-	 * 下课命令
-	 */
+	
 	public static void sendClassOverMessage(){
-		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_LOCK_SCREEN);
+		logger.info("下课信息发出");
+		final MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_LOCK_SCREEN);
 		JSONObject json = new JSONObject();
 		Application.getInstance().setLockScreen(false);
 		json.put("isLock", "over");
 		messagePacking.putBodyData(DataType.INT,json.toJSONString().getBytes());
-		SocketServiceCore.getInstance().sendMsg(messagePacking);
-		logger.info("下课信息发出");
+		Application app = Application.getInstance();
+		final Collection<ChannelHandlerContext> channels = app.getClientChannel().values();
+		new Thread() {
+			@Override
+			public void run() {
+				for (ChannelHandlerContext channel : channels) {
+					if (channel != null && channel.channel().isActive()) {
+						// 输出到通道
+						JSONObject json = new JSONObject();
+						json.put("messagePacking", messagePacking);
+						ByteBuf buf = Unpooled.copiedBuffer((json.toString() + "\n").getBytes());
+						if (channel != null && channel.channel().isActive()) {
+							channel.writeAndFlush(buf);
+						}
+					}
+				}
+				System.exit(0);
+			};
+		}.start();
 	}
+	
 	/**
 	 * 
 	 * 抢答命令

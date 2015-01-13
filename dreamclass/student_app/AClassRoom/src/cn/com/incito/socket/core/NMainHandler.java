@@ -45,7 +45,6 @@ public class NMainHandler extends ChannelInboundHandlerAdapter {
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NMainHandler:与服务器连接建立成功此时可以进行数据传输操作!");
-		MyApplication.getInstance().setFirstConnection(false);
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("imei", MyApplication.deviceId);
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_HAND_SHAKE);

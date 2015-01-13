@@ -36,6 +36,7 @@ import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
+import cn.com.incito.classroom.ui.activity.RandomGroupActivity.myAnimationListener;
 import cn.com.incito.classroom.ui.widget.ProgressiveDialog;
 import cn.com.incito.classroom.utils.BitmapUtil;
 import cn.com.incito.classroom.utils.FTPUtils;
@@ -582,13 +583,18 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 	 * 发送作业请求
 	 */
 	public void sendPaperRequest() {
-		mProgressDialog.show();
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("imei", MyApplication.deviceId);
-		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SEND_PAPER);
-		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
-		NCoreSocket.getInstance().sendMessage(messagePacking);
-		startTask();
+		if(NCoreSocket.getInstance().getChannel() != null){
+			mProgressDialog.show();
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("imei", MyApplication.deviceId);
+			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SEND_PAPER);
+			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
+			NCoreSocket.getInstance().sendMessage(messagePacking);
+			startTask();
+		}else{
+			ToastHelper.showCustomToast(this, "请30s后重试!");
+		}
+		
 	}
 
 	public void closeProgressDialog() {
@@ -671,7 +677,12 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 					jsonObject.put("file", Constants.FILE_PATH + filePath + "/" + fileName);
 					
 					messagePacking.putBodyData(DataType.INT, jsonObject.toJSONString().getBytes());
-					NCoreSocket.getInstance().sendMessage(messagePacking);
+					if(NCoreSocket.getInstance().getChannel() != null){
+						NCoreSocket.getInstance().sendMessage(messagePacking);
+					}else{
+						MyApplication.getInstance().setPaperLastMessagePacking(messagePacking);
+					}
+					
 					
 					mProgressDialog.dismiss();
 				} else {

@@ -33,6 +33,7 @@ public class NCoreSocket implements ICoreSocket {
 	private static NCoreSocket nCoreSocket;
 	private NCoreSocket(){};
 	private Channel channel = null;
+	private Timer timer = new Timer();
 	
 	public Channel getChannel() {
 		return channel;
@@ -51,7 +52,7 @@ public class NCoreSocket implements ICoreSocket {
 
 	@Override
 	public void startConnection(final String ip, final int port) throws InterruptedException {
-
+		MyApplication.getInstance().setFirstConnection(false);
 		EventLoopGroup workGroup = new NioEventLoopGroup();
 		try {
 			Bootstrap bootstrap = new Bootstrap();
@@ -85,14 +86,20 @@ public class NCoreSocket implements ICoreSocket {
 
 	@Override
 	public void stopConnection() {
-		channel.close();
+		MyApplication.getInstance().getPaperLastMessagePacking().clear();
+		if(channel != null){
+			channel.close();
+			channel = null;
+		}
+		timer.cancel();
+		
 	}
 
 	@Override
-	public void sendMessage(MessagePacking messagePacking) {
+	public void sendMessage(final MessagePacking messagePacking) {
 		final JSONObject jsonObject = new JSONObject();
 		jsonObject.put("messagePacking", messagePacking);
-
+		
 		if (channel != null) {
 			
 			ByteBuf buf = Unpooled.copiedBuffer((jsonObject.toJSONString() + "\n").getBytes());
@@ -101,10 +108,25 @@ public class NCoreSocket implements ICoreSocket {
 				@Override
 				public void operationComplete(ChannelFuture future)throws Exception {
 					if (future.isSuccess()) {
-						MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NCoreSocket:向服务器发送消息成,消息内容:"
-								+ jsonObject.toJSONString());
+						MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NCoreSocket:向服务器发送消息成,消息内容:"+ jsonObject.toJSONString());
+						byte msgId = messagePacking.msgId;
+						if(MyApplication.getInstance().getPaperLastMessagePacking().size() > 0){
+							
+						}
+						if(Message.MESSAGE_HAND_SHAKE == msgId || Message.MESSAGE_DEVICE_HAS_BIND == msgId ||Message.MESSAGE_GROUP_LIST == msgId){
+							MessagePacking packing = MyApplication.getInstance().getPaperLastMessagePacking().get("last");
+							if( packing != null){
+								sendMessage(packing);
+								MyApplication.getInstance().getPaperLastMessagePacking().clear();
+							}
+						}
 					} else {
-						// TODO 可以在断线重连后进行重发消息
+						// 可以在断线重连后进行重发消息主要是作业的消息的
+						MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":NCoreSocket:向服务器发送消息失败,重连后自动发送!");
+						byte msgId = messagePacking.msgId;
+						if(Message.MESSAGE_SAVE_PAPER == msgId){
+							MyApplication.getInstance().setPaperLastMessagePacking(messagePacking);
+						}
 						
 					}
 				}
@@ -119,13 +141,12 @@ public class NCoreSocket implements ICoreSocket {
 	 */
 	@Override
 	public void connection() {
-		Timer timer = new Timer();
 		TimerTask timerTask = new TimerTask() {
 			@Override
 			public void run() {
 				try {
 					startConnection(Constants.IP, Constants.PORT);
-				} catch (InterruptedException e) {
+				} catch (Exception e) {
 					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":restartConnection:连接中断");
 					e.printStackTrace();
 				}
@@ -137,6 +158,5 @@ public class NCoreSocket implements ICoreSocket {
 		}else{
 			timer.schedule(timerTask, 30000);
 		}
-		
 	}
 }

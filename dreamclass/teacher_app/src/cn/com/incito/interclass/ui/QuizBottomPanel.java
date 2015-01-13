@@ -32,6 +32,7 @@ import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.Message;
+import cn.com.incito.server.core.SocketServiceCore;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.BufferUtils;
@@ -39,6 +40,7 @@ import cn.com.incito.server.utils.CompressUtil;
 import cn.com.incito.server.utils.PeerFeedbackUtils;
 import cn.com.incito.server.utils.QuizCollector;
 
+import com.alibaba.fastjson.JSONObject;
 import com.sun.image.codec.jpeg.ImageFormatException;
 
 public class QuizBottomPanel extends JPanel implements MouseListener{
@@ -300,23 +302,22 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 				while (it.hasNext()) {
 					MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DISTRIBUTE_PAPER);
 				    String uuid = UUID.randomUUID().toString();
-				    messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(uuid));
-				    messagePacking.putBodyData(DataType.INT,  BufferUtils.writeUTFString("false"));
-				    byte[] data = messagePacking.pack().array();
-					ByteBuffer buffer = ByteBuffer.allocate(data.length);
+				    JSONObject json = new JSONObject();
+				    json.put("uuid", uuid);
+				    json.put("isContainsPic", "false");
+				    messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json.toJSONString()));
 					Entry<String, ChannelHandlerContext> entry = it.next();
 					String imei = entry.getKey();
 					List<Student> students = app.getStudentByImei(imei);
 					//记录有学生登陆的Pad
 					if (students != null && students.size() > 0) {
 						ChannelHandlerContext channel = entry.getValue();
-						if (channel != null && channel.channel().isActive()) {
-							// 输出到通道
-							buffer.clear();
-							buffer.put(data);
-							buffer.flip();
-							channel.writeAndFlush(buffer);
-							app.addQuizIMEI(imei);//已发送的IMEI
+						if (channel != null ) {
+							if(channel.channel().isActive()){
+								// 输出到通道
+								SocketServiceCore.getInstance().sendMsg(messagePacking, channel);
+								app.addQuizIMEI(imei);//已发送的IMEI								
+							}
 						}
 					}
 				}
