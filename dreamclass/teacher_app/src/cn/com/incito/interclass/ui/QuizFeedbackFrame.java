@@ -15,7 +15,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
-import cn.com.incito.server.core.CoreSocket;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.SocketServiceCore;
 import cn.com.incito.server.message.DataType;

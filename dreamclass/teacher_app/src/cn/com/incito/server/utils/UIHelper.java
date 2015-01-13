@@ -5,7 +5,6 @@ import io.netty.channel.ChannelHandlerContext;
 import java.awt.Color;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -13,17 +12,15 @@ import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.ui.MainFrame;
 import cn.com.incito.server.api.Application;
-import cn.com.incito.server.core.CoreSocket;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.SocketServiceCore;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
+
+import com.alibaba.fastjson.JSONObject;
 
 public class UIHelper {
 	static Logger logger =  Logger.getLogger(UIHelper.class.getName());

@@ -42,7 +42,7 @@ public class SocketIdleHandle extends ChannelInboundHandlerAdapter{
 			JSONObject json = new JSONObject();
 			json.put("messagePacking", packing);
 			logger.info("收到pad端心跳包：	"+msgId+ctx.channel().remoteAddress());
-			ctx.writeAndFlush((json.toJSONString()+"$_").getBytes());
+			ctx.writeAndFlush((json.toJSONString()+"\n").getBytes());
 			return;
 		}
 		ctx.fireChannelRead(msg);
@@ -68,7 +68,7 @@ public class SocketIdleHandle extends ChannelInboundHandlerAdapter{
             	MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_HEART_BEAT);
             	JSONObject jsonObject = new JSONObject();
             	jsonObject.put("messagePacking", messagePacking);
-            	ByteBuf buf = Unpooled.copiedBuffer((jsonObject.toJSONString()+"$_").getBytes());
+            	ByteBuf buf = Unpooled.copiedBuffer((jsonObject.toJSONString()+"\n").getBytes());
                 ctx.writeAndFlush(buf);
                 logger.info("心跳包发送："+ctx.channel().remoteAddress());
             }
