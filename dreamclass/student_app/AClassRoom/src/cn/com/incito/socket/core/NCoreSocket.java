@@ -1,8 +1,5 @@
 package cn.com.incito.socket.core;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -21,13 +18,16 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.CharsetUtil;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
-import cn.com.incito.socket.utils.StringUtilTest;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -68,12 +68,12 @@ public class NCoreSocket implements ICoreSocket {
 				bootstrap.handler(new ChannelInitializer<SocketChannel>() {
 					@Override
 					protected void initChannel(SocketChannel ch) throws Exception {
-						ByteBuf delimiter = Unpooled.copiedBuffer("$_".getBytes());
+						ByteBuf delimiter = Unpooled.copiedBuffer("\n".getBytes());
 						ChannelPipeline pipeline = ch.pipeline();
 						pipeline.addLast(new IdleStateHandler(30, 0, 10));
 						pipeline.addLast(new DelimiterBasedFrameDecoder(5 * 1024 * 1024, delimiter));
 						//TODO
-						pipeline.addLast(new StringUtilTest(CharsetUtil.UTF_8));
+						pipeline.addLast(new StringDecoder(CharsetUtil.UTF_8));
 						pipeline.addLast(new StringEncoder(CharsetUtil.UTF_8));
 						pipeline.addLast(new NMainHandler());
 					}
@@ -81,7 +81,6 @@ public class NCoreSocket implements ICoreSocket {
 				try {
 					channelFuture = bootstrap.connect(ip, port).sync();
 					channelFuture.addListener(new ChannelFutureListener() {
-						
 						@Override
 						public void operationComplete(ChannelFuture arg0) throws Exception {
 							if(arg0.isSuccess()){
@@ -136,7 +135,7 @@ public class NCoreSocket implements ICoreSocket {
 
 		ChannelHandlerContext channelHandlerContext = MyApplication.getInstance().getChannelHandlerContext();
 		if (channelHandlerContext != null) {
-			ByteBuf buf = Unpooled.copiedBuffer((jsonObject.toJSONString() + "$_").getBytes());
+			ByteBuf buf = Unpooled.copiedBuffer((jsonObject.toJSONString() + "\n").getBytes());
 			ChannelFuture channelFuture = channelHandlerContext.writeAndFlush(buf);
 			channelFuture.addListener(new ChannelFutureListener() {
 				@Override
