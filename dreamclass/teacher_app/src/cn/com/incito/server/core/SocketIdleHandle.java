@@ -41,7 +41,8 @@ public class SocketIdleHandle extends ChannelInboundHandlerAdapter{
 			JSONObject json = new JSONObject();
 			json.put("messagePacking", packing);
 			logger.info("收到pad端心跳包：	"+msgId+ctx.channel().remoteAddress());
-//			ctx.writeAndFlush((json.toJSONString()+"$_").getBytes());不再向pad端回复心跳信息
+
+			//			ctx.writeAndFlush((json.toJSONString()+"$_").getBytes());不再向pad端回复心跳信息
 			return;
 		}
 		ctx.fireChannelRead(msg);
