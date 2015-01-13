@@ -83,6 +83,7 @@ public class SocketServiceCore {
 						pipeline.addLast(new StringEncoder(CharsetUtil.UTF_8));
 						pipeline.addLast(new SocketIdleHandle());
 						pipeline.addLast(new ServiceHandle());
+						pipeline.addLast(new SocketInBoundEptCaught());
 					}
 				})
 				.option(ChannelOption.SO_KEEPALIVE, true)
