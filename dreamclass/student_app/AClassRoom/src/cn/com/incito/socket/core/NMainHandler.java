@@ -15,7 +15,6 @@ public class NMainHandler extends ChannelInboundHandlerAdapter {
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg)throws Exception {
 		String message = (String) msg;
-		
 		JSONObject jsonObject = JSONObject.parseObject(message);
 		MessagePacking messagePacking = JSONObject.parseObject(jsonObject.getString("messagePacking"), MessagePacking.class);
 
