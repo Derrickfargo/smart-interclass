@@ -32,6 +32,7 @@ import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.ApiClient;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.core.Message;
+import cn.com.incito.server.core.SocketServiceCore;
 import cn.com.incito.server.exception.AppException;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
@@ -243,8 +244,6 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		new Thread() {
 			@Override
 			public void run() {
-				byte[] data = messagePacking.pack().array();
-				ByteBuffer buffer = ByteBuffer.allocate(data.length);
 				Iterator<ChannelHandlerContext> it = channels.iterator();
 				while (it.hasNext()) {
 					ChannelHandlerContext channel = it.next();
@@ -252,10 +251,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 						it.remove();
 						continue;
 					}
-					buffer.clear();
-					buffer.put(data);
-					buffer.flip();
-					channel.writeAndFlush(buffer);
+					SocketServiceCore.getInstance().sendMsg(messagePacking, channel);
 				}
 			};
 		}.start();
@@ -380,13 +376,8 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 	 */
 	private void sendMsgToClient(final MessagePacking rdmPacking,
 			final ChannelHandlerContext clientChannel) {	
-		byte[] data=rdmPacking.pack().array();
-				ByteBuffer bytes =ByteBuffer.allocate(data.length);
-				bytes.clear();
-				bytes.put(data);
-				bytes.flip();
-				clientChannel.writeAndFlush(bytes);
-				logger.info("随机分组信息发送失败！"+new String(data));
+				SocketServiceCore.getInstance().sendMsg(rdmPacking, clientChannel);
+				logger.info("随机分组信息发送失败！"+clientChannel.channel().remoteAddress());
 	}
 
 	@Override
