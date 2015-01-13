@@ -140,7 +140,6 @@ public class QuizCollector {
 //					nextQuiz();//收取下一个作业
 //					return;
 				} catch (Exception e) {
-					logger.error("作业收取出现异常", e);
 					capacity--;
 					return;
 				}

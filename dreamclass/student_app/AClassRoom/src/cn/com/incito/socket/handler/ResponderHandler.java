@@ -14,10 +14,6 @@ import cn.com.incito.socket.core.MessageHandler;
  */
 public class ResponderHandler extends MessageHandler {
 
-	@Override
-	public void handleMessage(Message msg) {
-		handleMessage();
-	}
 
 	@Override
 	protected void handleMessage() {

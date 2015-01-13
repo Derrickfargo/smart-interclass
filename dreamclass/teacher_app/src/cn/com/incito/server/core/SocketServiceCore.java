@@ -25,11 +25,11 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import org.apache.log4j.Logger;
 
-import com.alibaba.fastjson.JSONObject;
-
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.config.AppConfig;
 import cn.com.incito.server.message.MessagePacking;
+
+import com.alibaba.fastjson.JSONObject;
 
 
 public class SocketServiceCore {
@@ -67,7 +67,7 @@ public class SocketServiceCore {
 				.childHandler(new ChannelInitializer<SocketChannel>() {
 					@Override
 					protected void initChannel(SocketChannel channel)throws Exception {
-						ByteBuf delimiter = Unpooled.copiedBuffer("$_".getBytes());
+						ByteBuf delimiter = Unpooled.copiedBuffer("\n".getBytes());
 						/**
 						 * 读取配置文件 确定心跳时间
 						 */
@@ -79,6 +79,7 @@ public class SocketServiceCore {
 						ChannelPipeline pipeline = channel.pipeline();
 						pipeline.addLast(new IdleStateHandler(readIdle,0,idle));
 						pipeline.addLast(new DelimiterBasedFrameDecoder(5*1024*1024, delimiter));
+					//TODO
 						pipeline.addLast(new StringDecoder(CharsetUtil.UTF_8));
 						pipeline.addLast(new StringEncoder(CharsetUtil.UTF_8));
 						pipeline.addLast(new SocketIdleHandle());
@@ -113,7 +114,7 @@ public class SocketServiceCore {
 		boolean flag = false;
 		JSONObject json = new JSONObject();
 		json.put("messagePacking", messagePacking);
-		ByteBuf buf = Unpooled.copiedBuffer((json.toString()+"$_").getBytes());
+		ByteBuf buf = Unpooled.copiedBuffer((json.toString()+"\n").getBytes());
 		if(ctx!=null&&ctx.channel().isActive()){
 			ctx.writeAndFlush(buf);
 			flag = true;

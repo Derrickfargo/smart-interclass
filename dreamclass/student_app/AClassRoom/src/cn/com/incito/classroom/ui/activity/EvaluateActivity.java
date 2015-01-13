@@ -32,8 +32,8 @@ import cn.com.incito.classroom.vo.EvaluateTempVo;
 import cn.com.incito.classroom.vo.EvaluateVo;
 import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.common.utils.UIHelper;
-import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
+import cn.com.incito.socket.core.NCoreSocket;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
@@ -248,7 +248,7 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_QUIZ_FEEDBACK_SUBMIT);
 		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
 		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"提交的评论结果"+jsonObject.toJSONString());
-		CoreSocket.getInstance().sendMessage(messagePacking);
+		NCoreSocket.getInstance().sendMessage(messagePacking);
 		MyApplication.getInstance().lockScreen(true);
 		this.finish();
 	}

@@ -16,10 +16,6 @@ import cn.com.incito.socket.core.MessageHandler;
  */
 public class ResponderEndHandler extends MessageHandler {
 	
-	@Override
-	public void handleMessage(Message msg) {
-		handleMessage();
-	}
 	
 	@Override
 	public void handleMessage(JSONObject jsonObject) {

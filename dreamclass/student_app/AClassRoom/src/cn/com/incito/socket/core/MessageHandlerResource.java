@@ -16,7 +16,6 @@ import cn.com.incito.socket.handler.EvaluateHandler;
 import cn.com.incito.socket.handler.GroupEditHandler;
 import cn.com.incito.socket.handler.GroupListHandler;
 import cn.com.incito.socket.handler.GroupSubmitHandler;
-import cn.com.incito.socket.handler.HeartbeatHandler;
 import cn.com.incito.socket.handler.LockScreenHandler;
 import cn.com.incito.socket.handler.RandomGroupHandler;
 import cn.com.incito.socket.handler.ResponderEndHandler;
@@ -47,8 +46,6 @@ public final class MessageHandlerResource {
         handlerResources = new HashMap<Byte, Class<? extends MessageHandler>>();
         //设备登陆消息回复，用于启动心跳
         handlerResources.put(Message.MESSAGE_HAND_SHAKE, DeviceLoginHandler.class);
-        //心跳消息
-        handlerResources.put(Message.MESSAGE_HEART_BEAT, HeartbeatHandler.class);
         //获取分组消息
         handlerResources.put(Message.MESSAGE_GROUP_LIST, GroupListHandler.class);
         //学生登陆消息

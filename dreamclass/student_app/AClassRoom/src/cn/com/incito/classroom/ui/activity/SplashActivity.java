@@ -16,7 +16,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
@@ -36,7 +35,6 @@ import cn.com.incito.classroom.utils.UpdateManager;
 import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.classroom.vo.Version;
 import cn.com.incito.common.utils.AndroidUtil;
-import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.core.NCoreSocket;
 import cn.com.incito.socket.message.DataType;
@@ -129,13 +127,9 @@ public class SplashActivity extends BaseActivity {
 					WifiInfo info = wifi.getConnectionInfo();
 					app.setDeviceId(info.getMacAddress().replace(":", "-"));
 					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "SplashActivity:"+ "WiFi已连接，检查Socket是否连接 ");
-					while (MyApplication.getInstance().getChannelHandlerContext() == null) {
-						MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ "SplashActivity:socket没有连接,请等候5s");
-						try {
-							Thread.sleep(5000);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
+					
+					while (NCoreSocket.getInstance().getChannel() == null) {
+						MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ "SplashActivity:socket没有连接,请等候30s");
 					}
 					startMainAct();
 				} else {
@@ -201,16 +195,17 @@ public class SplashActivity extends BaseActivity {
 	 * 发送连接请求
 	 */
 	public void startMainAct() {
-		// if (!isUpdateApk()) {
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":splashActivity登录");
+		 if (!isUpdateApk()) {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("imei", MyApplication.deviceId);
 		MessagePacking messagePacking = new MessagePacking(
 				Message.MESSAGE_DEVICE_HAS_BIND);
 		messagePacking.putBodyData(DataType.INT,
 				BufferUtils.writeUTFString(jsonObject.toJSONString()));
-		CoreSocket.getInstance().sendMessage(messagePacking);
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":splashActivity登录");
-		// }
+		NCoreSocket.getInstance().sendMessage(messagePacking);
+		
+		 }
 	}
 	
 	public void sleep(int seconds) {

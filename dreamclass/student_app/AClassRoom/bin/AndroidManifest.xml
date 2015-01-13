@@ -121,6 +121,10 @@
             </intent-filter>
         </service>
         -->
+        <uses-library android:name="android.test.runner" />
     </application>
+    <instrumentation
+        	android:name="android.test.InstrumentationTestRunner"
+        	android:targetPackage="cn.com.incito.classroom" />
 
 </manifest>

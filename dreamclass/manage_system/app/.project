@@ -3,6 +3,8 @@
 	<name>app</name>
 	<comment></comment>
 	<projects>
+		<project>class-parent</project>
+		<project>parent</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
