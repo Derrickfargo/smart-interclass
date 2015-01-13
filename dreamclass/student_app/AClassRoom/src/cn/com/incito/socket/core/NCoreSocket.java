@@ -27,8 +27,6 @@ import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
-import cn.com.incito.socket.utils.StringUtilTest;
-
 import com.alibaba.fastjson.JSONObject;
 
 public class NCoreSocket implements ICoreSocket {
