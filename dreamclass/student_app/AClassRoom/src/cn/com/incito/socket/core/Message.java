@@ -164,7 +164,4 @@ public class Message implements Serializable{
         this.channel = channel;
     }
 
-    public void executeMessage() {
-        handler.handleMessage(this);
-    }
 }

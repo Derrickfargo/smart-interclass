@@ -16,7 +16,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
@@ -36,7 +35,6 @@ import cn.com.incito.classroom.utils.UpdateManager;
 import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.classroom.vo.Version;
 import cn.com.incito.common.utils.AndroidUtil;
-import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.core.NCoreSocket;
 import cn.com.incito.socket.message.DataType;
@@ -208,7 +206,7 @@ public class SplashActivity extends BaseActivity {
 				Message.MESSAGE_DEVICE_HAS_BIND);
 		messagePacking.putBodyData(DataType.INT,
 				BufferUtils.writeUTFString(jsonObject.toJSONString()));
-		CoreSocket.getInstance().sendMessage(messagePacking);
+		NCoreSocket.getInstance().sendMessage(messagePacking);
 		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":splashActivity登录");
 		// }
 	}

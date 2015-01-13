@@ -44,7 +44,6 @@ import cn.com.incito.classroom.widget.canvas.SketchPadView;
 import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.common.utils.UIHelper;
-import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.core.NCoreSocket;
 import cn.com.incito.socket.message.DataType;

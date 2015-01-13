@@ -23,8 +23,8 @@ import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.ui.widget.HorizontalListView;
 import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.common.utils.ToastHelper;
-import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
+import cn.com.incito.socket.core.NCoreSocket;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
@@ -157,7 +157,7 @@ public class EditGroupInfoActivity extends BaseActivity implements
 							Message.MESSAGE_GROUP_EDIT);
 					messagePacking.putBodyData(DataType.INT,
 							BufferUtils.writeUTFString(json.toJSONString()));
-					CoreSocket.getInstance().sendMessage(messagePacking);
+					NCoreSocket.getInstance().sendMessage(messagePacking);
 					this.finish();
 					Logger.debug(Utils.getTime()+TAG+":启动修改分组..."+"request:"+json.toJSONString());
 					Log.i(TAG, "启动修改分组..."+"request:"+json.toJSONString());

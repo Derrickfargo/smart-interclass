@@ -27,6 +27,7 @@ import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
+import cn.com.incito.socket.utils.StringUtilTest;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -71,7 +72,8 @@ public class NCoreSocket implements ICoreSocket {
 						ChannelPipeline pipeline = ch.pipeline();
 						pipeline.addLast(new IdleStateHandler(30, 0, 10));
 						pipeline.addLast(new DelimiterBasedFrameDecoder(5 * 1024 * 1024, delimiter));
-						pipeline.addLast(new StringDecoder(CharsetUtil.UTF_8));
+						//TODO
+						pipeline.addLast(new StringUtilTest(CharsetUtil.UTF_8));
 						pipeline.addLast(new StringEncoder(CharsetUtil.UTF_8));
 						pipeline.addLast(new NMainHandler());
 					}

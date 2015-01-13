@@ -19,8 +19,8 @@ import cn.com.incito.classroom.ui.widget.MyAlertDialog;
 import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.common.utils.UIHelper;
-import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
+import cn.com.incito.socket.core.NCoreSocket;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
@@ -99,7 +99,7 @@ public class BindDeskActivity extends BaseActivity {
 				jsonObject.put("number", curentDesk);
 				MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_BIND);
 				messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
-				CoreSocket.getInstance().sendMessage(messagePacking);
+				NCoreSocket.getInstance().sendMessage(messagePacking);
 				Logger.debug(Utils.getTime()+"BindDeskActivity:"+"启动课桌绑定..." + "request:" + jsonObject.toJSONString());
 				Log.i("BindDeskActivity:", "启动课桌绑定..." + "request:" + jsonObject.toJSONString());
 			}

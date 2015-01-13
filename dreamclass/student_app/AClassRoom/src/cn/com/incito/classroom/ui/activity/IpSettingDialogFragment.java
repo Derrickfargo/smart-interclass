@@ -17,8 +17,8 @@ import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.common.utils.ToastHelper;
-import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
+import cn.com.incito.socket.core.NCoreSocket;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
@@ -86,7 +86,7 @@ public class IpSettingDialogFragment extends DialogFragment {
 				Message.MESSAGE_DEVICE_HAS_BIND);
 		messagePacking.putBodyData(DataType.INT,
 				BufferUtils.writeUTFString(jsonObject.toJSONString()));
-		CoreSocket.getInstance().sendMessage(messagePacking);
+		NCoreSocket.getInstance().sendMessage(messagePacking);
 		Logger.debug(Utils.getTime()+"SplashActivity"+":开始判定设备是否绑定..." + "request:" + jsonObject.toJSONString());
 		Log.i("SplashActivity","开始判定设备是否绑定..." + "request:" + jsonObject.toJSONString());
 	}

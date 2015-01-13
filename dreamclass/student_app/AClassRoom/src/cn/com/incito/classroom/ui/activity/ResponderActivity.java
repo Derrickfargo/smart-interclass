@@ -19,8 +19,8 @@ import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.common.utils.AndroidUtil;
-import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
+import cn.com.incito.socket.core.NCoreSocket;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
@@ -125,7 +125,7 @@ public class ResponderActivity extends BaseActivity {
 				JSONObject jsonObject = new JSONObject();
 				jsonObject.put("imei", MyApplication.deviceId);
 				messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
-				CoreSocket.getInstance().sendMessage(messagePacking);
+				NCoreSocket.getInstance().sendMessage(messagePacking);
 				
 				MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "ResponderActivity:发送抢答消息成功");
 			}
