@@ -126,7 +126,6 @@ public class ResponderActivity extends BaseActivity {
 				jsonObject.put("imei", MyApplication.deviceId);
 				messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
 				NCoreSocket.getInstance().sendMessage(messagePacking);
-				
 				MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "ResponderActivity:发送抢答消息成功");
 			}
 		});

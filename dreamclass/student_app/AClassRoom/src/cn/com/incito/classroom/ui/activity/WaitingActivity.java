@@ -27,6 +27,8 @@ import cn.com.incito.classroom.adapter.GroupNumAdapter;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
+import cn.com.incito.classroom.ui.activity.EvaluateActivity.MyPagerAdapter;
+import cn.com.incito.classroom.ui.activity.RandomGroupActivity.myAnimationListener;
 import cn.com.incito.classroom.ui.widget.MyAlertDialog;
 import cn.com.incito.classroom.ui.widget.ProgressiveDialog;
 import cn.com.incito.classroom.utils.Utils;
@@ -56,6 +58,7 @@ public class WaitingActivity extends BaseActivity {
 	public static final int STUDENT_LOGIN = 2;
 	public static final int STUDENT_CLEAR = 3;
 	public static final int RANDOM_GROUP = 4;
+	public static final int STUDENT_LOING_FALSE = 5;
 	
 	public int itemPosition;
 	EditText et_stname;
@@ -372,7 +375,12 @@ public class WaitingActivity extends BaseActivity {
 				mAdapter.setDatas(MyApplication.getInstance().getLoginResVo().getStudents());
 				gv_group_member.setAdapter(mAdapter);
 				break;
+			case STUDENT_LOING_FALSE:
+				mAdapter.setDatas(MyApplication.getInstance().getLoginResVo().getStudents());
+				gv_group_member.setAdapter(mAdapter);
+				break;
 			}
+			
 		}
 	};
 
@@ -456,5 +464,18 @@ public class WaitingActivity extends BaseActivity {
 		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(jsonObject.toJSONString()));
 		NCoreSocket.getInstance().sendMessage(messagePacking);
 		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":WaitingActivity启动获取组成员列表..."+ jsonObject.toJSONString());
+	}
+	
+	/**
+	 * pad掉线后设置该pad的学生显示状态为掉线
+	 */
+	public void setStudentsLoginFalse(){
+		List<LoginRes2Vo> students = MyApplication.getInstance().getLoginResVo().getStudents();
+		int size = students.size();
+		for(int i = 0; i < size; i++){
+			LoginRes2Vo stu = students.get(i);
+			stu.setLogin(false);
+		}
+		mHandler.sendEmptyMessage(STUDENT_LOING_FALSE);
 	}
 }

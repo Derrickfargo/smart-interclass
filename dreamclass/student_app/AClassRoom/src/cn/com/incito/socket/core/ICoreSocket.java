@@ -16,7 +16,15 @@ public interface ICoreSocket {
 	 * @param ip  服务器ip地址
 	 * @param port  服务器端口号
 	 */
-	public void startConnection(final String ip,int port);
+	public void startConnection(final String ip,int port) throws InterruptedException;
+	
+	
+	/**
+	 * 重连
+	 * @param ip
+	 * @param port
+	 */
+	public void connection();
 	
 	
 	/**
@@ -24,6 +32,8 @@ public interface ICoreSocket {
 	 * 用于在客户端断网时自动断开连接
 	 */
 	public void stopConnection();
+	
+	
 	
 	/**
 	 * 发送消息
