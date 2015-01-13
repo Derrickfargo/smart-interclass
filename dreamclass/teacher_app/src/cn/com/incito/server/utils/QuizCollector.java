@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 
 import cn.com.incito.server.config.AppConfig;
 import cn.com.incito.server.core.Message;
+import cn.com.incito.server.core.SocketServiceCore;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
 
@@ -124,13 +125,8 @@ public class QuizCollector {
 		        JSONObject json = new JSONObject();
 		        json.put("uuid", UUID.randomUUID().toString());
 		        messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(json.toString()));
-		        byte[] data = messagePacking.pack().array();
-				ByteBuffer buffer = ByteBuffer.allocate(data.length);
-				buffer.clear();
-				buffer.put(data);
-				buffer.flip();
 				try {
-					channel.writeAndFlush(buffer);
+					SocketServiceCore.getInstance().sendMsg(messagePacking, channel);
 //					有问题，考虑在这里处理或者在netty encode 中改
 //				} catch (IOException e) { 
 //					logger.error("作业收取失败,直接收取下一个作业", e);
@@ -139,6 +135,7 @@ public class QuizCollector {
 //					return;
 				} catch (Exception e) {
 					logger.error("作业收取出现异常", e);
+					capacity--;
 					return;
 				}
 				new QuizCollectMonitor(channel).start();

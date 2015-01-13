@@ -21,8 +21,8 @@ import android.provider.Settings;
 import android.util.Log;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.exception.AppUncaughtException;
-import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.classroom.vo.LoginResVo;
+import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.socket.core.NCoreSocket;
 
 import com.google.code.microlog4android.Logger;
@@ -38,11 +38,11 @@ public class MyApplication extends Application {
 	
 	private ChannelHandlerContext channelHandlerContext;
 
-	public ChannelHandlerContext getChannelHandlerContext() {
+	public synchronized ChannelHandlerContext getChannelHandlerContext() {
 		return channelHandlerContext;
 	}
 
-	public void setChannelHandlerContext(ChannelHandlerContext channelHandlerContext) {
+	public synchronized void setChannelHandlerContext(ChannelHandlerContext channelHandlerContext) {
 		this.channelHandlerContext = channelHandlerContext;
 	}
 
@@ -80,8 +80,7 @@ public class MyApplication extends Application {
 
 	public void closeSysScreenLock() {
 		mContentResolver = getContentResolver();
-		android.provider.Settings.System.putInt(mContentResolver,
-				android.provider.Settings.System.LOCK_PATTERN_ENABLED, 0);
+		android.provider.Settings.System.putInt(mContentResolver,android.provider.Settings.System.LOCK_PATTERN_ENABLED, 0);
 	}
 
 	public boolean isSubmitPaper() {
@@ -124,8 +123,7 @@ public class MyApplication extends Application {
 		mWifiLock.acquire();
 		
 		mInstance = this;
-		mPrefs = PreferenceManager
-				.getDefaultSharedPreferences(getApplicationContext());
+		mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		initApplication();
 		
 //		MobclickAgent.openActivityDurationTrack(false);// 禁止友盟的自动统计功能
@@ -241,11 +239,9 @@ public class MyApplication extends Application {
 		boolean screenOn = pm.isScreenOn();
 		
 		if (Constants.OPEN_LOCK_SCREEN) {
-			Logger.debug(Utils.getTime()+"LockScreenHandler:"+"是否收到解锁屏信息：" + isLock);
-			Log.i("LockScreenHandler", "是否收到解锁屏信息：" + isLock);
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":MyApplication:"+"是否收到解锁屏信息：" + isLock);
 
-			ContentResolver mContentResolver = this.getApplicationContext()
-					.getContentResolver();
+			ContentResolver mContentResolver = this.getApplicationContext().getContentResolver();
 			ExecRootCmd execRootCmd = new ExecRootCmd();
 			if (isLock) {
 				MyApplication.getInstance().setLockScreen(isLock);

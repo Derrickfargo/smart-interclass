@@ -17,5 +17,4 @@ public class EvaluateCompleteHandler extends MessageHandler{
 		}
 		MyApplication.getInstance().lockScreen(true);
 	}
-
 }

@@ -5,12 +5,17 @@ import io.netty.channel.ChannelHandlerContext;
 import java.awt.Color;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
 import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.ui.MainFrame;
 import cn.com.incito.server.api.Application;
@@ -31,12 +36,15 @@ public class UIHelper {
 	 */
 	public static void sendLockScreenMessage(boolean isLock){
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_LOCK_SCREEN);
+		JSONObject json = new JSONObject();
 		if(isLock){
 			Application.getInstance().setLockScreen(true);
-			messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString("true"));
+			json.put("isLock", "true");
+			messagePacking.putBodyData(DataType.INT,json.toJSONString().getBytes());
 		}else{
 			Application.getInstance().setLockScreen(false);
-			messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString("false"));
+			json.put("isLock", "false");
+			messagePacking.putBodyData(DataType.INT,json.toJSONString().getBytes());
 		}
 		SocketServiceCore.getInstance().sendMsg(messagePacking);
 		logger.info("锁屏信息发出");
@@ -46,8 +54,10 @@ public class UIHelper {
 	 */
 	public static void sendClassOverMessage(){
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_LOCK_SCREEN);
+		JSONObject json = new JSONObject();
 		Application.getInstance().setLockScreen(false);
-		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString("over"));
+		json.put("isLock", "over");
+		messagePacking.putBodyData(DataType.INT,json.toJSONString().getBytes());
 		SocketServiceCore.getInstance().sendMsg(messagePacking);
 		logger.info("下课信息发出");
 	}

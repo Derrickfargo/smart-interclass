@@ -39,7 +39,6 @@ import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.ui.widget.ProgressiveDialog;
 import cn.com.incito.classroom.utils.BitmapUtil;
 import cn.com.incito.classroom.utils.FTPUtils;
-import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.classroom.widget.canvas.ISketchPadCallback;
 import cn.com.incito.classroom.widget.canvas.SketchPadView;
 import cn.com.incito.common.utils.AndroidUtil;
@@ -47,6 +46,7 @@ import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.CoreSocket;
 import cn.com.incito.socket.core.Message;
+import cn.com.incito.socket.core.NCoreSocket;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
@@ -588,7 +588,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 		jsonObject.put("imei", MyApplication.deviceId);
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SEND_PAPER);
 		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
-		CoreSocket.getInstance().sendMessage(messagePacking);
+		NCoreSocket.getInstance().sendMessage(messagePacking);
 		startTask();
 	}
 
@@ -657,15 +657,23 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 				String filePath = "/" + MyApplication.getInstance().getDeviceId();
 				String fileName = MyApplication.getInstance().getDeviceId() + ".jpg";
 				if (FTPUtils.getInstance().uploadFile(filePath, fileName)) {
-					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "作业提交成功");
+					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "：DrawBoxActivity作业提交成功");
 					MyApplication.getInstance().lockScreen(true);
 					MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SAVE_PAPER);
-					// 测试ID
-					messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(MyApplication.getInstance().getQuizID()));
-					// 设备ID
-					messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(MyApplication.getInstance().getDeviceId()));
-					messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(Constants.FILE_PATH + filePath + "/" + fileName));
-					CoreSocket.getInstance().sendMessage(messagePacking);
+//					// 测试ID
+//					messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(MyApplication.getInstance().getQuizID()));
+//					// 设备ID
+//					messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(MyApplication.getInstance().getDeviceId()));
+//					messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(Constants.FILE_PATH + filePath + "/" + fileName));
+					
+					JSONObject jsonObject = new JSONObject();
+					jsonObject.put("quizId", MyApplication.getInstance().getQuizID());
+					jsonObject.put("deviceId", MyApplication.getInstance().getDeviceId());
+					jsonObject.put("file", Constants.FILE_PATH + filePath + "/" + fileName);
+					
+					messagePacking.putBodyData(DataType.INT, jsonObject.toJSONString().getBytes());
+					NCoreSocket.getInstance().sendMessage(messagePacking);
+					
 					mProgressDialog.dismiss();
 				} else {
 					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + " 作业提交失败");

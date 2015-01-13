@@ -1,8 +1,7 @@
 package cn.com.incito.socket.handler;
 
-import android.util.Log;
 import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.classroom.utils.Utils;
+import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;
 
@@ -39,18 +38,14 @@ public class VoteGroupInfoHandler extends MessageHandler {
             if (json.containsKey("masterimei"))
                 masterImei = json.getString("masterimei");
             if (agree) {
-            	Logger.debug(Utils.getTime()+TAG+":同意分组");
-            	Log.i(TAG, "同意分组");
-                //show bind activity
+            	MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":VoteGroupInfoHandler同意分组");
                 UIHelper.getInstance().showWaitingActivity();
                 if(MyApplication.getInstance().isOnClass){
     				MyApplication.getInstance().lockScreen(true);
     			}
             } else {
-                //show edit group activity
                 UIHelper.getInstance().showEditGroupActivity(groupID);
-                Logger.debug(Utils.getTime()+TAG+":不同意分组");
-                Log.i(TAG, "不同意分组");
+                MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":VoteGroupInfoHandler不同意分组");
             }
         }
     }
