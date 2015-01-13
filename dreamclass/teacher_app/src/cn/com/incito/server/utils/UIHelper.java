@@ -67,7 +67,7 @@ public class UIHelper {
 						// 输出到通道
 						JSONObject json = new JSONObject();
 						json.put("messagePacking", messagePacking);
-						ByteBuf buf = Unpooled.copiedBuffer((json.toString() + "$_").getBytes());
+						ByteBuf buf = Unpooled.copiedBuffer((json.toString() + "\n").getBytes());
 						if (channel != null && channel.channel().isActive()) {
 							channel.writeAndFlush(buf);
 						}
