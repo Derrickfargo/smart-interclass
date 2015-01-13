@@ -30,7 +30,6 @@ public class SocketIdleHandle extends ChannelInboundHandlerAdapter{
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg)throws Exception {	
 		String message = (String) msg;
-		logger.info("收到客户端心跳："+message+ctx.channel().remoteAddress());
 		JSONObject jsonObject = JSONObject.parseObject(message);
 		
 		MessagePacking messagePacking = JSONObject.parseObject(jsonObject.getString("messagePacking"), MessagePacking.class);
@@ -42,7 +41,8 @@ public class SocketIdleHandle extends ChannelInboundHandlerAdapter{
 			JSONObject json = new JSONObject();
 			json.put("messagePacking", packing);
 			logger.info("收到pad端心跳包：	"+msgId+ctx.channel().remoteAddress());
-			ctx.writeAndFlush((json.toJSONString()+"\n").getBytes());
+
+			//			ctx.writeAndFlush((json.toJSONString()+"$_").getBytes());不再向pad端回复心跳信息
 			return;
 		}
 		ctx.fireChannelRead(msg);
@@ -59,7 +59,7 @@ public class SocketIdleHandle extends ChannelInboundHandlerAdapter{
             if (event.state() == IdleState.READER_IDLE) {
                 /*读超时*/
             	logger.info("服务端读超时，关闭该通道：" + ctx.channel().remoteAddress().toString() );
-            	DeviceConnectionManager.quit(ctx);
+            	DeviceConnectionManager.quit(ctx);//关闭通道并刷新UI
                 ctx.disconnect();
             } else if (event.state() == IdleState.WRITER_IDLE) {
             	logger.info("服务端写超时，不做处理");
@@ -71,6 +71,7 @@ public class SocketIdleHandle extends ChannelInboundHandlerAdapter{
             	ByteBuf buf = Unpooled.copiedBuffer((jsonObject.toJSONString()+"\n").getBytes());
                 ctx.writeAndFlush(buf);
                 logger.info("心跳包发送："+ctx.channel().remoteAddress());
+                ctx.writeAndFlush(buf);
             }
         }
 	}
@@ -91,16 +92,16 @@ public class SocketIdleHandle extends ChannelInboundHandlerAdapter{
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)throws Exception {
 		SocketAddress sa = ctx.channel().remoteAddress();
 		logger.info(sa.toString() + "出现异常,异常信息为:"+cause.getMessage());
-		if(cause instanceof IOException){
+		if(cause instanceof IOException){//心跳写异常，可能是通道关闭，等待进一步测试抛异常种类调试
 			ctx.close();
 			logger.error("心跳解析出错,IOException", cause);
 			DeviceConnectionManager.quit(ctx);
 			return;
 		}
-		ctx.close();
+		ctx.close();//未知异常，暂时关闭通道。等待测试结果再操作
 		DeviceConnectionManager.quit(ctx);
 		logger.error("心跳解析失败", cause);
-//		ctx.fireExceptionCaught(cause);
+		ctx.fireExceptionCaught(cause);
 	}
 
 }

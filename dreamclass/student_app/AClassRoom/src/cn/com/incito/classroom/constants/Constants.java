@@ -14,7 +14,7 @@ public class Constants {
 	public static final String FILE_NAME="quiz.jpg";
 	public static final boolean OPEN_LOCK_SCREEN = false;// 是否打开锁屏功能
 	public static final int PORT = 9001;// pc端口号（socket）
-	public static String IP = "192.168.30.67";//pc端地址
+	public static String IP = "192.168.1.174";//pc端地址
 	public static String HTTP = "http://";
 	/**
 	 * 上传日志文件
