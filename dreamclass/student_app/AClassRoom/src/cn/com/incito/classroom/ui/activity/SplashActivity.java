@@ -127,13 +127,9 @@ public class SplashActivity extends BaseActivity {
 					WifiInfo info = wifi.getConnectionInfo();
 					app.setDeviceId(info.getMacAddress().replace(":", "-"));
 					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "SplashActivity:"+ "WiFi已连接，检查Socket是否连接 ");
-					while (MyApplication.getInstance().getChannelHandlerContext() == null) {
-						MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ "SplashActivity:socket没有连接,请等候5s");
-						try {
-							Thread.sleep(5000);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
+					
+					while (NCoreSocket.getInstance().getChannel() == null) {
+						MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ "SplashActivity:socket没有连接,请等候30s");
 					}
 					startMainAct();
 				} else {
@@ -199,7 +195,8 @@ public class SplashActivity extends BaseActivity {
 	 * 发送连接请求
 	 */
 	public void startMainAct() {
-		// if (!isUpdateApk()) {
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":splashActivity登录");
+		 if (!isUpdateApk()) {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("imei", MyApplication.deviceId);
 		MessagePacking messagePacking = new MessagePacking(
@@ -207,8 +204,8 @@ public class SplashActivity extends BaseActivity {
 		messagePacking.putBodyData(DataType.INT,
 				BufferUtils.writeUTFString(jsonObject.toJSONString()));
 		NCoreSocket.getInstance().sendMessage(messagePacking);
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":splashActivity登录");
-		// }
+		
+		 }
 	}
 	
 	public void sleep(int seconds) {

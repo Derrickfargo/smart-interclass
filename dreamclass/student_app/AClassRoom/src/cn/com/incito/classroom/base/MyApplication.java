@@ -1,6 +1,5 @@
 package cn.com.incito.classroom.base;
 
-import io.netty.channel.ChannelHandlerContext;
 import android.app.Application;
 import android.app.ExecRootCmd;
 import android.app.KeyguardManager;
@@ -35,15 +34,14 @@ import com.google.code.microlog4android.config.PropertyConfigurator;
 public class MyApplication extends Application {
 	public static final Logger Logger = LoggerFactory.getLogger();
 	public boolean isOnClass;// 是否在上课
-	
-	private ChannelHandlerContext channelHandlerContext;
+	private boolean isFirstConnection = true;
 
-	public synchronized ChannelHandlerContext getChannelHandlerContext() {
-		return channelHandlerContext;
+	public synchronized boolean isFirstConnection() {
+		return isFirstConnection;
 	}
 
-	public synchronized void setChannelHandlerContext(ChannelHandlerContext channelHandlerContext) {
-		this.channelHandlerContext = channelHandlerContext;
+	public synchronized void setFirstConnection(boolean isFirstConnection) {
+		this.isFirstConnection = isFirstConnection;
 	}
 
 	public boolean isOnClass() {
@@ -80,7 +78,8 @@ public class MyApplication extends Application {
 
 	public void closeSysScreenLock() {
 		mContentResolver = getContentResolver();
-		android.provider.Settings.System.putInt(mContentResolver,android.provider.Settings.System.LOCK_PATTERN_ENABLED, 0);
+		android.provider.Settings.System.putInt(mContentResolver,
+				android.provider.Settings.System.LOCK_PATTERN_ENABLED, 0);
 	}
 
 	public boolean isSubmitPaper() {
@@ -117,70 +116,68 @@ public class MyApplication extends Application {
 		Thread.setDefaultUncaughtExceptionHandler(appException);
 		PowerManager pmManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
 		WifiManager manager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-		mWifiLock = manager.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, "cn.com.incito.classroom");
-		wl = pmManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"My Tag");
+		mWifiLock = manager
+				.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF,
+						"cn.com.incito.classroom");
+		wl = pmManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "My Tag");
 		wl.acquire();
 		mWifiLock.acquire();
-		
+
 		mInstance = this;
-		mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		mPrefs = PreferenceManager
+				.getDefaultSharedPreferences(getApplicationContext());
 		initApplication();
-		
-//		MobclickAgent.openActivityDurationTrack(false);// 禁止友盟的自动统计功能
-//
-//		OpenUDIDManager.sync(this);
-//		File cacheDir = StorageUtils.getOwnCacheDirectory(
-//				getApplicationContext(),
-//				Constants.WISDOMCITY_IAMGE_CACHE_SDCARD_PATH);
-//		int memoryCacheSize = (int) (Runtime.getRuntime().maxMemory() / 8);
-//		AbstractMemoryCache<String, Bitmap> memoryCache;
-//		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-//			memoryCache = new LRUMemoryCacheBitmapCache(memoryCacheSize);
-//		} else {
-//			memoryCache = new LRULimitedMemoryCacheBitmapCache(memoryCacheSize);
-//		}
-//		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-//				this).threadPriority(Thread.NORM_PRIORITY - 2)
-//				.memoryCache(memoryCache)
-//				.denyCacheImageMultipleSizesInMemory()
-//				.discCache(
-//						new TotalSizeLimitedDiscCache(cacheDir,
-//								new Md5FileNameGenerator(), 10 * 1024 * 1024))
-//				.imageDownloader(
-//						new SlowNetworkImageDownloader(new BaseImageDownloader(
-//								this)))
-//				.tasksProcessingOrder(QueueProcessingType.LIFO).build();
-//		ImageLoader.getInstance().init(config);
+
+		// MobclickAgent.openActivityDurationTrack(false);// 禁止友盟的自动统计功能
+		//
+		// OpenUDIDManager.sync(this);
+		// File cacheDir = StorageUtils.getOwnCacheDirectory(
+		// getApplicationContext(),
+		// Constants.WISDOMCITY_IAMGE_CACHE_SDCARD_PATH);
+		// int memoryCacheSize = (int) (Runtime.getRuntime().maxMemory() / 8);
+		// AbstractMemoryCache<String, Bitmap> memoryCache;
+		// if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+		// memoryCache = new LRUMemoryCacheBitmapCache(memoryCacheSize);
+		// } else {
+		// memoryCache = new LRULimitedMemoryCacheBitmapCache(memoryCacheSize);
+		// }
+		// ImageLoaderConfiguration config = new
+		// ImageLoaderConfiguration.Builder(
+		// this).threadPriority(Thread.NORM_PRIORITY - 2)
+		// .memoryCache(memoryCache)
+		// .denyCacheImageMultipleSizesInMemory()
+		// .discCache(
+		// new TotalSizeLimitedDiscCache(cacheDir,
+		// new Md5FileNameGenerator(), 10 * 1024 * 1024))
+		// .imageDownloader(
+		// new SlowNetworkImageDownloader(new BaseImageDownloader(
+		// this)))
+		// .tasksProcessingOrder(QueueProcessingType.LIFO).build();
+		// ImageLoader.getInstance().init(config);
 
 	}
 
-	public void release(){
+	public void release() {
 		mWifiLock.release();
 		wl.release();
 	}
+
 	public static MyApplication getInstance() {
 		return mInstance;
 	}
 
 	private void initApplication() {
-		//初始化服务端ip
+		// 初始化服务端ip
 		String ip = mPrefs.getString(Constants.PREFERENCE_IP, "");
 		if (ip != null && !ip.trim().equals("")) {
 			Constants.setIP(ip);
 		}
-		
-		//初始化本机mac地址
-		initMacAddress();
-		
-		//启动连接
-		NCoreSocket.getInstance().startConnection(Constants.IP, Constants.PORT);
-		
-		//启动socket和日志服务
-//		Intent service = new Intent("cn.com.incito.classroom.service.SOCKET_SERVICE");
-//		startService(service);
-//		Logger.debug(Utils.getTime()+"MyApplication:"+"socket service started");
-//		Log.i("MyApplication", "socket service started");
 
+		// 初始化本机mac地址
+		initMacAddress();
+
+		// 启动连接
+		NCoreSocket.getInstance().connection();
 	}
 
 	private void initMacAddress() {
@@ -200,9 +197,10 @@ public class MyApplication extends Application {
 			}
 		}
 	}
-	
+
 	public void stopSocketService() {
-		Intent service = new Intent("cn.com.incito.classroom.service.SOCKET_SERVICE");
+		Intent service = new Intent(
+				"cn.com.incito.classroom.service.SOCKET_SERVICE");
 		stopService(service);
 	}
 
@@ -235,13 +233,15 @@ public class MyApplication extends Application {
 	 *            true是锁频屏，false解屏
 	 */
 	public void lockScreen(boolean isLock) {
-		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);  
+		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
 		boolean screenOn = pm.isScreenOn();
-		
-		if (Constants.OPEN_LOCK_SCREEN) {
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":MyApplication:"+"是否收到解锁屏信息：" + isLock);
 
-			ContentResolver mContentResolver = this.getApplicationContext().getContentResolver();
+		if (Constants.OPEN_LOCK_SCREEN) {
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()
+					+ ":MyApplication:" + "是否收到解锁屏信息：" + isLock);
+
+			ContentResolver mContentResolver = this.getApplicationContext()
+					.getContentResolver();
 			ExecRootCmd execRootCmd = new ExecRootCmd();
 			if (isLock) {
 				MyApplication.getInstance().setLockScreen(isLock);
@@ -250,7 +250,7 @@ public class MyApplication extends Application {
 				execRootCmd.powerkey();
 			} else {
 				if (MyApplication.getInstance().isLockScreen()) {
-					if(screenOn){
+					if (screenOn) {
 						MyApplication.getInstance().setLockScreen(isLock);
 						boolean ret1 = Settings.Global.putInt(mContentResolver,
 								"disable_powerkey", 0); // 打开电源按钮唤醒功能
@@ -261,7 +261,8 @@ public class MyApplication extends Application {
 							"disable_powerkey", 0); // 打开电源按钮唤醒功能
 					execRootCmd.powerkey();
 					KeyguardManager mManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
-					KeyguardLock mKeyguardLock = mManager.newKeyguardLock("Lock");
+					KeyguardLock mKeyguardLock = mManager
+							.newKeyguardLock("Lock");
 					// 让键盘锁失效
 					mKeyguardLock.disableKeyguard();
 				}
