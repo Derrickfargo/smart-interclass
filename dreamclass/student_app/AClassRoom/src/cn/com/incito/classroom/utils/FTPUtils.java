@@ -91,8 +91,14 @@ public class FTPUtils {
 				MyApplication.Logger.debug("FTP服务器未连接");
 				if (!initFTPSetting(FTPUrl, FTPPort, UserName, UserPassword)) {
 					MyApplication.Logger.debug("服务器连接失败");
-					return false;
+					try {
+						Thread.sleep(3000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					return uploadFile(FilePath,FileName);
 				}
+				
 			}
 			MyApplication.Logger.debug("服务器已连接");
 			ftpClient.makeDirectory(FilePath);
