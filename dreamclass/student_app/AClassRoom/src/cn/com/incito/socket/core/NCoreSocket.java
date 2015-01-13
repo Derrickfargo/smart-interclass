@@ -33,6 +33,7 @@ public class NCoreSocket implements ICoreSocket {
 	private static NCoreSocket nCoreSocket;
 	private NCoreSocket(){};
 	private Channel channel = null;
+	private Timer timer = new Timer();
 	
 	public Channel getChannel() {
 		return channel;
@@ -85,7 +86,13 @@ public class NCoreSocket implements ICoreSocket {
 
 	@Override
 	public void stopConnection() {
-		channel.close();
+		MyApplication.getInstance().getPaperLastMessagePacking().clear();
+		if(channel != null){
+			channel.close();
+			channel = null;
+		}
+		timer.cancel();
+		
 	}
 
 	@Override
@@ -93,8 +100,6 @@ public class NCoreSocket implements ICoreSocket {
 		final JSONObject jsonObject = new JSONObject();
 		jsonObject.put("messagePacking", messagePacking);
 		
-		
-
 		if (channel != null) {
 			
 			ByteBuf buf = Unpooled.copiedBuffer((jsonObject.toJSONString() + "\n").getBytes());
@@ -136,7 +141,6 @@ public class NCoreSocket implements ICoreSocket {
 	 */
 	@Override
 	public void connection() {
-		Timer timer = new Timer();
 		TimerTask timerTask = new TimerTask() {
 			@Override
 			public void run() {
@@ -154,6 +158,5 @@ public class NCoreSocket implements ICoreSocket {
 		}else{
 			timer.schedule(timerTask, 30000);
 		}
-		
 	}
 }
