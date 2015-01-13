@@ -113,7 +113,7 @@ public class NCoreSocket implements ICoreSocket {
 						if(MyApplication.getInstance().getPaperLastMessagePacking().size() > 0){
 							
 						}
-						if(Message.MESSAGE_HAND_SHAKE == msgId || Message.MESSAGE_DEVICE_HAS_BIND == msgId){
+						if(Message.MESSAGE_HAND_SHAKE == msgId || Message.MESSAGE_DEVICE_HAS_BIND == msgId ||Message.MESSAGE_GROUP_LIST == msgId){
 							MessagePacking packing = MyApplication.getInstance().getPaperLastMessagePacking().get("last");
 							if( packing != null){
 								sendMessage(packing);
@@ -146,7 +146,7 @@ public class NCoreSocket implements ICoreSocket {
 			public void run() {
 				try {
 					startConnection(Constants.IP, Constants.PORT);
-				} catch (InterruptedException e) {
+				} catch (Exception e) {
 					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":restartConnection:连接中断");
 					e.printStackTrace();
 				}

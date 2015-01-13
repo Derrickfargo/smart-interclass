@@ -437,6 +437,10 @@ public class WaitingActivity extends BaseActivity {
 
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
 		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(json));
+		if(NCoreSocket.getInstance().getChannel() == null){
+			ToastHelper.showCustomToast(this, "未连接至服务器,30s后重试!");
+			return;
+		}
 		NCoreSocket.getInstance().sendMessage(messagePacking);
 		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":WaitingActivity启动注册学生...:" + json);
 	}
@@ -449,7 +453,12 @@ public class WaitingActivity extends BaseActivity {
 		jsonObject.put("imei", MyApplication.deviceId);
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_LIST);
 		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(jsonObject.toJSONString()));
-		NCoreSocket.getInstance().sendMessage(messagePacking);
+		if(NCoreSocket.getInstance().getChannel() != null){
+			NCoreSocket.getInstance().sendMessage(messagePacking);
+		}else{
+			MyApplication.getInstance().setPaperLastMessagePacking(messagePacking);
+		}
+		
 		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":WaitingActivity启动获取组成员列表..."+ jsonObject.toJSONString());
 	}
 	
