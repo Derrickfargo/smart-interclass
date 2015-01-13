@@ -1,5 +1,6 @@
 package cn.com.incito.server.core;
 
+import java.io.IOException;
 import java.net.SocketAddress;
 
 import org.apache.log4j.Logger;
@@ -90,7 +91,16 @@ public class SocketIdleHandle extends ChannelInboundHandlerAdapter{
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)throws Exception {
 		SocketAddress sa = ctx.channel().remoteAddress();
 		logger.info(sa.toString() + "出现异常,异常信息为:"+cause.getMessage());
-		ctx.fireExceptionCaught(cause);
+		if(cause instanceof IOException){
+			ctx.close();
+			logger.error("心跳解析出错,IOException", cause);
+			DeviceConnectionManager.quit(ctx);
+			return;
+		}
+		ctx.close();
+		DeviceConnectionManager.quit(ctx);
+		logger.error("心跳解析失败", cause);
+//		ctx.fireExceptionCaught(cause);
 	}
 
 }

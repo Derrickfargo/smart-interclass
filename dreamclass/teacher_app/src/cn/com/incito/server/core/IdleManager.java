@@ -36,11 +36,10 @@ public class IdleManager {
 		if (ctx != null) {
 			if (ctx.channel().isActive()) {
 				ctx.close();
-				log.info("检测到设备心跳超时，设备退出  ： " + ctx.channel().remoteAddress());
+				log.info("检测到设备心跳超时或异常退出  ： " + ctx.channel().remoteAddress());
 			}
 		}
 		doLogout(imei, ctx);
-		app.getClientChannel().remove(imei);
 	}
 
 	private void doLogout(String imei, ChannelHandlerContext channel) {
@@ -66,7 +65,7 @@ public class IdleManager {
 		}
 		app.removeLoginStudent(imei);
 		app.getOnlineDevice().remove(imei);
-		Application.getInstance().getClientChannel().remove(imei);
+		app.getClientChannel().remove(imei);
 		app.refresh();// 更新UI
 
 		// 向其他设备发送退出通知
@@ -81,11 +80,7 @@ public class IdleManager {
 		for (ChannelHandlerContext channel : channels) {
 			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
 			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
-			// byte[] messageData = messagePacking.pack().array();
-			// ByteBuffer buffer = ByteBuffer.allocate(messageData.length);
-			// buffer.put(messageData);
-			// buffer.flip();
-			if (!channel.equals(cn)) {
+			if (!channel.channel().equals(cn.channel())) {
 				if (channel.channel().isActive()) {
 					SocketServiceCore.getInstance().sendMsg(messagePacking, channel);
 				}

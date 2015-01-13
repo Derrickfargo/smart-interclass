@@ -40,7 +40,7 @@ public class DeviceConnectionManager {
 	public static void quit(ChannelHandlerContext ctx){
 		String imei = null;
 		for(Entry<String, ChannelHandlerContext> connection:connections.entrySet()){
-			if(connection.getValue().equals(ctx)){
+			if(connection.getValue().channel().equals(ctx.channel())){
 				imei	= connection.getKey();
 			}
 		}

@@ -31,6 +31,7 @@ public class QuizCollector {
 	private static final int TIMEOUT = 20000;//消息队列等待时长
 	private static QuizCollector instance;
 	private int capacity;
+	private boolean isRunning	 = false;
 	private final Lock lock = new ReentrantLock();
 	private final Condition isIdle = lock.newCondition();
 	private Queue<ChannelHandlerContext> quizQueue = new LinkedList<ChannelHandlerContext>();
@@ -39,12 +40,16 @@ public class QuizCollector {
 	public static QuizCollector getInstance() {
 		if (instance == null) {
 			instance = new QuizCollector();
+		}else if (instance.quizQueue.size() == 0) {
+			instance.isRunning = false;//退出之前队列
+			instance = new QuizCollector();
 		}
 		return instance;
 	}
 
 	private QuizCollector() {
 		capacity = 0;
+		isRunning =  true;
 		initQuizCollector();
 	}
 
@@ -61,9 +66,10 @@ public class QuizCollector {
 		if(quizQueue.size() == 0){
 			return;
 		}
-		if (capacity >= getQuizThreadThreshold()) {
-			return;
-		}
+		logger.info("当前处理的作业个数："+capacity);
+//		if (capacity >= getQuizThreadThreshold()) {
+//			return;
+//		}
 		lock.lock();
 		isIdle.signal();
 		lock.unlock();
@@ -92,15 +98,15 @@ public class QuizCollector {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				while (Boolean.TRUE) {
+				while (isRunning) {
 					lock.lock();
 					try {
-						while (capacity >= getQuizThreadThreshold()) {
+						while (isRunning&&capacity >= getQuizThreadThreshold()) {
 							if (!isIdle.await(TIMEOUT, TimeUnit.MILLISECONDS)) {
 								logger.info("*****正在等待作业提交请求*****");
 							}
 						}
-						while (capacity < getQuizThreadThreshold()
+						while (isRunning&&capacity < getQuizThreadThreshold()
 								&& quizQueue.size() != 0) {
 							ChannelHandlerContext channel = quizQueue.poll();
 							capacity++;
