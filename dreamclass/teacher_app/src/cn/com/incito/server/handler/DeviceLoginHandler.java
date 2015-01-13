@@ -1,7 +1,5 @@
 package cn.com.incito.server.handler;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
@@ -11,7 +9,6 @@ import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.config.AppConfig;
-import cn.com.incito.server.core.ConnectionManager;
 import cn.com.incito.server.core.DeviceConnectionManager;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
