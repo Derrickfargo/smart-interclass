@@ -24,11 +24,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.adapter.GroupNumAdapter;
+import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
-import cn.com.incito.classroom.ui.activity.EvaluateActivity.MyPagerAdapter;
-import cn.com.incito.classroom.ui.activity.RandomGroupActivity.myAnimationListener;
 import cn.com.incito.classroom.ui.widget.MyAlertDialog;
 import cn.com.incito.classroom.ui.widget.ProgressiveDialog;
 import cn.com.incito.classroom.utils.Utils;
@@ -154,29 +153,31 @@ public class WaitingActivity extends BaseActivity {
 
 			}
 		});
-		gv_group_member
-				.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		gv_group_member.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 					@Override
-					public void onItemClick(AdapterView<?> adapterView,
-							View view, int position, long l) {
-						// addState = 0;
+					public void onItemClick(AdapterView<?> adapterView,View view, int position, long l) {
 						itemPosition = position;
-						if (!mProgressDialog.isShowing()) {
-							mProgressDialog.show();
-						}
 
-						if (loginResList.get(position).isLogin() == false) {
-							login(loginResList.get(position).getName(),
-									loginResList.get(position).getNumber(),
-									loginResList.get(position).getSex());
-						} else {
-							logout(loginResList.get(position).getName(),
-									loginResList.get(position).getNumber(),
-									loginResList.get(position).getSex());
+						if(NCoreSocket.getInstance().getChannel() != null){
+							if(!mProgressDialog.isShowing()){
+								mProgressDialog.show();
+							}
+							if (loginResList.get(position).isLogin() == false) {
+								login(loginResList.get(position).getName(),
+										loginResList.get(position).getNumber(),
+										loginResList.get(position).getSex());
+							} else {
+								logout(loginResList.get(position).getName(),
+										loginResList.get(position).getNumber(),
+										loginResList.get(position).getSex());
+							}
+						}else{
+							ToastHelper.showCustomToast(AppManager.getAppManager().currentActivity(), "还没有连接至服务器,请30s后重新操作");
 						}
 					}
 				});
 	}
+	
 
 	@Override
 	protected void onStart() {
@@ -205,12 +206,10 @@ public class WaitingActivity extends BaseActivity {
 		loginReqVo.setSex(sex);
 		loginReqVo.setType("0");
 		String json = JSON.toJSONString(loginReqVo);
-		MessagePacking messagePacking = new MessagePacking(
-				Message.MESSAGE_STUDENT_LOGIN);
-		messagePacking.putBodyData(DataType.INT,
-				BufferUtils.writeUTFString(json));
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
+		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(json));
 		NCoreSocket.getInstance().sendMessage(messagePacking);
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":WaitingActivity启动登录..." + "request:");
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":WaitingActivity学生登录:" + "request:");
 	}
 
 	/**
@@ -231,7 +230,7 @@ public class WaitingActivity extends BaseActivity {
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
 		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(json));
 		NCoreSocket.getInstance().sendMessage(messagePacking);
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() +":WaitingActivity启动取消登录...");
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() +":WaitingActivity:学生退出...");
 	}
 
 	/**
@@ -241,48 +240,40 @@ public class WaitingActivity extends BaseActivity {
 		String stName = et_stname.getText().toString();
 		String stNumber = et_stnumber.getText().toString();
 		if (TextUtils.isEmpty(stName)) {
-			ToastHelper.showCustomToast(getApplicationContext(),
-					R.string.toast_stname_notnull);
+			ToastHelper.showCustomToast(getApplicationContext(),R.string.toast_stname_notnull);
 			return false;
 		}
 		if(stName.contains(" ")){
-			ToastHelper.showCustomToast(getApplicationContext(),
-					R.string.toast_not_space);
+			ToastHelper.showCustomToast(getApplicationContext(),R.string.toast_not_space);
 			return false;
 		}else if (stName.length() < 2) {
-			ToastHelper.showCustomToast(getApplicationContext(),
-					R.string.toast_stname_tooshort);
+			ToastHelper.showCustomToast(getApplicationContext(),R.string.toast_stname_tooshort);
 			return false;
 		}
 		if (TextUtils.isEmpty(stNumber)) {
-			ToastHelper.showCustomToast(getApplicationContext(),
-					R.string.toast_stnumber_notnull);
+			ToastHelper.showCustomToast(getApplicationContext(),R.string.toast_stnumber_notnull);
 			return false;
 		}
 		if (loginResList.size() > Constants.STUDENT_MAX_NUM) {
-			ToastHelper.showCustomToast(getApplicationContext(),
-					R.string.toast_group_isfull);
+			ToastHelper.showCustomToast(getApplicationContext(),R.string.toast_group_isfull);
 			return false;
 		}
 		for (int i = 0; i < loginResList.size(); i++) {
 			if (stNumber.equals(loginResList.get(i).getNumber())) {
 				String msg = getResources().getString(
 						R.string.toast_stname_repeat);
-				ToastHelper.showCustomToast(getApplicationContext(),
-						String.format(msg, loginResList.get(i).getNumber()));
+				ToastHelper.showCustomToast(getApplicationContext(),String.format(msg, loginResList.get(i).getNumber()));
 				return false;
 			}
 		}
 		if (!Utils.isNumberOrChinese(stName)) {
-			ToastHelper.showCustomToast(getApplicationContext(),
-					R.string.tost_name_is_not_english_chinese);
+			ToastHelper.showCustomToast(getApplicationContext(),R.string.tost_name_is_not_english_chinese);
 			return false;
 		}
 
 		// 判断是否已经选择男女
 		if (!male.isChecked() && !female.isChecked()) {
-			ToastHelper.showCustomToast(getApplicationContext(),
-					R.string.toast_choose_sex);
+			ToastHelper.showCustomToast(getApplicationContext(),R.string.toast_choose_sex);
 			return false;
 		}
 		return true;
@@ -311,8 +302,7 @@ public class WaitingActivity extends BaseActivity {
 			// 登陆
 			case STUDENT_LOGIN: {
 				mProgressDialog.hide();
-				JSONObject jsonObject = (JSONObject) msg.getData()
-						.getSerializable("data");
+				JSONObject jsonObject = (JSONObject) msg.getData().getSerializable("data");
 				MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":WaitingActivity获取登录信息..." + jsonObject);
 				if (!"0".equals(jsonObject.getString("code"))) {
 					if ("-2".equals(jsonObject.getString("code"))) {
@@ -322,14 +312,11 @@ public class WaitingActivity extends BaseActivity {
 					return;
 				} else if (jsonObject.getJSONObject("data") == null) {
 				} else {
-					LoginResVo loginResVo = JSON.parseObject(jsonObject
-							.getJSONObject("data").toJSONString(),
-							LoginResVo.class);
+					LoginResVo loginResVo = JSON.parseObject(jsonObject.getJSONObject("data").toJSONString(),LoginResVo.class);
 					if (loginResVo.getStudents() != null) {
 						loginResList = loginResVo.getStudents();
 					}
-					((MyApplication) getApplication())
-							.setLoginResVo(loginResVo);
+					((MyApplication) getApplication()).setLoginResVo(loginResVo);
 					if (loginResList != null && loginResList.size() >= 0) {
 						mAdapter.setDatas(loginResList);
 						gv_group_member.setAdapter(mAdapter);

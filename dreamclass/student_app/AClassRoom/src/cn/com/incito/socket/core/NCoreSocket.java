@@ -51,7 +51,7 @@ public class NCoreSocket implements ICoreSocket {
 
 	@Override
 	public void startConnection(final String ip, final int port) throws InterruptedException {
-
+		MyApplication.getInstance().setFirstConnection(false);
 		EventLoopGroup workGroup = new NioEventLoopGroup();
 		try {
 			Bootstrap bootstrap = new Bootstrap();
@@ -89,9 +89,11 @@ public class NCoreSocket implements ICoreSocket {
 	}
 
 	@Override
-	public void sendMessage(MessagePacking messagePacking) {
+	public void sendMessage(final MessagePacking messagePacking) {
 		final JSONObject jsonObject = new JSONObject();
 		jsonObject.put("messagePacking", messagePacking);
+		
+		
 
 		if (channel != null) {
 			
@@ -101,10 +103,25 @@ public class NCoreSocket implements ICoreSocket {
 				@Override
 				public void operationComplete(ChannelFuture future)throws Exception {
 					if (future.isSuccess()) {
-						MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NCoreSocket:向服务器发送消息成,消息内容:"
-								+ jsonObject.toJSONString());
+						MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NCoreSocket:向服务器发送消息成,消息内容:"+ jsonObject.toJSONString());
+						byte msgId = messagePacking.msgId;
+						if(MyApplication.getInstance().getPaperLastMessagePacking().size() > 0){
+							
+						}
+						if(Message.MESSAGE_HAND_SHAKE == msgId || Message.MESSAGE_DEVICE_HAS_BIND == msgId){
+							MessagePacking packing = MyApplication.getInstance().getPaperLastMessagePacking().get("last");
+							if( packing != null){
+								sendMessage(packing);
+								MyApplication.getInstance().getPaperLastMessagePacking().clear();
+							}
+						}
 					} else {
-						// TODO 可以在断线重连后进行重发消息
+						// 可以在断线重连后进行重发消息主要是作业的消息的
+						MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":NCoreSocket:向服务器发送消息失败,重连后自动发送!");
+						byte msgId = messagePacking.msgId;
+						if(Message.MESSAGE_SAVE_PAPER == msgId){
+							MyApplication.getInstance().setPaperLastMessagePacking(messagePacking);
+						}
 						
 					}
 				}
