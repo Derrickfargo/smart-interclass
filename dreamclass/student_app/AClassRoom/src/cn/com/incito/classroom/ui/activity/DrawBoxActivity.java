@@ -236,7 +236,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 				if (paper != null) {
 					ByteArrayOutputStream outPut = new ByteArrayOutputStream();
 					bitmap = BitmapFactory.decodeByteArray(paper, 0, paper.length);
-					bitmap.compress(CompressFormat.PNG, 100, outPut);
+					bitmap.compress(CompressFormat.JPEG, 60, outPut);
 					changeBtn.setClickable(false);
 				}
 			} else {
@@ -693,7 +693,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 		}
 		try {
 			FileOutputStream out = new FileOutputStream(f);
-			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+			bitmap.compress(Bitmap.CompressFormat.JPEG, 60, out);
 			out.flush();
 			out.close();
 			MyApplication.Logger.debug("图片已经保存");
