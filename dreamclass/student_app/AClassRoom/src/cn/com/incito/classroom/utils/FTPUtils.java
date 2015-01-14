@@ -34,7 +34,7 @@ public class FTPUtils {
 		FTPUrl = fTPUrl;
 	}
 
-	private static int FTPPort = 21;
+	private static int FTPPort = 9000;
 	private static String UserName = "admin";
 	private static String UserPassword = "admin";
 
