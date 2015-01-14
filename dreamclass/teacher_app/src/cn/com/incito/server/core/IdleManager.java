@@ -33,11 +33,16 @@ public class IdleManager {
 	public synchronized void close(String imei) {
 		ChannelHandlerContext ctx = app.getClientChannel().get(imei);
 		if (ctx != null) {
+			if(ctx.channel()==null){
+				log.info("通道已經關閉："+imei);
+				return;
+			}
 			if (ctx.channel().isActive()) {
 				ctx.close();
-				log.info("检测到设备心跳超时或异常退出  ： " + ctx.channel().remoteAddress());
+				log.info("检测到设备心跳超时或异常退出  ： " + imei);
 			}
 		} else {
+			log.info("關閉通道失敗，context為空");
 			return;
 		}
 		doLogout(imei, ctx);

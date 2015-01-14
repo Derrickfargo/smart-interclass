@@ -56,11 +56,6 @@ public class DeviceLoginHandler extends MessageHandler {
         logger.info("回复设备登陆消息:" + data.toJSONString());
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_HAND_SHAKE);
 		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(data.toJSONString()));
-//		byte[] handShakResponse = messagePacking.pack().array();
-//        ByteBuffer buffer = ByteBuffer.allocate(handShakResponse.length);
-//        buffer.put(handShakResponse);
-//        buffer.flip();
-//        ctx.channel().writeAndFlush(buffer);
         SocketServiceCore.getInstance().sendMsg(messagePacking, ctx);
 	}
 
