@@ -30,7 +30,7 @@ public class DeviceLoginHandler extends MessageHandler {
 	@Override
 	public void handleMessage() {
 		imei = data.getString("imei");
-		logger.info("收到设备登陆消息:" + data.toJSONString());
+		logger.info("收到设备登陆消息:" + data.toJSONString()+ctx.channel().remoteAddress());
 		service.deviceLogin(imei);
 		DeviceConnectionManager.notificate(imei, ctx);
 		Application app = Application.getInstance();

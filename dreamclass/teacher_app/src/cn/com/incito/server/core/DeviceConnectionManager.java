@@ -18,9 +18,8 @@ public class DeviceConnectionManager {
 	 * @param cnctx
 	 */
 	public static void notificate(String imei, ChannelHandlerContext cnctx){
-		ChannelHandlerContext ctx = connections.get(imei);
-		if(ctx==null){
-			connections.put(imei, cnctx);
+		if(imei==null){
+				connections.put(imei, cnctx);			
 		}
 	}
 	
@@ -43,6 +42,9 @@ public class DeviceConnectionManager {
 			if(connection.getValue().channel().equals(ctx.channel())){
 				imei	= connection.getKey();
 			}
+		}
+		if(imei==null){
+			return;
 		}
 		quit(imei);
 	}

@@ -2,6 +2,7 @@ package cn.com.incito.server.utils;
 
 import java.util.Properties;
 
+import sun.security.action.GetIntegerAction;
 import cn.com.incito.server.config.AppConfig;
 
 public class URLs {
@@ -99,4 +100,23 @@ public class URLs {
 	 * 检查mac
 	 */
 	public static String URL_CHECK_MAC=URL_API_HOST+"api/mac/checkMac";
+	
+	/**
+	 * 
+	 * 端口序列
+	 *
+	 */
+	public enum Port{
+		FTP(9000),TCP(9001);
+		private Integer port ;
+		public void setPort(Integer port) {
+			this.port = port;
+		}
+		Port(Integer a){
+			this.port = a ;
+		}
+		public Integer getPort(){
+			return port;
+		}
+	}
 }

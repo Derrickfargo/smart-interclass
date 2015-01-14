@@ -33,7 +33,7 @@ public class FtpManager {
 		FtpServerFactory serverFactory = new FtpServerFactory();
 		
 		ListenerFactory factory = new ListenerFactory();
-		factory.setPort(21);// 监听端口
+		factory.setPort(9000);// 监听端口
 		serverFactory.addListener("default", factory.createListener());// 默认监听器
 		PropertiesUserManagerFactory userManagerFactory = new PropertiesUserManagerFactory();
 		userManagerFactory.setFile(new File("./config/users.properties"));

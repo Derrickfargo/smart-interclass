@@ -60,7 +60,7 @@ public class SocketIdleHandle extends ChannelInboundHandlerAdapter{
                 /*读超时*/
             	logger.info("服务端读超时，关闭该通道：" + ctx.channel().remoteAddress().toString() );
             	DeviceConnectionManager.quit(ctx);//关闭通道并刷新UI
-                ctx.disconnect();
+                ctx.close();
             } else if (event.state() == IdleState.WRITER_IDLE) {
             	logger.info("服务端写超时，不做处理");
             } else if (event.state() == IdleState.ALL_IDLE) {
@@ -88,17 +88,17 @@ public class SocketIdleHandle extends ChannelInboundHandlerAdapter{
 	}
 
 	@Override
-	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)throws Exception {
+	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause){
 		SocketAddress sa = ctx.channel().remoteAddress();
 		logger.info(sa.toString() + "出现异常,异常信息为:"+cause.getMessage());
 		if(cause instanceof IOException){//心跳写异常，可能是通道关闭，等待进一步测试抛异常种类调试
-			ctx.close();
 			logger.error("心跳解析出错,IOException", cause);
 			DeviceConnectionManager.quit(ctx);
+			ctx.close();
 			return;
 		}
-		ctx.close();//未知异常，暂时关闭通道。等待测试结果再操作
 		DeviceConnectionManager.quit(ctx);
+		ctx.close();//未知异常，暂时关闭通道。等待测试结果再操作
 		logger.error("心跳解析失败", cause);
 		ctx.fireExceptionCaught(cause);
 	}
