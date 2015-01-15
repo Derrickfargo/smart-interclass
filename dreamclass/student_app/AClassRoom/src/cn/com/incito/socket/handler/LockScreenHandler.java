@@ -4,6 +4,7 @@ import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.socket.core.MessageHandler;
+import cn.com.incito.socket.core.NCoreSocket;
 
 public class LockScreenHandler extends MessageHandler {
 
@@ -25,6 +26,7 @@ public class LockScreenHandler extends MessageHandler {
 		}else{
 			MyApplication.getInstance().lockScreen(false);
 			MyApplication.getInstance().setOnClass(false);
+			NCoreSocket.getInstance().stopConnection();
 			AppManager.getAppManager().AppExit(MyApplication.getInstance());
 		}
 	}

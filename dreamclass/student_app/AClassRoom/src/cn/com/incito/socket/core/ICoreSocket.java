@@ -16,7 +16,7 @@ public interface ICoreSocket {
 	 * @param ip  服务器ip地址
 	 * @param port  服务器端口号
 	 */
-	public void startConnection(final String ip,int port) throws InterruptedException;
+	public void startConnection() throws InterruptedException;
 	
 	
 	/**

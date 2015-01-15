@@ -107,7 +107,6 @@ public class AppManager {
 		try {
 			MyApplication.getInstance().sendBroadcast(new Intent("android.intent.action.SHOW_NAVIGATION_BAR"));
 			MyApplication.getInstance().release();
-			NCoreSocket.getInstance().stopConnection();
 			finishAllActivity();
 			MyApplication.getInstance().stopSocketService();
 			MyApplication.Logger.debug(Utils.getTime() + "AppManager" + "程序退出");

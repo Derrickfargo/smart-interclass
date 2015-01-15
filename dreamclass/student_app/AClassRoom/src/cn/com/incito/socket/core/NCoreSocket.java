@@ -21,38 +21,63 @@ import io.netty.util.CharsetUtil;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
+import cn.com.incito.classroom.ui.activity.WaitingActivity;
 import cn.com.incito.common.utils.AndroidUtil;
+import cn.com.incito.common.utils.UIHelper;
+import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
+import cn.com.incito.socket.utils.BufferUtils;
 
 import com.alibaba.fastjson.JSONObject;
 
 public class NCoreSocket implements ICoreSocket {
-	
-	private static NCoreSocket nCoreSocket;
-	private NCoreSocket(){};
-	private Channel channel = null;
-	private Timer timer = new Timer();
-	
-	public Channel getChannel() {
+
+	private volatile static NCoreSocket nCoreSocket;
+
+	private NCoreSocket() {
+		timer = new Timer("连接定时器");
+		timerTask = new TimerTask() {
+			@Override
+			public void run() {
+				try {
+					startConnection();
+				} catch (Exception e) {
+					MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":restartConnection:连接中断,异常消息:" + e.getMessage());
+				}
+			}
+		};
+	}
+
+	private volatile Channel channel = null;
+	private Timer timer;
+	private TimerTask timerTask;
+
+	public synchronized Channel getChannel() {
 		return channel;
 	}
 
 	/**
 	 * 单例模式
+	 * 
 	 * @return
 	 */
-	public static NCoreSocket getInstance(){
-		if(nCoreSocket == null){
-			nCoreSocket = new NCoreSocket();
+	public static NCoreSocket getInstance() {
+		if (nCoreSocket == null) {
+			synchronized (NCoreSocket.class) {
+				if (nCoreSocket == null) {
+					nCoreSocket = new NCoreSocket();
+				}
+			}
 		}
 		return nCoreSocket;
 	}
 
 	@Override
-	public void startConnection(final String ip, final int port) throws InterruptedException {
-		MyApplication.getInstance().setFirstConnection(false);
+	public void startConnection() throws InterruptedException {
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NCoreSocket:开始进行连接!");
 		EventLoopGroup workGroup = new NioEventLoopGroup();
 		try {
 			Bootstrap bootstrap = new Bootstrap();
@@ -60,7 +85,7 @@ public class NCoreSocket implements ICoreSocket {
 			bootstrap.group(workGroup);
 			bootstrap.channel(NioSocketChannel.class);
 			bootstrap.option(ChannelOption.TCP_NODELAY, true);
-			
+
 			bootstrap.handler(new ChannelInitializer<SocketChannel>() {
 				@Override
 				protected void initChannel(SocketChannel ch) throws Exception {
@@ -72,65 +97,89 @@ public class NCoreSocket implements ICoreSocket {
 					pipeline.addLast(new NMainHandler());
 				}
 			});
-			
-			channel = bootstrap.connect(ip, port).sync().channel();
+			channel = bootstrap.connect(Constants.IP, Constants.PORT).sync().channel();
 			channel.closeFuture().sync();
-			
-		} finally{
-			//释放资源
+
+		} finally {
+			// 释放资源并且在时间任务调度下下一次连接时间是当前任务完成后30s执行
 			channel = null;
 			workGroup.shutdownGracefully();
-			connection();
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NCoreSocket:本次通讯任务执行的时间:"+ timerTask.scheduledExecutionTime());
 		}
 	}
 
 	@Override
 	public void stopConnection() {
-		MyApplication.getInstance().getPaperLastMessagePacking().clear();
-		if(channel != null){
+		if (channel != null) {
 			channel.close();
 			channel = null;
 		}
-		timer.cancel();
 		
+
+		if (timer != null) {
+			try {
+				timer.cancel();
+			} catch (RuntimeException e) {
+				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NCoreSocket:timer:由于任务调度中有任务没有执行完成所造成的异常可以不同管!");
+			}
+		}
+		
+		if (timerTask != null) {
+			try {
+				timerTask.cancel();
+			} catch (RuntimeException e) {
+				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NCoreSocket:timerTask:由于任务调度中有任务没有执行完成所造成的异常可以不同管!");
+			}
+		}
+
+	}
+
+	/**
+	 * 消息发送完成事件的监听
+	 * 
+	 * @author hm
+	 */
+	private class SendMessageListener implements ChannelFutureListener {
+		private MessagePacking messagePacking;
+
+		public SendMessageListener(MessagePacking messagePacking) {
+			this.messagePacking = messagePacking;
+		}
+
+		@Override
+		public void operationComplete(ChannelFuture future) throws Exception {
+			if (future.isSuccess()) {
+				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NCoreSocket:向服务器发送消息成,消息ID" + messagePacking.msgId);
+				
+				if(messagePacking.msgId == Message.MESSAGE_HAND_SHAKE){
+					String activityName = AppManager.getAppManager().currentActivity().getClass().getSimpleName();
+					if("SplashActivity".equals(activityName)){
+						MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":NCoreSocket:判断设备是否绑定");
+						JSONObject jsonObject = new JSONObject();
+						jsonObject.put("imei", MyApplication.deviceId);
+						MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_HAS_BIND);
+						messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
+						sendMessage(messagePacking);
+						return;
+					}
+					WaitingActivity waitingActivity = UIHelper.getInstance().getWaitingActivity();
+					if(waitingActivity != null){
+						MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":NCoreSocket:通知学生上线");
+						waitingActivity.notifyStudentOnline();
+					}
+				}
+			}
+		}
 	}
 
 	@Override
 	public void sendMessage(final MessagePacking messagePacking) {
 		final JSONObject jsonObject = new JSONObject();
 		jsonObject.put("messagePacking", messagePacking);
-		
 		if (channel != null) {
-			
 			ByteBuf buf = Unpooled.copiedBuffer((jsonObject.toJSONString() + "\n").getBytes());
 			ChannelFuture channelFuture = channel.writeAndFlush(buf);
-			channelFuture.addListener(new ChannelFutureListener() {
-				@Override
-				public void operationComplete(ChannelFuture future)throws Exception {
-					if (future.isSuccess()) {
-						MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NCoreSocket:向服务器发送消息成,消息内容:"+ jsonObject.toJSONString());
-						byte msgId = messagePacking.msgId;
-						if(MyApplication.getInstance().getPaperLastMessagePacking().size() > 0){
-							
-						}
-						if(Message.MESSAGE_HAND_SHAKE == msgId || Message.MESSAGE_DEVICE_HAS_BIND == msgId ||Message.MESSAGE_GROUP_LIST == msgId){
-							MessagePacking packing = MyApplication.getInstance().getPaperLastMessagePacking().get("last");
-							if( packing != null){
-								sendMessage(packing);
-								MyApplication.getInstance().getPaperLastMessagePacking().clear();
-							}
-						}
-					} else {
-						// 可以在断线重连后进行重发消息主要是作业的消息的
-						MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":NCoreSocket:向服务器发送消息失败,重连后自动发送!");
-						byte msgId = messagePacking.msgId;
-						if(Message.MESSAGE_SAVE_PAPER == msgId){
-							MyApplication.getInstance().setPaperLastMessagePacking(messagePacking);
-						}
-						
-					}
-				}
-			});
+			channelFuture.addListener(new SendMessageListener(messagePacking));
 		} else {
 			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NCoreSocket:还没有连接至服务器,不能进行消息发送!");
 		}
@@ -141,22 +190,9 @@ public class NCoreSocket implements ICoreSocket {
 	 */
 	@Override
 	public void connection() {
-		TimerTask timerTask = new TimerTask() {
-			@Override
-			public void run() {
-				try {
-					startConnection(Constants.IP, Constants.PORT);
-				} catch (Exception e) {
-					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":restartConnection:连接中断");
-					e.printStackTrace();
-				}
-			}
-		};
-		
-		if(MyApplication.getInstance().isFirstConnection()){
-			timer.schedule(timerTask, 0);
-		}else{
-			timer.schedule(timerTask, 30000);
-		}
+		/**
+		 * 采用固定延迟触发即下一次任务执行的时间是上一个任务完成后30s执行
+		 */
+		timer.schedule(timerTask, 0, 30000);
 	}
 }

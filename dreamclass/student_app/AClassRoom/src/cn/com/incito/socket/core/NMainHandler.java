@@ -5,6 +5,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.classroom.ui.activity.WaitingActivity;
 import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.message.DataType;
@@ -44,7 +45,7 @@ public class NMainHandler extends ChannelInboundHandlerAdapter {
 	 */
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NMainHandler:与服务器连接建立成功此时可以进行数据传输操作!");
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NMainHandler:与服务器连接建立成功,发送设备登录信息!");
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("imei", MyApplication.deviceId);
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_HAND_SHAKE);
@@ -61,7 +62,12 @@ public class NMainHandler extends ChannelInboundHandlerAdapter {
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause){
 		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NMainHandler:由于出现异常我将主动关闭通道,出现异常原因:" + cause.getMessage());
 		ctx.close();
-		UIHelper.getInstance().getWaitingActivity().setStudentsLoginFalse();
+		
+		WaitingActivity waitingActivity = UIHelper.getInstance().getWaitingActivity();
+		if(waitingActivity != null){
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":NCoreSocket:通知学生下线");
+			waitingActivity.notifyStudentOffline();
+		}
 	}
 	
 	

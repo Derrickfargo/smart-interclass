@@ -241,12 +241,12 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 					changeBtn.setClickable(false);
 				}
 			} else {
-				bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bg);
+				bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bg_empty);
 				changeBtn.setClickable(true);
 			}
 
 		} else {
-			bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bg);
+			bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bg_empty);
 			changeBtn.setClickable(true);
 		}
 		initPaint(bitmap);
@@ -431,7 +431,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 				changeBtn.setBackgroundResource(R.drawable.bg_cgbg_bb);
 				isBlack = false;
 			} else {
-				m_sketchPad.setBkBitmap(((BitmapDrawable) (getResources().getDrawable(R.drawable.bg))).getBitmap());
+				m_sketchPad.setBkBitmap(((BitmapDrawable) (getResources().getDrawable(R.drawable.bg_empty))).getBitmap());
 				changeBtn.setBackgroundResource(R.drawable.bg_cgbg_white);
 				isBlack = true;
 			}
@@ -665,11 +665,6 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "：DrawBoxActivity作业提交成功");
 					MyApplication.getInstance().lockScreen(true);
 					MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SAVE_PAPER);
-//					// 测试ID
-//					messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(MyApplication.getInstance().getQuizID()));
-//					// 设备ID
-//					messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(MyApplication.getInstance().getDeviceId()));
-//					messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(Constants.FILE_PATH + filePath + "/" + fileName));
 					
 					JSONObject jsonObject = new JSONObject();
 					jsonObject.put("quizId", MyApplication.getInstance().getQuizID());
@@ -679,18 +674,12 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 					messagePacking.putBodyData(DataType.INT, jsonObject.toJSONString().getBytes());
 					if(NCoreSocket.getInstance().getChannel() != null){
 						NCoreSocket.getInstance().sendMessage(messagePacking);
-					}else{
-						MyApplication.getInstance().setPaperLastMessagePacking(messagePacking);
 					}
-					
-					
 					mProgressDialog.dismiss();
 				} else {
 					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + " 作业提交失败");
 					handler.sendEmptyMessage(2);
-
 				}
-
 			}
 		}).start();
 		;

@@ -113,8 +113,7 @@ public class SplashActivity extends BaseActivity {
 
 	private void startMain() {
 		tv_loading_msg.setText(R.string.loading_msg);
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()
-				+ ":SplashActivity:检查WiFi是否连接 ");
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":SplashActivity:检查WiFi是否连接 ");
 		new Thread(new Runnable() {
 
 			@Override
@@ -129,8 +128,7 @@ public class SplashActivity extends BaseActivity {
 					app.setDeviceId(info.getMacAddress().replace(":", "-"));
 					startMainAct();
 				} else {
-					MyApplication.Logger.debug(AndroidUtil.getCurrentTime()
-							+ ":SplashActivity:wifi没有连接");
+					MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":SplashActivity:wifi没有连接");
 					android.os.Message message1 = new android.os.Message();
 					message1.what = 1;
 					mHandler.sendMessage(message1);
@@ -193,19 +191,14 @@ public class SplashActivity extends BaseActivity {
 	 * 发送连接请求
 	 */
 	public void startMainAct() {
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()
-				+ ":splashActivity登录");
+		
 		if (!isUpdateApk()) {
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("imei", MyApplication.deviceId);
-			MessagePacking messagePacking = new MessagePacking(
-					Message.MESSAGE_DEVICE_HAS_BIND);
-			messagePacking.putBodyData(DataType.INT,
-					BufferUtils.writeUTFString(jsonObject.toJSONString()));
-			if (NCoreSocket.getInstance().getChannel() == null) {
-				MyApplication.getInstance().setPaperLastMessagePacking(
-						messagePacking);
-			} else {
+			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_HAS_BIND);
+			messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(jsonObject.toJSONString()));
+			if (NCoreSocket.getInstance().getChannel() != null) {
+				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":splashActivity:登录");
 				NCoreSocket.getInstance().sendMessage(messagePacking);
 			}
 		}
@@ -237,22 +230,16 @@ public class SplashActivity extends BaseActivity {
 	}
 
 	public boolean isUpdateApk() {
-		String ip = MyApplication.getInstance().getSharedPreferences()
-				.getString("server_ip", "");
-		String port = MyApplication.getInstance().getSharedPreferences()
-				.getString("server_port", "");
+		String ip = MyApplication.getInstance().getSharedPreferences().getString("server_ip", "");
+		String port = MyApplication.getInstance().getSharedPreferences().getString("server_port", "");
 		if (!Utils.isEmpty(ip) && !Utils.isEmpty(port)) {
 			try {
-				JSONObject updateResult = JSONObject.parseObject(ApiClient
-						.updateApk(code));
-				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()
-						+ ":SplashActivity:" + "版本更新返回信息：" + updateResult);
+				JSONObject updateResult = JSONObject.parseObject(ApiClient.updateApk(code));
+				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":SplashActivity:" + "版本更新返回信息：" + updateResult);
 				if (updateResult.getInteger("code") == 0) {
 					Version version = JSON.parseObject(updateResult
-							.getJSONObject("data").toJSONString(),
-							Version.class);
-					url = Constants.HTTP + ip + ":" + port
-							+ Constants.URL_DOWNLOAD_APK + version.getId();
+							.getJSONObject("data").toJSONString(),Version.class);
+					url = Constants.HTTP + ip + ":" + port + Constants.URL_DOWNLOAD_APK + version.getId();
 					MyApplication.Logger.debug(AndroidUtil.getCurrentTime()
 							+ "SplashActivity:" + "更新地址：" + url);
 					mHandler.sendEmptyMessage(1000);

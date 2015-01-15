@@ -3,6 +3,7 @@ package cn.com.incito.classroom.ui.activity;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
+import cn.com.incito.classroom.ui.activity.RandomGroupActivity.myAnimationListener;
 import cn.com.incito.classroom.ui.widget.MyAlertDialog;
 import cn.com.incito.classroom.ui.widget.ProgressiveDialog;
 import cn.com.incito.classroom.utils.Utils;
@@ -57,7 +59,8 @@ public class WaitingActivity extends BaseActivity {
 	public static final int STUDENT_LOGIN = 2;
 	public static final int STUDENT_CLEAR = 3;
 	public static final int RANDOM_GROUP = 4;
-	public static final int STUDENT_LOING_FALSE = 5;
+	public static final int STUDENT_ONLINE = 5;
+	public static final int STUDENT_OFFLINE = 6;
 	
 	public int itemPosition;
 	EditText et_stname;
@@ -208,6 +211,7 @@ public class WaitingActivity extends BaseActivity {
 		String json = JSON.toJSONString(loginReqVo);
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
 		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(json));
+		MyApplication.getInstance().setLocalStudentMap(loginReqVo);
 		NCoreSocket.getInstance().sendMessage(messagePacking);
 		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":WaitingActivity学生登录:" + "request:");
 	}
@@ -229,6 +233,7 @@ public class WaitingActivity extends BaseActivity {
 		String json = JSON.toJSONString(loginReqVo);
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
 		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(json));
+		MyApplication.getInstance().remove(loginReqVo);
 		NCoreSocket.getInstance().sendMessage(messagePacking);
 		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() +":WaitingActivity:学生退出...");
 	}
@@ -362,10 +367,10 @@ public class WaitingActivity extends BaseActivity {
 				mAdapter.setDatas(MyApplication.getInstance().getLoginResVo().getStudents());
 				gv_group_member.setAdapter(mAdapter);
 				break;
-			case STUDENT_LOING_FALSE:
+			case STUDENT_OFFLINE:
+				loginResList = MyApplication.getInstance().getLoginResVo().getStudents();
 				mAdapter.setDatas(MyApplication.getInstance().getLoginResVo().getStudents());
 				gv_group_member.setAdapter(mAdapter);
-				break;
 			}
 			
 		}
@@ -455,23 +460,41 @@ public class WaitingActivity extends BaseActivity {
 		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(jsonObject.toJSONString()));
 		if(NCoreSocket.getInstance().getChannel() != null){
 			NCoreSocket.getInstance().sendMessage(messagePacking);
-		}else{
-			MyApplication.getInstance().setPaperLastMessagePacking(messagePacking);
 		}
 		
 		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":WaitingActivity启动获取组成员列表..."+ jsonObject.toJSONString());
 	}
-	
+
 	/**
-	 * pad掉线后设置该pad的学生显示状态为掉线
+	 * 通知在这台PAD上登录的学生下线
 	 */
-	public void setStudentsLoginFalse(){
+	public void notifyStudentOffline() {
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":WaitingActivity:掉线刷新界面");
 		List<LoginRes2Vo> students = MyApplication.getInstance().getLoginResVo().getStudents();
+		Map<String,LoginReqVo> localMap = MyApplication.getInstance().getLocalStudentMap();
 		int size = students.size();
 		for(int i = 0; i < size; i++){
-			LoginRes2Vo stu = students.get(i);
-			stu.setLogin(false);
+			LoginRes2Vo s = students.get(i);
+			if(localMap.containsKey(s.getNumber())){
+				s.setLogin(false);
+			}
 		}
-		mHandler.sendEmptyMessage(STUDENT_LOING_FALSE);
+		mHandler.sendEmptyMessage(STUDENT_OFFLINE);
+	}
+
+	/**
+	 * 通知在这台pad上登录的学生上线
+	 */
+	public void notifyStudentOnline() {
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":WaitingActivity:让学生自动重连");
+		List<LoginRes2Vo> students = MyApplication.getInstance().getLoginResVo().getStudents();
+		Map<String,LoginReqVo> localMap = MyApplication.getInstance().getLocalStudentMap();
+		int size = students.size();
+		for(int i = 0; i < size; i++){
+			LoginRes2Vo s = students.get(i);
+			if(localMap.containsKey(s.getNumber())){
+				login(s.getName(), s.getNumber(), s.getSex());
+			}
+		}
 	}
 }

@@ -23,10 +23,10 @@ import android.provider.Settings;
 import android.util.Log;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.exception.AppUncaughtException;
+import cn.com.incito.classroom.vo.LoginReqVo;
 import cn.com.incito.classroom.vo.LoginResVo;
 import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.socket.core.NCoreSocket;
-import cn.com.incito.socket.message.MessagePacking;
 
 import com.google.code.microlog4android.Logger;
 import com.google.code.microlog4android.LoggerFactory;
@@ -38,24 +38,24 @@ import com.google.code.microlog4android.config.PropertyConfigurator;
 public class MyApplication extends Application {
 	public static final Logger Logger = LoggerFactory.getLogger();
 	public boolean isOnClass;// 是否在上课
-	private boolean isFirstConnection = true;
 	
-	private Map<String,MessagePacking> paperLastMessagePackingMap = new HashMap<String, MessagePacking>();
+	private Map<String,LoginReqVo> localStudentMap = new HashMap<String, LoginReqVo>();
+	
 
-	public Map<String,MessagePacking> getPaperLastMessagePacking() {
-		return paperLastMessagePackingMap;
+	public Map<String, LoginReqVo> getLocalStudentMap() {
+		return localStudentMap;
 	}
 
-	public void setPaperLastMessagePacking(MessagePacking paperLastMessagePacking) {
-		paperLastMessagePackingMap.put("last", paperLastMessagePacking);
+	public void setLocalStudentMap(LoginReqVo loginReqVo) {
+		if(loginReqVo != null){
+			localStudentMap.put(loginReqVo.getNumber(), loginReqVo);
+		}
 	}
-
-	public synchronized boolean isFirstConnection() {
-		return isFirstConnection;
-	}
-
-	public synchronized void setFirstConnection(boolean isFirstConnection) {
-		this.isFirstConnection = isFirstConnection;
+	
+	public void remove(LoginReqVo loginReqVo){
+		if(loginReqVo != null && localStudentMap.containsKey(loginReqVo.getNumber())){
+			localStudentMap.remove(loginReqVo.getNumber());
+		}
 	}
 
 	public boolean isOnClass() {
