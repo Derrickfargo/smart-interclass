@@ -145,7 +145,13 @@ public class FTPUtils {
 		if (!ftpClient.isConnected()) {
 			if (!initFTPSetting(FTPUrl, FTPPort, UserName, UserPassword)) {
 				MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":FTPUtils:FTP服务器初始化连接失败");
-				return false;
+				try {
+					Thread.sleep(3000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+	    			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":FTPUtils:94行:出现异常:" + e.getMessage());
+				}
+				return downLoadFile(FilePath,FileName);
 			}
 		}
 			FTPFile[] files = ftpClient.listFiles();
