@@ -6,7 +6,6 @@ import org.apache.log4j.Logger;
 
 import com.alibaba.fastjson.JSONObject;
 
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import cn.com.incito.interclass.po.Device;
 import cn.com.incito.interclass.po.Group;
@@ -34,10 +33,17 @@ public class IdleManager {
 	public synchronized void close(String imei) {
 		ChannelHandlerContext ctx = app.getClientChannel().get(imei);
 		if (ctx != null) {
+			if(ctx.channel()==null){
+				log.info("通道已經關閉："+imei);
+				return;
+			}
 			if (ctx.channel().isActive()) {
 				ctx.close();
-				log.info("检测到设备心跳超时或异常退出  ： " + ctx.channel().remoteAddress());
+				log.info("检测到设备心跳超时或异常退出  ： " + imei);
 			}
+		} else {
+			log.info("關閉通道失敗，context為空");
+			return;
 		}
 		doLogout(imei, ctx);
 	}
@@ -66,6 +72,7 @@ public class IdleManager {
 		app.removeLoginStudent(imei);
 		app.getOnlineDevice().remove(imei);
 		app.getClientChannel().remove(imei);
+		app.removeGroupChannel(group.getId(), channel);
 		app.refresh();// 更新UI
 
 		// 向其他设备发送退出通知
@@ -80,10 +87,10 @@ public class IdleManager {
 		for (ChannelHandlerContext channel : channels) {
 			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
 			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
-			if (!channel.channel().equals(cn.channel())) {
+			if(channel!=null){
 				if (channel.channel().isActive()) {
 					SocketServiceCore.getInstance().sendMsg(messagePacking, channel);
-				}
+				}				
 			}
 		}
 	}

@@ -587,6 +587,17 @@ public class Application {
 	public void addSocketChannel(String imei, ChannelHandlerContext channel) {
 		clientChannel.put(imei, channel);
 	}
+	
+	public void removeGroupChannel(Integer groupId,ChannelHandlerContext ctx){
+		List<ChannelHandlerContext> channels = groupChannel.get(groupId);
+		List<ChannelHandlerContext> dstChannels = new ArrayList<ChannelHandlerContext>();
+		for(ChannelHandlerContext channel : channels){
+			if(!channel.channel().equals(ctx.channel())){
+				dstChannels.add(channel);
+			}
+		}
+		groupChannel.put(groupId, dstChannels);
+	}
 
 	public void addSocketChannel(Integer groupId, ChannelHandlerContext channel) {
 		List<ChannelHandlerContext> channels = groupChannel.get(groupId);

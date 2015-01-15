@@ -36,11 +36,6 @@ public class GroupListHandler extends MessageHandler {
 		logger.info("回复获取分组消息:" + json);
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_LIST);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
-//        byte[] messageData = messagePacking.pack().array();
-//        ByteBuffer buffer = ByteBuffer.allocate(messageData.length);
-//        buffer.put(messageData);
-//        buffer.flip();
-//        ctx.channel().writeAndFlush(buffer);
         SocketServiceCore.getInstance().sendMsg(messagePacking, ctx);
 	}
 }

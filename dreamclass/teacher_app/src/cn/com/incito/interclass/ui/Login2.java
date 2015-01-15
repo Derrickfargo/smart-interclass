@@ -8,14 +8,13 @@ package cn.com.incito.interclass.ui;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.List;
@@ -323,10 +322,12 @@ public class Login2 extends MouseAdapter {
 		http.post(URLs.URL_TEACHER_GROUP, params, new StringResponseHandler() {
 			@Override
 			protected void onResponse(String content, URL url) {
+				logger.info("收到後台信號:"+content);
 				if (content != null && !content.equals("")) {
 					JSONObject jsonObject = JSON.parseObject(content);
 					if (jsonObject.getIntValue("code") == 2) {
 						JOptionPane.showMessageDialog(frame, "保存班级出现错误!");
+						logger.info("保存班級出現錯誤");
 						return;
 					}
 					String data = jsonObject.getString("data");
@@ -341,6 +342,13 @@ public class Login2 extends MouseAdapter {
 					Application.getInstance().initMapping(
 							resultData.getDevices(), resultData.getTables(),
 							resultData.getGroups());
+					
+					//第三部檢查端口號是否被佔用
+					boolean flag = checkPort();
+					if(!flag){
+						System.exit(0);
+					}
+					
 					MainFrame.getInstance().setVisible(true);
 					SwingUtilities.invokeLater(new Runnable() {
 
@@ -354,6 +362,25 @@ public class Login2 extends MouseAdapter {
 				}
 				logger.info(content);
 			}
+			/**
+			 * 檢查端口號
+			 * @return 返回端口號是否被佔用
+			 */
+			private boolean checkPort() {
+				boolean flag = true;
+				for(URLs.Port a:URLs.Port.values()){
+					try {
+						ServerSocket ss = new ServerSocket(a.getPort());
+						ss.close();
+					} catch (IOException e) {
+						logger.info("端口已被佔用："+a.getPort());
+						JOptionPane.showMessageDialog(frame, "啟動端口失敗，請檢查端口號！端口號為："+a.getPort());
+						flag = false;
+						break;
+					}
+				}
+				return flag;
+			}
 
 			@Override
 			public void onSubmit(URL url, ParamsWrapper params) {
@@ -362,11 +389,13 @@ public class Login2 extends MouseAdapter {
 			@Override
 			public void onConnectError(IOException exp) {
 				JOptionPane.showMessageDialog(frame, "获取分组课程信息失败，请检查网络！");
+				logger.info("获取分组课程信息失败，请检查网络！");
 			}
 
 			@Override
 			public void onStreamError(IOException exp) {
 				JOptionPane.showMessageDialog(frame, "数据解析错误！");
+				logger.info("數據解析錯誤！");
 			}
 		});
 	}
