@@ -110,13 +110,7 @@ public class GroupVoteHandler extends MessageHandler {
 	private void sendResponse(String json, List<ChannelHandlerContext> channels) {
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_VOTE);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
-//        byte[] messageData = messagePacking.pack().array();
-//        ByteBuffer buffer = ByteBuffer.allocate(messageData.length);
         for(ChannelHandlerContext channel: channels){
-//			buffer.clear();
-//			buffer.put(messageData);
-//			buffer.flip();
-//			channel.writeAndFlush(buffer);
 			SocketServiceCore.getInstance().sendMsg(messagePacking, channel);
 		}
 	}

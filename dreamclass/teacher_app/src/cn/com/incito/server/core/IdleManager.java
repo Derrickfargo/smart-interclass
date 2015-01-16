@@ -69,6 +69,7 @@ public class IdleManager {
 				}
 			}
 		}
+		app.holdDroppedStus(imei);//保存当前设备在线的学生
 		app.removeLoginStudent(imei);
 		app.getOnlineDevice().remove(imei);
 		app.getClientChannel().remove(imei);

@@ -89,7 +89,8 @@ public class Application {
 
 	private Map<Integer, List<ChannelHandlerContext>> groupChannel;// 保存每组和已登录的socket
 
-	private Map<String, List<Student>> imeiStudent = new HashMap<String, List<Student>>();//key 为imei
+	private Map<String, List<Student>> imeiStudent = new HashMap<String, List<Student>>();// key
+																							// 为imei
 
 	private Map<String, ChannelHandlerContext> clientChannel;// 保存所有设备登陆的socket，imei和socket
 
@@ -114,6 +115,11 @@ public class Application {
 	private Map<String, QuizFeedback> quizFeedbackMap = new HashMap<String, QuizFeedback>();// 作业id和作业评价
 
 	private List<Student> responderStudents = new ArrayList<Student>();// 抢答的学生组
+
+	/**
+	 * 保存重连学生，imei
+	 */
+	private Map<String, List<Student>> reconnectedStudents = new HashMap<String, List<Student>>();
 
 	/**
 	 * IMEI和设备的对应关系(key:imei,value:Device)，教师登陆完后初始化
@@ -142,27 +148,29 @@ public class Application {
 	 */
 	private Map<Integer, Group> tableGroup;
 
-	private String quizId;//考试流水号
-	
+	private String quizId;// 考试流水号
+
 	/**
 	 * 1 等待老师上课，2分组中，3做作业，4锁屏
 	 */
-	private int state;//教师端状态码
-	
+	private int state;// 教师端状态码
+
 	public int getState() {
 		return state;
 	}
-	
+
 	public void setState(int state) {
 		this.state = state;
 	}
-
 
 	public String getQuizId() {
 		return quizId;
 	}
 
-	
+	public Map<String, List<Student>> getRecStudents() {
+		return reconnectedStudents;
+	}
+
 	public void setQuizId(String quizId) {
 		this.quizId = quizId;
 	}
@@ -290,6 +298,27 @@ public class Application {
 		return onlineStudent;
 	}
 
+	/**
+	 * 保存暂时掉线的学生
+	 * 
+	 * @param imei
+	 *            掉线设备的imei号码
+	 * @return 保存成功与否
+	 */
+	public boolean holdDroppedStus(String imei) {
+		boolean flag = true;
+		List<Student> students = getStudentByImei(imei);
+		if (students == null) {// CSD
+			flag = false;
+			return flag;
+		}
+		if (reconnectedStudents == null) {
+			reconnectedStudents = new HashMap<String, List<Student>>();
+		}
+		reconnectedStudents.put(imei, students);
+		return flag;
+	}
+
 	public void refreshIMEI(Map<String, List<Student>> imeiStudents) {
 		imeiStudent.clear();
 		imeiStudent.putAll(imeiStudents);
@@ -315,7 +344,7 @@ public class Application {
 	}
 
 	/**
-	 *界面有更改，现需要遍历所有的在线学生
+	 * 界面有更改，现需要遍历所有的在线学生
 	 * 
 	 * @param imei
 	 * @param student
@@ -587,12 +616,12 @@ public class Application {
 	public void addSocketChannel(String imei, ChannelHandlerContext channel) {
 		clientChannel.put(imei, channel);
 	}
-	
-	public void removeGroupChannel(Integer groupId,ChannelHandlerContext ctx){
+
+	public void removeGroupChannel(Integer groupId, ChannelHandlerContext ctx) {
 		List<ChannelHandlerContext> channels = groupChannel.get(groupId);
 		List<ChannelHandlerContext> dstChannels = new ArrayList<ChannelHandlerContext>();
-		for(ChannelHandlerContext channel : channels){
-			if(!channel.channel().equals(ctx.channel())){
+		for (ChannelHandlerContext channel : channels) {
+			if (!channel.channel().equals(ctx.channel())) {
 				dstChannels.add(channel);
 			}
 		}
@@ -625,6 +654,71 @@ public class Application {
 			groupChannel.put(groupId, retval);
 		}
 		return retval;
+	}
+
+	/**
+	 * 通过imei得到重连小组学生
+	 * 
+	 * @param imei
+	 * @return 如果找不到该小组返回为null
+	 */
+	public Group getGroupOnline(String imei) {
+		if(imei == null)
+			return null;
+		Device device = getImeiDevice().get(imei);
+		if (device == null) 
+			return null;
+		Table table = getDeviceTable().get(device.getId());
+		if (table == null)
+			return null;
+		Group group = getTableGroup().get(table.getId());
+		if (group == null)
+			return null;
+		List<Student> students = group.getStudents();
+		for(Student stu : students){
+			for (Student student : getOnlineStu(group, imei)) {
+				if (stu.getName().equals(student.getName()) && 
+						stu.getNumber().equals(student.getNumber())) {
+						stu.setLogin(true);
+				}
+			}
+		}
+		group.setStudents(students);
+		return group;
+	}
+
+	/**
+	 * 得到該小組所有在線學生
+	 * @param group
+	 * @param imei
+	 * @return
+	 */
+	private List<Student> getOnlineStu(Group group,String  imei){
+		if (imei == null)
+			return null;
+		List<Student> student = new ArrayList<Student>();
+		List<Device> deviceList = group.getDevices();
+		boolean flag = false;
+		for (Device device : deviceList) {
+			List<Student> studentList = getStudentByImei(device.getImei());
+			if(!flag){
+				if (device.getImei().equals(imei)) {
+					List<Student> students = getRecStudents().get(imei);
+					if (students !=null) {// 确定是pad重连还是登陆
+						student.addAll(students);
+					}
+					flag = true;
+				} else{
+					if(studentList!=null)
+					student.addAll(studentList);
+				}
+			}else {
+				if(studentList!=null)
+				student.addAll(studentList);
+			}
+		}
+
+		return student;
 	}
 
 	public Map<Integer, List<ChannelHandlerContext>> getGroupChannel() {

@@ -29,11 +29,6 @@ public class DeviceHasBindHandler extends MessageHandler {
 		logger.info("回复设备是否绑定消息:" + json);
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_HAS_BIND);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
-//        byte[] messageData = messagePacking.pack().array();
-//        ByteBuffer buffer = ByteBuffer.allocate(messageData.length);
-//        buffer.put(messageData);
-//        buffer.flip();
-//        ctx.channel().writeAndFlush(buffer);
         SocketServiceCore.getInstance().sendMsg(messagePacking, ctx);
 	}
 }

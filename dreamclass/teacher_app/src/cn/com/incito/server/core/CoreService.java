@@ -5,7 +5,6 @@ import io.netty.channel.ChannelHandlerContext;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -120,23 +119,21 @@ public class CoreService {
 		int roomId = app.getRoom().getId();
 		int teacherId = app.getTeacher().getId();
 		int courseId = app.getCourse().getId();
-		int year = app.getClasses().getYear();//学年
-		int number = app.getClasses().getNumber();//班级
+		int year = app.getClasses().getYear();// 学年
+		int number = app.getClasses().getNumber();// 班级
 		try {
-			final String result = ApiClient.getGroupList(schoolId, roomId,
-					teacherId, courseId, year, number);
+			final String result = ApiClient.getGroupList(schoolId, roomId, teacherId, courseId, year, number);
 			if (result != null && !result.equals("")) {
 				JSONObject jsonObject = JSON.parseObject(result);
 				if (jsonObject.getIntValue("code") != 0) {
 					return;
 				}
 				String data = jsonObject.getString("data");
-				TeacherGroupResultData resultData = JSON.parseObject(data,
-						TeacherGroupResultData.class);
+				TeacherGroupResultData resultData = JSON.parseObject(data, TeacherGroupResultData.class);
 
 				// 第二步获得班级、课程、设备、课桌、分组数据
-				Application.getInstance().initMapping(resultData.getDevices(),
-						resultData.getTables(), resultData.getGroups());
+				Application.getInstance().initMapping(resultData.getDevices(), resultData.getTables(),
+						resultData.getGroups());
 				Application.getInstance().refresh();
 			}
 			logger.info(result);
@@ -168,8 +165,8 @@ public class CoreService {
 		Group group = app.getTableGroup().get(table.getId());
 		app.addGroup(group);
 		for (Student student : group.getStudents()) {
-			if (student.getUname().equals(uname)
-					&& student.getNumber().equals(number)) {
+			if (student.getUname().equals(uname) && student.getNumber().equals(number)) {
+				removeReconnectStu(imei, uname, number);// 移除重连学生
 				student.setLogin(true);
 				app.getOnlineStudent().add(student);// 加入在线的学生
 				app.addLoginStudent(imei, student);
@@ -178,6 +175,48 @@ public class CoreService {
 			}
 		}
 		return register(uname, sex, number, imei);// 学生未注册
+	}
+
+	/**
+	 * 移除重连表中学生
+	 * 
+	 * @param imei
+	 * @param uname
+	 * @param number
+	 */
+	private void removeReconnectStu(String imei, String uname, String number) {
+
+		List<Student> stus = app.getRecStudents().get(imei);
+		if (stus != null)
+			app.getRecStudents().remove(imei);// 允许为空或者size为零
+		Device device = app.getImeiDevice().get(imei);
+		if (device == null)
+			return;
+		Table table = app.getDeviceTable().get(device.getId());
+		if (table == null)
+			return;
+		Group group = app.getTableGroup().get(table.getId());
+		if (group == null)
+			return;
+
+		for (Device dvs : group.getDevices()) {
+			String imeis = dvs.getImei();
+			if (!imeis.equals(imei)) {
+				List<Student> students = app.getRecStudents().get(imeis);
+				if (students != null && students.size() != 0) {
+					Iterator<Student> it = students.iterator();
+					while (it.hasNext()) {
+						Student student = it.next();
+						if (student.getName().equals(uname) && 
+								student.getNumber().equals(number)) {
+							it.remove();
+							return;
+						}
+					}
+				}
+			}
+		}
+
 	}
 
 	/**
@@ -202,8 +241,7 @@ public class CoreService {
 		}
 		Group group = app.getTableGroup().get(table.getId());
 		for (Student student : group.getStudents()) {
-			if (student.getUname().equals(uname)
-					&& student.getNumber().equals(number)) {
+			if (student.getUname().equals(uname) && student.getNumber().equals(number)) {
 				student.setLogin(false);
 				app.getOnlineStudent().remove(student);
 				app.removeLoginStudent(imei, student);
@@ -234,9 +272,9 @@ public class CoreService {
 					for (Student student : group.getStudents()) {
 						if ((student.getName() + student.getNumber()).equals(uname + number)) {
 							student.setLogin(true);
-							//检查当前注册的学生是否之前在别的小组，存在则从之前的组中剔除
+							// 检查当前注册的学生是否之前在别的小组，存在则从之前的组中剔除
 							sendOtherPadLogout(uname, number);
-							//注册学生必须在这里先移除，有可能是切换分组
+							// 注册学生必须在这里先移除，有可能是切换分组
 							app.removeLoginStudent(student);
 							app.getOnlineStudent().add(student);
 							app.addLoginStudent(imei, student);
@@ -262,9 +300,11 @@ public class CoreService {
 
 	/**
 	 * 将其他组的相同人员剔除
+	 * 
 	 * @param uname
 	 * @param number
-	 * @param groupId 新组id
+	 * @param groupId
+	 *            新组id
 	 */
 	private void sendOtherPadLogout(String uname, String number) {
 		Application app = Application.getInstance();
@@ -273,7 +313,7 @@ public class CoreService {
 			return;
 		}
 		Group group = findGroup(groupList, uname, number);
-		if(group != null){
+		if (group != null) {
 			Iterator<Student> it = group.getStudents().iterator();
 			while (it.hasNext()) {
 				Student temp = it.next();
@@ -285,12 +325,12 @@ public class CoreService {
 			app.addGroup(group);
 			app.getTableGroup().put(group.getTableId(), group);
 			app.refresh();// 更新UI
-			String result = JSONUtils.renderJSONString(0, group);//更新消息发往pad端
-			sendResponse(result,Application.getInstance().getClientChannelByGroup(group.getId()));
+			String result = JSONUtils.renderJSONString(0, group);// 更新消息发往pad端
+			sendResponse(result, Application.getInstance().getClientChannelByGroup(group.getId()));
 		}
 	}
-	
-	private Group findGroup(List<Group> groupList, String uname, String number){
+
+	private Group findGroup(List<Group> groupList, String uname, String number) {
 		for (Group group : groupList) {
 			List<Student> students = group.getStudents();
 			if (students == null || students.size() == 0) {
@@ -304,33 +344,33 @@ public class CoreService {
 		}
 		return null;
 	}
-	
-	public Student getStudentByNumber(String number){
+
+	public Student getStudentByNumber(String number) {
 		for (Group group : app.getGroupList()) {
 			List<Student> students = group.getStudents();
 			for (Student student : students) {
-				if(student.getNumber().equals(number)){
+				if (student.getNumber().equals(number)) {
 					return student;
 				}
 			}
 		}
 		return null;
 	}
-	
-	private void sendResponse(String json,List<ChannelHandlerContext> channels) {
+
+	private void sendResponse(String json, List<ChannelHandlerContext> channels) {
 		for (ChannelHandlerContext channel : channels) {
 			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
-	        messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
-	        byte[] messageData = messagePacking.pack().array();
-	        ByteBuffer buffer = ByteBuffer.allocate(messageData.length);
-	        buffer.put(messageData);
-	        buffer.flip();
-			if (channel.channel().isActive()) { 
+			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
+			byte[] messageData = messagePacking.pack().array();
+			ByteBuffer buffer = ByteBuffer.allocate(messageData.length);
+			buffer.put(messageData);
+			buffer.flip();
+			if (channel.channel().isActive()) {
 				SocketServiceCore.getInstance().sendMsg(messagePacking, channel);
 			}
 		}
 	}
-	
+
 	/**
 	 * 根据IMEI获取所在组
 	 *
@@ -349,7 +389,8 @@ public class CoreService {
 			return JSONUtils.renderJSONString(2);// 失败
 		}
 		Group group = app.getTableGroup().get(table.getId());
-		return JSONUtils.renderJSONString(0, group);
+		Group testGroup = app.getGroupOnline(imei);
+		return JSONUtils.renderJSONString(0, testGroup);
 	}
 
 	public Group getGroupObjectByIMEI(String imei) {
@@ -376,69 +417,69 @@ public class CoreService {
 	 * @param imei
 	 * @return
 	 */
-//	public void SavePaper(final String imei, final String quizid,
-//			final String lessionid, final byte[] imageByte,
-//			final SocketChannel channel) {
-//		new Thread(){
-//			public void run() {
-//				File path = new File(Constants.PAPER_PATH + File.separator + lessionid
-//						+ File.separator + imei.replace(":", "-"));
-//				path.mkdirs();
-//		
-//				File file = new File(path, quizid + ".jpg");
-//				File thumbnail = new File(path, quizid + "_thumbnail.jpg");
-//				try {
-//					FileImageOutputStream imageOutput = new FileImageOutputStream(file);
-//					imageOutput.write(imageByte, 0, imageByte.length);
-//					imageOutput.close();
-//					ImageUtil.resize(file, file, 865, 1f);
-//					logger.error("大图生成：" + file.getAbsoluteFile());
-//					ImageUtil.resize(file, thumbnail, 186, 1f);
-//					logger.error("缩略图生成：" + thumbnail.getAbsoluteFile());
-//				} catch (IOException e) {
-//					logger.error("保存作业图片出现错误:", e);
-//				}
-//		
-//				Quiz quiz = new Quiz();
-//				quiz.setId(quizid);
-//				quiz.setImei(imei);
-//				quiz.setLessionid(lessionid);
-//				StringBuffer name = new StringBuffer();
-//				List<Student> students = app.getStudentByImei(imei);
-//				if (students != null) {
-//					for (Student student : students) {
-//						name.append(student.getName());
-//						name.append(",");
-//					}
-//				}
-//				if (name.length() != 0) {
-//					quiz.setName(name.deleteCharAt(name.length() - 1).toString());
-//				}
-//				quiz.setTime(System.currentTimeMillis());
-//				Group group = getGroupObjectByIMEI(imei);
-//				quiz.setGroupId(group.getId());
-//				quiz.setGroup(group);
-//				quiz.setQuizUrl(file.getAbsolutePath());
-//				quiz.setThumbnail(thumbnail.getAbsolutePath());
-//				app.getTempQuiz().put(imei, quiz);
-//				app.getQuizMap().put(quizid, quiz);
-//				app.getQuizList().add(quiz);
-//				app.refresh();
-//				if (app.getQuizList().size() == app.getClientChannel().size()) {
-//					Application.getInstance().getFloatIcon().showNoQuiz();
-//					MainFrame.getInstance().showNoQuiz();
-//					Application.getInstance().setLockScreen(true);
-//				} else {
-//					String message = String.format(Constants.MESSAGE_QUIZ, app
-//							.getQuizList().size(), app.getTempQuizIMEI().size());
-//					Application.getInstance().getFloatIcon().showQuizMessage(message);
-//				}
-//				//当前作业处理完毕，处理下一作业
-//				QuizCollector.getInstance().quizComplete(channel);
-//				QuizCollector.getInstance().nextQuiz();
-//			}
-//		}.start();
-//	}
+	// public void SavePaper(final String imei, final String quizid,
+	// final String lessionid, final byte[] imageByte,
+	// final SocketChannel channel) {
+	// new Thread(){
+	// public void run() {
+	// File path = new File(Constants.PAPER_PATH + File.separator + lessionid
+	// + File.separator + imei.replace(":", "-"));
+	// path.mkdirs();
+	//
+	// File file = new File(path, quizid + ".jpg");
+	// File thumbnail = new File(path, quizid + "_thumbnail.jpg");
+	// try {
+	// FileImageOutputStream imageOutput = new FileImageOutputStream(file);
+	// imageOutput.write(imageByte, 0, imageByte.length);
+	// imageOutput.close();
+	// ImageUtil.resize(file, file, 865, 1f);
+	// logger.error("大图生成：" + file.getAbsoluteFile());
+	// ImageUtil.resize(file, thumbnail, 186, 1f);
+	// logger.error("缩略图生成：" + thumbnail.getAbsoluteFile());
+	// } catch (IOException e) {
+	// logger.error("保存作业图片出现错误:", e);
+	// }
+	//
+	// Quiz quiz = new Quiz();
+	// quiz.setId(quizid);
+	// quiz.setImei(imei);
+	// quiz.setLessionid(lessionid);
+	// StringBuffer name = new StringBuffer();
+	// List<Student> students = app.getStudentByImei(imei);
+	// if (students != null) {
+	// for (Student student : students) {
+	// name.append(student.getName());
+	// name.append(",");
+	// }
+	// }
+	// if (name.length() != 0) {
+	// quiz.setName(name.deleteCharAt(name.length() - 1).toString());
+	// }
+	// quiz.setTime(System.currentTimeMillis());
+	// Group group = getGroupObjectByIMEI(imei);
+	// quiz.setGroupId(group.getId());
+	// quiz.setGroup(group);
+	// quiz.setQuizUrl(file.getAbsolutePath());
+	// quiz.setThumbnail(thumbnail.getAbsolutePath());
+	// app.getTempQuiz().put(imei, quiz);
+	// app.getQuizMap().put(quizid, quiz);
+	// app.getQuizList().add(quiz);
+	// app.refresh();
+	// if (app.getQuizList().size() == app.getClientChannel().size()) {
+	// Application.getInstance().getFloatIcon().showNoQuiz();
+	// MainFrame.getInstance().showNoQuiz();
+	// Application.getInstance().setLockScreen(true);
+	// } else {
+	// String message = String.format(Constants.MESSAGE_QUIZ, app
+	// .getQuizList().size(), app.getTempQuizIMEI().size());
+	// Application.getInstance().getFloatIcon().showQuizMessage(message);
+	// }
+	// //当前作业处理完毕，处理下一作业
+	// QuizCollector.getInstance().quizComplete(channel);
+	// QuizCollector.getInstance().nextQuiz();
+	// }
+	// }.start();
+	// }
 	/**
 	 * 保存学生作业
 	 *
@@ -448,7 +489,7 @@ public class CoreService {
 	public void SavePaper(String imei, String quizid, String path, ChannelHandlerContext channel) {
 		File file = new File(path);
 		logger.info("图片是否存在:" + file.exists());
-		if(!file.exists()){
+		if (!file.exists()) {
 			return;
 		}
 		File thumbnail = new File(file.getParent(), UUID.randomUUID() + ".jpg");
@@ -464,21 +505,20 @@ public class CoreService {
 		Quiz quiz = new Quiz();
 		quiz.setId(quizid);
 		quiz.setImei(imei);
-//		Student students = app.getStudentByImei(imei);
-//		if (students.getName().length() != 0) {
-//			quiz.setName(students.getName());
-//		}
-		
-		List<Student> studentsList=app.getStudentByImei(imei);
-		StringBuffer str=new StringBuffer();
-		if(studentsList.size()>0){
+		// Student students = app.getStudentByImei(imei);
+		// if (students.getName().length() != 0) {
+		// quiz.setName(students.getName());
+		// }
+
+		List<Student> studentsList = app.getStudentByImei(imei);
+		StringBuffer str = new StringBuffer();
+		if (studentsList.size() > 0) {
 			for (int i = 0; i < studentsList.size(); i++) {
-				str.append(studentsList.get(i).getName()+";");
+				str.append(studentsList.get(i).getName() + ";");
 			}
 			quiz.setName(str.toString());
 		}
-		
-		
+
 		quiz.setTime(System.currentTimeMillis());
 		quiz.setQuizUrl(file.getAbsolutePath());
 		quiz.setThumbnail(thumbnail.getAbsolutePath());
@@ -490,11 +530,11 @@ public class CoreService {
 			MainFrame.getInstance().showNoQuiz();
 			Application.getInstance().setLockScreen(true);
 		} else {
-			String message = String.format(Constants.MESSAGE_QUIZ, app
-					.getQuizList().size(), app.getClientChannel().size());
+			String message = String.format(Constants.MESSAGE_QUIZ, app.getQuizList().size(), app.getClientChannel()
+					.size());
 			Application.getInstance().getFloatIcon().showQuizMessage(message);
 		}
-		//当前作业处理完毕，处理下一作业
+		// 当前作业处理完毕，处理下一作业
 		QuizCollector.getInstance().quizComplete(channel);
 		QuizCollector.getInstance().nextQuiz();
 	}
