@@ -2,9 +2,6 @@ package cn.com.incito.server.utils;
 
 import io.netty.channel.ChannelHandlerContext;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.channels.SocketChannel;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Properties;
@@ -31,7 +28,6 @@ public class QuizCollector {
 	private static final int TIMEOUT = 20000;//消息队列等待时长
 	private static QuizCollector instance;
 	private int capacity;
-	private boolean isRunning	 = false;
 	private final Lock lock = new ReentrantLock();
 	private final Condition isIdle = lock.newCondition();
 	private Queue<ChannelHandlerContext> quizQueue = new LinkedList<ChannelHandlerContext>();
@@ -40,16 +36,12 @@ public class QuizCollector {
 	public static QuizCollector getInstance() {
 		if (instance == null) {
 			instance = new QuizCollector();
-		}else if (instance.quizQueue.size() == 0) {
-			instance.isRunning = false;//退出之前队列
-			instance = new QuizCollector();
 		}
 		return instance;
 	}
 
 	private QuizCollector() {
 		capacity = 0;
-		isRunning =  true;
 		initQuizCollector();
 	}
 
@@ -98,19 +90,20 @@ public class QuizCollector {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				while (isRunning) {
+				while (Boolean.TRUE) {
 					lock.lock();
 					try {
-						while (isRunning&&capacity >= getQuizThreadThreshold()) {
+						while (capacity >= getQuizThreadThreshold()) {
 							if (!isIdle.await(TIMEOUT, TimeUnit.MILLISECONDS)) {
 								logger.info("*****正在等待作业提交请求*****");
 							}
 						}
-						while (isRunning&&capacity < getQuizThreadThreshold()
-								&& quizQueue.size() != 0) {
+						while (capacity < getQuizThreadThreshold() && quizQueue.size() != 0) {
 							ChannelHandlerContext channel = quizQueue.poll();
-							capacity++;
-							doCollect(channel);// 收集作业
+							if(channel != null){
+								capacity++;
+								doCollect(channel);// 收集作业
+							}
 						}
 					} catch (Exception e) {
 						logger.fatal("作业队列中断：", e);
@@ -133,17 +126,13 @@ public class QuizCollector {
 		        messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(json.toString()));
 				try {
 					SocketServiceCore.getInstance().sendMsg(messagePacking, channel);
-//					有问题，考虑在这里处理或者在netty encode 中改
-//				} catch (IOException e) { 
-//					logger.error("作业收取失败,直接收取下一个作业", e);
-//					quizComplete(channel);
-//					nextQuiz();//收取下一个作业
-//					return;
+					new QuizCollectMonitor(channel).start();
 				} catch (Exception e) {
-					capacity--;
+					logger.error("作业收取失败,直接收取下一个作业", e);
+					quizComplete(channel);
+					nextQuiz();//收取下一个作业
 					return;
 				}
-				new QuizCollectMonitor(channel).start();
 			}
 			
 		}).start();

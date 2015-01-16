@@ -167,7 +167,12 @@ public class Login2 extends MouseAdapter {
 		frame.add(btnLogin);// 添加按钮
 		btnLogin.setBounds(125, 220, btnImage.getIconWidth(),
 				btnImage.getIconHeight());
-		btnLogin.addMouseListener(this);
+		btnLogin.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				doGetGroup();
+			}
+		});
 		initData();
 		setBgimg();// 设置背景
 		frame.setVisible(true);
@@ -220,7 +225,7 @@ public class Login2 extends MouseAdapter {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		doGetGroup();
+		
 	}
 
 	@Override
