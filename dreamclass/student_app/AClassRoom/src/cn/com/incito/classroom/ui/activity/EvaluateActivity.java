@@ -247,7 +247,7 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 		jsonObject.put("feedback",  getInfo());
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_QUIZ_FEEDBACK_SUBMIT);
 		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"提交的评论结果"+jsonObject.toJSONString());
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":EvaluateActivity:提交的评论结果:"+jsonObject.toJSONString());
 		NCoreSocket.getInstance().sendMessage(messagePacking);
 		MyApplication.getInstance().lockScreen(true);
 		this.finish();

@@ -589,10 +589,11 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 			jsonObject.put("imei", MyApplication.deviceId);
 			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SEND_PAPER);
 			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
+
 			NCoreSocket.getInstance().sendMessage(messagePacking);
 			startTask();
 		}else{
-			ToastHelper.showCustomToast(this, "请30s后重试!");
+			showToast();
 		}
 		
 	}
@@ -641,7 +642,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 				if (timeTimer != null) {
 					timeTimer.cancel();
 					mProgressDialog.dismiss();
-					ToastHelper.showCustomToast(DrawBoxActivity.this, "作业提交失败，请重试");
+					ToastHelper.showCustomToast(DrawBoxActivity.this, "作业提交失败，请手动提交");
 				}
 				break;
 			default:
@@ -662,22 +663,22 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 				String filePath = "/" + MyApplication.getInstance().getDeviceId();
 				String fileName = MyApplication.getInstance().getDeviceId() + ".jpg";
 				if (FTPUtils.getInstance().uploadFile(filePath, fileName)) {
-					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "：DrawBoxActivity作业提交成功");
+					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "：DrawBoxActivity:作业上传成功");
 					MyApplication.getInstance().lockScreen(true);
-					MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SAVE_PAPER);
+					
 					
 					JSONObject jsonObject = new JSONObject();
 					jsonObject.put("quizId", MyApplication.getInstance().getQuizID());
 					jsonObject.put("deviceId", MyApplication.getInstance().getDeviceId());
 					jsonObject.put("file", Constants.FILE_PATH + filePath + "/" + fileName);
-					
-					messagePacking.putBodyData(DataType.INT, jsonObject.toJSONString().getBytes());
+					MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SAVE_PAPER);
+					messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
 					if(NCoreSocket.getInstance().getChannel() != null){
 						NCoreSocket.getInstance().sendMessage(messagePacking);
 					}
 					mProgressDialog.dismiss();
 				} else {
-					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + " 作业提交失败");
+					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + " 作业上传失败");
 					handler.sendEmptyMessage(2);
 				}
 			}

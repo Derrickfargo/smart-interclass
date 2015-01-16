@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -100,8 +99,7 @@ public class BindDeskActivity extends BaseActivity {
 				MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_BIND);
 				messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
 				NCoreSocket.getInstance().sendMessage(messagePacking);
-				Logger.debug(Utils.getTime()+"BindDeskActivity:"+"启动课桌绑定..." + "request:" + jsonObject.toJSONString());
-				Log.i("BindDeskActivity:", "启动课桌绑定..." + "request:" + jsonObject.toJSONString());
+				MyApplication.Logger.debug(Utils.getTime()+"BindDeskActivity:"+"启动课桌绑定..." + "request:" + jsonObject.toJSONString());
 			}
 
 		});

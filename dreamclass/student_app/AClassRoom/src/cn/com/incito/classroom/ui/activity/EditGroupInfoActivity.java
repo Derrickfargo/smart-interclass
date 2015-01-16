@@ -7,7 +7,6 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,7 +20,7 @@ import cn.com.incito.classroom.adapter.HorizontalListViewAdapter.ViewHolder;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.ui.widget.HorizontalListView;
-import cn.com.incito.classroom.utils.Utils;
+import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.core.NCoreSocket;
@@ -34,9 +33,7 @@ import com.alibaba.fastjson.JSONObject;
 /**
  * 修改分组信息activity Created by liguangming on 2014/7/28.
  */
-public class EditGroupInfoActivity extends BaseActivity implements
-		View.OnClickListener {
-	private static final String TAG=EditGroupInfoActivity.class.getSimpleName();
+public class EditGroupInfoActivity extends BaseActivity implements View.OnClickListener {
 	private HorizontalListView mListView;
 	private HorizontalListViewAdapter mListViewAdapter;
 
@@ -142,25 +139,22 @@ public class EditGroupInfoActivity extends BaseActivity implements
 
 			} else {
 				if (groupName.length() < 2) {
-					ToastHelper.showCustomToast(
-							this,
-							getResources().getText(
-									R.string.group_name_short_notice)
-									.toString());
+					ToastHelper.showCustomToast(this,getResources().getText(R.string.group_name_short_notice).toString());
 				} else {
-					JSONObject json = new JSONObject();
-					json.put("id", mGroupID);
-					json.put("imei", MyApplication.getInstance().getDeviceId());
-					json.put("name", groupName);
-					json.put("logo", mGroupIconName);
-					MessagePacking messagePacking = new MessagePacking(
-							Message.MESSAGE_GROUP_EDIT);
-					messagePacking.putBodyData(DataType.INT,
-							BufferUtils.writeUTFString(json.toJSONString()));
-					NCoreSocket.getInstance().sendMessage(messagePacking);
-					this.finish();
-					Logger.debug(Utils.getTime()+TAG+":启动修改分组..."+"request:"+json.toJSONString());
-					Log.i(TAG, "启动修改分组..."+"request:"+json.toJSONString());
+					if(NCoreSocket.getInstance().getChannel() != null){
+						JSONObject json = new JSONObject();
+						json.put("id", mGroupID);
+						json.put("imei", MyApplication.getInstance().getDeviceId());
+						json.put("name", groupName);
+						json.put("logo", mGroupIconName);
+						MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_EDIT);
+						messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json.toJSONString()));
+						NCoreSocket.getInstance().sendMessage(messagePacking);
+						this.finish();
+						MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":EditGroupInfoActivity:启动修改分组..."+"request:"+json.toJSONString());
+					}else{
+						showToast();
+					}
 				}
 			}
 			break;

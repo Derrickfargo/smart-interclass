@@ -5,6 +5,7 @@ import java.util.Stack;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import cn.com.incito.classroom.utils.ApiClient;
 import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.socket.core.NCoreSocket;
@@ -105,6 +106,8 @@ public class AppManager {
 	 */
 	public void AppExit(Context context) {
 		try {
+//			SharedPreferences preferences = MyApplication.getInstance().getSharedPreferences();
+//			preferences.edit().putBoolean("isNormalExit", true).commit();
 			MyApplication.getInstance().sendBroadcast(new Intent("android.intent.action.SHOW_NAVIGATION_BAR"));
 			MyApplication.getInstance().release();
 			finishAllActivity();

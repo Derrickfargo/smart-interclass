@@ -17,6 +17,7 @@ import com.google.code.microlog4android.Logger;
 import com.google.code.microlog4android.LoggerFactory;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.MyApplication;
@@ -53,6 +54,9 @@ public class AppUncaughtException implements UncaughtExceptionHandler {
 
 	@Override
 	public void uncaughtException(Thread arg0, Throwable arg1) {
+	
+//		SharedPreferences preferences = MyApplication.getInstance().getSharedPreferences();
+//		preferences.edit().putBoolean("isNormalExit", false).commit();
 		Log.e("程序挂掉了","");
 		// 把错误的堆栈信息 获取出来
 		MyApplication.Logger.debug(Utils.getTime()+"AppUncaughtException:"+getErrorInfo(arg1));

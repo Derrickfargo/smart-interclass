@@ -15,6 +15,7 @@ import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.common.utils.AndroidUtil;
+import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.core.NCoreSocket;
 import cn.com.incito.socket.message.DataType;
@@ -79,12 +80,17 @@ public class ConfirmGroupInfoActivity extends BaseActivity implements
 		} else if (id == R.id.btn_disagree) {
 			json.put("vote", "1");
 		}
-		MessagePacking messagePacking = new MessagePacking(
-				Message.MESSAGE_GROUP_VOTE);
-		messagePacking.putBodyData(DataType.INT,
-				BufferUtils.writeUTFString(json.toJSONString()));
-		NCoreSocket.getInstance().sendMessage(messagePacking);
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":ConfirmGroupInfoActivity启动分组确认..." + "request:" + json.toJSONString());
+		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_VOTE);
+		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json.toJSONString()));
+
+		if(NCoreSocket.getInstance().getChannel() != null){
+			NCoreSocket.getInstance().sendMessage(messagePacking);
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":ConfirmGroupInfoActivity:启动分组确认..." + "request:" + json.toJSONString());
+		}else{
+			showToast();
+		}
+		
+		
 		if (id == R.id.btn_agree) {
 			mWaitingStudentTip.setText(R.string.waiting_other_confirm_tip);
 		}

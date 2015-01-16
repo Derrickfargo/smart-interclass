@@ -5,7 +5,6 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
@@ -21,15 +20,10 @@ import io.netty.util.CharsetUtil;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
-import cn.com.incito.classroom.ui.activity.WaitingActivity;
 import cn.com.incito.common.utils.AndroidUtil;
-import cn.com.incito.common.utils.UIHelper;
-import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
-import cn.com.incito.socket.utils.BufferUtils;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -104,7 +98,7 @@ public class NCoreSocket implements ICoreSocket {
 			// 释放资源并且在时间任务调度下下一次连接时间是当前任务完成后30s执行
 			channel = null;
 			workGroup.shutdownGracefully();
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NCoreSocket:本次通讯任务执行的时间:"+ timerTask.scheduledExecutionTime());
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NCoreSocket:本次通讯任务执行的时间:"+ timerTask.scheduledExecutionTime()/60000 + "分");
 		}
 	}
 
@@ -114,8 +108,6 @@ public class NCoreSocket implements ICoreSocket {
 			channel.close();
 			channel = null;
 		}
-		
-
 		if (timer != null) {
 			try {
 				timer.cancel();
@@ -123,7 +115,6 @@ public class NCoreSocket implements ICoreSocket {
 				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NCoreSocket:timer:由于任务调度中有任务没有执行完成所造成的异常可以不同管!");
 			}
 		}
-		
 		if (timerTask != null) {
 			try {
 				timerTask.cancel();
@@ -134,49 +125,12 @@ public class NCoreSocket implements ICoreSocket {
 
 	}
 
-	/**
-	 * 消息发送完成事件的监听
-	 * 
-	 * @author hm
-	 */
-	private class SendMessageListener implements ChannelFutureListener {
-		private MessagePacking messagePacking;
-
-		public SendMessageListener(MessagePacking messagePacking) {
-			this.messagePacking = messagePacking;
-		}
-
-		@Override
-		public void operationComplete(ChannelFuture future) throws Exception {
-			if (future.isSuccess()) {
-				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NCoreSocket:向服务器发送消息成,消息ID" + messagePacking.msgId);
-				
-				if(messagePacking.msgId == Message.MESSAGE_HAND_SHAKE){
-					String activityName = AppManager.getAppManager().currentActivity().getClass().getSimpleName();
-					if("SplashActivity".equals(activityName)){
-						MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":NCoreSocket:判断设备是否绑定");
-						JSONObject jsonObject = new JSONObject();
-						jsonObject.put("imei", MyApplication.deviceId);
-						MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_HAS_BIND);
-						messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
-						sendMessage(messagePacking);
-						return;
-					}
-					WaitingActivity waitingActivity = UIHelper.getInstance().getWaitingActivity();
-					if(waitingActivity != null){
-						MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":NCoreSocket:通知学生上线");
-						waitingActivity.notifyStudentOnline();
-					}
-				}
-			}
-		}
-	}
-
 	@Override
 	public void sendMessage(final MessagePacking messagePacking) {
 		final JSONObject jsonObject = new JSONObject();
 		jsonObject.put("messagePacking", messagePacking);
 		if (channel != null) {
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NCoreSocket:向服务器发送消息,消息ID:" + messagePacking.msgId);
 			ByteBuf buf = Unpooled.copiedBuffer((jsonObject.toJSONString() + "\n").getBytes());
 			ChannelFuture channelFuture = channel.writeAndFlush(buf);
 			channelFuture.addListener(new SendMessageListener(messagePacking));
@@ -184,6 +138,7 @@ public class NCoreSocket implements ICoreSocket {
 			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NCoreSocket:还没有连接至服务器,不能进行消息发送!");
 		}
 	}
+	
 
 	/**
 	 * 连接操作里面包含重连

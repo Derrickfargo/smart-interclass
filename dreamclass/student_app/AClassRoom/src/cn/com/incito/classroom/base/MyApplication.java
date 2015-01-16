@@ -38,25 +38,17 @@ import com.google.code.microlog4android.config.PropertyConfigurator;
 public class MyApplication extends Application {
 	public static final Logger Logger = LoggerFactory.getLogger();
 	public boolean isOnClass;// 是否在上课
-	
-	private Map<String,LoginReqVo> localStudentMap = new HashMap<String, LoginReqVo>();
+//	public boolean isReconnect;
+//	public boolean isNormalExit;
 	
 
-	public Map<String, LoginReqVo> getLocalStudentMap() {
-		return localStudentMap;
-	}
-
-	public void setLocalStudentMap(LoginReqVo loginReqVo) {
-		if(loginReqVo != null){
-			localStudentMap.put(loginReqVo.getNumber(), loginReqVo);
-		}
-	}
-	
-	public void remove(LoginReqVo loginReqVo){
-		if(loginReqVo != null && localStudentMap.containsKey(loginReqVo.getNumber())){
-			localStudentMap.remove(loginReqVo.getNumber());
-		}
-	}
+//	public boolean isReconnect() {
+//		return isReconnect;
+//	}
+//
+//	public void setReconnect(boolean isReconnect) {
+//		this.isReconnect = isReconnect;
+//	}
 
 	public boolean isOnClass() {
 		return isOnClass;
@@ -130,17 +122,17 @@ public class MyApplication extends Application {
 		Thread.setDefaultUncaughtExceptionHandler(appException);
 		PowerManager pmManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
 		WifiManager manager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-		mWifiLock = manager
-				.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF,
-						"cn.com.incito.classroom");
+		mWifiLock = manager.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF,"cn.com.incito.classroom");
 		wl = pmManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "My Tag");
 		wl.acquire();
 		mWifiLock.acquire();
 
 		mInstance = this;
-		mPrefs = PreferenceManager
-				.getDefaultSharedPreferences(getApplicationContext());
+		mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		initApplication();
+		
+		//获取上次是否是正常退出
+//		isNormalExit = mPrefs.getBoolean("isNormalExit", false);
 
 		// MobclickAgent.openActivityDurationTrack(false);// 禁止友盟的自动统计功能
 		//
@@ -170,6 +162,14 @@ public class MyApplication extends Application {
 		// ImageLoader.getInstance().init(config);
 
 	}
+
+//	public boolean isNormalExit() {
+//		return isNormalExit;
+//	}
+//
+//	public void setNormalExit(boolean isNormalExit) {
+//		this.isNormalExit = isNormalExit;
+//	}
 
 	public void release() {
 		mWifiLock.release();

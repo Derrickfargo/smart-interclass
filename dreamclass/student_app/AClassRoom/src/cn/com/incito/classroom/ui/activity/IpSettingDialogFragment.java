@@ -6,7 +6,6 @@ import java.util.regex.Pattern;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,15 +14,8 @@ import android.widget.ImageButton;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
-import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.common.utils.ToastHelper;
-import cn.com.incito.socket.core.Message;
-import cn.com.incito.socket.core.NCoreSocket;
-import cn.com.incito.socket.message.DataType;
-import cn.com.incito.socket.message.MessagePacking;
-import cn.com.incito.socket.utils.BufferUtils;
 
-import com.alibaba.fastjson.JSONObject;
 import com.google.code.microlog4android.Logger;
 import com.google.code.microlog4android.LoggerFactory;
 
@@ -32,12 +24,10 @@ public class IpSettingDialogFragment extends DialogFragment {
 	ImageButton buttonAgree;
 	public static final Logger Logger = LoggerFactory.getLogger();
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.edit_ip_info, container);
 		editIP = (EditText) view.findViewById(R.id.edit_ip_name);
-		editIP.setText(MyApplication.getInstance().getSharedPreferences()
-				.getString(Constants.PREFERENCE_IP, Constants.IP));
+		editIP.setText(MyApplication.getInstance().getSharedPreferences().getString(Constants.PREFERENCE_IP, Constants.IP));
 		setCancelable(false);
 		buttonAgree = (ImageButton) view.findViewById(R.id.btn_agree);
 		buttonAgree.setOnClickListener(new View.OnClickListener() {
@@ -46,16 +36,12 @@ public class IpSettingDialogFragment extends DialogFragment {
 			public void onClick(View v) {
 				if (ipMatch()) {
 					Constants.setIP(editIP.getText().toString());
-					Editor editor = MyApplication.getInstance()
-							.getSharedPreferences().edit();
-					editor.putString(Constants.PREFERENCE_IP, editIP.getText()
-							.toString());
+					Editor editor = MyApplication.getInstance().getSharedPreferences().edit();
+					editor.putString(Constants.PREFERENCE_IP, editIP.getText().toString());
 					editor.apply();
 					dismiss();
 				} else {
-					ToastHelper.showCustomToast(
-							IpSettingDialogFragment.this.getActivity(),
-							"输入的IP不正确哦");
+					ToastHelper.showCustomToast(IpSettingDialogFragment.this.getActivity(),"输入的IP不正确哦");
 				}
 			}
 		});
@@ -75,20 +61,4 @@ public class IpSettingDialogFragment extends DialogFragment {
 		System.out.println(matcher.matches());
 		return matcher.matches();
 	}
-
-	/**
-	 * 发送连接请求
-	 */
-	public void startMainAct() {
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("imei", MyApplication.deviceId);
-		MessagePacking messagePacking = new MessagePacking(
-				Message.MESSAGE_DEVICE_HAS_BIND);
-		messagePacking.putBodyData(DataType.INT,
-				BufferUtils.writeUTFString(jsonObject.toJSONString()));
-		NCoreSocket.getInstance().sendMessage(messagePacking);
-		Logger.debug(Utils.getTime()+"SplashActivity"+":开始判定设备是否绑定..." + "request:" + jsonObject.toJSONString());
-		Log.i("SplashActivity","开始判定设备是否绑定..." + "request:" + jsonObject.toJSONString());
-	}
-
 }

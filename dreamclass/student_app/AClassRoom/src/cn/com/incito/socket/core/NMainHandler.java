@@ -32,9 +32,9 @@ public class NMainHandler extends ChannelInboundHandlerAdapter {
 			MessagePacking packing = new MessagePacking(Message.MESSAGE_HEART_BEAT);
 			NCoreSocket.getInstance().sendMessage(packing);
 		} else {
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ "NMainHandler:收到服务器消息:" + message);
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NMainHandler:收到服务器消息:msgId:" + msgId);
 			if(messagePacking.getJsonObject() == null){
-				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ "NMainHandler:收到服务器消息:只有消息ID没有数据");
+				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NMainHandler:收到服务器消息:只有消息ID没有数据:msgId:" + msgId);
 			}
 			messagePacking.getHandler().handleMessage(messagePacking.getJsonObject());
 		}
@@ -45,12 +45,12 @@ public class NMainHandler extends ChannelInboundHandlerAdapter {
 	 */
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NMainHandler:与服务器连接建立成功,发送设备登录信息!");
+		
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NMainHandler:与服务器连接建立成功,发送设备登录消息!");
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("imei", MyApplication.deviceId);
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_HAND_SHAKE);
 		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
-		
 		NCoreSocket.getInstance().sendMessage(messagePacking);
 	}
 	
@@ -61,11 +61,12 @@ public class NMainHandler extends ChannelInboundHandlerAdapter {
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause){
 		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NMainHandler:由于出现异常我将主动关闭通道,出现异常原因:" + cause.getMessage());
+//		MyApplication.getInstance().setReconnect(true);
 		ctx.close();
 		
 		WaitingActivity waitingActivity = UIHelper.getInstance().getWaitingActivity();
 		if(waitingActivity != null){
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":NCoreSocket:通知学生下线");
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":NMainHandler:由于异常改变本pad的所有学生的状态!");
 			waitingActivity.notifyStudentOffline();
 		}
 	}

@@ -1,12 +1,12 @@
 package cn.com.incito.classroom.ui.activity;
 
+import java.lang.ref.WeakReference;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -45,23 +45,34 @@ public class ResponderActivity extends BaseActivity {
 	private Timer timer;
 	private TimerTask timerTask;
 	
-	@SuppressLint("HandlerLeak")
-	private Handler handler = new Handler(){
+	private ResponderActivityHandler handler;
+	
+	private static final class ResponderActivityHandler extends Handler{
+		WeakReference<ResponderActivity> weakReference;
+		
+		public ResponderActivityHandler(ResponderActivity activity) {
+			weakReference = new WeakReference<ResponderActivity>(activity);
+		}
+		
+		@Override
 		public void handleMessage(android.os.Message msg) {
+			final ResponderActivity responderActivity = weakReference.get();
 			switch (msg.what) {
 			case RANDOM_BUTTEON_POSITION:
-				RandomButton();
+				if(responderActivity != null){
+					responderActivity.RandomButton();
+				}
 				break;
-
 			default:
 				break;
 			}
-		};
-	}; 
+		}
+	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		handler = new ResponderActivityHandler(this);
 		this.beforResponderisLockScreeen = getIntent().getExtras().getBoolean("beforResponderisLockScreeen");
 		timer = new Timer();
 		timerTask = new TimerTask() {
@@ -108,47 +119,28 @@ public class ResponderActivity extends BaseActivity {
 		imageButton.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
 		layoutParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-//		
-//		layoutParams.leftMargin = randomX();
-//		layoutParams.topMargin = randomY();
-//		
 		imageButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-//				if(timer != null){
-//					timer.cancel();
-//				}
-				MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "ResponderActivity:发送抢答消息开始");
+				if(NCoreSocket.getInstance().getChannel() != null){
+					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "ResponderActivity:发送抢答消息!");
+					JSONObject jsonObject = new JSONObject();
+					jsonObject.put("imei", MyApplication.deviceId);
+					MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_RESPONDER);
+					messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
+					NCoreSocket.getInstance().sendMessage(messagePacking);
+				}else{
+					showToast();
+				}
 				
-				MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_RESPONDER);
-				JSONObject jsonObject = new JSONObject();
-				jsonObject.put("imei", MyApplication.deviceId);
-				messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
-				NCoreSocket.getInstance().sendMessage(messagePacking);
-				MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "ResponderActivity:发送抢答消息成功");
 			}
 		});
 		
 		relativeLayout.addView(imageButton,layoutParams);
 		setContentView(relativeLayout);
 		
-		//开始旋转动画
-//		startAnimation();
 	}
-	
-	/**
-	 * 按钮旋转动画
-	
-	private void startAnimation() {
-		rotateAnimation = new RotateAnimation(0, 359, Animation.RELATIVE_TO_SELF, 0.5f,  Animation.RELATIVE_TO_SELF, 0.5f);
-		rotateAnimation.setInterpolator(new LinearInterpolator());//匀速旋转
-		rotateAnimation.setRepeatCount(-1);//一直不停的旋转
-		rotateAnimation.setDuration(3000);
-		rotateAnimation.setRepeatMode(Animation.RESTART);
-		
-		imageButton.startAnimation(rotateAnimation);
-	} */
 
 	/**
 	 * 随机的x轴坐标

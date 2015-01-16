@@ -4,7 +4,6 @@ import java.lang.ref.WeakReference;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,11 +17,9 @@ import cn.com.incito.classroom.base.BaseActivity;
 
 /**
  * 倒计时activity
- * 
  * @author hm
  *
  */
-@SuppressLint("HandlerLeak")
 public class CountdownActivity extends BaseActivity {
 
 	private ImageView countdown_image;
@@ -45,34 +42,27 @@ public class CountdownActivity extends BaseActivity {
 
 			switch (msg.what) {
 			case 3:
-				activity.countdown_image
-						.setImageResource(R.drawable.cuountdown_3);
-				activity.countdown_image
-						.startAnimation(activity.scaleAnimation);
+				activity.countdown_image.setImageResource(R.drawable.cuountdown_3);
+				activity.countdown_image.startAnimation(activity.scaleAnimation);
 				activity.backgroundNumber--;
 				break;
 			case 2:
-				activity.countdown_image
-						.setImageResource(R.drawable.cuountdown_2);
-				activity.countdown_image
-						.startAnimation(activity.scaleAnimation);
+				activity.countdown_image.setImageResource(R.drawable.cuountdown_2);
+				activity.countdown_image.startAnimation(activity.scaleAnimation);
 				activity.backgroundNumber--;
 				break;
 			case 1:
-				activity.countdown_image
-						.setImageResource(R.drawable.cuountdown_1);
-				activity.countdown_image
-						.startAnimation(activity.scaleAnimation);
+				activity.countdown_image.setImageResource(R.drawable.cuountdown_1);
+				activity.countdown_image.startAnimation(activity.scaleAnimation);
 				activity.backgroundNumber--;
 				break;
 			case 0:
-				boolean beforResponderisLockScreeen = activity.getIntent()
-						.getExtras().getBoolean("beforResponderisLockScreeen");
+				boolean beforResponderisLockScreeen = activity.getIntent().getExtras().getBoolean("beforResponderisLockScreeen");
 				Intent intent = new Intent(activity, ResponderActivity.class);
-				intent.putExtra("beforResponderisLockScreeen",
-						beforResponderisLockScreeen);
+				intent.putExtra("beforResponderisLockScreeen",beforResponderisLockScreeen);
 				activity.finish();
 				activity.startActivity(intent);
+				break;
 			default:
 				break;
 			}
@@ -88,9 +78,7 @@ public class CountdownActivity extends BaseActivity {
 
 		countdown_image = (ImageView) findViewById(R.id.countdown_image);
 
-		scaleAnimation = new ScaleAnimation(0.5f, 1, 0.7f, 1,
-				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
-				0.5f);
+		scaleAnimation = new ScaleAnimation(0.5f, 1, 0.7f, 1,Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,0.5f);
 		scaleAnimation.setDuration(500);
 		scaleAnimation.setFillAfter(true);
 		scaleAnimation.setFillBefore(false);

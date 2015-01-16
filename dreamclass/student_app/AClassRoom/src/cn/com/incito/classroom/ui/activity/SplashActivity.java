@@ -196,7 +196,7 @@ public class SplashActivity extends BaseActivity {
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("imei", MyApplication.deviceId);
 			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_HAS_BIND);
-			messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(jsonObject.toJSONString()));
+			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
 			if (NCoreSocket.getInstance().getChannel() != null) {
 				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":splashActivity:登录");
 				NCoreSocket.getInstance().sendMessage(messagePacking);

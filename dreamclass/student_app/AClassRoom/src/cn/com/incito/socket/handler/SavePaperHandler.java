@@ -17,7 +17,7 @@ public class SavePaperHandler extends MessageHandler {
 		if (MyApplication.getInstance().isSubmitPaper()) {
 			MyApplication.getInstance().setSubmitPaper(false);
 		} else {
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":SavePaperHandler发送作业开始:");
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":SavePaperHandler:开始收取作业");
 			if (UIHelper.getInstance().getDrawBoxActivity() != null && AppManager.getAppManager().currentActivity().getClass().getSimpleName().equals("DrawBoxActivity")) {
 				UIHelper.getInstance().getDrawBoxActivity().submitPaper();;
 			}
