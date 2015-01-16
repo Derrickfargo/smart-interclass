@@ -14,12 +14,14 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Quiz;
+import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.ui.widget.MedalDialog;
 import cn.com.incito.interclass.ui.widget.PraiseDialog;
 import cn.com.incito.interclass.ui.widget.PunishDialog;
@@ -300,14 +302,35 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		String studentId = "";
+		List<Student> studentList = group.getStudents();
+		if (studentList == null || studentList.size() == 0) {
+			return;
+		}
+		for (int i = 0; i < studentList.size(); i++) {
+			if (studentList.get(i).isLogin()) {
+				studentId = studentId + studentList.get(i).getId() + ",";
+			}
+		}
 		if (e.getSource() == btnPlus) {
+			if (studentId == null || "".equals(studentId)) {
+				JOptionPane.showMessageDialog(this, "当前小组没有学生登陆，不能为小组加分！");
+				return;
+			}
 			new PraiseDialog(null, group);
-			
 		}
 		if (e.getSource() == btnMinus) {
+			if (studentId == null || "".equals(studentId)) {
+				JOptionPane.showMessageDialog(this, "当前小组没有学生登陆，不能为小组减分！");
+				return;
+			}
 			new PunishDialog(null, group);
 		}
 		if (e.getSource() == btnMedal) {
+			if (studentId == null || "".equals(studentId)) {
+				JOptionPane.showMessageDialog(this, "当前小组没有学生登陆，不能为小组颁发勋章！");
+				return;
+			}
 			new MedalDialog(MainFrame.getInstance().getFrame(), group);
 		}
 		if (quizPanel.contains(e.getSource())) {

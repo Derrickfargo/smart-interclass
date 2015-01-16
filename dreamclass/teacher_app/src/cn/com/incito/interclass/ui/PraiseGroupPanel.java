@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.List;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -14,12 +15,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-
-import cn.com.incito.http.AsyncHttpConnection;
-import cn.com.incito.http.StringResponseHandler;
-import cn.com.incito.http.support.ParamsWrapper;
 import cn.com.incito.interclass.po.Group;
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.ui.widget.MedalDialog;
@@ -27,7 +22,6 @@ import cn.com.incito.interclass.ui.widget.MultilineLabel;
 import cn.com.incito.interclass.ui.widget.PraiseDialog;
 import cn.com.incito.interclass.ui.widget.PraiseDialog.setScoreCallback;
 import cn.com.incito.interclass.ui.widget.PunishDialog;
-import cn.com.incito.server.utils.URLs;
 
 /**
  * 小组表扬Panel
@@ -246,13 +240,35 @@ public class PraiseGroupPanel extends JPanel implements MouseListener, setScoreC
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		String studentId = "";
+		List<Student> studentList = group.getStudents();
+		if (studentList == null || studentList.size() == 0) {
+			return;
+		}
+		for (int i = 0; i < studentList.size(); i++) {
+			if (studentList.get(i).isLogin()) {
+				studentId = studentId + studentList.get(i).getId() + ",";
+			}
+		}
 		if (e.getSource() == btnPraise) {
+			if (studentId == null || "".equals(studentId)) {
+				JOptionPane.showMessageDialog(this, "当前小组没有学生登陆，不能为小组加分！");
+				return;
+			}
 			new PraiseDialog(this, group);
 		}
 		if (e.getSource() == btnPunish) {
+			if (studentId == null || "".equals(studentId)) {
+				JOptionPane.showMessageDialog(this, "当前小组没有学生登陆，不能为小组减分！");
+				return;
+			}
 			new PunishDialog(this, group);
 		}
 		if (e.getSource() == btnMedal) {
+			if (studentId == null || "".equals(studentId)) {
+				JOptionPane.showMessageDialog(this, "当前小组没有学生登陆，不能为小组颁发勋章！");
+				return;
+			}
 			new MedalDialog(MainFrame.getInstance().getFrame(), group);
 		}
 	}
