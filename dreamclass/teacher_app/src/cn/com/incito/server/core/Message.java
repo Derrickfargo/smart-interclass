@@ -3,8 +3,6 @@ package cn.com.incito.server.core;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.nio.ByteBuffer;
-import java.nio.channels.SocketChannel;
-
 import org.apache.log4j.Logger;
 
 import cn.com.incito.server.exception.NoHandlerException;
@@ -120,6 +118,11 @@ public class Message {
 	 * 结束抢答
 	 */
 	public static final Byte MESSAGE_RESPONDER_END = 0x13;
+	
+	/**
+	 *重连命令 
+	 */
+	public static final Byte MESSAGE_RECONNECT = 0x14;
 	
 	private Logger log = Logger.getLogger(Message.class);
 	

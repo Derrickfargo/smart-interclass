@@ -2,9 +2,6 @@ package cn.com.incito.server.handler;
 
 import io.netty.channel.ChannelHandlerContext;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.channels.SocketChannel;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -39,13 +36,7 @@ public class GroupSubmitHandler extends MessageHandler {
 		logger.info("回复分组信息提交确认消息:" + json);
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_CONFIRM);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
-//        byte[] messageData = messagePacking.pack().array();
-//        ByteBuffer buffer = ByteBuffer.allocate(messageData.length);
         for(ChannelHandlerContext channel: channels){
-//			buffer.clear();
-//			buffer.put(messageData);
-//			buffer.flip();
-//			channel.writeAndFlush(buffer);
 			SocketServiceCore.getInstance().sendMsg(messagePacking, channel);
 		}
 	}

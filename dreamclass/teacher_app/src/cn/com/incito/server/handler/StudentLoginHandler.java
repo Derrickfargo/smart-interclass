@@ -2,9 +2,6 @@ package cn.com.incito.server.handler;
 
 import io.netty.channel.ChannelHandlerContext;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.channels.SocketChannel;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -71,11 +68,6 @@ public class StudentLoginHandler extends MessageHandler {
 				logger.info("注册学生结果，学号已注册:" + result);
 				MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
 				messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(result));
-//				byte[] handShakResponse = messagePacking.pack().array();
-//		        ByteBuffer buffer = ByteBuffer.allocate(handShakResponse.length);
-//		        buffer.put(handShakResponse);
-//		        buffer.flip();
-//		        ctx.channel().writeAndFlush(buffer);
 		        SocketServiceCore.getInstance().sendMsg(messagePacking, ctx);
 		        return;
 			}
