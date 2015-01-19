@@ -345,14 +345,21 @@ public class CoreService {
 		return null;
 	}
 
-	public Student getStudentByNumber(String number) {
-		for (Group group : app.getGroupList()) {
+	public Student getStudentByNumber(String number,String imei) {
+		Device device = app.getImeiDevice().get(imei);
+		if(device == null)
+			return null;
+		Table table = app.getDeviceTable().get(device.getId());
+		if(table == null)
+			return null;
+		Group group = app.getTableGroup().get(table.getId());
+		if(group == null)
+			return null;
 			List<Student> students = group.getStudents();
 			for (Student student : students) {
 				if (student.getNumber().equals(number)) {
 					return student;
 				}
-			}
 		}
 		return null;
 	}
@@ -378,18 +385,10 @@ public class CoreService {
 	 * @return
 	 */
 	public String getGroupByIMEI(String imei) {
-		Device device = app.getImeiDevice().get(imei);
-		if (device == null) {
-			// 系统中无此设备
-			return JSONUtils.renderJSONString(1);// 失败
-		}
-		Table table = app.getDeviceTable().get(device.getId());
-		if (table == null) {
-			// 此设备未绑定课桌
-			return JSONUtils.renderJSONString(2);// 失败
-		}
-		Group group = app.getTableGroup().get(table.getId());
 		Group testGroup = app.getGroupOnline(imei);
+		if(testGroup==null){
+			return JSONUtils.renderJSONString(1);
+		}
 		return JSONUtils.renderJSONString(0, testGroup);
 	}
 

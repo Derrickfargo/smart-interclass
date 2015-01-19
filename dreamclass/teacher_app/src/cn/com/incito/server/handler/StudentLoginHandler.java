@@ -62,7 +62,7 @@ public class StudentLoginHandler extends MessageHandler {
     		break;
         case 2:
         	logger.info("收到注册学生消息:" + data);
-			Student student = service.getStudentByNumber(number);
+			Student student = service.getStudentByNumber(number,imei);
 			if(student != null){//该学号已注册
 				result = JSONUtils.renderJSONString(-2, number);// 学号已注册
 				logger.info("注册学生结果，学号已注册:" + result);

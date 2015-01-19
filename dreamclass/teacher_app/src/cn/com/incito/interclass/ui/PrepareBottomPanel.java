@@ -26,6 +26,7 @@ import cn.com.incito.interclass.po.Student;
 import cn.com.incito.interclass.po.Table;
 import cn.com.incito.server.api.ApiClient;
 import cn.com.incito.server.api.Application;
+import cn.com.incito.server.core.CoreService;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.SocketServiceCore;
 import cn.com.incito.server.exception.AppException;
@@ -309,8 +310,8 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		for (Group group : groupList) {//遍历小组发送分组消息
 			group.setName("梦想小组"+i);
 			group.setLogo("rainbow");
-			List<Student> groupStudent = new ArrayList<Student>();
-			List<Device> devices =groupDevice.get(group.getId());
+			List<Student> groupStudent = new ArrayList<Student>();//该小组所有学生
+			List<Device> devices =groupDevice.get(group.getId());//该小组所有设备
 			try {
 				ApiClient.updateGroup(group.getId(), "梦想小组"+i, "rainbow");
 			} catch (AppException e) {
@@ -325,8 +326,8 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 				Map<String, Object> rdmMsg = new HashMap<String, Object>();
 				student=students.poll();
 				groupStudent.addAll(student);
-//				rdmMsg.put("group", group);发送小组信息，暂禁止
 				rdmMsg.put("students", student);
+//				rdmMsg.put("group", new CoreService().getGroupByIMEI(device.getImei()));发送小组信息
 				for(Student updateStu:student){				
 					try {
 						ApiClient.loginForStudent(updateStu.getName(), updateStu.getSex(),updateStu.getNumber(), device.getImei());
