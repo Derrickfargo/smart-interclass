@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Icon;
@@ -242,8 +243,8 @@ public class PraiseGroupPanel extends JPanel implements MouseListener, setScoreC
 	public void mouseClicked(MouseEvent e) {
 		String studentId = "";
 		List<Student> studentList = group.getStudents();
-		if (studentList == null || studentList.size() == 0) {
-			return;
+		if (studentList == null) {
+			studentList = new ArrayList<Student>();
 		}
 		for (int i = 0; i < studentList.size(); i++) {
 			if (studentList.get(i).isLogin()) {
@@ -260,6 +261,10 @@ public class PraiseGroupPanel extends JPanel implements MouseListener, setScoreC
 		if (e.getSource() == btnPunish) {
 			if (studentId == null || "".equals(studentId)) {
 				JOptionPane.showMessageDialog(this, "当前小组没有学生登陆，不能为小组减分！");
+				return;
+			}
+			if (group.getScore() < 1) {
+				JOptionPane.showMessageDialog(this, "当前小组积分已经为零！");
 				return;
 			}
 			new PunishDialog(this, group);

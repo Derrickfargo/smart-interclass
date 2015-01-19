@@ -14,6 +14,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -222,8 +223,8 @@ public class PunishDialog extends JDialog implements MouseListener {
 	public void changePoint(final int updateScore) {
 		String studentId = "";
 		List<Student> studentList = group.getStudents();
-		if (studentList == null || studentList.size() < 0) {
-			return;
+		if (studentList == null) {
+			studentList = new ArrayList<Student>();
 		}
 		for (int i = 0; i < studentList.size(); i++) {
 			if (studentList.get(i).isLogin()) {

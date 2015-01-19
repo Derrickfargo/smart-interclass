@@ -305,7 +305,7 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 		String studentId = "";
 		List<Student> studentList = group.getStudents();
 		if (studentList == null || studentList.size() == 0) {
-			return;
+			studentList = new ArrayList<Student>();
 		}
 		for (int i = 0; i < studentList.size(); i++) {
 			if (studentList.get(i).isLogin()) {
@@ -322,6 +322,10 @@ public class QuizGroupPanel extends JPanel implements MouseListener{
 		if (e.getSource() == btnMinus) {
 			if (studentId == null || "".equals(studentId)) {
 				JOptionPane.showMessageDialog(this, "当前小组没有学生登陆，不能为小组减分！");
+				return;
+			}
+			if (group.getScore() < 1) {
+				JOptionPane.showMessageDialog(this, "当前小组积分已经为零！");
 				return;
 			}
 			new PunishDialog(null, group);
