@@ -33,9 +33,7 @@ public class SavePaperHandler extends MessageHandler {
 	public void handleMessage(MessagePacking msg) {
 		logger.info("收到作业提交消息");
 		JSONObject json = msg.getJsonObject();
-//		buffer.flip();
 		// 获取考试id号
-//		quizid = getInfo(buffer);
 		quizid = json.getString("quizId");
 		logger.info("quizid：" + quizid);
 		// 获取imei
