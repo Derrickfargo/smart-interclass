@@ -94,7 +94,6 @@ public class WaitingActivity extends BaseActivity {
 		imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		mAdapter = new GroupNumAdapter(WaitingActivity.this);
 		et_stnumber.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
-		getGroupUserList();
 		// LockScreenReceiver mLockScreenReceiver = new LockScreenReceiver();
 		// mLockScreenReceiver.registerScreenActionReceiver(this);
 	}
@@ -182,7 +181,6 @@ public class WaitingActivity extends BaseActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-
 	}
 
 	@Override
@@ -421,6 +419,7 @@ public class WaitingActivity extends BaseActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		getGroupUserList();
 	}
 
 	/**

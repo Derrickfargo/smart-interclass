@@ -1,8 +1,5 @@
 package cn.com.incito.classroom.base;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import android.app.Application;
 import android.app.ExecRootCmd;
 import android.app.KeyguardManager;
@@ -23,7 +20,6 @@ import android.provider.Settings;
 import android.util.Log;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.exception.AppUncaughtException;
-import cn.com.incito.classroom.vo.LoginReqVo;
 import cn.com.incito.classroom.vo.LoginResVo;
 import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.socket.core.NCoreSocket;
@@ -38,17 +34,6 @@ import com.google.code.microlog4android.config.PropertyConfigurator;
 public class MyApplication extends Application {
 	public static final Logger Logger = LoggerFactory.getLogger();
 	public boolean isOnClass;// 是否在上课
-//	public boolean isReconnect;
-//	public boolean isNormalExit;
-	
-
-//	public boolean isReconnect() {
-//		return isReconnect;
-//	}
-//
-//	public void setReconnect(boolean isReconnect) {
-//		this.isReconnect = isReconnect;
-//	}
 
 	public boolean isOnClass() {
 		return isOnClass;
@@ -62,7 +47,6 @@ public class MyApplication extends Application {
 
 	public static String deviceId;
 
-	private static final String TAG = MyApplication.class.getSimpleName();
 
 	private static MyApplication mInstance = null;
 
@@ -275,8 +259,7 @@ public class MyApplication extends Application {
 							"disable_powerkey", 0); // 打开电源按钮唤醒功能
 					execRootCmd.powerkey();
 					KeyguardManager mManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
-					KeyguardLock mKeyguardLock = mManager
-							.newKeyguardLock("Lock");
+					KeyguardLock mKeyguardLock = mManager.newKeyguardLock("Lock");
 					// 让键盘锁失效
 					mKeyguardLock.disableKeyguard();
 				}
