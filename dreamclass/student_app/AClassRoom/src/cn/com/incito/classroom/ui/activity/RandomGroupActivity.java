@@ -55,6 +55,7 @@ public class RandomGroupActivity extends BaseActivity {
 		//解析后台传回的数据
 		String students = getIntent().getExtras().getString("data");
 		studentList = JSONArray.parseArray(JSON.parseObject(students).getString("students"), Student.class);
+		
 		randomGroupAdapter = new RandomGroupAdapter(this, studentList);
 		student_list.setAdapter(randomGroupAdapter);
 		

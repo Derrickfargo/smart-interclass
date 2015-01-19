@@ -170,4 +170,9 @@ public class UpdateManager {
 		AppManager.getAppManager().AppExit(mContext);
 	}
 
+	public void dimissDialog() {
+		if(downloadDialog != null && downloadDialog.isShowing()){
+			downloadDialog.dismiss();
+		}
+	}
 }

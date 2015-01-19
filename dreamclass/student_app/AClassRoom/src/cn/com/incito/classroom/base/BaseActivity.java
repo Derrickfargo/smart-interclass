@@ -1,5 +1,6 @@
 package cn.com.incito.classroom.base;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +11,9 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
+import cn.com.incito.classroom.ui.activity.SplashActivity;
 import cn.com.incito.classroom.ui.widget.NetWorkDialog;
+import cn.com.incito.classroom.utils.UpdateManager;
 import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.common.utils.UIHelper;
 
@@ -85,6 +88,15 @@ public class BaseActivity extends FragmentActivity {
 				NetworkInfo wifiInfo = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 				NetworkInfo activeInfo = manager.getActiveNetworkInfo();
 				if (activeInfo == null || wifiInfo == null) {
+					Activity activity = AppManager.getAppManager().currentActivity();
+					String activityName = activity.getClass().getSimpleName();
+					if("SplashActivity".equals(activityName)){
+						SplashActivity splashActivity = (SplashActivity) activity;
+						UpdateManager updateManager = splashActivity.getUpdateManager();
+						if(updateManager != null){
+							updateManager.dimissDialog();
+						}
+					}
 					if (netWorkDialog == null) {
 						netWorkDialog = new NetWorkDialog(context);
 						netWorkDialog.setCancelable(false);
