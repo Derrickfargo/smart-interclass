@@ -49,30 +49,11 @@ public class SavePaperHandler extends MessageHandler {
 		sendResponse(JSONUtils.renderJSONString(0));
 	}
 
-//	public void handleMessage(byte[] imageByte) {
-//		// 需要给组中所以的设备发送
-//		service.SavePaper(imei, quizid, Application.getInstance().getLessionid(), imageByte, message.getChannel());
-//		sendResponse(JSONUtils.renderJSONString(0));
-//	}
-
 	private void sendResponse(String json) {
 		logger.info("回复作业提交消息：" + json);
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SAVE_PAPER_RESULT);
 		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
 		SocketServiceCore.getInstance().sendMsg(messagePacking, ctx);
-	}
-
-	/**
-	 * @param buffer
-	 * @return 获得android端传过来的数据
-	 */
-	private String getInfo(ByteBuffer buffer) {
-		byte[] intSize = new byte[4];// int
-		buffer.get(intSize);
-		long idLength = BufferUtils.decodeIntLittleEndian(intSize, 0, intSize.length);
-		byte[] idByte = new byte[(int) idLength];
-		buffer.get(idByte);
-		return BufferUtils.readUTFString(idByte);
 	}
 
 	@Override
