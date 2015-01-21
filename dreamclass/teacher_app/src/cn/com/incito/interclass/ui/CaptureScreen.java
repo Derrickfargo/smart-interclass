@@ -175,14 +175,16 @@ public class CaptureScreen {
 				while (it.hasNext()) {
 					Entry<String, ChannelHandlerContext> entry = it.next();
 					String imei = entry.getKey();
+					logger.info("將要發送作業的設備Imei"+imei);
 					List<Student> studentsList = app.getStudentByImei(imei);
 					// 记录有学生登陆的Pad
 					if (studentsList.size() > 0) {
 						ChannelHandlerContext channel = entry.getValue();
 						if (channel != null) {
-							if (channel.channel().isActive()) {
+							if (channel.channel().isOpen()) {
 								SocketServiceCore.getInstance().sendMsg(data, channel);
 								app.addQuizIMEI(imei);// 已发送的IMEI
+								logger.info("已發送作業"+imei);
 							}
 						}
 					}

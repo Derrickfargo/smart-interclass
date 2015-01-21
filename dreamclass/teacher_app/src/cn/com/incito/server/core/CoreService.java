@@ -511,6 +511,7 @@ public class CoreService {
 
 		List<Student> studentsList = app.getStudentByImei(imei);
 		StringBuffer str = new StringBuffer();
+		logger.info("保存学生作业结果："+"在线学生数量："+studentsList.size()+";"+imei);
 		if (studentsList.size() > 0) {
 			for (int i = 0; i < studentsList.size(); i++) {
 				str.append(studentsList.get(i).getName() + ";");

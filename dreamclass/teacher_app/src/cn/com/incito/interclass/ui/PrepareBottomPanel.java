@@ -373,7 +373,6 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 	private void sendMsgToClient(final MessagePacking rdmPacking,
 			final ChannelHandlerContext clientChannel) {	
 				SocketServiceCore.getInstance().sendMsg(rdmPacking, clientChannel);
-				logger.info("随机分组信息发送失败！"+clientChannel.channel().remoteAddress());
 	}
 
 	@Override

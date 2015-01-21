@@ -100,7 +100,7 @@ public class Application {
 
 	private Map<Integer, List<Integer>> tempVote = new HashMap<Integer, List<Integer>>();// 小组的投票信息
 
-	private List<String> tempQuizIMEI = new ArrayList<String>();
+	private List<String> tempQuizIMEI = new ArrayList<String>();//记录已发送设备Imei
 
 	private Map<String, Quiz> tempQuiz = new HashMap<String, Quiz>();// 随堂联系,imei和作业
 
