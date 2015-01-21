@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,6 +42,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
+import android.provider.Settings.Secure;
 import android.provider.Settings.System;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -208,7 +210,7 @@ public class AndroidUtil {
 	 */
 	public static String getDeviceId(Context context) {
 		TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-		String androidId = System.getString(context.getContentResolver(), System.ANDROID_ID);
+		String androidId = System.getString(context.getContentResolver(), Secure.ANDROID_ID);
 		String imei = tm.getDeviceId();
 		String imsi = tm.getSubscriberId();
 		imei = imei == null ? androidId : imei;
@@ -448,7 +450,7 @@ public class AndroidUtil {
 	 */
 	public static String getLasMouthTime() {
 		Calendar calendar = Calendar.getInstance();
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm",Locale.CHINA);
 		calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) - 1);
 		return df.format(calendar.getTime());
 	}
@@ -458,7 +460,7 @@ public class AndroidUtil {
 	 * @return
 	 */
 	public static String getCurrentTime() {
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS",Locale.CHINA);
 		return df.format(new Date());
 	}
 
@@ -547,4 +549,5 @@ public class AndroidUtil {
 	public static int notTextNumber(String str){
 		return str.length() - TextNumber(str);
 	}
+	
 }

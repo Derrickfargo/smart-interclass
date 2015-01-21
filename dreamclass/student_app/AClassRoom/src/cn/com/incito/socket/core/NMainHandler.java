@@ -45,7 +45,6 @@ public class NMainHandler extends ChannelInboundHandlerAdapter {
 	 */
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
-		
 		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NMainHandler:与服务器连接建立成功,发送设备登录消息!");
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("imei", MyApplication.deviceId);
@@ -61,17 +60,13 @@ public class NMainHandler extends ChannelInboundHandlerAdapter {
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause){
 		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NMainHandler:由于出现异常我将主动关闭通道,出现异常原因:" + cause.getMessage());
-//		MyApplication.getInstance().setReconnect(true);
 		ctx.close();
-		
 		WaitingActivity waitingActivity = UIHelper.getInstance().getWaitingActivity();
 		if(waitingActivity != null){
 			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":NMainHandler:由于异常改变本pad的所有学生的状态!");
 			waitingActivity.notifyStudentOffline();
 		}
 	}
-	
-	
 
 	@Override
 	public void userEventTriggered(ChannelHandlerContext ctx, Object evt){

@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,9 +55,13 @@ public class UpdateManager {
 	}
 
 	public Handler mHandler = new Handler() {
+		
 
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
+			case 0:
+				mProgress.setProgress(0);
+				break;
 			case DOWN_UPDATE:
 				mProgress.setProgress(progress);
 				break;
@@ -67,6 +72,7 @@ public class UpdateManager {
 				break;
 			}
 		};
+		
 	};
 
 	// 外部接口让主Activity调用
@@ -82,13 +88,6 @@ public class UpdateManager {
 		View v = inflater.inflate(R.layout.progress, null);
 		mProgress = (ProgressBar) v.findViewById(R.id.progress);
 		builder.setView(v);
-		// builder.setNegativeButton("取消", new OnClickListener() {
-		// @Override
-		// public void onClick(DialogInterface dialog, int which) {
-		// dialog.dismiss();
-		// interceptFlag = true;
-		// }
-		// });
 		downloadDialog = builder.create();
 		downloadDialog.setCanceledOnTouchOutside(false);
 		downloadDialog.show();
@@ -138,7 +137,6 @@ public class UpdateManager {
 				ApiClient.uploadErrorLog(e.getMessage());
 				e.printStackTrace();
 			}
-
 		}
 	};
 
@@ -171,8 +169,10 @@ public class UpdateManager {
 	}
 
 	public void dimissDialog() {
+		mHandler.sendEmptyMessage(0);
 		if(downloadDialog != null && downloadDialog.isShowing()){
 			downloadDialog.dismiss();
+			downloadDialog =  null;
 		}
 	}
 }

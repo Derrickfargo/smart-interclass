@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
@@ -15,11 +17,6 @@ import cn.com.incito.classroom.ui.activity.SplashActivity;
 import cn.com.incito.classroom.ui.widget.NetWorkDialog;
 import cn.com.incito.classroom.utils.UpdateManager;
 import cn.com.incito.common.utils.ToastHelper;
-import cn.com.incito.common.utils.UIHelper;
-
-import com.google.code.microlog4android.Logger;
-import com.google.code.microlog4android.LoggerFactory;
-import com.google.code.microlog4android.config.PropertyConfigurator;
 
 /**
  * activity基类 Created by popoy on 2014/8/5.
@@ -67,7 +64,6 @@ public class BaseActivity extends FragmentActivity {
 	protected void onPause() {
 		super.onPause();
 		unregisterReceiver(receiver);
-
 	}
 
 	@Override
@@ -107,6 +103,9 @@ public class BaseActivity extends FragmentActivity {
 						}
 					}
 				}else{
+					WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+					WifiInfo info = wifi.getConnectionInfo();
+					MyApplication.getInstance().setDeviceId(info.getMacAddress().replace(":", "-"));
 					if(netWorkDialog != null){
 						netWorkDialog.dismiss();
 					}
