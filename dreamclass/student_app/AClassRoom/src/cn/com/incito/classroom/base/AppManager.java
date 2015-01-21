@@ -106,8 +106,7 @@ public class AppManager {
 	 */
 	public void AppExit(Context context) {
 		try {
-//			SharedPreferences preferences = MyApplication.getInstance().getSharedPreferences();
-//			preferences.edit().putBoolean("isNormalExit", true).commit();
+			NCoreSocket.getInstance().stopConnection();
 			MyApplication.getInstance().sendBroadcast(new Intent("android.intent.action.SHOW_NAVIGATION_BAR"));
 			MyApplication.getInstance().release();
 			finishAllActivity();
