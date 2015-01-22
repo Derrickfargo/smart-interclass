@@ -16,8 +16,13 @@ import android.widget.ListView;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.adapter.RandomGroupAdapter;
 import cn.com.incito.classroom.base.BaseActivity;
+import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.vo.Student;
 import cn.com.incito.common.utils.UIHelper;
+import cn.com.incito.socket.core.NCoreSocket;
+import cn.com.incito.socket.message.DataType;
+import cn.com.incito.socket.message.MessagePacking;
+import cn.com.incito.socket.utils.BufferUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -45,6 +50,11 @@ public class RandomGroupActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		UIHelper.getInstance().setRandomGroupActivity(this);
 		setContentView(R.layout.random_group_activity);
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("imei", MyApplication.deviceId);
+		MessagePacking messagePacking = new MessagePacking(cn.com.incito.socket.core.Message.MESSAGE_GROUP_LIST);
+		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(jsonObject.toJSONString()));
+		NCoreSocket.getInstance().sendMessage(messagePacking);
 		handler = new RandomGroupActivityHandler(this);
 		
 		linearLayout = (LinearLayout) findViewById(R.id.liner_layout);

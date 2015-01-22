@@ -679,6 +679,5 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 	
 	@Override
 	public void onDestroy(SketchPadView obj) {
-		super.onDestroy();
 	}
 }
