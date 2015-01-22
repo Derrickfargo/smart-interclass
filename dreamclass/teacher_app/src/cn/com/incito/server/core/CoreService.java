@@ -345,7 +345,7 @@ public class CoreService {
 		return null;
 	}
 
-	public Student getStudentByNumber(String number,String imei) {
+	public Student getStudentByNumber(String number,String imei,String name) {
 		Device device = app.getImeiDevice().get(imei);
 		if(device == null)
 			return null;
@@ -361,6 +361,29 @@ public class CoreService {
 					return student;
 				}
 		}
+		Student stu = recheck(number,name,group);
+		return stu;
+	}
+	
+	/**
+	 * 检查在别的小组中是否存在同样学号不同姓名的
+	 * @param number
+	 * @param name
+	 * @param group
+	 * @return
+	 */
+	private Student recheck(String number,String name ,Group group){
+		for(Group groups:app.getGroupList()){
+			if(groups.getId()!=group.getId()){
+				List<Student> students = groups.getStudents();
+				for(Student stu:students){
+					if(stu.getNumber().equals(number)&&!stu.getName().equals(name)){
+						return stu;
+					}
+				}
+			}			
+		}
+		
 		return null;
 	}
 
