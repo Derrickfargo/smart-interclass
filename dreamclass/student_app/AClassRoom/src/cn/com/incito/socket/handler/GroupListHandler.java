@@ -12,7 +12,7 @@ import cn.com.incito.socket.core.MessageHandler;
 public class GroupListHandler extends MessageHandler {
 	@Override
 	protected void handleMessage() {
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":GroupListHandler收到分组列表"+data.toJSONString());
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":GroupListHandler:收到分组列表");
 		UIHelper.getInstance().getWaitingActivity().doResult(data, WaitingActivity.STUDENT_LIST);
 	}
 }

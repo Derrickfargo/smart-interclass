@@ -94,8 +94,7 @@ public class WaitingActivity extends BaseActivity {
 		imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		mAdapter = new GroupNumAdapter(WaitingActivity.this);
 		et_stnumber.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
-		// LockScreenReceiver mLockScreenReceiver = new LockScreenReceiver();
-		// mLockScreenReceiver.registerScreenActionReceiver(this);
+		getGroupUserList();
 	}
 
 	private void initViews() {
@@ -206,8 +205,8 @@ public class WaitingActivity extends BaseActivity {
 		String json = JSON.toJSONString(loginReqVo);
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
 		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(json));
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":WaitingActivity学生登录:");
 		NCoreSocket.getInstance().sendMessage(messagePacking);
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":WaitingActivity学生登录:" + "request:");
 	}
 
 	/**
@@ -227,8 +226,8 @@ public class WaitingActivity extends BaseActivity {
 		String json = JSON.toJSONString(loginReqVo);
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
 		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(json));
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() +":WaitingActivity:学生退出");
 		NCoreSocket.getInstance().sendMessage(messagePacking);
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() +":WaitingActivity:学生退出...");
 	}
 
 	/**
@@ -283,7 +282,6 @@ public class WaitingActivity extends BaseActivity {
 			llayout1.setVisibility(View.GONE);
 			join_text_notice.setVisibility(View.VISIBLE);
 			join_relative.setPaddingRelative(200, 0, 0, 0);
-			// join_relative.setLeft(400);
 			addState = 0;
 			imm.hideSoftInputFromWindow(llayout.getWindowToken(), 0);
 			return false;
@@ -301,7 +299,7 @@ public class WaitingActivity extends BaseActivity {
 			case STUDENT_LOGIN: {
 				mProgressDialog.hide();
 				JSONObject jsonObject = (JSONObject) msg.getData().getSerializable("data");
-				MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":WaitingActivity获取登录信息..." + jsonObject);
+				MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":WaitingActivity:学生登录成功");
 				if (!"0".equals(jsonObject.getString("code"))) {
 					if ("-2".equals(jsonObject.getString("code"))) {
 						String number = jsonObject.getString("data");
@@ -329,7 +327,7 @@ public class WaitingActivity extends BaseActivity {
 			case STUDENT_LIST: {
 				mProgressDialog.hide();
 				JSONObject jsonObject = (JSONObject) msg.getData().getSerializable("data");
-				MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":WaitingActivity得到分组学生信息..."+ jsonObject.toString());
+				MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":WaitingActivity:得到所有学生信息");
 				if (!"0".equals(jsonObject.getString("code"))) {
 					return;
 				} else if (jsonObject.getJSONObject("data") == null) {
@@ -416,12 +414,6 @@ public class WaitingActivity extends BaseActivity {
 		mHandler.sendMessage(message);
 	}
 	
-	@Override
-	protected void onResume() {
-		super.onResume();
-		getGroupUserList();
-	}
-
 	/**
 	 * 注册成员
 	 */
@@ -440,8 +432,8 @@ public class WaitingActivity extends BaseActivity {
 			ToastHelper.showCustomToast(this, "未连接至服务器,30s后重试!");
 			return;
 		}
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":WaitingActivity:启动注册学生");
 		NCoreSocket.getInstance().sendMessage(messagePacking);
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":WaitingActivity启动注册学生...:" + json);
 	}
 
 	/**
@@ -453,10 +445,9 @@ public class WaitingActivity extends BaseActivity {
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_LIST);
 		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(jsonObject.toJSONString()));
 		if(NCoreSocket.getInstance().getChannel() != null){
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":WaitingActivity启动获取组成员列表");
 			NCoreSocket.getInstance().sendMessage(messagePacking);
 		}
-		
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":WaitingActivity启动获取组成员列表..."+ jsonObject.toJSONString());
 	}
 
 	/**

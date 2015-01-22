@@ -7,6 +7,7 @@ import android.util.Log;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.utils.ApiClient;
 import cn.com.incito.classroom.utils.Utils;
+import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.socket.handler.DeviceBindHandler;
 import cn.com.incito.socket.handler.DeviceHasBindHandler;
 import cn.com.incito.socket.handler.DeviceLoginHandler;
@@ -90,7 +91,6 @@ public final class MessageHandlerResource {
             } catch (Exception e) {
             	ApiClient.uploadErrorLog(e.getMessage());
             	MyApplication.Logger.debug(Utils.getTime()+"MessageHandlerResource+"+"获取MessageHandler出错:" + e.getMessage());
-                Log.e("MessageHandlerResource", "获取MessageHandler出错:" + e.getMessage());
                 return null;
             }
         }

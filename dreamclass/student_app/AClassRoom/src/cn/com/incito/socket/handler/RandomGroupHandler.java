@@ -14,7 +14,7 @@ public class RandomGroupHandler extends MessageHandler {
 
 	@Override
 	protected void handleMessage() {
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "::RandomGroupHandler::收到随机分组消息" + data.toJSONString());
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "::RandomGroupHandler::收到随机分组消息");
 		
 		String currentActivityName = AppManager.getAppManager().currentActivity().getClass().getSimpleName();
 		

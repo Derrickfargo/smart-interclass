@@ -85,7 +85,7 @@ public class ConfirmGroupInfoActivity extends BaseActivity implements
 
 		if(NCoreSocket.getInstance().getChannel() != null){
 			NCoreSocket.getInstance().sendMessage(messagePacking);
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":ConfirmGroupInfoActivity:启动分组确认..." + "request:" + json.toJSONString());
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":ConfirmGroupInfoActivity:启动分组确认");
 		}else{
 			showToast();
 		}

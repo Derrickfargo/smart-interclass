@@ -14,7 +14,7 @@ public class GroupEditHandler extends MessageHandler {
 	protected void handleMessage() {
 		String currentActivityName = AppManager.getAppManager().currentActivity().getClass().getSimpleName();
 		int groupID = data.getIntValue("id");
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":GroupEditHandler收到修改分组...组ID：" + groupID);
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":GroupEditHandler:收到修改分组...组ID：" + groupID);
 		if("RandomGroupActivity".equals(currentActivityName)){
 			AppManager.getAppManager().finishActivity();
 		}

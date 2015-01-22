@@ -17,7 +17,7 @@ public class DeviceBindHandler extends MessageHandler {
 			UIHelper uiHelper = UIHelper.getInstance();
 			uiHelper.showLoginActivity();
 		} else {
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":DeviceBindHandler:设备绑定失败，一个桌子最多绑定..."+ Constants.PAD_PER_DESK + "个pad"+ + Constants.PAD_PER_DESK + "个pad");
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":DeviceBindHandler:设备绑定失败，一个桌子最多绑定"+ Constants.PAD_PER_DESK + "个pad");
 			UIHelper.getInstance().getBindDeskActivity().showErrorDialog();
 		}
 	}

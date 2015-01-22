@@ -11,6 +11,7 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 
+import android.os.SystemClock;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.common.utils.AndroidUtil;
@@ -74,8 +75,7 @@ public class FTPUtils {
 				ftpClient.disconnect();
 				return false;
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
 			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":FTPUtils:79行:出现异常:" + e.getMessage());
 			return false;
 		}
@@ -113,16 +113,13 @@ public class FTPUtils {
 			fileInputStream.close(); //
 			ftpClient.logout();
 			ftpClient.disconnect();
-		} catch (IOException e) { // TODO Auto-generated
-			e.printStackTrace();
+		} catch (Exception e) { // TODO Auto-generated
 			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":FTPUtils:117行:出现异常:" + e.getMessage());
 			return false;
 		}finally{  
             try {  
-//            	ftpClient.logout();
                 ftpClient.disconnect();  
-            } catch (IOException e) {  
-                e.printStackTrace();
+            } catch (Exception e) {  
     			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":FTPUtils:125行:出现异常:" + e.getMessage());
 
             }  
@@ -144,12 +141,7 @@ public class FTPUtils {
 		if (!ftpClient.isConnected()) {
 			if (!initFTPSetting(FTPUrl, FTPPort, UserName, UserPassword)) {
 				MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":FTPUtils:FTP服务器初始化连接失败");
-				try {
-					Thread.sleep(3000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-	    			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":FTPUtils:94行:出现异常:" + e.getMessage());
-				}
+				SystemClock.sleep(3000);
 				return downLoadFile(FilePath,FileName);
 			}
 		}
@@ -168,24 +160,15 @@ public class FTPUtils {
 			}
 			ftpClient.logout();
 			ftpClient.disconnect();
-		} catch (IOException e) { // TODO Auto-generated
-			e.printStackTrace();
+		} catch (Exception e) { // TODO Auto-generated
 			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":FTPUtils:165行:出现异常:" + e.getMessage());
-
 		}finally{  
             try {  
-//            	ftpClient.logout();
                 ftpClient.disconnect();
             } catch (IOException e) {  
-                e.printStackTrace();  
     			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":FTPUtils:173行:出现异常:" + e.getMessage());
             }  
         }  
 		return true;
 	}
-
-	// public static void main(String[] args) {
-	// FTPUtils.getInstance();
-	// downLoadFile("ftp_home","temp.png");
-	// }
 }

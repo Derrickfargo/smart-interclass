@@ -28,7 +28,7 @@ public class NMainHandler extends ChannelInboundHandlerAdapter {
 		byte msgId = messagePacking.msgId;
 		
 		if (msgId == Message.MESSAGE_HEART_BEAT) {
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ "NMainHandler:收到服务器心跳消息" + ctx.channel().remoteAddress().toString());
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ "NMainHandler:收到服务器心跳消息" + ctx.channel().remoteAddress().toString().substring(1));
 			MessagePacking packing = new MessagePacking(Message.MESSAGE_HEART_BEAT);
 			NCoreSocket.getInstance().sendMessage(packing);
 		} else {

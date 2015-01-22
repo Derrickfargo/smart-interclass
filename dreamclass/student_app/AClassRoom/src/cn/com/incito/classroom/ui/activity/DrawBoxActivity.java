@@ -241,12 +241,12 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 					changeBtn.setClickable(false);
 				}
 			} else {
-				bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bg_empty);
+				bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bg_white);
 				changeBtn.setClickable(true);
 			}
 
 		} else {
-			bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bg_empty);
+			bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bg_white);
 			changeBtn.setClickable(true);
 		}
 		initPaint(bitmap);
@@ -510,14 +510,8 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 		return getBitmapFile(bmBitmap);// 保存图片到本地
 	}
 
-	@Override
-	public void onDestroy(SketchPadView obj) {
-
-	}
-
 	public void showDialog() {
 		new AlertDialog.Builder(this).setTitle("确认").setMessage("确定提交作业吗？").setPositiveButton("是", new DialogInterface.OnClickListener() {
-
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
@@ -532,29 +526,6 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 		}).show();
 	}
 
-	public void submitPaper() {
-		handler.sendEmptyMessage(0);
-	}
-
-	// /**
-	// * 提交作业
-	// */
-	// public void submitPaper() {
-	// MessagePacking messagePacking = new MessagePacking(
-	// Message.MESSAGE_SAVE_PAPER);
-	// // 测试ID
-	// messagePacking.putBodyData(DataType.INT, BufferUtils
-	// .writeUTFString(MyApplication.getInstance().getQuizID()));
-	// // 设备ID
-	// messagePacking.putBodyData(DataType.INT, BufferUtils
-	// .writeUTFString(MyApplication.getInstance().getDeviceId()));
-	// // 图片
-	// Logger.debug(Utils.getTime()+TAG+"启动作业提交...");
-	// messagePacking.putBodyData(DataType.INT,BitmapUtil.bmpToByteArray(getBitMap(), true));
-	// Logger.debug(Utils.getTime()+TAG+"打包成功");
-	// CoreSocket.getInstance().sendMessage(messagePacking);
-	// startTask();
-	// }
 	public void initPopwindow() {
 		line1 = (LinearLayout) findViewById(R.id.line1);
 		LayoutInflater layoutInflater = LayoutInflater.from(this);
@@ -589,7 +560,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 			jsonObject.put("imei", MyApplication.deviceId);
 			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SEND_PAPER);
 			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
-
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":DrawBoxActivity:发送主动提交作业请求");
 			NCoreSocket.getInstance().sendMessage(messagePacking);
 			startTask();
 		}else{
@@ -656,10 +627,11 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 	 */
 	public void sendPaper() {
 		getPaperFile();
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "开始发送作业");
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "开始向教师端发送作业");
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
+				handler.sendEmptyMessage(0);
 				String filePath = "/" + MyApplication.getInstance().getDeviceId();
 				String fileName = MyApplication.getInstance().getDeviceId() + ".jpg";
 				if (FTPUtils.getInstance().uploadFile(filePath, fileName)) {
@@ -678,16 +650,15 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 					}
 					mProgressDialog.dismiss();
 				} else {
-					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + " 作业上传失败");
-					handler.sendEmptyMessage(2);
+					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":DrawBoxActivity:作业上传失败");
+					handler.sendEmptyMessage(1);
 				}
 			}
 		}).start();
-		;
 	}
 
 	public File getBitmapFile(Bitmap bitmap) {
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "保存图片到本地");
+		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":DrawBoxActivity:开始保存图片到本地");
 		File f = new File("/sdcard/", "temp.jpg");
 		if (f.exists()) {
 			f.delete();
@@ -697,12 +668,17 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 			bitmap.compress(Bitmap.CompressFormat.JPEG, 60, out);
 			out.flush();
 			out.close();
-			MyApplication.Logger.debug("图片已经保存");
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":DrawBoxActivity:图片已经保存到本地");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return f;
+	}
+	
+	@Override
+	public void onDestroy(SketchPadView obj) {
+		super.onDestroy();
 	}
 }

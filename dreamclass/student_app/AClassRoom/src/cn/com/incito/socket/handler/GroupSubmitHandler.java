@@ -16,7 +16,7 @@ public class GroupSubmitHandler extends MessageHandler {
 		int code = data.getIntValue("code");
 		if (code == 0) {
 			JSONObject json = data.getJSONObject("data");
-			MyApplication.Logger.debug(Utils.getTime()+":GroupSubmitHandler分组提交成功" + "response:"+json);
+			MyApplication.Logger.debug(Utils.getTime()+":GroupSubmitHandler分组提交成功");
 			UIHelper.getInstance().showConfirmGroupActivity(json);
 		} else {}
 	}

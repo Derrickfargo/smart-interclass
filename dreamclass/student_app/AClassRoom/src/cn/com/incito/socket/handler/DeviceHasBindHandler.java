@@ -21,11 +21,11 @@ public class DeviceHasBindHandler extends MessageHandler {
 
 		if (jsonObject.getBoolean("isbind")) {
 			uiHelper.showWaitingActivity();
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":DeviceHasBindHandler已绑定设备,进入等待界面..."+"response:"+jsonObject.toJSONString());
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":DeviceHasBindHandler已绑定设备,进入等待界面");
 			
 		} else {
 			uiHelper.showBindDeskActivity();
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":DeviceHasBindHandler未绑定设备,进入绑定界面..."+"response:"+jsonObject.toJSONString());
+			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":DeviceHasBindHandler未绑定设备,进入绑定界面");
 		}
 	}
 

@@ -3,7 +3,6 @@ package cn.com.incito.socket.handler;
 import java.io.File;
 
 import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;

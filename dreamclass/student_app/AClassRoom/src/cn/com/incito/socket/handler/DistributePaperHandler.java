@@ -34,7 +34,6 @@ public class DistributePaperHandler extends MessageHandler {
 				dialog.show();
 			}
 		}
-
 		MyApplication.getInstance().lockScreen(false);
 		UIHelper.getInstance().showDrawBoxActivity(isContainsPic);
 	}

@@ -99,7 +99,7 @@ public class BindDeskActivity extends BaseActivity {
 				MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_BIND);
 				messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
 				NCoreSocket.getInstance().sendMessage(messagePacking);
-				MyApplication.Logger.debug(Utils.getTime()+"BindDeskActivity:"+"启动课桌绑定..." + "request:" + jsonObject.toJSONString());
+				MyApplication.Logger.debug(Utils.getTime()+"BindDeskActivity:"+"启动课桌绑定");
 			}
 
 		});

@@ -151,7 +151,7 @@ public class EditGroupInfoActivity extends BaseActivity implements View.OnClickL
 						messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json.toJSONString()));
 						NCoreSocket.getInstance().sendMessage(messagePacking);
 						this.finish();
-						MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":EditGroupInfoActivity:启动修改分组..."+"request:"+json.toJSONString());
+						MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":EditGroupInfoActivity:启动修改分组");
 					}else{
 						showToast();
 					}
