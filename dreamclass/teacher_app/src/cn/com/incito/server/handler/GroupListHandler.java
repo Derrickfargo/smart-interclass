@@ -59,7 +59,6 @@ public class GroupListHandler extends MessageHandler {
 		List<ChannelHandlerContext> channelList = app.getGroupChannel().get(group.getId());
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_LIST);
         messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json));
-        SocketServiceCore.getInstance().sendMsg(messagePacking, ctx);
         for(ChannelHandlerContext channel:channelList){
 			if(channel!=null){
 				if(channel.channel().isActive()){

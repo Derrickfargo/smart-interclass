@@ -23,6 +23,7 @@ import java.util.Properties;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
+import org.apache.ftpserver.command.impl.QUIT;
 import org.apache.log4j.Logger;
 
 import cn.com.incito.server.api.Application;
@@ -31,18 +32,18 @@ import cn.com.incito.server.message.MessagePacking;
 
 import com.alibaba.fastjson.JSONObject;
 
-
 public class SocketServiceCore {
 
 	private static SocketServiceCore socketServiceCore;
-	
+
 	private ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-	
+
 	Logger logger = Logger.getLogger(SocketServiceCore.class.getName());
 	private final ServerBootstrap serverBootstrap = new ServerBootstrap();
 	private final EventLoopGroup bossGroup = new NioEventLoopGroup();
 	private final EventLoopGroup workerGroup = new NioEventLoopGroup();
 	private final Properties properties = AppConfig.getProperties();
+
 	private SocketServiceCore() {
 
 	}
@@ -53,8 +54,7 @@ public class SocketServiceCore {
 		}
 		return socketServiceCore;
 	}
-	
-	
+
 	/**
 	 * 开始接收服务器的连接
 	 */
@@ -62,84 +62,89 @@ public class SocketServiceCore {
 		executor.execute(new Runnable() {
 			@Override
 			public void run() {
-				serverBootstrap.group(bossGroup, workerGroup)
-				.channel(NioServerSocketChannel.class)
-				.childHandler(new ChannelInitializer<SocketChannel>() {
-					@Override
-					protected void initChannel(SocketChannel channel)throws Exception {
-						ByteBuf delimiter = Unpooled.copiedBuffer("\n".getBytes());
-						/**
-						 * 读取配置文件 确定心跳时间
-						 */
-						int readIdle = 0;
-						int idle = 0;
-						
-						readIdle = Integer.parseInt(properties.getProperty("readidle"));
-						idle = Integer.parseInt(properties.getProperty("idle"));
-						ChannelPipeline pipeline = channel.pipeline();
-						pipeline.addLast(new IdleStateHandler(readIdle,0,idle));
-						pipeline.addLast(new DelimiterBasedFrameDecoder(5*1024*1024, delimiter));
-					//TODO
-						pipeline.addLast(new StringDecoder(CharsetUtil.UTF_8));
-						pipeline.addLast(new StringEncoder(CharsetUtil.UTF_8));
-						pipeline.addLast(new SocketIdleHandle());
-						pipeline.addLast(new ServiceHandle());
-						pipeline.addLast(new SocketInBoundEptCaught());
-					}
-				})
-				.option(ChannelOption.SO_KEEPALIVE, true)
-				.option(ChannelOption.TCP_NODELAY, true)
-				.childOption(ChannelOption.SO_KEEPALIVE, true)
-				.childOption(ChannelOption.TCP_NODELAY, true);
+				serverBootstrap.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
+						.childHandler(new ChannelInitializer<SocketChannel>() {
+							@Override
+							protected void initChannel(SocketChannel channel) throws Exception {
+								ByteBuf delimiter = Unpooled.copiedBuffer("\n".getBytes());
+								/**
+								 * 读取配置文件 确定心跳时间
+								 */
+								int readIdle = 0;
+								int idle = 0;
+
+								readIdle = Integer.parseInt(properties.getProperty("readidle"));
+								idle = Integer.parseInt(properties.getProperty("idle"));
+								ChannelPipeline pipeline = channel.pipeline();
+								pipeline.addLast(new SocketInBoundEptCaught());
+								pipeline.addLast(new IdleStateHandler(readIdle, 0, idle));
+								pipeline.addLast(new DelimiterBasedFrameDecoder(5 * 1024 * 1024, delimiter));
+								pipeline.addLast(new StringDecoder(CharsetUtil.UTF_8));
+								pipeline.addLast(new StringEncoder(CharsetUtil.UTF_8));
+								pipeline.addLast(new SocketIdleHandle());
+								pipeline.addLast(new ServiceHandle());
+							}
+						}).option(ChannelOption.SO_KEEPALIVE, true).option(ChannelOption.TCP_NODELAY, true)
+						.childOption(ChannelOption.SO_KEEPALIVE, true).childOption(ChannelOption.TCP_NODELAY, true);
 				try {
 					ChannelFuture f = serverBootstrap.bind(9001).sync();
 					logger.info("服务端通讯线程启动");
 					f.channel().closeFuture().sync();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
-				}finally {
+				} finally {
 					bossGroup.shutdownGracefully();
 					workerGroup.shutdownGracefully();
 				}
 			}
-		});	
+		});
 	}
+
 	/**
 	 * 发送信息至指定通道
+	 * 
 	 * @param messagePacking
 	 * @param ctx
 	 * @return
 	 */
-	public boolean sendMsg(MessagePacking messagePacking,ChannelHandlerContext ctx){
+	public boolean sendMsg(MessagePacking messagePacking, ChannelHandlerContext ctx) {
 		boolean flag = false;
 		JSONObject json = new JSONObject();
 		json.put("messagePacking", messagePacking);
-		ByteBuf buf = Unpooled.copiedBuffer((json.toString()+"\n").getBytes());
-		if(ctx!=null&&ctx.channel().isActive()){
-			ctx.writeAndFlush(buf);
-			flag = true;
+		ByteBuf buf = Unpooled.copiedBuffer((json.toString() + "\n").getBytes());
+		if (ctx != null) {
+			if (ctx.channel().isActive()) {
+				try{
+					ctx.writeAndFlush(buf);					
+				}catch(Exception e){
+					logger.info("写出现异常"+e);
+					DeviceConnectionManager.quit(ctx);
+				}
+				flag = true;
+			}
 		}
 		return flag;
 	}
 
 	/**
 	 * 启动线程发往所有客户端
+	 * 
 	 * @param messagePacking
 	 */
-	public void sendMsg(final MessagePacking messagePacking){
+	public void sendMsg(final MessagePacking messagePacking) {
 		Application app = Application.getInstance();
 		final Collection<ChannelHandlerContext> channels = app.getClientChannel().values();
 		new Thread() {
 			@Override
 			public void run() {
-					for(ChannelHandlerContext channel: channels){
-						if(channel != null && channel.channel().isActive()){
-							// 输出到通道
-							sendMsg(messagePacking, channel);
-						}
+				for (ChannelHandlerContext channel : channels) {
+					if (channel != null && channel.channel().isActive()) {
+						// 输出到通道
+						sendMsg(messagePacking, channel);
 					}
+				}
 			};
 		}.start();
-		
+
 	}
 }

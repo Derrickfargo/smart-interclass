@@ -308,6 +308,7 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 				    messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json.toJSONString()));
 					Entry<String, ChannelHandlerContext> entry = it.next();
 					String imei = entry.getKey();
+					logger.info("发送空白作业"+imei);
 					List<Student> students = app.getStudentByImei(imei);
 					//记录有学生登陆的Pad
 					if (students != null && students.size() > 0) {
@@ -316,6 +317,7 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 							if(channel.channel().isActive()){
 								// 输出到通道
 								SocketServiceCore.getInstance().sendMsg(messagePacking, channel);
+								logger.info("空白作业发送成功"+imei);
 								app.addQuizIMEI(imei);//已发送的IMEI								
 							}
 						}

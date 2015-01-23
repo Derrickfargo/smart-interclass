@@ -68,9 +68,7 @@ public class UIHelper {
 						JSONObject json = new JSONObject();
 						json.put("messagePacking", messagePacking);
 						ByteBuf buf = Unpooled.copiedBuffer((json.toString() + "\n").getBytes());
-						if (channel != null && channel.channel().isActive()) {
-							channel.writeAndFlush(buf);
-						}
+						channel.writeAndFlush(buf);
 					}
 				}
 				System.exit(0);

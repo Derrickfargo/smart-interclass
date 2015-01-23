@@ -1,7 +1,5 @@
 package cn.com.incito.server.handler;
 
-import java.nio.ByteBuffer;
-
 import org.apache.log4j.Logger;
 
 import com.alibaba.fastjson.JSONObject;

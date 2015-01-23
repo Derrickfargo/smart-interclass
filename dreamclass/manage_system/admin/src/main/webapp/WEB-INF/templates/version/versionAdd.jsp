@@ -37,30 +37,34 @@
 									<div class="col-xs-12">
 										<div class="col-xs-12">
 											<div class="form-group">
-												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>版本类型：</label>
+				<!-- 								<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>版本类型：</label>
 												<div class="col-xs-4">
 													<select id="type" name="type" class="form-control" >
 														<option value="1" selected>教师端</option>
 														<option value="2">学生端</option>
 													</select>
-												</div>
+												</div> -->
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>版本号：</label>
 												<div class="col-xs-4">
 													<input type="text" name="name" id="name" value="${version.name}" maxlength="32" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkNameTip').addClass('hidden')">
 													<p id="checkNameTip" class="help-block hidden"><font color="red"><b>请输入版本号</b></font></p>
 												</div>
-											</div>
-											<div class="form-group">
 												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>版本代码：</label>
 												<div class="col-xs-4">
 													<input type="text" name="code" id="code" value="${version.code}" maxlength="8" class="form-control borderRadiusIE8 required"  onkeyup="$('#checkCodeTip').addClass('hidden')">
 													<p id="checkCodeTip" class="help-block hidden"><font color="red"><b>请输入2-8个汉字</b></font></p>
 												</div>
-												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>版本文件：</label>
+											</div>
+											<div class="form-group">
+												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>教师端文件：</label>
 												<div class="col-xs-4">
-													<input type="file" id="file" name="file" class="form-control borderRadiusIE8 required" onkeyup="showHidden()"/>
-													<p id="fileTip" class="help-block hidden"><font color="red"><b>请选择要导入的apk文件</b></font></p>
-													<p id = "fileTips" class = "help_block hidden"><font color = "red"><b>请选择要导入的exe文件</b></font></p>
+													<input type="file" id="teacherFile" name="teacherFile" class="form-control borderRadiusIE8 required" onclick="$('#teacherFileTips').addClass('hidden')"/>
+													<p id = "teacherFileTips" class = "help_block hidden"><font color = "red"><b>请选择要导入的EXE文件</b></font></p>
+												</div>
+												<label class="col-xs-2 control-label"><span class="span-red-bold">* </span>学生端文件：</label>
+												<div class="col-xs-4">
+													<input type="file" id="stuFile" name="stuFile" class="form-control borderRadiusIE8 required" onclick="$('#stuFileTips').addClass('hidden')"/>
+													<p id="stuFileTips" class="help-block hidden"><font color="red"><b>请选择要导入的APK文件</b></font></p>
 												</div>
 											</div>
 											<div class="form-group">

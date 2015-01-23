@@ -180,13 +180,9 @@ public class CaptureScreen {
 					// 记录有学生登陆的Pad
 					if (studentsList.size() > 0) {
 						ChannelHandlerContext channel = entry.getValue();
-						if (channel != null) {
-							if (channel.channel().isOpen()) {
-								SocketServiceCore.getInstance().sendMsg(data, channel);
-								app.addQuizIMEI(imei);// 已发送的IMEI
-								logger.info("已發送作業"+imei);
-							}
-						}
+						boolean flag = SocketServiceCore.getInstance().sendMsg(data, channel);
+						app.addQuizIMEI(imei);// 已发送的IMEI
+						logger.info("已發送作業:" + imei+":"+flag);
 					}
 					try {
 						Thread.sleep(delay_time);

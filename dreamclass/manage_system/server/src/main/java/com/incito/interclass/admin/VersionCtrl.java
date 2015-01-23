@@ -56,7 +56,25 @@ public class VersionCtrl extends BaseCtrl {
 	 * @return
 	 */
 	@RequestMapping(value = "/save")
-	public ModelAndView save(Integer type, String name, Integer code, String description, MultipartFile file) {
+	public ModelAndView save(String name, Integer code, String description, MultipartFile teacherFile,MultipartFile stuFile) {
+		Version stuVersion = saveVersion(2, name, code, description, stuFile);
+		Version teacherVersion = saveVersion(1, name, code, description, teacherFile);
+		
+		if(stuVersion==null||teacherVersion==null)	
+		return new ModelAndView("version/versionAdd");
+		
+		versionService.saveVersion(stuVersion);
+		versionService.saveVersion(teacherVersion);
+		return new ModelAndView("redirect:/version/list");
+	}
+	
+	@RequestMapping(value = "/delete")
+	public ModelAndView delete(Integer id) {
+		versionService.deleteVersion(id);
+		return new ModelAndView("redirect:list");
+	}
+	
+	private Version saveVersion(Integer type , String name, Integer code, String description, MultipartFile file){
 		Version version = new Version();
 		version.setType(type);
 		version.setCode(code);
@@ -71,19 +89,14 @@ public class VersionCtrl extends BaseCtrl {
 		File newFile = new File(dir, filename);
 		try {
 			file.transferTo(newFile);
+		} catch (IllegalStateException e) {
+			return null;
 		} catch (IOException e) {
-			return new ModelAndView("version/versionAdd");
+			return null;
 		}
 		version.setUrl(newFile.getAbsolutePath());
 		version.setFileSize(newFile.length());
 		version.setDescription(description);
-		versionService.saveVersion(version);
-		return new ModelAndView("redirect:/version/list");
-	}
-	
-	@RequestMapping(value = "/delete")
-	public ModelAndView delete(Integer id) {
-		versionService.deleteVersion(id);
-		return new ModelAndView("redirect:list");
+		return version;
 	}
 }
