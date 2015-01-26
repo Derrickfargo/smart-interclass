@@ -77,6 +77,7 @@ public class SocketServiceCore {
 						readIdle = Integer.parseInt(properties.getProperty("readidle"));
 						idle = Integer.parseInt(properties.getProperty("idle"));
 						ChannelPipeline pipeline = channel.pipeline();
+						pipeline.addLast(new SocketInBoundEptCaught());
 						pipeline.addLast(new IdleStateHandler(readIdle,0,idle));
 						pipeline.addLast(new DelimiterBasedFrameDecoder(5*1024*1024, delimiter));
 					//TODO
@@ -84,7 +85,6 @@ public class SocketServiceCore {
 						pipeline.addLast(new StringEncoder(CharsetUtil.UTF_8));
 						pipeline.addLast(new SocketIdleHandle());
 						pipeline.addLast(new ServiceHandle());
-						pipeline.addLast(new SocketInBoundEptCaught());
 					}
 				})
 				.option(ChannelOption.SO_KEEPALIVE, true)
@@ -115,10 +115,16 @@ public class SocketServiceCore {
 		JSONObject json = new JSONObject();
 		json.put("messagePacking", messagePacking);
 		ByteBuf buf = Unpooled.copiedBuffer((json.toString()+"\n").getBytes());
-		if(ctx!=null&&ctx.channel().isActive()){
-			ctx.writeAndFlush(buf);
-			flag = true;
-		}
+		if(ctx!=null)
+//			if(ctx.channel().isActive()){
+				try{
+					ctx.writeAndFlush(buf);				
+				}catch(Exception e){
+					logger.error("發送失敗", e);
+					ctx.close();
+				}
+				flag = true;
+//		}
 		return flag;
 	}
 
