@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
 import com.incito.interclass.business.VersionService;
 import com.incito.interclass.common.BaseCtrl;
 import com.incito.interclass.entity.Version;
@@ -35,11 +38,19 @@ public class VersionCtrl extends BaseCtrl {
 	@RequestMapping(value = "/check", produces = { "application/json;charset=UTF-8" })
 	public String checkVersion(Integer type, Integer code) {
 		Version version = versionService.getLatestVersion(type);
+		Version apk = versionService.getLatestVersion(2);
 		if (version == null || version.getId() == 0) {
 			return renderJSONString(1);
+		}else if(apk==null||apk.getId()==0){
+			return renderJSONString(1);
 		}
-		if (code < version.getCode()) {
-			return renderJSONString(SUCCESS, version);
+		if (code < version.getCode()&&
+				version.getCode()==apk.getCode()) {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("code", SUCCESS);
+			map.put("data", version);
+			map.put("apk", apk);
+			return JSON.toJSONString(map);
 		}
 		return renderJSONString(1);
 	}

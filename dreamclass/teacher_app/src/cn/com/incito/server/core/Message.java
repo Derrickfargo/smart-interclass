@@ -124,6 +124,11 @@ public class Message {
 	 */
 	public static final Byte MESSAGE_RECONNECT = 0x14;
 	
+	/**
+	 * apk版本更新
+	 */
+	public static final Byte MESSAGE_APK_UPDATE = 0x15;
+	
 	private Logger log = Logger.getLogger(Message.class);
 	
 	private byte msgID;

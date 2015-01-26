@@ -19,6 +19,7 @@ import cn.com.incito.server.handler.ResponderHandler;
 import cn.com.incito.server.handler.SavePaperHandler;
 import cn.com.incito.server.handler.SendPaperHandler;
 import cn.com.incito.server.handler.StudentLoginHandler;
+import cn.com.incito.server.handler.VersionUpdateHandle;
 
 /**
  * 消息处理器列表 
@@ -68,6 +69,8 @@ public final class MessageHandlerResource {
 		handlerResources.put(Message.MESSAGE_QUIZ_FEEDBACK_SUBMIT, QuizEvaluateSubmitHandler.class);
 		//设备重连
 		handlerResources.put(Message.MESSAGE_RECONNECT, ReconnectionHandler.class);
+		//pad版本更新
+		handlerResources.put(Message.MESSAGE_APK_UPDATE, VersionUpdateHandle.class);
 	}
 	
 	public MessageHandler getMessageHandler(Byte key){
