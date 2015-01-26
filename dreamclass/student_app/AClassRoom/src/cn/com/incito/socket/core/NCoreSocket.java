@@ -84,12 +84,12 @@ public final class NCoreSocket{
 			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NCoreSocket:属性设置完毕,开始进行连接!");
 			channel = bootstrap.connect(Constants.IP, Constants.PORT).sync().channel();
 			channel.closeFuture().sync();
+			workGroup.shutdownGracefully().sync();
 		}catch(Exception e){
 			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":restartConnection:与服务器连接失败,失败信息:" + e.getMessage());
 		}finally {
 			// 释放资源并且在时间任务调度下下一次连接时间是当前任务完成后30s执行
 			channel = null;
-			workGroup.shutdownGracefully();
 			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NCoreSocket:本次连接资源清理完毕,等待下次连接!");
 		}
 	}

@@ -157,10 +157,10 @@ public class UIHelper {
 	public void showDrawBoxActivity(String hasPic) {
 		Intent intent = new Intent();
 		MyApplication.getInstance().setSubmitPaper(false);
-			intent.putExtra("flag", hasPic);
-			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			intent.setAction(Constants.ACTION_SHOW_DRAWBOX);
-			app.startActivity(intent);
+		intent.putExtra("flag", hasPic);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.setAction(Constants.ACTION_SHOW_DRAWBOX);
+		app.startActivity(intent);
 	}
 
 

@@ -20,10 +20,10 @@ public class DistributePaperHandler extends MessageHandler {
 	@Override
 	protected void handleMessage() {
 		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":DistributePaperHandler：收到做作业命令!");
-		
 		String uuid = data.getString("uuid");
 		MyApplication.getInstance().setQuizID(uuid);
 		isContainsPic = data.getString("isContainsPic");
+		MyApplication.getInstance().lockScreen(false);
 		
 		if ("true".equals(isContainsPic)) {// 有图片,利用ftp去下载图片
 			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":DistributePaperHandler：收到做作业命令,老师截图发送作业,马上开始下载作业!");
@@ -34,7 +34,6 @@ public class DistributePaperHandler extends MessageHandler {
 				dialog.show();
 			}
 		}
-		MyApplication.getInstance().lockScreen(false);
 		UIHelper.getInstance().showDrawBoxActivity(isContainsPic);
 	}
 }
