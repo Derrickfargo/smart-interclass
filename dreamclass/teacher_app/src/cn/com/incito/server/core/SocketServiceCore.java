@@ -77,7 +77,7 @@ public class SocketServiceCore {
 						readIdle = Integer.parseInt(properties.getProperty("readidle"));
 						idle = Integer.parseInt(properties.getProperty("idle"));
 						ChannelPipeline pipeline = channel.pipeline();
-						pipeline.addLast(new SocketInBoundEptCaught());
+						pipeline.addLast(new SocketOutBoundEptCaught());
 						pipeline.addLast(new IdleStateHandler(readIdle,0,idle));
 						pipeline.addLast(new DelimiterBasedFrameDecoder(5*1024*1024, delimiter));
 					//TODO
@@ -115,8 +115,7 @@ public class SocketServiceCore {
 		JSONObject json = new JSONObject();
 		json.put("messagePacking", messagePacking);
 		ByteBuf buf = Unpooled.copiedBuffer((json.toString()+"\n").getBytes());
-		if(ctx!=null)
-//			if(ctx.channel().isActive()){
+		if(ctx!=null){
 				try{
 					ctx.writeAndFlush(buf);				
 				}catch(Exception e){
@@ -124,7 +123,7 @@ public class SocketServiceCore {
 					ctx.close();
 				}
 				flag = true;
-//		}
+		}
 		return flag;
 	}
 
