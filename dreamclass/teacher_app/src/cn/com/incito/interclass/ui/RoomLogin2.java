@@ -185,6 +185,11 @@ public class RoomLogin2 extends MouseAdapter{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				String name = txtRoomName.getText();
+				if(name==null||"".equals(name)){
+					JOptionPane.showMessageDialog(frame, "学校名称不能为空！");
+					return;
+				}
 				sentRoomMsg();
 			}
 		});
