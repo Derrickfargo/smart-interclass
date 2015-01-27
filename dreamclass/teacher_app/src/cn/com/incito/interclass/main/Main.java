@@ -233,6 +233,7 @@ public class Main {
 		File file = new File("update/互动课堂_"+ versionCode + ".apk");
 		if(!file.exists()){
 			//TODO
+			JOptionPane.showMessageDialog(null, "pad端更新程序丟失");
 			return;
 		}
 	}

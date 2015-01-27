@@ -5,9 +5,9 @@ import org.apache.log4j.Logger;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOutboundHandlerAdapter;
 
-public class SocketInBoundEptCaught extends ChannelOutboundHandlerAdapter{
+public class SocketOutBoundEptCaught extends ChannelOutboundHandlerAdapter{
 
-	private Logger log = Logger.getLogger(SocketInBoundEptCaught.class.getName());
+	private Logger log = Logger.getLogger(SocketOutBoundEptCaught.class.getName());
 
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {

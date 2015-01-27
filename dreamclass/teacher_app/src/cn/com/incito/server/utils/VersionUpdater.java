@@ -26,15 +26,13 @@ public class VersionUpdater {
 
 	private static VersionUpdater instance;
 	private Logger log = Logger.getLogger(VersionUpdater.class.getName());
-	ExecutorService executor;
+	private ExecutorService executor;
 	private Application app = Application.getInstance();
 	private Queue<String> deviceQueue;
 	private Set<String> deviceSet;
 	private Lock lock;
 	private Condition idle;
-	private int timeout;
-	private int capacity;
-	private int code;
+	private int timeout,capacity,code;
 	private String path;
 
 	public static VersionUpdater getInstance(int code,String path) {
@@ -55,9 +53,9 @@ public class VersionUpdater {
 		idle = lock.newCondition();
 		timeout = 30000;
 		capacity = 0;
-		initVersionUpdater();
 		this.code = code;
 		this.path = path;
+		initVersionUpdater();
 	}
 
 	private void initVersionUpdater() {
@@ -101,15 +99,22 @@ public class VersionUpdater {
 		return deviceQueue;
 	}
 
-	private void sendMsg(String imei) {
-		ChannelHandlerContext ctx = app.getClientChannel().get(imei);
-		JSONObject json = new JSONObject();
-		json.put("serverVersionCode", code);
-		json.put("fileName",path);
-		MessagePacking msg = new MessagePacking(Message.MESSAGE_APK_UPDATE);
-		msg.putBodyData(null, json.toJSONString().getBytes());
-		SocketServiceCore.getInstance().sendMsg(msg, ctx);
-		log.info("已发送设备升级命令："+imei);
+	private void sendMsg(final String imei) {
+		executor.execute(new Runnable() {
+			
+			@Override
+			public void run() {
+				ChannelHandlerContext ctx = app.getClientChannel().get(imei);
+				JSONObject json = new JSONObject();
+				json.put("serverVersionCode", code);
+				json.put("fileName",path);
+				MessagePacking msg = new MessagePacking(Message.MESSAGE_APK_UPDATE);
+				msg.putBodyData(null, json.toJSONString().getBytes());
+				SocketServiceCore.getInstance().sendMsg(msg, ctx);
+				log.info("已发送设备升级命令："+imei);
+				
+			}
+		});
 	}
 
 }

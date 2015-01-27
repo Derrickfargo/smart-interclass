@@ -76,7 +76,7 @@ public class SocketServiceCore {
 								readIdle = Integer.parseInt(properties.getProperty("readidle"));
 								idle = Integer.parseInt(properties.getProperty("idle"));
 								ChannelPipeline pipeline = channel.pipeline();
-								pipeline.addLast(new SocketInBoundEptCaught());
+								pipeline.addLast(new SocketOutBoundEptCaught());
 								pipeline.addLast(new IdleStateHandler(readIdle, 0, idle));
 								pipeline.addLast(new DelimiterBasedFrameDecoder(5 * 1024 * 1024, delimiter));
 								pipeline.addLast(new StringDecoder(CharsetUtil.UTF_8));
