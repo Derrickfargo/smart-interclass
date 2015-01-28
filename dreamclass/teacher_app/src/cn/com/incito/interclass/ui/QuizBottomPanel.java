@@ -270,18 +270,16 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
     	logger.info("开始收取作业...");
     	Application app = Application.getInstance();
 		Map<String,ChannelHandlerContext> channels = app.getClientChannel();
-//		Iterator<Entry<String, ChannelHandlerContext>>it = channels.entrySet().iterator();
-		Iterator<ChannelHandlerContext> it = channels.values().iterator();
+		Iterator<Entry<String, ChannelHandlerContext>>it = channels.entrySet().iterator();
 		while (it.hasNext()) {//加入收取作业队列
-			QuizCollector.getInstance().addQuizQueue(it.next());
-//			Entry<String, ChannelHandlerContext> next = it.next();
-//			Quiz quiz = app.getTempQuiz().get(next.getKey());
-//			if(quiz==null){
-//				QuizCollector.getInstance().addQuizQueue(next.getValue());
-//				logger.info("已加入收取作业队列"+next.getKey());
-//			}else{
-//				logger.info("作业已经手动提交"+next.getKey());
-//			}
+			Entry<String, ChannelHandlerContext> next = it.next();
+			Quiz quiz = app.getTempQuiz().get(next.getKey());
+			if(quiz==null){
+				QuizCollector.getInstance().addQuizQueue(next.getValue());
+				logger.info("已加入收取作业队列"+next.getKey());
+			}else{
+				logger.info("作业已经手动提交"+next.getKey());
+			}
 		}
 		QuizCollector.getInstance().nextQuiz();//处理第一个作业
     }

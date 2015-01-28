@@ -549,7 +549,8 @@ public class CoreService {
 			}
 			quiz.setName(str.toString());
 		}
-
+		Group group = getGroup(imei);
+		quiz.setGroup(group);
 		quiz.setTime(System.currentTimeMillis());
 		quiz.setQuizUrl(file.getAbsolutePath());
 		quiz.setThumbnail(thumbnail.getAbsolutePath());
@@ -569,6 +570,17 @@ public class CoreService {
 		QuizCollector.getInstance().quizComplete(channel);
 		QuizCollector.getInstance().nextQuiz();
 		return true;
+	}
+	
+	private Group getGroup(String imei){
+		Device device = app.getImeiDevice().get(imei);
+		if(device==null)
+			return null;
+		Table table = app.getDeviceTable().get(device.getId());			
+		if(table == null)
+			return null;
+		Group group = app.getTableGroup().get(table.getId());
+		return group;
 	}
 
 }
