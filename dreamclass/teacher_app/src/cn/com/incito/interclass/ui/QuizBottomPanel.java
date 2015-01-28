@@ -70,7 +70,7 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 		btnQuiz.setIcon(btnImage);// 设置图片
 		add(btnQuiz);// 添加按钮
 		btnQuiz.setVisible(false);
-		btnQuiz.setBounds(280, -4, btnImage.getIconWidth(), btnImage.getIconHeight());
+		btnQuiz.setBounds(340, -4, btnImage.getIconWidth(), btnImage.getIconHeight());
 		btnQuiz.addMouseListener(this);
 		
 		btnFeedback = new JButton();
@@ -90,7 +90,7 @@ public class QuizBottomPanel extends JPanel implements MouseListener{
 		List<Table> tables = app.getTableList();
 		if (tables.size() != 0) {
 			btnQuiz.setVisible(true);
-			btnFeedback.setVisible(true);
+//			btnFeedback.setVisible(true);
 		}
 	}
 
