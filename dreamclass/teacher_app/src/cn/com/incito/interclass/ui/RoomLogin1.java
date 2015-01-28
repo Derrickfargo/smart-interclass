@@ -131,7 +131,7 @@ public class RoomLogin1 extends MouseAdapter{
 		//学校名称
 		lblschoolName = new JLabel();
 		lblschoolName.setForeground(UIHelper.getDefaultFontColor());
-		lblschoolName.setText("请输入梦想教师登录账号:");
+		lblschoolName.setText("请输入学校名称:");
 		
 		lblschoolName.setFont( new Font("Microsoft YaHei", Font.PLAIN, 16));
 		lblschoolName.setBounds(250, 250, 200, 35);
@@ -236,7 +236,7 @@ public class RoomLogin1 extends MouseAdapter{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(txtschoolName==null||txtschoolName.getText().equals("用户名")){
-					JOptionPane.showMessageDialog(frame, "请输入梦想教师登录账号!");
+					JOptionPane.showMessageDialog(frame, "请输入学校登陆账号!");
 					return;
 				}
 				if(txtschoolPassword==null||txtschoolPassword.getText().equals("密码")){
