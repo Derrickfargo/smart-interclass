@@ -15,7 +15,7 @@ import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.ui.widget.MyAlertDialog;
-import cn.com.incito.classroom.utils.Utils;
+import cn.com.incito.common.utils.LogUtil;
 import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.Message;
@@ -99,7 +99,8 @@ public class BindDeskActivity extends BaseActivity {
 				MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_BIND);
 				messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
 				NCoreSocket.getInstance().sendMessage(messagePacking);
-				MyApplication.Logger.debug(Utils.getTime()+"BindDeskActivity:"+"启动课桌绑定");
+				LogUtil.d("发送绑定课桌消息");
+//				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"BindDeskActivity:"+"启动课桌绑定");
 			}
 
 		});

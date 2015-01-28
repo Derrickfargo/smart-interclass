@@ -460,7 +460,7 @@ public class AndroidUtil {
 	 * @return
 	 */
 	public static String getCurrentTime() {
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS",Locale.CHINA);
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.CHINA);
 		return df.format(new Date());
 	}
 

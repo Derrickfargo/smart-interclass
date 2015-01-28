@@ -1,7 +1,6 @@
 package cn.com.incito.classroom.ui.activity;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import android.content.Context;
@@ -34,8 +33,7 @@ import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.classroom.vo.LoginReqVo;
 import cn.com.incito.classroom.vo.LoginRes2Vo;
 import cn.com.incito.classroom.vo.LoginResVo;
-import cn.com.incito.classroom.vo.Student;
-import cn.com.incito.common.utils.AndroidUtil;
+import cn.com.incito.common.utils.LogUtil;
 import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.Message;
@@ -45,7 +43,6 @@ import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 /**
@@ -205,7 +202,8 @@ public class WaitingActivity extends BaseActivity {
 		String json = JSON.toJSONString(loginReqVo);
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
 		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(json));
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":WaitingActivity学生登录:");
+		LogUtil.d("发送学生登录消息");
+//		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":WaitingActivity学生登录:");
 		NCoreSocket.getInstance().sendMessage(messagePacking);
 	}
 
@@ -226,7 +224,8 @@ public class WaitingActivity extends BaseActivity {
 		String json = JSON.toJSONString(loginReqVo);
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_LOGIN);
 		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(json));
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() +":WaitingActivity:学生退出");
+		LogUtil.d("发送学生退出消息");
+//		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() +":WaitingActivity:学生退出");
 		NCoreSocket.getInstance().sendMessage(messagePacking);
 	}
 
@@ -299,7 +298,8 @@ public class WaitingActivity extends BaseActivity {
 			case STUDENT_LOGIN: {
 				mProgressDialog.hide();
 				JSONObject jsonObject = (JSONObject) msg.getData().getSerializable("data");
-				MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":WaitingActivity:学生登录成功");
+				LogUtil.d("收到学生登录成功消息:" + jsonObject.toJSONString());
+//				MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":WaitingActivity:学生登录成功");
 				if (!"0".equals(jsonObject.getString("code"))) {
 					if ("-2".equals(jsonObject.getString("code"))) {
 						String number = jsonObject.getString("data");
@@ -327,7 +327,8 @@ public class WaitingActivity extends BaseActivity {
 			case STUDENT_LIST: {
 				mProgressDialog.hide();
 				JSONObject jsonObject = (JSONObject) msg.getData().getSerializable("data");
-				MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":WaitingActivity:得到所有学生信息");
+				LogUtil.d("得到所有学生消息:" + jsonObject.toJSONString());
+//				MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":WaitingActivity:得到所有学生信息");
 				if (!"0".equals(jsonObject.getString("code"))) {
 					return;
 				} else if (jsonObject.getJSONObject("data") == null) {
@@ -376,43 +377,44 @@ public class WaitingActivity extends BaseActivity {
 		mHandler.sendMessage(message);
 	}
 
-	public void refreshStudents(JSONObject data) {
+//	public void refreshStudents(JSONObject data) {
+//
+//		// 马上刷新等待界面数据
+//		List<Student> studentList = JSONArray.parseArray(JSON.parseObject(data.toJSONString()).getString("students"),Student.class);
+//		LogUtil
+//		MyApplication.Logger.debug("WaitingActivity:随机分组返回的数据:" + studentList.size());
+//		
+//		List<LoginRes2Vo> loginRes2Vos = new ArrayList<LoginRes2Vo>();
+//		
+//		if (studentList != null && studentList.size() > 0) {
+//			Iterator<Student> it = studentList.iterator();
+//			while (it.hasNext()) {
+//				Student s = it.next();
+//				
+//				LoginRes2Vo loginRes2Vo = new LoginRes2Vo();
+//				loginRes2Vo.setAvatar(s.getAvatar());
+//				loginRes2Vo.setId(s.getId() + "");
+//				loginRes2Vo.setLogin(s.isLogin());
+//				loginRes2Vo.setName(s.getName());
+//				loginRes2Vo.setNumber(s.getNumber());
+//				loginRes2Vo.setSex(s.getSex() + "");
+//				
+//				loginRes2Vos.add(loginRes2Vo);
+//			}
+//			MyApplication.getInstance().getLoginResVo().getStudents().clear();
+//			MyApplication.getInstance().getLoginResVo().setStudents(loginRes2Vos);
+//		}else{
+//			MyApplication.getInstance().getLoginResVo().getStudents().clear();
+//		}
+//		mHandler.sendEmptyMessage(RANDOM_GROUP);
+//	}
 
-		// 马上刷新等待界面数据
-		List<Student> studentList = JSONArray.parseArray(JSON.parseObject(data.toJSONString()).getString("students"),Student.class);
-		MyApplication.Logger.debug("WaitingActivity:随机分组返回的数据:" + studentList.size());
-		
-		List<LoginRes2Vo> loginRes2Vos = new ArrayList<LoginRes2Vo>();
-		
-		if (studentList != null && studentList.size() > 0) {
-			Iterator<Student> it = studentList.iterator();
-			while (it.hasNext()) {
-				Student s = it.next();
-				
-				LoginRes2Vo loginRes2Vo = new LoginRes2Vo();
-				loginRes2Vo.setAvatar(s.getAvatar());
-				loginRes2Vo.setId(s.getId() + "");
-				loginRes2Vo.setLogin(s.isLogin());
-				loginRes2Vo.setName(s.getName());
-				loginRes2Vo.setNumber(s.getNumber());
-				loginRes2Vo.setSex(s.getSex() + "");
-				
-				loginRes2Vos.add(loginRes2Vo);
-			}
-			MyApplication.getInstance().getLoginResVo().getStudents().clear();
-			MyApplication.getInstance().getLoginResVo().setStudents(loginRes2Vos);
-		}else{
-			MyApplication.getInstance().getLoginResVo().getStudents().clear();
-		}
-		mHandler.sendEmptyMessage(RANDOM_GROUP);
-	}
-
-	public void clearStudent() {
-		MyApplication.Logger.debug("WaitingActivity:随机分组返回的数据 clear学生调用");
-		android.os.Message message = new android.os.Message();
-		message.what = STUDENT_CLEAR;
-		mHandler.sendMessage(message);
-	}
+//	public void clearStudent() {
+//		MyApplication.Logger.debug("WaitingActivity:随机分组返回的数据 clear学生调用");
+//		android.os.Message message = new android.os.Message();
+//		message.what = STUDENT_CLEAR;
+//		mHandler.sendMessage(message);
+//	}
 	
 	/**
 	 * 注册成员
@@ -432,7 +434,8 @@ public class WaitingActivity extends BaseActivity {
 			ToastHelper.showCustomToast(this, "未连接至服务器,30s后重试!");
 			return;
 		}
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":WaitingActivity:启动注册学生");
+		LogUtil.d("发送学生注册消息");
+//		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":WaitingActivity:启动注册学生");
 		NCoreSocket.getInstance().sendMessage(messagePacking);
 	}
 
@@ -445,7 +448,8 @@ public class WaitingActivity extends BaseActivity {
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_LIST);
 		messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(jsonObject.toJSONString()));
 		if(NCoreSocket.getInstance().getChannel() != null){
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":WaitingActivity启动获取组成员列表");
+			LogUtil.d("获取小组所有学生");
+//			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":WaitingActivity启动获取组成员列表");
 			NCoreSocket.getInstance().sendMessage(messagePacking);
 		}
 	}

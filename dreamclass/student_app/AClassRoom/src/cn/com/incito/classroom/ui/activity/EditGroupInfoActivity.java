@@ -20,7 +20,7 @@ import cn.com.incito.classroom.adapter.HorizontalListViewAdapter.ViewHolder;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.ui.widget.HorizontalListView;
-import cn.com.incito.common.utils.AndroidUtil;
+import cn.com.incito.common.utils.LogUtil;
 import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.core.NCoreSocket;
@@ -150,8 +150,10 @@ public class EditGroupInfoActivity extends BaseActivity implements View.OnClickL
 						MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_EDIT);
 						messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json.toJSONString()));
 						NCoreSocket.getInstance().sendMessage(messagePacking);
+						LogUtil.d("启动修改分组");
 						this.finish();
-						MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":EditGroupInfoActivity:启动修改分组");
+						
+//						MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":EditGroupInfoActivity:启动修改分组");
 					}else{
 						showToast();
 					}

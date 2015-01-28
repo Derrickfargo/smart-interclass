@@ -8,7 +8,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Looper;
 import android.os.Parcelable;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
@@ -28,7 +27,7 @@ import cn.com.incito.classroom.exception.AppException;
 import cn.com.incito.classroom.utils.ApiClient;
 import cn.com.incito.classroom.utils.UpdateManager;
 import cn.com.incito.classroom.vo.Version;
-import cn.com.incito.common.utils.AndroidUtil;
+import cn.com.incito.common.utils.LogUtil;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -111,11 +110,13 @@ public class SplashActivity extends BaseActivity {
 		if (!TextUtils.isEmpty(ip) && !TextUtils.isEmpty(port)) {
 			try {
 				JSONObject updateResult = JSONObject.parseObject(ApiClient.updateApk(code));
-				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":SplashActivity:" + "版本更新返回信息：" + updateResult);
+				LogUtil.d("版本更新返回信息：" + updateResult);
+//				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":SplashActivity:" + "版本更新返回信息：" + updateResult);
 				if (updateResult.getInteger("code") == 0) {
 					Version version = JSON.parseObject(updateResult.getJSONObject("data").toJSONString(),Version.class);
 					url = Constants.HTTP + ip + ":" + port + Constants.URL_DOWNLOAD_APK + version.getId();
-					MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ "SplashActivity:" + "更新地址：" + url);
+					LogUtil.d("更新地址：" + url);
+//					MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ "SplashActivity:" + "更新地址：" + url);
 					return true;
 				}
 			} catch (AppException e) {

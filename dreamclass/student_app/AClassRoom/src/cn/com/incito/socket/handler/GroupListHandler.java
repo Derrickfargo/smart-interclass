@@ -1,8 +1,7 @@
 package cn.com.incito.socket.handler;
 
-import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.ui.activity.WaitingActivity;
-import cn.com.incito.common.utils.AndroidUtil;
+import cn.com.incito.common.utils.LogUtil;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;
 /**
@@ -12,7 +11,7 @@ import cn.com.incito.socket.core.MessageHandler;
 public class GroupListHandler extends MessageHandler {
 	@Override
 	protected void handleMessage() {
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":GroupListHandler:收到分组列表");
+		LogUtil.d("收到分组列表");
 		UIHelper.getInstance().getWaitingActivity().doResult(data, WaitingActivity.STUDENT_LIST);
 	}
 }

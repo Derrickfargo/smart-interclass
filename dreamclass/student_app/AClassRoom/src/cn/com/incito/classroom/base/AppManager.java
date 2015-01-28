@@ -5,9 +5,8 @@ import java.util.Stack;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import cn.com.incito.classroom.utils.ApiClient;
-import cn.com.incito.classroom.utils.Utils;
+import cn.com.incito.common.utils.LogUtil;
 import cn.com.incito.socket.core.NCoreSocket;
 
 import com.google.code.microlog4android.Logger;
@@ -111,7 +110,8 @@ public class AppManager {
 			MyApplication.getInstance().release();
 			finishAllActivity();
 			MyApplication.getInstance().stopSocketService();
-			MyApplication.Logger.debug(Utils.getTime() + "AppManager" + "程序退出");
+			LogUtil.d("程序退出");
+//			MyApplication.Logger.debug(Utils.getTime() + "AppManager" + "程序退出");
 			android.os.Process.killProcess(android.os.Process.myPid());
 		} catch (Exception e) {
 			ApiClient.uploadErrorLog(e.getMessage());

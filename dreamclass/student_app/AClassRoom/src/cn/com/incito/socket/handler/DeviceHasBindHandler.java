@@ -1,7 +1,6 @@
 package cn.com.incito.socket.handler;
 
-import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.common.utils.AndroidUtil;
+import cn.com.incito.common.utils.LogUtil;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;
 
@@ -21,11 +20,11 @@ public class DeviceHasBindHandler extends MessageHandler {
 
 		if (jsonObject.getBoolean("isbind")) {
 			uiHelper.showWaitingActivity();
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":DeviceHasBindHandler已绑定设备,进入等待界面");
+			LogUtil.d("已绑定设备,进入等待界面");
 			
 		} else {
 			uiHelper.showBindDeskActivity();
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":DeviceHasBindHandler未绑定设备,进入绑定界面");
+			LogUtil.d("未绑定设备,进入绑定界面");
 		}
 	}
 

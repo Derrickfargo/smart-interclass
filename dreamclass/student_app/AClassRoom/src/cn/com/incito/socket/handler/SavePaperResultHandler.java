@@ -3,7 +3,7 @@ package cn.com.incito.socket.handler;
 import java.io.File;
 
 import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.common.utils.AndroidUtil;
+import cn.com.incito.common.utils.LogUtil;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;
 
@@ -18,7 +18,7 @@ public class SavePaperResultHandler extends MessageHandler {
 			if(f.exists()){
 				f.delete();
 			}
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":SavePaperResultHandler:老师收到上传的作业!");
+			LogUtil.d("老师收到上传的作业!");
 			MyApplication.getInstance().lockScreen(true);
 			MyApplication.getInstance().setSubmitPaper(true);
 			UIHelper.getInstance().getDrawBoxActivity().closeProgressDialog();

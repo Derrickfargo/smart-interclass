@@ -1,7 +1,6 @@
 package cn.com.incito.socket.handler;
 
-import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.classroom.utils.Utils;
+import cn.com.incito.common.utils.LogUtil;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;
 
@@ -16,7 +15,7 @@ public class GroupSubmitHandler extends MessageHandler {
 		int code = data.getIntValue("code");
 		if (code == 0) {
 			JSONObject json = data.getJSONObject("data");
-			MyApplication.Logger.debug(Utils.getTime()+":GroupSubmitHandler分组提交成功");
+			LogUtil.d("分组提交成功");
 			UIHelper.getInstance().showConfirmGroupActivity(json);
 		} else {}
 	}

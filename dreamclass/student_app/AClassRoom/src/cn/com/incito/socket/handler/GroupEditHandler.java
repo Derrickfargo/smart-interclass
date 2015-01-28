@@ -2,7 +2,7 @@ package cn.com.incito.socket.handler;
 
 import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.common.utils.AndroidUtil;
+import cn.com.incito.common.utils.LogUtil;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;
 
@@ -14,7 +14,7 @@ public class GroupEditHandler extends MessageHandler {
 	protected void handleMessage() {
 		String currentActivityName = AppManager.getAppManager().currentActivity().getClass().getSimpleName();
 		int groupID = data.getIntValue("id");
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":GroupEditHandler:收到修改分组...组ID：" + groupID);
+		LogUtil.d("收到修改分组...组ID：" + groupID);
 		if("RandomGroupActivity".equals(currentActivityName)){
 			AppManager.getAppManager().finishActivity();
 		}

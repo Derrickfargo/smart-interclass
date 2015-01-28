@@ -18,7 +18,6 @@ import android.widget.RelativeLayout;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.core.NCoreSocket;
 import cn.com.incito.socket.message.DataType;
@@ -124,7 +123,7 @@ public class ResponderActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				if(NCoreSocket.getInstance().getChannel() != null){
-					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "ResponderActivity:发送抢答消息!");
+//					MyApplication.Logger.debug(An/droidUtil.getCurrentTime() + "ResponderActivity:发送抢答消息!");
 					JSONObject jsonObject = new JSONObject();
 					jsonObject.put("imei", MyApplication.deviceId);
 					MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_RESPONDER);

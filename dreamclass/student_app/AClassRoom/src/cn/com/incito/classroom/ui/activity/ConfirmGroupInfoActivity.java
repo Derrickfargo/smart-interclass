@@ -14,8 +14,7 @@ import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.utils.Utils;
-import cn.com.incito.common.utils.AndroidUtil;
-import cn.com.incito.common.utils.UIHelper;
+import cn.com.incito.common.utils.LogUtil;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.core.NCoreSocket;
 import cn.com.incito.socket.message.DataType;
@@ -85,7 +84,8 @@ public class ConfirmGroupInfoActivity extends BaseActivity implements
 
 		if(NCoreSocket.getInstance().getChannel() != null){
 			NCoreSocket.getInstance().sendMessage(messagePacking);
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":ConfirmGroupInfoActivity:启动分组确认");
+			LogUtil.d("发送分组确认");
+//			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":ConfirmGroupInfoActivity:启动分组确认");
 		}else{
 			showToast();
 		}

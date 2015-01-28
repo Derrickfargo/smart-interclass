@@ -12,9 +12,8 @@ import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 
 import android.os.SystemClock;
-import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
-import cn.com.incito.common.utils.AndroidUtil;
+import cn.com.incito.common.utils.LogUtil;
 
 /**
  * ftp工具类
@@ -40,91 +39,88 @@ public class FTPUtils {
 	private static String UserPassword = "admin";
 
 	private FTPUtils() {
-		if(ftpClient==null){
+		if (ftpClient == null) {
 			ftpClient = new FTPClient();
 		}
 	}
 
 	public static FTPUtils getInstance() {
 		if (ftpUtilsInstance == null) {
-			ftpUtilsInstance = new FTPUtils();
+			synchronized (FTPUtils.class) {
+				if (ftpUtilsInstance == null) {
+					ftpUtilsInstance = new FTPUtils();
+				}
+			}
 		}
 		return ftpUtilsInstance;
 	}
 
-	public static boolean initFTPSetting(String FTPUrl, int FTPPort,
-			String UserName, String UserPassword) {
+	public static boolean initFTPSetting(String FTPUrl, int FTPPort,String UserName, String UserPassword) {
 		int reply;
 		try { // 1.需要连接的Url,Port
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":FTPUtils:FTP服务器初始化连接" + "地址：" + FTPUrl + "端口号："
-					+ FTPPort);
+			LogUtil.d("FTP服务器初始化连接" + "地址：" + FTPUrl + "端口号："+ FTPPort);
 			ftpClient.connect(FTPUrl, FTPPort);
 			// 2.登陆服务端
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() +":FTPUtils:FTP服务器初始化连接" + "用户名：" + UserName);
+			LogUtil.d("FTP服务器初始化连接" + "用户名：" + UserName);
 			ftpClient.login(UserName, UserPassword); //
-			ftpClient.setBufferSize(1024*4);
+			ftpClient.setBufferSize(1024 * 4);
 			ftpClient.setControlEncoding("UTF-8");
 			ftpClient.enterLocalPassiveMode();
 			ftpClient.setKeepAlive(true);
 			ftpClient.setFileType(FTP.BINARY_FILE_TYPE); // 设置为2进制
 			reply = ftpClient.getReplyCode();
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":FTPUtils:FTP服务器初始化连接,返回数据："+reply);
+			LogUtil.d("FTP服务器初始化连接,返回数据：" + reply);
 			if (!FTPReply.isPositiveCompletion(reply)) { // 连接不成功
-				MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":FTPUtils:FTP服务器初始化连接失败");
+				LogUtil.d("FTP服务器初始化连接失败");
 				ftpClient.logout();
 				ftpClient.disconnect();
 				return false;
 			}
 		} catch (Exception e) {
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":FTPUtils:79行:出现异常:" + e.getMessage());
+			LogUtil.e("初始化ftp服务器出现异常:", e.getCause());
 			return false;
 		}
 		return true;
 	}
 
 	public boolean uploadFile(String FilePath, String FileName) {
+		boolean isSucces = false;
 		try {
 			if (!ftpClient.isConnected()) {
-				MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":FTPUtils:FTP服务器未连接");
+				LogUtil.d("FTP服务器未连接");
 				if (!initFTPSetting(FTPUrl, FTPPort, UserName, UserPassword)) {
-					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":FTPUtils:服务器连接失败");
-					try {
-						Thread.sleep(3000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-		    			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":FTPUtils:94行:出现异常:" + e.getMessage());
-					}
-					return uploadFile(FilePath,FileName);
+					LogUtil.d("ftp服务器连接失败,3s后进行重连");
+					SystemClock.sleep(3000);
+					return uploadFile(FilePath, FileName);
 				}
-				
 			}
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":FTPUtils:服务器已连接");
+			LogUtil.d("ftp服务器已连接");
 			ftpClient.makeDirectory(FilePath);
 			ftpClient.changeWorkingDirectory(FilePath); // 跳转到服务端目录
 			FTPFile[] files = ftpClient.listFiles();
 			for (FTPFile file : files) {
 				if (file.getName().equals(FileName)) {
 					if (ftpClient.deleteFile(Constants.FILE_PATH + FilePath+ "/" + FileName))
-						MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":FTPUtils:删除旧文件成功");
+						LogUtil.d("ftp服务器上删除旧文件成功");
 				}
 			}
 			FileInputStream fileInputStream = new FileInputStream(new File("/sdcard/temp.jpg"));
-			ftpClient.storeFile(FileName, fileInputStream); //
-			fileInputStream.close(); //
+			isSucces = ftpClient.storeFile(FileName, fileInputStream);
+			fileInputStream.close();
 			ftpClient.logout();
 			ftpClient.disconnect();
-		} catch (Exception e) { // TODO Auto-generated
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":FTPUtils:117行:出现异常:" + e.getMessage());
-			return false;
-		}finally{  
-            try {  
-                ftpClient.disconnect();  
-            } catch (Exception e) {  
-    			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":FTPUtils:125行:出现异常:" + e.getMessage());
-
-            }  
-        }  
-		return true;
+		} catch (Exception e) { 
+			LogUtil.e("出现异常", e.getCause());
+			isSucces = false;
+		} finally {
+			try {
+				ftpClient.disconnect();
+			} catch (Exception e) {
+				LogUtil.e("上传文件时出现异常", e.getCause());
+			}
+		}
+		LogUtil.d("作业上传结果：isSuccess:" + isSucces);
+		return isSucces;
 	}
 
 	/**
@@ -137,14 +133,15 @@ public class FTPUtils {
 	 * @return
 	 */
 	public static boolean downLoadFile(String FilePath, String FileName) {
+		boolean isSuccess = false;
 		try {
-		if (!ftpClient.isConnected()) {
-			if (!initFTPSetting(FTPUrl, FTPPort, UserName, UserPassword)) {
-				MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":FTPUtils:FTP服务器初始化连接失败");
-				SystemClock.sleep(3000);
-				return downLoadFile(FilePath,FileName);
+			if (!ftpClient.isConnected()) {
+				if (!initFTPSetting(FTPUrl, FTPPort, UserName, UserPassword)) {
+					LogUtil.d("FTP服务器初始化连接失败");
+					SystemClock.sleep(3000);
+					return downLoadFile(FilePath, FileName);
+				}
 			}
-		}
 			FTPFile[] files = ftpClient.listFiles();
 			for (FTPFile file : files) {
 				if (file.getName().equals(FileName)) {
@@ -152,23 +149,25 @@ public class FTPUtils {
 					if (localFile.exists()) {
 						localFile.delete();
 					}
-					System.out.println(localFile.getAbsolutePath());
 					OutputStream outputStream = new FileOutputStream(localFile);
-					ftpClient.retrieveFile(file.getName(), outputStream); // 耗时操作
+					isSuccess = ftpClient.retrieveFile(file.getName(), outputStream); // 耗时操作
 					outputStream.close();
 				}
 			}
 			ftpClient.logout();
 			ftpClient.disconnect();
-		} catch (Exception e) { // TODO Auto-generated
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":FTPUtils:165行:出现异常:" + e.getMessage());
-		}finally{  
-            try {  
-                ftpClient.disconnect();
-            } catch (IOException e) {  
-    			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":FTPUtils:173行:出现异常:" + e.getMessage());
-            }  
-        }  
-		return true;
+		} catch (Exception e) { 
+			LogUtil.e("下载文件出现异常", e.getCause());
+			isSuccess = false;
+		} finally {
+			try {
+//				ftpClient.logout();
+				ftpClient.disconnect();
+			} catch (IOException e) {
+				LogUtil.e("出现异常", e.getCause());
+			}
+		}
+		LogUtil.d("作业下载结果：isSuccess:" + isSuccess);
+		return isSuccess;
 	}
 }

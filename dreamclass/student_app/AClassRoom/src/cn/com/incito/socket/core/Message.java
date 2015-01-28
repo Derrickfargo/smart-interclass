@@ -120,6 +120,16 @@ public class Message implements Serializable{
 	 */
 	public static final Byte MESSAGE_QUIZ_FEEDBACK_COMPLETE=0x12;
 	
+	/**
+	 * 收到交作业的回执
+	 */
+	public static final Byte MESSAGE_RICIVE_SAVEPAPER = 0x14;
+	
+	/**
+	 * 收到作业
+	 */
+	public static final Byte MESSAGE_RECIVE_PAER = 0x15;
+	
 	
     private byte msgID;
     private int msgSize;

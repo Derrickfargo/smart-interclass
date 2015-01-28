@@ -36,13 +36,13 @@ import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
-import cn.com.incito.classroom.ui.activity.RandomGroupActivity.myAnimationListener;
 import cn.com.incito.classroom.ui.widget.ProgressiveDialog;
 import cn.com.incito.classroom.utils.BitmapUtil;
 import cn.com.incito.classroom.utils.FTPUtils;
 import cn.com.incito.classroom.widget.canvas.ISketchPadCallback;
 import cn.com.incito.classroom.widget.canvas.SketchPadView;
 import cn.com.incito.common.utils.AndroidUtil;
+import cn.com.incito.common.utils.LogUtil;
 import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.Message;
@@ -143,7 +143,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 	private Timer timeTimer;
 
 	private TimerTask timeTimerTask;
-
+	
 	private ProgressiveDialog mProgressDialog;
 
 	@Override
@@ -206,7 +206,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 		mBlack = (ImageView) findViewById(R.id.ico_black);
 		mBlack.setOnClickListener(this);
 		changeBtn = (Button) findViewById(R.id.bg_select_btn);// 背景选择按钮
-		changeBtn.setOnClickListener(this);
+//		changeBtn.setOnClickListener(this);
 		// saveBtn.setOnClickListener(this);
 		cleanBtn = (ImageView) findViewById(R.id.earise);
 		cleanBtn.setOnClickListener(this);
@@ -560,9 +560,8 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 			jsonObject.put("imei", MyApplication.deviceId);
 			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SEND_PAPER);
 			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":DrawBoxActivity:发送主动提交作业请求");
+			LogUtil.d("发送主动提交作业请求");
 			NCoreSocket.getInstance().sendMessage(messagePacking);
-			startTask();
 		}else{
 			showToast();
 		}
@@ -585,6 +584,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 			@Override
 			public void run() {
 				handler.sendEmptyMessage(1);
+				NCoreSocket.getInstance().closeConnection();
 			}
 		};
 		timeTimer.schedule(timeTimerTask, 10 * 1000);
@@ -607,7 +607,6 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 					mProgressDialog.setMessage(R.string.sendpaper_notice);
 					mProgressDialog.show();
 				}
-				sendPaper();
 				break;
 			case 1:
 				if (timeTimer != null) {
@@ -615,6 +614,26 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 					mProgressDialog.dismiss();
 					ToastHelper.showCustomToast(DrawBoxActivity.this, "作业提交失败，请手动提交");
 				}
+				break;
+			case 2:
+				File file = new File("/sdcard/" + Constants.FILE_NAME);
+				String flag = msg.getData().getString("isContainsPic");
+				if ("true".equals(flag)) {
+					if (file.exists()) {
+						byte[] paper = AndroidUtil.getBytes(file);
+						if (paper != null) {
+							ByteArrayOutputStream outPut = new ByteArrayOutputStream();
+							bitmap = BitmapFactory.decodeByteArray(paper, 0, paper.length);
+							bitmap.compress(CompressFormat.JPEG, 60, outPut);
+						}
+					} else {
+						bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bg_white);
+					}
+
+				} else {
+					bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bg_white);
+				}
+				initPaint(bitmap);
 				break;
 			default:
 				break;
@@ -627,38 +646,28 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 	 */
 	public void sendPaper() {
 		getPaperFile();
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "开始向教师端发送作业");
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				handler.sendEmptyMessage(0);
-				String filePath = "/" + MyApplication.getInstance().getDeviceId();
-				String fileName = MyApplication.getInstance().getDeviceId() + ".jpg";
-				if (FTPUtils.getInstance().uploadFile(filePath, fileName)) {
-					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "：DrawBoxActivity:作业上传成功");
-					MyApplication.getInstance().lockScreen(true);
-					
-					
-					JSONObject jsonObject = new JSONObject();
-					jsonObject.put("quizId", MyApplication.getInstance().getQuizID());
-					jsonObject.put("deviceId", MyApplication.getInstance().getDeviceId());
-					jsonObject.put("file", Constants.FILE_PATH + filePath + "/" + fileName);
-					MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SAVE_PAPER);
-					messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
-					if(NCoreSocket.getInstance().getChannel() != null){
-						NCoreSocket.getInstance().sendMessage(messagePacking);
-					}
-					mProgressDialog.dismiss();
-				} else {
-					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":DrawBoxActivity:作业上传失败");
-					handler.sendEmptyMessage(1);
-				}
-			}
-		}).start();
+		handler.sendEmptyMessage(0);
+		String filePath = "/" + MyApplication.getInstance().getDeviceId();
+		String fileName = MyApplication.getInstance().getDeviceId() + ".jpg";
+		if (FTPUtils.getInstance().uploadFile(filePath, fileName)) {
+			LogUtil.d("作业上传成功,向服务器发送作业上传成功并且等待10秒,等待pc回执");
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("quizId", MyApplication.getInstance().getQuizID());
+			jsonObject.put("deviceId", MyApplication.getInstance().getDeviceId());
+			jsonObject.put("file", Constants.FILE_PATH + filePath + "/" + fileName);
+			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SAVE_PAPER);
+			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
+			startTask();
+			NCoreSocket.getInstance().sendMessage(messagePacking);
+		} else {
+			LogUtil.d("作业上传失败!");
+			handler.sendEmptyMessage(1);
+			NCoreSocket.getInstance().closeConnection();
+		}
 	}
 
 	public File getBitmapFile(Bitmap bitmap) {
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":DrawBoxActivity:开始保存图片到本地");
+		LogUtil.d("开始保存图片到本地,名称temp.jpg");
 		File f = new File("/sdcard/", "temp.jpg");
 		if (f.exists()) {
 			f.delete();
@@ -668,7 +677,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 			bitmap.compress(Bitmap.CompressFormat.JPEG, 60, out);
 			out.flush();
 			out.close();
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":DrawBoxActivity:图片已经保存到本地");
+			LogUtil.d("作业已经保存到本地");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -679,5 +688,18 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 	
 	@Override
 	public void onDestroy(SketchPadView obj) {
+	}
+
+	/**
+	 * 上次作业未提交成功这次直接更换背景
+	 * @param isContainsPic
+	 */
+	public void replaceBackGround(String isContainsPic) {
+		android.os.Message message = handler.obtainMessage();
+		Bundle b = new Bundle();
+		b.putString("isContainsPic", isContainsPic);
+		message.setData(b);
+		message.what = 2;
+		handler.sendMessage(message);
 	}
 }

@@ -20,18 +20,15 @@ import android.provider.Settings;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.exception.AppUncaughtException;
 import cn.com.incito.classroom.vo.LoginResVo;
-import cn.com.incito.common.utils.AndroidUtil;
+import cn.com.incito.common.utils.LogUtil;
 import cn.com.incito.socket.core.NCoreSocket;
 
-import com.google.code.microlog4android.Logger;
-import com.google.code.microlog4android.LoggerFactory;
 import com.google.code.microlog4android.config.PropertyConfigurator;
 
 /**
  * 应用 appication（缓存各类数据） Created by popoy on 2014/7/28.
  */
 public class MyApplication extends Application {
-	public static final Logger Logger = LoggerFactory.getLogger();
 	public boolean isOnClass;// 是否在上课
 	
 	/**
@@ -173,7 +170,8 @@ public class MyApplication extends Application {
 		boolean screenOn = pm.isScreenOn();
 
 		if (Constants.OPEN_LOCK_SCREEN) {
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":MyApplication:" + "是否收到解锁屏信息：" + isLock);
+			LogUtil.d("是否收到解锁屏信息：" + isLock);
+//			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":MyApplication:" + "是否收到解锁屏信息：" + isLock);
 			ContentResolver mContentResolver = this.getApplicationContext().getContentResolver();
 			ExecRootCmd execRootCmd = new ExecRootCmd();
 			if (isLock) {
@@ -209,6 +207,6 @@ public class MyApplication extends Application {
 	public void onTerminate() {
 		super.onTerminate();
 		sendBroadcast(new Intent("android.intent.action.SHOW_NAVIGATION_BAR"));
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":MyApplication:广播发出");
+//		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":MyApplication:广播发出");
 	}
 }

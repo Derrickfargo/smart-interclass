@@ -2,7 +2,7 @@ package cn.com.incito.socket.handler;
 
 import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.common.utils.AndroidUtil;
+import cn.com.incito.common.utils.LogUtil;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;
 
@@ -14,8 +14,7 @@ public class RandomGroupHandler extends MessageHandler {
 
 	@Override
 	protected void handleMessage() {
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "::RandomGroupHandler::收到随机分组消息");
-		
+		LogUtil.d("收到随机分组消息");
 		String currentActivityName = AppManager.getAppManager().currentActivity().getClass().getSimpleName();
 		
 		boolean isLockScreen = MyApplication.getInstance().isLockScreen();
@@ -33,6 +32,5 @@ public class RandomGroupHandler extends MessageHandler {
 			}
 			UIHelper.getInstance().showRandomGroupActivity(data);
 		}
-		UIHelper.getInstance().getWaitingActivity().refreshStudents(data);
 	}
 }

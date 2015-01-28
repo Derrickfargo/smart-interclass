@@ -7,9 +7,10 @@ import android.os.Looper;
 import android.os.SystemClock;
 import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.MyApplication;
+import cn.com.incito.classroom.ui.activity.DrawBoxActivity;
 import cn.com.incito.classroom.ui.activity.SplashActivity;
 import cn.com.incito.classroom.ui.activity.WaitingActivity;
-import cn.com.incito.common.utils.AndroidUtil;
+import cn.com.incito.common.utils.LogUtil;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
@@ -34,7 +35,7 @@ public class SendMessageListener implements ChannelFutureListener {
 	public void operationComplete(ChannelFuture future) throws Exception {
 		byte msgId = messagePacking.msgId;
 		if (future.isSuccess()) {
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":SendMessageListener:向服务器发送消息成功,消息ID:" + msgId);
+			LogUtil.d("向服务器发送消息成功,消息ID:" + msgId);
 			/**
 			 * 发送设备登录命令成功后
 			 * 如果当前界面是启动界面则判断apk是否需要更新,否则发送设备是否绑定消息
@@ -46,10 +47,10 @@ public class SendMessageListener implements ChannelFutureListener {
 				if("SplashActivity".equals(activityName)){
 					final SplashActivity splashActivity = (SplashActivity) activity;
 					boolean isUpdateAp = splashActivity.isUpdateApk();
-					MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":SendMessageListener:当前界面是开始动画界面检查apk是否需要更新:isUpdateAp:" + isUpdateAp);
+					LogUtil.d("当前界面是开始动画界面检查apk是否需要更新:isUpdateAp:" + isUpdateAp);
 					if(!isUpdateAp){
 						SystemClock.sleep(2000);
-						MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":SendMessageListener:当前界面是开始动画界面检查apk不需要更新,发送设备是否绑定消息");
+						LogUtil.d("当前界面是开始动画界面检查apk不需要更新,发送设备是否绑定消息");
 						JSONObject jsonObject = new JSONObject();
 						jsonObject.put("imei", MyApplication.deviceId);
 						MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_HAS_BIND);
@@ -71,17 +72,27 @@ public class SendMessageListener implements ChannelFutureListener {
 					 */
 					WaitingActivity waitingActivity = UIHelper.getInstance().getWaitingActivity();
 					if(waitingActivity != null){
-						MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":SendMessageListener:当前界面不是动画界面,发送获取小组信息");
+						LogUtil.d("当前界面不是动画界面,发送获取小组信息");
 						JSONObject jsonObject = new JSONObject();
 						jsonObject.put("imei", MyApplication.deviceId);
 						MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_LIST);
 						messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
 						NCoreSocket.getInstance().sendMessage(messagePacking);
 					}
+					/**
+					 * 如果是做作业界面
+					 * 发送提交作业命令
+					 */
+					if("DrawBoxActivity".equals(AppManager.getAppManager().currentActivity().getClass().getSimpleName())){
+						DrawBoxActivity boxActivity = UIHelper.getInstance().getDrawBoxActivity();
+						if(boxActivity != null){
+							boxActivity.sendPaperRequest();
+						}
+					}
 				}
 			}
 		}else{
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":SendMessageListener:向服务器发送消息失败消息ID：" + msgId);
+			LogUtil.e("向服务器发送消息失败断开连接消息ID：" + msgId,future.cause());
 		}
 	}
 }

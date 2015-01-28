@@ -2,7 +2,7 @@ package cn.com.incito.socket.handler;
 
 import android.content.SharedPreferences.Editor;
 import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.common.utils.AndroidUtil;
+import cn.com.incito.common.utils.LogUtil;
 import cn.com.incito.socket.core.MessageHandler;
 /**
  * 登陆处理hanlder
@@ -20,6 +20,6 @@ public class DeviceLoginHandler extends MessageHandler {
 		editor.putString("server_port", port);
 		editor.commit();
 		editor.apply();
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + "DeviceLoginHandler:收到设备登录回复");
+		LogUtil.d("收到设备登录回复");
 	}
 }

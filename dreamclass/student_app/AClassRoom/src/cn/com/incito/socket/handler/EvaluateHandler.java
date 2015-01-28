@@ -2,11 +2,8 @@ package cn.com.incito.socket.handler;
 
 import java.nio.ByteBuffer;
 
-import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.utils.CompressUtil;
-import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.common.utils.UIHelper;
-import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.core.MessageHandler;
 import cn.com.incito.socket.utils.BufferUtils;
 
@@ -34,7 +31,7 @@ public class EvaluateHandler extends MessageHandler{
 
 	@Override
 	protected void handleMessage() {
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() +"：EvaluateHandler：收到互评命令");
+//		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() +"：EvaluateHandler：收到互评命令");
 		UIHelper.getInstance().showEvaluateActivity(CompressUtil.unGZip(imageByte),uuid);;
 	}
 

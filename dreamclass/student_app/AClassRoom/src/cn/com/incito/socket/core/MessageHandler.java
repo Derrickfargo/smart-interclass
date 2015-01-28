@@ -1,5 +1,8 @@
 package cn.com.incito.socket.core;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import com.alibaba.fastjson.JSONObject;
 
 
@@ -12,6 +15,7 @@ import com.alibaba.fastjson.JSONObject;
 public abstract class MessageHandler {
 	protected Message message;
 	protected JSONObject data;
+	private ExecutorService executorService = Executors.newCachedThreadPool();
 	
 	/**
 	 * 消息对应的处理器 存放消息对应的处理逻辑，在消息分发时使用
@@ -23,8 +27,14 @@ public abstract class MessageHandler {
 	 */
 	public void handleMessage(JSONObject jsonObject){
 		data = jsonObject;
-		handleMessage();
+		
+		executorService.execute(new Runnable() {
+			
+			@Override
+			public void run() {
+				handleMessage();
+			}
+		});
 	}
-
 	protected abstract void handleMessage();
 }

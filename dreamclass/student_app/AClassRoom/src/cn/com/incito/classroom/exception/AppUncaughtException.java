@@ -13,17 +13,13 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.Thread.UncaughtExceptionHandler;
 
-import com.google.code.microlog4android.Logger;
-import com.google.code.microlog4android.LoggerFactory;
-
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Log;
-import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.utils.ApiClient;
 import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.common.utils.AndroidUtil;
+import cn.com.incito.common.utils.LogUtil;
 
 /**
  * Description : Define the exception of this application which recorded in log
@@ -59,13 +55,15 @@ public class AppUncaughtException implements UncaughtExceptionHandler {
 //		preferences.edit().putBoolean("isNormalExit", false).commit();
 		Log.e("程序挂掉了","");
 		// 把错误的堆栈信息 获取出来
-		MyApplication.Logger.debug(Utils.getTime()+"AppUncaughtException:"+getErrorInfo(arg1));
+		LogUtil.d(getErrorInfo(arg1));
+//		MyApplication.Logger.debug(Utils.getTime()+"AppUncaughtException:"+getErrorInfo(arg1));
 		String errorInfo=arg1.getMessage();
 		// 打印到控制台上异常信息
 		if (AndroidUtil.isNetworkAvailable(context)) {
 			ApiClient.uploadErrorLog(errorInfo);
 		}
-		MyApplication.Logger.debug("AppUncaughtException:"+errorInfo);
+		LogUtil.d(errorInfo);
+//		MyApplication.Logger.debug("AppUncaughtException:"+errorInfo);
 	}
 
 	/**

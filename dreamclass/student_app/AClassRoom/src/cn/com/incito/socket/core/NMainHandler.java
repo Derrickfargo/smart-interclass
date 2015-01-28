@@ -5,9 +5,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.classroom.ui.activity.WaitingActivity;
-import cn.com.incito.common.utils.AndroidUtil;
-import cn.com.incito.common.utils.UIHelper;
+import cn.com.incito.common.utils.LogUtil;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
@@ -28,13 +26,13 @@ public class NMainHandler extends ChannelInboundHandlerAdapter {
 		byte msgId = messagePacking.msgId;
 		
 		if (msgId == Message.MESSAGE_HEART_BEAT) {
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ "NMainHandler:收到服务器心跳消息" + ctx.channel().remoteAddress().toString().substring(1));
+			LogUtil.d("收到服务器心跳消息" + ctx.channel().remoteAddress().toString().substring(1));
 			MessagePacking packing = new MessagePacking(Message.MESSAGE_HEART_BEAT);
 			NCoreSocket.getInstance().sendMessage(packing);
 		} else {
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NMainHandler:收到服务器消息:msgId:" + msgId);
+			LogUtil.d("收到服务器消息:msgId:" + msgId);
 			if(messagePacking.getJsonObject() == null){
-				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NMainHandler:收到服务器消息:只有消息ID没有数据:msgId:" + msgId);
+				LogUtil.d("收到服务器消息:只有消息ID没有数据:msgId:" + msgId);
 			}
 			messagePacking.getHandler().handleMessage(messagePacking.getJsonObject());
 		}
@@ -45,7 +43,8 @@ public class NMainHandler extends ChannelInboundHandlerAdapter {
 	 */
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NMainHandler:与服务器连接建立成功,发送设备登录消息!");
+		
+		LogUtil.d("与服务器连接建立成功,发送设备登录消息!");
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("imei", MyApplication.deviceId);
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_HAND_SHAKE);
@@ -59,13 +58,8 @@ public class NMainHandler extends ChannelInboundHandlerAdapter {
 	 */
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause){
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NMainHandler:由于出现异常我将主动关闭通道,出现异常原因:" + cause.getMessage());
+		LogUtil.e("出现异常:" ,cause);
 		ctx.close();
-		WaitingActivity waitingActivity = UIHelper.getInstance().getWaitingActivity();
-		if(waitingActivity != null){
-			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":NMainHandler:由于异常改变本pad的所有学生的状态!");
-			waitingActivity.notifyStudentOffline();
-		}
 	}
 
 	@Override
@@ -75,7 +69,6 @@ public class NMainHandler extends ChannelInboundHandlerAdapter {
 			IdleStateEvent event = (IdleStateEvent) evt;
 			if (event.state() == IdleState.READER_IDLE) {
 				/* 读超时 */
-				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":NMainHandler:长时间没有收到服务器心跳,马上自动关闭连接!");
 				throw new RuntimeException("心跳超时!");
 			}
 		}

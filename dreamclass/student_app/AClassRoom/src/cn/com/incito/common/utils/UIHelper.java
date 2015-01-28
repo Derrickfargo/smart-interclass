@@ -155,6 +155,8 @@ public class UIHelper {
 	 * 显示电子绘画板
 	 */
 	public void showDrawBoxActivity(String hasPic) {
+		
+		
 		Intent intent = new Intent();
 		MyApplication.getInstance().setSubmitPaper(false);
 		intent.putExtra("flag", hasPic);
@@ -183,15 +185,15 @@ public class UIHelper {
 		}
 		if(UIHelper.getInstance().getEvaluateActivity()!=null){
 			setNum(2);
-			MyApplication.Logger.debug("互评界面不为空，传入了新图片大小为");
+//			MyApplication.Logger.debug("互评界面不为空，传入了新图片大小为");
 			if (paper != null){
-				UIHelper.getInstance().getEvaluateActivity().setQuizList(paper,uuid);
-				MyApplication.Logger.debug("新图片大小为"+paper.length);
+//				UIHelper.getInstance().getEvaluateActivity().setQuizList(paper,uuid);
+//				MyApplication.Logger.debug("新图片大小为"+paper.length);
 			}
 		}else{
 			setNum(1);
 			if (paper != null) {
-				MyApplication.Logger.debug("收到第一张互评图片");
+//				MyApplication.Logger.debug("收到第一张互评图片");
 				Bundle mBundle = new Bundle();
 				mBundle.putByteArray("paper", paper);
 				mBundle.putString("quizId", uuid);;
@@ -242,6 +244,4 @@ public class UIHelper {
 		}
 		this.evaluateActivity = evaluateActivity;
 	}
-	
-	
 }

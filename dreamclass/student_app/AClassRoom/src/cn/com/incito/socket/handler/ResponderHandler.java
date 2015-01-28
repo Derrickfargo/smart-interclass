@@ -1,7 +1,7 @@
 package cn.com.incito.socket.handler;
 
 import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.common.utils.AndroidUtil;
+import cn.com.incito.common.utils.LogUtil;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;
 
@@ -16,7 +16,7 @@ public class ResponderHandler extends MessageHandler {
 
 	@Override
 	protected void handleMessage() {
-		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+ ":ResponderHandler:收到抢答消息");
+		LogUtil.d("收到抢答消息");
 		boolean isLockScreen = MyApplication.getInstance().isLockScreen();
 
 		/**

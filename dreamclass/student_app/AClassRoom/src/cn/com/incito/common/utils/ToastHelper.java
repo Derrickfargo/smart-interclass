@@ -31,8 +31,7 @@ public class ToastHelper {
      * 显示自定义Toast提示(来自String) *
      */
     public static void showCustomToast(Context context, String text) {
-        View toastRoot = LayoutInflater.from(context).inflate(
-                R.layout.common_toast, null);
+        View toastRoot = LayoutInflater.from(context).inflate(R.layout.common_toast, null);
         ((TextView) toastRoot.findViewById(R.id.toast_text)).setText(text);
         Toast toast = new Toast(context);
         toast.setGravity(Gravity.CENTER, 0, 0);
