@@ -1,9 +1,12 @@
 package cn.com.incito.server.utils;
 
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Properties;
 import java.util.Queue;
 import java.util.Set;
@@ -32,6 +35,7 @@ public class QuizCollector {
 	private final Condition isIdle = lock.newCondition();
 	private Queue<ChannelHandlerContext> quizQueue = new LinkedList<ChannelHandlerContext>();
 	private Set<ChannelHandlerContext> quizSet = new HashSet<ChannelHandlerContext>();
+	private List<Channel> quizList = new ArrayList<Channel>();
 
 	public static QuizCollector getInstance() {
 		if (instance == null) {
@@ -74,8 +78,10 @@ public class QuizCollector {
 		if (channel == null) {
 			return;
 		}
+		quizList.add(channel.channel());
 		quizSet.add(channel);
 		quizQueue.offer(channel);
+		logger.info("收作业命令加入队列："+channel.channel().remoteAddress());
 		if (quizQueue.size() == 1) {
 			lock.lock();
 			isIdle.signal();
@@ -126,6 +132,7 @@ public class QuizCollector {
 		        messagePacking.putBodyData(DataType.INT,BufferUtils.writeUTFString(json.toString()));
 				try {
 					SocketServiceCore.getInstance().sendMsg(messagePacking, channel);
+					logger.info("收作业命令已发送："+channel.channel().remoteAddress());
 					new QuizCollectMonitor(channel).start();
 				} catch (Exception e) {
 					logger.error("作业收取失败,直接收取下一个作业", e);
@@ -141,6 +148,10 @@ public class QuizCollector {
 	public void quizComplete(ChannelHandlerContext channel) {
 		capacity--;
 		quizSet.remove(channel);
+	}
+	
+	public void orderComplete(ChannelHandlerContext ctx){
+		quizList.remove(ctx.channel());
 	}
 
 	/**
@@ -159,6 +170,10 @@ public class QuizCollector {
 				Thread.sleep(TIMEOUT);// 10秒后检测是否提交完成
 			} catch (InterruptedException e) {
 				e.printStackTrace();
+			}
+			if(quizList.contains(channel.channel())){
+				quizList.remove(channel.channel());
+				addQuizQueue(channel);
 			}
 			if (quizSet.contains(channel)) {
 				logger.info("作业在10秒内没有收取成功,自动收取下一个作业.");

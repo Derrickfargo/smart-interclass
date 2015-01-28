@@ -131,14 +131,14 @@ public class RoomLogin1 extends MouseAdapter{
 		//学校名称
 		lblschoolName = new JLabel();
 		lblschoolName.setForeground(UIHelper.getDefaultFontColor());
-		lblschoolName.setText("请输入学校账号:");
+		lblschoolName.setText("请输入梦想教师登录账号:");
 		
 		lblschoolName.setFont( new Font("Microsoft YaHei", Font.PLAIN, 16));
-		lblschoolName.setBounds(250, 250, 170, 35);
+		lblschoolName.setBounds(250, 250, 200, 35);
 		frame.add(lblschoolName);
 		
 		txtschoolName = new JTextField();
-		txtschoolName.setBounds(420, 250, 210, 35);
+		txtschoolName.setBounds(460, 250, 240, 35);
 		txtschoolName.setText("用户名");
 		txtschoolName.addFocusListener(new FocusListener() {
 			
@@ -181,12 +181,12 @@ public class RoomLogin1 extends MouseAdapter{
 		//学校密码
 		lblschoolpassword= new JLabel();
 		lblschoolpassword.setForeground(UIHelper.getDefaultFontColor());
-		lblschoolpassword.setText("请输入学校密码:");
+		lblschoolpassword.setText("请输入密码:");
 		lblschoolpassword.setFont( new Font("Microsoft YaHei", Font.PLAIN, 16));
-		lblschoolpassword.setBounds(250, 350, 175, 35);
+		lblschoolpassword.setBounds(250, 350, 205, 35);
 		frame.add(lblschoolpassword);
 		txtschoolPassword = new JPasswordField();
-		txtschoolPassword.setBounds(420, 350, 210, 35);
+		txtschoolPassword.setBounds(460, 350, 250, 35);
 		txtschoolPassword.setEchoChar((char)0);
 		txtschoolPassword.setText("密码");
 		txtschoolPassword.setForeground(UIHelper.getDefaultFontColor());
@@ -236,11 +236,11 @@ public class RoomLogin1 extends MouseAdapter{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(txtschoolName==null||txtschoolName.getText().equals("用户名")){
-					JOptionPane.showMessageDialog(frame, "请输入学校名称!");
+					JOptionPane.showMessageDialog(frame, "请输入梦想教师登录账号!");
 					return;
 				}
 				if(txtschoolPassword==null||txtschoolPassword.getText().equals("密码")){
-					JOptionPane.showMessageDialog(frame, "请输入学校密码！");
+					JOptionPane.showMessageDialog(frame, "请输入密码！");
 					return;
 				}
 				sentRoomMsg();

@@ -120,9 +120,13 @@ public class Message {
 	public static final Byte MESSAGE_RESPONDER_END = 0x13;
 	
 	/**
-	 *重连命令 
+	 *收到交作业的回执
 	 */
-	public static final Byte MESSAGE_RECONNECT = 0x14;
+	public static final Byte MESSAGE_RECEIVE_SAVEPAPER = 0x14;
+	/**
+	 * 收到写作业的回执
+	 */
+	public static final Byte MESSAGE_RECEIVE_DISTRIBUTE_PAPER =0x15;
 	
 	private Logger log = Logger.getLogger(Message.class);
 	

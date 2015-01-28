@@ -40,6 +40,14 @@ public class CoreService {
 		app.getOnlineDevice().add(imei);
 		app.refresh();// 更新UI
 	}
+	
+	/**
+	 * 移除写作业回执命令
+	 * @param imei
+	 */
+	public void removeOrderSet(String imei){
+		app.getOrderSet().remove(imei);
+	}
 
 	public Group deviceLogout(String imei) {
 		Device device = app.getImeiDevice().get(imei);
@@ -508,11 +516,11 @@ public class CoreService {
 	 * @param imei
 	 * @return
 	 */
-	public void SavePaper(String imei, String quizid, String path, ChannelHandlerContext channel) {
+	public boolean SavePaper(String imei, String quizid, String path, ChannelHandlerContext channel) {
 		File file = new File(path);
 		logger.info("图片是否存在:" + file.exists());
 		if (!file.exists()) {
-			return;
+			return false;
 		}
 		File thumbnail = new File(file.getParent(), UUID.randomUUID() + ".jpg");
 		try {
@@ -521,7 +529,7 @@ public class CoreService {
 			logger.info("缩略图生成：" + thumbnail.getAbsoluteFile());
 		} catch (IOException e) {
 			logger.error("保存作业图片出现错误:", e);
-			return;
+			return false;
 		}
 
 		Quiz quiz = new Quiz();
@@ -560,6 +568,7 @@ public class CoreService {
 		// 当前作业处理完毕，处理下一作业
 		QuizCollector.getInstance().quizComplete(channel);
 		QuizCollector.getInstance().nextQuiz();
+		return true;
 	}
 
 }

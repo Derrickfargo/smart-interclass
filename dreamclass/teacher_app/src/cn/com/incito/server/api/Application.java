@@ -1,5 +1,6 @@
 package cn.com.incito.server.api;
 
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.awt.Font;
@@ -115,7 +116,13 @@ public class Application {
 	private Map<String, QuizFeedback> quizFeedbackMap = new HashMap<String, QuizFeedback>();// 作业id和作业评价
 
 	private List<Student> responderStudents = new ArrayList<Student>();// 抢答的学生组
+	
+	private Set<String> orderSet = new HashSet<String>();
 
+	
+	public Set<String> getOrderSet(){
+		return orderSet;
+	}
 	/**
 	 * 保存重连学生，imei
 	 */
@@ -255,6 +262,7 @@ public class Application {
 	}
 
 	public void addQuizIMEI(String imei) {
+		orderSet.add(imei);
 		tempQuizIMEI.add(imei);
 		String message = String.format(Constants.MESSAGE_QUIZ, 0, tempQuizIMEI.size());
 		getFloatIcon().showQuizMessage(message);

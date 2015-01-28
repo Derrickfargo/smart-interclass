@@ -48,6 +48,7 @@ public class GroupListHandler extends MessageHandler {
 			}
 			app.refresh();//刷新界面
 		}
+		app.getRecStudents().remove(imei);
 		logger.info(result);
 		sendResponse(result,imei);
 	}

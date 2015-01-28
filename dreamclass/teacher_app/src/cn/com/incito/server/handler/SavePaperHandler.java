@@ -42,8 +42,9 @@ public class SavePaperHandler extends MessageHandler {
 		// 获得图片路径
 		file = json.getString("file");
 		logger.info("路径：" + file);
-		service.SavePaper(imei, quizid, file, ctx);
+		boolean flag = service.SavePaper(imei, quizid, file, ctx);
 		// 需要给组中所以的设备发送
+		if(flag == true)
 		sendResponse(JSONUtils.renderJSONString(0));
 	}
 

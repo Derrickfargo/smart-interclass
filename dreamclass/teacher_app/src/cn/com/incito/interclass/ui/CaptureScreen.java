@@ -36,14 +36,14 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
@@ -66,7 +66,6 @@ import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.SocketServiceCore;
 import cn.com.incito.server.message.DataType;
 import cn.com.incito.server.message.MessagePacking;
-import cn.com.incito.server.utils.BufferUtils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.sun.image.codec.jpeg.ImageFormatException;
@@ -74,6 +73,7 @@ import com.sun.image.codec.jpeg.ImageFormatException;
 public class CaptureScreen {
 
 	private Application app = Application.getInstance();
+	private ExecutorService executor = Executors.newCachedThreadPool();
 
 	Logger logger = Logger.getLogger(CaptureScreen.class.getName());
 
@@ -174,17 +174,34 @@ public class CaptureScreen {
 			public void run() {
 				while (it.hasNext()) {
 					Entry<String, ChannelHandlerContext> entry = it.next();
-					String imei = entry.getKey();
+					final String imei = entry.getKey();
 					logger.info("將要發送作業的設備Imei"+imei);
 					List<Student> studentsList = app.getStudentByImei(imei);
 					// 记录有学生登陆的Pad
 					if (studentsList.size() > 0) {
-						ChannelHandlerContext channel = entry.getValue();
+						final ChannelHandlerContext channel = entry.getValue();
 						if (channel != null) {
 							if (channel.channel().isOpen()) {
 								SocketServiceCore.getInstance().sendMsg(data, channel);
+								
 								app.addQuizIMEI(imei);// 已发送的IMEI
 								logger.info("已發送作業"+imei);
+								executor.execute(new Runnable() {
+									
+									@Override
+									public void run() {
+										try {
+											Thread.sleep(5000);
+										} catch (InterruptedException e) {
+											e.printStackTrace();
+											logger.info("等待被打断"+imei);
+										}
+										if(app.getOrderSet().contains(imei)){
+											logger.info("做作业回执超时，关闭通道："+imei);
+											channel.close();
+										}
+									}
+								});
 							}
 						}
 					}
@@ -217,6 +234,7 @@ public class CaptureScreen {
 			exe.printStackTrace();
 		}
 	}
+	
 
 	// 一个暂时类，用于显示当前的屏幕图像
 	private class ContentPanel extends JPanel implements MouseListener, MouseMotionListener {

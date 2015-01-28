@@ -14,7 +14,8 @@ import cn.com.incito.server.handler.GroupSubmitHandler;
 import cn.com.incito.server.handler.GroupVoteHandler;
 import cn.com.incito.server.handler.HeartbeatHandler;
 import cn.com.incito.server.handler.QuizEvaluateSubmitHandler;
-import cn.com.incito.server.handler.ReconnectionHandler;
+import cn.com.incito.server.handler.ReDistributePaperHandler;
+import cn.com.incito.server.handler.ReSavePaperHander;
 import cn.com.incito.server.handler.ResponderHandler;
 import cn.com.incito.server.handler.SavePaperHandler;
 import cn.com.incito.server.handler.SendPaperHandler;
@@ -66,8 +67,10 @@ public final class MessageHandlerResource {
 		handlerResources.put(Message.MESSAGE_STUDENT_RESPONDER, ResponderHandler.class);
 		//提交互评
 		handlerResources.put(Message.MESSAGE_QUIZ_FEEDBACK_SUBMIT, QuizEvaluateSubmitHandler.class);
-		//设备重连
-		handlerResources.put(Message.MESSAGE_RECONNECT, ReconnectionHandler.class);
+		//收到做作业命令
+		handlerResources.put(Message.MESSAGE_RECEIVE_DISTRIBUTE_PAPER,ReDistributePaperHandler.class);
+		//收到交作业命令
+		handlerResources.put(Message.MESSAGE_RECEIVE_SAVEPAPER, ReSavePaperHander.class);
 	}
 	
 	public MessageHandler getMessageHandler(Byte key){
