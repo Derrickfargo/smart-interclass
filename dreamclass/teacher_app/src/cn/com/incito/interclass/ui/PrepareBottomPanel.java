@@ -223,7 +223,6 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 					}
 				}
 			}
-//			final List<ChannelHandlerContext> channels = app.getClientChannelByGroup(group.getId());
 			sendMessageToGroup(messagePacking, ctxs);
 		}
 	}
