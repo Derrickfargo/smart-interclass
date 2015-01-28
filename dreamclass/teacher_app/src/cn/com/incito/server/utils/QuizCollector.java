@@ -171,14 +171,14 @@ public class QuizCollector {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			if(quizList.contains(channel.channel())){
-				quizList.remove(channel.channel());
-				addQuizQueue(channel);
-			}
 			if (quizSet.contains(channel)) {
 				logger.info("作业在10秒内没有收取成功,自动收取下一个作业.");
 				quizComplete(channel);
 				nextQuiz();
+			}
+			if(quizList.contains(channel.channel())){
+				quizList.remove(channel.channel());
+				addQuizQueue(channel);
 			}
 		}
 	}
