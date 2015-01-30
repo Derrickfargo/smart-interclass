@@ -178,7 +178,7 @@ public class QuizCollector {
 			}
 			if(quizList.contains(channel.channel())){
 				quizList.remove(channel.channel());
-				addQuizQueue(channel);
+				channel.close();
 			}
 		}
 	}
