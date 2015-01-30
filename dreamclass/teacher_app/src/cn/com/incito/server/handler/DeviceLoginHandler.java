@@ -53,10 +53,10 @@ public class DeviceLoginHandler extends MessageHandler {
 		String port = props.get(AppConfig.CONF_SERVER_PORT).toString();
 		data.put(AppConfig.CONF_SERVER_IP, ip);
 		data.put(AppConfig.CONF_SERVER_PORT, port);
-        logger.info("回复设备登陆消息:" + data.toJSONString());
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_HAND_SHAKE);
 		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(data.toJSONString()));
         SocketServiceCore.getInstance().sendMsg(messagePacking, ctx);
+        logger.info("回复设备登陆消息:" + data.toJSONString());
 	}
 
 }
