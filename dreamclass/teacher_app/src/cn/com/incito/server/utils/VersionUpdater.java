@@ -111,8 +111,7 @@ public class VersionUpdater {
 				MessagePacking msg = new MessagePacking(Message.MESSAGE_APK_UPDATE);
 				msg.putBodyData(null, json.toJSONString().getBytes());
 				SocketServiceCore.getInstance().sendMsg(msg, ctx);
-				log.info("已发送设备升级命令："+imei);
-				
+				log.info("已发送设备升级命令："+imei);		
 			}
 		});
 	}

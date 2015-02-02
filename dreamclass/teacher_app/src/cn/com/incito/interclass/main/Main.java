@@ -97,8 +97,10 @@ public class Main {
 					Version version = JSON.parseObject(data, Version.class);
 					Version apk = JSON.parseObject(apkStr, Version.class);
 					File lastfile = checkPCVersion(version,apk);// 检查教师端文件是否最新版本
-					if (lastfile == null)
+					if (lastfile == null){
+						checkMac();
 						return;
+					}
 					install(lastfile);
 				}
 			}
@@ -242,11 +244,10 @@ public class Main {
 		Runtime run = Runtime.getRuntime();
 		try {
 			run.exec("update.exe " + file.getAbsolutePath().replace(' ', '*'));
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
+		} catch (Exception e) {
+			log.info("启动失败",e);
+		} 
 			System.exit(0);
-		}
 	}
 	
 
