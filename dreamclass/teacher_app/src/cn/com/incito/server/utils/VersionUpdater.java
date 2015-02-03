@@ -93,7 +93,8 @@ public class VersionUpdater {
 		for(String imei : onlineDevice){
 			if(!deviceSet.contains(imei)){
 				deviceQueue.offer(imei);
-				deviceSet.add(imei);				
+				deviceSet.add(imei);
+				idle.signal();
 			}
 		}
 		return deviceQueue;
