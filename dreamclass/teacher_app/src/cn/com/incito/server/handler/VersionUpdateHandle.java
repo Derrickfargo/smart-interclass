@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import cn.com.incito.interclass.main.Main;
 import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
+import cn.com.incito.server.core.SocketServiceCore;
 import cn.com.incito.server.message.MessagePacking;
 
 public class VersionUpdateHandle extends MessageHandler{
@@ -20,6 +21,6 @@ public class VersionUpdateHandle extends MessageHandler{
 	}
 
 	private void sendMessage(MessagePacking msg){
-		ctx.writeAndFlush(msg);
+		SocketServiceCore.getInstance().sendMsg(msg, ctx);
 	}
 }
