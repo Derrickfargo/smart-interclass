@@ -127,7 +127,7 @@ public class Message {
 	/**
 	 * apk版本更新
 	 */
-	public static final Byte MESSAGE_APK_UPDATE = 0x15;
+	public static final Byte MESSAGE_APK_UPDATE = 0x16;
 	
 	private Logger log = Logger.getLogger(Message.class);
 	

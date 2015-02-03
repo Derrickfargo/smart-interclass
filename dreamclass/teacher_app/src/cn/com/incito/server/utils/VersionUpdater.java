@@ -67,7 +67,7 @@ public class VersionUpdater {
 					lock.lock();
 					try {
 						deviceQueue = getDeviceQueue();
-						while (deviceQueue.size() == 0) {
+						if(deviceQueue.size() == 0) {
 							if (!idle.await(timeout, TimeUnit.MILLISECONDS))
 								log.info("****正在等待新設備登錄****");
 						}
