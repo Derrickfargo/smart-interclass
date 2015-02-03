@@ -34,6 +34,7 @@ public class VersionUpdater {
 	private Condition idle;
 	private int timeout,capacity,code;
 	private String path;
+	private int limit = 5;
 
 	public static VersionUpdater getInstance(int code,String path) {
 		if (instance == null)
@@ -71,15 +72,19 @@ public class VersionUpdater {
 							if (!idle.await(timeout, TimeUnit.MILLISECONDS))
 								log.info("****正在等待新設備登錄****");
 						}
-						while (deviceQueue.size() != 0) {
+						while (deviceQueue.size() != 0&&capacity<limit) {
 							String imei = deviceQueue.poll();
 							sendMsg(imei);
 							capacity++;
 							log.info("已发送设备总量："+capacity);
 						}
+						while(capacity>=limit){
+							idle.await(timeout, TimeUnit.MILLISECONDS);
+							capacity=0;
+						}
 					} catch (InterruptedException e) {
 						e.printStackTrace();
-						log.error("设备更新队列终端", e);
+						log.error("设备更新队列中断", e);
 					} finally {
 						lock.unlock();
 					}
@@ -94,7 +99,6 @@ public class VersionUpdater {
 			if(!deviceSet.contains(imei)){
 				deviceQueue.offer(imei);
 				deviceSet.add(imei);
-				idle.signal();
 			}
 		}
 		return deviceQueue;
@@ -112,6 +116,7 @@ public class VersionUpdater {
 				MessagePacking msg = new MessagePacking(Message.MESSAGE_APK_UPDATE);
 				msg.putBodyData(null, json.toJSONString().getBytes());
 				SocketServiceCore.getInstance().sendMsg(msg, ctx);
+				capacity--;
 				log.info("已发送设备升级命令："+imei);		
 			}
 		});

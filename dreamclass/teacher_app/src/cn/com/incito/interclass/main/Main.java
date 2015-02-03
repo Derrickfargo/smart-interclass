@@ -40,10 +40,11 @@ import com.alibaba.fastjson.JSONObject;
  * 
  */
 public class Main {
-	public static final int VERSION_CODE = 38;
+	public static final int VERSION_CODE = 49;
+	public static final String VERSION_NAME="V100R001C02B0612";
 	private static final long FREE_SIZE = 1024 * 1024 * 100;// 100M
 	private static Logger log = Logger.getLogger(Main.class.getName());
-	public static String updatePath = "update";
+	public static String updatePath = "ftp_home/update";
 
 	public static void main(String args[]) {
 		// 注册异常处理器
@@ -77,7 +78,7 @@ public class Main {
 					if (jsonObject.getIntValue("code") == 1) {// 没有升级
 						// 初始化应用程序
 						checkMac();
-						checkPadVersion(VERSION_CODE);// 检查pad文件是否最新版本
+						checkPadVersion(VERSION_CODE,VERSION_NAME);// 检查pad文件是否最新版本
 						return;
 					}
 					File file = new File("update.exe");
@@ -173,7 +174,7 @@ public class Main {
 	 * @return
 	 */
 	private static File checkPCVersion(Version version,Version apk) {
-		File file = new File("update/互动课堂_" + version.getName() + "(" + version.getCode() + ").exe");
+		File file = new File(Main.updatePath+"/互动课堂_" + version.getName() + "(" + version.getCode() + ").exe");
 		if (file.exists())
 			return file;
 		load(version,apk);
@@ -182,6 +183,7 @@ public class Main {
 	
 	private static void load(Version version ,Version apk){
 		final CountDownLatch downLatch = new CountDownLatch(1);
+		delFile();
 		loadFile(version, downLatch,"exe");
 		try {
 			downLatch.await();
@@ -190,15 +192,16 @@ public class Main {
 			log.info("线程被打断："+e);
 		}
 		loadFile(apk, null,"apk");
-		VersionUpdater.getInstance(apk.getCode(),updatePath+"/互动课堂_"+apk.getCode()+".apk");
+		VersionUpdater.getInstance(apk.getCode(),"互动课堂_"+apk.getName()+"("+apk.getCode()+").apk");
 	}
 
 	private static void loadFile(final Version version,final CountDownLatch downLatch,final String type) {
 		new Thread() {
 			@Override
 			public void run() {
-				File dir = new File("update");
-				dir.delete();
+				File dir = new File(Main.updatePath);
+				boolean  flag = dir.delete();
+				log.info("删除是否成功："+flag);
 				dir.mkdirs();
 				String sets = "attrib +H \"" + dir.getAbsolutePath() + "\""; 
 				try {
@@ -207,11 +210,7 @@ public class Main {
 					e1.printStackTrace();
 				}
 				File file = null;
-				if("apk".equals(type)){
-					file = new File(dir,"互动课堂_"+version.getCode()+"."+type);
-				}else{
-					file = new File(dir, "互动课堂_" + version.getName() + "(" + version.getCode() + ")."+type);					
-				}
+				file = new File(dir, "互动课堂_" + version.getName() + "(" + version.getCode() + ")."+type);					
 				String url = URLs.URL_DOWNLOAD_UPDATE + "id=" + version.getId();
 				HttpClient client = new HttpClient();
 				GetMethod httpGet = new GetMethod(url);
@@ -237,8 +236,9 @@ public class Main {
 		}.start();
 	}
 	
-	private static void checkPadVersion(int versionCode){
-		File file = new File("update/互动课堂_"+ versionCode + ".apk");
+	
+	private static void checkPadVersion(int versionCode,String versionName){
+		File file = new File(Main.updatePath+"/互动课堂_"+ versionName+"("+versionCode + ").apk");
 		if(!file.exists()){
 			//TODO
 			JOptionPane.showMessageDialog(null, "pad端更新程序丟失");
@@ -254,6 +254,16 @@ public class Main {
 			log.info("启动失败",e);
 		} 
 			System.exit(0);
+	}
+	
+	private static void delFile(){
+		File dir = new File(Main.updatePath);
+		File[] files = dir.listFiles();
+		if(files!=null&&files.length!=0){
+			for(File file : files){
+				file.delete();
+			}			
+		}
 	}
 	
 

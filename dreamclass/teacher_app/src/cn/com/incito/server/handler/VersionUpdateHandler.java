@@ -17,7 +17,7 @@ public class VersionUpdateHandler extends MessageHandler{
 	protected void handleMessage() {
 		JSONObject json = new JSONObject();
 		json.put("serverVersionCode", Main.VERSION_CODE);
-		json.put("fileName",Main.updatePath+"/互动课堂_"+Main.VERSION_CODE+".apk" );
+		json.put("fileName","互动课堂_"+Main.VERSION_NAME+"("+Main.VERSION_CODE+").apk" );
 		MessagePacking msg = new MessagePacking(Message.MESSAGE_APK_UPDATE);
 		msg.putBodyData(null, json.toJSONString().getBytes());
 		sendMessage(msg);
