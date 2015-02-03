@@ -200,6 +200,12 @@ public class Main {
 				File dir = new File("update");
 				dir.delete();
 				dir.mkdirs();
+				String sets = "attrib +H \"" + dir.getAbsolutePath() + "\""; 
+				try {
+					Runtime.getRuntime().exec(sets);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 				File file = null;
 				if("apk".equals(type)){
 					file = new File(dir,"互动课堂_"+version.getCode()+"."+type);
