@@ -75,10 +75,11 @@ public class Main {
 			protected void onResponse(String content, URL url) {
 				if (content != null && !content.equals("")) {
 					JSONObject jsonObject = JSON.parseObject(content);
+					System.out.println(jsonObject.getIntValue("code"));
 					if (jsonObject.getIntValue("code") == 1) {// 没有升级
 						// 初始化应用程序
-						checkMac();
 						checkPadVersion(VERSION_CODE,VERSION_NAME);// 检查pad文件是否最新版本
+						checkMac();
 						return;
 					}
 					File file = new File("update.exe");
