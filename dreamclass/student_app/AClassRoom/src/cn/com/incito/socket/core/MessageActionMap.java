@@ -22,8 +22,8 @@ public final class MessageActionMap {
 		sparseArray.put(Message.MESSAGE_DEVICE_LOGOUT, "设备退出");
 		sparseArray.put(Message.MESSAGE_DEVICE_BIND, "绑定课桌");
 		sparseArray.put(Message.MESSAGE_DEVICE_HAS_BIND, "判定课桌是否绑定");
-		sparseArray.put(Message.MESSAGE_GROUP_CONFIRM, "小组图标修改信息");
-		sparseArray.put(Message.MESSAGE_GROUP_EDIT, "小组改名与修改图标完成");
+		sparseArray.put(Message.MESSAGE_GROUP_CONFIRM, "小组图标修改完成,等待投票");
+		sparseArray.put(Message.MESSAGE_GROUP_EDIT, "小组改名与修改图标");
 		sparseArray.put(Message.MESSAGE_GROUP_LIST, "获取小组成员");
 		sparseArray.put(Message.MESSAGE_GROUP_VOTE, "小组改名同意");
 		sparseArray.put(Message.MESSAGE_HEART_BEAT, "心跳");
