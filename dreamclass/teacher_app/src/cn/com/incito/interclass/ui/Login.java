@@ -261,11 +261,11 @@ public class Login extends MouseAdapter {
 	public void mouseClicked(MouseEvent e) {
 		if(e.getSource()==btnLogin){
 			if(txtUserName==null||txtUserName.getText().equals("用户名/手机号/邮箱")){
-				JOptionPane.showMessageDialog(frame, "请输入学校名称!");
+				JOptionPane.showMessageDialog(frame, "请输入用户名/手机号/邮箱!");
 				return;
 			}
 			if(txtPassword==null||txtPassword.getText().equals("密码")){
-				JOptionPane.showMessageDialog(frame, "请输入学校密码！");
+				JOptionPane.showMessageDialog(frame, "请输入密码！");
 				return;
 			}
 			if (doLogin) {

@@ -142,7 +142,7 @@ public class RoomLogin2 extends MouseAdapter{
 			txtRoomName.setText(rooms.get(0).getName());
 			txtRoomName.addKeyListener(new KeyAdapter() {
 				public void keyReleased(KeyEvent e){
-					if(!txtRoomName.getText().equals("未来教室1")){
+					if(!txtRoomName.getText().equals("未来教室1")&&!"".equals(txtRoomName.getText())){
 						tips.setIcon(imag);
 						return;
 					}
@@ -187,7 +187,7 @@ public class RoomLogin2 extends MouseAdapter{
 			public void actionPerformed(ActionEvent e) {
 				String name = txtRoomName.getText();
 				if(name==null||"".equals(name)){
-					JOptionPane.showMessageDialog(frame, "学校名称不能为空！");
+					JOptionPane.showMessageDialog(frame, "请输入教室名称！");
 					return;
 				}
 				sentRoomMsg();

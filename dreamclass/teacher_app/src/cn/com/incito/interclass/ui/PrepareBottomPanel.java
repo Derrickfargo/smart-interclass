@@ -212,8 +212,18 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 			json.put("id", group.getId());
 			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_EDIT);
 			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json.toString()));
-			final List<ChannelHandlerContext> channels = app.getClientChannelByGroup(group.getId());
-			sendMessageToGroup(messagePacking, channels);
+			List<Device> devices = group.getDevices();
+			List<ChannelHandlerContext> ctxs = new ArrayList<ChannelHandlerContext>();
+			for(Device device : devices){
+				ChannelHandlerContext ctx = app.getClientChannel().get(device.getImei());
+				List<Student> students = app.getStudentByImei(device.getImei());
+				if(ctx!=null&&students!=null){
+					if(students.size()!=0){
+						ctxs.add(ctx);
+					}
+				}
+			}
+			sendMessageToGroup(messagePacking, ctxs);
 		}
 	}
 
