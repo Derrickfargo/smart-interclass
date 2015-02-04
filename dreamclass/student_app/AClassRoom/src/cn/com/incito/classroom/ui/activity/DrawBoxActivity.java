@@ -2,9 +2,7 @@ package cn.com.incito.classroom.ui.activity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -36,7 +34,6 @@ import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
-import cn.com.incito.classroom.ui.widget.ProgressiveDialog;
 import cn.com.incito.classroom.utils.BitmapUtil;
 import cn.com.incito.classroom.utils.FTPUtils;
 import cn.com.incito.classroom.widget.canvas.ISketchPadCallback;
@@ -45,11 +42,7 @@ import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.common.utils.LogUtil;
 import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.common.utils.UIHelper;
-import cn.com.incito.socket.core.Message;
-import cn.com.incito.socket.core.NCoreSocket;
-import cn.com.incito.socket.message.DataType;
-import cn.com.incito.socket.message.MessagePacking;
-import cn.com.incito.socket.utils.BufferUtils;
+import cn.com.incito.socket.core.util.SendMessageUtil;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -57,9 +50,6 @@ import com.alibaba.fastjson.JSONObject;
  * 绘画板activity Created by liguangming on 2014/7/28.
  */
 public class DrawBoxActivity extends BaseActivity implements OnClickListener, ISketchPadCallback {
-
-	public static final String TAG = DrawBoxActivity.class.getSimpleName();
-
 	private ImageView cleanBtn;
 
 	private ImageButton delAllBtn;
@@ -143,8 +133,6 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 	private Timer timeTimer;
 
 	private TimerTask timeTimerTask;
-	
-	private ProgressiveDialog mProgressDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -153,16 +141,10 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 		setContentView(R.layout.draw_box);
 		UIHelper.getInstance().setDrawBoxActivity(this);
 		initViews();
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
+		
+		if(MyApplication.getInstance().isLockScreen()){
+			MyApplication.getInstance().lockScreen(false);
+		}
 	}
 
 	private void initViews() {
@@ -206,8 +188,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 		mBlack = (ImageView) findViewById(R.id.ico_black);
 		mBlack.setOnClickListener(this);
 		changeBtn = (Button) findViewById(R.id.bg_select_btn);// 背景选择按钮
-//		changeBtn.setOnClickListener(this);
-		// saveBtn.setOnClickListener(this);
+		changeBtn.setOnClickListener(this);
 		cleanBtn = (ImageView) findViewById(R.id.earise);
 		cleanBtn.setOnClickListener(this);
 
@@ -226,9 +207,10 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 		mSubmitButton.setOnClickListener(this);
 		m_sketchPad = (SketchPadView) findViewById(R.id.sketchpad);
 		m_sketchPad.setCallback(DrawBoxActivity.this);
-		mProgressDialog = new ProgressiveDialog(this);
-		mProgressDialog.setCanceledOnTouchOutside(false);
-		mProgressDialog.setMessage(R.string.sendpaper_notice);
+		
+		/**
+		 * 获取作业并且设置背景
+		 */
 		File file = new File("/sdcard/" + Constants.FILE_NAME);
 		String flag = getIntent().getStringExtra("flag");
 		if ("true".equals(flag)) {
@@ -381,7 +363,6 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 			break;
 		// 橡皮擦(擦出)
 		case R.id.earise:
-			// view.isDel = true;
 			if (mPopupWindow == null) {
 				initPopwindow();
 				showPopwindow();
@@ -392,9 +373,6 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 					showPopwindow();
 				}
 			}
-
-			// 全擦出
-			// view.clean();
 			break;
 
 		// 设置相别擦大小
@@ -421,7 +399,6 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 			showDialog();
 			break;
 		case R.id.cleanAllBtn:
-			// view.clean();
 			m_sketchPad.clearAllStrokes();
 			mPopupWindow.dismiss();
 			break;
@@ -466,6 +443,7 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 			}
 		}
 		BitmapUtil.setFree();
+		LogUtil.d("销毁做作业界面成功!");
 	}
 
 	/**
@@ -501,29 +479,10 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 
 	}
 
-	/**
-	 * @return 保存图片
-	 */
-	private File getPaperFile() {// 老师收作业的时候调用此方法保存图片 然后将图片传到服务器
-		final Bitmap bmBitmap = m_sketchPad.getCanvasSnapshot();
-		m_sketchPad.cleanDrawingCache();
-		return getBitmapFile(bmBitmap);// 保存图片到本地
-	}
 
-	public void showDialog() {
-		new AlertDialog.Builder(this).setTitle("确认").setMessage("确定提交作业吗？").setPositiveButton("是", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-				sendPaperRequest();
-			}
-		}).setNegativeButton("否", new DialogInterface.OnClickListener() {
+	@Override
+	public void onDestroy(SketchPadView obj) {
 
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-			}
-		}).show();
 	}
 
 	public void initPopwindow() {
@@ -547,52 +506,6 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 		int[] location = new int[2];
 		cleanBtn.getLocationOnScreen(location);
 		mPopupWindow.showAtLocation(cleanBtn, Gravity.NO_GRAVITY, location[0] - 160, 570);
-
-	}
-
-	/**
-	 * 发送作业请求
-	 */
-	public void sendPaperRequest() {
-		if(NCoreSocket.getInstance().getChannel() != null){
-			mProgressDialog.show();
-			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("imei", MyApplication.deviceId);
-			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SEND_PAPER);
-			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
-			LogUtil.d("发送主动提交作业请求");
-			NCoreSocket.getInstance().sendMessage(messagePacking);
-		}else{
-			showToast();
-		}
-		
-	}
-
-	public void closeProgressDialog() {
-		if (mProgressDialog != null && mProgressDialog.isShowing()) {
-			mProgressDialog.dismiss();
-		}
-	}
-
-	/**
-	 * 进度条
-	 */
-	public void startTask() {
-		timeTimer = new Timer();
-		timeTimerTask = new TimerTask() {
-
-			@Override
-			public void run() {
-				handler.sendEmptyMessage(1);
-				NCoreSocket.getInstance().closeConnection();
-			}
-		};
-		timeTimer.schedule(timeTimerTask, 10 * 1000);
-	}
-
-	public void cancleTask() {
-		if (timeTimer != null)
-			timeTimer.cancel();
 	}
 
 	private Handler handler = new Handler() {
@@ -600,20 +513,11 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case 0:
-				if (mProgressDialog != null) {
-					mProgressDialog.show();
-				} else {
-					mProgressDialog = new ProgressiveDialog(DrawBoxActivity.this);
-					mProgressDialog.setMessage(R.string.sendpaper_notice);
-					mProgressDialog.show();
-				}
+				showProgress(R.string.sendpaper_notice);
 				break;
 			case 1:
-				if (timeTimer != null) {
-					timeTimer.cancel();
-					mProgressDialog.dismiss();
-					ToastHelper.showCustomToast(DrawBoxActivity.this, "作业提交失败，请手动提交");
-				}
+				closeProgress();
+				ToastHelper.showCustomToast(DrawBoxActivity.this, "作业提交失败，请手动提交");
 				break;
 			case 2:
 				File file = new File("/sdcard/" + Constants.FILE_NAME);
@@ -635,39 +539,77 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 				}
 				initPaint(bitmap);
 				break;
-			default:
+			case 3:
+				showDialog();
 				break;
 			}
 		};
 	};
+	
+	/**
+	 * 手动提交确认对话框
+	 */
+	public void showDialog() {
+		new AlertDialog.Builder(this).setTitle("确认").setMessage("确定提交作业吗？").setPositiveButton("是", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+				SendMessageUtil.sendPaperBySelf();
+			}
+		}).setNegativeButton("否", new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		}).show();
+	}
+	
+	
+	/**
+	 * 发送作业请求
+	 */
+	public void sendPaperRequest() {
+		handler.sendEmptyMessage(3);
+	}
 
 	/**
-	 * 发送作业
+	 * 作业上传与报告服务器
 	 */
 	public void sendPaper() {
 		getPaperFile();
-		handler.sendEmptyMessage(0);
 		String filePath = "/" + MyApplication.getInstance().getDeviceId();
 		String fileName = MyApplication.getInstance().getDeviceId() + ".jpg";
+		handler.sendEmptyMessage(0);
 		if (FTPUtils.getInstance().uploadFile(filePath, fileName)) {
-			LogUtil.d("作业上传成功,向服务器发送作业上传成功并且等待10秒,等待pc回执");
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("quizId", MyApplication.getInstance().getQuizID());
 			jsonObject.put("deviceId", MyApplication.getInstance().getDeviceId());
 			jsonObject.put("file", Constants.FILE_PATH + filePath + "/" + fileName);
-			MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_SAVE_PAPER);
-			messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
 			startTask();
-			NCoreSocket.getInstance().sendMessage(messagePacking);
+			SendMessageUtil.sendPaperUploadSuccess(jsonObject.toJSONString());
 		} else {
-			LogUtil.d("作业上传失败!");
+			LogUtil.d("作业上传至服务器失败");
 			handler.sendEmptyMessage(1);
-			NCoreSocket.getInstance().closeConnection();
 		}
 	}
-
+	
+	/**
+	 * @return 保存图片
+	 */
+	private File getPaperFile() {// 老师收作业的时候调用此方法保存图片 然后将图片传到服务器
+		final Bitmap bmBitmap = m_sketchPad.getCanvasSnapshot();
+		m_sketchPad.cleanDrawingCache();
+		return getBitmapFile(bmBitmap);// 保存图片到本地
+	}
+	
+	/**
+	 * 保存作业截图到本地
+	 * @param bitmap
+	 * @return
+	 */
 	public File getBitmapFile(Bitmap bitmap) {
-		LogUtil.d("开始保存图片到本地,名称temp.jpg");
+		LogUtil.d("开始保存图片到本地");
 		File f = new File("/sdcard/", "temp.jpg");
 		if (f.exists()) {
 			f.delete();
@@ -677,17 +619,34 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 			bitmap.compress(Bitmap.CompressFormat.JPEG, 60, out);
 			out.flush();
 			out.close();
-			LogUtil.d("作业已经保存到本地");
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+			LogUtil.d("图片保存到本地成功!");
+		} catch (Exception e) {
+			LogUtil.e("保存图片到本地时出现异常",e.getCause());
+		} 
 		return f;
 	}
 	
-	@Override
-	public void onDestroy(SketchPadView obj) {
+
+	/**
+	 * 回执时间检测
+	 */
+	public void startTask() {
+		timeTimer = new Timer();
+		timeTimerTask = new TimerTask() {
+			@Override
+			public void run() {
+				handler.sendEmptyMessage(1);
+			}
+		};
+		timeTimer.schedule(timeTimerTask, 10 * 1000);
+	}
+	
+	/**
+	 * 关闭回执时间检测
+	 */
+	public void cancleTask() {
+		if (timeTimer != null)
+			timeTimer.cancel();
 	}
 
 	/**
@@ -702,4 +661,12 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 		message.what = 2;
 		handler.sendMessage(message);
 	}
+	
+	/**
+	 * 重连后弹出提示是否提交作业
+	 */
+	public void reconnectShowDailog(){
+		handler.sendEmptyMessage(3);
+	}
+
 }

@@ -1,10 +1,12 @@
 package cn.com.incito.classroom.ui.activity;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -14,15 +16,9 @@ import cn.com.incito.classroom.adapter.DeskNumberAdapter;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
-import cn.com.incito.classroom.ui.widget.MyAlertDialog;
-import cn.com.incito.common.utils.LogUtil;
 import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.common.utils.UIHelper;
-import cn.com.incito.socket.core.Message;
-import cn.com.incito.socket.core.NCoreSocket;
-import cn.com.incito.socket.message.DataType;
-import cn.com.incito.socket.message.MessagePacking;
-import cn.com.incito.socket.utils.BufferUtils;
+import cn.com.incito.socket.core.util.SendMessageUtil;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -32,20 +28,17 @@ import com.alibaba.fastjson.JSONObject;
 public class BindDeskActivity extends BaseActivity {
 
 	private GridView gv_desk_number;
-
 	private ImageButton btn_join;
-
 	protected long mExitTime;
-
-	DeskNumberAdapter deskNumberAdapter;
-
+	private DeskNumberAdapter deskNumberAdapter;
 	private int curentDesk;
-
+	private BindDeskActivityHandler mHandler;
 
 	@Override
 	protected void onAfterOnCreate(Bundle savedInstanceState) {
 		super.onAfterOnCreate(savedInstanceState);
 		setContentView(R.layout.binddesk);
+		mHandler = new BindDeskActivityHandler(this);
 		UIHelper.getInstance().setBindDeskActivity(this);
 		initViews();
 		initEvent();
@@ -67,18 +60,6 @@ public class BindDeskActivity extends BaseActivity {
 
 	}
 
-	@Override
-	public void onBackPressed() {
-		MyAlertDialog dialog=new MyAlertDialog(this);
-		dialog.show();
-//		if ((System.currentTimeMillis() - mExitTime) > 2000) {// 如果两次按键时间间隔大于2000毫秒，则不退出
-//			Toast.makeText(this, R.string.toast_quit_app, Toast.LENGTH_SHORT).show();
-//			mExitTime = System.currentTimeMillis();// 更新mExitTime
-//		} else {
-//			AppManager.getAppManager().AppExit(this);
-//		}
-	}
-
 	private void initViews() {
 		gv_desk_number = (GridView) findViewById(R.id.gv_desk_number);
 		btn_join = (ImageButton) findViewById(R.id.btn_bind);
@@ -94,13 +75,9 @@ public class BindDeskActivity extends BaseActivity {
 					return;
 				}
 				JSONObject jsonObject = new JSONObject();
-				jsonObject.put("imei", MyApplication.deviceId);
+				jsonObject.put("imei", MyApplication.getInstance().getDeviceId());
 				jsonObject.put("number", curentDesk);
-				MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_DEVICE_BIND);
-				messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
-				NCoreSocket.getInstance().sendMessage(messagePacking);
-				LogUtil.d("发送绑定课桌消息");
-//				MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"BindDeskActivity:"+"启动课桌绑定");
+				SendMessageUtil.sendBindDesk(jsonObject.toJSONString());
 			}
 
 		});
@@ -111,16 +88,23 @@ public class BindDeskActivity extends BaseActivity {
 		message.what = 1;
 		mHandler.sendMessage(message);
 	}
-	private Handler mHandler = new Handler() {
+	
+	private static class BindDeskActivityHandler extends Handler{
+		
+		private WeakReference<BindDeskActivity> weakReference;
+		
+		public BindDeskActivityHandler(BindDeskActivity bindDeskActivity) {
+			this.weakReference = new WeakReference<BindDeskActivity>(bindDeskActivity);
+		}
+		
 		@Override
-		public void handleMessage(android.os.Message msg) {
-			switch (msg.what) {
-			// 登陆
-			case 1: {
-				ToastHelper.showCustomToast(BindDeskActivity.this, "一个桌子最多绑定" + Constants.PAD_PER_DESK + "个pad");
-			}
+		public void handleMessage(Message msg) {
+			BindDeskActivity bindDeskActivity = weakReference.get();
+			switch (msg.what){
+			case 1: 
+				bindDeskActivity.showToast("一个桌子最多绑定" + Constants.PAD_PER_DESK + "个pad");
 				break;
 			}
 		}
-	};
+	}
 }

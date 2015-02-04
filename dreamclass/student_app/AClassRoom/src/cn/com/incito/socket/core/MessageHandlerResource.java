@@ -3,16 +3,13 @@ package cn.com.incito.socket.core;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.util.Log;
-import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.utils.ApiClient;
-import cn.com.incito.classroom.utils.Utils;
-import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.common.utils.LogUtil;
 import cn.com.incito.socket.handler.DeviceBindHandler;
 import cn.com.incito.socket.handler.DeviceHasBindHandler;
 import cn.com.incito.socket.handler.DeviceLoginHandler;
 import cn.com.incito.socket.handler.DistributePaperHandler;
+import cn.com.incito.socket.handler.DownLoadApkHandler;
 import cn.com.incito.socket.handler.EvaluateCompleteHandler;
 import cn.com.incito.socket.handler.EvaluateHandler;
 import cn.com.incito.socket.handler.GroupEditHandler;
@@ -80,6 +77,8 @@ public final class MessageHandlerResource {
         handlerResources.put(Message.MESSAGE_RESPONDER_END, ResponderEndHandler.class);
         //结束作业互评
         handlerResources.put(Message.MESSAGE_QUIZ_FEEDBACK_COMPLETE, EvaluateCompleteHandler.class);
+        //下载更新包
+        handlerResources.put(Message.MESSAGE_APK_UPTE, DownLoadApkHandler.class);
         
     }
 
@@ -92,7 +91,6 @@ public final class MessageHandlerResource {
             } catch (Exception e) {
             	ApiClient.uploadErrorLog(e.getMessage());
             	LogUtil.e("获取MessageHandler出错:", e.getCause());
-                return null;
             }
         }
         return null;

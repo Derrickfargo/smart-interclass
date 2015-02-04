@@ -17,14 +17,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
-import cn.com.incito.classroom.base.MyApplication;
-import cn.com.incito.socket.core.Message;
-import cn.com.incito.socket.core.NCoreSocket;
-import cn.com.incito.socket.message.DataType;
-import cn.com.incito.socket.message.MessagePacking;
-import cn.com.incito.socket.utils.BufferUtils;
-
-import com.alibaba.fastjson.JSONObject;
+import cn.com.incito.socket.core.util.SendMessageUtil;
 
 /**
  * 抢答界面
@@ -33,17 +26,12 @@ import com.alibaba.fastjson.JSONObject;
 public class ResponderActivity extends BaseActivity {
 	
 	private static final int RANDOM_BUTTEON_POSITION = 1;
-
 	private ImageButton imageButton;
 	private RotateAnimation rotateAnimation;//旋转动画
-	
 	private boolean beforResponderisLockScreeen;
-	
 	private RelativeLayout.LayoutParams layoutParams;//按钮的布局属性
-	
 	private Timer timer;
 	private TimerTask timerTask;
-	
 	private ResponderActivityHandler handler;
 	
 	private static final class ResponderActivityHandler extends Handler{
@@ -61,8 +49,6 @@ public class ResponderActivity extends BaseActivity {
 				if(responderActivity != null){
 					responderActivity.RandomButton();
 				}
-				break;
-			default:
 				break;
 			}
 		}
@@ -89,17 +75,12 @@ public class ResponderActivity extends BaseActivity {
 	 * 随机改变按钮的位置
 	 */
 	private void RandomButton(){
-		
 		int x = randomX();
 		int y = randomY();
-		
-		
 		PropertyValuesHolder xPropertyValuesHolder = PropertyValuesHolder.ofFloat("x", x);
 		PropertyValuesHolder yPropertyValuesHolder = PropertyValuesHolder.ofFloat("y", y);
 		PropertyValuesHolder rotation = PropertyValuesHolder.ofFloat("rotation", 0,360);
-		ObjectAnimator.ofPropertyValuesHolder(imageButton, xPropertyValuesHolder,yPropertyValuesHolder,rotation)
-		.setDuration(2*1000)
-		.start();
+		ObjectAnimator.ofPropertyValuesHolder(imageButton, xPropertyValuesHolder,yPropertyValuesHolder,rotation).setDuration(2*1000).start();
 	}
 	
 	
@@ -122,23 +103,11 @@ public class ResponderActivity extends BaseActivity {
 			
 			@Override
 			public void onClick(View v) {
-				if(NCoreSocket.getInstance().getChannel() != null){
-//					MyApplication.Logger.debug(An/droidUtil.getCurrentTime() + "ResponderActivity:发送抢答消息!");
-					JSONObject jsonObject = new JSONObject();
-					jsonObject.put("imei", MyApplication.deviceId);
-					MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_STUDENT_RESPONDER);
-					messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
-					NCoreSocket.getInstance().sendMessage(messagePacking);
-				}else{
-					showToast();
-				}
-				
+				SendMessageUtil.sendStudentResponder();
 			}
 		});
-		
 		relativeLayout.addView(imageButton,layoutParams);
 		setContentView(relativeLayout);
-		
 	}
 
 	/**

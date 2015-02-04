@@ -30,9 +30,11 @@ import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.vo.EvaluateTempVo;
 import cn.com.incito.classroom.vo.EvaluateVo;
+import cn.com.incito.common.utils.LogUtil;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.Message;
 import cn.com.incito.socket.core.NCoreSocket;
+import cn.com.incito.socket.core.callback.DefaultSendMessageCallback;
 import cn.com.incito.socket.message.DataType;
 import cn.com.incito.socket.message.MessagePacking;
 import cn.com.incito.socket.utils.BufferUtils;
@@ -241,12 +243,12 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 	 */
 	public void sendScore() {
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("imei", MyApplication.deviceId);
+		jsonObject.put("imei", MyApplication.getInstance().getDeviceId());
 		jsonObject.put("feedback",  getInfo());
 		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_QUIZ_FEEDBACK_SUBMIT);
 		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(jsonObject.toJSONString()));
-//		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":EvaluateActivity:提交的评论结果:"+jsonObject.toJSONString());
-		NCoreSocket.getInstance().sendMessage(messagePacking);
+		LogUtil.d("发送评论结果消息");
+		NCoreSocket.getInstance().sendMessage(messagePacking,new DefaultSendMessageCallback());
 		MyApplication.getInstance().lockScreen(true);
 		this.finish();
 	}
@@ -373,7 +375,7 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 			tempVo.setScore(quizList.get(i).getSelectNumber());
 			tempList.add(tempVo);
 		}
-//		MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+"作业评分结果："+JSON.toJSONString(tempList));
+		 LogUtil.d("作业评分结果");
 		return tempList;
 	}
 	/**
@@ -386,7 +388,7 @@ public class EvaluateActivity extends BaseActivity implements OnClickListener {
 				j++;
 			}
 		}
-//		MyApplication.Logger.debug("已经选择的名次个数"+j);
+		 LogUtil.d("已经选择的名次个数"+j);
 		if(j>=3){
 			button_confirm.setVisibility(View.VISIBLE);
 		}else{

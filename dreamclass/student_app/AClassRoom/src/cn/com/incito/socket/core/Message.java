@@ -103,13 +103,6 @@ public class Message implements Serializable{
 	 */
 	public static final Byte MESSAGE_STUDENT_EVALUATE=0x10;
 	
-	
-	/**
-	 * 结束抢答
-	 */
-	public static final Byte MESSAGE_RESPONDER_END = 0x13;
-	
-	
 	/**
 	 * 作业互评提交
 	 */
@@ -121,6 +114,11 @@ public class Message implements Serializable{
 	public static final Byte MESSAGE_QUIZ_FEEDBACK_COMPLETE=0x12;
 	
 	/**
+	 * 结束抢答
+	 */
+	public static final Byte MESSAGE_RESPONDER_END = 0x13;
+	
+	/**
 	 * 收到交作业的回执
 	 */
 	public static final Byte MESSAGE_RICIVE_SAVEPAPER = 0x14;
@@ -129,6 +127,13 @@ public class Message implements Serializable{
 	 * 收到作业
 	 */
 	public static final Byte MESSAGE_RECIVE_PAER = 0x15;
+	
+	/**
+	 * apk版本更新
+	 * android-pc
+	 * android-pc
+	 */
+	public static final Byte MESSAGE_APK_UPTE = 0x16;
 	
 	
     private byte msgID;

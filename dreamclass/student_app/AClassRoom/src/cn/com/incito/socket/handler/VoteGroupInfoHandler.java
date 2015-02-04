@@ -6,16 +6,12 @@ import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;
 
 import com.alibaba.fastjson.JSONObject;
-import com.google.code.microlog4android.Logger;
-import com.google.code.microlog4android.LoggerFactory;
 
 /**
  * 分组投票处理hanlder
  * Created by liushiping on 2014/7/28.
  */
 public class VoteGroupInfoHandler extends MessageHandler {
-	private static final String TAG=DeviceBindHandler.class.getSimpleName();
-	public static final Logger Logger = LoggerFactory.getLogger();
     @Override
     protected void handleMessage() {
         int groupID = -1;
@@ -39,15 +35,13 @@ public class VoteGroupInfoHandler extends MessageHandler {
                 masterImei = json.getString("masterimei");
             if (agree) {
             	LogUtil.d("同意分组");
-//            	MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":VoteGroupInfoHandler同意分组");
                 UIHelper.getInstance().showWaitingActivity();
-                if(MyApplication.getInstance().isOnClass){
+                if(MyApplication.getInstance().isLockScreen()){
     				MyApplication.getInstance().lockScreen(true);
     			}
             } else {
                 UIHelper.getInstance().showEditGroupActivity(groupID);
                 LogUtil.d("不同意分组");
-//                MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":VoteGroupInfoHandler不同意分组");
             }
         }
     }

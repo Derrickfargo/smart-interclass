@@ -38,8 +38,7 @@ public class FtpReconnectDialog extends AlertDialog {
 			@Override
 			public void onClick(View v) {
 					FTPUtils.getInstance();
-					if (FTPUtils.downLoadFile(Constants.FILE_PATH,
-							Constants.FILE_NAME)) {
+					if (FTPUtils.downLoadFile(Constants.FILE_PATH,Constants.FILE_NAME)) {
 						dismiss();
 					}
 			}

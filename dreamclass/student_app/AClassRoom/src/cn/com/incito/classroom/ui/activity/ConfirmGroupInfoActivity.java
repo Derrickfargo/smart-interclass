@@ -14,21 +14,14 @@ import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.utils.Utils;
-import cn.com.incito.common.utils.LogUtil;
-import cn.com.incito.socket.core.Message;
-import cn.com.incito.socket.core.NCoreSocket;
-import cn.com.incito.socket.message.DataType;
-import cn.com.incito.socket.message.MessagePacking;
-import cn.com.incito.socket.utils.BufferUtils;
+import cn.com.incito.socket.core.util.SendMessageUtil;
 
 import com.alibaba.fastjson.JSONObject;
 
 /**
  * 绑定课桌activity Created by bianshijian on 2014/7/28.
  */
-public class ConfirmGroupInfoActivity extends BaseActivity implements
-		View.OnClickListener {
-	public static final String TAG=ConfirmGroupInfoActivity.class.getSimpleName();
+public class ConfirmGroupInfoActivity extends BaseActivity implements View.OnClickListener {
 	private ImageButton mBtnDisagree;
 	private ImageButton mBtnAgree;
 	private ImageView mGroupIcon;
@@ -62,10 +55,8 @@ public class ConfirmGroupInfoActivity extends BaseActivity implements
 		mGroupName.setText(json.get("name").toString());
 		String iconName = json.get("logo").toString();
 		mGroupIcons = getResources().obtainTypedArray(R.array.groupIcons);
-		String[] iconsName = getResources().getStringArray(
-				R.array.groupicons_name);
-		Drawable drawable = Utils.getGroupIconByName(mGroupIcons, iconsName,
-				iconName);
+		String[] iconsName = getResources().getStringArray(R.array.groupicons_name);
+		Drawable drawable = Utils.getGroupIconByName(mGroupIcons, iconsName,iconName);
 		mGroupIcon.setImageDrawable(drawable);
 	}
 	@Override
@@ -79,18 +70,7 @@ public class ConfirmGroupInfoActivity extends BaseActivity implements
 		} else if (id == R.id.btn_disagree) {
 			json.put("vote", "1");
 		}
-		MessagePacking messagePacking = new MessagePacking(Message.MESSAGE_GROUP_VOTE);
-		messagePacking.putBodyData(DataType.INT, BufferUtils.writeUTFString(json.toJSONString()));
-
-		if(NCoreSocket.getInstance().getChannel() != null){
-			NCoreSocket.getInstance().sendMessage(messagePacking);
-			LogUtil.d("发送分组确认");
-//			MyApplication.Logger.debug(AndroidUtil.getCurrentTime()+":ConfirmGroupInfoActivity:启动分组确认");
-		}else{
-			showToast();
-		}
-		
-		
+		SendMessageUtil.sendGroupConfirm(json.toJSONString());
 		if (id == R.id.btn_agree) {
 			mWaitingStudentTip.setText(R.string.waiting_other_confirm_tip);
 		}

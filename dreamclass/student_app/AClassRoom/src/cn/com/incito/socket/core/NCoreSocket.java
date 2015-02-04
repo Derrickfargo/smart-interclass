@@ -21,11 +21,16 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import cn.com.incito.classroom.base.AppManager;
+import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.ui.activity.DrawBoxActivity;
 import cn.com.incito.classroom.ui.activity.WaitingActivity;
 import cn.com.incito.common.utils.LogUtil;
 import cn.com.incito.common.utils.UIHelper;
+import cn.com.incito.socket.core.callback.ISendMessageCallback;
+import cn.com.incito.socket.core.listener.SendMessageListener;
+import cn.com.incito.socket.core.util.SendMessageUtil;
 import cn.com.incito.socket.message.MessagePacking;
 
 import com.alibaba.fastjson.JSONObject;
@@ -45,6 +50,10 @@ public final class NCoreSocket{
 	}
 	public synchronized Channel getChannel() {
 		return channel;
+	}
+	
+	public synchronized void setChannel(Channel channel){
+		this.channel = channel;
 	}
 
 	/**
@@ -87,12 +96,15 @@ public final class NCoreSocket{
 			});
 			LogUtil.d("属性设置完毕,开始进行连接!");
 			channel = bootstrap.connect(Constants.IP, Constants.PORT).sync().channel();
+			SendMessageUtil.sendDeviceLogin();
 			channel.closeFuture().sync();
-		}catch(Exception e){
-			LogUtil.e("出现异常", e.getCause());
-		}finally {
-			// 释放资源并且在时间任务调度下下一次连接时间是当前任务完成后30s执行
 			channel = null;
+		}catch(Exception e){
+			LogUtil.e("连接出现异常", e.getCause());
+		}finally {
+			workGroup.shutdownGracefully();
+			// 释放资源并且在时间任务调度下下一次连接时间是当前任务完成后30s执行
+			LogUtil.d("当前通道：" + (channel == null ? "通道为空":channel.toString()));
 			WaitingActivity waitingActivity = UIHelper.getInstance().getWaitingActivity();
 			if(waitingActivity != null){
 				LogUtil.d("改变本pad的所有学生的状态");
@@ -100,33 +112,37 @@ public final class NCoreSocket{
 			}
 			DrawBoxActivity boxActivity = UIHelper.getInstance().getDrawBoxActivity();
 			if(boxActivity != null){
-				LogUtil.d("清理画板!");
-				boxActivity.closeProgressDialog();
-				boxActivity.cancleTask();
-				boxActivity.showToast();
+				boxActivity.closeProgress();
+				LogUtil.d("清理画板,如果有进度条则关闭进度条");
 			}
-			workGroup.shutdownGracefully();
-			LogUtil.d("本次连接资源清理完毕,等待下次连接!");
+			if(MyApplication.getInstance().isOver){
+				stopConnection();
+				AppManager.getAppManager().AppExit(waitingActivity);
+				LogUtil.d("已经下课不再进行重连");
+				System.exit(0);
+			}else{
+				LogUtil.d("本次连接资源清理完毕,等待下次连接!");
+			}
+			
 		}
 	}
 
 	/**
-	 * 停止连接
+	 * 停止连接任务执行
 	 */
 	public void stopConnection() {
-		LogUtil.d("关闭连接,停止线程任务");
-		if (channel != null) {
-			channel.close();
-			channel = null;
-		}
+		closeConnection();
 		if(executorService != null && !executorService.isShutdown()){
 			executorService.shutdownNow();
+			LogUtil.d("关闭连接,停止线程任务");
 		}
 	}
 	
+	/**
+	 * 关闭连接
+	 */
 	public void closeConnection(){
 		if(channel != null){
-			LogUtil.d("主动关闭通道,进行重连!");
 			channel.close();
 		}
 	}
@@ -135,19 +151,17 @@ public final class NCoreSocket{
 	 * 向服务器发送消息
 	 * @param messagePacking
 	 */
-	public void sendMessage(final MessagePacking messagePacking) {
+	public void sendMessage(final MessagePacking messagePacking,ISendMessageCallback sendMessageCallback) {
 		final JSONObject jsonObject = new JSONObject();
 		jsonObject.put("messagePacking", messagePacking);
-		if (channel != null) {
-			LogUtil.d("向服务器发送消息,消息ID:" + messagePacking.msgId);
+		if (channel != null && channel.isActive()) {
 			ByteBuf buf = Unpooled.copiedBuffer((jsonObject.toJSONString() + "\n").getBytes());
 			ChannelFuture channelFuture = channel.writeAndFlush(buf);
-			channelFuture.addListener(new SendMessageListener(messagePacking));
+			channelFuture.addListener(new SendMessageListener(messagePacking,sendMessageCallback));
 		} else {
-			LogUtil.d("还没有连接至服务器,不能进行消息发送!" + messagePacking.msgId);
+			sendMessageCallback.channelIsNull(messagePacking.msgId);
 		}
 	}
-	
 
 	/**
 	 * 连接操作里面包含重连

@@ -46,15 +46,18 @@ public final class LogUtil {
 	     * @param cause
 	     */
 	    public static void e(String info,Throwable cause){
-	    	logger.debug(genaratorTag(getCaller()) + info +":" + getErrorInfo(cause));
+	    	logger.error(genaratorTag(getCaller()) + info +":" + getErrorInfo(cause));
 	    }
 	    
 		private static String getErrorInfo(Throwable arg1) {
-			Writer writer = new StringWriter();
-			PrintWriter pw = new PrintWriter(writer);
-			arg1.printStackTrace(pw);
-			pw.close();
-			String error = writer.toString();
-			return error;
+			if(arg1 != null){
+				Writer writer = new StringWriter();
+				PrintWriter pw = new PrintWriter(writer);
+				arg1.printStackTrace(pw);
+				pw.close();
+				String error = writer.toString();
+				return error;
+			}
+		 return "没有传递过来异常原因";
 		}
 }

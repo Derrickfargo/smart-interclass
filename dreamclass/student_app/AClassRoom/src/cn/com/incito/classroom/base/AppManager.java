@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import cn.com.incito.classroom.utils.ApiClient;
 import cn.com.incito.common.utils.LogUtil;
+import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.NCoreSocket;
 
 import com.google.code.microlog4android.Logger;
@@ -31,6 +32,7 @@ public class AppManager {
 	 * 单一实例
 	 */
 	public static AppManager getAppManager() {
+		
 		if (instance == null) {
 			instance = new AppManager();
 		}
@@ -105,17 +107,22 @@ public class AppManager {
 	 */
 	public void AppExit(Context context) {
 		try {
-			NCoreSocket.getInstance().stopConnection();
 			MyApplication.getInstance().sendBroadcast(new Intent("android.intent.action.SHOW_NAVIGATION_BAR"));
 			MyApplication.getInstance().release();
+			NCoreSocket.getInstance().stopConnection();
 			finishAllActivity();
 			MyApplication.getInstance().stopSocketService();
 			LogUtil.d("程序退出");
-//			MyApplication.Logger.debug(Utils.getTime() + "AppManager" + "程序退出");
 			android.os.Process.killProcess(android.os.Process.myPid());
 		} catch (Exception e) {
 			ApiClient.uploadErrorLog(e.getMessage());
 			e.printStackTrace();
+		}finally{
+			if(UIHelper.getInstance().getWaitingActivity() != null){
+				LogUtil.d("在此销毁进程");
+				NCoreSocket.getInstance().stopConnection();
+				System.gc();
+			}
 		}
 	}
 }

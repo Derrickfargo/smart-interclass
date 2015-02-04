@@ -3,6 +3,11 @@ package cn.com.incito.socket.core;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import android.app.Activity;
+import cn.com.incito.classroom.base.AppManager;
+import cn.com.incito.classroom.ui.activity.WaitingActivity;
+import cn.com.incito.common.utils.LogUtil;
+
 import com.alibaba.fastjson.JSONObject;
 
 
@@ -15,26 +20,32 @@ import com.alibaba.fastjson.JSONObject;
 public abstract class MessageHandler {
 	protected Message message;
 	protected JSONObject data;
-	private ExecutorService executorService = Executors.newCachedThreadPool();
-	
-	/**
-	 * 消息对应的处理器 存放消息对应的处理逻辑，在消息分发时使用
+	private ExecutorService executorService = Executors.newSingleThreadExecutor();
+	protected Activity activity;
+
 	
 	/**
 	 * 直接传入jsonObject进行处理
 	 * @param jsonObject
 	 * @author hm
 	 */
-	public void handleMessage(JSONObject jsonObject){
+	public final void handleMessage(JSONObject jsonObject){
 		data = jsonObject;
+		activity = AppManager.getAppManager().currentActivity();
 		
 		executorService.execute(new Runnable() {
-			
 			@Override
 			public void run() {
 				handleMessage();
 			}
 		});
+	}
+	
+	protected final void finishNotWaitingActivity(){
+		if(!WaitingActivity.class.equals(activity.getClass())){
+			LogUtil.d("销毁不是等待界面的界面!");
+			activity.finish();
+		}
 	}
 	protected abstract void handleMessage();
 }
