@@ -135,6 +135,12 @@ public class Message implements Serializable{
 	 */
 	public static final Byte MESSAGE_APK_UPTE = 0x16;
 	
+	/**
+	 * 抢答成功命令
+	 * pc-android
+	 */
+	public static final Byte MESSAGE_RESPONDER_SUCCESS = 0x17;
+	
 	
     private byte msgID;
     private int msgSize;

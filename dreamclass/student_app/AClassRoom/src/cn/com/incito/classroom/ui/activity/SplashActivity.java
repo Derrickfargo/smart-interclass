@@ -13,6 +13,7 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.BaseActivity;
@@ -24,6 +25,7 @@ import cn.com.incito.classroom.utils.UpdateManager;
 import cn.com.incito.classroom.vo.Version;
 import cn.com.incito.common.utils.LogUtil;
 import cn.com.incito.common.utils.ShortCutUtil;
+import cn.com.incito.common.utils.ToastHelper;
 import cn.com.incito.socket.core.NCoreSocket;
 
 import com.alibaba.fastjson.JSON;

@@ -1,5 +1,6 @@
 package cn.com.incito.socket.handler;
 
+import android.os.SystemClock;
 import cn.com.incito.classroom.base.AppManager;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.ui.activity.ResponderActivity;
@@ -14,6 +15,7 @@ public class ResponderEndHandler extends MessageHandler {
 	
 	@Override
 	protected void handleMessage() {
+		SystemClock.sleep(2000);
 		if(ResponderActivity.class.equals(activity.getClass())){
 			ResponderActivity responderActivity = (ResponderActivity)activity;
 			if(responderActivity.getBeforResponderisLockScreeen()){

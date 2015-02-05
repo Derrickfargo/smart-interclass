@@ -3,8 +3,8 @@ package cn.com.incito.socket.core;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import android.app.Activity;
 import cn.com.incito.classroom.base.AppManager;
+import cn.com.incito.classroom.base.BaseActivity;
 import cn.com.incito.classroom.ui.activity.WaitingActivity;
 import cn.com.incito.common.utils.LogUtil;
 
@@ -21,7 +21,7 @@ public abstract class MessageHandler {
 	protected Message message;
 	protected JSONObject data;
 	private ExecutorService executorService = Executors.newSingleThreadExecutor();
-	protected Activity activity;
+	protected BaseActivity activity;
 
 	
 	/**
@@ -31,7 +31,7 @@ public abstract class MessageHandler {
 	 */
 	public final void handleMessage(JSONObject jsonObject){
 		data = jsonObject;
-		activity = AppManager.getAppManager().currentActivity();
+		activity = (BaseActivity) AppManager.getAppManager().currentActivity();
 		
 		executorService.execute(new Runnable() {
 			@Override

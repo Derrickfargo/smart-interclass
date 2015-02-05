@@ -39,6 +39,7 @@ public final class MessageActionMap {
 		sparseArray.put(Message.MESSAGE_STUDENT_RESPONDER, "抢答");
 		sparseArray.put(Message.MESSAGE_DISTRIBUTE_PAPER, "做作业");
 		sparseArray.put(Message.MESSAGE_APK_UPTE, "询问是否有升级包");
+		sparseArray.put(Message.MESSAGE_RESPONDER_SUCCESS, "抢答成功!");
 	}
 	
 	public static String getActionByMsgId(byte msgId){

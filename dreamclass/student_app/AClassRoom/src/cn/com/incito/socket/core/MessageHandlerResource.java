@@ -19,6 +19,7 @@ import cn.com.incito.socket.handler.LockScreenHandler;
 import cn.com.incito.socket.handler.RandomGroupHandler;
 import cn.com.incito.socket.handler.ResponderEndHandler;
 import cn.com.incito.socket.handler.ResponderHandler;
+import cn.com.incito.socket.handler.ResponderSuccessHandler;
 import cn.com.incito.socket.handler.SavePaperHandler;
 import cn.com.incito.socket.handler.SavePaperResultHandler;
 import cn.com.incito.socket.handler.StudentLoginHandler;
@@ -79,6 +80,7 @@ public final class MessageHandlerResource {
         handlerResources.put(Message.MESSAGE_QUIZ_FEEDBACK_COMPLETE, EvaluateCompleteHandler.class);
         //下载更新包
         handlerResources.put(Message.MESSAGE_APK_UPTE, DownLoadApkHandler.class);
+        handlerResources.put(Message.MESSAGE_RESPONDER_SUCCESS, ResponderSuccessHandler.class);
         
     }
 

@@ -29,6 +29,8 @@ import cn.com.incito.common.utils.ToastHelper;
  * activity基类 Created by popoy on 2014/8/5.
  */
 public class BaseActivity extends FragmentActivity {
+	
+	public static final int RESPONDER_SUCCESS = 4;
 
 	protected int mScreenWidth;
 
@@ -40,6 +42,7 @@ public class BaseActivity extends FragmentActivity {
 	private ProgressiveDialog mProgressDialog;
 
 	public NetWorkDialog netWorkDialog;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -184,6 +187,9 @@ public class BaseActivity extends FragmentActivity {
 					activity.showToast("网络拥堵请稍后重试!");
 				}
 				break;
+			case RESPONDER_SUCCESS:
+				ToastHelper.showResponderSuccessToast(activity.getApplicationContext());
+				break;
 			default:
 				break;
 			}
@@ -202,5 +208,16 @@ public class BaseActivity extends FragmentActivity {
 	
 	public void showError(){
 		handler.sendEmptyMessage(0);
+	}
+	
+	/**
+	 * 显示抢答成功对话框
+	* @author hm
+	* @date 2015年2月5日 上午11:37:55 
+	* @Title: showResponderSuccess 
+	* @return void    返回类型 
+	 */
+	public void showResponderSuccess() {
+		handler.sendEmptyMessage(RESPONDER_SUCCESS);
 	}
 }

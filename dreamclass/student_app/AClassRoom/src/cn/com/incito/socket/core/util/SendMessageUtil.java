@@ -82,7 +82,7 @@ public final class SendMessageUtil extends AbstractSendMessageUitl{
 	 * @param jsonObject
 	 */
 	public static void sendGroupConfirm(String json){
-		sendMessagePackingWithData(Message.MESSAGE_GROUP_CONFIRM, json);
+		sendMessagePackingWithData(Message.MESSAGE_GROUP_VOTE, json);
 	}
 	
 	/**

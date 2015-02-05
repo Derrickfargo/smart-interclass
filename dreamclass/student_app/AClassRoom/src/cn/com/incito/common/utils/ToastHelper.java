@@ -6,12 +6,31 @@ import android.content.Context;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import cn.com.incito.classroom.R;
 
 public class ToastHelper {
+	
+	/**
+	 * 显示抢答成功toast
+	* @author hm
+	* @date 2015年2月5日 下午2:18:28 
+	* @Title: showResponderSuccessToast 
+	* @Description:  
+	* @return void    返回类型 
+	* @throws
+	 */
+	public static void showResponderSuccessToast(Context context){
+		Toast toast = new Toast(context);
+		toast.setDuration(Toast.LENGTH_SHORT);
+		LinearLayout linearLayout = new LinearLayout(context);
+		linearLayout.setBackgroundResource(R.drawable.responder_success);
+		toast.setView(linearLayout);
+		toast.show();
+	}
+	
     /**
      * 显示自定义Toast提示(来自res) *
      */

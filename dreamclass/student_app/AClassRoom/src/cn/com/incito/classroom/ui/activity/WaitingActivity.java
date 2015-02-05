@@ -47,6 +47,7 @@ public class WaitingActivity extends BaseActivity {
 	public static final int STUDENT_LIST = 1;
 	public static final int STUDENT_LOGIN = 2;
 	public static final int STUDENT_OFFLINE = 3;
+
 	
 	public int itemPosition;
 	private EditText et_stname;
