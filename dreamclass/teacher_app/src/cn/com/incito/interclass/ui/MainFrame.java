@@ -19,6 +19,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.List;
 import java.util.Properties;
 
 import javax.swing.Icon;
@@ -26,11 +27,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import cn.com.incito.interclass.po.Group;
+import cn.com.incito.interclass.po.Table;
 import cn.com.incito.interclass.ui.widget.IpDialog;
 import cn.com.incito.server.api.Application;
 import cn.com.incito.server.config.AppConfig;
@@ -44,6 +47,8 @@ public class MainFrame extends MouseAdapter {
 	private static final String CARD_QUIZ = "QUIZ";
 	private static final String CARD_PRAISE = "PRAISE";
 	private static final String CARD_RESPONDER="RESPONDER";
+	private static final String CARD_GROUP1="GROUP1";
+	private static final String CARD_GROUP2="GROUP2";
 	private static final String CARD_PREPARE_BOTTOM = "PREPARE_BOTTOM";
 	private static final String CARD_QUIZ_BOTTOM = "QUIZ_BOTTOM";
 	private static final String CARD_PRAISE_BOTTOM = "PRAISE_BOTTOM";
@@ -55,7 +60,7 @@ public class MainFrame extends MouseAdapter {
 	private JFrame frame = new JFrame();
 	private Boolean isDragged;
 	private Point loc, tmp;
-	private JButton btnMin, btnClose, btnPraise,btnResponder;
+	private JButton btnMin, btnClose, btnPraise,btnResponder,btnGroup;
 	private JLabel lblBackground;
 	private JPanel contentPane;
 	
@@ -69,6 +74,8 @@ public class MainFrame extends MouseAdapter {
 	private QuizPanel quizPanel;
 	private PraisePanel praisePanel;
 	private ResponderPanel responderPanel;
+	private GroupPanel1 groupPanel1;
+	private GroupPanel2 groupPanel2;
 	private BlankPanel blankPanel;
 	
 	private CardLayout bottomCardLayout;
@@ -175,6 +182,7 @@ public class MainFrame extends MouseAdapter {
         btnQuiz.setIcon(new ImageIcon("images/main/bg_works.png"));
         btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
         btnResponder.setIcon(new ImageIcon("images/main/bg_qa.png"));
+        btnGroup.setIcon(new ImageIcon("images/main/bg_fenzu.png"));
 	}
 	
 	public void showQuiz() {
@@ -187,6 +195,7 @@ public class MainFrame extends MouseAdapter {
         btnStatus.setIcon(new ImageIcon("images/main/bg_ready.png"));
         btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
         btnResponder.setIcon(new ImageIcon("images/main/bg_qa.png"));
+        btnGroup.setIcon(new ImageIcon("images/main/bg_fenzu.png"));
 	}
 	
 	public void showPraise() {
@@ -199,6 +208,7 @@ public class MainFrame extends MouseAdapter {
 		btnStatus.setIcon(new ImageIcon("images/main/bg_ready.png"));
 		btnPraise.setIcon(new ImageIcon("images/main/bg_praise_hover.png"));
 		btnResponder.setIcon(new ImageIcon("images/main/bg_qa.png"));
+		btnGroup.setIcon(new ImageIcon("images/main/bg_fenzu.png"));
 		
 		praisePanel.refresh();
 	}
@@ -213,9 +223,103 @@ public class MainFrame extends MouseAdapter {
 		btnStatus.setIcon(new ImageIcon("images/main/bg_ready.png"));
 		btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
 		btnResponder.setIcon(new ImageIcon("images/main/bg_qa_hover.png"));
-		
+		btnGroup.setIcon(new ImageIcon("images/main/bg_fenzu.png"));
 		responderPanel.refresh();
 	}
+	
+	private void showGroup1() {
+		setVisible(true);
+		frame.setExtendedState(JFrame.NORMAL);
+		centerCardLayout.show(centerCardPanel, CARD_GROUP1);
+		bottomCardLayout.show(bottomCardPanel, CARD_PRAISE_BOTTOM);
+                
+		btnQuiz.setIcon(new ImageIcon("images/main/bg_works.png"));
+		btnStatus.setIcon(new ImageIcon("images/main/bg_ready.png"));
+		btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
+		btnResponder.setIcon(new ImageIcon("images/main/bg_qa.png"));
+		btnGroup.setIcon(new ImageIcon("images/main/bg_fenzu_hover.png"));
+	}
+	
+	/**
+	 * 显示第二种分组界面
+	 */
+	public void showGroup2() {
+		setVisible(true);
+		frame.setExtendedState(JFrame.NORMAL);
+		centerCardLayout.show(centerCardPanel, CARD_GROUP2);
+		bottomCardLayout.show(bottomCardPanel, CARD_PRAISE_BOTTOM);
+                
+		btnQuiz.setIcon(new ImageIcon("images/main/bg_works.png"));
+		btnStatus.setIcon(new ImageIcon("images/main/bg_ready.png"));
+		btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
+		btnResponder.setIcon(new ImageIcon("images/main/bg_qa.png"));
+		btnGroup.setIcon(new ImageIcon("images/main/bg_fenzu_hover.png"));
+	}
+	
+	/**
+	 * 开始编辑分组
+	 */
+	public void doGrouping() {
+		setVisible(true);
+		frame.setExtendedState(JFrame.NORMAL);
+		centerCardLayout.show(centerCardPanel, CARD_PREPARE);
+        bottomCardLayout.show(bottomCardPanel, CARD_PREPARE_BOTTOM);
+                
+		btnQuiz.setIcon(new ImageIcon("images/main/bg_works.png"));
+		btnStatus.setIcon(new ImageIcon("images/main/bg_ready_hover.png"));
+		btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
+		btnResponder.setIcon(new ImageIcon("images/main/bg_qa.png"));
+		btnGroup.setIcon(new ImageIcon("images/main/bg_fenzu.png"));
+		//执行分组
+		prepareBottomPanel.doEditGroup();
+	}
+	
+	/**
+	 * 随机分组
+	 */
+	public void doRdmGroup() {
+		if(app.isDoRdmGrouping()){
+			JOptionPane.showMessageDialog(getFrame(), "学生正在随机分组，请等待分组完毕！");
+			return;
+		}
+		if(Application.isOnResponder){
+			JOptionPane.showMessageDialog(getFrame(), "学生正在抢答，请等待抢答完毕！");
+			return;
+		}
+		if(app.getOnlineStudent().size() == 0){
+			JOptionPane.showMessageDialog(getFrame(), "当前还没有学生登陆，请先登陆后再随机分组!");
+			return;
+		}
+		List<Table> tableList = app.getTableList();
+		if (tableList == null || tableList.size() == 0) {
+			JOptionPane.showMessageDialog(getFrame(), "设备还未绑定课桌，请先绑定课桌!");
+			return;
+		}
+		if (app.isGrouping()) {
+			int result = JOptionPane.showConfirmDialog(getFrame(), "学生正在编辑分组，是否立即结束并进行随机分组？",
+					"随机分组确认", JOptionPane.YES_NO_OPTION);
+			if(result==JOptionPane.NO_OPTION){
+				return;
+			}
+			app.setGrouping(false);
+		}
+		if (Application.hasQuiz) {// 格式不一致，统一修改重构
+			int result = JOptionPane.showConfirmDialog(getFrame(), "学生正在作业，是否立即结束并进行分组？",
+					"随机分组确认", JOptionPane.YES_NO_OPTION);
+			if(result==JOptionPane.NO_OPTION){
+				return;
+			}
+			Application.hasQuiz=false;
+			Application.getInstance().getFloatIcon().showNoQuiz();
+			MainFrame.getInstance().showNoQuiz();
+		}
+		if(Application.isOnClass){//变换上课状态
+			prepareBottomPanel.setOnClass(false);
+		}
+		prepareBottomPanel.doRdmGroup();
+		showGroup2();
+	}
+	
 	public void showBlank(){
 		setVisible(true);
 		frame.setExtendedState(JFrame.NORMAL);
@@ -225,7 +329,7 @@ public class MainFrame extends MouseAdapter {
 		btnStatus.setIcon(new ImageIcon("images/main/bg_ready_hover.png"));
 		btnPraise.setIcon(new ImageIcon("images/main/bg_praise.png"));
 		btnResponder.setIcon(new ImageIcon("images/main/bg_qa.png"));
-		
+		btnGroup.setIcon(new ImageIcon("images/main/bg_fenzu.png"));
 		praisePanel.refresh();
 	}
 
@@ -329,6 +433,37 @@ public class MainFrame extends MouseAdapter {
 			}
 		});
 		
+		//抢答菜单
+		Icon iconResponder = new ImageIcon("images/main/bg_qa.png");
+		btnResponder = new JButton();
+		btnResponder.setIcon(iconResponder);
+		btnResponder.setFocusPainted(false);
+		btnResponder.setBorderPainted(false);// 设置边框不可见
+		btnResponder.setContentAreaFilled(false);// 设置透明
+		left.add(btnResponder);
+		btnResponder.setBounds(0, 154, iconResponder.getIconWidth(), iconResponder.getIconHeight());
+		btnResponder.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				showResponder();
+			}
+		});
+		
+		//分组菜单
+		Icon iconGroup = new ImageIcon("images/main/bg_fenzu.png");
+		btnGroup = new JButton();
+		btnGroup.setIcon(iconGroup);
+		btnGroup.setFocusPainted(false);
+		btnGroup.setBorderPainted(false);// 设置边框不可见
+		btnGroup.setContentAreaFilled(false);// 设置透明
+		left.add(btnGroup);
+		btnGroup.setBounds(0, 202, iconGroup.getIconWidth(), iconGroup.getIconHeight());
+		btnGroup.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				showGroup1();
+			}
+		});
+		
+		
 		// 用户信息
 		JPanel pnlUser = new JPanel() {
 			private static final long serialVersionUID = 1778895558158714379L;
@@ -358,21 +493,6 @@ public class MainFrame extends MouseAdapter {
 		left.setBounds(10, 73, 127, 930);
 		contentPane.add(left);
 		
-//		抢答
-		Icon iconResponder = new ImageIcon("images/main/bg_qa.png");
-		btnResponder = new JButton();
-		btnResponder.setIcon(iconResponder);
-		btnResponder.setFocusPainted(false);
-		btnResponder.setBorderPainted(false);// 设置边框不可见
-		btnResponder.setContentAreaFilled(false);// 设置透明
-		left.add(btnResponder);
-		btnResponder.setBounds(0, 154, iconResponder.getIconWidth(), iconResponder.getIconHeight());
-		btnResponder.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				showResponder();
-			}
-		});
-
 		// ///////////////////center部分////////////////////////
 		centerCardLayout = new CardLayout();
 		centerCardPanel = new JPanel(centerCardLayout);
@@ -419,8 +539,19 @@ public class MainFrame extends MouseAdapter {
 		responderScrollPane.setBorder(null);
 		responderScrollPane.setBounds(0, 0, 876, 630);
 		centerCardPanel.add(responderScrollPane, CARD_RESPONDER);
+		
+		groupPanel1 = new GroupPanel1();
+		groupPanel1.setBackground(Color.white);
+		groupPanel1.setBorder(null);
+		groupPanel1.setBounds(0, 0, 876, 630);
+		centerCardPanel.add(groupPanel1, CARD_GROUP1);
+		
+		groupPanel2 = new GroupPanel2();
+		groupPanel2.setBackground(Color.white);
+		groupPanel2.setBounds(0, 0, 876, 630);
+		centerCardPanel.add(groupPanel2, CARD_GROUP2);
         
-//		遮挡	
+		//遮挡	
 		blankPanel = new BlankPanel();
 		blankPanel.setBackground(Color.white);
 		blankPanel.setBorder(null);

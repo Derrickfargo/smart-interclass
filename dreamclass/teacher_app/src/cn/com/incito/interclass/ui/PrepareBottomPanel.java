@@ -42,10 +42,9 @@ import com.alibaba.fastjson.JSONObject;
 public class PrepareBottomPanel extends JPanel implements MouseListener{
 	private static final long serialVersionUID = -9135075807085951600L;
 	private JLabel lblExpected,lblClass,lblClassBackground,lblCourse,lblCourseBackground;
-	private JButton btnBegin, btnGroup;
+	private JButton btnBegin/*, btnGroup, btnRdmGroup*/;
 	private Application app = Application.getInstance();
 	Logger logger =  Logger.getLogger(PrepareBottomPanel.class.getName());
-	private JButton btnRdmGroup;
 	public JLabel getLblExpected() {
 		return lblExpected;
 	}
@@ -73,12 +72,12 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		lblClass.setForeground(UIHelper.getDefaultFontColor());
 		add(lblClass);
 		lblClass.setVisible(false);
-		lblClass.setBounds(130, 0, iconClass.getIconWidth(), iconClass.getIconHeight() - 4);
+		lblClass.setBounds(170, 0, iconClass.getIconWidth(), iconClass.getIconHeight() - 4);
 		lblClassBackground = new JLabel();
 		lblClassBackground.setIcon(iconClass);
 		add(lblClassBackground);
 		lblClassBackground.setVisible(false);
-		lblClassBackground.setBounds(130, -4, iconClass.getIconWidth(), iconClass.getIconHeight());
+		lblClassBackground.setBounds(170, -4, iconClass.getIconWidth(), iconClass.getIconHeight());
 		
 		ImageIcon iconCourse = new ImageIcon("images/main/btn_gray.png");
 		lblCourse = new JLabel("", JLabel.CENTER);
@@ -86,23 +85,23 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		lblCourse.setForeground(UIHelper.getDefaultFontColor());
 		add(lblCourse);
 		lblCourse.setVisible(false);
-		lblCourse.setBounds(290, 0, iconCourse.getIconWidth(), iconCourse.getIconHeight() -4 );
+		lblCourse.setBounds(330, 0, iconCourse.getIconWidth(), iconCourse.getIconHeight() -4 );
 		lblCourseBackground = new JLabel();
 		lblCourseBackground.setIcon(iconCourse);
 		add(lblCourseBackground);
 		lblCourseBackground.setVisible(false);
-		lblCourseBackground.setBounds(290, -4, iconCourse.getIconWidth(), iconCourse.getIconHeight());
+		lblCourseBackground.setBounds(330, -4, iconCourse.getIconWidth(), iconCourse.getIconHeight());
 
-		btnGroup = new JButton();// 创建按钮对象
-		btnGroup.setFocusPainted(false);
-		btnGroup.setBorderPainted(false);// 设置边框不可见
-		btnGroup.setContentAreaFilled(false);// 设置透明
-		ImageIcon iconGroup = new ImageIcon("images/main/btn_group.png");
-		btnGroup.setIcon(iconGroup);// 设置图片
-		add(btnGroup);// 添加按钮
-		btnGroup.setBounds(358, -4, iconGroup.getIconWidth(), iconGroup.getIconHeight());
-		btnGroup.addMouseListener(this);
-		btnGroup.setVisible(false);
+//		btnGroup = new JButton();// 创建按钮对象
+//		btnGroup.setFocusPainted(false);
+//		btnGroup.setBorderPainted(false);// 设置边框不可见
+//		btnGroup.setContentAreaFilled(false);// 设置透明
+//		ImageIcon iconGroup = new ImageIcon("images/main/btn_group.png");
+//		btnGroup.setIcon(iconGroup);// 设置图片
+//		add(btnGroup);// 添加按钮
+//		btnGroup.setBounds(358, -4, iconGroup.getIconWidth(), iconGroup.getIconHeight());
+//		btnGroup.addMouseListener(this);
+//		btnGroup.setVisible(false);
 		
 		btnBegin = new JButton();// 创建按钮对象
 		btnBegin.setFocusPainted(false);
@@ -115,29 +114,29 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		btnBegin.addMouseListener(this);
 		btnBegin.setVisible(false);
 		
-		btnRdmGroup = new JButton("");//创建随机分组按钮
-		btnRdmGroup.setFocusPainted(false);
-		btnRdmGroup.setContentAreaFilled(false);
-		btnRdmGroup.setBorderPainted(false);
-		ImageIcon rdmImage = new ImageIcon("images/main/btn_randomization.png");
-		btnRdmGroup.setIcon(rdmImage);
-		btnRdmGroup.setBounds(200, -4, rdmImage.getIconWidth(),rdmImage.getIconHeight());
-		add(btnRdmGroup);
-		btnRdmGroup.addMouseListener(this);
-		btnRdmGroup.setVisible(false);
+//		btnRdmGroup = new JButton("");//创建随机分组按钮
+//		btnRdmGroup.setFocusPainted(false);
+//		btnRdmGroup.setContentAreaFilled(false);
+//		btnRdmGroup.setBorderPainted(false);
+//		ImageIcon rdmImage = new ImageIcon("images/main/btn_randomization.png");
+//		btnRdmGroup.setIcon(rdmImage);
+//		btnRdmGroup.setBounds(200, -4, rdmImage.getIconWidth(),rdmImage.getIconHeight());
+//		add(btnRdmGroup);
+//		btnRdmGroup.addMouseListener(this);
+//		btnRdmGroup.setVisible(false);
 	}
 	
 	public void refresh(){
 		List<Table> tables = app.getTableList();
 		if (tables.size() != 0) {
 			lblExpected.setVisible(true);
-			lblClass.setVisible(false);
-			lblClassBackground.setVisible(false);
-			lblCourse.setVisible(false);
-			lblCourseBackground.setVisible(false);
-			btnGroup.setVisible(true);
+			lblClass.setVisible(true);
+			lblClassBackground.setVisible(true);
+			lblCourse.setVisible(true);
+			lblCourseBackground.setVisible(true);
+//			btnGroup.setVisible(true);
 			btnBegin.setVisible(true);
-			btnRdmGroup.setVisible(true);
+//			btnRdmGroup.setVisible(true);
 		}
 	}
 	private void doBegin() {
@@ -178,7 +177,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		setOnClass(true); 
 	}
 
-	private void doEditGroup() {
+	public void doEditGroup() {
 		if(app.isDoRdmGrouping()){
 			JOptionPane.showMessageDialog(getParent().getParent(), "学生正在随机分组!");
 		}
@@ -232,8 +231,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 			UIHelper.sendLockScreenMessage(true);
 			btnBegin.setIcon(new ImageIcon("images/main/btn_end.png"));// 设置图片
 			Application.isOnClass = true;
-			Application.getInstance().setLessionid(
-					UUID.randomUUID().toString());
+			Application.getInstance().setLessionid(UUID.randomUUID().toString());
 		} else {
 			UIHelper.sendLockScreenMessage(false);
 			btnBegin.setIcon(new ImageIcon("images/main/btn_begin.png"));// 设置图片
@@ -267,47 +265,10 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 	 * 随机分组
 	 * @author caicai
 	 */
-	private void doRdmGroup() {
-		if(app.isDoRdmGrouping()){
-			JOptionPane.showMessageDialog(getParent().getParent(), "学生正在随机分组，请等待分组完毕！");
-			return;
-		}
-		if(Application.isOnResponder){
-			JOptionPane.showMessageDialog(getParent().getParent(), "学生正在抢答，请等待抢答完毕！");
-			return;
-		}
-		if(app.getOnlineStudent().size() == 0){
-			JOptionPane.showMessageDialog(getParent().getParent(), "当前还没有学生登陆，请先登陆后再随机分组!");
-			return;
-		}
-		List<Table> tableList = app.getTableList();
-		if (tableList == null || tableList.size() == 0) {
-			JOptionPane.showMessageDialog(getParent().getParent(), "设备还未绑定课桌，请先绑定课桌!");
-			return;
-		}
-		if (app.isGrouping()) {
-			int result = JOptionPane.showConfirmDialog(getParent().getParent(), "学生正在编辑分组，是否立即结束并进行随机分组？",
-					"随机分组确认", JOptionPane.YES_NO_OPTION);
-			if(result==JOptionPane.NO_OPTION){
-				return;
-			}
-			app.setGrouping(false);
-		}
-		if (Application.hasQuiz) {// 格式不一致，统一修改重构
-			int result = JOptionPane.showConfirmDialog(getParent().getParent(), "学生正在作业，是否立即结束并进行分组？",
-					"随机分组确认", JOptionPane.YES_NO_OPTION);
-			if(result==JOptionPane.NO_OPTION){
-				return;
-			}
-			Application.hasQuiz=false;
-			Application.getInstance().getFloatIcon().showNoQuiz();
-			MainFrame.getInstance().showNoQuiz();
-		}
-		if(Application.isOnClass){//变换上课状态
-			setOnClass(false);
-		}
+	public void doRdmGroup() {
 //		new CoverPanel();
-		MainFrame.getInstance().showBlank();
+//		新界面不显示这个
+//		MainFrame.getInstance().showBlank();
 		// 发送小组信息
 		app.setDoRdmGrouping(true);
 		Queue<List<Student>> students =  RdmGroup.getStudentQue();
@@ -403,12 +364,12 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 				doBegin();
 			}
 		}
-		if(e.getSource() == btnGroup){
-			doEditGroup();
-		}
-		if(e.getSource()==btnRdmGroup){
-			doRdmGroup();
-		}
+//		if(e.getSource() == btnGroup){
+//			doEditGroup();
+//		}
+//		if(e.getSource()==btnRdmGroup){
+//			doRdmGroup();
+//		}
 	}
 	
 	@Override
@@ -430,12 +391,12 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 				btnBegin.setIcon(new ImageIcon("images/main/btn_begin_hover.png"));
 			}
 		}
-		if (e.getSource() == btnGroup) {
-			btnGroup.setIcon(new ImageIcon("images/main/btn_group_hover.png"));
-		}
-		if(e.getSource()==btnRdmGroup){
-			btnRdmGroup.setIcon(new ImageIcon("images/main/btn_randomization_hover.png"));
-		}
+//		if (e.getSource() == btnGroup) {
+//			btnGroup.setIcon(new ImageIcon("images/main/btn_group_hover.png"));
+//		}
+//		if(e.getSource()==btnRdmGroup){
+//			btnRdmGroup.setIcon(new ImageIcon("images/main/btn_randomization_hover.png"));
+//		}
 	}
 
 	@Override
@@ -447,11 +408,11 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 				btnBegin.setIcon(new ImageIcon("images/main/btn_begin.png"));
 			}
 		}
-		if (e.getSource() == btnGroup) {
-			btnGroup.setIcon(new ImageIcon("images/main/btn_group.png"));
-		}
-		if(e.getSource()==btnRdmGroup){
-			btnRdmGroup.setIcon(new ImageIcon("images/main/btn_randomization.png"));
-		}
+//		if (e.getSource() == btnGroup) {
+//			btnGroup.setIcon(new ImageIcon("images/main/btn_group.png"));
+//		}
+//		if(e.getSource()==btnRdmGroup){
+//			btnRdmGroup.setIcon(new ImageIcon("images/main/btn_randomization.png"));
+//		}
 	}
 }
