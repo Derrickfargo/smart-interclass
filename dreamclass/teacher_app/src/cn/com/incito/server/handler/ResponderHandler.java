@@ -7,7 +7,10 @@ import org.apache.log4j.Logger;
 
 import cn.com.incito.interclass.po.Student;
 import cn.com.incito.server.api.Application;
+import cn.com.incito.server.core.Message;
 import cn.com.incito.server.core.MessageHandler;
+import cn.com.incito.server.core.SocketServiceCore;
+import cn.com.incito.server.message.MessagePacking;
 import cn.com.incito.server.utils.UIHelper;
 
 public class ResponderHandler extends MessageHandler{
@@ -27,6 +30,8 @@ public class ResponderHandler extends MessageHandler{
 		}
 		else if(Application.isOnResponder){
 			Application.isOnResponder=false;
+			MessagePacking msg = new MessagePacking(Message.MESSAGE_RECEIVE_RESPONDER);
+			SocketServiceCore.getInstance().sendMsg(msg, ctx);
 			UIHelper.sendResponderMessage(false);			
 			app.setResponderStudents(students);
 			app.refreshResponder();

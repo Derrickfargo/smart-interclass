@@ -127,6 +127,10 @@ public class Message {
 	 * 收到写作业的回执
 	 */
 	public static final Byte MESSAGE_RECEIVE_DISTRIBUTE_PAPER =0x15;
+	/**
+	 * 收到抢答信息的回执
+	 */
+	public static final Byte MESSAGE_RECEIVE_RESPONDER = 0x17;
 	
 	private Logger log = Logger.getLogger(Message.class);
 	
