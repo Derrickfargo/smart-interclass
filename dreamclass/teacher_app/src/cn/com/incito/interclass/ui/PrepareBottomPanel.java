@@ -110,7 +110,7 @@ public class PrepareBottomPanel extends JPanel implements MouseListener{
 		ImageIcon btnImage = new ImageIcon("images/main/btn_begin.png");
 		btnBegin.setIcon(btnImage);// 设置图片
 		add(btnBegin);// 添加按钮
-		btnBegin.setBounds(515, -4, btnImage.getIconWidth(), btnImage.getIconHeight());
+		btnBegin.setBounds(710, -4, btnImage.getIconWidth(), btnImage.getIconHeight());
 		btnBegin.addMouseListener(this);
 		btnBegin.setVisible(false);
 		
