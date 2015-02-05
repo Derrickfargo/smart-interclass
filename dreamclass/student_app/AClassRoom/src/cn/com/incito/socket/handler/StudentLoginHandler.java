@@ -1,7 +1,6 @@
 package cn.com.incito.socket.handler;
 
 import cn.com.incito.classroom.ui.activity.WaitingActivity;
-import cn.com.incito.common.utils.LogUtil;
 import cn.com.incito.common.utils.UIHelper;
 import cn.com.incito.socket.core.MessageHandler;
 /**
@@ -11,9 +10,8 @@ import cn.com.incito.socket.core.MessageHandler;
 public class StudentLoginHandler extends MessageHandler {
 	@Override
 	protected void handleMessage() {
-		LogUtil.d("学生登录回复");
 		if(UIHelper.getInstance().getWaitingActivity()!=null){
-			UIHelper.getInstance().getWaitingActivity().doResult(data, WaitingActivity.STUDENT_LOGIN);
+			UIHelper.getInstance().getWaitingActivity().doResult(data, WaitingActivity.STUDENT_LIST);
 		}
 	}
 }

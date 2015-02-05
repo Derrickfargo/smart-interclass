@@ -88,16 +88,16 @@ public class GroupNumAdapter extends BaseAdapter {
 		}
 		if ("1".equals(datas.get(position).getSex())) {// 男
 			if (datas.get(position).isLogin()) {
-				holder.rlayout.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.bg_logged_user_m));
+				holder.rlayout.setBackground(mContext.getResources().getDrawable(R.drawable.bg_logged_user_m));
 			} else {
-				holder.rlayout.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.bg_not_logged_user_m));
+				holder.rlayout.setBackground(mContext.getResources().getDrawable(R.drawable.bg_not_logged_user_m));
 			}
 
 		}else{//女
 			if (datas.get(position).isLogin()) {
-				holder.rlayout.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.bg_logged_user_w));
+				holder.rlayout.setBackground(mContext.getResources().getDrawable(R.drawable.bg_logged_user_w));
 			} else {
-				holder.rlayout.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.bg_not_logged_user_w));
+				holder.rlayout.setBackground(mContext.getResources().getDrawable(R.drawable.bg_not_logged_user_w));
 			}
 		}
 

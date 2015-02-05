@@ -10,20 +10,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -41,7 +33,6 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import android.provider.Settings;
 import android.provider.Settings.Secure;
 import android.provider.Settings.System;
 import android.telephony.TelephonyManager;
@@ -122,26 +113,6 @@ public class AndroidUtil {
 		return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
 	}
 
-	/**
-	 * 定位器是否可用 gps或者netwrok打开一个即可
-	 * @param context
-	 * @return
-	 */
-	public static boolean isLocationProviderAvailable(Context context) {
-		String locations = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-		return locations != null && (locations.contains(LocationManager.GPS_PROVIDER) || locations.contains(LocationManager.NETWORK_PROVIDER));
-	}
-
-
-	/**
-	 * 是否打开GPS
-	 * @param context
-	 * @return
-	 */
-	public static boolean isGpsProviderAvailable(Context context) {
-		String locations = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-		return locations != null && locations.contains(LocationManager.GPS_PROVIDER);
-	}
 
 	/**
 	 * 网络连接是否可用
@@ -232,7 +203,6 @@ public class AndroidUtil {
 			ApiClient.uploadErrorLog(e.getMessage());
 			return 0;
 		}
-
 	}
 
 	/**
@@ -249,23 +219,6 @@ public class AndroidUtil {
 		}
 	}
 
-	// /**
-	// * 显示分享对话框
-	// * @param context
-	// * @param messageId 分享的正文内容模板ID
-	// * @param values 分享的征文内容数据
-	// */
-	// public static final void showShareDialog(Context context, int messageId, String... values) {
-	// Intent intent=new Intent(Intent.ACTION_SEND);
-	// intent.setType("text/plain");
-	// intent.putExtra(Intent.EXTRA_SUBJECT,
-	// context.getResources().getString(R.string.share_title));
-	// intent.putExtra(Intent.EXTRA_TEXT,
-	// StringUtil.format(context, messageId, values));
-	// context.startActivity(Intent.createChooser(intent,
-	// context.getResources().getString(R.string.share_dialog_title)));
-	// }
-	//
 	/**
 	 * 显示拨号界面
 	 * @param context
@@ -277,7 +230,6 @@ public class AndroidUtil {
 			context.startActivity(intent);
 		} catch (ActivityNotFoundException e) {
 			ApiClient.uploadErrorLog(e.getMessage());
-			// ToastTools.show(context, R.string.toast_setting_dial_error);
 		}
 	}
 
@@ -292,7 +244,6 @@ public class AndroidUtil {
 			context.startActivity(intent);
 		} catch (ActivityNotFoundException e) {
 			ApiClient.uploadErrorLog(e.getMessage());
-			// ToastTools.show(context, R.string.toast_market_error);
 		}
 	}
 
@@ -400,7 +351,7 @@ public class AndroidUtil {
 	 * @return String 返回类型
 	 * @throws
 	 */
-	public static String getAppVersion(Context context) {
+	public static String getAppVersionName(Context context) {
 		// 1.获取当前应用程序的包的apk信息
 		PackageManager pm = context.getPackageManager();
 		try {
@@ -454,6 +405,22 @@ public class AndroidUtil {
 		calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) - 1);
 		return df.format(calendar.getTime());
 	}
+	
+	/**
+	 * 获取当前运行apk的versionCode
+	 * @param context
+	 * @return
+	 */
+	public static int currentVersionCode(Context context){
+		 PackageManager packageManager = context.getPackageManager();  
+		 PackageInfo currentPackageInfo = null;
+		 try {
+			currentPackageInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
+		} catch (NameNotFoundException e) {
+			LogUtil.e("获取包名出现异常",e.getCause());
+		}
+		return currentPackageInfo.versionCode;
+	}
 
 	/**
 	 * 获取系统当前时间
@@ -464,47 +431,46 @@ public class AndroidUtil {
 		return df.format(new Date());
 	}
 
-	public static void downFile(final String url) {
-		new Thread() {
-
-			public void run() {
-				HttpClient client = new DefaultHttpClient();
-				HttpGet get = new HttpGet(url);
-				HttpResponse response;
-				try {
-					response = client.execute(get);
-					HttpEntity entity = response.getEntity();
-					long length = entity.getContentLength();
-					InputStream is = entity.getContent();
-					FileOutputStream fileOutputStream = null;
-					if (is != null) {
-						File file = new File(Environment.getExternalStorageDirectory(), "xubooooo");
-						fileOutputStream = new FileOutputStream(file);
-						byte[] buf = new byte[1024];
-						int ch = -1;
-						int count = 0;
-						while ((ch = is.read(buf)) != -1) {
-							fileOutputStream.write(buf, 0, ch);
-							count += ch;
-							if (length > 0) {
-							}
-						}
-					}
-					fileOutputStream.flush();
-					if (fileOutputStream != null) {
-						fileOutputStream.close();
-					}
-					// down();
-				} catch (ClientProtocolException e) {
-					ApiClient.uploadErrorLog(e.getMessage());
-					e.printStackTrace();
-				} catch (IOException e) {
-					ApiClient.uploadErrorLog(e.getMessage());
-					e.printStackTrace();
-				}
-			}
-		}.start();
-	}
+//	public static void downFile(final String url) {
+//		new Thread() {
+//			public void run() {
+//				HttpClient client = new DefaultHttpClient();
+//				HttpGet get = new HttpGet(url);
+//				HttpResponse response;
+//				try {
+//					response = client.execute(get);
+//					HttpEntity entity = response.getEntity();
+//					long length = entity.getContentLength();
+//					InputStream is = entity.getContent();
+//					FileOutputStream fileOutputStream = null;
+//					if (is != null) {
+//						File file = new File(Environment.getExternalStorageDirectory(), "xubooooo");
+//						fileOutputStream = new FileOutputStream(file);
+//						byte[] buf = new byte[1024];
+//						int ch = -1;
+//						int count = 0;
+//						while ((ch = is.read(buf)) != -1) {
+//							fileOutputStream.write(buf, 0, ch);
+//							count += ch;
+//							if (length > 0) {
+//							}
+//						}
+//					}
+//					fileOutputStream.flush();
+//					if (fileOutputStream != null) {
+//						fileOutputStream.close();
+//					}
+//					// down();
+//				} catch (ClientProtocolException e) {
+//					ApiClient.uploadErrorLog(e.getMessage());
+//					e.printStackTrace();
+//				} catch (IOException e) {
+//					ApiClient.uploadErrorLog(e.getMessage());
+//					e.printStackTrace();
+//				}
+//			}
+//		}.start();
+//	}
 
 	/**
 	 * 判断应用是否在前台运行

@@ -11,7 +11,6 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 
-import android.os.SystemClock;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.common.utils.LogUtil;
 
@@ -89,9 +88,8 @@ public class FTPUtils {
 			if (!ftpClient.isConnected()) {
 				LogUtil.d("FTP服务器未连接");
 				if (!initFTPSetting(FTPUrl, FTPPort, UserName, UserPassword)) {
-					LogUtil.d("ftp服务器连接失败,3s后进行重连");
-					SystemClock.sleep(3000);
-					return uploadFile(FilePath, FileName);
+					LogUtil.d("ftp服务器连接失败");
+					return false;
 				}
 			}
 			LogUtil.d("ftp服务器已连接");
@@ -138,8 +136,7 @@ public class FTPUtils {
 			if (!ftpClient.isConnected()) {
 				if (!initFTPSetting(FTPUrl, FTPPort, UserName, UserPassword)) {
 					LogUtil.d("FTP服务器初始化连接失败");
-					SystemClock.sleep(3000);
-					return downLoadFile(FilePath, FileName);
+					return false;
 				}
 			}
 			FTPFile[] files = ftpClient.listFiles();

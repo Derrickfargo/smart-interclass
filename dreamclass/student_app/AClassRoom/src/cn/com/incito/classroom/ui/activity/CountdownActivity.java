@@ -14,6 +14,7 @@ import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.BaseActivity;
+import cn.com.incito.classroom.base.MyApplication;
 
 /**
  * 倒计时activity
@@ -28,10 +29,10 @@ public class CountdownActivity extends BaseActivity {
 	private int backgroundNumber = 3;
 	private ScaleAnimation scaleAnimation;
 	private Handler handler;
+	private boolean beforResponderisLockScreeen;
 
 	private static class CountdownHandler extends Handler {
 		private WeakReference<CountdownActivity> weakReference;
-
 		public CountdownHandler(CountdownActivity activity) {
 			weakReference = new WeakReference<CountdownActivity>(activity);
 		}
@@ -39,7 +40,6 @@ public class CountdownActivity extends BaseActivity {
 		@Override
 		public void handleMessage(Message msg) {
 			CountdownActivity activity = weakReference.get();
-
 			switch (msg.what) {
 			case 3:
 				activity.countdown_image.setImageResource(R.drawable.cuountdown_3);
@@ -57,9 +57,8 @@ public class CountdownActivity extends BaseActivity {
 				activity.backgroundNumber--;
 				break;
 			case 0:
-				boolean beforResponderisLockScreeen = activity.getIntent().getExtras().getBoolean("beforResponderisLockScreeen");
 				Intent intent = new Intent(activity, ResponderActivity.class);
-				intent.putExtra("beforResponderisLockScreeen",beforResponderisLockScreeen);
+				intent.putExtra("beforResponderisLockScreeen",activity.beforResponderisLockScreeen);
 				activity.finish();
 				activity.startActivity(intent);
 				break;
@@ -75,9 +74,7 @@ public class CountdownActivity extends BaseActivity {
 
 		setContentView(R.layout.count_down_activity);
 		handler = new CountdownHandler(this);
-
 		countdown_image = (ImageView) findViewById(R.id.countdown_image);
-
 		scaleAnimation = new ScaleAnimation(0.5f, 1, 0.7f, 1,Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,0.5f);
 		scaleAnimation.setDuration(500);
 		scaleAnimation.setFillAfter(true);
@@ -85,7 +82,6 @@ public class CountdownActivity extends BaseActivity {
 		scaleAnimation.setInterpolator(new AccelerateInterpolator());
 		scaleAnimation.setRepeatMode(Animation.RESTART);
 		scaleAnimation.setRepeatCount(0);
-
 		timer = new Timer();
 		timerTask = new TimerTask() {
 			@Override
@@ -105,6 +101,10 @@ public class CountdownActivity extends BaseActivity {
 			}
 		};
 		timer.schedule(timerTask, 1 * 1000, 1 * 1000);
+		beforResponderisLockScreeen = MyApplication.getInstance().isLockScreen();
+		if(beforResponderisLockScreeen){
+			MyApplication.getInstance().lockScreen(false);
+		}
 	}
 
 	@Override

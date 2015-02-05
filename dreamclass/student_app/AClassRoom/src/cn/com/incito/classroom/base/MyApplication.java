@@ -21,15 +21,17 @@ import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.classroom.exception.AppUncaughtException;
 import cn.com.incito.classroom.vo.LoginResVo;
 import cn.com.incito.common.utils.LogUtil;
-import cn.com.incito.socket.core.NCoreSocket;
 
 import com.google.code.microlog4android.config.PropertyConfigurator;
 
 /**
  * 应用 appication（缓存各类数据） Created by popoy on 2014/7/28.
  */
+@SuppressWarnings("deprecation")
 public class MyApplication extends Application {
 	public boolean isOnClass;// 是否在上课
+	
+	public boolean isOver = false;
 	
 	/**
 	 * 作业ID用于学生提交作业或者老师收作业
@@ -109,9 +111,6 @@ public class MyApplication extends Application {
 		}
 		// 初始化本机mac地址
 		initMacAddress();
-
-		// 启动连接
-		NCoreSocket.getInstance().connection();
 	}
 
 	private void initMacAddress() {
@@ -171,22 +170,21 @@ public class MyApplication extends Application {
 
 		if (Constants.OPEN_LOCK_SCREEN) {
 			LogUtil.d("是否收到解锁屏信息：" + isLock);
-//			MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":MyApplication:" + "是否收到解锁屏信息：" + isLock);
 			ContentResolver mContentResolver = this.getApplicationContext().getContentResolver();
 			ExecRootCmd execRootCmd = new ExecRootCmd();
 			if (isLock) {
 				this.setLockScreen(isLock);
-				boolean ret = Settings.Global.putInt(mContentResolver,"disable_powerkey", 1);// 屏蔽电源按钮唤醒功能
+				Settings.Global.putInt(mContentResolver,"disable_powerkey", 1);// 屏蔽电源按钮唤醒功能
 				execRootCmd.powerkey();
 			} else {
 				if (isLockScreen()) {
 					if (screenOn) {
 						this.setLockScreen(isLock);
-						boolean ret1 = Settings.Global.putInt(mContentResolver,"disable_powerkey", 0); // 打开电源按钮唤醒功能
+						Settings.Global.putInt(mContentResolver,"disable_powerkey", 0); // 打开电源按钮唤醒功能
 						execRootCmd.powerkey();
 					}
 					this.setLockScreen(isLock);
-					boolean ret1 = Settings.Global.putInt(mContentResolver,"disable_powerkey", 0); // 打开电源按钮唤醒功能
+					Settings.Global.putInt(mContentResolver,"disable_powerkey", 0); // 打开电源按钮唤醒功能
 					execRootCmd.powerkey();
 					KeyguardManager mManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
 					KeyguardLock mKeyguardLock = mManager.newKeyguardLock("Lock");
@@ -207,6 +205,5 @@ public class MyApplication extends Application {
 	public void onTerminate() {
 		super.onTerminate();
 		sendBroadcast(new Intent("android.intent.action.SHOW_NAVIGATION_BAR"));
-//		MyApplication.Logger.debug(AndroidUtil.getCurrentTime() + ":MyApplication:广播发出");
 	}
 }

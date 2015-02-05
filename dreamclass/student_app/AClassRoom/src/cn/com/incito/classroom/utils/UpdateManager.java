@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import android.app.AlertDialog;
@@ -15,13 +14,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.base.AppManager;
+import cn.com.incito.common.utils.LogUtil;
+import cn.com.incito.socket.core.NCoreSocket;
 
 public class UpdateManager {
 
@@ -40,6 +40,8 @@ public class UpdateManager {
 	private static final int DOWN_UPDATE = 1;
 
 	private static final int DOWN_OVER = 2;
+	
+	private static final int CLOSE = 3;
 
 	private int progress;
 
@@ -68,6 +70,10 @@ public class UpdateManager {
 			case DOWN_OVER:
 				installApk();
 				break;
+			case CLOSE:
+				mProgress.setProgress(0);
+				downloadDialog.dismiss();
+				NCoreSocket.getInstance().closeConnection();
 			default:
 				break;
 			}
@@ -98,12 +104,14 @@ public class UpdateManager {
 
 		@Override
 		public void run() {
+			InputStream is = null;
+			FileOutputStream fos = null;
 			try {
 				URL url = new URL(update_url);
 				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 				conn.connect();
 				int length = conn.getContentLength();
-				InputStream is = conn.getInputStream();
+			    is = conn.getInputStream();
 
 				File file = new File(savePath);
 				if (!file.exists()) {
@@ -111,7 +119,7 @@ public class UpdateManager {
 				}
 				String apkFile = saveFileName;
 				File ApkFile = new File(apkFile);
-				FileOutputStream fos = new FileOutputStream(ApkFile);
+				fos = new FileOutputStream(ApkFile);
 				int count = 0;
 				byte buf[] = new byte[1024];
 
@@ -130,12 +138,25 @@ public class UpdateManager {
 				} while (!interceptFlag);// 点击取消就停止下载.
 				fos.close();
 				is.close();
-			} catch (MalformedURLException e) {
+			} catch (Exception e) {
 				ApiClient.uploadErrorLog(e.getMessage());
-				e.printStackTrace();
-			} catch (IOException e) {
-				ApiClient.uploadErrorLog(e.getMessage());
-				e.printStackTrace();
+				LogUtil.e("下载更新时出现异常:", e.getCause());
+				mHandler.sendEmptyMessage(CLOSE);
+			} finally{
+				if(is != null){
+					try {
+						is.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				if(fos != null){
+					try {
+						fos.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		}
 	};

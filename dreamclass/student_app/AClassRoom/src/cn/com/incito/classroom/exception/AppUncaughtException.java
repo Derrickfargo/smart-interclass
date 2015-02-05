@@ -15,9 +15,7 @@ import java.lang.Thread.UncaughtExceptionHandler;
 
 import android.content.Context;
 import android.util.Log;
-import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.utils.ApiClient;
-import cn.com.incito.classroom.utils.Utils;
 import cn.com.incito.common.utils.AndroidUtil;
 import cn.com.incito.common.utils.LogUtil;
 
@@ -51,19 +49,15 @@ public class AppUncaughtException implements UncaughtExceptionHandler {
 	@Override
 	public void uncaughtException(Thread arg0, Throwable arg1) {
 	
-//		SharedPreferences preferences = MyApplication.getInstance().getSharedPreferences();
-//		preferences.edit().putBoolean("isNormalExit", false).commit();
 		Log.e("程序挂掉了","");
 		// 把错误的堆栈信息 获取出来
 		LogUtil.d(getErrorInfo(arg1));
-//		MyApplication.Logger.debug(Utils.getTime()+"AppUncaughtException:"+getErrorInfo(arg1));
 		String errorInfo=arg1.getMessage();
 		// 打印到控制台上异常信息
 		if (AndroidUtil.isNetworkAvailable(context)) {
 			ApiClient.uploadErrorLog(errorInfo);
 		}
 		LogUtil.d(errorInfo);
-//		MyApplication.Logger.debug("AppUncaughtException:"+errorInfo);
 	}
 
 	/**
