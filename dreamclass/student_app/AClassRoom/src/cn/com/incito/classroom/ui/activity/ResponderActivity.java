@@ -26,6 +26,7 @@ import cn.com.incito.socket.core.util.SendMessageUtil;
 public class ResponderActivity extends BaseActivity {
 	
 	private static final int RANDOM_BUTTEON_POSITION = 1;
+	private static final int HIDE_BUTTON = 2;
 	private ImageButton imageButton;
 	private RotateAnimation rotateAnimation;//旋转动画
 	private boolean beforResponderisLockScreeen;
@@ -50,6 +51,10 @@ public class ResponderActivity extends BaseActivity {
 					responderActivity.RandomButton();
 				}
 				break;
+			case HIDE_BUTTON:
+				if(responderActivity != null){
+					responderActivity.imageButton.setVisibility(View.GONE);
+				}
 			}
 		}
 	}
@@ -103,6 +108,7 @@ public class ResponderActivity extends BaseActivity {
 			
 			@Override
 			public void onClick(View v) {
+				imageButton.setVisibility(View.GONE);
 				SendMessageUtil.sendStudentResponder();
 			}
 		});
@@ -145,5 +151,15 @@ public class ResponderActivity extends BaseActivity {
 	 */
 	public boolean getBeforResponderisLockScreeen(){
 		return beforResponderisLockScreeen;
+	}
+	
+	/**
+	 * 收到抢答结束命令隐藏抢答按钮
+	 * @author hm
+	 * @date 2015年2月6日 上午9:45:36 
+	 * @return void
+	 */
+	public void hideImageButton(){
+		handler.sendEmptyMessage(HIDE_BUTTON);
 	}
 }
