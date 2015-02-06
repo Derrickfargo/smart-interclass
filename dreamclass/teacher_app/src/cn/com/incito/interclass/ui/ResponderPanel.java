@@ -1,6 +1,5 @@
 package cn.com.incito.interclass.ui;
 
-import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -19,9 +18,8 @@ public class ResponderPanel extends JPanel implements MouseListener{
 	private static final long serialVersionUID = 3263791015780289798L;
 	Application app = Application.getInstance();
 	private List<Student> responderStus;
-	private JLabel stuList;
-	private JLabel stuText;
-	private JLabel responder,stuImg,stuLoading;
+	private JLabel responder,stuLoading;
+	private ImageIcon start,over,loading;
 	
 	public ResponderPanel() {
 		this.setLayout(null);
@@ -64,19 +62,15 @@ public class ResponderPanel extends JPanel implements MouseListener{
 	public void refresh(){
 		initData();
 		if(responderStus==null||responderStus.size()==0){
-			stuList.setText(null);
-			showRes(false);
 			return;
 		}
 		List<Student> students=responderStus;
 		StringBuffer stuBuffer= new StringBuffer();
 		for(Student student : students){
-			stuBuffer.append(student.getNumber()+": "+student.getName()+" ; ");
+			stuBuffer.append(student.getName()+" ;");
 		}
 		String stuName = stuBuffer.toString();
-		stuList.setText(stuName);		
-		stuList.setFont(new Font("微软雅黑", Font.BOLD, 15));
-		showRes(true);
+		new ResponderFrame(stuName);
 		showLodding(false);
 		
 		repaint();
@@ -84,39 +78,24 @@ public class ResponderPanel extends JPanel implements MouseListener{
 	}
 	
 	private void initView(){
-		stuList = new JLabel();
-		stuList.setBounds(270, 203, 500, 50);
-		stuList.setVisible(false);
-		this.add(stuList);
 		
-		stuImg = new JLabel();
-		ImageIcon imag = new ImageIcon("images/login/pic_check.png");
-		stuImg.setIcon(imag);
-		stuImg.setBounds(50, 207,imag.getIconWidth(), imag.getIconHeight());
-		stuImg.setVisible(false);
-		this.add(stuImg);
+		start = new ImageIcon("images/responder/responder.png");
+		over = new ImageIcon("images/responder/responder_over.png");
+		loading = new ImageIcon("images/responder/loading.jpg");
 		
 		stuLoading = new JLabel();
-		ImageIcon img = new ImageIcon("images/main/loading.gif");
-		stuLoading.setIcon(img);
-		stuLoading.setBounds(385, 514, img.getIconWidth(), img.getIconHeight());
+		stuLoading.setIcon(loading);
+		stuLoading.setBounds(385, 514, loading.getIconWidth(), loading.getIconHeight());
 		stuLoading.setVisible(false);
 		this.add(stuLoading);
 		
 		responder  =  new JLabel();
-		ImageIcon imgs = new ImageIcon("images/responder/responder.png");
-		responder.setIcon(imgs);
+		responder.setIcon(start);
 		responder.addMouseListener(this);
-		responder.setBounds(320, 265, imgs.getIconWidth(), imgs.getIconHeight());
+		responder.setBounds(320, 265, start.getIconWidth(), start.getIconHeight());
 		responder.setVisible(true);
 		this.add(responder);
 		
-		stuText = new JLabel();
-		stuText.setBounds(100, 200, 200, 50);
-		stuText.setText("抢答的学生为：");
-		stuText.setFont(new Font("微软雅黑", Font.BOLD, 24));
-		stuText.setVisible(false);
-		this.add(stuText);
 	}
 	
 	private void initData(){
@@ -127,18 +106,28 @@ public class ResponderPanel extends JPanel implements MouseListener{
 		}
 		responderStus = new ArrayList<Student>();
 	}
-	private void showRes(boolean flag){
-		stuList.setVisible(flag);
-		stuText.setVisible(flag);
-		stuImg.setVisible(flag);
-	}
 	private void showLodding(boolean flag){
 		stuLoading.setVisible(flag);
+		if(flag){
+			responder.setIcon(over);
+			return;
+		}
+		responder.setIcon(start);
 	}
+	
+	private void cancel(){
+		UIHelper.sendResponderMessage(false);
+	}
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if(e.getSource()==responder){
-			showRes(false);
+			if(Application.isOnResponder){
+				showLodding(false);
+				cancel();
+				Application.isOnResponder = false;
+				return;
+			}
 			doResponder();
 		}
 	}
@@ -156,6 +145,10 @@ public class ResponderPanel extends JPanel implements MouseListener{
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		if(e.getSource()==responder){
+			if(Application.isOnResponder){
+				responder.setIcon(new ImageIcon("images/responder/responder_over_hover.png"));
+				return;
+			}
 			responder.setIcon(new ImageIcon("images/responder/responder_hover.png"));
 		}
 	}
@@ -163,7 +156,11 @@ public class ResponderPanel extends JPanel implements MouseListener{
 	@Override
 	public void mouseExited(MouseEvent e) {
 		if(e.getSource()==responder){
-			responder.setIcon(new ImageIcon("images/responder/responder.png"));
+			if(Application.isOnResponder){
+				responder.setIcon(over);
+				return;
+			}
+			responder.setIcon(start);
 		}
 	}
 }
