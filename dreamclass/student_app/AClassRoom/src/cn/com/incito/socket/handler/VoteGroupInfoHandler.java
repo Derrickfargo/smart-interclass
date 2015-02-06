@@ -36,7 +36,7 @@ public class VoteGroupInfoHandler extends MessageHandler {
             if (agree) {
             	LogUtil.d("同意分组");
                 UIHelper.getInstance().showWaitingActivity();
-                if(MyApplication.getInstance().isLockScreen()){
+                if(!MyApplication.getInstance().isLockScreen()){
     				MyApplication.getInstance().lockScreen(true);
     			}
             } else {

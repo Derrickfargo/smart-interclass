@@ -32,7 +32,6 @@ public abstract class MessageHandler {
 	public final void handleMessage(JSONObject jsonObject){
 		data = jsonObject;
 		activity = (BaseActivity) AppManager.getAppManager().currentActivity();
-		
 		executorService.execute(new Runnable() {
 			@Override
 			public void run() {
@@ -43,7 +42,7 @@ public abstract class MessageHandler {
 	
 	protected final void finishNotWaitingActivity(){
 		if(!WaitingActivity.class.equals(activity.getClass())){
-			LogUtil.d("销毁不是等待界面的界面!");
+			LogUtil.d("销毁不是等待界面的界面：" + activity.getClass());
 			activity.finish();
 		}
 	}

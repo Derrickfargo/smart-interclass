@@ -16,6 +16,7 @@ import android.widget.ListView;
 import cn.com.incito.classroom.R;
 import cn.com.incito.classroom.adapter.RandomGroupAdapter;
 import cn.com.incito.classroom.base.BaseActivity;
+import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.vo.Student;
 import cn.com.incito.common.utils.UIHelper;
 
@@ -46,6 +47,9 @@ public class RandomGroupActivity extends BaseActivity {
 		UIHelper.getInstance().setRandomGroupActivity(this);
 		setContentView(R.layout.random_group_activity);
 		handler = new RandomGroupActivityHandler(this);
+		if(MyApplication.getInstance().isLockScreen()){
+			MyApplication.getInstance().lockScreen(false);
+		}
 		
 		linearLayout = (LinearLayout) findViewById(R.id.liner_layout);
 		student_list = (ListView) findViewById(R.id.student_list);
@@ -72,6 +76,7 @@ public class RandomGroupActivity extends BaseActivity {
 				linearLayout.startAnimation(frontAnimation);
 			}
 		});
+		
 	}
 	/**
 	 * 刷新数据
@@ -131,11 +136,10 @@ public class RandomGroupActivity extends BaseActivity {
 	}
 	
 	@Override
-	protected void onStop() {
+	protected void onDestroy() {
 		if(frontAnimation != null){
 			frontAnimation.cancel();
 		}
-		this.finish();
-		super.onStop();
+		super.onDestroy();
 	}
 }
