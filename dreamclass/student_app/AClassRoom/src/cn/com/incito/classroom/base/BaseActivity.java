@@ -31,6 +31,7 @@ import cn.com.incito.common.utils.ToastHelper;
 public class BaseActivity extends FragmentActivity {
 	
 	public static final int RESPONDER_SUCCESS = 4;
+	public static final int INSTALL_UPDATE = 1;
 
 	protected int mScreenWidth;
 
@@ -190,6 +191,8 @@ public class BaseActivity extends FragmentActivity {
 			case RESPONDER_SUCCESS:
 				ToastHelper.showResponderSuccessToast(activity.getApplicationContext());
 				break;
+			case INSTALL_UPDATE:
+				ToastHelper.showCustomToast(activity.getBaseContext(), "正在更新,更新成功后请点击重新进入");
 			default:
 				break;
 			}
@@ -219,5 +222,15 @@ public class BaseActivity extends FragmentActivity {
 	 */
 	public void showResponderSuccess() {
 		handler.sendEmptyMessage(RESPONDER_SUCCESS);
+	}
+
+	/**
+	 * 提示正在更新
+	 * @author hm
+	 * @date 2015年2月6日 下午5:30:14 
+	 * @return void
+	 */
+	public void showUpdate() {
+		handler.sendEmptyMessage(INSTALL_UPDATE);
 	}
 }

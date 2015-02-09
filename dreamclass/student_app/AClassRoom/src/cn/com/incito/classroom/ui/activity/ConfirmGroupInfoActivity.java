@@ -48,6 +48,7 @@ public class ConfirmGroupInfoActivity extends BaseActivity implements View.OnCli
 		mBtnDisagree.setOnClickListener(this);
 	}
 
+	@SuppressWarnings("unchecked")
 	private void initData() {
 		Bundle bundle = getIntent().getExtras();
 		Map<String, Object> json = (Map<String, Object>) bundle.get("data");
