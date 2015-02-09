@@ -27,6 +27,11 @@ public class Main {
 			JOptionPane.showMessageDialog(null, "应用程序升级失败，磁盘上未找到最新更新包！");
 			System.exit(0);
 		}
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
 		File target = new File(source.getParentFile().getParentFile().getParent(), "互动课堂.exe");
 		target.delete();//删除原来的文件
 		
