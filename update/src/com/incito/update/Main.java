@@ -32,7 +32,7 @@ public class Main {
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
-		File target = new File(source.getParentFile().getParentFile().getParent(), "互动课堂.exe");
+		File target = new File(source.getParentFile().getParent(), "互动课堂.exe");
 		target.delete();//删除原来的文件
 		
 		try {
