@@ -176,7 +176,8 @@ public class CaptureScreen {
 					Entry<String, ChannelHandlerContext> entry = it.next();
 					final String imei = entry.getKey();
 					logger.info("將要發送作業的設備Imei"+imei);
-					List<Student> studentsList = app.getStudentByImei(imei);
+					if(imei!=null&&!("").equals(imei)){
+						List<Student> studentsList = app.getStudentByImei(imei);						
 					// 记录有学生登陆的Pad
 					if (studentsList.size() > 0) {
 						final ChannelHandlerContext channel = entry.getValue();
@@ -202,6 +203,7 @@ public class CaptureScreen {
 										}
 									}
 								});
+							}
 							}
 						}
 					}
