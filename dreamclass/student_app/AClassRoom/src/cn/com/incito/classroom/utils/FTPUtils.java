@@ -11,6 +11,7 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 
+import android.content.Context;
 import cn.com.incito.classroom.constants.Constants;
 import cn.com.incito.common.utils.LogUtil;
 
@@ -166,5 +167,57 @@ public class FTPUtils {
 		}
 		LogUtil.d("作业下载结果：isSuccess:" + isSuccess);
 		return isSuccess;
+	}
+	
+	/**
+	 * apk下载
+	* @author hm
+	* @date 2015年2月1日 下午2:17:56 
+	* @Title: downLoadApk 
+	* @Description:  
+	* @param context
+	* @param fileName
+	* @return
+	* @return boolean    返回类型 
+	* @throws
+	 */
+	public static boolean downLoadApk(Context context,String fileName){
+		boolean downLoadResult = false;
+		try {
+		if (!ftpClient.isConnected()) {
+			LogUtil.d("FTP服务器未连接,开始连接fpt服务器");
+			if (!initFTPSetting(FTPUrl, FTPPort, UserName, UserPassword)) {
+				return downLoadResult;
+			}
+		}
+		LogUtil.d("ftp服务器已连接");
+		ftpClient.changeWorkingDirectory("/update");
+		FTPFile[] files = ftpClient.listFiles();
+		for (FTPFile file : files) {
+			if (file.getName().equals(fileName)) {
+				File localFile = new File(FileUtils.getSDCardPath() + "/" + fileName);
+				
+				if (localFile.exists()) {
+					localFile.delete();
+				}
+				OutputStream outputStream = new FileOutputStream(localFile);
+				downLoadResult = ftpClient.retrieveFile(file.getName(), outputStream); // 耗时操作
+				outputStream.close();
+			}
+		}
+		    ftpClient.logout();
+			ftpClient.disconnect();
+		} catch (IOException e) { 
+			LogUtil.e("下载更新包出现异常",e.getCause());
+			downLoadResult = false;
+		}finally{  
+            try {  
+                ftpClient.disconnect();
+            } catch (IOException e) {  
+            	LogUtil.e("ftp断开连接时出现异常",e.getCause());
+            }  
+        }  
+		LogUtil.d("apk下载结果:" + downLoadResult);
+		return downLoadResult;
 	}
 }
