@@ -7,8 +7,8 @@ import android.content.SharedPreferences.Editor;
 import cn.com.incito.classroom.base.MyApplication;
 import cn.com.incito.classroom.ui.activity.SplashActivity;
 import cn.com.incito.classroom.utils.FTPUtils;
-import cn.com.incito.common.utils.AndroidUtil;
-import cn.com.incito.common.utils.AutoInstallApkUtil;
+//import cn.com.incito.common.utils.AndroidUtil;
+//import cn.com.incito.common.utils.AutoInstallApkUtil;
 import cn.com.incito.common.utils.LogUtil;
 import cn.com.incito.socket.core.MessageHandler;
 
@@ -32,34 +32,34 @@ public class DownLoadApkHandler extends MessageHandler {
 		 * 服务器返回的版本的code
 		 */
 		int serverVersionCode = data.getIntValue("serverVersionCode");
-		int packageVersionCode = AutoInstallApkUtil.getAapPackageVersioncode(activity);
-		int currentVersionCode = AndroidUtil.currentVersionCode(MyApplication.getInstance().getApplicationContext());
+//		int packageVersionCode = AutoInstallApkUtil.getAapPackageVersioncode(activity);
+//		int currentVersionCode = AndroidUtil.currentVersionCode(MyApplication.getInstance().getApplicationContext());
 		/**
 		 * 更新包的名字
 		 */
 		String fileName = data.getString("fileName");
 		
-		LogUtil.d("服务器返回的版本:" + serverVersionCode + ":文件名称:" + fileName + ":正在运行的版本:" + currentVersionCode);
+//		LogUtil.d("服务器返回的版本:" + serverVersionCode + ":文件名称:" + fileName + ":正在运行的版本:" + currentVersionCode);
 
 		/**
 		 * 本地目录下有没有安装包 有的话比较该安装包的版本与服务器返回的版本 如果服务器返回的版本大于本地的版本则进行重新下载 
 		 * 否则不做下载
 		 */
 		
-		if (serverVersionCode > currentVersionCode) {
-			if(serverVersionCode == packageVersionCode){
-				//另外一种情况 就是pc端连续发两次最新版本而第一次我已经把版本下载好
-				if(SplashActivity.class.equals(activity.getClass())){
-					AutoInstallApkUtil.installApkDefaul(activity);
-				}
-			}
-			if(serverVersionCode > packageVersionCode){
-				LogUtil.d("apk有更新");
-				updateService.execute(new updateRunable(fileName));
-			}
-		}else{
-			reconnectNew();
-		}
+//		if (serverVersionCode > currentVersionCode) {
+//			if(serverVersionCode == packageVersionCode){
+//				//另外一种情况 就是pc端连续发两次最新版本而第一次我已经把版本下载好
+//				if(SplashActivity.class.equals(activity.getClass())){
+//					AutoInstallApkUtil.installApkDefaul(activity);
+//				}
+//			}
+//			if(serverVersionCode > packageVersionCode){
+//				LogUtil.d("apk有更新");
+//				updateService.execute(new updateRunable(fileName));
+//			}
+//		}else{
+//			reconnectNew();
+//		}
 	}
 
 
@@ -107,7 +107,7 @@ public class DownLoadApkHandler extends MessageHandler {
 			boolean flag = downApk();
 			if(flag){
 				if(SplashActivity.class.equals(activity.getClass())){
-					AutoInstallApkUtil.installApkDefaul(activity);
+//					AutoInstallApkUtil.installApkDefaul(activity);
 				}
 			}else{
 				updateService.execute(new updateRunable(fileName));
