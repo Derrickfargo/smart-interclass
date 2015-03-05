@@ -119,7 +119,7 @@ public final class SendMessageUtil extends AbstractSendMessageUitl{
 	 * 判断apk是否需要更新,从教师端获取更新消息
 	 * 有更新采用后台下载到本地,下次启动apk时进行自动后台安装
 	 */
-	public static void isUpdateApk(String json){
-		sendMessagePackingWithData(Message.MESSAGE_APK_UPTE, json);
+	public static void isUpdateApk(){
+		sendMessagePackingWithImei(Message.MESSAGE_APK_UPTE);
 	}
 }

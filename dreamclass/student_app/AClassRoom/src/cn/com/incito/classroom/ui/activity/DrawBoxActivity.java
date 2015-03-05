@@ -661,12 +661,5 @@ public class DrawBoxActivity extends BaseActivity implements OnClickListener, IS
 		message.what = 2;
 		handler.sendMessage(message);
 	}
-	
-	/**
-	 * 重连后弹出提示是否提交作业
-	 */
-	public void reconnectShowDailog(){
-		handler.sendEmptyMessage(3);
-	}
 
 }

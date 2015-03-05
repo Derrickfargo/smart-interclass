@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.com.incito.classroom"
-    android:versionCode="34"
-    android:versionName="V100R001C005B005" >
+    android:versionCode="50"
+    android:versionName="V100R001C02B0613" >
 
     <uses-sdk
         android:minSdkVersion="17"
@@ -28,6 +28,7 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+    <uses-permission android:name="android.permission.INSTALL_PACKAGES"/>
 
     <application
         android:name="cn.com.incito.classroom.base.MyApplication"
@@ -37,6 +38,10 @@
         android:largeHeap="true"
         android:screenOrientation="landscape"
         android:theme="@style/MyAppTheme" >
+        
+        <!-- 使用友盟统计 -->
+        <meta-data android:name="UMENG_APPKEY" android:value="54f5119cfd98c5df3400041a" />
+        
         <activity
             android:name="cn.com.incito.classroom.ui.activity.SplashActivity"
             android:screenOrientation="landscape" >

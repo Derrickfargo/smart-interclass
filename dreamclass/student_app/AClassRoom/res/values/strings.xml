@@ -9,6 +9,7 @@
     <string name="waiting_access_wifi">正在进入教室...</string>
     <string name="sendpaper_notice">作业正在上传至服务器</string>
     <string name="sendPaperSuccess">作业上传至服务器成功,等待老师确认</string>
+     <string name="down_apk">正在下载更新,成功后请重新启动</string>
     <!-- toast -->
     <string name="loading_network_disconnect">没能连接成功，联系老师吧~</string>
     <string name="toast_stname_notnull">要填上名字哦~</string>

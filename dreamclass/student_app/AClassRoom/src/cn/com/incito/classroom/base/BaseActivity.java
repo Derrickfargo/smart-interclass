@@ -118,7 +118,10 @@ public class BaseActivity extends FragmentActivity {
 			mProgressDialog.setMessage(id);
 		}
 		if(!mProgressDialog.isShowing()){
+			mProgressDialog.setMessage(id);
 			mProgressDialog.show();
+		}else{
+			mProgressDialog.setMessage(id);
 		}
 	}
 	
