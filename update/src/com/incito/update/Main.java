@@ -10,7 +10,7 @@ import java.util.Enumeration;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
-
+//¡£¡£¡£
 public class Main {
 
 	public static void main(String[] args) {
